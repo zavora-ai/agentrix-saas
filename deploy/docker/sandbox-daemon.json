@@ -1,0 +1,15 @@
+{
+  "runtimes": {
+    "runsc": {
+      "path": "/usr/bin/runsc",
+      "runtimeArgs": ["--network=sandbox"]
+    }
+  },
+  "default-runtime": "runsc",
+  "icc": false,
+  "userland-proxy": false,
+  "no-new-privileges": true,
+  "live-restore": true,
+  "log-driver": "local",
+  "log-opts": { "max-size": "10m", "max-file": "3" }
+}

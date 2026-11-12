@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{#- Deprecated: the first release's five-tab console, replaced by Agentrix OS at /os (agentrix-shell). Its links
+    go to the /os pages; only the receipt page (and the Move when node runs without W4's pages)
+    still renders on it.
+    The console shell. Every console view carries ConsoleChrome:
+      site: { id, host, name, state_words, fixture, live_url? },
+      nav: { active: "today"|"decisions"|"move"|"trust"|"webagents", decisions_waiting },
+      owner: { name } -#}
+{% block body_class %}console-page{% endblock %}
+{% block topright %}
+<span class="site-chip"><span>{{ site.name }}<small>{{ site.host }} · {{ site.state_words }}</small></span></span>
+{% if site.live_url %}<a class="btn btn-ghost" href="{{ site.live_url }}" rel="noopener">View your site</a>{% endif %}
+<form method="post" action="/auth/signout"><button class="btn btn-ghost" type="submit">Sign out</button></form>
+{% endblock %}
+{% block layout %}
+<div class="console">
+  <nav class="c-nav" aria-label="Console">
+    <a href="/os" {% if nav.active == "today" %}aria-current="page"{% endif %}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>Today</a>
+    <a href="/os/decisions" {% if nav.active == "decisions" %}aria-current="page"{% endif %}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 11l3 3 8-8"/><path d="M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h9"/></svg>Decisions{% if nav.decisions_waiting %}<span class="badge" aria-label="{{ nav.decisions_waiting }} waiting">{{ nav.decisions_waiting }}</span>{% endif %}</a>
+    <a href="/console/move" {% if nav.active == "move" %}aria-current="page"{% endif %}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7h13l-3-3M21 17H8l3 3"/></svg>The Move</a>
+    <a href="/os/trust" {% if nav.active == "trust" %}aria-current="page"{% endif %}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Trust</a>
+    <a href="/os/webagents" {% if nav.active == "webagents" %}aria-current="page"{% endif %}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/><rect x="14" y="14" width="7" height="7" rx="2"/></svg>WebAgents</a>
+  </nav>
+  <main id="main" class="page{% block page_class %}{% endblock %}">
+  {% block content %}{% endblock %}
+  </main>
+</div>
+{% endblock %}

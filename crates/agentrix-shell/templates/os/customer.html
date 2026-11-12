@@ -1,0 +1,69 @@
+{% extends "os/base.html" %}
+{#- ShellPage::Customer · view::CustomerView (+ Chrome) {
+      c: CustomerDetail { name, contact, phone, account_words, has_account, first, last,
+                          orders: [CustomerOrderLine { href, number, what, placed, label, tone }],
+                          conversations: [ConversationLine { at, how, said, href? }],
+                          consents: [ConsentLine { purpose, given, withdrawn, receipt? }], rights_url } }
+    One customer: their orders, what they said to the site, the consents on their account, and where they download or
+    erase what the site holds. Export and erasure are the customer's own (W6, A-11 to A-13): they need the customer's
+    fresh sign-in, so the owner can't run them from here. -#}
+{% block title %}{{ c.name }} · Customers · {{ site.name }}{% endblock %}
+{% block field %}
+<section class="view on" aria-labelledby="who-h">
+  <p class="small"><a href="{{ base }}/customers">← Customers</a></p>
+  <div class="field-head"><div><h2 id="who-h">{{ c.name }}</h2><div class="sub">First seen {{ c.first }} · last seen {{ c.last }}</div></div>{% if c.has_account %}{{ ui.chip("Account", "info") }}{% endif %}</div>
+  <div class="cards">
+    <article class="fcard">
+      <h3>Details</h3>
+      <dl class="kv">
+        <dt>Contact</dt><dd>{{ c.contact }}</dd>
+        {% if c.phone %}<dt>Phone</dt><dd>{{ c.phone }}</dd>{% endif %}
+        <dt>Account</dt><dd>{{ c.account_words if c.has_account else "No account on your site" }}</dd>
+      </dl>
+    </article>
+
+    <article class="fcard span2">
+      <h3>Orders</h3>
+      {% if c.orders %}
+      <div class="table-wrap"><table class="data">
+        <thead><tr><th scope="col">Order</th><th scope="col" class="hide-sm">Came in</th><th scope="col">State</th></tr></thead>
+        <tbody>{% for x in c.orders %}<tr><td><a href="{{ x.href }}"><b>{{ x.what or "Order" }}</b></a>{% if x.number %} <span class="small muted mono">{{ x.number }}</span>{% endif %}</td><td class="hide-sm">{{ x.placed }}</td><td>{{ ui.chip(x.label, x.tone) }}</td></tr>{% endfor %}</tbody>
+      </table></div>
+      {% else %}
+      <p class="quiet">No orders from {{ c.name }} yet.</p>
+      {% endif %}
+    </article>
+
+    <article class="fcard span2">
+      <h3>Conversations</h3>
+      {% if c.conversations %}
+      <ol class="tl">{% for t in c.conversations %}<li><span class="t">{{ t.at }}</span><span class="pin"></span><span><b>{{ t.how }}</b> · {% if t.href %}<a href="{{ t.href }}">{{ t.said }}</a>{% else %}{{ t.said }}{% endif %}</span></li>{% endfor %}</ol>
+      {% else %}
+      <p class="quiet">Nothing {{ c.name }} said is linked to them yet.</p>
+      {% endif %}
+      <p class="small muted">Conversations with your desks on the site aren't tied to a person, so they don't show here.</p>
+    </article>
+
+    <article class="fcard">
+      <h3>Consents</h3>
+      {% if c.consents %}
+      <ul>{% for k in c.consents %}<li><b>{{ k.purpose }}</b> <span class="small muted">given {{ k.given }}{% if k.withdrawn %} · {{ k.withdrawn }}{% endif %}</span>{% if k.receipt %} <a class="small" href="/receipts/{{ k.receipt }}">Receipt</a>{% endif %}</li>{% endfor %}</ul>
+      {% elif c.has_account %}
+      <p class="quiet">{{ c.name }} hasn't turned on any optional use of their details.</p>
+      {% else %}
+      <p class="quiet">No consents recorded. Only people with an account on your site can give them.</p>
+      {% endif %}
+    </article>
+
+    <article class="fcard">
+      <h3>Download or erase</h3>
+      {% if c.has_account %}
+      <p class="small">{{ c.name }} can download everything your site holds about them, or erase their account, from their own account page. Both need their own fresh sign-in, so you can't do either for them here.</p>
+      <p class="small">Send them this address: <span class="mono">{{ c.rights_url }}</span></p>
+      {% else %}
+      <p class="small">{{ c.name }} has no account on your site, so there's nothing for them to download or erase there. What they sent stays with their orders and questions.</p>
+      {% endif %}
+    </article>
+  </div>
+</section>
+{% endblock %}

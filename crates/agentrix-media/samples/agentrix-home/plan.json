@@ -1,0 +1,120 @@
+{
+  "site": "agentrix-home",
+  "sample": false,
+  "tier": "fast",
+  "look": "Warm colour grade, soft natural light, coral and cream accents",
+  "images": [
+    {
+      "slot": "film:01",
+      "kind": "film",
+      "seed": 5001,
+      "brief": "Eight in the morning outside Kilele Bakery, a small bright bakery in Westlands, Nairobi, with cream walls and wooden shelves of round sourdough loaves and croissants: a short queue of fictional customers forming under a plain coral awning on a leafy street, warm low sunlight",
+      "context": "Still 1 of 16 for a short film about a fictional Nairobi bakery on the Agentrix home page; fictional people, made with AI"
+    },
+    {
+      "slot": "film:02",
+      "kind": "film",
+      "seed": 5202,
+      "brief": "A busy morning in a small bright Nairobi bakery with cream walls and wooden shelves of round sourdough loaves and croissants: Njeri, a Kenyan woman in her early twenties with long braids, wearing a cream apron hands a paper bag of bread across the wooden counter while Otieno, a Kenyan man in his mid twenties in a white baker's jacket and white baker's cap carries a tray of croissants behind her. Low in the foreground, under the counter, a thin grey laptop lies flat and shut, lid down, dusty with flour, forgotten on a shelf",
+      "context": "Still 2 of 16 for a short film about a fictional Nairobi bakery on the Agentrix home page; fictional people, made with AI"
+    },
+    {
+      "slot": "film:04",
+      "kind": "film",
+      "seed": 5004,
+      "brief": "Six in the evening outside Kilele Bakery, a small bright bakery in Westlands, Nairobi, with cream walls and wooden shelves of round sourdough loaves and croissants: Wanjiru, a Kenyan woman in her late thirties with short natural black hair, wearing a coral apron over a dark brown shirt pulls down the metal shutter; the street lights are just coming on",
+      "context": "Still 4 of 16 for a short film about a fictional Nairobi bakery on the Agentrix home page; fictional people, made with AI"
+    },
+    {
+      "slot": "film:06",
+      "kind": "film",
+      "seed": 5006,
+      "brief": "Sunday seven in the morning, chaos inside Kilele Bakery, a small bright bakery in Westlands, Nairobi, with cream walls and wooden shelves of round sourdough loaves and croissants: a small printer spills a long ribbon of blank paper tickets, flour dusted everywhere, Wanjiru, a Kenyan woman in her late thirties with short natural black hair, wearing a coral apron over a dark brown shirt on the phone looking apologetic, a fictional customer waiting with arms crossed",
+      "context": "Still 6 of 16 for a short film about a fictional Nairobi bakery on the Agentrix home page; fictional people, made with AI"
+    },
+    {
+      "slot": "film:09",
+      "kind": "film",
+      "seed": 5009,
+      "brief": "Eight in the morning, calm, inside Kilele Bakery, a small bright bakery in Westlands, Nairobi, with cream walls and wooden shelves of round sourdough loaves and croissants: Njeri, a Kenyan woman in her early twenties with long braids, wearing a cream apron smiles as she hands a white cake box across the counter",
+      "context": "Still 9 of 16 for a short film about a fictional Nairobi bakery on the Agentrix home page; fictional people, made with AI"
+    },
+    {
+      "slot": "film:10",
+      "kind": "film",
+      "seed": 5010,
+      "brief": "Wanjiru, a Kenyan woman in her late thirties with short natural black hair, wearing a coral apron over a dark brown shirt, standing at the bakery oven with a tray of loaves, glances at her phone in one hand and smiles as she types a reply with her thumb",
+      "context": "Still 10 of 16 for a short film about a fictional Nairobi bakery on the Agentrix home page; fictional people, made with AI"
+    },
+    {
+      "slot": "film:13",
+      "kind": "film",
+      "seed": 5313,
+      "brief": "Sunday seven in the morning, a calm bakery kitchen: white cake boxes lined up on a steel counter with small blank paper tags, a plain sheet pinned on the wall behind, too far away to read. Njeri, a Kenyan woman in her early twenties with long braids, wearing a cream apron, and Otieno, a Kenyan man in his mid twenties in a plain white baker's jacket with no writing or embroidery and a white baker's cap, hold mugs of chai and smile",
+      "context": "Still 13 of 16 for a short film about a fictional Nairobi bakery on the Agentrix home page; fictional people, made with AI"
+    },
+    {
+      "slot": "film:16",
+      "kind": "film",
+      "seed": 5116,
+      "brief": "Months later, opening day of a second small bakery with a plain coral awning; a plain coral ribbon with no writing stretched across the open door; Wanjiru, a Kenyan woman in her late thirties with short natural black hair, wearing a coral apron over a dark brown shirt, Njeri, a Kenyan woman in her early twenties with long braids, wearing a cream apron and Otieno, a Kenyan man in his mid twenties in a white baker's jacket and white baker's cap stand together in front of it, smiling, a pair of scissors in Wanjiru's hand",
+      "context": "Still 16 of 16 for a short film about a fictional Nairobi bakery on the Agentrix home page; fictional people, made with AI"
+    },
+    {
+      "slot": "film:03",
+      "kind": "film",
+      "seed": 5003,
+      "brief": "Amani, a Kenyan woman in her early thirties in a bright orange and teal kitenge top, sitting on a sofa at home in the evening, frowning at her phone; a blank party invitation card lies on the coffee table",
+      "context": "Still 3 of 16 for a short film about a fictional Nairobi bakery on the Agentrix home page; fictional people, made with AI"
+    },
+    {
+      "slot": "film:05",
+      "kind": "film",
+      "seed": 5105,
+      "brief": "Late at night, a deserted Nairobi street: the dark front of a small bakery with its metal shutter pulled down under a plain coral awning, one street light glowing, the pavement completely empty, night sky",
+      "context": "Still 5 of 16 for a short film about a fictional Nairobi bakery on the Agentrix home page; fictional people, made with AI"
+    },
+    {
+      "slot": "film:07",
+      "kind": "film",
+      "seed": 5007,
+      "brief": "Amani, a Kenyan woman in her early thirties in a bright orange and teal kitenge top, walking in through the door of a different, larger bakery with glass display cases and white tiles",
+      "context": "Still 7 of 16 for a short film about a fictional Nairobi bakery on the Agentrix home page; fictional people, made with AI"
+    },
+    {
+      "slot": "film:08",
+      "kind": "film",
+      "seed": 5008,
+      "brief": "Late at night: Wanjiru, a Kenyan woman in her late thirties with short natural black hair, wearing a coral apron over a dark brown shirt sits alone at a table in the empty, dim bakery, her face lit by an open laptop, looking hopeful",
+      "context": "Still 8 of 16 for a short film about a fictional Nairobi bakery on the Agentrix home page; fictional people, made with AI"
+    },
+    {
+      "slot": "film:11",
+      "kind": "film",
+      "seed": 5011,
+      "brief": "Amani, a Kenyan woman in her early thirties in a bright orange and teal kitenge top, on the sofa at home designing a cake on her phone, with Zawadi, her six-year-old daughter, leaning in beside her, excited",
+      "context": "Still 11 of 16 for a short film about a fictional Nairobi bakery on the Agentrix home page; fictional people, made with AI"
+    },
+    {
+      "slot": "film:12",
+      "kind": "film",
+      "seed": 5012,
+      "brief": "Six in the evening outside Kilele Bakery, a small bright bakery in Westlands, Nairobi, with cream walls and wooden shelves of round sourdough loaves and croissants: Wanjiru, a Kenyan woman in her late thirties with short natural black hair, wearing a coral apron over a dark brown shirt, relaxed, waves goodbye to Njeri, a Kenyan woman in her early twenties with long braids, wearing a cream apron and Otieno, a Kenyan man in his mid twenties in a white baker's jacket and white baker's cap as the shutter comes down",
+      "context": "Still 12 of 16 for a short film about a fictional Nairobi bakery on the Agentrix home page; fictional people, made with AI"
+    },
+    {
+      "slot": "film:14",
+      "kind": "film",
+      "seed": 5014,
+      "brief": "Amani, a Kenyan woman in her early thirties in a bright orange and teal kitenge top, collecting a white cake box at the counter of Kilele Bakery, a small bright bakery in Westlands, Nairobi, with cream walls and wooden shelves of round sourdough loaves and croissants; Njeri, a Kenyan woman in her early twenties with long braids, wearing a cream apron hands it over with a smile",
+      "context": "Still 14 of 16 for a short film about a fictional Nairobi bakery on the Agentrix home page; fictional people, made with AI"
+    },
+    {
+      "slot": "film:15",
+      "kind": "film",
+      "seed": 5015,
+      "brief": "Zawadi, her six-year-old daughter at her birthday party at home, about to blow out the candles on a cake decorated with gold swirls and no letters, Amani, a Kenyan woman in her early thirties in a bright orange and teal kitenge top beside her, balloons behind",
+      "context": "Still 15 of 16 for a short film about a fictional Nairobi bakery on the Agentrix home page; fictional people, made with AI"
+    }
+  ]
+}

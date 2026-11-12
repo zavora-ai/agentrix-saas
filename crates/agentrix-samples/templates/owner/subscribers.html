@@ -1,0 +1,22 @@
+{% extends "owner/base.html" %}
+{% block field %}{% import "owner/macros.html" as m %}
+{{ m.head(c) }}
+<article class="fcard accent">
+  <h3>Give a subscription</h3>
+  <p class="muted small">For a reader who already has an account on the site. No payment is taken; it shows as given by you.</p>
+  <form method="post" action="{{ c.base }}subscribers" class="grant-form">
+    <label>Reader's email<input name="email" type="email" required placeholder="reader@example.com" autocomplete="off"></label>
+    <label>Plan<input name="plan" value="{{ plan }}" maxlength="60"></label>
+    <label>Lasts<select name="lasts"><option value="month">1 month</option><option value="year">1 year</option><option value="open">Until you end it</option></select></label>
+    <button class="btn btn-primary btn-sm">Give</button>
+  </form>
+</article>
+<article class="fcard">
+  {% if rows %}
+  <div class="tbl"><table class="procs">
+    <thead><tr><th>Reader</th><th class="hide-sm">Plan</th><th class="hide-sm">Source</th><th>State</th><th class="hide-sm">Since</th><th class="hide-sm">Until</th><th></th></tr></thead>
+    <tbody>{% for s in rows %}<tr><td><b>{{ s.name }}</b><small class="muted"> {{ s.email }}</small></td><td class="hide-sm">{{ s.plan }}</td><td class="hide-sm">{{ s.source }}</td><td>{% if s.active %}{{ m.chip("Active", "ok") }}{% else %}{{ m.chip("Ended", "") }}{% endif %}</td><td class="hide-sm">{{ s.since }}</td><td class="hide-sm">{{ s.until or "no end date" }}</td><td>{% if s.active %}<form method="post" action="{{ s.end }}" class="inline"><button class="btn btn-sm btn-ghost danger">End</button></form>{% endif %}</td></tr>{% endfor %}</tbody>
+  </table></div>
+  {% else %}{{ m.empty("No subscribers yet. They appear when a reader pays in the sandbox or you give one above.") }}{% endif %}
+</article>
+{% endblock %}

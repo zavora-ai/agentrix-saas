@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{#- Prices · view::HomeView · the plans, from W3's catalogue at render time -#}
+{% from "macros.html" import ask_box, paste, person %}
+{% block title %}Prices · Agentrix{% endblock %}
+{% block description %}What Agentrix costs: plans from the price list, paid monthly or annually with PayPal. Moving your site is free, and a 12-month plan comes with a {{ annual_discount_percent }}% discount.{% endblock %}
+{% block path %}/prices{% endblock %}
+{% block desk %}prices{% endblock %}
+{% block main %}
+{{ ask_box(front_desks[3], desks_ai) }}
+<section class="section wrap" id="pricing" aria-labelledby="pricing-title">
+  <p class="eyebrow">Pricing</p>
+  <h1 id="pricing-title">Priced for Intelligence</h1>
+  <p class="lead">Moving your site is free. What you pay for is the WebAgents running your site, monthly, in US dollars, billed through PayPal.</p>
+  <ul class="plans">
+    {% for p in plans %}
+    <li class="plan">
+      {% if p.first_month %}<p class="plan-offer">{{ p.first_month }}</p>{% endif %}
+      <h3>{{ p.name }}</h3>
+      <p class="plan-price"><b>USD {{ p.price | replace("$", "") }}</b> a {{ p.interval }}</p>
+      <ul class="plan-points">{% for point in p.points %}<li>{{ point }}</li>{% endfor %}</ul>
+      {% if p.webagents %}
+      <p class="plan-team-h">Your WebAgents</p>
+      {% for g in p.groups %}<p class="plan-group">{{ g.name }}</p>
+      <ul class="plan-team">{% for a in g.agents %}<li{% if a.soon %} class="soon"{% endif %}><b>{{ a.name }}</b> {{ a.role }}{% if a.soon %} <span class="plan-soon">Coming</span>{% endif %}</li>{% endfor %}</ul>{% endfor %}
+      {% endif %}
+      <a class="btn btn-primary plan-go" href="/#check">Start with {{ p.name }}</a>
+    </li>
+    {% endfor %}
+  </ul>
+  <p class="small muted">The first-month AI is a launch offer. Need more AI? Buy credits as you go, at what the models cost plus a margin we show you.{% if agency %} Agencies pay {{ agency.price }} a {{ agency.interval }} for each client site{% if agency.minimum_sites %}, {{ agency.minimum_sites }} sites at least{% endif %}, white-label, with one console for every client.{% endif %} These are pilot prices.</p>
+</section>
+
+<section class="section section-alt" id="questions" aria-labelledby="questions-title">
+  <div class="wrap">
+    <h2 id="questions-title">Questions about price</h2>
+    <dl class="faq">
+      {% if plans %}<div><dt>I run a very small business. What fits?</dt><dd>Essential: your site with web hosting and {{ plans[0].webagents|length }} WebAgents for USD {{ plans[0].price | replace("$", "") }} a month{% if plans[0].first_month %}, with {{ plans[0].first_month }}{% endif %}.</dd></div>{% endif %}
+      <div><dt>We're a large online store. Can we get custom pricing?</dt><dd>Yes. If you run many sites, take a lot of orders or expect heavy AI use, we agree a price with you. Talk to a person on WhatsApp.</dd></div>
+      <div><dt>What if we use more AI than our plan includes?</dt><dd>Buy AI credits as you go, at what the models cost plus a margin we show you. You set a monthly cap, and nothing goes over it without your OK.</dd></div>
+      <div><dt>Is hosting extra?</dt><dd>No. Web hosting is included in every plan.</dd></div>
+      <div><dt>Is there a contract?</dt><dd>Plans are paid monthly. Moving your site is free. A 12-month plan comes with a {{ annual_discount_percent }}% discount.</dd></div>
+      <div><dt>Can I cancel?</dt><dd>Yes, from Billing in your console. You confirm it with your passkey or a code.</dd></div>
+      <div><dt>How do I pay?</dt><dd>Annually or monthly in US dollars, through PayPal.</dd></div>
+    </dl>
+    {{ person(contact) }}
+  </div>
+</section>
+
+<section class="band band-cta" aria-labelledby="cta-title">
+  <div class="wrap cta">
+    <h2 id="cta-title">See what your site could do.</h2>
+    {{ paste("url-end", assess_action, false) }}
+    {{ person(contact) }}
+  </div>
+</section>
+{% endblock %}

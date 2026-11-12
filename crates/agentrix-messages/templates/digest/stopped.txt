@@ -1,0 +1,12 @@
+{% block subject %}You've stopped {{ digest.name }}{% endblock %}
+{% block preheader %}Your topics are deleted.{% endblock %}
+{% block body %}
+# The digest is stopped
+No more digests will come to this address, and your topics are deleted.
+
+{% if resubscribe_url %}
+Changed your mind? You can subscribe again at any time.
+
+::link Subscribe again | {{ resubscribe_url }}
+{% endif %}
+{% endblock %}

@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Agentrix OS for Owners</title>
+<meta name="description" content="Concept: the owner console of Agentrix WebAgent Platform, reinvented as an operating system where everything is an agent. Six screens: the shell, the Store, missions, live agents, the phone and the trust centre.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Manrope:wght@600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../styles.css">
+<link rel="stylesheet" href="console.css">
+<style>
+  .hero-os { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr); gap: clamp(24px, 4vw, 56px); align-items: center; }
+  .mini-os { position: relative; border-radius: 22px; overflow: hidden; box-shadow: var(--shadow-3); background: #151432; color: #e9e8f6; padding: 16px; display: grid; gap: 10px; }
+  .mini-os .bar { display: flex; align-items: center; gap: 8px; font: 700 12px/1 var(--font-text); }
+  .mini-os .bar .w { margin-left: auto; display: inline-flex; gap: 2px; padding: 3px; border-radius: 10px; background: rgba(255,255,255,.08); }
+  .mini-os .bar .w span { padding: 6px 9px; border-radius: 8px; color: #c5c3e0; }
+  .mini-os .bar .w span.on { background: rgba(255,255,255,.16); color: #fff; }
+  .mini-os .body { display: grid; grid-template-columns: 44px 1fr; gap: 10px; }
+  .mini-os .dk { display: grid; gap: 8px; align-content: start; }
+  .mini-os .dk .avatar { width: 36px; height: 36px; border-radius: 11px; font-size: 12px; }
+  .mini-os .tlc { padding: 12px; border-radius: 14px; background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.12); font-size: 13px; color: #c5c3e0; display: grid; gap: 8px; }
+  .mini-os .tlc b { color: #fff; }
+  .mini-os .tlc .t { font: 600 11.5px/1 var(--font-mono); color: #9a98bd; margin-right: 6px; }
+  .mini-os .ask { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 14px; background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.16); font-size: 13px; color: #9a98bd; }
+  .tension { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 16px; }
+  .tension .card h3 { font-size: var(--fs-16); }
+  .tension .card p { font-size: var(--fs-14); color: var(--ink-2); margin-top: 6px; }
+  @media (max-width: 860px) { .hero-os, .tension { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body class="os-page">
+<header class="conceptbar">
+  <a class="logo" href="../index.html"><span class="mark" aria-hidden="true"></span>Agentrix</a>
+  <nav aria-label="Agentrix OS concepts">
+    <a href="index.html" aria-current="page">Agentrix OS</a>
+    <a href="shell.html">Shell</a>
+    <a href="store.html">Store</a>
+    <a href="mission.html">Missions</a>
+    <a href="live.html">Live</a>
+    <a href="phone.html">Phone</a>
+    <a href="trust.html">Trust centre</a>
+    <a href="gestures.html">Gestures</a>
+  </nav>
+  <span class="concept-label">Concept · illustrative data</span>
+</header>
+
+<main class="wrap">
+  <section class="page-head hero-os">
+    <div>
+      <span class="eyebrow">Owner console · Agentrix WebAgent Platform by Zavora</span>
+      <h1 style="margin-top:12px">The owner console: your WebAgents, your decisions and your site in one place</h1>
+      <p class="lead" style="margin-top:12px">Agentrix OS won its hackathon on one idea: an operating system where everything is an agent. For a website owner, the agents are the site's WebAgents: a front desk that talks to every visitor, an editor, a sales lead, a guardian. They work in the background while the owner sleeps, live while customers are on the site, and only ever with the authority the owner signed.</p>
+      <div class="row" style="margin-top:18px"><a class="btn btn-primary btn-lg" href="shell.html">Open the shell</a><a class="btn btn-lg" href="phone.html">See it on a phone</a></div>
+    </div>
+    <div class="mini-os" aria-label="Night Time, in miniature">
+      <div class="bar"><span class="orb sm" aria-hidden="true"></span>Kilele Bakery<span class="w"><span>Front of house</span><span class="on">Back office</span></span></div>
+      <div class="body">
+        <div class="dk"><span class="os-mark" data-state="listening" style="--c:#8c87e6"><span class="avatar av-guardian">Gu</span></span><span class="os-mark" data-state="working" style="--c:#c58016"><span class="avatar av-editor">Ed</span></span><span class="os-mark" data-state="waiting"><span class="avatar av-sales">Sa</span></span><span class="os-mark" data-state="asleep"><span class="avatar av-caretaker">Ct</span></span></div>
+        <div class="tlc">
+          <span><span class="t">01:30</span><b>Guardian</b> blocked 212 probes on your old login page.</span>
+          <span><span class="t">04:10</span><b>Sales</b> drafted a quote for a new lead, and is waiting for you.</span>
+          <span><span class="t">05:00</span><b>Editor</b> found 2 prices that differ from your list.</span>
+          <span><span class="t">06:40</span><b>Chief WebAgent</b> wrote your brief from 31 recorded events.</span>
+        </div>
+      </div>
+      <div class="ask"><span class="orb sm xs" style="--s:22px" aria-hidden="true"></span>Ask, or give your WebAgents a job…</div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:8px" aria-label="Big ideas">
+    <span class="eyebrow">The big ideas</span>
+    <h2 style="margin-top:8px">Nine ideas behind the console</h2>
+    <div class="ideas" style="margin-top:16px">
+      <div class="idea"><b>1 · The Chief WebAgent is the shell</b><p>One command bar, text or voice. It plans, shows what will happen and what it will cost before anything starts, delegates to WebAgents, and answers in one voice. It is not an app, has no tools of its own that reach outside, and has no human name.</p></div>
+      <div class="idea"><b>2 · WebAgents are apps</b><p>A dock with live presence, a Store with plain-words listings, permissions grouped by effect, authority per job, a budget per app, pause and remove. Adding one is a charter change you sign.</p></div>
+      <div class="idea"><b>3 · Two worlds are two walls</b><p>Front of house (visitors and AI agents, live, untrusted) and Back office (your WebAgents at work). The shell shows the wall between them, and the only things that cross it are typed signals.</p></div>
+      <div class="idea"><b>4 · Night Time</b><p>The shell follows your opening hours. During quiet hours it turns dark, only emergencies reach you, and the field becomes a timeline of the work. In the morning the timeline becomes your brief.</p></div>
+      <div class="idea"><b>5 · Missions</b><p>Say a goal in your own words. The Chief WebAgent turns it into a contract: what counts, who works on it, when they wake, the budget and the end date. You sign it, and it reports every Monday, including what didn't work.</p></div>
+      <div class="idea"><b>6 · Sit in, take over, hand back</b><p>Watch any visitor conversation unseen, step in as yourself, then hand it back. While you type, the desk whispers facts from your own pages. What you say can become an answer for everyone.</p></div>
+      <div class="idea"><b>7 · Walk the site by voice</b><p>Open your own site and talk. The Chief WebAgent points at what it means, Editor drafts the change, and you sign the release. Voice can stop everything; it can never sign.</p></div>
+      <div class="idea"><b>8 · Every decision is bound to its effect</b><p>Your passkey signs the exact effect (or, without one, a single-use code from your authenticator app approves it): amount, recipient, release. That fingerprint runs once and becomes a receipt anyone can verify. One switch freezes everything, from the app, WhatsApp or voice.</p></div>
+      <div class="idea"><b>9 · Hands-free, safely</b><p>Six hand gestures for floury hands, recognised on the device with nothing uploaded, each held until a ring fills. A gesture can stop everything or bring up the passkey sheet, but it can never approve.</p></div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:0" aria-label="Six screens">
+    <span class="eyebrow">Seven screens</span>
+    <h2 style="margin-top:8px">Walk through the concept.</h2>
+    <div class="hub" style="margin-top:16px">
+      <a href="shell.html"><span class="n">01</span><b>The shell</b><p>Dock, two worlds, the lane, the command bar, the Activity monitor, Night Time.</p></a>
+      <a href="store.html"><span class="n">02</span><b>The Store</b><p>Add Sales: can and never, what wakes it, authority per job, budget, sign.</p></a>
+      <a href="mission.html"><span class="n">03</span><b>A mission reports in</b><p>Christmas cakes, week 2: what worked, what didn't, and what needs you.</p></a>
+      <a href="live.html"><span class="n">04</span><b>Live</b><p>Take over a visitor's conversation, and walk the site by voice.</p></a>
+      <a href="phone.html"><span class="n">05</span><b>The phone</b><p>Two minutes a day: lock screen, Now, a signed decision, the apps, WhatsApp.</p></a>
+      <a href="trust.html"><span class="n">06</span><b>Trust centre</b><p>Walls, Freeze, the ladder per job, signed grants, memory, receipts.</p></a>
+      <a href="gestures.html"><span class="n">07</span><b>Gestures</b><p>Six held hand gestures, recognised on the device. They can stop everything, but never approve.</p></a>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:0" aria-label="The tension">
+    <span class="eyebrow">Spatial or calm?</span>
+    <h2 style="margin-top:8px">On a phone it is a short list. On a desk it shows more.</h2>
+    <p class="lead" style="margin-top:8px">Agentrix OS was spatial and expressive. The platform chose a calm, phone-first console. Both are right, for different moments, so the console keeps one model and draws it two ways.</p>
+    <div class="tension">
+      <div class="card"><h3>What makes it an OS</h3><p>A shell agent, apps with permissions, processes that sleep and wake, a task manager, a notification policy, a kill switch, and a memory you can read. These are the same on every surface. The desk view draws them spatially: dock, field, lane, worlds, Night Time.</p></div>
+      <div class="card"><h3>What keeps it calm</h3><p>The phone draws the same model as a short stack: brief, decisions, live, apps. There are no gestures to learn and nothing to arrange, and the lock screen says only that something is waiting. Most mornings take two minutes, and quiet hours are really quiet.</p></div>
+    </div>
+    <p class="small muted" style="margin-top:14px">Design doc: <code class="mono">docs/07-owner-console.md</code>. WebAgent architecture: <code class="mono">docs/05-webagents.md</code>.</p>
+  </section>
+</main>
+<footer class="concept-foot">
+  <div class="wrap row">
+    <span><a href="../index.html">← All Agentrix concepts</a> · Start: <a href="shell.html">The shell →</a></span>
+    <span>Concept screens with illustrative data. Kilele Bakery is fictional.</span>
+  </div>
+</footer>
+<script src="console.js"></script>
+</body>
+</html>

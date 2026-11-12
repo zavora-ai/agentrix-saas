@@ -1,0 +1,15 @@
+{#- The lane's "Needs you": operator cards for this person (08 §7.1). Today these are break-glass
+    requests waiting for a second person; each is a full decision card with its signers. -#}
+<h4>Needs you{% if shell.waiting %} <span class="badge">{{ shell.waiting }}</span>{% endif %}</h4>
+{%- for c in shell.lane %}
+<article class="card decision" data-action-host>
+  <div class="head"><span class="from"><span class="avatar op sm av-security">Sc</span>{{ c.first_name }} asks</span><span class="chip chip-wait">Two people</span></div>
+  <h3>Open break-glass on {{ c.domain }}</h3>
+  <p class="facts">Reason: {{ c.reason }}{% if c.incident %} · {{ c.incident }}{% endif %} · asked {{ c.created_at|ago }}; it lapses if nobody signs within 30 minutes.</p>
+  <div class="signers"><span class="signer signed"><i>{{ c.first_name|initials }}</i>{{ c.first_name }} · {{ c.first_role }} ✓</span><span class="signer"><i>{{ shell.initials }}</i>{{ shell.operator.name }} · {{ c.second_role }}</span></div>
+  <div class="actions"><button class="btn btn-primary" type="button" data-action-json='{"action":"break-glass-second","bg_id":"{{ c.bg_id }}"}'>Read what happens, then sign</button><a class="btn" href="/sites/{{ c.site_id }}#access">Open the site</a></div>
+  <div class="action-sheet"></div>
+</article>
+{%- else %}
+<div class="quiet">Nothing needs you. Cards land here when an action needs your approval or a second person.</div>
+{%- endfor %}

@@ -1,0 +1,44 @@
+{#- agentrix-ui · the document every page extends, usually through a layout in ui/layouts/.
+
+Optional variables (all may be left out):
+  lang          "en" by default
+  theme         "light" or "dark" to override the system choice
+  night         true to render Night Time on load (the shell's quiet hours)
+  quiet_hours   {from: "22:00", to: "06:00", tz: "Africa/Nairobi"}: kit.js keeps Night Time right while the page stays open
+  flash         {text, tone}: one toast after a redirect (tone "", "ok" or "risk")
+
+Blocks: title, description, html_attrs, color_scheme, styles, head, body_class, body, toasts, scripts.
+No inline scripts or style attributes: the CSP is default-src 'self'. -#}
+<!doctype html>
+<html lang="{{ lang|default('en') }}"
+  {%- if theme is defined and theme in ['light', 'dark'] %} data-theme="{{ theme }}"{% endif %}
+  {%- if night is defined and night %} data-time="night"{% endif %}
+  {%- if quiet_hours is defined and quiet_hours %} data-night-from="{{ quiet_hours.from }}" data-night-to="{{ quiet_hours.to }}" data-tz="{{ quiet_hours.tz }}"{% endif %}
+  {%- block html_attrs %}{% endblock %}>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="{% block color_scheme %}light dark{% endblock %}">
+<title>{% block title %}Agentrix{% endblock %}</title>
+<meta name="description" content="{% block description %}Agentrix moves small-business websites onto WebAgents that answer customers, take orders and ask the owner before anything that matters.{% endblock %}">
+<link rel="preload" href="{{ ui_base }}/fonts/dm-sans-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="{{ ui_base }}/fonts/manrope-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="{{ ui_base }}/tokens.css?v={{ ui_v }}">
+<link rel="stylesheet" href="{{ ui_base }}/kit.css?v={{ ui_v }}">
+{%- if ui_marks %}
+<link rel="stylesheet" href="/_agentrix/marks.css?v={{ ui_v }}">
+<script type="module" src="/_agentrix/marks.js?v={{ ui_v }}"></script>
+{%- endif %}
+{% block styles %}{% endblock %}
+<script type="module" src="{{ ui_base }}/kit.js?v={{ ui_v }}"></script>
+{% block head %}{% endblock %}
+</head>
+<body class="{% block body_class %}{% endblock %}">
+<a class="skip" href="#main">{{ words.common.skip }}</a>
+{% block body %}{% endblock %}
+<div class="toasts" role="status" aria-live="polite">
+{%- block toasts %}{% if flash is defined and flash %}<div class="toast {{ flash.tone|default('') }}" data-flash>{{ flash.text }}</div>{% endif %}{% endblock -%}
+</div>
+{% block scripts %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,2 @@
+{"refund_id": "R-1042-1", "order_id": "KB-1042", "sku": "weekend-bake-box", "qty": 1, "reason": "The banana bread loaf was missing from the bake box.", "rule": "g-3", "state": "done", "at": "sat-1 13:20"}
+{"refund_id": "R-1038-1", "order_id": "KB-1038", "amount": 800, "reason": "Two slices arrived crushed.", "rule": "g-3", "state": "done", "at": "wed-1 11:05"}

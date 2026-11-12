@@ -1,0 +1,19 @@
+{% extends "owner/base.html" %}
+{% block field %}{% import "owner/macros.html" as m %}
+{{ m.head(c) }}
+<div class="tiles">
+  {% for g in groups %}<a class="tile" href="#d-{{ g.state }}"><span class="k">{{ g.label }}</span><b class="big">{{ g.count }}</b></a>{% endfor %}
+</div>
+{% for g in groups %}
+<article class="fcard" id="d-{{ g.state }}">
+  <div class="spread"><h3>{{ g.label }}</h3><span class="chip">{{ g.count }}</span></div>
+  <p class="muted small">{{ g.about }}</p>
+  {% if g.rows %}
+  <div class="tbl"><table class="procs">
+    <thead><tr><th>Email</th><th>Topics</th><th class="hide-sm">Asked</th><th class="hide-sm">Confirmed</th></tr></thead>
+    <tbody>{% for d in g.rows %}<tr><td>{{ d.email }}</td><td>{{ d.topics or "none" }}</td><td class="hide-sm">{{ d.since }}</td><td class="hide-sm">{{ d.confirmed or "not yet" }}</td></tr>{% endfor %}</tbody>
+  </table></div>
+  {% else %}{{ m.empty("None in this state.") }}{% endif %}
+</article>
+{% endfor %}
+{% endblock %}

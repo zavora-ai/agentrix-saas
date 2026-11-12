@@ -1,0 +1,9 @@
+{% extends "ui/layouts/page.html" %}
+{% import "ui/kit.html" as ui %}
+{% block title %}Treasury board · Agentrix{% endblock %}
+{% block main %}
+{{ ui.empty("The board isn't built on this node", "Build it with npm run build in web/saas-board, or point SAAS_BOARD_DIST at the built folder. Its data is at /feed.json meanwhile.", action={"label": "Open the feed", "href": "/feed.json"}, level=1) }}
+{% endblock %}
+{% block foot %}
+<footer class="foot"><div class="row"><span>Agentrix by Zavora · sandbox demo for the PayPal AI Hackathon · open source (MIT)</span></div></footer>
+{% endblock %}

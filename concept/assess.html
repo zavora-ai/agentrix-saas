@@ -1,0 +1,478 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Agentrix Assess</title>
+<meta name="description" content="Concept: the first three minutes. Paste an address, see the site read in sealed rooms, talk to the new website.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Manrope:wght@600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<style>
+  .player { display: grid; grid-template-columns: 240px 1fr; gap: var(--s5); align-items: start; padding-bottom: var(--s7); }
+  .steps { position: sticky; top: 76px; list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; }
+  .steps button { width: 100%; display: grid; grid-template-columns: 30px 1fr auto; align-items: center; gap: 10px; text-align: left; padding: 10px 12px; border-radius: 12px; border: 1px solid transparent; background: transparent; cursor: pointer; color: var(--ink-2); font: 600 var(--fs-14)/1.25 var(--font-text); }
+  .steps button .n { display: inline-grid; place-items: center; width: 26px; height: 26px; border-radius: 8px; background: var(--surface-2); color: var(--muted); font: 800 12px/1 var(--font-display); }
+  .steps button .t { font: 600 var(--fs-12)/1 var(--font-mono); color: var(--muted); }
+  .steps button:hover { background: var(--paper); }
+  .steps button[aria-current="step"] { background: var(--paper); border-color: var(--line); color: var(--indigo-900); box-shadow: var(--shadow-1); }
+  .steps button[aria-current="step"] .n { background: var(--indigo); color: #fff; }
+  .steps button.done .n { background: var(--indigo-100); color: var(--indigo); }
+
+  .controls { display: flex; align-items: center; gap: 8px; margin-bottom: var(--s3); flex-wrap: wrap; }
+  .controls .clock { margin-left: auto; font: 600 var(--fs-13)/1 var(--font-mono); color: var(--muted); }
+  .progress { height: 3px; background: var(--surface-2); }
+  .progress span { display: block; height: 100%; width: 0; background: var(--coral); }
+
+  .stage { min-height: 560px; position: relative; background: var(--paper); }
+  .scene { display: none; padding: clamp(18px, 3vw, 36px); }
+  .scene.active { display: block; animation: rise .4s var(--ease) both; }
+  .center { text-align: center; max-width: 560px; margin: 0 auto; padding-top: clamp(24px, 5vw, 64px); }
+
+  .addr { display: flex; gap: 8px; margin-top: var(--s5); padding: 6px; border-radius: 16px; border: 1.5px solid var(--indigo); background: #fff; box-shadow: 0 10px 30px -14px rgba(56,53,109,.5); }
+  .addr .input { flex: 1; display: flex; align-items: center; gap: 10px; padding: 0 12px; font: 600 var(--fs-18)/1 var(--font-text); color: var(--indigo-900); min-width: 0; }
+  .addr .input svg { width: 18px; height: 18px; color: var(--muted); flex: none; }
+  .caret { display: inline-block; width: 2px; height: 22px; background: var(--coral); margin-left: 1px; animation: pulse 1s infinite; vertical-align: middle; }
+  .assure { display: flex; justify-content: center; gap: 18px; flex-wrap: wrap; margin-top: var(--s4); color: var(--muted); font-size: var(--fs-13); }
+  .assure span { display: inline-flex; align-items: center; gap: 6px; }
+  .assure svg { width: 15px; height: 15px; color: var(--ok); }
+
+  .reading { display: grid; grid-template-columns: 1fr 260px; gap: var(--s4); }
+  .pagelist { list-style: none; padding: 0; margin: var(--s4) 0 0; display: grid; gap: 8px; }
+  .pagelist li { display: grid; grid-template-columns: 1fr auto; gap: 10px; align-items: center; padding: 10px 12px; border: 1px solid var(--line); border-radius: 12px; background: #fff; animation: rise .35s var(--ease) both; }
+  .pagelist .path { font: 600 var(--fs-13)/1.2 var(--font-mono); color: var(--indigo-900); }
+  .pagelist .ttl { font-size: var(--fs-12); color: var(--muted); }
+  .side-facts { display: grid; gap: var(--s3); align-content: start; margin-top: var(--s4); }
+  .fact { padding: 12px; border-radius: 12px; background: var(--surface); border: 1px solid var(--line); font-size: var(--fs-13); color: var(--ink-2); }
+  .fact b { display: block; color: var(--indigo-900); margin-bottom: 4px; font-size: var(--fs-13); }
+  .fact.block { background: var(--risk-bg); border-color: #f3c9c5; }
+  .fact.block b { color: var(--risk); }
+
+  .findings { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s3); margin-top: var(--s4); }
+  .finding { border: 1px solid var(--line); border-radius: 14px; padding: var(--s4); background: #fff; }
+  .finding h4 { font-size: var(--fs-16); margin: 8px 0 4px; }
+  .finding p { font-size: var(--fs-14); color: var(--ink-2); }
+  .finding details { margin-top: 10px; }
+  .finding summary { cursor: pointer; font: 700 var(--fs-13)/1 var(--font-text); color: var(--indigo); }
+  .finding pre { margin: 8px 0 0; padding: 10px; border-radius: 10px; background: #15142a; color: #e6e5f5; font: 400 12px/1.5 var(--font-mono); overflow-x: auto; white-space: pre-wrap; word-break: break-word; }
+  .finding pre .hl { color: #ff8fa6; }
+
+  .compare { display: grid; grid-template-columns: 1fr 1fr 260px; gap: var(--s4); margin-top: var(--s4); align-items: start; }
+  .mini { border: 1px solid var(--line); border-radius: 12px; overflow: hidden; background: #fff; }
+  .mini .cap { display: flex; justify-content: space-between; align-items: center; padding: 8px 10px; font: 700 var(--fs-12)/1 var(--font-text); color: var(--ink-2); background: var(--surface); border-bottom: 1px solid var(--line); }
+  .old-site { height: 300px; padding: 10px; background: #f0efe9; font-family: Georgia, serif; position: relative; overflow: hidden; }
+  .old-site .ban { height: 70px; background: repeating-linear-gradient(45deg, #c9c3b4, #c9c3b4 6px, #d4cfc2 6px, #d4cfc2 12px); border-radius: 4px; display: grid; place-items: center; color: #6c6555; font-size: 11px; }
+  .old-site .nav { display: flex; gap: 4px; margin: 6px 0; flex-wrap: wrap; }
+  .old-site .nav i { font-style: normal; font-size: 9px; padding: 3px 5px; background: #8a2be2; color: #fff; }
+  .old-site p { font-size: 9px; line-height: 1.3; color: #555; margin-bottom: 4px; }
+  .old-site .side { position: absolute; right: 10px; top: 100px; width: 70px; height: 150px; background: #e1ddd2; border: 1px dashed #b9b2a2; font-size: 8px; padding: 4px; color: #888; }
+  .new-site { height: 300px; background: #fbf4ea; padding: 14px; color: #3b2416; }
+  .new-site .top { display: flex; justify-content: space-between; align-items: center; font: 800 13px/1 var(--font-display); }
+  .new-site .top span { font: 600 9px/1 var(--font-text); opacity: .7; }
+  .new-site .heroimg { margin-top: 12px; height: 84px; border-radius: 12px; background: radial-gradient(circle at 70% 40%, #f2c58a 0 18%, transparent 19%), radial-gradient(circle at 30% 60%, #e2a05b 0 14%, transparent 15%), linear-gradient(135deg, #7a3f1d, #c06a2b); }
+  .new-site h5 { margin: 10px 0 4px; font: 800 16px/1.1 var(--font-display); }
+  .new-site .ask { margin-top: 8px; border: 1.5px solid #3b2416; border-radius: 999px; padding: 6px 10px; font: 600 10px/1 var(--font-text); background: #fff; }
+  .new-site .tiles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-top: 10px; }
+  .new-site .tiles i { height: 42px; border-radius: 8px; background: #fff; border: 1px solid #ecdcc6; }
+  .parity-big { font: 800 var(--fs-44)/1 var(--font-display); color: var(--indigo-900); letter-spacing: -.03em; }
+  .bars { display: grid; gap: 10px; margin-top: var(--s3); }
+  .bars label { display: flex; justify-content: space-between; font: 600 var(--fs-13)/1 var(--font-text); color: var(--ink-2); margin-bottom: 5px; }
+
+  .chat { max-width: 640px; margin: var(--s4) auto 0; border: 1px solid #ecdcc6; border-radius: 18px; overflow: hidden; background: #fffdf9; }
+  .chat-head { display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; background: #fbf4ea; border-bottom: 1px solid #ecdcc6; font: 800 var(--fs-14)/1 var(--font-display); color: #3b2416; }
+  .chat-body { padding: 16px; display: grid; gap: 12px; min-height: 300px; align-content: start; }
+  .msg { max-width: 82%; padding: 10px 14px; border-radius: 16px; font-size: var(--fs-14); line-height: 1.5; animation: rise .35s var(--ease) both; }
+  .msg.you { justify-self: end; background: #3b2416; color: #fff; border-bottom-right-radius: 6px; }
+  .msg.site { justify-self: start; background: #fff; border: 1px solid #ecdcc6; color: #3b2416; border-bottom-left-radius: 6px; }
+  .msg .src { display: inline-flex; align-items: center; gap: 6px; margin-top: 8px; font: 600 var(--fs-12)/1 var(--font-text); color: #8a5a2b; background: #fbf0e0; padding: 5px 8px; border-radius: 8px; }
+  .typing { justify-self: start; display: inline-flex; gap: 4px; padding: 12px 14px; background: #fff; border: 1px solid #ecdcc6; border-radius: 16px; }
+  .typing i { width: 6px; height: 6px; border-radius: 50%; background: #c9a77f; animation: pulse 1s infinite; }
+  .typing i:nth-child(2) { animation-delay: .15s; } .typing i:nth-child(3) { animation-delay: .3s; }
+  .teach { max-width: 640px; margin: var(--s4) auto 0; border: 1.5px dashed var(--indigo); border-radius: 16px; padding: var(--s4); background: var(--indigo-50); animation: rise .4s var(--ease) both; }
+  .disclose { text-align: center; font-size: var(--fs-12); color: var(--muted); margin-top: 10px; }
+
+  .agentgrid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s3); margin-top: var(--s4); }
+  .agentcard { display: grid; grid-template-columns: 40px 1fr; gap: 12px; padding: var(--s4); border: 1px solid var(--line); border-radius: 14px; background: #fff; animation: rise .4s var(--ease) both; }
+  .agentcard h4 { font-size: var(--fs-16); }
+  .agentcard p { font-size: var(--fs-14); color: var(--ink-2); margin-top: 4px; }
+  .agentcard .row { margin-top: 10px; }
+
+  .keep { max-width: 460px; margin: clamp(10px, 4vw, 40px) auto 0; text-align: center; }
+  .passkey { width: 84px; height: 84px; margin: 0 auto var(--s4); border-radius: 26px; background: var(--indigo-50); border: 1px solid var(--indigo-100); display: grid; place-items: center; color: var(--indigo); }
+  .passkey svg { width: 46px; height: 46px; }
+  .share { display: flex; align-items: center; gap: 8px; margin-top: var(--s5); padding: 10px 12px; border-radius: 12px; background: var(--surface); border: 1px solid var(--line); text-align: left; }
+  .share .mono { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--indigo-900); }
+
+  .caption { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s4); margin-top: var(--s4); }
+  .caption div { padding: var(--s4); border-radius: 14px; background: var(--paper); border: 1px solid var(--line); font-size: var(--fs-14); color: var(--ink-2); }
+  .caption b { display: block; font: 700 var(--fs-12)/1 var(--font-text); letter-spacing: .1em; text-transform: uppercase; color: var(--coral-strong); margin-bottom: 8px; }
+  .caption div:last-child b { color: var(--indigo); }
+
+  @media (max-width: 1000px) {
+    .player { grid-template-columns: 1fr; }
+    .steps { position: static; display: flex; overflow-x: auto; gap: 6px; padding-bottom: 4px; scrollbar-width: none; }
+    .steps::-webkit-scrollbar { display: none; }
+    .steps li { flex: none; }
+    .steps button { grid-template-columns: 26px auto; }
+    .steps button .t { display: none; }
+    .compare { grid-template-columns: 1fr 1fr; }
+    .compare .parity { grid-column: 1 / -1; }
+  }
+  @media (max-width: 720px) {
+    .reading, .findings, .agentgrid, .caption { grid-template-columns: 1fr; }
+    .compare { grid-template-columns: 1fr; }
+    .pagelist li { grid-template-columns: 1fr; }
+    .stage { min-height: 620px; }
+    .msg { max-width: 92%; }
+  }
+</style>
+</head>
+<body>
+<header class="conceptbar">
+  <a class="logo" href="index.html"><span class="mark" aria-hidden="true"></span>Agentrix</a>
+  <nav aria-label="Concept screens">
+    <a href="index.html">Overview</a>
+    <a href="assess.html" aria-current="page">Assess</a>
+    <a href="move.html">The Move</a>
+    <a href="console.html">Owner console</a>
+    <a href="site.html">The website</a>
+  </nav>
+  <span class="concept-label">Concept · illustrative data</span>
+</header>
+
+<main class="wrap">
+  <div class="page-head">
+    <span class="eyebrow">Surface 01 · Assess · 0:00–3:00 · no account</span>
+    <h1 style="margin-top:12px">"That's my business."</h1>
+    <p class="lead">Wanjiru pastes her bakery's address. In three minutes she sees her site read in sealed rooms, gets an honest health report, and talks to her new website before she has signed up for anything.</p>
+  </div>
+
+  <div class="player">
+    <ol class="steps" id="steps" aria-label="Sequence"></ol>
+
+    <div>
+      <div class="controls" role="group" aria-label="Playback">
+        <button class="btn btn-sm" id="prev" type="button" aria-label="Previous step">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>Back</button>
+        <button class="btn btn-primary btn-sm" id="play" type="button" aria-pressed="false">Play</button>
+        <button class="btn btn-sm" id="next" type="button" aria-label="Next step">Next
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></button>
+        <span class="clock" id="clock" aria-live="off">0:00</span>
+      </div>
+
+      <div class="browser">
+        <div class="browser-bar">
+          <span class="dots" aria-hidden="true"><i></i><i></i><i></i></span>
+          <span class="url"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg><span id="url">agentrix.ai</span></span>
+        </div>
+        <div class="progress" aria-hidden="true"><span id="bar"></span></div>
+
+        <div class="stage" aria-live="polite">
+          <!-- 1. Paste -->
+          <section class="scene" data-step="0" aria-label="Paste your address">
+            <div class="center">
+              <span class="eyebrow">Free · two minutes</span>
+              <h2 style="margin-top:12px">What could your website do while you sleep?</h2>
+              <p class="muted" style="margin-top:10px">Paste your address. We'll read what's public and show you.</p>
+              <div class="addr">
+                <div class="input"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg><span id="typed"></span><span class="caret" aria-hidden="true"></span></div>
+                <span class="btn btn-primary btn-lg">Show me</span>
+              </div>
+              <div class="assure">
+                <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg>No account</span>
+                <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg>No passwords</span>
+                <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg>Only what's already public</span>
+              </div>
+            </div>
+          </section>
+
+          <!-- 2. Reading -->
+          <section class="scene" data-step="1" aria-label="Reading your site">
+            <div class="spread">
+              <div><span class="eyebrow">Step 1 of 3</span><h2 style="margin-top:8px">Reading kilele-bakery.example</h2></div>
+              <span class="chip chip-info"><span class="live-dot" aria-hidden="true"></span><span id="pagecount">0 of 14 pages</span></span>
+            </div>
+            <div class="reading">
+              <ul class="pagelist" id="pagelist"></ul>
+              <div class="side-facts">
+                <div class="fact"><b>Every page opens in a sealed room</b>A fresh browser with no keys, reaching only your site, destroyed when the page is read.</div>
+                <div class="fact"><b>A polite, named reader</b>Identifies itself (signed), follows your robots.txt, one request a second.</div>
+                <div class="fact block"><b>Refused: 1 redirect</b>/old-specials tried to send our reader to 169.254.169.254, a cloud's private address. Blocked and noted.</div>
+              </div>
+            </div>
+          </section>
+
+          <!-- 3. Health -->
+          <section class="scene" data-step="2" aria-label="Health report">
+            <div class="spread">
+              <div><span class="eyebrow">Step 2 of 3</span><h2 style="margin-top:8px">Your site's health, honestly</h2></div>
+              <div class="row"><span class="chip chip-risk">2 urgent</span><span class="chip">4 findings</span><span class="chip chip-outline">public evidence only</span></div>
+            </div>
+            <div class="findings">
+              <article class="finding">
+                <span class="chip chip-risk">Urgent · security</span>
+                <h4>Hidden links you didn't put there</h4>
+                <p>Three links to gambling sites are hidden on your summer offers post. Search engines see them; you don't.</p>
+                <details><summary>Evidence</summary><pre>/blog/summer-offers  line 214
+&lt;div <span class="hl">style="display:none"</span>&gt;
+  &lt;a href="https://<span class="hl">bet-zone.example</span>/…"&gt;…&lt;/a&gt; ×3
+&lt;/div&gt;</pre></details>
+              </article>
+              <article class="finding">
+                <span class="chip chip-risk">Urgent · security</span>
+                <h4>An old WordPress with a public login page</h4>
+                <p>Your pages announce WordPress 6.1 (2022), and the login page answers anyone. It's the most-attacked door on the web.</p>
+                <details><summary>Evidence</summary><pre>&lt;meta name="generator" content="<span class="hl">WordPress 6.1</span>"&gt;
+GET /wp-login.php → <span class="hl">200 OK</span></pre></details>
+              </article>
+              <article class="finding">
+                <span class="chip chip-wait">Customers · AI assistants</span>
+                <h4>AI assistants can't read your menu</h4>
+                <p>Your prices live inside a picture, and there's no product data. Ask an assistant "how much is a Kilele birthday cake?" and it can't say.</p>
+                <details><summary>Evidence</summary><pre>/menu → &lt;img src="<span class="hl">menu-2023.jpg</span>"&gt; (text: none)
+structured data: <span class="hl">none found</span></pre></details>
+              </article>
+              <article class="finding">
+                <span class="chip chip-wait">Speed</span>
+                <h4>Slow on phones</h4>
+                <p>4.8 seconds before anything shows on a typical 4G phone. Most of that is one 3.2 MB photo.</p>
+                <details><summary>Evidence</summary><pre>first contentful paint (4G, mid-range): <span class="hl">4.8 s</span>
+hero-cakes.jpg  <span class="hl">3.2 MB</span>  (displayed at 1200×500)</pre></details>
+              </article>
+            </div>
+          </section>
+
+          <!-- 4. Alive -->
+          <section class="scene" data-step="3" aria-label="Your new website, alive">
+            <div class="spread">
+              <div><span class="eyebrow">Step 3 of 3</span><h2 style="margin-top:8px">Your new website, alive</h2></div>
+              <span class="chip chip-ok">Private preview · 7 days · not indexed</span>
+            </div>
+            <div class="compare">
+              <div class="mini">
+                <div class="cap"><span>Today · WordPress</span><span class="chip chip-risk">4.8 s</span></div>
+                <div class="old-site" aria-hidden="true">
+                  <div class="ban">BANNER IMAGE (3.2 MB)</div>
+                  <div class="nav"><i>HOME</i><i>MENU</i><i>CAKES</i><i>BLOG</i><i>ABOUT</i><i>CONTACT</i></div>
+                  <p>Welcome to Kilele Bakery!!! We bake fresh every day since 2016. Click here for our menu (image).</p>
+                  <p>Summer offers 2023 — see blog. Call us for orders. Delivery available in some areas.</p>
+                  <p>Opening hours: please see contact page.</p>
+                  <div class="side">WIDGET · Tag cloud · Archives · Meta</div>
+                </div>
+              </div>
+              <div class="mini">
+                <div class="cap"><span>Your new website · preview</span><span class="chip chip-ok">0.9 s</span></div>
+                <div class="new-site" aria-hidden="true">
+                  <div class="top">Kilele Bakery <span>Menu · Cakes · Order · Visit</span></div>
+                  <div class="heroimg"></div>
+                  <h5>Baked at dawn in Westlands.</h5>
+                  <div class="ask">Ask this site · delivery, cakes, hours…</div>
+                  <div class="tiles"><i></i><i></i><i></i></div>
+                </div>
+              </div>
+              <div class="parity card tight">
+                <span class="small muted">Matches your old site</span>
+                <div class="parity-big"><span id="parity">0</span>%</div>
+                <span class="chip chip-ok" style="margin-top:6px">Above the 95% bar</span>
+                <div class="bars">
+                  <div><label><span>Words and pages</span><span>99</span></label><div class="meter ok"><span data-w="99"></span></div></div>
+                  <div><label><span>Links</span><span>100</span></label><div class="meter ok"><span data-w="100"></span></div></div>
+                  <div><label><span>Products and prices</span><span>96</span></label><div class="meter ok"><span data-w="96"></span></div></div>
+                  <div><label><span>Look (kept your logo and colours)</span><span>92</span></label><div class="meter"><span data-w="92"></span></div></div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- 5. Talk -->
+          <section class="scene" data-step="4" aria-label="Talk to it">
+            <div class="center" style="padding-top:0;max-width:640px">
+              <h2>Talk to it like a customer would.</h2>
+              <p class="muted" style="margin-top:8px">It only answers from your pages, and says so when it doesn't know.</p>
+            </div>
+            <div class="chat">
+              <div class="chat-head"><span>Kilele Bakery</span><span class="chip" style="background:#fbf0e0;color:#8a5a2b">AI concierge</span></div>
+              <div class="chat-body" id="chat"></div>
+            </div>
+            <div class="teach" id="teach" hidden>
+              <div class="spread"><b class="small" style="color:var(--indigo-900)">What Wanjiru sees: teach your site</b><span class="chip chip-coral">New question</span></div>
+              <p class="small" style="margin-top:6px;color:var(--ink-2)">"Can you make a gluten-free birthday cake?" Your pages don't say.</p>
+              <div class="row" style="margin-top:10px"><span class="btn btn-sm btn-primary">Yes, always</span><span class="btn btn-sm">Only to order</span><span class="btn btn-sm">No</span></div>
+            </div>
+            <p class="disclose">Visitors are told they're talking to AI. Every answer cites the page it came from.</p>
+          </section>
+
+          <!-- 6. WebAgents -->
+          <section class="scene" data-step="5" aria-label="Meet your WebAgents">
+            <div class="spread">
+              <div><span class="eyebrow">Ready on day one</span><h2 style="margin-top:8px">Meet your WebAgents</h2></div>
+              <span class="small muted">Suggestions come from your real site, not a template.</span>
+            </div>
+            <div class="agentgrid">
+              <article class="agentcard"><span class="avatar av-concierge">Co</span><div><h4>Concierge</h4><p>I can already answer 23 common questions from your pages. Two need you: gluten-free cakes, delivery to Karen.</p><div class="row"><span class="btn btn-sm">See the questions</span></div></div></article>
+              <article class="agentcard" style="animation-delay:.1s"><span class="avatar av-editor">Ed</span><div><h4>Editor</h4><p>Your cake price list is dated 2023. Shall we confirm today's prices before anything goes live?</p><div class="row"><span class="btn btn-sm">Review prices</span></div></div></article>
+              <article class="agentcard" style="animation-delay:.2s"><span class="avatar av-guardian">Gu</span><div><h4>Guardian</h4><p>Three hidden gambling links on your summer offers post. They'll be left behind when we move your site.</p><div class="row"><span class="btn btn-sm">See evidence</span></div></div></article>
+              <article class="agentcard" style="animation-delay:.3s"><span class="avatar av-sales">Sa</span><div><h4>Sales</h4><p>Your order form never tells customers it worked. I'll confirm every order on WhatsApp, after you OK it.</p><div class="row"><span class="btn btn-sm">Turn on</span></div></div></article>
+            </div>
+          </section>
+
+          <!-- 7. Keep -->
+          <section class="scene" data-step="6" aria-label="Keep it">
+            <div class="keep">
+              <div class="passkey" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 11c0 3-1 6-3 8M8.5 7.5A5 5 0 0 1 17 11c0 1.5-.2 3-.6 4.4M6.3 10A6.5 6.5 0 0 1 9 5.6M12 14.5c-.2 1.8-.8 3.5-1.7 5M15.3 17.5c-.3 1-.7 2-1.2 2.9M4 13.5c.4-1 .6-2 .6-3"/></svg></div>
+              <h2>Keep your new website</h2>
+              <p class="muted" style="margin-top:8px">No password to remember: your phone or laptop is the key. Nothing changes on your current site until you say go.</p>
+              <div class="stack" style="margin-top:var(--s5)">
+                <span class="btn btn-primary btn-lg" style="width:100%">Continue with passkey</span>
+                <span class="small muted">Essential plan from KSh 3,700/month · migration included · cancel anytime</span>
+              </div>
+              <div class="share">
+                <span class="mono">kilele.preview.agentrix.site/9xQ2</span>
+                <span class="btn btn-sm">Share preview</span>
+              </div>
+              <p class="small muted" style="margin-top:8px">Send it to someone whose opinion you trust.</p>
+            </div>
+          </section>
+        </div>
+      </div>
+
+      <div class="caption" aria-live="polite">
+        <div><b>What Wanjiru sees</b><span id="see"></span></div>
+        <div><b>What's actually happening</b><span id="real"></span></div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer class="concept-foot">
+  <div class="wrap row">
+    <span>Next: <a href="move.html">The Move →</a></span>
+    <span>Concept screens with illustrative data. Kilele Bakery is fictional.</span>
+  </div>
+</footer>
+
+<script>
+(() => {
+  const steps = [
+    { label: "Paste your address", t: "0:00", url: "agentrix.ai", dur: 6500,
+      see: "One field and three promises. No sign-up wall, no password, no WordPress login.",
+      real: "Nothing yet. The address is checked to be a public site before anything is fetched." },
+    { label: "Reading your site", t: "0:10", url: "agentrix.ai/assess/kilele-bakery.example", dur: 9000,
+      see: "Her pages appear one by one, each with a sealed-room badge, and one refused redirect.",
+      real: "A signed, robots-respecting reader fetches public pages. Each render runs in a fresh sandbox whose only route out is a proxy that allows kilele-bakery.example and refuses private addresses." },
+    { label: "Honest health report", t: "0:45", url: "agentrix.ai/assess/kilele-bakery.example/health", dur: 9000,
+      see: "Four findings in plain words, each with the evidence one tap away.",
+      real: "The Assessor and detectors work over the recorded crawl. Nothing is guessed; a finding without evidence is not shown." },
+    { label: "Your new website, alive", t: "1:30", url: "kilele.preview.agentrix.site", dur: 8000,
+      see: "Old and new side by side, 4.8 s against 0.9 s, and a 97% match.",
+      real: "The Mover rebuilds a signed preview release from the crawl, renders it in a no-network sandbox, and scores parity on text, links, products and look." },
+    { label: "Talk to it", t: "2:00", url: "kilele.preview.agentrix.site", dur: 10000,
+      see: "Her site answers a Sunday-delivery question with its source, and admits what it doesn't know.",
+      real: "The Concierge is grounded only on the crawled pages. Unknowns become a 'teach your site' card instead of a made-up answer." },
+    { label: "Meet your WebAgents", t: "2:30", url: "agentrix.ai/assess/kilele-bakery.example/webagents", dur: 8000,
+      see: "Four WebAgents, each with a first suggestion drawn from her real site.",
+      real: "Suggestions come from findings and gaps in this site's evidence. Each is a proposal; nothing acts yet." },
+    { label: "Keep it", t: "3:00", url: "agentrix.ai/keep", dur: 8000,
+      see: "Keep it with a passkey, or share the preview with someone she trusts.",
+      real: "A WebAuthn passkey creates the account. The preview becomes a site in setup. The old site is untouched." }
+  ];
+  const pages = [
+    ["/", "Home"], ["/menu", "Menu"], ["/cakes", "Celebration cakes"], ["/order", "Order a cake"],
+    ["/delivery", "Delivery"], ["/about", "Our story"], ["/visit", "Visit us"], ["/blog/summer-offers", "Summer offers 2023"],
+    ["/blog/sourdough-101", "Sourdough 101"], ["/contact", "Contact"]
+  ];
+  const scenes = [...document.querySelectorAll(".scene")];
+  const list = document.getElementById("steps");
+  const playBtn = document.getElementById("play");
+  const bar = document.getElementById("bar");
+  let i = 0, playing = false, timers = [], elapsed = 0, last = performance.now();
+
+  steps.forEach((s, k) => {
+    const li = document.createElement("li");
+    li.innerHTML = `<button type="button"><span class="n">${k + 1}</span><span>${s.label}</span><span class="t">${s.t}</span></button>`;
+    li.firstChild.addEventListener("click", () => go(k, true));
+    list.appendChild(li);
+  });
+  const later = (fn, ms) => timers.push(setTimeout(fn, ms));
+  const clear = () => { timers.forEach(clearTimeout); timers = []; };
+
+  function enter(k) {
+    clear();
+    if (k === 0) {
+      const el = document.getElementById("typed"), txt = "kilele-bakery.example"; el.textContent = "";
+      [...txt].forEach((c, n) => later(() => { el.textContent += c; }, 500 + n * 85));
+    }
+    if (k === 1) {
+      const ul = document.getElementById("pagelist"), count = document.getElementById("pagecount"); ul.innerHTML = "";
+      pages.forEach(([p, t], n) => later(() => {
+        const li = document.createElement("li");
+        li.innerHTML = `<div><div class="path">${p}</div><div class="ttl">${t}</div></div>
+          <span class="sealed"><span class="seal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></span>network: this site only <span class="sep">·</span> keys: none <span class="sep">·</span> <span class="done">destroyed ✓</span></span>`;
+        ul.prepend(li);
+        if (ul.children.length > 6) ul.lastChild.remove();
+        count.textContent = `${Math.min(14, n + 5)} of 14 pages`;
+      }, 300 + n * 750));
+    }
+    if (k === 3) {
+      const p = document.getElementById("parity"); p.textContent = "0";
+      document.querySelectorAll("[data-w]").forEach(s => { s.style.width = "0"; later(() => s.style.width = s.dataset.w + "%", 200); });
+      let v = 0; const tick = () => { v = Math.min(97, v + 3); p.textContent = v; if (v < 97) later(tick, 40); }; later(tick, 300);
+    }
+    if (k === 4) {
+      const chat = document.getElementById("chat"), teach = document.getElementById("teach");
+      chat.innerHTML = ""; teach.hidden = true;
+      const add = (cls, html) => { const d = document.createElement("div"); d.className = cls; d.innerHTML = html; chat.appendChild(d); return d; };
+      later(() => add("msg you", "Do you deliver on Sundays?"), 400);
+      later(() => add("typing", "<i></i><i></i><i></i>"), 1100);
+      later(() => { chat.lastChild.remove(); add("msg site", `Yes. On Sundays we deliver within Westlands and Kilimani between 9 am and 1 pm. Delivery is KSh 300.<br><span class="src">Source: Delivery page</span>`); }, 2300);
+      later(() => add("msg you", "Can you make a gluten-free birthday cake?"), 4200);
+      later(() => add("typing", "<i></i><i></i><i></i>"), 4900);
+      later(() => { chat.lastChild.remove(); add("msg site", `This site doesn't say whether Kilele makes gluten-free cakes, so I won't guess. Want Wanjiru to reply to you on WhatsApp?`); }, 6100);
+      later(() => { teach.hidden = false; }, 7200);
+    }
+  }
+
+  function go(k, user) {
+    i = (k + steps.length) % steps.length;
+    scenes.forEach(s => s.classList.toggle("active", +s.dataset.step === i));
+    [...list.querySelectorAll("button")].forEach((b, n) => {
+      b.toggleAttribute("aria-current", n === i); if (n === i) b.setAttribute("aria-current", "step");
+      b.classList.toggle("done", n < i);
+    });
+    const s = steps[i];
+    document.getElementById("url").textContent = s.url;
+    document.getElementById("see").textContent = s.see;
+    document.getElementById("real").textContent = s.real;
+    document.getElementById("clock").textContent = s.t;
+    enter(i);
+    elapsed = 0;
+    if (!playing) playBtn.textContent = "Play";
+  }
+  function loop(now) {
+    const dt = now - last; last = now;
+    if (playing) elapsed += dt;
+    const p = Math.min(1, elapsed / steps[i].dur);
+    bar.style.width = (p * 100) + "%";
+    if (p >= 1 && playing) { if (i === steps.length - 1) setPlaying(false); else go(i + 1); }
+    requestAnimationFrame(loop);
+  }
+  function setPlaying(v) {
+    if (v && i === steps.length - 1 && elapsed >= steps[i].dur) go(0);
+    playing = v;
+    playBtn.textContent = v ? "Pause" : (i === steps.length - 1 && elapsed >= steps[i].dur ? "Replay" : "Play");
+    playBtn.setAttribute("aria-pressed", String(v));
+  }
+  playBtn.addEventListener("click", () => setPlaying(!playing));
+  document.getElementById("next").addEventListener("click", () => go(i + 1, true));
+  document.getElementById("prev").addEventListener("click", () => go(i - 1, true));
+  document.addEventListener("keydown", e => { if (e.key === "ArrowRight") go(i + 1, true); if (e.key === "ArrowLeft") go(i - 1, true); });
+
+  go(0);
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  setPlaying(!reduce);
+  requestAnimationFrame(loop);
+})();
+</script>
+</body>
+</html>

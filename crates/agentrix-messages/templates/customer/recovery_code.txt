@@ -1,0 +1,12 @@
+{% block subject %}Your recovery code for {{ site.name }}{% endblock %}
+{% block preheader %}For getting back into your account. It works for {{ minutes }} minutes.{% endblock %}
+{% block body %}
+# Getting back into your account
+Someone asked for a code to get back into your {{ site.name }} account. Here it is:
+
+::code {{ code }}
+
+It works for {{ minutes }} minutes. After you use it, add a new passkey on your account page, so you have a quicker way in next time.
+
+Not you? Ignore this email and don't share the code. Without it, nothing changes on your account.
+{% endblock %}

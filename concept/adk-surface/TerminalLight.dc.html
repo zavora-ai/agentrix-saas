@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Terminal UI, light</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&amp;family=IBM+Plex+Sans:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0;font-family:'IBM Plex Mono',ui-monospace,monospace;background:#EEF2F7}
+a{color:#C03A00}a:hover{color:#9A2E00}
+</style>
+</helmet>
+<div style="width: 1280px; height: 820px; box-sizing: border-box; padding: 20px; background: #EEF2F7">
+  <div role="img" aria-label="Full-screen terminal UI in light mode showing agents, a thread with Finance and a decision card" style="width: 100%; height: 100%; box-sizing: border-box; background: #FFFFFF; border: 1px solid #DBE3ED; border-radius: 12px; overflow: hidden; display: flex; flex-direction: column; font-size: 13px; line-height: 1.55; color: #1F2937">
+
+    <div style="display: flex; justify-content: space-between; padding: 8px 14px; background: #F7F9FC; border-bottom: 1px solid #E5EAF1; color: #64748B; font-size: 12px">
+      <span>adk-rust — full screen</span>
+      <span>also: --ui inline (scrollback) · --output json (CI)</span>
+    </div>
+
+    <div style="display: flex; flex-wrap: wrap; gap: 0 18px; padding: 4px 14px; background: #FFF1EA; color: #1F2937">
+      <span style="font-weight: 600">adk-rust</span>
+      <span style="color: #556070">kernel up 3d</span>
+      <span>Work ▸ Finance</span>
+      <span>Ask</span>
+      <span style="color: #556070">gpt-5.6-terra</span>
+      <span>ctx 23%</span>
+      <span>$1.84 / $5.00</span>
+      <span style="color: #556070">quiet 22:00–07:00</span>
+      <span style="color: #C03A00; font-weight: 600">2 decisions</span>
+    </div>
+
+    <div style="flex-grow: 1; display: flex; min-height: 0">
+      <div style="flex: 0 0 280px; box-sizing: border-box; border-right: 1px solid #E5EAF1; padding: 12px 14px; display: flex; flex-direction: column; gap: 16px">
+        <div style="display: flex; flex-direction: column">
+          <span style="color: #64748B; font-weight: 600">Agents</span>
+          <span style="display: flex; justify-content: space-between"><span><span style="color: #12774B">●</span> Chief of staff</span><span style="color: #12774B">working</span></span>
+          <span style="display: flex; justify-content: space-between; background: #FFF1EA; margin: 0 -6px; padding: 0 6px"><span><span style="color: #C03A00">◆</span> Finance</span><span style="color: #C03A00">waiting for you</span></span>
+          <span style="display: flex; justify-content: space-between"><span><span style="color: #C03A00">◆</span> Code</span><span style="color: #C03A00">waiting for you</span></span>
+          <span style="display: flex; justify-content: space-between"><span><span style="color: #2563EB">✓</span> Research</span><span style="color: #2563EB">done</span></span>
+          <span style="display: flex; justify-content: space-between"><span><span style="color: #64748B">○</span> Household</span><span style="color: #64748B">asleep 07:00</span></span>
+        </div>
+        <div style="display: flex; flex-direction: column">
+          <span style="color: #64748B; font-weight: 600">Coming up</span>
+          <span style="display: flex; justify-content: space-between"><span>09:00 Code</span><span style="color: #64748B">webhook</span></span>
+          <span style="display: flex; justify-content: space-between"><span>12:00 Research</span><span style="color: #64748B">daily</span></span>
+          <span style="display: flex; justify-content: space-between"><span>17:30 Finance</span><span style="color: #64748B">weekdays</span></span>
+        </div>
+        <div style="display: flex; flex-direction: column">
+          <span style="color: #64748B; font-weight: 600">While you were away</span>
+          <span>2 finished · 1 failed</span>
+          <span>1 proposal · $0.62</span>
+          <span style="color: #64748B">ctrl-t to open Today</span>
+        </div>
+      </div>
+
+      <div style="flex-grow: 1; min-width: 0; box-sizing: border-box; padding: 12px 18px; display: flex; flex-direction: column; gap: 10px">
+        <div style="display: flex; flex-direction: column">
+          <span style="color: #64748B">Finance · 17:58</span>
+          <span>The October invoice for [CLIENT] is ready. I drafted it from the timesheet and your rate card.</span>
+        </div>
+        <span style="display: flex; justify-content: space-between; color: #64748B"><span><span style="color: #12774B">✓</span> read_file timesheet-october.csv</span><span>read-only · 0.2 s</span></span>
+
+        <div style="border: 1px solid #DBE3ED; padding: 8px 12px; max-width: 640px; display: flex; flex-direction: column; white-space: pre-wrap">
+          <span style="display: flex; justify-content: space-between; color: #64748B"><span>Invoice INV-[NUMBER]</span><span>drawn by Finance · forms · rev 3</span></span>
+          <span>Client  [CLIENT]            Period  1–31 October</span>
+          <span>Hours   42                  Total   [TOTAL]</span>
+          <span style="color: #64748B">tab to edit a field · sending asks you first</span>
+        </div>
+
+        <div style="background: #FFF8F3; border: 1px solid #E8936A; max-width: 820px; display: flex; flex-direction: column">
+          <span style="display: flex; justify-content: space-between; background: #FFF1EA; padding: 2px 12px"><span style="color: #C03A00; font-weight: 600">Waiting for you · Send the October invoice to [CLIENT]</span><span style="color: #C03A00">medium · not repeatable</span></span>
+          <div style="padding: 8px 12px; display: flex; flex-direction: column; white-space: pre-wrap">
+            <span>send_email</span>
+            <span>  to          [client email]</span>
+            <span>  subject     Invoice INV-[NUMBER] for October</span>
+            <span>  attachment  invoice-INV-[NUMBER].pdf (48 KB)</span>
+            <span style="color: #64748B; margin-top: 6px">held 18:00 · parked through quiet hours · fingerprint 7f3a…c2</span>
+            <span style="margin-top: 8px"><span style="background: #1F2937; color: #FFFFFF; padding: 0 4px">y</span> allow once   <span style="background: #1F2937; color: #FFFFFF; padding: 0 4px">a</span> always allow (this recipient)<span style="background: #1F2937; color: #FFFFFF; padding: 0 4px">e</span> edit   <span style="background: #1F2937; color: #FFFFFF; padding: 0 4px">n</span> deny   <span style="background: #1F2937; color: #FFFFFF; padding: 0 4px">?</span> details</span>
+          </div>
+        </div>
+        <span style="color: #64748B">also on your phone and in Telegram — the first answer wins</span>
+
+        <div style="margin-top: auto; display: flex; flex-direction: column; gap: 4px">
+          <span style="color: #64748B; white-space: pre-wrap">queued › also cc my accountant   (sent after this card is answered)</span>
+          <span style="border: 1px solid #DBE3ED; padding: 4px 10px"><span style="color: #C03A00">›</span> <span style="background: #1F2937; color: #FFFFFF"> </span></span>
+        </div>
+      </div>
+    </div>
+
+    <div style="display: flex; flex-wrap: wrap; gap: 0 22px; padding: 5px 14px; background: #F7F9FC; border-top: 1px solid #E5EAF1; color: #64748B; font-size: 12px">
+      <span>tab agents</span><span>ctrl-t today</span><span>ctrl-r permissions</span><span>/ commands</span><span>ctrl-k stop all</span><span>esc never decides</span>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":820}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {};
+  }
+}
+</script>
+</body>
+</html>

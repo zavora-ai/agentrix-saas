@@ -1,0 +1,54 @@
+{% extends "layout.html" %}
+{#- X14 Incidents: open and past, by severity (08 §3.7). -#}
+{% block title %}Incidents{% endblock %}
+{% block field %}
+<div class="field-head">
+  <div><h2>Incidents</h2><div class="sub">Open and mitigated first, worst first. Declaring and status changes go in the operator ledger; notes stay on the incident's timeline.</div></div>
+  <div class="row">{% if open %}<span class="chip chip-wait">{{ open|length }} open</span>{% else %}<span class="chip chip-ok"><span class="dot"></span>Nothing open</span>{% endif %}</div>
+</div>
+<div class="cp-grid">
+  <article class="card tight">
+    <div class="card-title"><h4>Open</h4><span class="small muted">open or mitigated</span></div>
+    <ul class="rows">
+      {%- for i in open %}
+      <li><span class="sev {{ i.severity }}">{{ i.severity|upper }}</span><span><a href="/incidents/{{ i.incident_id }}"><b>{{ i.incident_id }}</b> · {{ i.title }}</a><div class="small muted">{{ i.state }} · cell {{ i.cell }}</div></span><span class="ledger-id">opened {{ i.opened_at|ago }}</span></li>
+      {%- else %}
+      <li><span></span><span class="small muted">No incident is open. Edge probes and burn-rate alerts aren't running yet, so incidents open when an on-call person declares one.</span><span></span></li>
+      {%- endfor %}
+    </ul>
+  </article>
+  {%- if can_declare %}
+  <article class="card tight">
+    <div class="card-title"><h4>Declare an incident</h4><span class="small muted">You become the commander.</span></div>
+    <form class="access-form" method="post" action="/incidents">
+      <div class="row">
+        <select name="severity" aria-label="Severity">
+          <option value="sev1">SEV1: many sites down, data exposure, money moved wrongly</option>
+          <option value="sev2" selected>SEV2: an SLO burning fast, one partner's sites degraded</option>
+          <option value="sev3">SEV3: one site degraded, a slow burn</option>
+          <option value="sev4">SEV4: cosmetic</option>
+        </select>
+      </div>
+      <label for="inc-title">What's wrong, in a line</label>
+      <input id="inc-title" type="text" name="title" required maxlength="140" value="{{ kept|field("title") }}">
+      <label for="inc-summary">What you know so far</label>
+      <textarea id="inc-summary" name="summary" maxlength="2000">{{ kept|field("summary") }}</textarea>
+      <label for="inc-site">One site it's about (id or address, optional)</label>
+      <input id="inc-site" type="text" name="site" maxlength="200" value="{{ kept|field("site") }}">
+      <div class="row"><button class="btn btn-sm btn-coral" type="submit">Declare in cell {{ cell }}</button></div>
+    </form>
+  </article>
+  {%- endif %}
+  <article class="card tight">
+    <div class="card-title"><h4>Resolved</h4><span class="small muted">the last 30</span></div>
+    {%- if resolved %}
+    <div class="tbl-wrap"><table class="tbl">
+      <thead><tr><th>Incident</th><th>Severity</th><th>Opened ({{ shell.zone }})</th><th class="num">To mitigate</th><th>Postmortem</th></tr></thead>
+      <tbody>{% for i in resolved %}<tr><td><a href="/incidents/{{ i.incident_id }}">{{ i.incident_id }}</a> · {{ i.title }}</td><td>{{ i.severity|upper }}</td><td>{{ i.opened_at|when }}</td><td class="num">{{ i.mitigated_at|since(i.opened_at) if i.mitigated_at else "—" }}</td><td>{{ "written" if i.postmortem else "not yet" }}</td></tr>{% endfor %}</tbody>
+    </table></div>
+    {%- else %}
+    <div class="empty">No incident has been resolved yet.</div>
+    {%- endif %}
+  </article>
+</div>
+{% endblock %}

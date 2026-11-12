@@ -1,0 +1,31 @@
+{% extends "tana/layout.html" %}
+{% from "tana/macros.html" import card %}
+{% block main %}
+<div class="n-grid">
+  <div>
+    <header class="front-head">
+      {% if ("section:" ~ section.id) in shell.pictures %}{% set pic = shell.pictures[("section:" ~ section.id)] %}<figure class="pic front-pic"><img src="{{ pic.url }}" alt="{{ pic.alt }}"{% if pic.width and pic.height %} width="{{ pic.width }}" height="{{ pic.height }}"{% endif %}>{% if pic.label %}<span class="rtag">{{ pic.label }}</span>{% endif %}</figure>{% endif %}
+      <span class="kicker">Section</span>
+      <h2>{{ section.name }}</h2>
+      <p>{{ section.about }}</p>
+    </header>
+    {% if stories %}
+    <div class="n-list">
+      {% for c in stories %}{{ card(c, subscriber) }}{% endfor %}
+    </div>
+    {% else %}
+    <p class="note">No {{ section.name | lower }} stories published yet. They appear here the moment the editor publishes one.</p>
+    {% endif %}
+  </div>
+  <aside class="rail-n">
+    <div class="box"><span class="kicker">On this device</span><h4>Follow {{ section.name }}</h4><p class="sub">Catch me up keeps to the sections you follow. Kept in this browser only; nothing is stored on our side.</p>
+      <div class="row" style="margin-top:10px"><button class="n-btn teal" type="button" id="followBtn" data-section="{{ section.name }}">Follow {{ section.name }} on this device</button></div>
+    </div>
+    <div class="box"><span class="kicker">In this section</span>
+      <p class="sub">{{ stories | length }} stories{% if corrected %}, {{ corrected }} corrected{% endif %}. Every correction is on the <a href="/corrections">corrections page</a>.</p>
+      <p class="box-link"><a href="/archive?section={{ section.id }}">{{ section.name }} in the archive</a></p>
+    </div>
+    <div class="box"><span class="kicker">By email</span><p class="sub">Get {{ section.name | lower }} stories in the Friday five.</p><p class="box-link"><a href="/digest">Set up the Friday five</a></p></div>
+  </aside>
+</div>
+{% endblock %}

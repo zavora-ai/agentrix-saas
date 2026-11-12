@@ -1,0 +1,94 @@
+{
+  "_about": "Fixed lines every surface shares. A desk or a page can't rephrase them; change them here, read them aloud against specs/platform/voice.md, and every screen follows. {owner}, {person}, {site} and the like are filled with the template's replace filter.",
+  "visitor": {
+    "ai_chip": "AI",
+    "desk_line": "WebAgent · answers from this site",
+    "disclosure": "You're talking to AI. It never guesses prices, dates or allergens.",
+    "footer_ai": "The WebAgents on this site are AI.",
+    "front_desk": "Front desk",
+    "doesnt_say": "The site doesn't say, so I won't guess.",
+    "waiting_ok": "Waiting for {owner}'s OK. Nothing charged.",
+    "resting": "Answers are paused right now. The page and the form below still work.",
+    "frozen": "Answers are paused right now. You can still read the site.",
+    "handover_person": "Handed to {person} (a person). Their reply also appears here.",
+    "person_joined": "{person} from {site} joined · a person",
+    "sketch": "Sketch, not a photo",
+    "made_with": "Made with Agentrix",
+    "made_with_link": "Get a free check of your own site",
+    "remember_device": "Remember me on this device"
+  },
+  "sample": {
+    "tag": "Sample",
+    "band": "{site} isn't a real business. It's a sample Agentrix runs to show the platform. Orders use PayPal's test mode, so no money moves and nothing is delivered.",
+    "terms": "Sample terms, not legal advice."
+  },
+  "ladder": {
+    "watch": "Watch",
+    "suggest": "Suggest",
+    "ask": "Ask me first",
+    "tell": "Do it and tell me",
+    "budget": "Handle it within budget",
+    "ceiling": "Your max",
+    "lowered": "Lowered by the platform"
+  },
+  "decision": {
+    "approve": "Approve",
+    "decline": "Decline",
+    "why": "Why?",
+    "details": "Details",
+    "what_happens": "What happens if you approve",
+    "expired": "This card expired before anyone answered. Nothing was done.",
+    "superseded": "A newer version of this card replaced it. Nothing was done from this one.",
+    "approved_passkey": "Approved with your passkey on {device}",
+    "approved_code": "Approved with an authenticator code",
+    "declined": "Declined. Nothing was done.",
+    "asks": "{name} asks",
+    "suggests": "{name} suggests"
+  },
+  "approve": {
+    "title": "Confirm it's you",
+    "body": "Your device signs exactly what is shown here. Nothing else can be approved with this signature.",
+    "use_passkey": "Use passkey",
+    "use_code": "No passkey on this device? Use a code from your authenticator app",
+    "code_label": "Code from your authenticator app",
+    "confirm_code": "Approve with code",
+    "cancel": "Cancel",
+    "signing": "Waiting for your device",
+    "signed": "Signed. It runs once, and you get a receipt.",
+    "failed": "Your device didn't sign. Nothing was approved. Try again, or use a code.",
+    "code_placeholder": "6 digits",
+    "code_note": "The code works once, and only for this approval. Your receipt will say a code approved it, not a passkey.",
+    "back": "Back to passkey",
+    "sig_label": "Your passkey signs:"
+  },
+  "state": {
+    "loading": "Loading",
+    "offline_banner": "You're offline. You're seeing what was saved at {time}. Approvals wait until you're back online.",
+    "offline_action": "You're offline. This waits until you're back online.",
+    "read_only": "Read-only. {reason} You can still read and export everything.",
+    "frozen_owner": "Frozen. Every WebAgent stopped before its next step. Your site keeps serving signed release {release}. Unfreezing needs your passkey or an authenticator code.",
+    "hold": "Platform hold. {reason}",
+    "models_resting": "AI answers are resting: {reason}. Your site still serves its pages, and you can still edit by hand."
+  },
+  "error": {
+    "404_title": "There's no page at this address",
+    "404_body": "Check the address for a typo, or start again from the home page.",
+    "403_title": "This page isn't open to you",
+    "403_body": "You're signed in as {who}, and this account can't open it. Ask the owner to add you, or sign in with another account.",
+    "500_title": "This page didn't load",
+    "500_body": "Something failed on our side, and nothing you entered was lost. Reload in a minute.",
+    "500_ref": "If it keeps happening, quote reference {ref} to support.",
+    "home": "Go to the home page",
+    "reload": "Reload"
+  },
+  "common": {
+    "skip": "Skip to content",
+    "undo": "Undo",
+    "close": "Close",
+    "back": "Back",
+    "cancel": "Cancel",
+    "save": "Save",
+    "sign_in": "Sign in",
+    "sign_out": "Sign out"
+  }
+}

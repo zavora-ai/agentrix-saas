@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Agentrix OS Phone</title>
+<meta name="description" content="Concept: the phone view of Agentrix OS. Two minutes a day: the brief, a short stack of decisions signed with a passkey, the team as apps, and live presence, plus WhatsApp and voice.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Manrope:wght@600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../styles.css">
+<link rel="stylesheet" href="console.css">
+<style>
+  .p-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding-top: 4px; }
+  .p-top h3 { font-size: var(--fs-20); }
+  .p-top .sub { font-size: var(--fs-12); color: var(--muted); }
+  .p-brief { padding: 12px; border-radius: 16px; background: var(--paper); border: 1px solid var(--line); border-left: 4px solid var(--coral); font-size: var(--fs-13); color: var(--ink-2); }
+  .p-brief b { color: var(--indigo-900); }
+  .p-card { position: relative; padding: 12px; border-radius: 16px; background: var(--paper); border: 1px solid var(--line); box-shadow: var(--shadow-2); }
+  .p-card .from { display: flex; align-items: center; gap: 8px; font: 700 var(--fs-12)/1.2 var(--font-text); color: var(--indigo-900); }
+  .p-card .from .avatar { width: 26px; height: 26px; border-radius: 8px; font-size: 10px; }
+  .p-card .from .chip { margin-left: auto; }
+  .p-card h4 { margin-top: 8px; font-size: var(--fs-16); }
+  .p-card p { font-size: var(--fs-12); color: var(--ink-2); margin-top: 4px; }
+  .p-stack { position: relative; padding-bottom: 14px; }
+  .p-stack::after, .p-stack::before { content: ""; position: absolute; left: 10px; right: 10px; height: 14px; border-radius: 0 0 14px 14px; background: var(--paper); border: 1px solid var(--line); border-top: 0; }
+  .p-stack::before { bottom: 0; left: 18px; right: 18px; opacity: .6; }
+  .p-stack::after { bottom: 7px; }
+  .p-stack .p-card { z-index: 1; }
+  .p-live { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 14px; background: var(--indigo-900); color: #fff; font-size: var(--fs-13); }
+  .p-live b { color: #fff; }
+  .p-live .avatar { width: 26px; height: 26px; border-radius: 8px; font-size: 10px; }
+  .p-live .btn { margin-left: auto; background: rgba(255,255,255,.12); color: #fff; border-color: rgba(255,255,255,.2); }
+  .effect-box { margin-top: 10px; padding: 10px; border-radius: 12px; background: var(--surface); border: 1px solid var(--line); }
+  .effect-box h5 { margin: 0 0 6px; font: 700 10.5px/1 var(--font-text); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+  .effect-box ul { margin: 0; padding-left: 16px; display: grid; gap: 4px; font-size: var(--fs-12); color: var(--ink-2); }
+  .effect-box .quote { margin-top: 8px; padding: 8px 10px; border-radius: 10px; background: var(--paper); border: 1px solid var(--line); font-size: var(--fs-12); color: var(--ink); }
+  .p-sheet { position: absolute; left: 0; right: 0; bottom: 0; z-index: 5; padding: 18px 18px 28px; border-radius: 26px 26px 0 0; background: var(--indigo-900); color: #fff; text-align: center; transform: translateY(105%); transition: transform .35s var(--ease); box-shadow: 0 -20px 40px -20px rgba(0,0,0,.5); }
+  .p-sheet.on { transform: none; }
+  .p-sheet .fp { width: 58px; height: 58px; margin: 0 auto 10px; border-radius: 18px; display: grid; place-items: center; background: rgba(255,255,255,.1); }
+  .p-sheet .fp svg { width: 36px; height: 36px; }
+  .p-sheet h4 { color: #fff; font-size: var(--fs-16); }
+  .p-sheet p { font-size: var(--fs-12); color: rgba(255,255,255,.8); margin-top: 4px; }
+  .p-sheet .sig { margin-top: 10px; padding: 8px; border-radius: 10px; background: rgba(255,255,255,.08); font: 500 10.5px/1.5 var(--font-mono); color: rgba(255,255,255,.85); text-align: left; word-break: break-word; }
+  .p-sheet.signing .fp { animation: orb-listen 1s ease-in-out infinite; }
+  .p-sheet .ok { display: none; margin-top: 10px; color: #7fe0b3; font-weight: 700; font-size: var(--fs-13); }
+  .p-sheet.signed .ok { display: block; }
+  .p-sheet.signed .btn { display: none; }
+  .p-done { display: none; padding: 12px; border-radius: 14px; background: var(--ok-bg); color: var(--ok); font: 700 var(--fs-13)/1.4 var(--font-text); }
+  .is-done .p-done { display: block; }
+  .is-done .p-acts { display: none; }
+  .p-acts { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 12px; }
+  .p-acts .btn-primary { grid-column: 1 / -1; }
+  .talk { display: grid; justify-items: center; gap: 10px; padding: 18px 12px; border-radius: 18px; background: linear-gradient(180deg, var(--indigo-50), #fff); border: 1px solid var(--indigo-100); text-align: center; }
+  .talk p { font-size: var(--fs-13); color: var(--ink-2); }
+  .talk .cap b { color: var(--indigo-900); }
+  .wa { background: #e9e4dc; border-radius: 18px; padding: 14px; border: 1px solid #ddd6cb; max-width: 420px; }
+  .wa-head { display: flex; align-items: center; gap: 10px; font: 700 var(--fs-14)/1 var(--font-text); color: #1e3a2f; margin-bottom: 10px; }
+  .wa-head i { width: 28px; height: 28px; border-radius: 50%; background: var(--indigo); display: grid; place-items: center; color: #fff; font: 800 11px/1 var(--font-display); font-style: normal; }
+  .wa-bubble { background: #fff; border-radius: 4px 14px 14px 14px; padding: 10px 12px; font-size: var(--fs-14); color: #222; box-shadow: 0 1px 1px rgba(0,0,0,.06); margin-top: 6px; }
+  .wa-bubble.me { background: #d9fdd3; border-radius: 14px 4px 14px 14px; margin-left: 40px; }
+  .wa-bubble .time { display: block; text-align: right; font-size: 11px; color: #8a8a8a; margin-top: 4px; }
+  .wa-replies { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; margin-top: 4px; }
+  .wa-replies span { background: #fff; border-radius: 10px; text-align: center; padding: 9px; font: 600 var(--fs-13)/1 var(--font-text); color: #128c7e; box-shadow: 0 1px 1px rgba(0,0,0,.06); }
+  .wa-replies span.full { grid-column: 1 / -1; }
+  .channels { display: grid; grid-template-columns: minmax(0, 420px) minmax(0, 1fr); gap: clamp(20px, 4vw, 48px); align-items: start; margin-top: 18px; }
+  @media (max-width: 860px) { .channels { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body class="os-page">
+<header class="conceptbar">
+  <a class="logo" href="../index.html"><span class="mark" aria-hidden="true"></span>Agentrix</a>
+  <nav aria-label="Agentrix OS concepts">
+    <a href="index.html">Agentrix OS</a>
+    <a href="shell.html">Shell</a>
+    <a href="store.html">Store</a>
+    <a href="mission.html">Missions</a>
+    <a href="live.html">Live</a>
+    <a href="phone.html" aria-current="page">Phone</a>
+    <a href="trust.html">Trust centre</a>
+    <a href="gestures.html">Gestures</a>
+  </nav>
+  <span class="concept-label">Concept · illustrative data</span>
+</header>
+
+<main class="wrap">
+  <div class="page-head">
+    <span class="eyebrow">Agentrix OS · 5 of 6 · The phone</span>
+    <h1 style="margin-top:12px">On your phone: the brief, your decisions, and who's on your site</h1>
+    <p class="lead">Same model, calmer shape. The dock becomes a home screen of WebAgents, the field becomes a short stack, and the lane becomes "Needs you". A morning is: read the brief, sign two decisions, glance at what's live, put the phone down. Nothing on the lock screen says what a decision is about.</p>
+    <div class="tryline"><span>Try:</span><span class="chip chip-outline">Approve on the third phone</span><span class="chip chip-outline">read the WhatsApp brief below</span></div>
+  </div>
+
+  <section class="phones" aria-label="Phone screens">
+    <figure>
+      <div class="phone"><div class="phone-screen lock">
+        <span class="phone-notch" aria-hidden="true"></span>
+        <div class="phone-status" style="background:transparent;color:#fff"><span>07:00</span><span>●●● 5G</span></div>
+        <div class="clock"><b>7:00</b><span>Saturday 7 November</span></div>
+        <div style="display:grid;gap:8px;padding:0 12px">
+          <div class="notif"><span class="ico"><i></i></span><div><b>Kilele · Agentrix <small>now</small></b><p>Your morning brief is ready.</p></div></div>
+          <div class="notif"><span class="ico"><i></i></span><div><b>Kilele · Agentrix <small>now</small></b><p>2 decisions are waiting.</p></div></div>
+          <div class="notif" style="opacity:.75"><span class="ico"><i></i></span><div><b>Kilele · Agentrix <small>06:00</small></b><p>Quiet hours ended. Nothing urgent overnight.</p></div></div>
+        </div>
+      </div></div>
+      <figcaption><b>Notifications say only that something is waiting.</b> Notifications say only that something is waiting. The details open after you unlock, and nothing is decided from the lock screen.</figcaption>
+    </figure>
+
+    <figure>
+      <div class="phone"><div class="phone-screen">
+        <span class="phone-notch" aria-hidden="true"></span>
+        <div class="phone-status"><span>7:01</span><span>●●● 5G</span></div>
+        <div class="pscreen">
+          <div class="p-top"><div><h3>Morning, Wanjiru</h3><div class="sub">Kilele Bakery · walls holding</div></div><span class="orb sm" data-waiting aria-hidden="true"></span></div>
+          <div class="p-brief"><b>Overnight:</b> 41 visitors, 9 questions answered (2 in Swahili, none corrected). <b>1 order</b> and <b>1 price update</b> need you. Christmas mission: <b>23 of 60</b>. Spend KSh 38 of 1,500.</div>
+          <div class="spread small"><b style="color:var(--indigo-900)">Needs you · 2</b><span class="muted">about 1 minute</span></div>
+          <div class="p-stack"><div class="p-card"><div class="from"><span class="avatar av-cashier">Ca</span>Cashier asks<span class="chip chip-ok">Low</span></div><h4>Cake order · KSh 4,500</h4><p>Amani W. · collect Sat 14 Nov, 10:00</p></div></div>
+          <div class="swipe-hint"><span>← snooze</span><span>tap to open</span><span>never swipe to approve</span></div>
+          <div class="p-live"><span class="os-mark" data-state="answering" style="--c:#e3607b"><span class="avatar av-concierge">Ck</span></span><span><b>3 on your site.</b> Cakes is answering Mary.</span><span class="btn btn-sm">Sit in</span></div>
+          <div class="widget"><h5>Christmas cakes <span class="chip chip-ok" style="letter-spacing:0;text-transform:none">on track</span></h5><div class="big">23 <span style="font-size:var(--fs-14);color:var(--muted)">/ 60</span></div><div class="meter ok" style="margin-top:8px"><span style="width:38%"></span></div></div>
+        </div>
+        <div class="ptabs"><span class="on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2"/></svg>Now</span><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-6l-2 3h-4l-2-3H2"/><path d="M5.5 5.1 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.5-6.9A2 2 0 0 0 16.8 4H7.2a2 2 0 0 0-1.7 1.1z"/></svg>Decisions<span class="badge">2</span></span><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="2"/><path d="M16.2 7.8a6 6 0 0 1 0 8.4M7.8 16.2a6 6 0 0 1 0-8.4"/></svg>Live</span><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/><rect x="14" y="14" width="7" height="7" rx="2"/></svg>Apps</span></div>
+      </div></div>
+      <figcaption><b>Now.</b> The brief, the decision stack, what's live and the mission at a glance. Hold the Chief WebAgent's team mark to talk.</figcaption>
+    </figure>
+
+    <figure>
+      <div class="phone"><div class="phone-screen" data-pdec>
+        <span class="phone-notch" aria-hidden="true"></span>
+        <div class="phone-status"><span>7:01</span><span>●●● 5G</span></div>
+        <div class="pscreen">
+          <div class="p-top"><span class="small muted">‹ Decisions · 1 of 2</span><span class="chip chip-ok">Low risk</span></div>
+          <div class="p-card" style="box-shadow:none">
+            <div class="from"><span class="avatar av-cashier">Ca</span>Cashier asks</div>
+            <h4>Approve cake order · KSh 4,500</h4>
+            <p>Amani W. · 2-tier vanilla, "Happy 30th Amani" · collect Sat 14 Nov, 10:00</p>
+            <div class="effect-box"><h5>If you approve, exactly this happens</h5><ul><li>PayPal request to Amani: KSh 4,500</li><li>Saturday 10:00 collection slot reserved</li><li>This message, in the same conversation:</li></ul><div class="quote">"Hi Amani, your cake is confirmed for Saturday at 10:00. Please pay the PayPal request to confirm it. Kilele Bakery"</div></div>
+            <div class="riskline" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;font-size:var(--fs-12);color:var(--muted)"><span>Why low:</span><span class="chip">returning customer</span><span class="chip">usual amount</span><span class="chip">slot free</span></div>
+          </div>
+          <div class="p-acts"><button class="btn btn-primary btn-lg" type="button" data-papprove>Approve with passkey</button><button class="btn" type="button">Edit</button><button class="btn btn-ghost" type="button">Decline</button></div>
+          <div class="p-done">Approved · signed by this iPhone · receipt r-4c19…e7 · Amani has been told. Next: Editor's price update.</div>
+        </div>
+        <div class="p-sheet" data-psheet>
+          <div class="fp"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 11c0 3-1 6-3 8M8.5 7.5A5 5 0 0 1 17 11c0 1.5-.2 3-.6 4.4M6.3 10A6.5 6.5 0 0 1 9 5.6M12 14.5c-.2 1.8-.8 3.5-1.7 5M15.3 17.5c-.3 1-.7 2-1.2 2.9M4 13.5c.4-1 .6-2 .6-3"/></svg></div>
+          <h4>Confirm it's you</h4>
+          <p>Order o-118 · KSh 4,500 · Amani W. · Sat 14 Nov 10:00</p>
+          <div class="sig">H(kilele, cashier, order.confirm, {o-118, 4500 KES, 2026-11-14T10:00}, exp 7 Nov 19:00) = 4c19…e7</div>
+          <div class="row" style="justify-content:center;margin-top:12px"><button class="btn" type="button" data-pcancel style="background:rgba(255,255,255,.1);color:#fff;border-color:rgba(255,255,255,.2)">Cancel</button><button class="btn btn-primary" type="button" data-psign style="background:#fff;color:var(--indigo-900);border-color:#fff">Use Face ID</button></div>
+          <div class="ok">Signed · runs once</div>
+        </div>
+      </div></div>
+      <figcaption><b>One decision, one signature.</b> The card shows the exact effect. The passkey signs that effect's fingerprint, so what you approved is what runs, once. Without a passkey, a single-use code from your authenticator app approves the same fingerprint, and the receipt says so.</figcaption>
+    </figure>
+
+    <figure>
+      <div class="phone"><div class="phone-screen">
+        <span class="phone-notch" aria-hidden="true"></span>
+        <div class="phone-status"><span>7:02</span><span>●●● 5G</span></div>
+        <div class="pscreen">
+          <div class="p-top"><div><h3>Your WebAgents</h3><div class="sub">7 on the team · 3 awake · asleep costs nothing</div></div></div>
+          <div class="appgrid">
+            <span class="app-ico"><span class="os-mark" data-state="answering" style="--c:#b72d50"><span class="avatar av-concierge">Co</span></span>Concierge</span>
+            <span class="app-ico"><span class="os-mark" data-state="waiting" style="--c:#0f6b62"><span class="avatar av-sales">Sa</span></span>Sales</span>
+            <span class="app-ico"><span class="os-mark" data-state="working" style="--c:#7a4b00"><span class="avatar av-editor">Ed</span></span>Editor<span class="badge">1</span></span>
+            <span class="app-ico"><span class="os-mark" data-state="asleep"><span class="avatar av-reputation">Re</span></span>Reputation</span>
+            <span class="app-ico"><span class="os-mark" data-state="waiting" style="--c:#11734a"><span class="avatar av-cashier">Ca</span></span>Cashier<span class="badge">1</span></span>
+            <span class="app-ico"><span class="os-mark" data-state="listening" style="--c:#45597f"><span class="avatar av-guardian">Gu</span></span>Guardian</span>
+            <span class="app-ico"><span class="os-mark" data-state="asleep"><span class="avatar av-caretaker">Ct</span></span>Caretaker</span>
+            <span class="app-ico"><span class="sys"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg></span>Store</span>
+            <span class="app-ico"><span class="sys"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></span>Activity</span>
+            <span class="app-ico"><span class="sys"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/></svg></span>Missions</span>
+            <span class="app-ico"><span class="sys"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V3H6.5A2.5 2.5 0 0 0 4 5.5z"/></svg></span>Memory</span>
+            <span class="app-ico"><span class="sys"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></span>Trust</span>
+          </div>
+          <div class="talk"><span class="orb lg" data-state="listening" aria-hidden="true"></span><p><b style="color:var(--indigo-900)">Hold to talk</b><br>"How did the weekend go?" · "Pause Sales until Monday" · "Stop everything"</p></div>
+          <button class="btn freeze" type="button" style="width:100%;border:1.5px solid var(--risk);color:var(--risk)" data-freeze aria-pressed="false" data-on="Frozen · tap to unfreeze with passkey" data-off="Freeze all WebAgents"><span data-freeze-text>Freeze all WebAgents</span></button>
+        </div>
+        <div class="ptabs"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2"/></svg>Now</span><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-6l-2 3h-4l-2-3H2"/><path d="M5.5 5.1 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.5-6.9A2 2 0 0 0 16.8 4H7.2a2 2 0 0 0-1.7 1.1z"/></svg>Decisions<span class="badge">2</span></span><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="2"/><path d="M16.2 7.8a6 6 0 0 1 0 8.4M7.8 16.2a6 6 0 0 1 0-8.4"/></svg>Live</span><span class="on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/><rect x="14" y="14" width="7" height="7" rx="2"/></svg>Apps</span></div>
+      </div></div>
+      <figcaption><b>Apps.</b> The dock as a home screen: presence rings, badges, the Store and the system apps. Voice and Freeze are one tap away.</figcaption>
+    </figure>
+  </section>
+
+  <section class="section" aria-label="Where the owner already is">
+    <span class="eyebrow">Beyond the app</span>
+    <h2 style="margin-top:8px">WhatsApp, email and voice: the same decisions, with fewer powers.</h2>
+    <div class="channels">
+      <div class="wa" aria-label="Brief on WhatsApp">
+        <div class="wa-head"><i>A</i>Kilele · Agentrix</div>
+        <div class="wa-bubble"><b>Good morning, Wanjiru.</b> Overnight your site welcomed 41 visitors and answered 9 questions (2 in Swahili). <b>1 cake order</b> is waiting: KSh 4,500, collect Saturday. Editor has a price update for you. Christmas: 23 of 60. Spend: KSh 38 of 1,500.<span class="time">07:00</span></div>
+        <div class="wa-replies"><span>Open the order</span><span>Decline</span><span class="full">Ask me anything</span></div>
+        <div class="wa-bubble me">Open the order<span class="time">07:01</span></div>
+        <div class="wa-bubble">Money needs your passkey or an authenticator code, so I've opened it in the app: <u>os.agentrix.ai/d/o-118</u>. Reply <b>STOP</b> at any time to freeze every WebAgent.<span class="time">07:01</span></div>
+      </div>
+      <div>
+        <table class="surface-table" aria-label="What each surface may decide">
+          <thead><tr><th>Surface</th><th>May decide</th><th>Never</th></tr></thead>
+          <tbody>
+            <tr><td><b>App (PWA)</b></td><td>Everything, with a passkey (or an authenticator code) for money, publishing and high risk</td><td>Show a card's details in a notification</td></tr>
+            <tr><td><b>WhatsApp</b></td><td>Allow once or decline everyday cards; STOP freezes</td><td>Money, high risk, unfreeze; those open the app</td></tr>
+            <tr><td><b>Voice</b></td><td>Ask, decline, pause, stop everything (at once)</td><td>Approve money, publishing or high risk</td></tr>
+            <tr><td><b>Email</b></td><td>Nothing: the brief and weekly review, with links</td><td>Approvals (email is easy to forge and forward)</td></tr>
+          </tbody>
+        </table>
+        <p class="small muted" style="margin-top:10px">One rule table decides this for every surface, so a decision can't be approved somewhere with weaker checks.</p>
+      </div>
+    </div>
+  </section>
+</main>
+<footer class="concept-foot">
+  <div class="wrap row">
+    <span><a href="live.html">← Live</a> · Next: <a href="trust.html">The trust centre →</a></span>
+    <span>Concept screens with illustrative data. Kilele Bakery is fictional.</span>
+  </div>
+</footer>
+<script src="console.js"></script>
+<script>
+(() => {
+  const scr = document.querySelector('[data-pdec]'), sh = scr.querySelector('[data-psheet]');
+  scr.querySelector('[data-papprove]').addEventListener('click', () => { sh.classList.remove('signing', 'signed'); sh.classList.add('on'); });
+  scr.querySelector('[data-pcancel]').addEventListener('click', () => sh.classList.remove('on'));
+  scr.querySelector('[data-psign]').addEventListener('click', () => {
+    sh.classList.add('signing');
+    setTimeout(() => { sh.classList.remove('signing'); sh.classList.add('signed'); setTimeout(() => { sh.classList.remove('on'); scr.classList.add('is-done'); }, 800); }, 900);
+  });
+})();
+</script>
+</body>
+</html>

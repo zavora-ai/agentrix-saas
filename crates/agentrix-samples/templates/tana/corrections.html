@@ -1,0 +1,30 @@
+{% extends "tana/layout.html" %}
+{% block main %}
+<div class="n-grid">
+  <div>
+    <header class="front-head">
+      <span class="kicker">Corrections</span>
+      <h2>What we got wrong, and fixed</h2>
+      <p>Every correction {{ shell.site.name }} has published, newest first. The same note sits at the top of the story, and desks' answers and the Friday five use the corrected version.</p>
+    </header>
+    {% if corrections %}
+    <ol class="corr-list">
+      {% for c in corrections %}
+      <li id="{{ c.id }}"><time>{{ c.when }}</time><span class="kicker">{{ c.story.section_name }}</span>
+        <h4><a href="{{ c.story.href }}#correction">{{ c.story.title }}</a></h4>
+        <p><span class="corr">Correction</span> <b>{{ c.what }}.</b> {{ c.note }}</p>
+        <div class="by">By {{ c.story.author }} · first published {{ c.story.date }}, {{ c.story.clock }}</div></li>
+      {% endfor %}
+    </ol>
+    {% else %}
+    <p class="note">No corrections yet. When a story is corrected, the note appears here and at the top of the story.</p>
+    {% endif %}
+  </div>
+  <aside class="rail-n">
+    <div class="box" id="contact"><span class="kicker">Spotted a mistake?</span><h4>Tell {{ shell.site.owner }}</h4><p class="sub">{{ editor }} edits the paper and reads every report herself. Write to <a href="mailto:{{ editor_email }}">{{ editor_email }}</a>, or send it from here.</p>
+      <div class="row" style="margin-top:10px"><a class="n-btn teal wa-person-btn" href="mailto:{{ editor_email }}" data-person>Write to {{ shell.site.owner }}</a></div>
+      <p class="small" style="margin-top:8px">A person reads this, not a WebAgent. {{ shell.site.owner }} usually replies by {{ shell.site.owner_channel }} within {{ shell.site.owner_wait | replace("~", "") }}.</p>
+    </div>
+  </aside>
+</div>
+{% endblock %}

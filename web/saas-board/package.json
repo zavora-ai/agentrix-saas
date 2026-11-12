@@ -1,0 +1,23 @@
+{
+  "name": "saas-board",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Agentrix SaaS treasury board: AG Studio with a swapped-in adk-rust harness.",
+  "type": "module",
+  "license": "MIT",
+  "scripts": {
+    "dev": "vite --port 18184 --strictPort",
+    "build": "tsc --noEmit && vite build && vite build -c vite.wallet.config.ts",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "ag-grid-community": "36.3.0",
+    "ag-studio": "3.1.0"
+  },
+  "devDependencies": {
+    "typescript": "7.0.2",
+    "vite": "8.3.7",
+    "vitest": "4.1.12"
+  }
+}

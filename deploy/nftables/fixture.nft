@@ -1,0 +1,44 @@
+#!/usr/sbin/nft -f
+# Agentrix · fixture VM host firewall (design §2).
+#
+# The fixture is deliberately infected (the gauntlet's ten planted attacks), so it is treated
+# as hostile: public 80/443 for the sealed rooms to crawl, SSH only from control's VPC address,
+# and no new connections from the fixture into the VPC.
+
+# Replace only this table. Docker's iptables-nft tables are left alone, so reloading this
+# file never breaks container networking.
+table inet agentrix
+delete table inet agentrix
+
+table inet agentrix {
+	chain input {
+		type filter hook input priority filter - 10; policy drop;
+
+		ct state established,related accept
+		ct state invalid drop
+		iif "lo" accept
+
+		tcp dport { 80, 443 } accept
+		ip saddr @@CONTROL_VPC_IP@@ tcp dport 22 accept
+
+		icmp type { echo-request, destination-unreachable, time-exceeded } accept
+		icmpv6 type { echo-request, destination-unreachable, packet-too-big, time-exceeded, parameter-problem, nd-router-advert, nd-neighbor-solicit, nd-neighbor-advert } accept
+
+		counter drop
+	}
+
+	chain forward {
+		type filter hook forward priority filter - 10; policy accept;
+
+		# The WordPress containers cannot open connections into the VPC either.
+		ip daddr @@VPC_SUBNET@@ ct state new counter drop
+	}
+
+	chain output {
+		type filter hook output priority filter - 10; policy accept;
+		oif "lo" accept
+
+		# Replies to control's SSH are established traffic; nothing new goes into the VPC.
+		ip daddr @@VPC_SUBNET@@ ct state new counter drop
+	}
+}

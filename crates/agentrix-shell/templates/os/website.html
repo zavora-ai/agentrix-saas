@@ -1,0 +1,49 @@
+{% extends "os/base.html" %}
+{#- ShellPage::Website · view::WebsiteView (+ Chrome) {
+      versions: [VersionView { name, words, live, state, href? }], can_roll_back, old_site_words?, rollback_url,
+      passed: [PassedQuestion], passed_total }
+    01b C23 and C24 (concept/console.html's Website panel): versions with one-step undo, and the questions
+    your pages can't answer yet. Undo posts to the first release's rollback route (R7.4). -#}
+{% block title %}Website · {{ site.name }}{% endblock %}
+{% block field %}
+<section class="view on" aria-labelledby="web-h">
+  <div class="field-head"><div><h2 id="web-h">Website</h2><div class="sub">{{ site.host }} · {{ site.state_words }}</div></div>{% if site.live_url %}<a class="btn btn-sm" href="{{ site.live_url }}" rel="noopener">Open your site</a>{% endif %}</div>
+  <div class="cards">
+    <article class="fcard span2" aria-labelledby="ver-h">
+      <div class="spread-h"><h3 id="ver-h">Versions</h3><span class="small muted">Each one signed; undo in one step</span></div>
+      {% for v in versions %}
+      <div class="version-row{% if v.live %} live{% endif %}">
+        <span class="pin" aria-hidden="true"></span>
+        <div><b>{% if v.href %}<a href="{{ v.href }}">{{ v.name }}</a>{% else %}{{ v.name }}{% endif %}</b><p class="small muted">{{ v.words }}</p></div>
+        {% if v.live %}<span class="chip chip-ok">Live</span>{% elif v.state == "candidate" %}<span class="chip">Not signed</span>{% endif %}
+      </div>
+      {% else %}
+      <p>No release yet. Your first one is signed when you approve the go-live card at the end of the Move.</p>
+      {% endfor %}
+      {% if can_roll_back or old_site_words %}
+      <div class="verbs">
+        {% if can_roll_back %}<form method="post" action="{{ rollback_url }}"><input type="hidden" name="to" value="previous"><button class="btn btn-sm" type="submit">Put back the previous release</button></form>{% endif %}
+        {% if old_site_words %}<form method="post" action="{{ rollback_url }}"><input type="hidden" name="to" value="old-site"><button class="btn btn-ghost btn-sm" type="submit">Go back to your old site</button></form>{% endif %}
+      </div>
+      <p class="small muted">Undo switches which signed release your site serves, in one step, and writes a receipt.{% if old_site_words %} Going back to your old site is possible {{ old_site_words|lower }}.{% endif %}</p>
+      {% endif %}
+    </article>
+
+    <article class="fcard" aria-labelledby="teach-h2">
+      <div class="spread-h"><h3 id="teach-h2">Questions your pages can't answer yet</h3>{% if passed_total %}<span class="chip chip-coral">{{ passed_total }}</span>{% endif %}</div>
+      {% for q in passed %}
+      <p>"{{ q.question }}" <span class="muted small">{{ q.when_words }}{% if q.contact %} · reply to {{ q.contact }}{% endif %}</span></p>
+      {% else %}
+      <p>None yet. When a visitor asks something your pages don't cover, the Concierge says so and offers to pass it to you.</p>
+      {% endfor %}
+      {% if passed %}<p class="small muted">Answering one on your site helps everyone who asks next: add it to the page it belongs on, and the Concierge cites it.</p>{% endif %}
+    </article>
+
+    <article class="fcard" aria-labelledby="door-h">
+      <div class="spread-h"><h3 id="door-h">How AI assistants see you</h3></div>
+      <p>AI assistants read your site through its agent door: the same signed pages people see. Orders they place are held for your approval like any other.</p>
+      {% if site.live_url %}<div class="verbs"><a class="btn btn-sm" href="{{ site.live_url }}.well-known/awp" rel="noopener">See what they read</a></div>{% endif %}
+    </article>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en"{% if theme and theme != "auto" %} data-theme="{{ theme }}"{% endif %}>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<title>{% block title %}Agentrix{% endblock %} · Agentrix</title>
+<meta name="description" content="{% block description %}Agentrix WebAgent Platform by Zavora: move your website to a team of WebAgents that work for you.{% endblock %}">
+<link rel="stylesheet" href="/static/app.css?v={{ asset_v }}">
+{% block head %}{% endblock %}
+</head>
+<body class="{% block body_class %}{% endblock %}">
+<a class="skip" href="#main">Skip to content</a>
+{% block chrome %}
+<header class="topbar">
+  <a class="brand" href="/"><i aria-hidden="true"></i>Agentrix</a>
+  <div class="right">{% block topright %}{% endblock %}</div>
+</header>
+{% endblock %}
+{% block layout %}
+<main id="main" class="page{% block page_class %}{% endblock %}">
+{% block main %}{% endblock %}
+</main>
+{% endblock %}
+{% block foot %}
+<footer class="foot">Agentrix WebAgent Platform by Zavora · open source (MIT) · <a href="/.well-known/agentrix/keys">The key our receipts are signed with</a></footer>
+{% endblock %}
+{% block scripts %}{% endblock %}
+</body>
+</html>

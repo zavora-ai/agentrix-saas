@@ -1,0 +1,15 @@
+{% block subject %}Your code to see order {{ order.number }}{% endblock %}
+{% block preheader %}It shows the order's details on one device. It doesn't sign you in.{% endblock %}
+{% block body %}
+# Your code for order {{ order.number }}
+Someone asked to see the details of order {{ order.number }} at {{ site.host }}. This code shows them:
+
+::code {{ code }}
+
+It works for {{ minutes }} minutes, on the device where it was asked for. It doesn't sign you in or change the order.
+
+If that wasn't you, ignore this. The order's details stay hidden without the code.
+{% endblock %}
+{% block chat %}
+{{ site.name }}: {{ code|code }} is your code to see order {{ order.number }}. It works for {{ minutes }} minutes. Don't share it with anyone, including us.
+{% endblock %}

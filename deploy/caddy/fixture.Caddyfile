@@ -1,0 +1,7 @@
+# Agentrix · fixture VM. Serves the deliberately infected WordPress
+# (fixtures/wordpress-infected) on the fixture domain. Tokens @@…@@ are filled by
+# deploy/provision.sh; until the fixture domain is chosen the site address is ":80".
+
+@@FIXTURE_SITE@@ {
+	reverse_proxy @@FIXTURE_UPSTREAM@@
+}

@@ -1,0 +1,11 @@
+{% extends "ui/layouts/page.html" %}
+{% import "ui/kit.html" as ui %}
+{% block title %}Books · Agentrix{% endblock %}
+{% block main %}
+<div class="page-head"><p class="eyebrow">Agentrix · the books, read only</p><h1>The books</h1>
+<p class="lead">Both companies' books and CRM live in Zavora ERA, hosted on this node. Agents reach it through the open-source mcp-erp.</p></div>
+{{ ui.banner("wait", "ERA is not connected to this node yet. Nothing here is read or written.") }}
+{% endblock %}
+{% block foot %}
+<footer class="foot"><div class="row"><span>Agentrix by Zavora · sandbox demo for the PayPal AI Hackathon · open source (MIT)</span></div></footer>
+{% endblock %}

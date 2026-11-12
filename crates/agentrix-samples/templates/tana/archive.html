@@ -1,0 +1,27 @@
+{% extends "tana/layout.html" %}
+{% block main %}
+<div class="n-wrap">
+  <header class="front-head">
+    <span class="kicker">Archive</span>
+    <h2>Every story online</h2>
+    <p>{{ total }} {% if total == 1 %}story{% else %}stories{% endif %}{% if section_name %} in {{ section_name }}{% endif %} across {{ issues }} weekly {% if issues == 1 %}issue{% else %}issues{% endif %}, newest first. Ask the Archive desk for a date or a topic.</p>
+  </header>
+  <nav class="filters" aria-label="Filter by section"><a href="/archive"{% if not section %} aria-current="true"{% endif %}>All sections</a>{% for s in sections %}<a href="/archive?section={{ s.id }}"{% if section == s.id %} aria-current="true"{% endif %}>{{ s.name }}</a>{% endfor %}</nav>
+  {% if years %}
+  <nav class="years" aria-label="Jump to a year">{% for y in years %}<a href="#{{ y.id }}">{{ y.year }} <i>{{ y.count }}</i></a>{% endfor %}</nav>
+  {% for y in years %}
+  <section class="arch-year" id="{{ y.id }}"><h3>{{ y.year }}</h3>
+    {% for m in y.months %}
+    <div class="arch-month" id="{{ m.id }}"><h4>{{ m.name }}</h4>
+      <ul class="arch-list">
+        {% for c in m.stories %}<li><time datetime="{{ c.iso }}">{{ c.date }}</time><span class="kicker">{{ c.section_name }}</span><a href="{{ c.href }}">{{ c.title }}</a>{% if c.locked %} <span class="n-lock">Subscriber</span>{% endif %}{% if c.corrected %} <span class="corr">Corrected</span>{% endif %}<i class="issue">Issue {{ c.issue }}</i></li>{% endfor %}
+      </ul>
+    </div>
+    {% endfor %}
+  </section>
+  {% endfor %}
+  {% else %}
+  <p class="note">No stories in this section yet. <a href="/archive">See every section</a>.</p>
+  {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,34 @@
+/* The console's Messages page: layout only. Colours, type and components come from the
+   agentrix-ui kit (tokens.css, kit.css); this file adds no colour or size of its own. */
+.msg-list { list-style: none; margin: 0; padding: 0; }
+.msg-row { display: grid; grid-template-columns: 96px minmax(0, 1fr); gap: var(--s3); padding: var(--s3) 0; border-bottom: 1px dashed var(--line); }
+.msg-row:last-child { border-bottom: 0; }
+.msg-row p { margin: 2px 0 0; }
+.msg-when { color: var(--muted); padding-top: 2px; }
+.msg-subject { font: 700 var(--fs-16)/1.35 var(--font-display); color: var(--head); text-decoration: none; }
+a.msg-subject:hover { text-decoration: underline; }
+.msg-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; margin: 6px 0 0; }
+.msg-more { margin: var(--s3) 0 0; }
+.msg-back { display: inline-block; margin-bottom: var(--s2); color: var(--ink-2); text-decoration: none; }
+.msg-back::before { content: "← "; }
+.msg-detail { display: grid; grid-template-columns: minmax(0, 340px) minmax(0, 1fr); gap: var(--s4); align-items: start; }
+.msg-frame { display: block; width: 100%; height: 560px; border: 1px solid var(--line); border-radius: var(--r-sm); background: var(--surface); }
+.msg-text { margin-top: var(--s3); }
+.msg-text summary { cursor: pointer; font-weight: 600; color: var(--ink-2); }
+.msg-text pre, .msg-chat { white-space: pre-wrap; overflow-wrap: anywhere; margin: var(--s2) 0 0; padding: var(--s3); border-radius: var(--r-sm); background: var(--surface-2); font: 400 var(--fs-13)/1.55 var(--font-mono); color: var(--ink); }
+.msg-push { display: grid; gap: 2px; margin-top: var(--s2); padding: var(--s3) var(--s4); border-radius: var(--r-lg); background: var(--surface-2); max-width: 360px; font-size: var(--fs-14); }
+.msg-push b { color: var(--head); }
+.msg-cat { display: flex; gap: var(--s3); align-items: flex-start; justify-content: space-between; padding: var(--s3) 0; border-bottom: 1px dashed var(--line); }
+.msg-cat:last-child { border-bottom: 0; }
+.msg-cat > div { min-width: 0; flex: 1; }
+.msg-cat p { margin: 2px 0 0; }
+.card-title .segmented { grid-auto-columns: auto; }
+@media (max-width: 760px) {
+  .msg-detail { grid-template-columns: minmax(0, 1fr); }
+  .msg-row { grid-template-columns: minmax(0, 1fr); gap: 2px; }
+  .msg-cat { flex-direction: column; }
+  .msg-frame { height: 480px; }
+}
+.msg-check { display: inline-flex; min-width: 44px; min-height: 44px; align-items: center; justify-content: center; cursor: pointer; }
+.msg-check input { width: 18px; height: 18px; accent-color: var(--primary); }
+.visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }

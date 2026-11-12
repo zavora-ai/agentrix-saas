@@ -1,0 +1,30 @@
+{% extends "owner/base.html" %}
+{% block field %}{% import "owner/macros.html" as m %}
+{{ m.head(c) }}
+<article class="fcard">
+  {% if rows %}
+  <div class="tbl"><table class="procs">
+    <thead><tr><th>Product</th><th class="hide-sm">Price now</th><th class="hide-sm">Status</th><th>Change price or status</th></tr></thead>
+    <tbody>
+    {% for p in rows %}
+    <tr id="p-{{ p.sku }}">
+      <td><b>{{ p.name }}</b><small class="muted"> {{ p.section }}{% if p.size %} · {{ p.size }}{% endif %}{% if p.family %} · {{ p.family }}{% endif %}</small>{% if p.published %}<a class="tiny" href="{{ p.page }}">on the site</a>{% endif %}</td>
+      <td class="hide-sm num">{{ p.price }}</td>
+      <td class="hide-sm">{% if p.published %}{{ m.chip("Published", "ok") }}{% else %}{{ m.chip("Draft", "") }}{% endif %}</td>
+      <td>
+        <form method="post" action="{{ p.href }}" class="inline">
+          <label class="sr-only" for="price-{{ p.sku }}">Price of {{ p.name }} in {{ c.site.currency }}</label>
+          <span class="money-in"><span>{% if c.site.currency == "KES" %}KSh{% else %}{{ c.site.currency }}{% endif %}</span><input id="price-{{ p.sku }}" name="price" value="{{ p.price_input }}" inputmode="decimal" autocomplete="off" required></span>
+          <label class="sr-only" for="status-{{ p.sku }}">Status of {{ p.name }}</label>
+          <select id="status-{{ p.sku }}" name="status"><option value="published"{% if p.published %} selected{% endif %}>Published</option><option value="draft"{% if not p.published %} selected{% endif %}>Draft</option></select>
+          <button class="btn btn-sm">Save</button>
+        </form>
+      </td>
+    </tr>
+    {% endfor %}
+    </tbody>
+  </table></div>
+  <p class="muted small">A saved price shows on the site and in its desks' answers on the next page load. Orders already placed keep the price they were placed at.</p>
+  {% else %}{{ m.empty("No products yet. They come from the site's records; once one is added it shows here with its price and status.") }}{% endif %}
+</article>
+{% endblock %}

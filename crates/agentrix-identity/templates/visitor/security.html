@@ -1,0 +1,81 @@
+<section class="acct" id="acct" data-acct="security">
+  <h1 class="acct-h">Sign-in and security</h1>
+  {% if recovered %}<p class="note ok" role="status">You're back in. Add a passkey on this device, and make new recovery codes if you used one.</p>{% endif %}
+  {% if alert %}
+  <div class="note warn" id="acct-alert">
+    <p><b>New sign-in on {{ alert.device }}, {{ alert.when }}. Not you?</b></p>
+    <div class="acct-row">
+      <button class="btn" type="button" data-end-all>Sign out everywhere</button>
+      <button class="btn ghost" type="button" id="acct-was-me">It was me</button>
+    </div>
+  </div>
+  {% endif %}
+  <p class="note ok" id="acct-done" role="status" tabindex="-1" hidden></p>
+  <p class="note warn" id="acct-error" role="alert" hidden></p>
+
+  <div>
+    <h2>Signed in on</h2>
+    <ul class="list">
+      {% for s in sessions %}
+      <li>
+        <span><b>{{ s.device }}</b><span>{% if s.current %}Now, {{ s.method_words }}{% else %}{{ s.seen }} · {{ s.method_words }}{% endif %}{% if s.new %} · <span class="pill new">New</span>{% endif %}</span></span>
+        {% if not s.current %}<button class="btn ghost" type="button" data-end-session="{{ s.id }}">Sign out</button>{% endif %}
+      </li>
+      {% endfor %}
+    </ul>
+    <div class="acct-row"><button class="btn" type="button" data-end-all>Sign out everywhere</button></div>
+    <p class="small">Signs you out on every device, this one too. You sign back in with your passkey or a code.</p>
+  </div>
+
+  <div>
+    <h2>Passkeys</h2>
+    {% if passkeys %}
+    <ul class="list">
+      {% for p in passkeys %}
+      <li>
+        <span><b>{{ p.label }}</b><span>Made {{ p.made }}{% if p.used %} · last used {{ p.used }}{% endif %}</span></span>
+        <button class="btn ghost" type="button" data-remove-passkey="{{ p.id }}">Remove</button>
+      </li>
+      {% endfor %}
+    </ul>
+    {% else %}
+    <p class="small">No passkey yet. You sign in with a code by email.</p>
+    {% endif %}
+    <div class="acct-row"><button class="btn" type="button" id="acct-add-passkey" hidden>Add a passkey on this device</button></div>
+    <p class="small">A passkey works on {{ host }} only, so a look-alike site can't use it.</p>
+  </div>
+
+  <div>
+    <h2>Email</h2>
+    <p>{{ email }} · {% if verified %}<span class="pill ok">Checked</span>{% else %}<span class="pill wait">Not checked yet</span>{% endif %}</p>
+    {% if not verified %}
+    <form method="post" action="/account/code/send">
+      <input type="hidden" name="purpose" value="verify">
+      <input type="hidden" name="email" value="{{ email }}">
+      <input type="hidden" name="next" value="/account/security">
+      <button class="btn ghost" type="submit">Email me a code to check it</button>
+    </form>
+    <p class="small">{{ site }} checks your email before your first order, so receipts reach you.</p>
+    {% endif %}
+  </div>
+
+  <div>
+    <h2>Recovery codes</h2>
+    <p>{{ codes_left }} of 8 left.</p>
+    <div class="acct-row"><button class="btn ghost" type="button" id="acct-new-codes">Make new codes</button></div>
+    <p class="small">New codes replace the old ones. You'll be asked to sign in again first if it has been a while.</p>
+  </div>
+
+  <div>
+    <h2>Sign-in history</h2>
+    {% if events %}
+    <ul class="list">
+      {% for e in events %}<li><span><b>{{ e.device }}</b><span>{{ e.when }} · {{ e.method_words }}</span></span></li>{% endfor %}
+    </ul>
+    {% else %}<p class="small">No sign-ins recorded yet.</p>{% endif %}
+    <p class="small">Kept for 13 months, to warn you about a sign-in that wasn't you.</p>
+  </div>
+
+  <p class="small"><a class="link" href="/account/choices">Your choices</a> · <a class="link" href="/account/data">Your data</a> · <a class="link" href="/account/keeps">What {{ site }} keeps</a></p>
+  <form method="post" action="/account/sign-out"><button class="btn ghost" type="submit">Sign out</button></form>
+</section>

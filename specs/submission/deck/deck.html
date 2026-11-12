@@ -1,0 +1,721 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Agentrix · Vultr Agent Rush deck</title>
+<!--
+  The submission deck. Each <section class="slide"> is one 1920 x 1080 page.
+  Render: specs/submission/render.sh deck   (headless Chrome, print to PDF)
+  Live values: edit LIVE below. A value still null prints as "recorded live" and must not ship.
+-->
+<style>
+@font-face { font-family: "Manrope"; font-weight: 200 800; src: url(../../../crates/agentrix-ui/static/fonts/manrope-latin-wght-normal.woff2) format("woff2-variations"); }
+@font-face { font-family: "DM Sans"; font-weight: 100 1000; src: url(../../../crates/agentrix-ui/static/fonts/dm-sans-latin-wght-normal.woff2) format("woff2-variations"); }
+@font-face { font-family: "DM Sans"; font-style: italic; font-weight: 100 1000; src: url(../../../crates/agentrix-ui/static/fonts/dm-sans-latin-wght-italic.woff2) format("woff2-variations"); }
+@font-face { font-family: "JetBrains Mono"; font-weight: 100 800; src: url(../../../crates/agentrix-ui/static/fonts/jetbrains-mono-latin-wght-normal.woff2) format("woff2-variations"); }
+:root {
+  --band: #1f1d3d; --band-2: #2c2a57; --band-3: #38356d; --ink: #f3f2fb; --ink-2: #c9c7e6; --line: #6f6ba8;
+  --pink: #ff8fa6; --red: #de4060; --gold: #f4c76b; --green: #7fd8a6; --paper: #fbfaff; --paper-ink: #1f1d3d; --paper-ink-2: #55527f;
+}
+@page { size: 1920px 1080px; margin: 0; }
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--band); }
+body { font-family: "DM Sans", sans-serif; color: var(--ink); -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+.slide { width: 1920px; height: 1080px; position: relative; overflow: hidden; page-break-after: always; break-after: page;
+  background: radial-gradient(1200px 800px at 85% 10%, #2e2b5e 0%, var(--band) 60%); padding: 80px 120px 100px; display: flex; flex-direction: column; }
+.slide.paper { background: var(--paper); color: var(--paper-ink); }
+.kicker { font: 700 26px/1 "Manrope"; letter-spacing: .14em; text-transform: uppercase; color: var(--pink); margin: 0 0 26px; }
+.paper .kicker { color: var(--red); }
+h1, h2 { font-family: "Manrope"; font-weight: 800; letter-spacing: -.02em; margin: 0; }
+h1 { font-size: 132px; line-height: .98; }
+h2 { font-size: 60px; line-height: 1.06; max-width: 1600px; }
+h3 { font: 800 34px/1.15 "Manrope"; margin: 0 0 12px; letter-spacing: -.01em; }
+p { margin: 0; }
+.lede { font-size: 34px; line-height: 1.4; color: var(--ink-2); max-width: 1180px; margin-top: 30px; }
+.paper .lede { color: var(--paper-ink-2); }
+.pink { color: var(--pink); }
+.paper .pink { color: var(--red); }
+.mono { font-family: "JetBrains Mono", monospace; font-size: .86em; }
+.foot { position: absolute; left: 120px; right: 120px; bottom: 44px; display: flex; justify-content: space-between; font-size: 21px; color: var(--line); }
+.paper .foot { color: #8a87b5; }
+.grid { display: grid; gap: 24px; margin-top: 40px; }
+.g2 { grid-template-columns: 1fr 1fr; } .g3 { grid-template-columns: repeat(3, 1fr); } .g4 { grid-template-columns: repeat(4, 1fr); }
+.card { background: var(--band-2); border: 1px solid #3e3b78; border-radius: 24px; padding: 28px 32px; }
+.paper .card { background: #fff; border: 1px solid #e3e1f3; box-shadow: 0 1px 0 #e9e7f7; }
+.card p { font-size: 23px; line-height: 1.4; color: var(--ink-2); }
+.paper .card p { color: var(--paper-ink-2); }
+.sealed { border: 3px dashed var(--gold); background: rgba(244,199,107,.06); }
+.tag { display: inline-block; font: 700 19px/1 "Manrope"; letter-spacing: .08em; text-transform: uppercase; padding: 9px 14px; border-radius: 999px; background: #3a3770; color: var(--ink-2); margin-bottom: 18px; }
+.tag.gold { background: rgba(244,199,107,.16); color: var(--gold); }
+.tag.green { background: rgba(127,216,166,.14); color: var(--green); }
+.tag.pinkt { background: rgba(255,143,166,.14); color: var(--pink); }
+.paper .tag { background: #efedfb; color: var(--paper-ink-2); }
+.big { font: 800 120px/1 "Manrope"; letter-spacing: -.03em; color: var(--pink); }
+.paper .big { color: var(--red); }
+table { border-collapse: collapse; width: 100%; font-size: 22px; }
+th { text-align: left; font: 700 19px/1.2 "Manrope"; letter-spacing: .08em; text-transform: uppercase; color: var(--line); padding: 0 18px 14px 0; }
+td { padding: 10px 18px 10px 0; border-top: 1px solid #3e3b78; vertical-align: top; line-height: 1.32; color: var(--ink-2); }
+td b { color: var(--ink); font-weight: 700; }
+.paper td { border-top-color: #e3e1f3; color: var(--paper-ink-2); }
+.paper td b { color: var(--paper-ink); }
+.steps { display: flex; gap: 14px; margin-top: 40px; }
+.step { flex: 1; background: var(--band-2); border-radius: 22px; padding: 26px 22px 28px; border: 1px solid #3e3b78; }
+.step.s { border: 3px dashed var(--gold); }
+.step.go { background: var(--pink); color: var(--band); border: none; }
+.step .n { font: 800 22px/1 "Manrope"; color: var(--line); margin-bottom: 12px; }
+.step.go .n { color: #6b2337; }
+.step b { display: block; font: 800 30px/1.1 "Manrope"; margin-bottom: 10px; }
+.step p { font-size: 20px; line-height: 1.38; color: var(--ink-2); }
+.step.go p { color: #3b1a2a; }
+.shot { border-radius: 22px; overflow: hidden; border: 1px solid #3e3b78; box-shadow: 0 30px 60px rgba(0,0,0,.35); }
+.shot img { display: block; width: 100%; }
+.cap { font-size: 19px; color: var(--line); margin-top: 12px; }
+.paper .cap { color: #8a87b5; }
+.mark { width: 64px; height: 64px; }
+.row { display: flex; gap: 28px; align-items: center; }
+.live { border-bottom: 3px solid var(--gold); }
+.live.missing { background: rgba(244,199,107,.18); color: var(--gold); border-radius: 6px; padding: 0 8px; }
+ul.clean { list-style: none; padding: 0; margin: 0; }
+ul.clean li { font-size: 25px; line-height: 1.4; color: var(--ink-2); padding: 12px 0 12px 34px; position: relative; border-top: 1px solid #3e3b78; }
+ul.clean li::before { content: ""; position: absolute; left: 4px; top: 25px; width: 13px; height: 13px; border-radius: 4px; background: var(--pink); }
+.paper ul.clean li { color: var(--paper-ink-2); border-top-color: #e3e1f3; }
+.mv { display:flex; justify-content:space-between; align-items:center; background: var(--band-2); border: 1px solid #3e3b78; border-radius: 22px; padding: 0 22px 0 30px; height: 84px; font: 600 30px/1 "Manrope"; }
+.mv .tag { margin: 0; }
+.mv.sealed { border: 3px dashed var(--gold); background: rgba(244,199,107,.06); }
+.mv.go { background: var(--pink); color: var(--band); border: none; font-weight: 800; font-size: 26px; white-space: nowrap; letter-spacing: -.01em; }
+#cover .foot span:last-child { visibility: hidden; }
+
+.pgrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 26px; margin-top: 28px; }
+.pcol { background: #fff; border: 1px solid #e3e1f3; border-radius: 24px; padding: 22px 28px; display: flex; flex-direction: column; gap: 12px; }
+.pcol h3 { font-size: 26px; color: var(--paper-ink); min-height: 62px; margin: 0; }
+.pn { width: 40px; height: 40px; border-radius: 12px; background: var(--paper-ink); color: #fff; display: grid; place-items: center; font: 800 22px/1 "Manrope"; }
+.viz { display: grid; grid-template-columns: auto 1fr; gap: 22px; align-items: center; border-top: 1px solid #ece9f8; padding-top: 14px; }
+.viz.two { grid-template-columns: 1fr 1fr; align-items: start; }
+.viz.col { display: flex; flex-direction: column; align-items: stretch; gap: 10px; }
+.viz > div:only-child { grid-column: 1 / -1; }
+.hero { font: 800 50px/1 "Manrope"; color: var(--paper-ink); letter-spacing: -.02em; }
+.hero.muted { color: #6b6893; }
+.vl { font-size: 19px; line-height: 1.35; color: var(--paper-ink-2); margin-top: 6px; }
+.vt { font: 700 18px/1.2 "Manrope"; color: var(--paper-ink); }
+.src { font-size: 15px; color: #8a87b5; margin-top: 4px; }
+.ink { color: var(--paper-ink); }
+.waffle { display: grid; grid-template-columns: repeat(10, 13px); gap: 3px; }
+.waffle i { width: 13px; height: 13px; border-radius: 3px; background: #ece9f8; display: block; }
+.waffle i.on { background: #de4060; }
+.hb { display: grid; grid-template-columns: 190px 1fr 56px; align-items: center; gap: 12px; font-size: 18px; color: var(--paper-ink-2); }
+.hb b { font: 800 22px/1 "Manrope"; color: var(--paper-ink); text-align: right; }
+.track { height: 18px; background: #ece9f8; border-radius: 4px; overflow: hidden; display: block; }
+.track i { display: block; height: 100%; background: #de4060; border-radius: 4px; }
+.track i.mute { background: #6b6893; }
+.meter { position: relative; height: 40px; background: #ece9f8; border-radius: 6px; overflow: hidden; }
+.meter i { display: block; height: 100%; background: #de4060; border-radius: 6px 4px 4px 6px; }
+.meter i.mute { background: #6b6893; }
+.meter span { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); font: 800 26px/1 "Manrope"; color: #fff; }
+
+.matrix { display: grid; grid-template-columns: 210px repeat(3, 1fr); gap: 14px; margin-top: 30px; }
+.mh { background: var(--pink); color: var(--band); border-radius: 18px; padding: 16px 22px; }
+.mh b { display: block; font: 800 28px/1.1 "Manrope"; }
+.mh span { font: 600 19px/1.3 "DM Sans"; }
+.mr { display: flex; align-items: center; font: 800 26px/1.15 "Manrope"; color: var(--ink); padding-right: 10px; }
+.mc { background: var(--band-2); border: 1px solid #3e3b78; border-radius: 18px; padding: 18px 22px; }
+.mc p { font-size: 21px; line-height: 1.38; color: var(--ink-2); margin: 0; }
+.team { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 24px; }
+.chip { display: inline-flex; align-items: center; gap: 10px; background: var(--band-2); border: 1px solid #3e3b78; border-radius: 999px; padding: 6px 18px 6px 6px; font: 700 20px/1 "Manrope"; color: var(--ink); }
+.chip i { width: 34px; height: 34px; border-radius: 10px; display: grid; place-items: center; font: 800 15px/1 "Manrope"; color: #fff; font-style: normal; }
+
+.loop { display: grid; grid-template-columns: repeat(6, 1fr); gap: 12px; margin-top: 26px; }
+.lp { position: relative; background: #fff; border: 1px solid #e3e1f3; border-radius: 18px; padding: 16px 18px 18px; }
+.lp:not(:last-child)::after { content: ""; position: absolute; right: -11px; top: 50%; width: 10px; height: 10px; border-top: 3px solid #b9b6d9; border-right: 3px solid #b9b6d9; transform: translateY(-50%) rotate(45deg); }
+.lp .ln { display: inline-grid; place-items: center; width: 30px; height: 30px; border-radius: 9px; background: var(--paper-ink); color: #fff; font: 800 16px/1 "Manrope"; margin-bottom: 10px; }
+.lp b { display: block; font: 800 22px/1.15 "Manrope"; color: var(--paper-ink); margin-bottom: 6px; }
+.lp p { font-size: 18px; line-height: 1.35; color: var(--paper-ink-2); margin: 0; }
+.lp.key { border: 2px solid var(--paper-ink); }
+.lp em { display: inline-block; font: 700 16px/1 "Manrope"; font-style: normal; padding: 6px 10px; border-radius: 999px; margin: 4px 4px 0 0; }
+.lp em.ok { background: #e3f5ec; color: #1d6b45; }
+.lp em.hold { background: #fde7ec; color: #a3203f; }
+.lp em.no { background: #ececf3; color: #4a4870; }
+
+.halves { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-top: 26px; }
+.halves .tag { margin-bottom: 12px; }
+.browser { border-radius: 18px; overflow: hidden; border: 1px solid #3e3b78; background: #fbf6ef; height: 600px; box-shadow: 0 24px 50px rgba(0,0,0,.35); }
+.browser .bar { display: flex; align-items: center; gap: 8px; height: 40px; padding: 0 16px; background: #2c2a57; }
+.browser .bar i { width: 11px; height: 11px; border-radius: 50%; background: #6f6ba8; display: block; }
+.browser .bar span { margin-left: 14px; font: 500 16px/1 "JetBrains Mono", monospace; color: var(--ink-2); }
+.browser img { display: block; width: 100%; }
+.term { margin: 0; height: 600px; overflow: hidden; background: #0e0d20; border: 1px solid #3e3b78; border-radius: 18px; padding: 22px 24px; font: 400 16.5px/1.5 "JetBrains Mono", monospace; color: #f3f2fb; white-space: pre-wrap; box-shadow: 0 24px 50px rgba(0,0,0,.35); }
+.term .pr { color: var(--pink); font-weight: 700; }
+.term .o { color: #b8f0cf; }
+.term .c { color: #8f8bbf; }
+
+.ag { padding: 20px 24px; }
+.ag p { font-size: 20px; line-height: 1.38; }
+.agh { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; flex-wrap: wrap; }
+.agh i { width: 38px; height: 38px; border-radius: 11px; display: grid; place-items: center; color: #fff; font: 800 16px/1 "Manrope"; font-style: normal; }
+.agh b { font: 800 25px/1.1 "Manrope"; color: var(--paper-ink); }
+.agh span { font: 600 18px/1 "DM Sans"; color: #8a87b5; }
+
+.demos { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; margin-top: 30px; }
+.browser.sm { height: 440px; }
+.browser.sm .bar span { font-size: 14px; }
+.demo h3 { font: 800 30px/1.1 "Manrope"; color: var(--ink); margin: 20px 0 4px; }
+.demo .dk { font-size: 19px; color: var(--line); }
+.demo .dt { font-size: 21px; line-height: 1.4; color: var(--ink-2); margin-top: 10px; }
+.demo .dt b { color: var(--pink); }
+
+.person { text-align: left; }
+.person img { width: 290px; height: 290px; border-radius: 28px; object-fit: cover; display: block; box-shadow: 0 16px 36px rgba(31,29,61,.18); }
+.person .pname { font: 800 32px/1.1 "Manrope"; color: var(--paper-ink); margin: 22px 0 8px; }
+.person p { font-size: 21px; line-height: 1.4; color: var(--paper-ink-2); }
+
+.harvey { border-collapse: separate; border-spacing: 0; width: 100%; }
+.harvey th, .harvey td { padding: 10px 14px; border-top: 1px solid #3e3b78; text-align: center; vertical-align: middle; }
+.harvey tr:first-child th { border-top: none; font: 800 24px/1.1 "Manrope"; color: var(--ink); text-transform: none; letter-spacing: 0; vertical-align: bottom; padding-bottom: 14px; }
+.harvey tr:first-child th span { display: block; font: 500 16px/1.25 "DM Sans"; color: var(--line); margin-top: 6px; }
+.harvey th { text-align: left; font: 700 24px/1.1 "Manrope"; color: var(--ink-2); white-space: nowrap; text-transform: none; letter-spacing: 0; }
+.harvey td svg { display: inline-block; vertical-align: middle; }
+.harvey tr.ax th, .harvey tr.ax td { background: rgba(222,64,96,.16); border-top: none; }
+.harvey tr.ax th { color: #fff; font-size: 28px; font-weight: 800; border-radius: 16px 0 0 16px; }
+.harvey tr.ax td:last-child { border-radius: 0 16px 16px 0; }
+.legend { display: flex; align-items: center; gap: 8px; font-size: 19px; color: var(--ink-2); margin-top: 6px; }
+.legend svg { width: 24px; height: 24px; }
+
+.adk { display: grid; grid-template-columns: 1.7fr 1fr 1fr; gap: 24px; margin-top: 24px; align-items: stretch; }
+.adk-chart { background: #fff; border: 1px solid #e3e1f3; border-radius: 24px; padding: 6px 10px; display: flex; align-items: center; justify-content: center; height: 262px; overflow: hidden; }
+.adk-chart img { height: 250px; width: auto; display: block; }
+.adk-stat { display: flex; flex-direction: column; justify-content: center; }
+
+.adkp { background: var(--band-2); border: 1px solid #3e3b78; border-radius: 22px; padding: 20px 24px; }
+.adkh { font: 800 22px/1 "Manrope"; letter-spacing: .1em; text-transform: uppercase; color: var(--pink); margin-bottom: 8px; }
+.adkr { padding: 10px 0; border-top: 1px solid #3e3b78; }
+.adkr:first-of-type { border-top: none; }
+.adkr .lab { font: 800 22px/1.15 "Manrope"; color: var(--ink); }
+.adkr p { font-size: 18px; line-height: 1.35; color: var(--ink-2); margin-top: 3px; }
+
+.results { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-top: 26px; }
+.res { display: grid; grid-template-columns: 430px 1fr; gap: 22px; align-items: start; background: #fff; border: 1px solid #e3e1f3; border-radius: 24px; padding: 18px; }
+.resimg { border-radius: 14px; overflow: hidden; background: #f4f3fa; border: 1px solid #ece9f8; }
+.resimg img { width: 100%; display: block; }
+.resn { font: 800 26px/1.15 "Manrope"; color: var(--paper-ink); margin: 6px 0 16px; }
+.resn span { display: block; font: 600 18px/1.3 "DM Sans"; color: #8a87b5; margin-top: 4px; }
+.resk { display: grid; grid-template-columns: 1fr; gap: 10px; margin-bottom: 16px; }
+.resk div { display: flex; align-items: baseline; gap: 12px; }
+.resk div { background: #f6f5fc; border-radius: 14px; padding: 12px 12px 10px; }
+.resk b { display: block; font: 800 34px/1 "Manrope"; color: var(--red); letter-spacing: -.02em; white-space: nowrap; }
+.resk span { font-size: 16px; color: var(--paper-ink-2); }
+.rest { font-size: 20px; line-height: 1.4; color: var(--paper-ink-2); }
+.note { font-size: 20px; color: var(--line); margin-top: auto; }
+</style>
+</head>
+<body>
+
+<!-- 1 · Cover -->
+<section class="slide" id="cover">
+  <div class="row" style="gap:18px; margin-bottom:64px">
+    <svg class="mark" viewBox="0 0 26 26"><clipPath id="c1"><rect width="26" height="26" rx="8"/></clipPath><g clip-path="url(#c1)"><rect width="26" height="26" fill="#38356d"/><path d="M13 13 27.86-.38A20 20 0 0 1 3 30.32Z" fill="#de4060"/></g><rect x="7" y="7" width="12" height="12" rx="4" fill="#fff"/></svg>
+    <span style="font:800 40px/1 Manrope; letter-spacing:-.01em">Agentrix</span>
+    <span style="font:600 24px/1 'DM Sans'; color:var(--ink-2); margin-left:14px">by Zavora Technologies</span>
+  </div>
+  <div style="display:grid; grid-template-columns: 1.15fr .85fr; gap: 80px; align-items: center; flex:1">
+    <div>
+      <p class="kicker">AGENTRIX WEBAGENTS PLATFORM</p>
+      <h1>Upgrade your website into <span class="pink">WebAgents.</span></h1>
+      <p class="lede">Turn a WordPress, Shopify or React website into an autonomous AI business. The Move runs in sealed rooms on Vultr, security issues stay behind, and the new site goes live only after the owner verifies the domain through DNS and approves with a passkey.</p>
+    </div>
+    <div style="display:flex; flex-direction:column; gap:14px">
+      <p class="kicker" style="color:var(--ink-2); margin-bottom:8px">The Move</p>
+      <div class="mv sealed">1 · Assess <span class="tag gold">sealed browser</span></div>
+      <div class="mv">2 · Claim <span class="tag">passkey, DNS proof</span></div>
+      <div class="mv sealed">3 · Replay <span class="tag gold">no route out</span></div>
+      <div class="mv sealed">4 · Clean <span class="tag gold">quarantine</span></div>
+      <div class="mv sealed">5 · Rebuild · 6 · Prove <span class="tag gold">no network</span></div>
+      <div class="mv go">7 · Go live, Agentrix Website with WebAgents</div>
+    </div>
+  </div>
+  <div class="foot"><span>Vultr Agent Rush · Challenge 1: Blast Radius Zero · agentrix.website · built in Rust on ADK-Rust · MIT</span><span>1</span></div>
+</section>
+
+<!-- 2 · Problem -->
+<section class="slide paper" id="problem">
+  <p class="kicker">The problem</p>
+  <h2 style="text-wrap: balance">Websites are passive, insecure and not built for AI agents.</h2>
+  <div class="pgrid">
+    <div class="pcol">
+      <div class="pn">1</div>
+      <h3>Websites are passive, and search sends them fewer visitors.</h3>
+      <div class="viz">
+        <div class="waffle" role="img" aria-label="15 of 100 squares filled: 15% of websites are active"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+        <div><div class="hero">15%</div><p class="vl">of 1.49 billion websites are active. The rest are parked, redirecting or abandoned.</p><p class="src">Netcraft, July 2026</p></div>
+      </div>
+      <div class="viz col">
+        <p class="vt">Google searches where a result is clicked</p>
+        <div class="hb"><span class="hbl">No AI summary</span><span class="track"><i style="width:100%" class="mute"></i></span><b>15%</b></div>
+        <div class="hb"><span class="hbl">With an AI summary</span><span class="track"><i style="width:53.3%"></i></span><b>8%</b></div>
+        <p class="src">Pew Research</p>
+      </div>
+    </div>
+    <div class="pcol">
+      <div class="pn">2</div>
+      <h3>Customers now send AI agents, and websites aren't built for them.</h3>
+      <div class="viz col">
+        <p class="vt">Web traffic that is automated</p>
+        <div class="meter" role="img" aria-label="53% of web traffic is automated"><i style="width:53%"></i><span>53%</span></div>
+        <p class="vl">and 40% of it is malicious, so sites block agents and bad bots alike.</p>
+        <p class="src">Imperva 2026 Bad Bot Report</p>
+      </div>
+      <div class="viz col">
+        <div class="hero">+393%</div>
+        <p class="vl">traffic from AI sources to US retail sites, Q1 2026 on a year earlier.</p>
+        <p class="vt" style="margin-top:10px">How well AI can read the average retail product page</p>
+        <div class="meter" role="img" aria-label="The average retail product page scored 66% on Adobe's AI-readability check"><i style="width:66%" class="mute"></i><span>66%</span></div>
+        <p class="src">Adobe</p>
+      </div>
+    </div>
+    <div class="pcol">
+      <div class="pn">3</div>
+      <h3>The software underneath is insecure.</h3>
+      <div class="viz two">
+        <div><div class="hero">39.4%</div><p class="vl">of all websites run WordPress.</p><p class="src">W3Techs, 8 Nov 2026</p></div>
+        <div><div class="hero">11,334</div><p class="vl">new vulnerabilities in the WordPress ecosystem in 2025, 42% more than in 2024.</p></div>
+      </div>
+      <div class="viz col">
+        <div class="hb"><span class="hbl">In plugins</span><span class="track"><i style="width:91%"></i></span><b>91%</b></div>
+        <div class="hb"><span class="hbl">No fix when made public</span><span class="track"><i style="width:46%"></i></span><b>46%</b></div>
+        <p class="vl" style="margin-top:14px">The most targeted were exploited at scale within a median of <b class="ink">5 hours</b>. A small business can't keep up.</p>
+        <p class="src">Patchstack, State of WordPress Security in 2026</p>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span>Sources as cited in the repository's README, section 1</span><span>2</span></div>
+</section>
+
+<!-- 3 · Solution -->
+<section class="slide" id="solution">
+  <p class="kicker">THE SOLUTION - AGENTRIX WEBAGENT PLATFORM</p>
+  <h2 style="text-wrap: balance">An autonomous AI business: WebAgents that work 24/7 for the owner and the customer.</h2>
+  <p class="lede" style="margin-top:16px; font-size:27px; max-width:1500px">Agentrix WebAgent Platform turns a WordPress, Shopify or React website into a business run by WebAgents, with the owner in charge.</p>
+  <div class="matrix">
+    <div></div>
+    <div class="mh"><b>Proactive</b><span>they act before anyone asks</span></div>
+    <div class="mh"><b>Responsive</b><span>they answer when asked</span></div>
+    <div class="mh"><b>Supportive</b><span>they keep people in control</span></div>
+    <div class="mr">For the owner</div>
+    <div class="mc"><p>The Chief WebAgent writes the morning brief and Monday's weekly review. Alarms, expiring decisions, new orders and budgets near their limit reach the owner without looking.</p></div>
+    <div class="mc"><p>Ask the Chief anything about the business in the console, the app or Telegram. It answers from the site's own records and says which ones.</p></div>
+    <div class="mc"><p>Anything with a consequence is one decision card, approved with a passkey. An autonomy dial per job, a freeze for every WebAgent, undo for go-live, and quiet hours.</p></div>
+    <div class="mr">For the customer</div>
+    <div class="mc"><p>Order confirmations, status updates, payment receipts and refunds arrive by email without anyone having to ask.</p></div>
+    <div class="mc"><p>Ask this site answers at any hour from the site's pages and shows the page it used. Desks take orders and bookings. Customers' AI agents get the same answers through the agent door.</p></div>
+    <div class="mc"><p>When a question needs a person, it goes to the owner and the reply comes back. Quotes and bookings wait for approval, and customers always know they're talking to AI.</p></div>
+  </div>
+  <div class="team"><span class="chip"><i style="background:#ffffff;color:#1f1d3d">Ch</i>Chief WebAgent</span><span class="chip"><i style="background:#de4060">Co</i>Concierge</span><span class="chip"><i style="background:#c0662b">Sa</i>Sales</span><span class="chip"><i style="background:#2f7d6d">Ed</i>Editor</span><span class="chip"><i style="background:#7a4fb5">Re</i>Reputation</span><span class="chip"><i style="background:#2b6cb0">Ca</i>Cashier</span><span class="chip"><i style="background:#5b5f6e">Gu</i>Guardian</span><span class="chip"><i style="background:#8a6a1f">Kt</i>Caretaker</span><span class="chip"><i style="background:#6b6893">Mo</i>Mover</span></div>
+  <div class="foot"><span>Each WebAgent has a mandate, a budget and an autonomy dial per job that only the owner raises</span><span>3</span></div>
+</section>
+
+<!-- 4 · The design of a WebAgent -->
+<section class="slide paper" id="webagent">
+  <p class="kicker">The design of a WebAgent</p>
+  <h2>Each WebAgent is a governed process, not a chatbot.</h2>
+  <div class="loop">
+    <div class="lp"><span class="ln">1</span><b>Wakes for a reason</b><p>An owner's message, a visitor or an AI agent, a schedule, an order or a payment.</p></div>
+    <div class="lp"><span class="ln">2</span><b>Reasons</b><p>Through the Model Gateway, with a named purpose, metered against its budget.</p></div>
+    <div class="lp"><span class="ln">3</span><b>Proposes a tool call</b><p>Typed arguments and a declared effect. Never a raw credential.</p></div>
+    <div class="lp key"><span class="ln">4</span><b>The governed path decides</b><p><em class="ok">Allow</em> <em class="hold">Hold for the owner's passkey</em> <em class="no">Deny</em></p></div>
+    <div class="lp"><span class="ln">5</span><b>Acts through a gateway</b><p>Each effect runs once and leaves a signed receipt.</p></div>
+    <div class="lp"><span class="ln">6</span><b>Sleeps</b><p>No lease, no model call, no cost, until the next reason to wake.</p></div>
+  </div>
+  <div style="display:grid; grid-template-columns: 1.55fr 1fr; gap: 30px; margin-top: 26px; align-items: start">
+    <div><div class="shot" style="border-color:#e3e1f3; box-shadow: 0 16px 40px rgba(31,29,61,.12)"><img src="img/webagent-teams.png" alt="Three sample businesses' WebAgent teams, each led by a Chief WebAgent, with each WebAgent's state"></div><p class="cap">Live on agentrix.website: each sample's team, led by its Chief WebAgent, each mark showing what it's doing now</p></div>
+    <ul class="clean">
+      <li><b class="ink">A mandate and a budget.</b> A call outside its jobs is refused.</li>
+      <li><b class="ink">An autonomy dial per job</b> that only the owner raises. One switch freezes them all.</li>
+      <li><b class="ink">Capabilities, never credentials.</b> Only two gateways hold secrets.</li>
+      <li><b class="ink">Memory scoped to its site</b>, with facts the owner confirms.</li>
+      <li><b class="ink">A living mark</b> that shows its state: listening, answering, waiting for you, asleep.</li>
+    </ul>
+  </div>
+  <div class="foot"><span>The full anatomy: docs/diagrams/webagent-anatomy.svg</span><span>4</span></div>
+</section>
+
+<!-- 5 · A new kind of website -->
+<section class="slide" id="new-website">
+  <p class="kicker">For people and AI agents</p>
+  <h2>A new kind of website.</h2>
+  <p class="lede" style="margin-top:12px; font-size:27px; max-width:1600px">One site, two front doors: pages for people, and an agent door for the AI agents they send. Same facts, same prices, same owner's approval.</p>
+  <div class="halves">
+    <div>
+      <span class="tag pinkt">For people</span>
+      <div class="browser"><div class="bar"><i></i><i></i><i></i><span>kilele-bakery-sample.agentrix.website</span></div><img src="img/kilele-site.png" alt="Kilele Bakery's sample site: Baked at dawn in Westlands, today's bakes with prices and stock, and the Ask bar"></div>
+    </div>
+    <div>
+      <span class="tag gold">For AI agents</span>
+      <pre class="term"><span class="pr">$</span> curl kilele-bakery-sample.agentrix.website/.well-known/awp.json
+<span class="o">{ "site": "Kilele Bakery", "awp": "2.0",
+  "mcp": { "url": "https://kilele-bakery-sample.agentrix.website/mcp" },
+  "capabilities": [ "catalog.search", "delivery.slots", "quote.create",
+    "checkout.create", "order.status", "ask_site",
+    { "id": "request_custom_order", "approval": "always",
+      "heldFor": "Wanjiru" } ] }</span>
+
+<span class="pr">$</span> mcp initialize <span class="c"># clientInfo.name: agentrix-deck-demo</span>
+<span class="o">  Kilele Bakery agent door (Sample) · protocol 2025-06-18</span>
+
+<span class="pr">$</span> mcp call catalog.search '{"query": "sourdough"}'
+<span class="o">  Country sourdough   KSh 450     6 left today
+  Weekend bake box    KSh 1,350   5 left today</span>
+
+<span class="pr">$</span> mcp call delivery.slots
+<span class="o">  Sat 14 Nov, 10:00–12:00   6 left   Westlands and Kilimani · KSh 300</span>
+
+<span class="pr">$</span> mcp call ask_site '{"question": "Are you open on Sunday, and until when?"}'
+<span class="o">  "Mon–Sat 6:30–19:00, Sun 7:00–14:00 [1]."
+  [1] Visit · Hours   /visit#visit-hours</span></pre>
+    </div>
+  </div>
+  <div class="foot"><span>A real session with the sample's live agent door, 8 Nov 2026, 23:04 EAT. Each "mcp call" is one MCP tools/call; replies are shortened</span><span>5</span></div>
+</section>
+
+<!-- 6 · Proactive agents -->
+<section class="slide paper" id="proactive">
+  <p class="kicker">Proactive agents</p>
+  <h2 style="text-wrap: balance">The owner's console is where proactive WebAgents work.</h2>
+  <div style="display:grid; grid-template-columns: 1.45fr 1fr; gap: 34px; margin-top: 30px; align-items: start">
+    <div><div class="shot" style="border-color:#e3e1f3; box-shadow: 0 18px 44px rgba(31,29,61,.14)"><img src="../../../crates/agentrix-home/static/owner-brief.webp" alt="The owner's console: the Chief WebAgent's brief, the Guardian's protections and the AI spend meter"></div><p class="cap">The owner's console on a sample site: the Chief's brief, the Guardian's protections and the AI spend against the daily limit</p></div>
+    <div style="display:flex; flex-direction:column; gap:16px">
+      <div class="card ag"><div class="agh"><i style="background:#1f1d3d">Ch</i><b>Chief WebAgent</b><span>the owner's chief of staff</span></div><p>Writes the morning brief: what the site did overnight, the one decision waiting, and what it cost against the budget. Monday brings the weekly review, and "How was this week?" gets an answer from the site's own orders and records.</p></div>
+      <div class="card ag"><div class="agh"><i style="background:#5b5f6e">Gu</i><b>Guardian</b><span>protection and alarms</span></div><p>Probes the site every 5 minutes, watches for abuse, and raises an alarm when something changes. The console shows the gauntlet's containment score once it has run.</p></div>
+      <div class="card ag"><div class="agh"><i style="background:#de4060"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15z"/><path d="M10 20a2 2 0 0 0 4 0"/></svg></i><b>What reaches the owner</b><span>without looking</span></div><p>An alarm, a decision about to expire, a new order, a budget near its limit: in the console, the app or Telegram, within quiet hours. Anything with a consequence is a card the owner approves with a passkey.</p></div>
+    </div>
+  </div>
+  <div class="foot"><span>The Chief, Guardian and Caretaker work in the back office; they never read untrusted text directly</span><span>6</span></div>
+</section>
+
+<!-- 7 · The Move -->
+<section class="slide" id="the-move">
+  <p class="kicker">How a site gets there</p>
+  <h2>The Move: the old site is rebuilt in sealed rooms, never trusted, and goes live on the owner's say-so.</h2>
+  <div class="steps">
+    <div class="step s"><div class="n">1</div><b>Assess</b><p>A real browser in a sealed room reads the site. An honest health report, with evidence.</p></div>
+    <div class="step"><div class="n">2</div><b>Claim</b><p>Passkey sign-in. Prove the site with a DNS record or a file.</p></div>
+    <div class="step s"><div class="n">3</div><b>Replay</b><p>The old WordPress runs from its own database, with no route out.</p></div>
+    <div class="step s"><div class="n">4</div><b>Clean</b><p>Anything infected is quarantined, with the reason in plain words.</p></div>
+    <div class="step s"><div class="n">5</div><b>Rebuild</b><p>A Vultr model writes the new pages. They're built with no network.</p></div>
+    <div class="step s"><div class="n">6</div><b>Prove</b><p>Each page is rendered, screenshotted and checked by a vision model.</p></div>
+    <div class="step go"><div class="n">7</div><b>Go live</b><p>The owner approves the card with a passkey. Old site kept, undo for 30 days.</p></div>
+  </div>
+  <div class="grid g3" style="margin-top:34px">
+    <div class="card"><span class="tag">Owner first</span><h3>Proof before anything private</h3><p>The owner signs in with a passkey and proves the domain with a DNS record before the Move reads anything that isn't public.</p></div>
+    <div class="card sealed"><span class="tag gold">Sealed</span><h3>Security issues stay behind</h3><p>Spam links, hidden scripts, webshells and text aimed at AI agents are quarantined with the reason in plain words, and never copied.</p></div>
+    <div class="card"><span class="tag green">Proved</span><h3>Parity of at least 0.95</h3><p>Each step is saved, so a crash resumes where it stopped. The go-live card shows parity, what was left behind, and how to undo.</p></div>
+  </div>
+  <div class="foot"><span>Dashed: runs in a sealed room on the sandbox machine</span><span>7</span></div>
+</section>
+
+<!-- 8 · Plan, dispatch, verify -->
+<section class="slide" id="real-work">
+  <p class="kicker">How the agent does real work</p>
+  <h2>Plan, dispatch, verify. Every job is signed going in and receipted coming out.</h2>
+  <div class="grid g4" style="margin-top:36px">
+    <div class="card"><span class="tag">Plan</span><h3>A graph of jobs</h3><p>The Mover on the control VM turns "move my site" into fetch, replay, build and render jobs. Each step is saved, so a crash resumes.</p></div>
+    <div class="card"><span class="tag">Dispatch</span><h3>A signed job spec</h3><p>Inputs by digest, the room image, the egress allowlist, the caps and a deadline, signed with Ed25519. The runner refuses anything that doesn't verify.</p></div>
+    <div class="card sealed"><span class="tag gold">Run, sealed</span><h3>One room per job</h3><p>A Docker container under gVisor, on the sandbox VM. It streams events: request, refused, frame, artifact, killed, destroyed.</p></div>
+    <div class="card"><span class="tag green">Verify</span><h3>A signed receipt</h3><p>Control fetches each artifact by digest and signs what ran: hosts contacted, refusals, peaks, outputs, and the room destroyed.</p></div>
+  </div>
+  <div class="grid g2" style="margin-top:22px">
+    <div class="card"><span class="tag pinkt">Pattern A</span><h3>The model writes code, a container runs it</h3><p>Vultr's <span class="mono">qwen3.8-27b</span> writes each page. A room with no network builds and renders it. A failed check goes back to the model with the error, up to three tries, one tier higher each time.</p></div>
+    <div class="card"><span class="tag pinkt">Pattern B</span><h3>Goal, browser, screenshots, vision, a human</h3><p>Firefox under Playwright reads the old site in a room. A Vultr vision model compares old and new screenshots. Nothing goes live until the owner signs the go-live card with a passkey.</p></div>
+  </div>
+  <div class="foot"><span>Receipts: RFC 8785 JSON, Ed25519, checkable against /.well-known/agentrix/keys</span><span>8</span></div>
+</section>
+
+<!-- 9 · Architecture on Vultr -->
+<section class="slide" id="architecture">
+  <p class="kicker">Architecture on Vultr</p>
+  <h2 style="text-wrap: balance">A control plane plans and signs every job, a sealed sandbox runs it, and one gateway reaches the models.</h2>
+  <svg viewBox="0 0 1680 650" width="1680" height="650" style="margin-top:30px" font-family="DM Sans" font-size="22">
+    <defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0 10 5 0 10z" fill="#9b97d0"/></marker>
+      <marker id="arg" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0 10 5 0 10z" fill="#f4c76b"/></marker>
+      <marker id="arn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0 10 5 0 10z" fill="#7fd8a6"/></marker>
+      <marker id="arp" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0 10 5 0 10z" fill="#ff8fa6"/></marker></defs>
+    <text x="20" y="50" font-weight="700" font-family="Manrope" fill="#9b97d0" letter-spacing="2" font-size="20">INTERNET</text>
+    <rect x="20" y="74" width="230" height="74" rx="16" fill="#2c2a57" stroke="#4a4688"/><text x="40" y="118" fill="#f3f2fb">Owner, passkey</text>
+    <rect x="20" y="166" width="230" height="74" rx="16" fill="#2c2a57" stroke="#4a4688"/><text x="40" y="210" fill="#f3f2fb">Visitors</text>
+    <rect x="20" y="258" width="230" height="74" rx="16" fill="#2c2a57" stroke="#4a4688"/><text x="40" y="302" fill="#f3f2fb">Customers' AI agents</text>
+    <rect x="300" y="14" width="1080" height="616" rx="26" fill="none" stroke="#6f6ba8" stroke-dasharray="2 8" stroke-width="2"/>
+    <text x="326" y="52" font-weight="800" font-family="Manrope" fill="#ff8fa6" letter-spacing="2" font-size="20">VULTR · ATLANTA · ONE VPC</text>
+    <rect x="330" y="74" width="440" height="300" rx="20" fill="#2c2a57" stroke="#6f6ba8" stroke-width="2"/>
+    <text x="352" y="112" font-weight="800" font-family="Manrope" font-size="27" fill="#f3f2fb">control VM</text>
+    <text x="352" y="140" fill="#9b97d0" font-size="19">firewall group: 80 and 443 in</text>
+    <text x="352" y="184" fill="#c9c7e6">Caddy, TLS</text>
+    <text x="352" y="218" fill="#c9c7e6">agentrix-node: site edge, console,</text>
+    <text x="352" y="246" fill="#c9c7e6">the Mover, the broker</text>
+    <text x="352" y="284" fill="#c9c7e6">agentrix-models: the Model</text>
+    <text x="352" y="312" fill="#c9c7e6">Gateway, the only key holder</text>
+    <text x="352" y="350" fill="#c9c7e6">SQLite, content store, signer</text>
+    <rect x="900" y="74" width="450" height="300" rx="20" fill="rgba(244,199,107,.06)" stroke="#f4c76b" stroke-width="3" stroke-dasharray="12 9"/>
+    <text x="922" y="112" font-weight="800" font-family="Manrope" font-size="27" fill="#f3f2fb">sandbox VM, VX1</text>
+    <text x="922" y="140" fill="#f4c76b" font-size="19">no public inbound · no secrets</text>
+    <text x="922" y="184" fill="#c9c7e6" font-size="21">agentrix-runner, :7443 from control</text>
+    <rect x="922" y="204" width="190" height="62" rx="12" fill="#38356d"/><text x="934" y="242" fill="#f3f2fb" font-size="19">Docker + gVisor</text>
+    <rect x="1128" y="204" width="200" height="62" rx="12" fill="#38356d"/><text x="1144" y="242" fill="#f3f2fb" font-size="20">egress proxy</text>
+    <text x="922" y="310" fill="#c9c7e6" font-size="20">fetch, replay, build, render rooms:</text>
+    <text x="922" y="338" fill="#c9c7e6" font-size="20">capped, destroyed after each job</text>
+    <rect x="900" y="440" width="450" height="140" rx="20" fill="#2c2a57" stroke="#6f6ba8" stroke-width="2"/>
+    <text x="922" y="480" font-weight="800" font-family="Manrope" font-size="27" fill="#f3f2fb">fixture VM</text>
+    <text x="922" y="516" fill="#c9c7e6">Zavora's deliberately infected</text>
+    <text x="922" y="544" fill="#c9c7e6">WordPress: ten planted attacks</text>
+    <rect x="330" y="440" width="440" height="140" rx="20" fill="#2c2a57" stroke="#6f6ba8" stroke-width="2"/>
+    <text x="352" y="480" font-weight="800" font-family="Manrope" font-size="27" fill="#f3f2fb">Vultr DNS and the API</text>
+    <text x="352" y="516" fill="#c9c7e6">agentrix.website and its sites;</text>
+    <text x="352" y="544" fill="#c9c7e6">provision.sh builds and snapshots</text>
+    <rect x="1430" y="74" width="240" height="200" rx="20" fill="#de4060"/>
+    <text x="1452" y="116" font-weight="800" font-family="Manrope" font-size="25" fill="#fff">Serverless</text>
+    <text x="1452" y="146" font-weight="800" font-family="Manrope" font-size="25" fill="#fff">Inference</text>
+    <text x="1452" y="190" fill="#ffe3ea" font-size="19">every model call,</text>
+    <text x="1452" y="216" fill="#ffe3ea" font-size="19">by purpose, from</text>
+    <text x="1452" y="242" fill="#ffe3ea" font-size="19">the gateway only</text>
+    <rect x="1430" y="440" width="240" height="140" rx="20" fill="#2c2a57" stroke="#6f6ba8" stroke-width="2"/>
+    <text x="1452" y="480" font-weight="800" font-family="Manrope" font-size="25" fill="#f3f2fb">Object Storage</text>
+    <text x="1452" y="516" fill="#c9c7e6" font-size="19">every blob and</text>
+    <text x="1452" y="542" fill="#c9c7e6" font-size="19">receipt, each minute</text>
+    <path d="M250 111 H326" stroke="#9b97d0" stroke-width="2.5" marker-end="url(#ar)"/>
+    <path d="M250 203 H326" stroke="#9b97d0" stroke-width="2.5" marker-end="url(#ar)"/>
+    <path d="M250 295 H326" stroke="#9b97d0" stroke-width="2.5" marker-end="url(#ar)"/>
+    <path d="M770 176 H896" stroke="#f4c76b" stroke-width="3" marker-end="url(#arg)"/>
+    <text x="835" y="164" fill="#f4c76b" font-size="17" text-anchor="middle">signed spec</text>
+    <path d="M900 250 H774" stroke="#7fd8a6" stroke-width="3" marker-end="url(#arn)"/>
+    <text x="835" y="278" fill="#7fd8a6" font-size="17" text-anchor="middle">artifacts</text>
+    <path d="M1228 266 V436" stroke="#9b97d0" stroke-width="2.5" marker-end="url(#ar)"/>
+    <text x="1214" y="412" fill="#9b97d0" font-size="17" text-anchor="end">the job's hosts only</text>
+    <path d="M700 74 C 820 0, 1300 0, 1426 120" stroke="#ff8fa6" stroke-width="2.5" fill="none" marker-end="url(#arp)"/>
+    <path d="M770 340 H835 V605 H1550 V584" stroke="#9b97d0" stroke-width="2.5" fill="none" stroke-dasharray="7 6" marker-end="url(#ar)"/>
+  </svg>
+  <div class="foot"><span>Cloud Compute (control, sandbox VX1, fixture) · VPC · firewall groups · DNS · Object Storage · Serverless Inference · the API</span><span>9</span></div>
+</section>
+
+<!-- 10 · Models at work -->
+<section class="slide" id="models">
+  <p class="kicker">Models at work, on Vultr Serverless Inference</p>
+  <h2>Each model has one job, and something checks its work.</h2>
+  <table style="margin-top:30px">
+    <tr><th style="width:15%">Purpose</th><th style="width:22%">Vultr model</th><th style="width:31%">What it decides</th><th>How its output is checked</th></tr>
+    <tr><td><b>Build</b></td><td class="mono">qwen3.8-27b, glm-5.3 on retries</td><td>Writes each new page from the clean content</td><td>A page check refuses invented links and images; errors go back to the model</td></tr>
+    <tr><td><b>Vision parity</b></td><td class="mono">deepseek-v4.1-flash-1017</td><td>Does the new page match the old one, and why</td><td>Scored with text and pixel similarity; the card shows the reason</td></tr>
+    <tr><td><b>Screening</b></td><td class="mono">nemotron-3.5-content-safety</td><td>Is this text trying to instruct an AI agent</td><td>Read only after the model's reasoning; anything unclear fails closed</td></tr>
+    <tr><td><b>Decisions</b></td><td class="mono">systemone clef</td><td>Risk scores for quarantine and decision cards</td><td>The owner decides; the score only ranks</td></tr>
+    <tr><td><b>Ask this site</b></td><td class="mono">qwen3.8-27b, qwen3-embedding-4b</td><td>Answers visitors from the site's own pages</td><td>Every answer cites a page, or says it doesn't know</td></tr>
+  </table>
+  <div class="grid g3" style="margin-top:26px">
+    <div class="card"><span class="tag">The Model Gateway</span><p>The only process with a model key. Callers name a purpose, never a model. A budget per site, and a receipt for every routing change.</p></div>
+    <div class="card"><span class="tag green">Bake-off, measured</span><p><span class="mono">qwen3.8-27b</span> built 15 of 15 pages on the first try at $0.0009 a page. DeepSeek Flash scored right pages 1.00 and wrong ones 0.03.</p></div>
+    <div class="card"><span class="tag gold">On the live site</span><p>Every model call goes to Vultr Serverless Inference through the gateway, with a signed receipt whenever the routing changes.</p></div>
+  </div>
+  <div class="foot"><span>Bake-off: specs/first-release/bakeoff.md, five pages, three passes, $0.14 in all</span><span>10</span></div>
+</section>
+
+<!-- 11 · Containment -->
+<section class="slide" id="containment">
+  <p class="kicker">Containment · Docker + gVisor, on a separate Vultr VM</p>
+  <h2 style="text-wrap: balance">Untrusted code runs only in a room built for one job, and the room is gone afterwards.</h2>
+  <div class="grid g4" style="margin-top:36px">
+    <div class="card"><span class="tag gold">Process isolation</span><p>A separate VX1 VM. Every job gets its own <b style="color:var(--ink)">Docker container under gVisor</b>: read-only root, user 65534, all capabilities dropped, no traffic between rooms.</p></div>
+    <div class="card"><span class="tag gold">Secret hygiene</span><p>The sandbox VM holds no secret. A job spec carries digests, never credentials. Model keys live only in the gateway on control.</p></div>
+    <div class="card"><span class="tag gold">Resource limits</span><p>Caps on CPU, memory, processes and tmpfs, a wall-clock deadline, and byte caps per connection. A fork bomb is killed.</p></div>
+    <div class="card"><span class="tag gold">Lifecycle</span><p>Every room is destroyed when its job ends or its deadline hits. The signed receipt says <span class="mono">destroyed: true</span>, and artifacts are read only after.</p></div>
+  </div>
+  <div class="grid g2" style="margin-top:22px">
+    <div class="card"><h3>Egress, twice over</h3><p>A room's only way out is its own proxy, holding that job's allowlist. Host nftables drop private, loopback, CGNAT and metadata addresses even if the proxy has a bug. Build and render rooms have no network at all. 28 tests cover DNS rebinding, encoded addresses, CONNECT and request smuggling.</p></div>
+    <div class="card sealed"><span class="tag gold">Next: a throwaway VM per Move</span><p>Each Move gets its own sandbox VM, created through the Vultr API from a prepared snapshot and destroyed with a receipt. Measured on 8 Nov: restoring the sandbox from its 9.6 GB snapshot took 12 min 55 s, so this needs warm spares or a smaller image first.</p></div>
+  </div>
+  <div class="foot"><span>Process isolation · secret hygiene · resource limits · lifecycle discipline: Challenge 1's four focus points</span><span>11</span></div>
+</section>
+
+<!-- 12 · Gauntlet -->
+<section class="slide" id="gauntlet">
+  <p class="kicker">The gauntlet</p>
+  <div class="row" style="justify-content:space-between; align-items:flex-end">
+    <h2 style="max-width:1250px">Ten attacks planted in a hacked WordPress copy, scored from receipts.</h2>
+    <div style="text-align:right"><div class="big">10</div><p style="font-size:24px; line-height:1.3; color:var(--ink-2)">attacks, scored from<br>receipts on every deploy</p></div>
+  </div>
+  <table style="margin-top:24px; font-size:21px">
+    <tr><th style="width:4%">#</th><th style="width:46%">Attack</th><th>What stops it</th></tr>
+    <tr><td>1</td><td><b>Redirect to Vultr's metadata address</b> 169.254.169.254</td><td>Refused by the egress proxy, on the receipt</td></tr>
+    <tr><td>2</td><td><b>Links into 127.0.0.1</b>, the old site's console</td><td>Refused, on the receipt</td></tr>
+    <tr><td>3</td><td><b>Hidden text telling AI agents</b> to add a script and email the admin password</td><td>Screened by nemotron, quarantined, never followed</td></tr>
+    <tr><td>4</td><td><b>Hidden spam links</b> in posts</td><td>Detected, quarantined, left behind</td></tr>
+    <tr><td>5</td><td><b>A cloaking plugin</b> that shows crawlers different content</td><td>Caught in the replay, quarantined</td></tr>
+    <tr><td>6</td><td><b>A webshell</b> disguised as an image upload</td><td>Type mismatch detected, never copied</td></tr>
+    <tr><td>7</td><td><b>An obfuscated miner script</b> in the footer</td><td>Stripped by the sanitiser, quarantined</td></tr>
+    <tr><td>8</td><td><b>The replayed PHP phones home</b></td><td>No route out, the attempt on the receipt</td></tr>
+    <tr><td>9</td><td><b>A build hook fork-bombs</b> and grabs 8 GB</td><td>Killed by the caps, room destroyed, the Mover retries</td></tr>
+    <tr><td>10</td><td><b>A visitor tells Ask</b> to ignore its rules and give 90% off</td><td>Refused, and the owner sees the attempt</td></tr>
+  </table>
+  <div class="foot"><span>fixtures/wordpress-infected/attacks.json · re-run on every deploy</span><span>12</span></div>
+</section>
+
+<!-- 13 · Real results -->
+<section class="slide paper" id="results">
+  <p class="kicker">Real results, live on Vultr</p>
+  <h2 style="text-wrap: balance">Example: agents assessing two websites before moving them onto Agentrix.</h2>
+  <div class="results">
+    <div class="res">
+      <div class="resimg"><img src="img/zavora-assess.png" alt="Agentrix's report on zavora.ai: four findings"></div>
+      <div class="resb">
+        <p class="resn">zavora.ai <span>Zavora's own website</span></p>
+        <div class="resk"><div><b>14</b><span>pages read</span></div><div><b>&lt;1 min</b><span>to the report</span></div><div><b>2</b><span>to act on now</span></div></div>
+        <p class="rest">Hidden instructions aimed at AI assistants on 3 pages, and a hidden frame on /about. AI assistants also have to guess the business details.</p>
+      </div>
+    </div>
+    <div class="res">
+      <div class="resimg"><img src="img/fixture-assess.png" alt="Agentrix's report on Zavora's infected test site: seven findings"></div>
+      <div class="resb">
+        <p class="resn">fixture.agentrix.website <span>Zavora's infected test site</span></p>
+        <div class="resk"><div><b>50</b><span>pages read</span></div><div><b>&lt;2 min</b><span>to the report</span></div><div><b>2</b><span>escapes refused</span></div></div>
+        <p class="rest">Spam links, a disguised miner script and hidden instructions to AI found. Two pages tried to send the sealed room to Vultr's metadata address and the loopback: refused, and on the receipt.</p>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span>Recorded 8 Nov 2026 on agentrix.website, with model calls on Vultr Serverless Inference. Anyone can run it: paste an address</span><span>13</span></div>
+</section>
+
+<!-- 14 · Demo Agentrix Websites -->
+<section class="slide" id="demos">
+  <p class="kicker">Demo Agentrix Websites</p>
+  <h2 style="max-width: 1700px; font-size: 56px">Three businesses showcasing WebAgents on https://agentrix.website. Open one and experience WebAgents.</h2>
+  <div class="demos">
+    <div class="demo">
+      <div class="browser sm"><div class="bar"><i></i><i></i><i></i><span>kilele-bakery-sample.agentrix.website</span></div><img src="img/kilele-site.png" alt="Kilele Bakery, a sample site on Agentrix"></div>
+      <h3>Kilele Bakery</h3><p class="dk">Cakes and bread · Nairobi</p>
+      <p class="dt"><b>Try:</b> "Are you open on Sunday?" The Visit desk answers from Kilele's own hours, and a custom cake order waits for Wanjiru.</p>
+    </div>
+    <div class="demo">
+      <div class="browser sm"><div class="bar"><i></i><i></i><i></i><span>classy-perfumes-sample.agentrix.website</span></div><img src="img/classy-site.png" alt="Classy Perfumes, a sample site on Agentrix"></div>
+      <h3>Classy Perfumes</h3><p class="dk">Fragrance and gifts · Westlands</p>
+      <p class="dt"><b>Try:</b> "A gift under KSh 5,000 for someone who loves vanilla." It says what's over budget.</p>
+    </div>
+    <div class="demo">
+      <div class="browser sm"><div class="bar"><i></i><i></i><i></i><span>tana-valley-times-sample.agentrix.website</span></div><img src="img/tana-site.png" alt="Tana Valley Times, a sample site on Agentrix"></div>
+      <h3>Tana Valley Times</h3><p class="dk">Local news · weekly</p>
+      <p class="dt"><b>Try:</b> "How much will phase one of the northern rail cost?" The answer quotes the paper's correction.</p>
+    </div>
+  </div>
+  <div class="foot"><span>Samples: the businesses, people and orders are invented, and payments run in PayPal's sandbox. Each has its own WebAgents and agent door</span><span>14</span></div>
+</section>
+
+<!-- 15 · Business -->
+<section class="slide paper" id="business">
+  <p class="kicker">Business value</p>
+  <h2>Free to move. Paid to run.</h2>
+  <p class="lede" style="margin-top:12px; font-size:26px; max-width:1680px">The market: 217 million active websites (Netcraft, July 2026), and WordPress alone runs 39.4% of all websites (W3Techs). Every one of them waits.</p>
+  <div class="grid g4" style="margin-top:44px">
+    <div class="card"><span class="tag">Essential</span><div class="big" style="font-size:84px">$29</div><p>a month. The site with hosting, Ask, the brief and a first month of AI.</p></div>
+    <div class="card"><span class="tag">Business</span><div class="big" style="font-size:84px">$79</div><p>a month. More WebAgents, more autonomy, more AI in the first month.</p></div>
+    <div class="card"><span class="tag">Commerce</span><div class="big" style="font-size:84px">$149</div><p>a month. For shops that take orders, from people and from AI agents.</p></div>
+    <div class="card"><span class="tag">Agency</span><div class="big" style="font-size:84px">$15</div><p>a client site a month, from 10 sites. White-label, one console.</p></div>
+  </div>
+  <div class="grid g3" style="margin-top:28px">
+    <div class="card"><h3>Who buys</h3><p>Small-business owners with a WordPress site that waits. Agencies with dozens of client sites to clean and move. Hosts like Vultr, whose WordPress customers need a way off.</p></div>
+    <div class="card"><h3>What it does for them</h3><p>Support: Ask answers at night. Sales: orders from people and AI agents. Security: the hack left behind, the Guardian watching. Operations: a brief every morning.</p></div>
+    <div class="card"><h3>Why it pays on Vultr</h3><p>Every site moved is steady Vultr compute, storage and inference. Model cost to build a 50-page site on Vultr's picks: about $0.06, estimated from the bake-off.</p></div>
+  </div>
+  <p class="note">US dollars, paid monthly or yearly through PayPal; 20% off a year. Hosting included. These are pilot prices, to test with the first ten sites.</p>
+  <div class="foot"><span>crates/agentrix-billing/data/plans.json</span><span>15</span></div>
+</section>
+
+<!-- 16 · Competition -->
+<section class="slide" id="competition">
+  <p class="kicker">The competition</p>
+  <h2 style="text-wrap: balance">Website builders make sites that wait. Agentrix makes sites that work.</h2>
+  <div style="display:grid; grid-template-columns: 1.55fr 1fr; gap: 40px; margin-top: 26px; align-items: start">
+    <table class="harvey">
+      <tr><th></th><th>Passive<span>the site waits</span></th><th>Proactive<span>acts before anyone asks</span></th><th>Responsive<span>answers customers and their AI agents</span></th><th>Supportive<span>the owner approves what matters</span></th></tr>
+      <tr class="ax"><th>Agentrix</th><td><svg width="34" height="34" viewBox="0 0 34 34"><circle cx="17" cy="17" r="13" fill="none" stroke="#5c5996" stroke-width="3"/></svg></td><td><svg width="34" height="34" viewBox="0 0 34 34"><circle cx="17" cy="17" r="14" fill="#ff8fa6"/></svg></td><td><svg width="34" height="34" viewBox="0 0 34 34"><circle cx="17" cy="17" r="14" fill="#ff8fa6"/></svg></td><td><svg width="34" height="34" viewBox="0 0 34 34"><circle cx="17" cy="17" r="14" fill="#ff8fa6"/></svg></td></tr>
+      <tr><th>Wix</th><td><svg width="34" height="34" viewBox="0 0 34 34"><circle cx="17" cy="17" r="13" fill="none" stroke="#c9c7e6" stroke-width="3"/><path d="M17 4a13 13 0 0 1 0 26z" fill="#c9c7e6"/></svg></td><td><svg width="34" height="34" viewBox="0 0 34 34"><circle cx="17" cy="17" r="13" fill="none" stroke="#5c5996" stroke-width="3"/></svg></td><td><svg width="34" height="34" viewBox="0 0 34 34"><circle cx="17" cy="17" r="14" fill="#c9c7e6"/></svg></td><td><svg width="34" height="34" viewBox="0 0 34 34"><circle cx="17" cy="17" r="13" fill="none" stroke="#5c5996" stroke-width="3"/></svg></td></tr>
+      <tr><th>Shopify</th><td><svg width="34" height="34" viewBox="0 0 34 34"><circle cx="17" cy="17" r="13" fill="none" stroke="#c9c7e6" stroke-width="3"/><path d="M17 4a13 13 0 0 1 0 26z" fill="#c9c7e6"/></svg></td><td><svg width="34" height="34" viewBox="0 0 34 34"><circle cx="17" cy="17" r="13" fill="none" stroke="#5c5996" stroke-width="3"/></svg></td><td><svg width="34" height="34" viewBox="0 0 34 34"><circle cx="17" cy="17" r="14" fill="#c9c7e6"/></svg></td><td><svg width="34" height="34" viewBox="0 0 34 34"><circle cx="17" cy="17" r="13" fill="none" stroke="#c9c7e6" stroke-width="3"/><path d="M17 4a13 13 0 0 1 0 26z" fill="#c9c7e6"/></svg></td></tr>
+      <tr><th>WordPress.com</th><td><svg width="34" height="34" viewBox="0 0 34 34"><circle cx="17" cy="17" r="14" fill="#c9c7e6"/></svg></td><td><svg width="34" height="34" viewBox="0 0 34 34"><circle cx="17" cy="17" r="13" fill="none" stroke="#5c5996" stroke-width="3"/></svg></td><td><svg width="34" height="34" viewBox="0 0 34 34"><circle cx="17" cy="17" r="13" fill="none" stroke="#5c5996" stroke-width="3"/></svg></td><td><svg width="34" height="34" viewBox="0 0 34 34"><circle cx="17" cy="17" r="14" fill="#c9c7e6"/></svg></td></tr>
+      <tr><th>Squarespace</th><td><svg width="34" height="34" viewBox="0 0 34 34"><circle cx="17" cy="17" r="14" fill="#c9c7e6"/></svg></td><td><svg width="34" height="34" viewBox="0 0 34 34"><circle cx="17" cy="17" r="13" fill="none" stroke="#5c5996" stroke-width="3"/></svg></td><td><svg width="34" height="34" viewBox="0 0 34 34"><circle cx="17" cy="17" r="13" fill="none" stroke="#c9c7e6" stroke-width="3"/><path d="M17 4a13 13 0 0 1 0 26z" fill="#c9c7e6"/></svg></td><td><svg width="34" height="34" viewBox="0 0 34 34"><circle cx="17" cy="17" r="13" fill="none" stroke="#5c5996" stroke-width="3"/></svg></td></tr>
+      <tr><th>Webflow</th><td><svg width="34" height="34" viewBox="0 0 34 34"><circle cx="17" cy="17" r="14" fill="#c9c7e6"/></svg></td><td><svg width="34" height="34" viewBox="0 0 34 34"><circle cx="17" cy="17" r="13" fill="none" stroke="#5c5996" stroke-width="3"/></svg></td><td><svg width="34" height="34" viewBox="0 0 34 34"><circle cx="17" cy="17" r="13" fill="none" stroke="#c9c7e6" stroke-width="3"/><path d="M17 4a13 13 0 0 1 0 26z" fill="#c9c7e6"/></svg></td><td><svg width="34" height="34" viewBox="0 0 34 34"><circle cx="17" cy="17" r="13" fill="none" stroke="#c9c7e6" stroke-width="3"/><path d="M17 4a13 13 0 0 1 0 26z" fill="#c9c7e6"/></svg></td></tr>
+      <tr><th>GoDaddy Airo</th><td><svg width="34" height="34" viewBox="0 0 34 34"><circle cx="17" cy="17" r="13" fill="none" stroke="#c9c7e6" stroke-width="3"/><path d="M17 4a13 13 0 0 1 0 26z" fill="#c9c7e6"/></svg></td><td><svg width="34" height="34" viewBox="0 0 34 34"><circle cx="17" cy="17" r="13" fill="none" stroke="#c9c7e6" stroke-width="3"/><path d="M17 4a13 13 0 0 1 0 26z" fill="#c9c7e6"/></svg></td><td><svg width="34" height="34" viewBox="0 0 34 34"><circle cx="17" cy="17" r="13" fill="none" stroke="#5c5996" stroke-width="3"/></svg></td><td><svg width="34" height="34" viewBox="0 0 34 34"><circle cx="17" cy="17" r="13" fill="none" stroke="#5c5996" stroke-width="3"/></svg></td></tr>
+      <tr><th>Hostinger</th><td><svg width="34" height="34" viewBox="0 0 34 34"><circle cx="17" cy="17" r="14" fill="#c9c7e6"/></svg></td><td><svg width="34" height="34" viewBox="0 0 34 34"><circle cx="17" cy="17" r="13" fill="none" stroke="#5c5996" stroke-width="3"/></svg></td><td><svg width="34" height="34" viewBox="0 0 34 34"><circle cx="17" cy="17" r="13" fill="none" stroke="#5c5996" stroke-width="3"/></svg></td><td><svg width="34" height="34" viewBox="0 0 34 34"><circle cx="17" cy="17" r="13" fill="none" stroke="#c9c7e6" stroke-width="3"/><path d="M17 4a13 13 0 0 1 0 26z" fill="#c9c7e6"/></svg></td></tr>
+      <tr><th>Durable</th><td><svg width="34" height="34" viewBox="0 0 34 34"><circle cx="17" cy="17" r="13" fill="none" stroke="#c9c7e6" stroke-width="3"/><path d="M17 4a13 13 0 0 1 0 26z" fill="#c9c7e6"/></svg></td><td><svg width="34" height="34" viewBox="0 0 34 34"><circle cx="17" cy="17" r="13" fill="none" stroke="#c9c7e6" stroke-width="3"/><path d="M17 4a13 13 0 0 1 0 26z" fill="#c9c7e6"/></svg></td><td><svg width="34" height="34" viewBox="0 0 34 34"><circle cx="17" cy="17" r="13" fill="none" stroke="#c9c7e6" stroke-width="3"/><path d="M17 4a13 13 0 0 1 0 26z" fill="#c9c7e6"/></svg></td><td><svg width="34" height="34" viewBox="0 0 34 34"><circle cx="17" cy="17" r="13" fill="none" stroke="#5c5996" stroke-width="3"/></svg></td></tr>
+    </table>
+    <div style="display:flex; flex-direction:column; gap:14px; margin-top: 8px">
+      <div class="adkp"><p class="adkh">What ADK-Rust brings</p><div class="adkr"><code class="lab">Kernel</code><p>Durable agent processes: wake for a reason, lease, checkpoint, resume after a crash. Quotas and quiet hours built in.</p></div><div class="adkr"><code class="lab">Harness</code><p>One governed tool path for every action: policy, an autonomy dial per job, and passkey-held decisions.</p></div><div class="adkr"><code class="lab">Realtime</code><p>Live voice with the Chief and answers streamed as they're written.</p></div><div class="adkr"><code class="lab">Memory</code><p>Sessions, facts the owner confirms, the site's own corpus, and versioned playbooks.</p></div><div class="adkr"><code class="lab">Site engine</code><p>Migration that cleans and quarantines, proves parity and signs each release; an agent door over AWP and MCP.</p></div></div>
+      <p class="legend"><svg width="34" height="34" viewBox="0 0 34 34"><circle cx="17" cy="17" r="14" fill="#c9c7e6"/></svg> yes &nbsp; <svg width="34" height="34" viewBox="0 0 34 34"><circle cx="17" cy="17" r="13" fill="none" stroke="#c9c7e6" stroke-width="3"/><path d="M17 4a13 13 0 0 1 0 26z" fill="#c9c7e6"/></svg> partly &nbsp; <svg width="34" height="34" viewBox="0 0 34 34"><circle cx="17" cy="17" r="13" fill="none" stroke="#5c5996" stroke-width="3"/></svg> no, or not found</p>
+    </div>
+  </div>
+  <div class="foot"><span>From each product's own docs and coverage, 8 Nov 2026. "Not found" means not in public docs. Sources: specs/submission/competitors.md</span><span>16</span></div>
+</section>
+
+<!-- 17 · Team -->
+<section class="slide paper" id="team">
+  <p class="kicker">The team</p>
+  <h2>Made in Kenya, by the makers of ADK-Rust.</h2>
+  <div style="display:grid; grid-template-columns: 330px 1fr; gap: 40px; margin-top: 28px; align-items: start">
+    <div class="person">
+      <img src="img/james-karanja.jpg" alt="James Karanja Maina" width="290" height="290">
+      <p class="pname">James Karanja Maina</p>
+      <p>Founder, Zavora Technologies Ltd<br><span class="mono" style="font-size:17px">james.karanja@zavora.ai</span></p>
+    </div>
+  <div class="grid g2" style="margin-top:0">
+    <div class="card"><h3>Who we are</h3><p>Zavora Technologies Ltd makes ADK-Rust, an open-source agent framework in Rust, and builds products on it. James Karanja Maina, its founder, leads Agentrix. Our vision is to create autonomous AI companies.</p></div>
+    <div class="card"><h3>What we built on</h3><p>ADK-Rust, Zavora's open-source agent framework, which existed before the event. Everything in this repository was built for it: 28 Rust crates and 952 tests, MIT licensed.</p></div>
+    <div class="card"><h3>How we built it</h3><p>A spec first: requirements, design, tasks and acceptance checks. Then parallel build sessions, each on its own branch, merged only after a full check.</p></div>
+    <div class="card"><h3>What we hold ourselves to</h3><p style="font: italic 400 30px/1.3 'DM Sans'; color: var(--paper-ink); margin-top: 6px">We believe AGI is intelligent orchestration.</p></div>
+  </div>
+  </div>
+  <div class="adk">
+    <div class="adk-chart"><img src="img/adk-rust-stars.png" alt="GitHub stars for zavora-ai/adk-rust, rising from near zero in early 2026 to over 700 in November"></div>
+    <div class="card adk-stat"><div class="big" style="font-size:84px">800k</div><p>ADK-Rust downloads in the last 3 months</p></div>
+    <div class="card adk-stat"><div class="big" style="font-size:84px">30+</div><p>contributors to ADK-Rust in the last 3 months</p></div>
+  </div>
+  <div class="foot"><span>github.com/zavora-ai/adk-rust · star history from star-history.com</span><span>17</span></div>
+</section>
+
+<!-- 18 · Next -->
+<section class="slide" id="next">
+  <p class="kicker">What's next</p>
+  <h2>From one site to a fleet on Vultr.</h2>
+  <div class="grid g4" style="margin-top:50px">
+    <div class="card sealed"><span class="tag gold">Next</span><h3>A VM per Move</h3><p>Every Move in its own throwaway Vultr VM, from a warm snapshot, destroyed with a receipt. Then microVM rooms on VX1's KVM.</p></div>
+    <div class="card"><span class="tag">December</span><h3>Payments live</h3><p>PayPal for plans and for orders, each payment an approved, receipted effect.</p></div>
+    <div class="card"><span class="tag">December to January</span><h3>Ten pilot sites</h3><p>Real businesses, starting in Kenya. The fleet profile on Vultr Kubernetes Engine.</p></div>
+    <div class="card"><span class="tag">2027</span><h3>On the Marketplace</h3><p>The same build as a Vultr Marketplace app, an agency console, and more regions.</p></div>
+  </div>
+  <div class="foot"><span>Designed in docs 01 to 09 of the repository</span><span>18</span></div>
+</section>
+
+<!-- 19 · Close -->
+<section class="slide" id="close">
+  <div style="flex:1; display:flex; flex-direction:column; justify-content:center">
+    <h1>Upgrade your website into <span class="pink">WebAgents.</span></h1>
+    <div class="grid" style="margin-top:70px; grid-template-columns: .75fr .75fr 1.5fr">
+      <div class="card"><span class="tag">Try it</span><h3 style="font-size:40px">agentrix.website</h3></div>
+      <div class="card"><span class="tag">Watch</span><h3 style="font-size:32px" data-live="video">the demo video</h3></div>
+      <div class="card"><span class="tag">Code, MIT</span><h3 style="font-size:27px; white-space:nowrap; letter-spacing:-.01em">github.com/zavora-ai/agentrix-webagent-platform</h3></div>
+    </div>
+  </div>
+  <div class="foot"><span>Agentrix by Zavora Technologies · Vultr Agent Rush · Challenge 1: Blast Radius Zero</span><span>19</span></div>
+</section>
+
+<script>
+// Live values, from receipts and the usage meter. null keeps the slide's own words.
+const LIVE = {
+  routing: "every one, through the gateway",
+  cost: null,         // the demo Move's model cost on Vultr, from the usage meter
+  gauntlet: null,     // "10/10", from the gauntlet.run receipt
+  move_time: null,    // the Vultr Move: Start to the go-live card
+  parity: null,       // the Vultr Move's rendered parity
+  move_note: null,    // replaces the validation-routes note once the Vultr Move ran
+  video: null,
+};
+// ?only=cover shows one slide, for the cover image.
+const only = new URLSearchParams(location.search).get("only");
+if (only) for (const s of document.querySelectorAll(".slide")) if (s.id !== only) s.remove();
+for (const el of document.querySelectorAll("[data-live]")) {
+  const v = LIVE[el.dataset.live];
+  if (v !== null && v !== undefined) { el.textContent = v; el.classList.remove("live"); }
+  else if (el.classList.contains("live") && el.textContent === "recorded live") el.classList.add("missing");
+}
+</script>
+</body>
+</html>

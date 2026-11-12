@@ -1,0 +1,38 @@
+{% block subject %}{% if move.state == "started" %}The Move of {{ move.domain }} has started{% elif move.state == "waiting" %}The Move of {{ move.domain }} needs you{% else %}The Move of {{ move.domain }} stopped at {{ move.step }}{% endif %}{% endblock %}
+{% block preheader %}{% if move.state == "stopped" %}{{ move.reason }}{% else %}{{ move.progress }}{% endif %}{% endblock %}
+{% block body %}
+{% if move.state == "started" %}
+# The Move has started
+We're copying {{ move.domain }}, cleaning it and proving it matches before anything changes. Your old site keeps running the whole time.
+
+::fact Progress | {{ move.progress }}
+
+You can watch it live, or leave it: we'll tell you when it needs you.
+{% elif move.state == "waiting" %}
+# The Move needs you
+{{ move.question }}
+
+::fact Progress | {{ move.progress }}
+
+The Move waits here until you answer. Nothing changes on your old site.
+{% else %}
+# The Move stopped at {{ move.step }}
+{{ move.reason }}
+
+Start it again and it picks up where it stopped. Your old site is untouched.
+{% endif %}
+
+::button Open the Move | {{ move.url }}
+{% endblock %}
+{% block push %}{% if move.state == "started" %}The Move has started.{% elif move.state == "waiting" %}The Move needs you.{% else %}The Move stopped.{% endif %}{% endblock %}
+{% block push_url %}{{ move.url }}{% endblock %}
+{% block chat %}
+{% if move.state == "started" %}
+Agentrix: the Move of {{ move.domain }} has started. Your old site keeps running. {{ move.progress }}.
+{% elif move.state == "waiting" %}
+Agentrix: the Move of {{ move.domain }} needs you. {{ move.question }}
+{% else %}
+Agentrix: the Move of {{ move.domain }} stopped at {{ move.step }}. {{ move.reason }}
+{% endif %}
+::button Open the Move | {{ move.url }}
+{% endblock %}

@@ -1,0 +1,123 @@
+{% extends "onboarding/base.html" %}
+{% import "onboarding/macros.html" as m %}
+{#- OnboardingPage::Assess · view::AssessPage {
+      id, host, fixture, state: "running"|"done"|"unreachable"|"refused", step_words,
+      progress_words, started_words, tick {hosts, requests, bytes_words, refusals}, frame?,
+      report? { summary_words, counts, total, pages_read, receipt?, findings: [FindingCard], fine: [FineLine] },
+      unreachable? { said, next_step }, keep_href, signin_href, report_path, events_path }
+    concept/assess.html scenes 2 ("Reading your site", O1.2), 3 ("Your site's health, honestly",
+    O1.3) and 7 ("Keep it", O1.8); O1.4 when the check couldn't finish. The page renders the
+    current state; static/onboarding/assess.js replays the run's recorded events from the start
+    (pages, refusals, the room's receipt, frames) and follows it live. -#}
+{% block title %}{% if state == "done" %}Health report for {{ host }}{% elif state == "running" %}Reading {{ host }}{% else %}We couldn't check {{ host }}{% endif %}{% endblock %}
+{% block body_class %}page-assess{% endblock %}
+{% block main %}
+<div class="assess" id="assess" data-state="{{ state }}" data-events="{{ events_path }}" data-host="{{ host }}">
+
+{% if state == "running" %}
+<section class="panel" aria-labelledby="assess-h">
+  <div class="spread">
+    <div><div class="row eyebrow-row"><span class="eyebrow">{{ step_words }}</span>{{ m.fixture_label(fixture) }}</div><h1 class="h2 scene-title" id="assess-h">Reading {{ host }}</h1></div>
+    <span class="chip chip-info"><span class="live-dot" aria-hidden="true"></span><span id="assess-progress">{{ progress_words }}</span></span>
+  </div>
+  <div class="reading">
+    <div class="reading-main">
+      <ul class="pagelist" id="pagelist" aria-label="Pages read so far" aria-live="polite"></ul>
+      <p class="small muted" id="pagelist-empty">Pages appear here as the sealed room reads them.</p>
+      <figure class="room-frame" id="frame">
+        {% if frame %}
+        <img id="frame-img" src="{{ frame.src }}" alt="What the sealed browser sees on {{ frame.page_url }}">
+        <figcaption id="frame-cap"><span class="chip {{ 'chip-ok' if frame.kind == 'live' else 'chip-sealed' }}" id="frame-label">{{ "Live" if frame.kind == "live" else "Sealed screenshot, about 1 a second" }}</span><span class="mono frame-url" id="frame-url">{{ frame.page_url }}</span></figcaption>
+        {% else %}
+        <img id="frame-img" alt="" hidden>
+        <figcaption id="frame-cap" hidden><span class="chip chip-sealed" id="frame-label"></span><span class="mono frame-url" id="frame-url"></span></figcaption>
+        <p class="frame-empty" id="frame-empty">The sealed browser hasn't sent a frame yet.</p>
+        {% endif %}
+      </figure>
+    </div>
+    <div class="side-facts">
+      <div class="fact"><b>Every page opens in a sealed room</b>A fresh browser with no keys that can reach only {{ host }}. It's destroyed when the check ends.</div>
+      <div class="fact"><b>A polite, named reader</b>It says it's <a href="/bot">Agentrix's reader</a>, follows your robots.txt and waits between requests.</div>
+      <div class="fact receipt-fact"><b>The room's receipt, live</b>
+        <dl class="ticks" aria-live="off">
+          <div><dt>Hosts contacted</dt><dd id="tick-hosts">{{ tick.hosts }}</dd></div>
+          <div><dt>Requests</dt><dd id="tick-requests">{{ tick.requests }}</dd></div>
+          <div><dt>Downloaded</dt><dd id="tick-bytes">{{ tick.bytes_words }}</dd></div>
+          <div><dt>Refused</dt><dd id="tick-refusals">{{ tick.refusals }}</dd></div>
+        </dl>
+      </div>
+      <div class="fact block" id="refused" hidden><b id="refused-title"></b><span id="refused-words"></span></div>
+      <div class="fact" id="found" hidden><b id="found-title"></b><ul class="found-list" id="found-list"></ul></div>
+      <p class="fact block" id="live-error" role="status" hidden></p>
+    </div>
+  </div>
+</section>
+{% endif %}
+
+{% if state == "unreachable" or state == "refused" %}
+<section class="panel" aria-labelledby="assess-h">
+  <div class="row eyebrow-row"><span class="eyebrow">Assess</span>{{ m.fixture_label(fixture) }}</div>
+  <h1 class="h2 scene-title" id="assess-h">{% if state == "refused" %}{{ host }} asked us not to read it{% else %}We couldn't reach {{ host }}{% endif %}</h1>
+  <p class="lead said">{{ unreachable.said }}</p>
+  <div class="note"><p><b>What you can do:</b> {{ unreachable.next_step }}</p></div>
+  {% if "guessed" not in unreachable.said %}<p class="small muted honest">We haven't guessed at any findings. A report shows only what we saw.</p>{% endif %}
+  <div class="row acts"><a class="btn btn-primary" href="/start">Try another address</a></div>
+</section>
+{% endif %}
+
+{% if state == "done" and report %}
+<section class="panel" aria-labelledby="assess-h">
+  <div class="spread">
+    <div><div class="row eyebrow-row"><span class="eyebrow">{{ step_words }}</span>{{ m.fixture_label(fixture) }}</div><h1 class="h2 scene-title" id="assess-h">Health report for {{ host }}</h1></div>
+    <div class="row">
+      {% if report.counts.urgent %}<span class="chip chip-risk">{{ report.counts.urgent }} urgent</span>{% endif %}
+      <span class="chip">{{ report.total_words }}</span>
+      <span class="chip chip-outline">public evidence only</span>
+    </div>
+  </div>
+  <p class="report-summary">{{ report.summary_words }}</p>
+  <div class="sealed report-room">
+    {{ m.seal() }}
+    {{ host }} · {{ report.pages_words }} <span class="sep">·</span> network: {{ host }} only <span class="sep">·</span> keys: none <span class="sep">·</span> <span class="done">destroyed ✓</span>
+    {% if report.receipt %}<span class="sep">·</span> <a href="/receipts/{{ report.receipt }}">receipt</a>{% endif %}
+  </div>
+  {% if report.findings %}
+  <div class="findings">
+    {% for f in report.findings %}{{ m.finding(f) }}{% endfor %}
+  </div>
+  {% endif %}
+  {% if report.fine %}
+  <h2 class="h3 fine-title">What looks fine</h2>
+  <ul class="fine">
+    {% for line in report.fine %}<li><span class="ok-dot">{{ m.icon("check") }}</span><div><b>{{ line.area }}</b><p>{{ line.words }}</p></div></li>{% endfor %}
+  </ul>
+  {% endif %}
+  <details class="pages-read" id="pages-read">
+    <summary>The pages we read <span class="muted">· started {{ started_words }}</span></summary>
+    <ul class="pagelist pagelist-all" id="pagelist" aria-label="Pages we read"></ul>
+    <p class="small muted" id="pagelist-empty">The list loads from this check's record. If it stays empty, reload the page.</p>
+  </details>
+</section>
+
+<section class="panel keep-panel" aria-labelledby="keep-h">
+  <div class="keep">
+    <div class="passkey">{{ m.icon("passkey") }}</div>
+    <span class="eyebrow">Step 3 of 3</span>
+    <h2 id="keep-h">Move {{ host }} to Agentrix</h2>
+    <p class="muted keep-sub">No password to remember: your phone or laptop is the key. Nothing changes on your current site until you say go.</p>
+    <div class="keep-actions">
+      <a class="btn btn-primary btn-lg btn-block" href="{{ keep_href }}">Keep this site: create your account</a>
+      <span class="small muted">Already have an account? <a href="{{ signin_href }}">Sign in</a></span>
+    </div>
+    <div class="share">
+      <span class="mono" id="share-url">{{ report_path }}</span>
+      <button class="btn btn-sm" type="button" id="share" data-path="{{ report_path }}">Share report</button>
+    </div>
+    <p class="small muted share-note" id="share-note">Send it to someone whose opinion you trust. Anyone with the link can read this report.</p>
+  </div>
+</section>
+{% endif %}
+
+</div>
+{% endblock %}
+{% block scripts %}<script src="/static/onboarding/assess.js?v={{ onboarding_v }}" defer></script>{% endblock %}

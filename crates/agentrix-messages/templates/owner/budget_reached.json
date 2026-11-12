@@ -1,0 +1,19 @@
+{
+ "site": {
+  "name": "Kilele Bakery",
+  "host": "kilele-bakery-sample.agentrix.website",
+  "sample": true
+ },
+ "person": {
+  "name": "Wanjiru"
+ },
+ "console_url": "https://agentrix.website/console/kilele-bakery-sample",
+ "budget": {
+  "period": "monthly",
+  "limit": 3870,
+  "currency": "KES",
+  "at": "16:40",
+  "resumes": "on Tue 1 Dec",
+  "url": "https://agentrix.website/billing?site=kilele-bakery-sample"
+ }
+}

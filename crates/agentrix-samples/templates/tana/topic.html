@@ -1,0 +1,21 @@
+{% extends "tana/layout.html" %}
+{% from "tana/macros.html" import card, timeline %}
+{% block main %}
+<div class="n-grid">
+  <div>
+    <header class="front-head">
+      <span class="kicker">Story so far</span>
+      <h2>{{ title }}</h2>
+      <p>{{ about }} Every step links to the published story. Corrections stay visible.</p>
+    </header>
+    <div class="box tl-big" id="timeline">
+      {% if steps %}{{ timeline(steps) }}{% else %}<p class="sub">No steps published yet. They appear here as the stories run.</p>{% endif %}
+    </div>
+  </div>
+  <aside class="rail-n">
+    <div class="box"><span class="kicker">The stories</span>
+      {% if stories %}<div class="side-list">{% for c in stories %}{{ card(c, false) }}{% endfor %}</div>{% else %}<p class="sub">No stories yet.</p>{% endif %}
+    </div>
+  </aside>
+</div>
+{% endblock %}

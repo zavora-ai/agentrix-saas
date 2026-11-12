@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Billing and Metering</title>
+<meta name="description" content="Concept: Zavora Cloud's money at month end. Per-site inference metering reconciled with Vultr, an invoice run with KRA eTIMS, payment rails through the Effects Gateway (M-Pesa, Paystack, PayPal via Steward), partner payouts with two signers.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Manrope:wght@600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../styles.css">
+<link rel="stylesheet" href="../console/console.css">
+<link rel="stylesheet" href="cp.css">
+<style>
+  .rail { display: grid; grid-template-columns: 36px minmax(0, 1fr) auto; gap: 10px; align-items: center; padding: 10px 0; border-top: 1px solid var(--line); }
+  .rail:first-of-type { border-top: 0; }
+  .rail .ic { width: 36px; height: 36px; border-radius: 10px; display: grid; place-items: center; color: #fff; font: 800 11px/1 var(--font-display); }
+  .rail b { display: block; color: var(--indigo-900); font-size: var(--fs-14); }
+  .rail span.meta { display: block; font-size: var(--fs-12); color: var(--muted); }
+  .rail .n { font: 800 var(--fs-18)/1 var(--font-display); color: var(--indigo-900); text-align: right; }
+  .rail .n small { display: block; font: 500 11px/1.3 var(--font-text); color: var(--muted); }
+  .hbar { display: grid; grid-template-columns: 92px minmax(0, 1fr) 70px; gap: 8px; align-items: center; font-size: var(--fs-12); color: var(--ink-2); padding: 4px 0; }
+  .hbar .track { height: 12px; border-radius: 999px; background: var(--surface-2); overflow: hidden; }
+  .hbar .track i { display: block; height: 100%; border-radius: inherit; background: var(--indigo); }
+  .hbar .v { text-align: right; font-weight: 700; color: var(--indigo-900); font-variant-numeric: tabular-nums; }
+  .payouts { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; font-size: var(--fs-13); }
+  .payouts li { display: flex; justify-content: space-between; gap: 10px; color: var(--ink-2); }
+  .payouts li b { color: var(--indigo-900); }
+  .var-note { font-size: 11.5px; color: var(--muted); display: block; margin-top: 2px; }
+</style>
+</head>
+<body>
+<header class="conceptbar">
+  <a class="logo" href="../index.html"><span class="mark" aria-hidden="true"></span>Agentrix</a>
+  <nav aria-label="Control plane concepts">
+    <a href="index.html">Control plane</a>
+    <a href="fleet.html">Fleet</a>
+    <a href="portfolio.html">Agency portfolio</a>
+    <a href="rollout.html">Rollout</a>
+    <a href="incident.html">Incident</a>
+    <a href="billing.html" aria-current="page">Billing</a>
+    <a href="cli.html">Zavora CLI</a>
+  </nav>
+  <span class="concept-label">Concept · illustrative data</span>
+</header>
+
+<main class="wrap">
+  <div class="cp-head">
+    <span class="eyebrow">Control plane 05 · Billing and metering</span>
+    <h1 style="margin-top:12px">Usage, invoices and payouts for November</h1>
+    <p class="lead">Each site's own Vultr Inference subscription is matched against the Model Gateway's ledger. A number that doesn't reconcile is never invoiced. The Billing WebAgent drafts; finance signs. Money moves only through the Effects Gateway, and Zavora's books close in Zavora's own ERP.</p>
+  </div>
+
+  <section class="os-frame cp-frame" aria-label="Operator console: money, November">
+    <div class="browser-bar"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="url"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg><span>console.agentrix.ai/<b>operator</b>/money/2026-11</span></span></div>
+    <div class="os cp-os" data-shift="day" data-cp-scope="op" data-app="money">
+      <div class="os-bar" data-cp-bar></div>
+      <nav class="dock" data-cp-dock></nav>
+      <div class="field cp-field">
+        <div class="field-head">
+          <div><h2>Money · November</h2><div class="sub">Month end · USD, with KES at the rate posted in zavora-era</div></div>
+          <div class="row"><span class="chip chip-info">Invoice run drafted</span><span class="chip chip-wait">2 variances held</span></div>
+        </div>
+
+        <div class="cp-grid">
+          <div class="kpis five">
+            <div class="kpi"><div class="label">MRR · posted October</div><div class="value">$30,260</div><div class="foot">from paid invoices only</div></div>
+            <div class="kpi"><div class="label">Collected · Nov to date</div><div class="value">$21,880</div><div class="foot">collection rate 94%</div></div>
+            <div class="kpi"><div class="label">Outstanding</div><div class="value">$3,140</div><div class="foot">11 orgs · 5 in reminders</div></div>
+            <div class="kpi"><div class="label">Inference cost · Nov</div><div class="value">$1,904</div><div class="foot">612 site subscriptions + 3 pooled</div></div>
+            <div class="kpi"><div class="label">Gross margin · est.</div><div class="value">81<small>%</small></div><div class="foot">actual cost to serve, not the model</div></div>
+          </div>
+
+          <article class="card tight">
+            <div class="card-title"><h4>Metering reconciliation · Vultr usage vs gateway ledger</h4><span class="small muted">daily · over 2% is held</span></div>
+            <div class="tbl-wrap"><table class="tbl" style="min-width:640px">
+              <thead><tr><th>Subscription</th><th class="num">Gateway ledger</th><th class="num">Vultr usage</th><th class="num">Variance</th><th>State</th></tr></thead>
+              <tbody>
+                <tr><td><b>sub-kilele</b> · kilele-bakery.example</td><td class="num">$0.42</td><td class="num">$0.42</td><td class="num">0.0%</td><td><span class="chip chip-ok">matched</span></td></tr>
+                <tr><td><b>sub-pwani</b> · pwani-dental.example</td><td class="num">$3.91</td><td class="num">$3.93</td><td class="num">0.5%</td><td><span class="chip chip-ok">matched</span></td></tr>
+                <tr><td><b>sub-mara</b> · mara-lodge.example</td><td class="num">$27.60</td><td class="num">$27.71</td><td class="num">0.4%</td><td><span class="chip chip-ok">matched</span></td></tr>
+                <tr><td><b>sub-baraka</b> · baraka-hardware.example<span class="var-note">Visitors cancelled streamed answers; Vultr counts tokens generated, the gateway settled tokens delivered. Proposed fix: settle on the provider's count.</span></td><td class="num">$11.02</td><td class="num">$11.68</td><td class="num down">6.0%</td><td><span class="chip chip-wait">held</span></td></tr>
+                <tr><td><b>ams-pool-2</b> · pooled, 212 sites<span class="var-note">Allocation during INC-0142 under review.</span></td><td class="num">$96.40</td><td class="num">$99.10</td><td class="num down">2.8%</td><td><span class="chip chip-wait">held</span></td></tr>
+                <tr><td><b>sub-mwangaza-factory</b> · created 03:58</td><td class="num">$4.80</td><td class="num">—</td><td class="num">—</td><td><span class="chip">usage posts tomorrow</span></td></tr>
+                <tr><td><b>op-zavora</b> · operator tenant</td><td class="num">$38.20</td><td class="num">$38.20</td><td class="num">0.0%</td><td><span class="chip">Zavora's own cost</span></td></tr>
+              </tbody>
+            </table></div>
+            <p class="small muted" style="margin-top:8px">Owners pay for AI above their included budget only if they raised their cap on a decision card. 19 did this month.</p>
+          </article>
+
+          <div class="cp-grid cols-2e">
+              <article class="card tight">
+                <div class="card-title"><h4>Payment rails</h4><span class="small muted">through the Effects Gateway only</span></div>
+                <div class="rail"><span class="ic" style="background:#2fa84f">M</span><span><b>M-Pesa · Daraja STK Push</b><span class="meta">214 Kenyan orgs · one prompt per invoice · credentials only in the gateway</span></span><span class="n">86%<small>paid on first prompt</small></span></div>
+                <div class="rail"><span class="ic" style="background:#0b6c8a">C</span><span><b>Cards · Paystack</b><span class="meta">341 orgs · saved card · no card data in the platform</span></span><span class="n">97%<small>first attempt</small></span></div>
+                <div class="rail"><span class="ic" style="background:#1d3b8f">P</span><span><b>PayPal · via Steward</b><span class="meta">57 orgs · hash-chained ledger verified, receipts 1–4,812 ✓</span></span><span class="n">99%<small>first attempt</small></span></div>
+              </article>
+
+              <article class="card tight">
+                <div class="card-title"><h4>Reminders</h4><span class="small muted">day 0 · 3 · 7, then a person decides</span></div>
+                <ul class="rows">
+                  <li><span class="dot wait"></span><span><b>2 orgs</b>: day-3 reminder sent by the Billing WebAgent</span><span class="meta">within policy</span></li>
+                  <li><span class="dot wait"></span><span><b>2 orgs</b>: day-7 reminder sent, with a call offer</span><span class="meta">within policy</span></li>
+                  <li><span class="dot risk"></span><span><b>Kibanda Grill</b>: day 14, read-only suspension proposed; the last release would keep serving</span><span class="meta">needs op.finance</span></li>
+                </ul>
+              </article>
+
+              <article class="card tight">
+                <div class="card-title"><h4>MRR by plan · October</h4><span class="small muted">posted invoices</span></div>
+                <div class="hbar"><span>Business</span><span class="track"><i style="width:94%"></i></span><span class="v">$14,220</span></div>
+                <div class="hbar"><span>Essential</span><span class="track"><i style="width:58%"></i></span><span class="v">$8,700</span></div>
+                <div class="hbar"><span>Commerce</span><span class="track"><i style="width:40%"></i></span><span class="v">$5,960</span></div>
+                <div class="hbar"><span>Agency wholesale</span><span class="track"><i style="width:9%;background:var(--pf)"></i></span><span class="v">$1,380</span></div>
+                <p class="small muted" style="margin-top:6px">Partner-sourced sites: 23% of live sites. Net revenue retention will be reported once 3 cohorts exist. Prices are hypotheses (01-product §6).</p>
+              </article>
+
+              <article class="card tight">
+                <div class="card-title"><h4>Books · zavora-era</h4><span class="small muted">Zavora runs on Zavora</span></div>
+                <ul class="rows">
+                  <li><span class="dot"></span><span>October collections posted: JE-2026-11-0398 to 0411</span><span class="meta">immutable</span></li>
+                  <li><span class="dot"></span><span>eTIMS: 207 of 207 October invoices transmitted</span><span class="meta">KRA</span></li>
+                  <li><span class="dot wait"></span><span>Amos reconciled M-Pesa and bank statements; 2 postings wait for a click</span><span class="meta">ledger:post</span></li>
+                </ul>
+              </article>
+          </div>
+        </div>
+      </div>
+      <aside class="lane" aria-label="What needs you"><div class="lane-scroll">
+        <h4>Needs you <span class="badge">2</span></h4>
+        <article class="card decision" data-done="Approved · signed by Wairimu N. · 612 invoices scheduled for Mon 1 Dec 08:00 · 214 posted to zavora-era for eTIMS · receipt op-a01e…5c.">
+                <div class="head"><span class="from"><span class="avatar op sm av-billing">Bi</span>Billing asks</span><span class="chip chip-ok">Low risk · 0.09</span></div>
+                <h3>Issue 612 November invoices</h3>
+                <p class="facts">Essential 300 · Business 180 · Commerce 40 · wholesale for 6 agencies (92 sites). The overage on the two held subscriptions waits for review.</p>
+                <div class="effect"><h4>If you approve, exactly this happens</h4>
+                  <ul>
+                    <li>Invoices go out Mon 1 Dec 08:00 EAT, by email and in each console (white-labelled for reseller clients)</li>
+                    <li>214 KES invoices post to zavora-era and transmit to KRA eTIMS on posting</li>
+                    <li>398 USD invoices; collection by M-Pesa prompt, saved card (Paystack) or PayPal via Steward</li>
+                    <li>612 receivable postings, revenue by plan (draft entries JE-2026-11-0412 to 1023)</li>
+                  </ul>
+                </div>
+                <div class="riskline"><span>Why low:</span><span class="chip">matches plan catalogue</span><span class="chip">disputed usage excluded</span><span class="chip">reversible by credit note</span></div>
+                <div class="signers"><span class="signer"><i>W</i>Wairimu N. · op.finance</span></div>
+                <div class="actions"><button class="btn btn-primary" type="button" data-approve>Approve with passkey</button><button class="btn" type="button">Preview invoices</button><button class="btn btn-ghost" type="button" data-decline>Not yet</button></div>
+                <div class="sheet" role="status"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 11c0 3-1 6-3 8M8.5 7.5A5 5 0 0 1 17 11c0 1.5-.2 3-.6 4.4M6.3 10A6.5 6.5 0 0 1 9 5.6M12 14.5c-.2 1.8-.8 3.5-1.7 5M15.3 17.5c-.3 1-.7 2-1.2 2.9M4 13.5c.4-1 .6-2 .6-3"/></svg><b>Confirm with your passkey</b><div class="small" style="opacity:.8">Signing invoice run 2026-11 · 612 invoices · digest 3b9e…40</div></div>
+                <div class="done-line" role="status"></div>
+              </article>
+        <article class="card decision" data-partial="Your signature is recorded (1 of 2). Waiting for James (director)…" data-done="Paid · 2 of 2 signed · PayPal batch payout-2026-10 sent through Steward with the approval's request id · 3 receipts in the operator ledger.">
+                <div class="head"><span class="from"><span class="avatar op sm av-billing">Bi</span>Billing asks · two signers</span><span class="chip chip-wait">Money</span></div>
+                <h3>Pay October revenue share · $1,284.60</h3>
+                <ul class="payouts" style="margin-top:8px">
+                  <li><span><b>Jenga Digital</b> · 34 referred sites</span><span>$612.00</span></li>
+                  <li><span><b>Pixel Kisumu</b> · 22 referred sites</span><span>$408.60</span></li>
+                  <li><span><b>Coast Creatives</b> · 15 referred sites</span><span>$264.00</span></li>
+                </ul>
+                <div class="effect"><h4>If you approve, exactly this happens</h4>
+                  <ul><li>Steward's <code>paypal_send_payout</code> with <code>sender_batch_id</code> payout-2026-10; it runs only against this approval's call digest</li><li>Statements were checked with each partner by Partner Success</li><li>Payout details are held only by the Effects Gateway</li></ul>
+                </div>
+                <div class="signers"><span class="signer"><i>W</i>Wairimu N. · op.finance</span><span class="signer"><i>J</i>James · director</span></div>
+                <div class="actions"><button class="btn btn-primary" type="button" data-approve>Sign with passkey</button><button class="btn" type="button">Statements</button></div>
+                <div class="sheet" role="status"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 11c0 3-1 6-3 8M8.5 7.5A5 5 0 0 1 17 11c0 1.5-.2 3-.6 4.4M6.3 10A6.5 6.5 0 0 1 9 5.6M12 14.5c-.2 1.8-.8 3.5-1.7 5M15.3 17.5c-.3 1-.7 2-1.2 2.9M4 13.5c.4-1 .6-2 .6-3"/></svg><b>Confirm with your passkey</b><div class="small" style="opacity:.8">Signing payout-2026-10 · 3 payees · $1,284.60</div></div>
+                <div class="done-line" role="status"></div>
+              </article>
+        <h4>Done for you</h4>
+        <div class="quiet">Billing reconciled 612 subscriptions and held 2 variances · sent 4 reminders within the dunning policy · Amos reconciled M-Pesa and bank statements (2 postings wait for a click in zavora-era).</div>
+      </div></aside>
+      <div class="cmd" data-cp-cmd></div>
+    </div>
+  </section>
+
+  <section class="explain" aria-label="How this works">
+    <article class="card"><h3>One subscription per site</h3><p>Each site's own Vultr Inference subscription is both its isolation and its meter. The gateway reserves and settles every call; Vultr's usage is the check. Disputed numbers are never billed.</p><p class="small muted">08-control-plane §4.2, 02-architecture §6</p></article>
+    <article class="card"><h3>Money moves through one door</h3><p>M-Pesa, Paystack and PayPal via Steward run only in the Effects Gateway, against a signed approval of the exact payment. Payouts need two signers. No WebAgent sees a credential.</p><p class="small muted">08-control-plane §4.2, ADR-004</p></article>
+    <article class="card"><h3>Zavora's books on Zavora's ERP</h3><p>Invoices and payments post to zavora-era's double-entry ledger, which transmits Kenyan invoices to KRA eTIMS. Amos, the ERP's accountant, reconciles; a person clicks for every ledger posting.</p><p class="small muted">08-control-plane §4.2</p></article>
+  </section>
+</main>
+
+<footer class="concept-foot"><div class="wrap row"><span>Agentrix WebAgent Platform by Zavora · MIT · Concept · illustrative data. Amounts, partners and people are fictional; prices are hypotheses.</span><span>Design: docs/08-control-plane.md</span></div></footer>
+<script src="cp.js"></script>
+</body>
+</html>

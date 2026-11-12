@@ -1,0 +1,36 @@
+{% extends "kilele/layout.html" %}
+{% block main %}
+<section class="b-pagehead" id="top">
+  <h1>Allergens</h1>
+  <p>What each bake contains, from the ingredients {{ shell.site.owner }} has confirmed. The desks answer allergen questions from this page and never guess.</p>
+</section>
+
+<section class="b-section" id="kitchen">
+  <h2>Kitchen note</h2>
+  <p class="b-card kitchen"><b>{{ note }}</b> If an allergy is serious, <a class="link" href="/help#contact" data-person>talk to {{ shell.site.owner }}</a> before you order; a person answers.</p>
+</section>
+
+<section class="b-section" id="contains">
+  <h2>What each bake contains</h2>
+  <p class="sub">Yes means the bake contains it. Butter counts as milk.</p>
+  {% if rows %}
+  <div class="table-scroll" role="region" aria-label="Allergen table" tabindex="0">
+    <table class="a-table">
+      <thead><tr><th scope="col">Bake</th>{% for c in columns %}<th scope="col" class="c">{{ c }}</th>{% endfor %}</tr></thead>
+      <tbody>
+        {% for r in rows %}
+        <tr><td><a href="{{ r.href }}">{{ r.name }}</a><small>{{ r.ingredients }}</small></td>{% for has in r.cells %}<td class="c">{% if has %}<span class="yes" aria-label="Contains {{ columns[loop.index0] | lower }}">Yes</span>{% else %}<span class="no" aria-label="No {{ columns[loop.index0] | lower }}">·</span>{% endif %}</td>{% endfor %}</tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <p class="b-card">No bakes are listed yet, so there's nothing to show. Ask {{ shell.site.owner }} about a bake you have in mind.</p>
+  {% endif %}
+</section>
+
+<section class="b-section" id="cakes-gf">
+  <h2>Celebration cakes</h2>
+  <p class="b-card">A gluten-free sponge is available for 1- and 2-tier cakes, for {{ gf }} more. It's baked in the same kitchen, so the note above applies. <a class="link" href="/cakes#note-gf">Cake options</a></p>
+</section>
+{% endblock %}

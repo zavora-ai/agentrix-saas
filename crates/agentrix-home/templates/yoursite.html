@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{#- Your site · view::HomeView · the Your site desk's page: what a site becomes with WebAgents, and the free check -#}
+{% from "macros.html" import ask_box, paste, person %}
+{% block title %}Your site · Agentrix{% endblock %}
+{% block description %}What your website could become with WebAgents: what changes for your customers, for you and for AI agents, and a free check of your site.{% endblock %}
+{% block path %}/your-site{% endblock %}
+{% block desk %}yoursite{% endblock %}
+{% block main %}
+{{ ask_box(front_desks[0], desks_ai) }}
+
+<section class="desk-intro wrap" aria-labelledby="ys-title">
+  <p class="eyebrow">Your site</p>
+  <h1 id="ys-title">Show me how I can transform my site</h1>
+  <p class="lead">Your website can become an autonomous AI business: WebAgents that answer, sell and look after it while you stay in charge. Here is what changes.</p>
+</section>
+
+<section class="section wrap" id="changes" aria-labelledby="changes-title">
+  <h2 id="changes-title" class="sr-only">What changes</h2>
+  <div class="patterns">
+    <div class="card tight change"><svg class="ill" viewBox="0 0 240 132" role="img" aria-label="A visitor asks a question at night and a WebAgent desk answers, citing the site's page">
+  <rect class="ill-bg" x="0" y="0" width="240" height="132" rx="14"/>
+  <circle class="ill-moon" cx="214" cy="22" r="9"/><circle class="ill-bg" cx="219" cy="18" r="8"/>
+  <rect class="ill-paper" x="18" y="22" width="122" height="30" rx="10"/><text class="ill-t" x="30" y="41">Open on Sunday?</text>
+  <rect class="ill-accent" x="64" y="62" width="158" height="52" rx="12"/>
+  <rect class="ill-mark" x="74" y="72" width="16" height="16" rx="5"/>
+  <text class="ill-t ill-on" x="98" y="84">Yes, 8 a.m. to 1 p.m.</text>
+  <rect class="ill-chip" x="98" y="92" width="70" height="14" rx="7"/><text class="ill-s" x="106" y="102">From: Hours</text>
+</svg><h3>For your customers</h3><p>WebAgent desks answer your visitors at any hour, from your own pages, and show the page they used. They take orders and bookings, and pass anything that needs a person to you.</p></div>
+    <div class="card tight change"><svg class="ill" viewBox="0 0 240 132" role="img" aria-label="A phone shows the morning brief and a decision with Allow once and Decline">
+  <rect class="ill-bg" x="0" y="0" width="240" height="132" rx="14"/>
+  <rect class="ill-ink" x="78" y="10" width="84" height="114" rx="14"/>
+  <rect class="ill-paper" x="84" y="18" width="72" height="98" rx="9"/>
+  <rect class="ill-mark" x="91" y="25" width="12" height="12" rx="4"/><text class="ill-s" x="108" y="34">Your brief</text>
+  <rect class="ill-line-f" x="91" y="43" width="58" height="5" rx="2.5"/><rect class="ill-line-f" x="91" y="52" width="46" height="5" rx="2.5"/>
+  <rect class="ill-chip" x="90" y="64" width="60" height="22" rx="6"/><text class="ill-s" x="96" y="78">Custom cake?</text>
+  <rect class="ill-accent" x="90" y="92" width="34" height="14" rx="7"/><text class="ill-s ill-on" x="94" y="102">Allow</text>
+  <rect class="ill-paper ill-stroke" x="127" y="92" width="23" height="14" rx="7"/><text class="ill-s" x="130" y="102">No</text>
+  <circle class="ill-coral" cx="168" cy="36" r="8"/><text class="ill-s ill-on" x="165" y="39">1</text>
+</svg><h3>For you</h3><p>Your Chief WebAgent briefs you each morning on what happened and what needs you. Anything that costs money or makes a promise waits for your OK, with one tap on your phone.</p></div>
+    <div class="card tight change"><svg class="ill" viewBox="0 0 240 132" role="img" aria-label="An AI agent comes through the site's agent door over AWP and MCP, and its order waits for your OK">
+  <rect class="ill-bg" x="0" y="0" width="240" height="132" rx="14"/>
+  <rect class="ill-ink" x="16" y="44" width="44" height="44" rx="12"/><circle class="ill-paper" cx="31" cy="62" r="4"/><circle class="ill-paper" cx="45" cy="62" r="4"/><rect class="ill-paper" x="29" y="73" width="18" height="4" rx="2"/>
+  <path class="ill-flow" d="M62 66 H108"/><text class="ill-s" x="62" y="58">AWP · MCP</text>
+  <rect class="ill-paper ill-stroke" x="112" y="22" width="118" height="90" rx="12"/>
+  <rect class="ill-accent" x="112" y="22" width="20" height="90" rx="10"/>
+  <text class="ill-t" x="140" y="46">Order: 2 cakes</text>
+  <rect class="ill-chip" x="140" y="56" width="84" height="16" rx="8"/><text class="ill-s" x="147" y="67">Waits for your OK</text>
+  <rect class="ill-line-f" x="140" y="82" width="70" height="5" rx="2.5"/><rect class="ill-line-f" x="140" y="92" width="52" height="5" rx="2.5"/>
+</svg><h3>For AI assistants and agents</h3><p>Your new site has an agent door, so AI assistants and agents can read it, ask it questions and place orders over AWP and MCP. An order from an agent waits for your OK.</p></div>
+    <div class="card tight change"><svg class="ill" viewBox="0 0 240 132" role="img" aria-label="The old site becomes the new site with the same look and address, now protected">
+  <rect class="ill-bg" x="0" y="0" width="240" height="132" rx="14"/>
+  <rect class="ill-paper ill-stroke" x="14" y="26" width="86" height="76" rx="10"/><rect class="ill-line-f" x="14" y="26" width="86" height="14" rx="7"/>
+  <rect class="ill-line-f" x="24" y="50" width="54" height="6" rx="3"/><rect class="ill-line-f" x="24" y="62" width="40" height="6" rx="3"/>
+  <circle class="ill-coral" cx="84" cy="84" r="9"/><path class="ill-crack" d="M80 80 L88 88 M88 80 L80 88"/>
+  <path class="ill-flow" d="M106 64 H132"/>
+  <rect class="ill-paper ill-stroke" x="138" y="26" width="86" height="76" rx="10"/><rect class="ill-accent" x="138" y="26" width="86" height="14" rx="7"/>
+  <rect class="ill-line-f" x="148" y="50" width="54" height="6" rx="3"/><rect class="ill-line-f" x="148" y="62" width="40" height="6" rx="3"/>
+  <path class="ill-shield" d="M208 74 l9 4 v7 c0 6 -4 9 -9 11 c-5 -2 -9 -5 -9 -11 v-7 z"/>
+  <text class="ill-s" x="146" y="120">same look · same address</text>
+</svg><h3>What stays</h3><p>Your look, your pages and your address. The site is rebuilt on Agentrix's secure platform, and the old site's security problems are left behind.</p></div>
+  </div>
+</section>
+
+<section class="band band-cta" aria-labelledby="cta-title">
+  <div class="wrap cta">
+    <h2 id="cta-title">Start with a free check of your site.</h2>
+    <p>It reads public pages only, changes nothing on your site, and shows what the move would change.</p>
+    {{ paste("url-end", assess_action, false) }}
+    {{ person(contact) }}
+  </div>
+</section>
+{% endblock %}

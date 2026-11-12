@@ -1,0 +1,15 @@
+[package]
+name = "agentrix-themes"
+description = "Host token sets and stylesheets for the sample sites, and the static assets their pages load."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+authors.workspace = true
+
+[dependencies]
+
+
+[lints]
+workspace = true

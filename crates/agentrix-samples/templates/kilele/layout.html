@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% from "macros.html" import mark, navdesk %}
+{% block styles %}<link rel="stylesheet" href="/_s/kilele.css?v={{ shell.v }}">{% endblock %}
+{% block body_class %}bake{% endblock %}
+{% block body %}
+<div class="b-wrap">
+  <header class="b-head">
+    <a class="b-logo" href="/"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 28V8"/><path d="M16 12c-3-1-5-3-5-6 3 0 5 2 5 6zM16 12c3-1 5-3 5-6-3 0-5 2-5 6zM16 18c-3-1-5-3-5-6 3 0 5 2 5 6zM16 18c3-1 5-3 5-6-3 0-5 2-5 6zM16 24c-3-1-5-3-5-6 3 0 5 2 5 6zM16 24c3-1 5-3 5-6-3 0-5 2-5 6z"/></svg>{{ shell.site.name }}</a>
+    <nav class="b-nav" id="bnav" aria-label="{{ shell.site.name }}: each item is a WebAgent">
+      {% for d in shell.desks %}{{ navdesk(d, shell.site, loop.index > 2, shell.current) }}{% endfor %}
+    </nav>
+    <a class="b-btn order" href="/cakes/studio">Design a cake</a>
+    <a class="s-bag" href="/bag" aria-label="Bag{% if shell.bag >= 0 %}, {{ shell.bag }} items{% endif %}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5.5 8.5h13l-1.1 11.5H6.6z"/><path d="M9 8.5V7a3 3 0 0 1 6 0v1.5"/></svg>{% if shell.bag > 0 %}<i>{{ shell.bag }}</i>{% endif %}</a>
+    {% if shell.account %}<a class="s-chip" href="/account"><span class="ph">{{ shell.account.initial }}</span>{{ shell.account.name }}</a>{% else %}<a class="s-chip signin" href="{{ shell.sign_in }}">Sign in</a>{% endif %}
+    <button class="b-btn ghost b-menu" id="menuBtn" type="button" aria-expanded="false" aria-controls="teamSheet">Menu</button>
+  </header>
+  <main id="main">
+  {% block main %}{% endblock %}
+  </main>
+  <footer class="s-foot">
+    <div class="row"><span class="ai">The WebAgents on this site are AI. They never ask for a password, a code or a card. <a href="/privacy#report">Report a site pretending to be this one</a></span><a class="wa-person" href="/help#contact" data-person><span class="ph">{{ shell.site.owner_initial }}</span>Talk to {{ shell.site.owner }} <i>· person · {{ shell.site.owner_channel }}, {{ shell.site.owner_wait }}</i></a></div>
+    <div class="row"><span>© {{ shell.site.year }} {{ shell.site.name }} (a sample business) · <a href="/help">Help</a> · <a href="/allergens">Allergens</a> · <a href="/delivery">Delivery</a> · <a href="/privacy">Privacy</a> · <a href="/agents">For AI agents</a></span><span>Made with Agentrix</span></div>
+    <div class="row small"><span>Payments run in PayPal's sandbox; no real money moves.</span></div>
+      <div class="row small s-visits"><span data-visits="on">This site counts visits as daily totals, with no cookies and nothing that says who you are. Browsers that send Global Privacy Control aren't counted.</span><span data-visits="gpc" hidden>Your browser asks sites not to track you, so your visits aren't counted.</span><span data-visits="off" hidden>Your visits on this device aren't counted.</span><button class="link-btn" type="button" data-agx-count="off" data-visits="on">Don't count my visits</button><button class="link-btn" type="button" data-agx-count="on" data-visits="off" hidden>Count them again</button></div>
+  </footer>
+</div>
+{% block askdock %}<div class="ask-dock" id="dock">
+  <form class="bar" id="dockForm" action="/ask" method="post">
+    {{ mark(shell.front, 20, shell.site, "sm") }}
+    <label class="sr-only" for="dockQ">Ask {{ shell.site.name }}</label>
+    <input id="dockQ" name="q" autocomplete="off" placeholder="Ask {{ shell.site.name }} anything…">
+    {% if shell.ai %}<span class="wa-ai">AI</span>{% endif %}
+    <button class="wa-send" type="submit" aria-label="Ask"></button>
+  </form>
+  <div class="hint"><span><span class="kbd">/</span> to ask</span><span>Answers cite this site</span><span>{{ shell.site.owner }} is one tap away</span></div>
+</div>{% endblock %}
+<aside class="rail" id="rail" aria-label="Conversation">
+  <div class="rail-head">
+    <span id="railMark">{{ mark(shell.front, 28, shell.site) }}</span>
+    <div class="who"><b id="railName">{{ shell.front.name }}</b><span id="railMandate">AI WebAgent · answers from this site</span></div>
+    <button class="icon-btn" id="railClose" type="button" aria-label="Close conversation"></button>
+  </div>
+  <div class="rail-body" id="railBody"><div class="wa-thread" id="railThread" role="log" aria-label="Conversation"></div></div>
+  <div class="rail-foot">
+    <div class="memory-chip"><span>This chat is forgotten when you close the tab.</span></div>
+    <form class="wa-input" id="railForm"><label class="sr-only" for="railQ">Message</label><input id="railQ" autocomplete="off" placeholder="Ask a follow-up…"><button class="wa-mic" type="button" aria-disabled="true" aria-label="Voice (later)" title="Voice: later"></button><button class="wa-send" type="submit" aria-label="Send"></button></form>
+    <div class="wa-disclose rail-disclose"><span>You're talking to <b>AI</b>. It never guesses prices, dates or allergens.</span><a class="wa-person" href="/help#contact" data-person><span class="ph">{{ shell.site.owner_initial }}</span>{{ shell.site.owner }} <i>· person · {{ shell.site.owner_channel }}, {{ shell.site.owner_wait }}</i></a></div>
+  </div>
+</aside>
+<div class="team-sheet" id="teamSheet" role="dialog" aria-label="{{ shell.site.name }}'s WebAgents">
+  <div class="spread sheet-top"><b class="sheet-title">{{ shell.site.name }}'s WebAgents</b><button class="icon-btn" id="sheetClose" type="button" aria-label="Close menu"></button></div>
+  {% for d in shell.desks %}
+  <div class="team-row">{{ mark(d, 40, shell.site, "lg") }}<div><b>{{ d.name }}</b><p>{{ d.mandate }}</p>
+    <div class="acts"><button class="act primary" type="button" data-ask="{{ d.id }}">Ask {{ d.name }}</button><a class="act" href="{{ d.href }}">Open page</a></div></div></div>
+  {% endfor %}
+  <div class="team-row"><span></span><div class="acts"><a class="act" href="/bag">Bag{% if shell.bag >= 0 %} ({{ shell.bag }}){% endif %}</a>{% if shell.account %}<a class="act" href="/account">Your account</a>{% else %}<a class="act" href="{{ shell.sign_in }}">Sign in</a>{% endif %}<a class="act" href="/cakes/studio">Design a cake</a></div></div>
+</div>
+{% endblock %}

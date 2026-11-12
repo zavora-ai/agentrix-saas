@@ -1,0 +1,23 @@
+{
+ "site": {
+  "name": "Kilele Bakery",
+  "host": "kilele-bakery-sample.agentrix.website",
+  "sample": true
+ },
+ "person": {
+  "name": "Wanjiru"
+ },
+ "console_url": "https://agentrix.website/console/kilele-bakery-sample",
+ "claim": {
+  "domain": "kilele-bakery.example",
+  "registrar": null,
+  "record": {
+   "type": "TXT",
+   "name": "_agentrix.kilele-bakery.example",
+   "value": "agentrix-claim=c_8f2k1q"
+  },
+  "check_every": "10 minutes",
+  "expires": "Sun 15 Nov, 09:00",
+  "url": "https://agentrix.website/sites/kilele-bakery-sample/claim"
+ }
+}

@@ -1,0 +1,17 @@
+{
+ "site": {
+  "name": "Classy Perfumes",
+  "host": "classy-perfumes-sample.agentrix.website",
+  "sample": true,
+  "owner": "Makena"
+ },
+ "person": {
+  "name": "Mary"
+ },
+ "change": {
+  "kind": "passkey_added",
+  "device": "an iPhone",
+  "when": "Thu 12 Nov, 19:40"
+ },
+ "account_url": "https://classy-perfumes-sample.agentrix.website/account/security"
+}

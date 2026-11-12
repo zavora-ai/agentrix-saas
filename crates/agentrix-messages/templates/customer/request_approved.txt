@@ -1,0 +1,23 @@
+{% block subject %}{{ site.owner }} said yes to {{ request.number }}. Pay to confirm.{% endblock %}
+{% block preheader %}Pay {{ payment.charge|money(payment.charge_currency) }} by {{ payment.expires }} to keep it.{% endblock %}
+{% block body %}
+# {{ site.owner }} said yes
+{{ request.summary }}
+
+::fact Price | {{ payment.amount|money(payment.currency) }}
+{% if payment.charge_currency != payment.currency %}
+::fact You pay | {{ payment.charge|money(payment.charge_currency) }} at {{ payment.rate }}
+{% endif %}
+::fact Pay to | {{ site.name }} ({{ site.host }})
+::fact Pay by | {{ payment.expires }}
+
+Pay by {{ payment.expires }} to keep your order. After that the request closes and nothing is charged.
+
+::button Pay {{ payment.charge|money(payment.charge_currency) }} | {{ payment.url }}
+
+The button opens your order on {{ site.host }}. Check that address before you pay.
+{% endblock %}
+{% block chat %}
+{{ site.name }}: {{ site.owner }} said yes to {{ request.number }}. Pay {{ payment.charge|money(payment.charge_currency) }} by {{ payment.expires }} to confirm it. The link opens your order on {{ site.host }}.
+::button Pay {{ payment.charge|money(payment.charge_currency) }} | {{ payment.url }}
+{% endblock %}

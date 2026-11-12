@@ -1,0 +1,94 @@
+{#- Support access, break-glass and platform holds for one site (08 §2.4–2.5). `access` is
+    access::AccessCard; `site` the site page's view. -#}
+{%- set a = access -%}
+{%- if a.view %}
+<article class="card tight support-view">
+  <div class="card-title"><h4>What you can read now</h4><span class="chip chip-wait">{{ "support grant" if a.view.under == "grant" else "break-glass" }} · until {{ a.view.ends_at|clock }}</span></div>
+  <p class="gapnote">Every visit here is recorded. The owner gets a receipt for it, at most one per person every 15 minutes. You see {{ a.view.areas|join(", ") }}, nothing else.</p>
+  {%- if a.view.receipts %}<h4 style="margin-top:10px">Receipts</h4><ul class="rows">{% for at, kind, title in a.view.receipts %}<li><span class="chip">{{ kind }}</span><span>{{ title or "—" }}</span><span class="ledger-id">{{ at|when }}</span></li>{% endfor %}</ul>{% endif %}
+  {%- if a.view.steps %}<h4 style="margin-top:10px">The Move's steps</h4><ul class="rows">{% for at, step, summary in a.view.steps %}<li><span class="chip">{{ step }}</span><span>{{ summary }}</span><span class="ledger-id">{{ at|when }}</span></li>{% endfor %}</ul>{% endif %}
+  {%- if a.view.pages %}<h4 style="margin-top:10px">Pages: findings and items left behind</h4><ul class="rows">{% for loc, sev, title in a.view.pages %}<li><span class="chip">{{ sev }}</span><span>{{ title }}<div class="small muted">{{ loc }}</div></span><span></span></li>{% endfor %}</ul>{% endif %}
+  {%- if a.view.jobs %}<h4 style="margin-top:10px">Sealed-room job results</h4>{% for at, kind, result in a.view.jobs %}<div class="small" style="margin-top:6px"><b>{{ kind }}</b> · {{ at|when }}<pre>{{ result or "no result recorded" }}</pre></div>{% endfor %}{% endif %}
+</article>
+{%- endif %}
+
+<article class="card tight" id="access">
+  <div class="card-title"><h4>Support access, break-glass and holds</h4><span class="small muted">the owner gets receipts for grants, break-glass and holds on their Trust centre</span></div>
+  {%- if not a.receipts_on %}<p class="gapnote">Owner receipts for operator access aren't written on this build; the operator ledger still records every step.</p>{% endif %}
+
+  <h4>Support grants</h4>
+  <ul class="rows">
+    {%- for g in a.grants %}
+    <li><span class="chip{% if g.state == 'active' %} chip-ok{% elif g.state == 'requested' %} chip-wait{% endif %}">{{ g.state }}</span>
+      <span>{{ g.who }} asked for {{ "read" if g.access == "read" else "read and change" }} access to {{ g.area_list|join(", ") }} for {{ g.hours|plural("hour", "hours") }}<div class="small muted">{{ g.reason }}{% if g.state == "active" %} · until {{ g.ends_at|clock }}{% endif %}</div>
+        {%- if g.state == "requested" and a.owner_link %}<div class="small">The owner answers at <span class="mono">{{ a.owner_link }}{{ g.grant_id }}</span></div>{% endif %}</span>
+      <span>{% if g.mine and g.state in ["requested", "active"] %}<form method="post" action="/support-grants/{{ g.grant_id }}/end"><button class="btn btn-sm btn-ghost" type="submit">{{ "Withdraw the request" if g.state == "requested" else "End access now" }}</button></form>{% else %}<span class="ledger-id">{{ g.created_at|ago }}</span>{% endif %}</span></li>
+    {%- else %}
+    <li><span></span><span class="small muted">No support grants for this site.</span><span></span></li>
+    {%- endfor %}
+  </ul>
+  {%- if a.can_request %}
+  <form class="access-form" method="post" action="/sites/{{ site.row.site_id }}/support-grants">
+    <label>Ask the owner for access to</label>
+    <div class="checks">
+      <label><input type="checkbox" name="area_receipts" checked> receipts</label>
+      <label><input type="checkbox" name="area_jobs"> sealed-room jobs</label>
+      <label><input type="checkbox" name="area_releases"> releases and Move steps</label>
+      <label><input type="checkbox" name="area_pages"> pages and findings</label>
+    </div>
+    <div class="row">
+      <select name="access" aria-label="Access"><option value="read" selected>Read only</option><option value="read-write">Read and change</option></select>
+      <input type="number" name="hours" min="1" max="72" value="4" aria-label="Hours">
+    </div>
+    <label for="grant-reason">Why, in a sentence the owner will read</label>
+    <textarea id="grant-reason" name="reason" required maxlength="500">{{ kept|field("grant_reason") }}</textarea>
+    <div class="row"><button class="btn btn-sm btn-primary" type="submit">Ask the owner</button></div>
+  </form>
+  {%- elif site.row.owner_name is none %}
+  <p class="gapnote">Nobody has claimed this site, so there's no owner to ask for access.</p>
+  {%- endif %}
+
+  <h4 style="margin-top:14px">Break-glass</h4>
+  <ul class="rows">
+    {%- for b in a.break_glass %}
+    <li><span class="chip{% if b.state == 'open' %} chip-risk{% elif b.state == 'waiting' %} chip-wait{% endif %}">{{ b.state }}</span>
+      <span>{{ b.first_name }} ({{ b.first_role }}){% if b.second_name %} and {{ b.second_name }} ({{ b.second_role }}){% endif %}<div class="small muted">{{ b.reason }}{% if b.state == "open" %} · open until {{ b.ends_at|clock }}{% endif %}</div></span>
+      <span>{% if b.state in ["waiting", "open"] and (b.mine or a.can_break_glass) %}<form method="post" action="/break-glass/{{ b.bg_id }}/close"><button class="btn btn-sm btn-ghost" type="submit">{{ "Close break-glass" if b.state == "open" else "Withdraw the request" }}</button></form>{% else %}<span class="ledger-id">{{ b.created_at|ago }}</span>{% endif %}</span></li>
+    {%- else %}
+    <li><span></span><span class="small muted">Nobody has used break-glass on this site.</span><span></span></li>
+    {%- endfor %}
+  </ul>
+  {%- if a.can_break_glass %}
+  <div data-action-host>
+    <form class="access-form" data-action="break-glass">
+      <input type="hidden" name="site" value="{{ site.row.site_id }}">
+      <label for="bg-reason">Emergency read access without the owner's grant: only for an active SEV1 or SEV2, or a legal order</label>
+      <textarea id="bg-reason" name="reason" required maxlength="500" placeholder="What's happening and why you need to look"></textarea>
+      <input type="text" name="incident" maxlength="40" placeholder="Incident, e.g. INC-0142 (optional)" aria-label="Incident">
+      <div class="row"><button class="btn btn-sm btn-coral" type="submit">Ask for break-glass</button></div>
+    </form>
+    <div class="action-sheet decision"></div>
+  </div>
+  {%- endif %}
+
+  <h4 style="margin-top:14px">Platform holds</h4>
+  <ul class="rows">
+    {%- for h in a.holds %}
+    <li><span class="chip{% if not h.lifted_at %} chip-risk{% endif %}">{{ "on" if not h.lifted_at else "lifted" }}</span><span>{{ h.mode }} · {{ h.reason }}{% if h.lifted_at %}<div class="small muted">lifted {{ h.lifted_at|when }}: {{ h.lift_reason }}</div>{% endif %}</span><span class="ledger-id">{{ h.placed_at|when }}</span></li>
+    {%- else %}
+    <li><span></span><span class="small muted">This site has never been on hold.</span><span></span></li>
+    {%- endfor %}
+  </ul>
+  {%- if a.can_hold and not a.active_hold %}
+  <div data-action-host>
+    <form class="access-form" data-action="hold">
+      <input type="hidden" name="site" value="{{ site.row.site_id }}">
+      <div class="row"><select name="mode" aria-label="How the site is served"><option value="read-only" selected>Read only: answers and forms paused</option><option value="notice">Notice page: phishing or malware</option></select></div>
+      <label for="hold-reason">Reason the owner reads (visitors never see it)</label>
+      <textarea id="hold-reason" name="reason" required maxlength="500"></textarea>
+      <div class="row"><button class="btn btn-sm" type="submit">Place a platform hold</button></div>
+    </form>
+    <div class="action-sheet decision"></div>
+  </div>
+  {%- endif %}
+</article>

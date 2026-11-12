@@ -1,0 +1,10 @@
+{"sku": "sourdough", "planned": 8, "batches": ["06:30"]}
+{"sku": "rye", "planned": 10, "batches": ["06:30"]}
+{"sku": "croissant", "planned": 2, "batches": ["06:30", "10:00"]}
+{"sku": "cardamom-bun", "planned": 14, "batches": ["06:30"]}
+{"sku": "mandazi", "planned": 8, "batches": ["06:30"]}
+{"sku": "banana-bread", "planned": 9, "batches": ["06:30"]}
+{"sku": "cinnamon-roll", "planned": 0, "batches": ["06:30"]}
+{"sku": "red-velvet", "planned": 12, "batches": ["06:30"]}
+{"sku": "weekend-bake-box", "planned": 5, "batches": ["06:30"]}
+{"sku": "fruit-cake", "planned": 60, "batches": ["06:30"]}

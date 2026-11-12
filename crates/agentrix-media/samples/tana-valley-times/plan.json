@@ -1,0 +1,77 @@
+{
+  "site": "tana-valley-times-sample",
+  "sample": true,
+  "look": "Muted newsprint palette of ink blue, river green and warm paper, clean lines",
+  "images": [
+    {
+      "slot": "hero",
+      "kind": "news-illustration",
+      "seed": 3101,
+      "brief": "A wide river valley with terraced green hills, a small town of tin roofs by the river and a railway line along the far hillside, early morning",
+      "context": "Masthead illustration for Tana Valley Times, a sample local news site"
+    },
+    {
+      "slot": "story:council-approves-first-phase-of-the-northern-rail-extension",
+      "kind": "news-illustration",
+      "seed": 3111,
+      "brief": "A railway line curving north through farmland toward distant hills, survey pegs beside the track, an empty passenger train",
+      "context": "Illustration for a sample story: Council approves first phase of the northern rail extension"
+    },
+    {
+      "slot": "story:short-rains-arrive-early-across-the-valley",
+      "kind": "news-illustration",
+      "seed": 3112,
+      "brief": "Heavy rain clouds over green tea fields on rolling highland hills, rain falling in soft streaks",
+      "context": "Illustration for a sample story: Long rains arrive early across the highlands"
+    },
+    {
+      "slot": "story:what-the-fuel-price-review-means-for-fares",
+      "kind": "news-illustration",
+      "seed": 3113,
+      "brief": "A fuel pump nozzle beside a row of empty minibuses parked at a stage, simple shapes",
+      "context": "Illustration for a sample explainer: What the fuel price review means for fares"
+    },
+    {
+      "slot": "story:residents-split-over-the-northern-line-route",
+      "kind": "news-illustration",
+      "seed": 3114,
+      "brief": "A simple map of a valley with two dotted route lines for a railway, a river and a few houses, seen from above",
+      "context": "Illustration for a sample story: Residents split over the northern line's route"
+    },
+    {
+      "slot": "section:council",
+      "kind": "news-illustration",
+      "seed": 3121,
+      "brief": "A county assembly building with a flag pole and steps, seen from the front",
+      "context": "Section illustration for Politics on a sample news site"
+    },
+    {
+      "slot": "section:business",
+      "kind": "news-illustration",
+      "seed": 3132,
+      "brief": "Rows of closed market stalls at dawn under folded shade cloths, crates of mangoes and bolts of fabric stacked on the counters, empty walkways",
+      "context": "Section illustration for Business on a sample news site"
+    },
+    {
+      "slot": "section:farming",
+      "kind": "news-illustration",
+      "seed": 3123,
+      "brief": "A river with a dry cracked bank on one side and green reeds on the other, sun and cloud overhead",
+      "context": "Section illustration for Climate on a sample news site"
+    },
+    {
+      "slot": "section:transport",
+      "kind": "news-illustration",
+      "seed": 3124,
+      "brief": "A road and a railway crossing a river on two bridges, a minibus on the road",
+      "context": "Section illustration for Transport on a sample news site"
+    },
+    {
+      "slot": "section:community",
+      "kind": "news-illustration",
+      "seed": 3141,
+      "brief": "A small-town community hall with a tin roof and a wide veranda, a few market stalls with shade cloths in the yard in front, trees around it, morning",
+      "context": "Section illustration for Community on a sample local news site"
+    }
+  ]
+}

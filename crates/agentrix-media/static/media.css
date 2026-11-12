@@ -1,0 +1,17 @@
+/* Pictures: the media library in the console's own tokens. */
+.media-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 14px; margin: 14px 0; }
+.media-card { display: grid; gap: 8px; align-content: start; }
+.media-pic { position: relative; }
+/* The label a visitor sees, placed as the concept places "Concept render" (search.html .rtag). */
+.media-pic .rtag { position: absolute; right: 8px; bottom: 8px; background: rgba(255,255,255,.88); color: #5b5056; font: 600 10px/1 var(--font-text, inherit); padding: 4px 6px; border-radius: 6px; }
+.media-card img { width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 12px; background: var(--os-pane-2); border: 1px solid var(--os-line); }
+.media-card[data-status="draft"] { border-color: color-mix(in srgb, var(--coral, #e8506e) 45%, var(--os-line)); }
+.media-card p { margin: 0; }
+.media-card .verbs { display: flex; flex-wrap: wrap; gap: 6px; }
+.media-card .verbs form { margin: 0; }
+.media-blocked { display: grid; place-items: center; aspect-ratio: 4 / 3; border-radius: 12px; border: 1px dashed var(--os-line); color: var(--os-muted); font-size: 13px; }
+.media-draw { margin-top: 16px; }
+.media-form { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px 14px; }
+.media-form label { display: grid; gap: 4px; font-size: 13px; color: var(--os-head); font-weight: 600; }
+.media-form .wide { grid-column: 1 / -1; }
+.media-form input, .media-form select, .media-form textarea { font: inherit; font-weight: 400; padding: 9px 10px; border-radius: 10px; border: 1px solid var(--os-line); background: var(--os-pane); color: var(--os-ink); }

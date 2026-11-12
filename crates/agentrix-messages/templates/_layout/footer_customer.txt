@@ -1,0 +1,5 @@
+::note {{ site.name }} sent this from {{ site.host }} because of something you did there. The WebAgents on this site are AI. They never ask for a password, a code or payment details.
+::note Links in emails from {{ site.name }} only ever go to {{ site.host }}. If one points anywhere else, don't open it.
+{% if site.contact_url %}
+::link Questions? Ask {{ site.name }} | {{ site.contact_url }}
+{% endif %}

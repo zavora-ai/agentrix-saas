@@ -1,0 +1,57 @@
+[package]
+name = "agentrix-samples"
+description = "The three sample websites: pages, Ask, the agent door, customer accounts, checkout and the owner's apps, on agentrix-records."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+authors.workspace = true
+
+[dependencies]
+adk-core.workspace = true
+agentrix-host.workspace = true
+agentrix-identity.workspace = true
+agentrix-kernel.workspace = true
+agentrix-store.workspace = true
+agentrix-messages.workspace = true
+agentrix-marks = { path = "../agentrix-marks" }
+agentrix-media.workspace = true
+agentrix-types.workspace = true
+agentrix-ui.workspace = true
+agentrix-records = { path = "../agentrix-records" }
+agentrix-themes = { path = "../agentrix-themes" }
+anyhow.workspace = true
+async-trait.workspace = true
+axum.workspace = true
+chrono.workspace = true
+futures.workspace = true
+minijinja = { workspace = true, features = ["json"] }
+minijinja-embed.workspace = true
+reqwest.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+sqlx.workspace = true
+sha2.workspace = true
+hex.workspace = true
+rand.workspace = true
+tokio.workspace = true
+tokio-stream.workspace = true
+tower.workspace = true
+tracing.workspace = true
+url.workspace = true
+
+[build-dependencies]
+minijinja-embed.workspace = true
+
+[dev-dependencies]
+# The owner's rules table (decision_rules) for the desks' prompt tests.
+agentrix-decisions.workspace = true
+agentrix-messages.workspace = true
+sqlx.workspace = true
+agentrix-media.workspace = true
+agentrix-identity.workspace = true
+tracing-subscriber.workspace = true
+
+[lints]
+workspace = true

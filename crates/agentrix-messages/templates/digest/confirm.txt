@@ -1,0 +1,15 @@
+{% block subject %}Confirm {{ digest.name }} from {{ site.name }}{% endblock %}
+{% block preheader %}Nothing is sent until you confirm.{% endblock %}
+{% block body %}
+# One tap to confirm
+You asked for {{ digest.name }} from {{ site.name }}. Here is what you're agreeing to:
+
+::fact You get | {{ digest.schedule }}: five {{ digest.topics }} stories, two lines each, with links
+::fact Made from | Only stories {{ site.name }} published that week. The two lines are each story's own summary, as the newsroom wrote it
+::fact We keep | Your email and these topics. Not your reading history
+::fact Stop | One tap in any email. Your topics are deleted with it
+
+::button Confirm the digest | {{ confirm_url }}
+
+Nothing is sent until you confirm. Didn't ask for this? Ignore it: if nobody confirms within {{ forget_after }}, the address and topics are deleted.
+{% endblock %}

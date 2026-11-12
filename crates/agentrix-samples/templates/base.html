@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{% if shell.title and shell.title != shell.site.name %}{{ shell.title }} · {% endif %}{{ shell.site.name }} (Sample)</title>
+<meta name="description" content="{{ shell.description }}">
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="/static/ui/tokens.css?v={{ shell.ui_v }}">
+<link rel="stylesheet" href="/_s/agentrix.css?v={{ shell.v }}">
+<link rel="stylesheet" href="/_s/kit.css?v={{ shell.v }}">
+<link rel="stylesheet" href="/_s/site.css?v={{ shell.v }}">
+{% block styles %}{% endblock %}
+<script src="/_s/marks.js?v={{ shell.v }}" defer></script>
+<script src="/_s/desks.js?v={{ shell.v }}" defer></script>
+<script src="/_agx/visit.js" defer></script>
+{% block scripts %}{% endblock %}
+</head>
+<body class="site {% block body_class %}{% endblock %}" data-owner="{{ shell.site.owner }}" data-owner-channel="{{ shell.site.owner_channel }}" data-owner-wait="{{ shell.site.owner_wait }}" data-path="{{ shell.path }}">
+<a class="skip" href="#main">Skip to the page</a>
+{% if shell.sample %}<div class="s-band" role="note"><b>Sample</b><span>Sample site. The business and its people are invented, and payments run in PayPal's sandbox, so no real money moves.</span><a href="{{ shell.owner_url }}">See the owner's side</a></div>{% endif %}
+{% block body %}{% endblock %}
+<script type="application/json" id="wa-desks">{{ {"desks": shell.desks, "front": shell.front, "site": shell.site} | tojson }}</script>
+</body>
+</html>

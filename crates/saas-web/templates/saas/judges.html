@@ -1,0 +1,57 @@
+{% extends "ui/layouts/page.html" %}
+{% import "ui/kit.html" as ui %}
+{% import "saas/macros.html" as s %}
+{% block title %}For judges · Agentrix{% endblock %}
+{% block description %}What Agentrix is, the story in five scenes, and what to click.{% endblock %}
+{% block styles %}<link rel="stylesheet" href="/static/saas/saas.css?v={{ saas_v }}">{% endblock %}
+{% block nav %}{{ s.money_nav("judges") }}{% endblock %}
+{% block main %}
+<div class="page-head"><p class="eyebrow">For judges · about 10 minutes</p><h1>Who is this agent, who answers for it, and where did the money go?</h1>
+<p class="lead">Agentrix turns a small business's website into a team of AI agents. Each agent can be identified by anyone, answers to a human with a passkey, and keeps a PayPal wallet record anyone can check. Autonomous inside the authority the owner signs; every dollar booked in Zavora ERA (hosted).</p></div>
+
+{{ ui.banner("", "Everything here runs on the PayPal sandbox: no real money moves. When PayPal asks you to sign in, use the sandbox buyer account in the Devpost submission's testing notes, never your own PayPal account.") }}
+
+<section class="card run-day" data-run-day data-url="/judges/run-day" aria-labelledby="run-day-h">
+  <div class="spread"><h2 id="run-day-h">Run the day</h2>{% if run_day %}<button class="btn btn-primary btn-lg" type="button" data-run-day-start>Run the day</button>{% else %}{{ ui.chip("Judge mode is off on this node", "wait") }}{% endif %}</div>
+  <p class="small muted">One button runs the story on the sandbox: a customer buys, Agentrix bills the site, the Cashier pays inside the mandate, a changed payee asks for the passkey. Each scene shows the PayPal ids and ERA journals it left.</p>
+  <ol class="scenes-run" data-run-day-scenes></ol>
+  <p class="small" data-run-day-status role="status"></p>
+</section>
+
+<section class="section" id="verify" aria-labelledby="verify-h"><h2 id="verify-h">Verify any agent</h2>
+{% include "saas/apps/verify_box.html" %}
+</section>
+
+<ol class="scenes">
+  <li>
+    <h2>1 · Who is this agent</h2>
+    <p>Every agent has a badge: a W3C DID with the did:web method, rooted in the site's own domain, and signed by the owner's key. Paste any agent's DID into the Verify box above: it turns green, or names the exact check that failed.</p>
+    <p class="verbs">{{ ui.button("Kilele Bakery's agents", href=links.kilele ~ "/agents", size="sm", kind="primary") }} {{ ui.button("Agentrix's agents", href=links.money ~ "/agents", size="sm") }}</p>
+  </li>
+  <li>
+    <h2>2 · Who answers for it</h2>
+    <p>The owner's passkey is asked for at three moments only: linking PayPal (once), signing or raising the mandate, and stepping up. Each signature commits to exactly what is signed.</p>
+    <p class="verbs">{{ ui.button("Wanjiru's passkey moments", href=links.kilele ~ "/console/kilele/passkey", size="sm", kind="primary") }}</p>
+  </li>
+  <li>
+    <h2>3 · Where the money went</h2>
+    <p>A person buys with PayPal; the Cashier's wallet records the capture id, and ERA posts the journal. The wallet page matches all three: wallet entry, PayPal id, ERA journal.</p>
+    <p class="verbs">{{ ui.button("Kilele's wallet", href=links.kilele ~ "/console/kilele/wallet", size="sm", kind="primary") }} {{ ui.button("The ERA ledger", href=links.books ~ "/", size="sm") }}</p>
+  </li>
+  <li>
+    <h2>4 · Know your agent, working</h2>
+    <p>A customer's agent signs its request at the site's agent door and orders; an impostor is refused before any PayPal order exists.</p>
+    <p class="verbs">{{ ui.button("The agent door", href=links.pay ~ "/", size="sm", kind="primary") }}</p>
+  </li>
+  <li>
+    <h2>5 · Inside the authority the owner signed</h2>
+    <p>Agentrix bills the site and the Cashier pays inside the mandate, with no prompt. A vendor's "new bank details" raise a passkey prompt instead. Then check it all yourself.</p>
+    <p class="verbs">{{ ui.button("Decisions", href=links.kilele ~ "/console", size="sm", kind="primary") }} {{ ui.button("Proofs", href=links.money ~ "/proofs", size="sm") }} {{ ui.button("The treasury board", href=links.money ~ "/board/", size="sm") }}</p>
+  </li>
+</ol>
+{% if source != "books" %}<p class="small muted">This node is showing {{ "the built-in story" if source == "demo" else "saas-core's in-memory books, seeded with the story" }}; the live node reads Zavora ERA.</p>{% endif %}
+{% endblock %}
+{% block scripts %}<script type="module" src="/static/saas/judge.js?v={{ saas_v }}"></script><script type="module" src="/static/saas/verify.js?v={{ saas_v }}"></script>{% endblock %}
+{% block foot %}
+<footer class="foot"><div class="row"><span>Agentrix by Zavora · sandbox demo for the PayPal AI Hackathon · open source (MIT)</span><a href="/proofs">Proofs</a></div></footer>
+{% endblock %}

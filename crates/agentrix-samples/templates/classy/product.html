@@ -1,0 +1,47 @@
+{% extends "classy/layout.html" %}
+{% from "classy/parts.html" import pic, card %}
+{% block main %}
+<script type="application/ld+json">{{ ld | safe }}</script>
+<nav class="crumbs" aria-label="Breadcrumb"><a href="/fragrances">Fragrances</a> · <a href="{{ family_href }}">{{ p.family }}</a></nav>
+<article class="cp-product" id="item-{{ p.slug }}">
+  <div class="cp-product-pic">{{ pic(p, "large") }}</div>
+  <div class="cp-product-body" id="about">
+    <span class="cp-eyebrow">{{ p.family }}{% if p.gift_ready %} · gift set{% endif %}{% if p.limited %} · limited run{% endif %}</span>
+    <h1>{{ p.name }}</h1>
+    <div class="cp-price">{{ p.price }} <span>· {{ p.size }}</span></div>
+    <p class="cp-desc">{{ p.description }}</p>
+    <div class="cp-stock" id="stock"><span class="fit{% if p.out %} no{% elif p.low %} low{% endif %}">{{ p.stock }}</span><span class="small">Stock {{ asof }}{% if prices %} · prices from {{ prices }}{% endif %}</span></div>
+    {% if p.out %}
+    <p class="note">Sold out right now. Ask {{ shell.site.owner }} when it's back, or try another {{ p.family | lower }} scent below.</p>
+    {% else %}
+    <form class="cp-add" method="post" action="/bag/add"><input type="hidden" name="sku" value="{{ p.sku }}"><input type="hidden" name="qty" value="1"><input type="hidden" name="back" value="{{ back }}"><button class="btn" type="submit">Add to bag · {{ p.price }}</button></form>
+    {% endif %}
+    <dl class="cp-facts" id="notes">
+      <div><dt>Notes</dt><dd>{{ p.notes }}</dd></div>
+      <div><dt>Family</dt><dd>{{ p.family }}</dd></div>
+      <div><dt>Size</dt><dd>{{ p.size }}</dd></div>
+      <div><dt>Strength</dt><dd>{{ p.strength_words }}</dd></div>
+      <div><dt>Vanilla</dt><dd>{{ p.vanilla_words }}</dd></div>
+    </dl>
+    <p class="small">The shop doesn't publish how long a scent lasts or whether it's vegan. Ask {{ shell.site.owner }} if it matters to you.</p>
+  </div>
+</article>
+
+<section class="cp-section two-up">
+  <div class="panel" id="wrap"><h4>Gift wrap</h4><p>{% if p.gift_ready %}This set arrives wrapped, with a card. {% endif %}{{ wrapping }}</p><p class="small"><a href="/gifts/wrapping">How wrapping works</a></p></div>
+  <div class="panel" id="delivery"><h4>Delivery</h4>
+    <ul class="list">{% for d in delivery %}<li id="delivery-{{ d.zone }}"><span><b>{{ d.label }}</b><br><span class="small">{{ d.when }}</span></span><b>{{ d.fee }}</b></li>{% endfor %}</ul>
+    <p class="small">Unopened bottles can be returned within {{ returns_days }} days. <a href="/delivery#returns">Returns</a></p>
+  </div>
+  {% if sample %}<div class="panel" id="sample"><h4>Try it first</h4><p>Add a free 2 ml sample of {{ p.name }} to your order. Write the scent's name in the note for {{ shell.site.owner }} at checkout.</p>
+    <form method="post" action="/bag/add"><input type="hidden" name="sku" value="{{ sample }}"><input type="hidden" name="qty" value="1"><input type="hidden" name="back" value="{{ back }}"><button class="act" type="submit">Add a free 2 ml sample</button></form></div>{% endif %}
+</section>
+
+{% if more %}
+<section class="cp-section" id="more">
+  <h2>More {{ p.family | lower }} scents</h2>
+  <div class="shortlist">{% for s in more %}{{ card(s) }}{% endfor %}</div>
+</section>
+{% endif %}
+<p class="more-link"><a href="/fragrances">Back to all fragrances</a></p>
+{% endblock %}

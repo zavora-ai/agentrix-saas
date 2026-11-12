@@ -1,0 +1,42 @@
+{% extends shell.layout %}
+{% import "shop/parts.html" as p %}
+{% block styles %}{{ super() }}{{ p.styles(shell) }}{% endblock %}
+{% block main %}
+<div class="shop">
+  <p class="k-crumb"><a href="/">{{ shell.site.name }}</a> · Bag</p>
+  <div class="k-head"><h1>Your bag</h1>{% if items > 0 %}<span class="k-pill">{{ items }} item{% if items != 1 %}s{% endif %}</span>{% endif %}</div>
+  {% if notice %}<p class="k-note warn" role="status">{{ notice }}</p>{% endif %}
+  {% if lines %}
+  <div class="k-card">
+    <ul class="k-items" aria-label="Bag">
+      {% for l in lines %}
+      <li>
+        <div class="k-row"><span>{{ l.name }} × {{ l.qty }}<small>{{ l.unit }}</small></span><b>{{ l.amount }}</b></div>
+        {{ p.srcs(l) }}
+        <div class="k-qty" role="group" aria-label="How many {{ l.name }}">
+          <form method="post" action="/bag/update"><input type="hidden" name="sku" value="{{ l.sku }}"><input type="hidden" name="qty" value="{{ l.less }}"><button type="submit" aria-label="One less {{ l.name }}">−</button></form>
+          <span>{{ l.qty }}</span>
+          <form method="post" action="/bag/update"><input type="hidden" name="sku" value="{{ l.sku }}"><input type="hidden" name="qty" value="{{ l.more }}"><button type="submit" aria-label="One more {{ l.name }}"{% if l.at_most %} disabled{% endif %}>+</button></form>
+          <form method="post" action="/bag/update"><input type="hidden" name="sku" value="{{ l.sku }}"><input type="hidden" name="qty" value="0"><button class="rm" type="submit">Remove</button></form>
+        </div>
+      </li>
+      {% endfor %}
+    </ul>
+    <div class="k-total"><span>Subtotal</span><span>{{ subtotal }}</span></div>
+    <p class="k-small">{{ delivery_note }} At {{ short }}'s rate ({{ rate }}) the subtotal is {{ usd }}.</p>
+  </div>
+  {% for pr in problems %}<p class="k-note risk">{{ pr }} {% if shell.site.archetype == "bakery" %}Checkout checks again for the day you pick.{% else %}Change the quantity or remove it to check out.{% endif %}</p>{% endfor %}
+  <div class="k-acts">
+    {% if problems and shell.site.archetype != "bakery" %}<button class="k-btn" type="button" disabled>Check out</button>{% else %}<a class="k-btn" href="/checkout">Check out</a>{% endif %}
+    {% if browse %}<a class="k-btn ghost" href="{{ browse[0].href }}">Keep shopping</a>{% endif %}
+  </div>
+  {% if not signed_in %}<p class="k-small">Checkout asks you to sign in, so you can follow your order and get a receipt. Your bag stays as it is.</p>{% endif %}
+  {% else %}
+  <div class="k-card k-empty">
+    <h2>Your bag is empty.</h2>
+    <p>Things you add from the menu appear here, with their prices and today's stock.</p>
+    <div class="k-acts">{% for b in browse %}<a class="k-btn{% if not loop.first %} ghost{% endif %}" href="{{ b.href }}">Open {{ b.name }}</a>{% endfor %}<a class="k-btn ghost" href="/orders">Your orders</a></div>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,18 @@
+{% block subject %}WebAgents on {{ site.name }} are resting: the {{ budget.period }} AI budget is used{% endblock %}
+{% block preheader %}Pages, orders and payments still work. Answers resume {{ budget.resumes }}.{% endblock %}
+{% block body %}
+# Resting · budget reached
+The {{ budget.period }} AI budget of {{ budget.limit|money(budget.currency) }} is used, so your WebAgents stopped making model calls at {{ budget.at }}.
+
+What still works: every page, orders and payments, and anything you do by hand in the console. Desks tell visitors that answers are paused and offer to pass their question to you.
+
+Answers resume {{ budget.resumes }}. Billing shows your budget and what was spent. You can't raise the budget from the console yet.
+
+::button See your AI budget | {{ budget.url }}
+{% endblock %}
+{% block push %}Your WebAgents are resting: the AI budget is used.{% endblock %}
+{% block push_url %}{{ budget.url }}{% endblock %}
+{% block chat %}
+Agentrix: the {{ budget.period }} AI budget ({{ budget.limit|money(budget.currency) }}) is used, so WebAgents on {{ site.name }} are resting. Pages, orders and payments still work. Answers resume {{ budget.resumes }}.
+::button See your AI budget | {{ budget.url }}
+{% endblock %}

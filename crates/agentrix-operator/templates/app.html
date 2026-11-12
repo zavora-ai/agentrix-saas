@@ -1,0 +1,25 @@
+{% extends "layout.html" %}
+{#- Apps whose records don't exist yet. Each says what is true today and what fills it, rather
+    than drawing numbers (voice.md rule 6 and 7). `which` names the app. -#}
+{% block title %}{{ {"rollouts": "Rollouts", "incidents": "Incidents", "money": "Money", "partners": "Partners", "missing-site": "Site not found", "missing-incident": "Incident not found", "missing-partner": "Partner not found"}[which] }}{% endblock %}
+{% block field %}
+{%- if which == "rollouts" %}
+<div class="field-head"><div><h2>Rollouts</h2><div class="sub">Release trains, rings and waves</div></div></div>
+<article class="card tight"><div class="empty"><b>No release train has run yet.</b> Platform versions reach the one cell today through a deploy, and every deploy re-runs the gauntlet on live sites. Trains with rings, canary comparison and two-person promotion arrive with the fleet profile; their first ring is Zavora's own sites.</div></article>
+{%- elif which == "missing-partner" %}
+<div class="field-head"><div><div class="crumbs"><a href="/partners">Partners</a> /</div><h2>Partner not found</h2></div></div>
+<article class="card tight"><div class="empty"><b>No partner has the id <span class="mono">{{ site_id }}</span>.</b> See <a href="/partners">every partner</a>.</div></article>
+{%- elif which == "missing-incident" %}
+<div class="field-head"><div><div class="crumbs"><a href="/incidents">Incidents</a> /</div><h2>Incident not found</h2></div></div>
+<article class="card tight"><div class="empty"><b>No incident is called <span class="mono">{{ site_id }}</span>.</b> See <a href="/incidents">every incident</a>.</div></article>
+{%- elif which == "money" %}
+<div class="field-head"><div><h2>Money</h2><div class="sub">Plans, usage, invoices and payments in USD</div></div></div>
+<article class="card tight"><div class="empty"><b>No subscription has started yet.</b> Plans, usage per site, invoices and PayPal Subscriptions show here as soon as the first owner picks a plan. Model spend per site is already on <a href="/customers">Customers</a>.</div></article>
+{%- elif which == "partners" %}
+<div class="field-head"><div><h2>Partners</h2><div class="sub">Agencies, resellers and referral partners</div></div></div>
+<article class="card tight"><div class="empty"><b>No partners yet.</b> When an agency or reseller signs up, it appears here with its clients, tier and payouts, and gets its own portfolio view.</div></article>
+{%- else %}
+<div class="field-head"><div><div class="crumbs"><a href="/customers">Customers</a> /</div><h2>Site not found</h2></div></div>
+<article class="card tight"><div class="empty"><b>No site has the id <span class="mono">{{ site_id }}</span>.</b> It may have been typed wrong. Find it on <a href="/customers?show=all">the full list</a>.</div></article>
+{%- endif %}
+{% endblock %}

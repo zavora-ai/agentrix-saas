@@ -1,0 +1,383 @@
+{
+  "site": "kilele-bakery-sample",
+  "images": {
+    "hero": {
+      "brief": "Early morning inside a small bakery: plain round sourdough loaves with smooth flour-dusted tops and plain butter croissants on wooden racks by a window, golden sunrise light, a little flour on a wooden counter",
+      "bytes": 80626,
+      "cost_micro_usd": 20644,
+      "description": {
+        "alt": "Round flour-dusted sourdough loaves and golden croissants on wooden racks beside a window in warm morning light",
+        "check": "The upper-shelf croissants appear to have a dark seed or topping, but the brief describes them as plain; confirm before use.",
+        "photographic": true,
+        "shows_person": false,
+        "shows_text": false
+      },
+      "digest": "sha256:5e2cac10c5c647efdf18a15d99fa7bc85e14263ffe9848aff82e5b2be759d3cf",
+      "file": "hero.webp",
+      "height": 768,
+      "kind": "hero",
+      "label": "Sample image, made with AI",
+      "media_type": "image/webp",
+      "model": "z-image-turbo",
+      "prompt": "Early morning inside a small bakery: plain round sourdough loaves with smooth flour-dusted tops and plain butter croissants on wooden racks by a window, golden sunrise light, a little flour on a wooden counter. Natural light, realistic photographic style, calm composition with room for a headline on one side. Colours and mood only: Warm cream, honey and toasted brown tones, soft morning light, a small neighbourhood bakery in Nairobi, honest and unfussy. No people, no faces, no hands. No text, letters, numbers, logos, labels or watermarks.",
+      "seed": 1131,
+      "slot": "hero",
+      "verdict": {
+        "categories": [],
+        "model": "nemotron-3.5-content-safety",
+        "safe": true,
+        "user_safety": "safe"
+      },
+      "width": 1344
+    },
+    "product:banana-bread": {
+      "brief": "A thick slice of plain golden banana bread with a soft yellow crumb, standing beside the loaf",
+      "bytes": 49654,
+      "cost_micro_usd": 11797,
+      "description": {
+        "alt": "Thick slice of banana bread with a pale yellow crumb and dark brown crust, standing on a light surface.",
+        "check": "The crumb looks very open and airy, more like a light sponge than typical banana bread; confirm it matches the product.",
+        "photographic": true,
+        "shows_person": false,
+        "shows_text": false
+      },
+      "digest": "sha256:be2b2ea9b44e9f486b74fb4e63ff64c35ca6ab12fbb97ad9a4eb4f6dd328fd91",
+      "file": "product_banana-bread.webp",
+      "height": 768,
+      "kind": "product",
+      "label": "Sample image, made with AI",
+      "media_type": "image/webp",
+      "model": "z-image-turbo",
+      "prompt": "A thick slice of plain golden banana bread with a soft yellow crumb, standing beside the loaf. Product photograph, the item alone and centred on a plain surface, soft studio light, shallow depth of field. Show only what is described: no toppings, fillings, garnishes or props that were not asked for. Colours and mood only: Warm cream, honey and toasted brown tones, soft morning light, a small neighbourhood bakery in Nairobi, honest and unfussy. No people, no faces, no hands. No text, letters, numbers, logos, labels or watermarks.",
+      "seed": 1146,
+      "slot": "product:banana-bread",
+      "verdict": {
+        "categories": [],
+        "model": "nemotron-3.5-content-safety",
+        "safe": true,
+        "user_safety": "safe"
+      },
+      "width": 768
+    },
+    "product:cardamom-bun": {
+      "brief": "A soft knotted cardamom bun with a golden glaze and a sprinkle of sugar, no filling",
+      "bytes": 42384,
+      "cost_micro_usd": 11797,
+      "description": {
+        "alt": "Knotted cardamom bun with a golden-brown crust and coarse sugar sprinkled on top, on a light grey surface",
+        "check": "",
+        "photographic": true,
+        "shows_person": false,
+        "shows_text": false
+      },
+      "digest": "sha256:0ed17c9fd96f09cf9133722c309c28a7748b8c7d66900aea03ffd11f3cfbcc8a",
+      "file": "product_cardamom-bun.webp",
+      "height": 768,
+      "kind": "product",
+      "label": "Sample image, made with AI",
+      "media_type": "image/webp",
+      "model": "z-image-turbo",
+      "prompt": "A soft knotted cardamom bun with a golden glaze and a sprinkle of sugar, no filling. Product photograph, the item alone and centred on a plain surface, soft studio light, shallow depth of field. Show only what is described: no toppings, fillings, garnishes or props that were not asked for. Colours and mood only: Warm cream, honey and toasted brown tones, soft morning light, a small neighbourhood bakery in Nairobi, honest and unfussy. No people, no faces, no hands. No text, letters, numbers, logos, labels or watermarks.",
+      "seed": 1114,
+      "slot": "product:cardamom-bun",
+      "verdict": {
+        "categories": [],
+        "model": "nemotron-3.5-content-safety",
+        "safe": true,
+        "user_safety": "safe"
+      },
+      "width": 768
+    },
+    "product:cinnamon-roll": {
+      "brief": "A plain cinnamon roll with a dark brown sugar and cinnamon swirl and a glossy top, nothing else on it",
+      "bytes": 35608,
+      "cost_micro_usd": 11797,
+      "description": {
+        "alt": "A baked cinnamon roll with a dark brown sugar and cinnamon swirl and a glossy top on a plain beige surface.",
+        "check": "",
+        "photographic": true,
+        "shows_person": false,
+        "shows_text": false
+      },
+      "digest": "sha256:3d2828c4f550927d6f565e5e100c40019538cdfe8e684215f3afecdeb32d8f22",
+      "file": "product_cinnamon-roll.webp",
+      "height": 768,
+      "kind": "product",
+      "label": "Sample image, made with AI",
+      "media_type": "image/webp",
+      "model": "z-image-turbo",
+      "prompt": "A plain cinnamon roll with a dark brown sugar and cinnamon swirl and a glossy top, nothing else on it. Product photograph, the item alone and centred on a plain surface, soft studio light, shallow depth of field. Show only what is described: no toppings, fillings, garnishes or props that were not asked for. Colours and mood only: Warm cream, honey and toasted brown tones, soft morning light, a small neighbourhood bakery in Nairobi, honest and unfussy. No people, no faces, no hands. No text, letters, numbers, logos, labels or watermarks.",
+      "seed": 1117,
+      "slot": "product:cinnamon-roll",
+      "verdict": {
+        "categories": [],
+        "model": "nemotron-3.5-content-safety",
+        "safe": true,
+        "user_safety": "safe"
+      },
+      "width": 768
+    },
+    "product:croissant": {
+      "brief": "Two plain butter croissants with flaky, shiny golden layers, no seeds or toppings",
+      "bytes": 35228,
+      "cost_micro_usd": 11797,
+      "description": {
+        "alt": "Two plain butter croissants with flaky, shiny golden layers on a pale background.",
+        "check": "",
+        "photographic": true,
+        "shows_person": false,
+        "shows_text": false
+      },
+      "digest": "sha256:89263af3897b7f08abb00b56e00274923d906ab74037fb902254756b6c2793ca",
+      "file": "product_croissant.webp",
+      "height": 768,
+      "kind": "product",
+      "label": "Sample image, made with AI",
+      "media_type": "image/webp",
+      "model": "z-image-turbo",
+      "prompt": "Two plain butter croissants with flaky, shiny golden layers, no seeds or toppings. Product photograph, the item alone and centred on a plain surface, soft studio light, shallow depth of field. Show only what is described: no toppings, fillings, garnishes or props that were not asked for. Colours and mood only: Warm cream, honey and toasted brown tones, soft morning light, a small neighbourhood bakery in Nairobi, honest and unfussy. No people, no faces, no hands. No text, letters, numbers, logos, labels or watermarks.",
+      "seed": 1133,
+      "slot": "product:croissant",
+      "verdict": {
+        "categories": [],
+        "model": "nemotron-3.5-content-safety",
+        "safe": true,
+        "user_safety": "safe"
+      },
+      "width": 768
+    },
+    "product:fruit-cake": {
+      "brief": "A rich dark Christmas fruit cake with a glossy top and a slice cut to show dried fruit and nuts",
+      "bytes": 42610,
+      "cost_micro_usd": 11797,
+      "description": {
+        "alt": "Sliced fruit cake loaf with dark glaze on top and studded with dried fruit and nuts on a cream background.",
+        "check": "Confirm the glaze and nut topping match the actual loaf customers receive.",
+        "photographic": true,
+        "shows_person": false,
+        "shows_text": false
+      },
+      "digest": "sha256:1bf559071f220b46977b679690be4f14464750d7b3dfd8da7fc0af78bae0305d",
+      "file": "product_fruit-cake.webp",
+      "height": 768,
+      "kind": "product",
+      "label": "Sample image, made with AI",
+      "media_type": "image/webp",
+      "model": "z-image-turbo",
+      "prompt": "A rich dark Christmas fruit cake with a glossy top and a slice cut to show dried fruit and nuts. Product photograph, the item alone and centred on a plain surface, soft studio light, shallow depth of field. Warm cream, toasted brown and deep berry tones, a small neighbourhood bakery in Nairobi, honest and unfussy. No people, no faces, no hands. No text, letters, numbers, logos, labels or watermarks.",
+      "seed": 1120,
+      "slot": "product:fruit-cake",
+      "verdict": {
+        "categories": [],
+        "model": "nemotron-3.5-content-safety",
+        "safe": true,
+        "user_safety": "safe"
+      },
+      "width": 768
+    },
+    "product:mandazi": {
+      "brief": "A woven plate of puffy golden-brown mandazi, plain East African fried doughnuts cut in triangles, one torn open to show a soft fluffy white inside",
+      "bytes": 37850,
+      "cost_micro_usd": 11797,
+      "description": {
+        "alt": "Woven bamboo plate holding golden-brown mandazi, one torn open to show a soft white interior.",
+        "check": "The plate shows seven pieces, not the six the product listing states.",
+        "photographic": true,
+        "shows_person": false,
+        "shows_text": false
+      },
+      "digest": "sha256:2958221da6c3f838c2163e6f4613d9105143a203bc0027b316d021dea80150c1",
+      "file": "product_mandazi.webp",
+      "height": 768,
+      "kind": "product",
+      "label": "Sample image, made with AI",
+      "media_type": "image/webp",
+      "model": "z-image-turbo",
+      "prompt": "A woven plate of puffy golden-brown mandazi, plain East African fried doughnuts cut in triangles, one torn open to show a soft fluffy white inside. Product photograph, the item alone and centred on a plain surface, soft studio light, shallow depth of field. Show only what is described: no toppings, fillings, garnishes or props that were not asked for. Colours and mood only: Warm cream, honey and toasted brown tones, soft morning light, a small neighbourhood bakery in Nairobi, honest and unfussy. No people, no faces, no hands. No text, letters, numbers, logos, labels or watermarks.",
+      "seed": 1145,
+      "slot": "product:mandazi",
+      "verdict": {
+        "categories": [],
+        "model": "nemotron-3.5-content-safety",
+        "safe": true,
+        "user_safety": "safe"
+      },
+      "width": 768
+    },
+    "product:red-velvet": {
+      "brief": "A slice of red velvet cake with white cream cheese frosting between the layers, on a small plate",
+      "bytes": 33600,
+      "cost_micro_usd": 11797,
+      "description": {
+        "alt": "A slice of two-layer red velvet cake with white cream frosting, cocoa dusting and a cream rosette on a white plate.",
+        "check": "Confirm the slice size matches the portion sold for KSh 350.",
+        "photographic": true,
+        "shows_person": false,
+        "shows_text": false
+      },
+      "digest": "sha256:abaa70e2d40b09ae84a917a30e18dd2b1704b57f9c5c7bb0f32ae2b6647f6f0e",
+      "file": "product_red-velvet.webp",
+      "height": 768,
+      "kind": "product",
+      "label": "Sample image, made with AI",
+      "media_type": "image/webp",
+      "model": "z-image-turbo",
+      "prompt": "A slice of red velvet cake with white cream cheese frosting between the layers, on a small plate. Product photograph, the item alone and centred on a plain surface, soft studio light, shallow depth of field. Warm cream, toasted brown and deep berry tones, a small neighbourhood bakery in Nairobi, honest and unfussy. No people, no faces, no hands. No text, letters, numbers, logos, labels or watermarks.",
+      "seed": 1118,
+      "slot": "product:red-velvet",
+      "verdict": {
+        "categories": [],
+        "model": "nemotron-3.5-content-safety",
+        "safe": true,
+        "user_safety": "safe"
+      },
+      "width": 768
+    },
+    "product:rye": {
+      "brief": "A dark, dense rye loaf with caraway seeds on the crust, one slice cut to show a plain dark crumb with no fruit",
+      "bytes": 53674,
+      "cost_micro_usd": 11797,
+      "description": {
+        "alt": "A dark rye loaf topped with caraway seeds, sliced to reveal a dense brown crumb",
+        "check": "",
+        "photographic": true,
+        "shows_person": false,
+        "shows_text": false
+      },
+      "digest": "sha256:597d9b05aa2dde84dc08bacc92fa7563228d2d8f8102b83b431fe57b584232f1",
+      "file": "product_rye.webp",
+      "height": 768,
+      "kind": "product",
+      "label": "Sample image, made with AI",
+      "media_type": "image/webp",
+      "model": "z-image-turbo",
+      "prompt": "A dark, dense rye loaf with caraway seeds on the crust, one slice cut to show a plain dark crumb with no fruit. Product photograph, the item alone and centred on a plain surface, soft studio light, shallow depth of field. Show only what is described: no toppings, fillings, garnishes or props that were not asked for. Colours and mood only: Warm cream, honey and toasted brown tones, soft morning light, a small neighbourhood bakery in Nairobi, honest and unfussy. No people, no faces, no hands. No text, letters, numbers, logos, labels or watermarks.",
+      "seed": 1112,
+      "slot": "product:rye",
+      "verdict": {
+        "categories": [],
+        "model": "nemotron-3.5-content-safety",
+        "safe": true,
+        "user_safety": "safe"
+      },
+      "width": 768
+    },
+    "product:sourdough": {
+      "brief": "A round country sourdough loaf with a deep golden, blistered crust and an open scored ear",
+      "bytes": 67106,
+      "cost_micro_usd": 11797,
+      "description": {
+        "alt": "A round sourdough loaf dusted with flour, its scored top cracked open to show a dark, blistered crust on a plain light background.",
+        "check": "Confirm the plain cream background matches your site's product tile colour.",
+        "photographic": true,
+        "shows_person": false,
+        "shows_text": false
+      },
+      "digest": "sha256:c101b6b1aa9f0f12b29d9331c445f3d14dde61d6fdecaee176a949a0b379e127",
+      "file": "product_sourdough.webp",
+      "height": 768,
+      "kind": "product",
+      "label": "Sample image, made with AI",
+      "media_type": "image/webp",
+      "model": "z-image-turbo",
+      "prompt": "A round country sourdough loaf with a deep golden, blistered crust and an open scored ear. Product photograph, the item alone and centred on a plain surface, soft studio light, shallow depth of field. Warm cream, toasted brown and deep berry tones, a small neighbourhood bakery in Nairobi, honest and unfussy. No people, no faces, no hands. No text, letters, numbers, logos, labels or watermarks.",
+      "seed": 1111,
+      "slot": "product:sourdough",
+      "verdict": {
+        "categories": [],
+        "model": "nemotron-3.5-content-safety",
+        "safe": true,
+        "user_safety": "safe"
+      },
+      "width": 768
+    },
+    "product:weekend-bake-box": {
+      "brief": "An open brown cardboard bakery box holding a sourdough loaf, four cinnamon buns and a banana loaf",
+      "bytes": 35292,
+      "cost_micro_usd": 11797,
+      "description": {
+        "alt": "An open brown box holding a round sourdough loaf, two cinnamon rolls, and a banana",
+        "check": "Confirm the banana is included in the box and not just a styling prop, so the photo matches what is delivered",
+        "photographic": true,
+        "shows_person": false,
+        "shows_text": false
+      },
+      "digest": "sha256:84e6ae53a68028fccd18779b47baf0fbe805aaa71a659650c18614c4c70396d9",
+      "file": "product_weekend-bake-box.webp",
+      "height": 768,
+      "kind": "product",
+      "label": "Sample image, made with AI",
+      "media_type": "image/webp",
+      "model": "z-image-turbo",
+      "prompt": "An open brown cardboard bakery box holding a sourdough loaf, four cinnamon buns and a banana loaf. Product photograph, the item alone and centred on a plain surface, soft studio light, shallow depth of field. Warm cream, toasted brown and deep berry tones, a small neighbourhood bakery in Nairobi, honest and unfussy. No people, no faces, no hands. No text, letters, numbers, logos, labels or watermarks.",
+      "seed": 1119,
+      "slot": "product:weekend-bake-box",
+      "verdict": {
+        "categories": [],
+        "model": "nemotron-3.5-content-safety",
+        "safe": true,
+        "user_safety": "safe"
+      },
+      "width": 768
+    },
+    "section:cakes": {
+      "brief": "A two-tier celebration cake with cream frosting and fresh berries on a cake stand, on a wooden table in a bakery",
+      "bytes": 41366,
+      "cost_micro_usd": 15729,
+      "description": {
+        "alt": "Two-tier cream-frosted cake topped with mixed berries on a white cake stand",
+        "check": "",
+        "photographic": true,
+        "shows_person": false,
+        "shows_text": false
+      },
+      "digest": "sha256:8f78d570b901a5767007fec241f1f6f8aa8f4ea485487c1e539221373114128c",
+      "file": "section_cakes.webp",
+      "height": 768,
+      "kind": "section",
+      "label": "Sample image, made with AI",
+      "media_type": "image/webp",
+      "model": "z-image-turbo",
+      "prompt": "A two-tier celebration cake with cream frosting and fresh berries on a cake stand, on a wooden table in a bakery. Natural light, realistic photographic style, calm composition with room for a headline on one side. Warm cream, toasted brown and deep berry tones, a small neighbourhood bakery in Nairobi, honest and unfussy. No people, no faces, no hands. No text, letters, numbers, logos, labels or watermarks.",
+      "seed": 1102,
+      "slot": "section:cakes",
+      "verdict": {
+        "categories": [],
+        "model": "nemotron-3.5-content-safety",
+        "safe": true,
+        "user_safety": "safe"
+      },
+      "width": 1024
+    },
+    "section:visit": {
+      "brief": "The front of a small bakery shop on a leafy street at morning, an open wooden door, a chalkboard stand without writing, potted plants",
+      "bytes": 59650,
+      "cost_micro_usd": 15729,
+      "description": {
+        "alt": "Bakery shop front with open wooden door, blank chalkboard stand, and terracotta potted plants on a leafy street in morning light",
+        "check": "Check the small notices in the window for accurate, legible text before publishing.",
+        "photographic": true,
+        "shows_person": false,
+        "shows_text": true
+      },
+      "digest": "sha256:bee157c90e97fb1c805e26c51fbe89a3438fe1fd50700d3b8bce82963853251d",
+      "file": "section_visit.webp",
+      "height": 768,
+      "kind": "section",
+      "label": "Sample image, made with AI",
+      "media_type": "image/webp",
+      "model": "z-image-turbo",
+      "prompt": "The front of a small bakery shop on a leafy street at morning, an open wooden door, a chalkboard stand without writing, potted plants. Natural light, realistic photographic style, calm composition with room for a headline on one side. Colours and mood only: Warm cream, honey and toasted brown tones, soft morning light, a small neighbourhood bakery in Nairobi, honest and unfussy. No people, no faces, no hands. No text, letters, numbers, logos, labels or watermarks.",
+      "seed": 1103,
+      "slot": "section:visit",
+      "verdict": {
+        "categories": [],
+        "model": "nemotron-3.5-content-safety",
+        "safe": true,
+        "user_safety": "safe"
+      },
+      "width": 1024
+    }
+  },
+  "blocked": []
+}

@@ -1,0 +1,27 @@
+{#- agentrix-ui · platform pages on agentrix.website: start, Assess, sign-up and sign-in, plans,
+the claim, the Move, go-live, help. The concepts' top bar with the Agentrix logo, a centred page,
+the open-source footer.
+
+Blocks: title, description, banner (above the top bar: holds, offline), nav (links beside the logo),
+topright (sign-in, account), main_class ("page" by default; "page wide", "wrap"), main, foot,
+plus everything in ui/base.html. -#}
+{% extends "ui/base.html" %}
+{% block body %}
+{% block banner %}{% endblock %}
+<header class="topbar">
+  <a class="logo" href="/"><span class="mark" aria-hidden="true"></span>Agentrix</a>
+  {% block nav %}{% endblock %}
+  <div class="right">{% block topright %}{% endblock %}</div>
+</header>
+<main id="main" class="{% block main_class %}page{% endblock %}">
+{% block main %}{% endblock %}
+</main>
+{% block foot %}
+<footer class="foot">
+  <div class="row">
+    <span>Agentrix WebAgent Platform by Zavora · open source (MIT)</span>
+    <a href="/.well-known/agentrix/keys">The key our receipts are signed with</a>
+  </div>
+</footer>
+{% endblock %}
+{% endblock %}

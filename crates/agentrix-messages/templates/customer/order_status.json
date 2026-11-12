@@ -1,0 +1,37 @@
+{
+ "site": {
+  "name": "Kilele Bakery",
+  "host": "kilele-bakery-sample.agentrix.website",
+  "sample": true,
+  "owner": "Wanjiru",
+  "accent": "#3b2416",
+  "url": "https://kilele-bakery-sample.agentrix.website"
+ },
+ "person": {
+  "name": "Njeri"
+ },
+ "order": {
+  "number": "KB-1042",
+  "url": "https://kilele-bakery-sample.agentrix.website/orders/KB-1042",
+  "steps": [
+   {
+    "label": "Paid",
+    "when": "Thu 12 Nov, 14:06"
+   },
+   {
+    "label": "Baking",
+    "when": "Sat 14 Nov, 05:40"
+   },
+   {
+    "label": "Out for delivery",
+    "when": "Expected 10:00–12:00"
+   }
+  ]
+ },
+ "status": {
+  "label": "Baking",
+  "by": "Wanjiru",
+  "at": "05:40",
+  "note": "Your loaves go in at six. They leave for Kilimani by ten."
+ }
+}

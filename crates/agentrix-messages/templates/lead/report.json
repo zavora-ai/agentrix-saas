@@ -1,0 +1,17 @@
+{
+ "person": {"name": "Wanjiru"},
+ "check": {
+  "site": "kilele-bakery.example",
+  "checked_at": "Sun 8 Nov, 10:12",
+  "headline": "We read 41 pages. Three things to fix first.",
+  "findings": [
+   "Your opening hours say 06:30 on the home page and 07:00 on the contact page.",
+   "The cake page doesn't say how many days' notice a cake needs.",
+   "Two pages load a script from a domain that no longer exists."
+  ],
+  "report_url": "https://agentrix.website/assess/a_7k2m9q",
+  "keep_url": "https://agentrix.website/start?from=a_7k2m9q",
+  "expires": "Tue 8 Dec"
+ },
+ "consent": {"words": "Email me the report", "given_at": "Sun 8 Nov, 10:12", "source": "agentrix.website check"}
+}

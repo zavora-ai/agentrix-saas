@@ -1,0 +1,21 @@
+# The edge's routes. One site block per business host, each proxying to that business's Service.
+# `edge-check` is the proof that the load balancer, DNS and certificates work before any business runs here.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: caddyfile
+  namespace: edge
+  labels:
+    app.kubernetes.io/part-of: agentrix-saas
+data:
+  Caddyfile: |
+    {
+    	admin off
+    	http_port 8080
+    	https_port 8443
+    }
+
+    edge-check.paypal.agentrix.website {
+    	header -Server
+    	respond "Agentrix cluster edge: ok" 200
+    }

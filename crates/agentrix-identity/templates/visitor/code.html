@@ -1,0 +1,24 @@
+<section class="acct" id="acct" data-acct="code" data-pending="{{ pending }}">
+  <div>
+    <h1 class="acct-h">Check your email</h1>
+    {% if mailbox %}
+    <p class="acct-why">This is a sample site, so the code for {{ sent_to }} shows here instead of in an email. It works once, for {{ minutes }} minutes.</p>
+    {% else %}
+    <p class="acct-why">We sent a 6-digit code to {{ sent_to }}. It works once, for {{ minutes }} minutes.</p>
+    {% endif %}
+  </div>
+  {% if mailbox and test_agent %}<p class="note" role="status"><b>Test customer agent.</b> This address belongs to one of Agentrix's scripted test shoppers, so its code shows here and no email is sent: <b class="mono" id="acct-test-code">{{ mailbox }}</b>.</p>
+  {% elif mailbox %}<p class="note" role="status"><b>Sample mailbox.</b> Your code is <b class="mono">{{ mailbox }}</b>. An address you really own gets the code by email instead.</p>{% endif %}
+  <form class="acct-form" method="post" action="/account/code/check" novalidate>
+    <input type="hidden" name="pending" value="{{ pending }}">
+    <label class="field">6-digit code<input class="code" id="acct-code-input" name="code" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="7" pattern="[0-9 ]{6,7}" required autofocus></label>
+    <button class="btn wide" type="submit" id="acct-verify">{{ button }}</button>
+  </form>
+  <p class="note warn" id="acct-error" role="alert"{% if not error %} hidden{% endif %}>{{ error }}</p>
+  <form class="acct-row" method="post" action="/account/code/resend">
+    <input type="hidden" name="pending" value="{{ pending }}">
+    <button class="btn ghost" type="submit" id="acct-resend">Send a new code</button>
+    <a class="link" href="/account/sign-in">Use a different email</a>
+  </form>
+  <p class="small">{{ site }} never asks for this code in a chat, by WhatsApp or on the phone. Only type it here.</p>
+</section>

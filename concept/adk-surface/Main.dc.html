@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>One kernel, every surface</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap">
+<style>body{margin:0}</style>
+</helmet>
+<div style="width: 1440px; height: 960px; box-sizing: border-box; padding: 64px 80px; font-family: Inter, system-ui, sans-serif; color: {{t.text}}; background: {{t.glow}}, {{t.bg}}; display: flex; flex-direction: column; gap: 44px">
+
+  <header style="display: flex; flex-direction: column; gap: 20px; max-width: 900px">
+    <span style="align-self: flex-start; display: flex; align-items: center; gap: 8px; padding: 6px 14px; border: 1px solid {{t.accentLine}}; border-radius: 999px; background: {{t.surface}}; font-size: 14px; font-weight: 500; color: {{t.accent}}"><span style="width: 7px; height: 7px; border-radius: 4px; background: {{t.brand}}"></span>adk-surface · Spec 3.3</span>
+    <h1 style="margin: 0; font-size: 72px; line-height: 1.02; font-weight: 800; letter-spacing: -0.035em">One kernel.<br><span style="color: {{t.brand}}">Every surface.</span></h1>
+    <p style="margin: 0; font-size: 20px; line-height: 1.5; color: {{t.text2}}; max-width: 720px">Agents live in the kernel. Surfaces are windows onto it. A decision is made once, from anywhere, and every window knows who made it.</p>
+  </header>
+
+  <div style="display: flex; flex-direction: column; gap: 14px">
+    <div style="display: flex; gap: 24px; align-items: stretch">
+      <span style="flex: 0 0 110px; padding-top: 20px; font-size: 15px; font-weight: 600; color: {{t.muted}}">Surfaces</span>
+      <div style="flex-grow: 1; display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 12px">
+        <div style="background: {{t.surface}}; border: 1px solid {{t.border}}; border-radius: 18px; padding: 16px; display: flex; flex-direction: column; gap: 10px; box-shadow: {{t.shadow}}">
+          <span style="width: 36px; height: 36px; border-radius: 10px; background: {{t.accentSoft}}; display: flex; align-items: center; justify-content: center"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="{{t.accent}}" stroke-width="1.6" aria-hidden="true"><rect x="2" y="3" width="14" height="12" rx="2"></rect><path d="M2 6.5h14"></path></svg></span>
+          <span style="font-weight: 700; font-size: 16px">Web home</span>
+          <span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: {{t.muted}}">web</span>
+        </div>
+        <div style="background: {{t.surface}}; border: 1px solid {{t.border}}; border-radius: 18px; padding: 16px; display: flex; flex-direction: column; gap: 10px; box-shadow: {{t.shadow}}">
+          <span style="width: 36px; height: 36px; border-radius: 10px; background: {{t.raised}}; display: flex; align-items: center; justify-content: center"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="{{t.text}}" stroke-width="1.6" aria-hidden="true"><path d="M3 5l4 4-4 4M9 13h6"></path></svg></span>
+          <span style="font-weight: 700; font-size: 16px">Terminal</span>
+          <span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: {{t.muted}}">tui</span>
+        </div>
+        <div style="background: {{t.surface}}; border: 1px solid {{t.border}}; border-radius: 18px; padding: 16px; display: flex; flex-direction: column; gap: 10px; box-shadow: {{t.shadow}}">
+          <span style="width: 36px; height: 36px; border-radius: 10px; background: {{t.greenSoft}}; display: flex; align-items: center; justify-content: center"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="{{t.green}}" stroke-width="1.6" aria-hidden="true"><path d="M3 4h12v8H8l-3 3v-3H3z"></path></svg></span>
+          <span style="font-weight: 700; font-size: 16px">Chat</span>
+          <span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: {{t.muted}}">channels</span>
+        </div>
+        <div style="background: {{t.surface}}; border: 1px solid {{t.border}}; border-radius: 18px; padding: 16px; display: flex; flex-direction: column; gap: 10px; box-shadow: {{t.shadow}}">
+          <span style="width: 36px; height: 36px; border-radius: 10px; background: {{t.blueSoft}}; display: flex; align-items: center; justify-content: center"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="{{t.blue}}" stroke-width="1.6" aria-hidden="true"><rect x="5" y="2" width="8" height="14" rx="2"></rect><path d="M8 13.5h2"></path></svg></span>
+          <span style="font-weight: 700; font-size: 16px">Phone</span>
+          <span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: {{t.muted}}">mobile</span>
+        </div>
+        <div style="background: {{t.surface}}; border: 1px solid {{t.border}}; border-radius: 18px; padding: 16px; display: flex; flex-direction: column; gap: 10px; box-shadow: {{t.shadow}}">
+          <span style="width: 36px; height: 36px; border-radius: 10px; background: {{t.purpleSoft}}; display: flex; align-items: center; justify-content: center"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="{{t.purple}}" stroke-width="1.6" aria-hidden="true"><rect x="2" y="3" width="14" height="9" rx="1.5"></rect><path d="M6 15h6M9 12v3"></path></svg></span>
+          <span style="font-weight: 700; font-size: 16px">Desktop</span>
+          <span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: {{t.muted}}">desktop</span>
+        </div>
+        <div style="background: {{t.surface}}; border: 1px solid {{t.border}}; border-radius: 18px; padding: 16px; display: flex; flex-direction: column; gap: 10px; box-shadow: {{t.shadow}}">
+          <span style="width: 36px; height: 36px; border-radius: 10px; background: {{t.accentSoft}}; display: flex; align-items: center; justify-content: center"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="{{t.accent}}" stroke-width="1.6" aria-hidden="true"><rect x="6.5" y="2" width="5" height="8" rx="2.5"></rect><path d="M4 8.5a5 5 0 0010 0M9 13.5V16"></path></svg></span>
+          <span style="font-weight: 700; font-size: 16px">Voice and video</span>
+          <span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: {{t.muted}}">voice</span>
+        </div>
+      </div>
+    </div>
+
+    <div style="display: flex; gap: 24px; align-items: stretch">
+      <span style="flex: 0 0 110px; padding-top: 20px; font-size: 15px; font-weight: 600; color: {{t.muted}}">Engine</span>
+      <div style="flex-grow: 1; background: {{t.raised}}; border: 1px solid {{t.border}}; border-radius: 18px; padding: 20px 22px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px">
+        <div style="display: flex; flex-direction: column; gap: 4px"><span style="font-weight: 700; font-size: 16px">Feed</span><span style="font-size: 14px; color: {{t.text2}}; line-height: 1.45">Every event in order. Reconnect anywhere without a gap.</span></div>
+        <div style="display: flex; flex-direction: column; gap: 4px"><span style="font-weight: 700; font-size: 16px">Projection</span><span style="font-size: 14px; color: {{t.text2}}; line-height: 1.45">Events become cards, rows and status once, so every surface agrees.</span></div>
+        <div style="display: flex; flex-direction: column; gap: 4px"><span style="font-weight: 700; font-size: 16px">Commands</span><span style="font-size: 14px; color: {{t.text2}}; line-height: 1.45">Decide, send, stop. Each one signed with who, and how.</span></div>
+      </div>
+    </div>
+
+    <div style="display: flex; gap: 24px; align-items: stretch">
+      <span style="flex: 0 0 110px; padding-top: 20px; font-size: 15px; font-weight: 600; color: {{t.muted}}">Kernel</span>
+      <div style="flex-grow: 1; background: {{t.kernelBg}}; border: 1px solid {{t.border}}; border-radius: 18px; padding: 20px 22px; display: flex; flex-wrap: wrap; gap: 10px 28px; align-items: center">
+        <span style="font-weight: 700; font-size: 16px; color: {{t.kernelText}}">adk-kernel</span>
+        <span style="font-size: 14px; color: {{t.kernelMuted}}">Agents on any model</span>
+        <span style="font-size: 14px; color: {{t.kernelMuted}}">Decisions that wait</span>
+        <span style="font-size: 14px; color: {{t.kernelMuted}}">Routines and quiet hours</span>
+        <span style="font-size: 14px; color: {{t.kernelMuted}}">Memory you can undo</span>
+        <span style="font-size: 14px; color: {{t.kernelMuted}}">Activity ledger</span>
+        <span style="font-size: 14px; color: {{t.kernelMuted}}">Verifiable proof</span>
+        <span style="margin-left: auto; font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #FF9C78">adk-rust up</span>
+      </div>
+    </div>
+  </div>
+
+  <div style="display: flex; flex-wrap: wrap; gap: 8px; align-items: center">
+    <span style="font-size: 15px; font-weight: 600; color: {{t.muted}}; margin-right: 10px">Everywhere</span>
+    <span style="padding: 7px 13px; border-radius: 999px; background: {{t.raised}}; border: 1px solid {{t.border}}; font-size: 14px; color: {{t.text2}}">Esc never decides</span>
+    <span style="padding: 7px 13px; border-radius: 999px; background: {{t.raised}}; border: 1px solid {{t.border}}; font-size: 14px; color: {{t.text2}}">Typing never answers</span>
+    <span style="padding: 7px 13px; border-radius: 999px; background: {{t.raised}}; border: 1px solid {{t.border}}; font-size: 14px; color: {{t.text2}}">Unanswered decisions wait</span>
+    <span style="padding: 7px 13px; border-radius: 999px; background: {{t.raised}}; border: 1px solid {{t.border}}; font-size: 14px; color: {{t.text2}}">Voice and chat: once or deny</span>
+    <span style="padding: 7px 13px; border-radius: 999px; background: {{t.raised}}; border: 1px solid {{t.border}}; font-size: 14px; color: {{t.text2}}">Agents never draw approvals</span>
+    <span style="padding: 7px 13px; border-radius: 999px; background: {{t.raised}}; border: 1px solid {{t.border}}; font-size: 14px; color: {{t.text2}}">No agent approves itself</span>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"dark":{"editor":"boolean","default":false},"$preview":{"width":1440,"height":960}}'>
+class Component extends DCLogic {
+  renderVals() {
+    var L = {bg: '#FFFFFF', surface: '#FFFFFF', raised: '#F6F7F9', border: '#E6E8EC', text: '#0F172A', text2: '#475569', muted: '#64748B', brand: '#F74C00', accent: '#C03A00', accentSoft: '#FFF4EE', accentLine: '#FFD6C2', green: '#12774B', greenSoft: '#E8F6EF', blue: '#2563EB', blueSoft: '#EAF1FE', purple: '#6D28D9', purpleSoft: '#F3EDFE', shadow: '0 1px 2px rgba(15,23,42,0.04), 0 12px 32px rgba(15,23,42,0.06)', glow: 'radial-gradient(820px 520px at 0% 0%, #FFE9DE 0%, rgba(255,233,222,0) 72%)', kernelBg: '#0A1628', kernelText: '#FFFFFF', kernelMuted: '#C6D0DC'};
+    var D = {bg: '#0A1628', surface: '#15233B', raised: '#1C2B45', border: '#2A3D5C', text: '#F1F5F9', text2: '#D5DEE8', muted: '#A7B4C6', brand: '#F74C00', accent: '#FF9C78', accentSoft: 'rgba(247,76,0,0.14)', accentLine: 'rgba(255,156,120,0.38)', green: '#61E7A5', greenSoft: 'rgba(97,231,165,0.12)', blue: '#79B2FF', blueSoft: 'rgba(121,178,255,0.12)', purple: '#C4B5FD', purpleSoft: 'rgba(196,181,253,0.12)', shadow: 'none', glow: 'radial-gradient(820px 520px at 0% 0%, rgba(247,76,0,0.16) 0%, rgba(247,76,0,0) 72%)', kernelBg: '#1C2B45', kernelText: '#F1F5F9', kernelMuted: '#D5DEE8'};
+    return { t: this.props.dark ? D : L };
+  }
+}
+</script>
+</body>
+</html>

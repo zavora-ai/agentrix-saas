@@ -1,0 +1,37 @@
+{% extends "ui/layouts/page.html" %}
+{% import "ui/kit.html" as ui %}
+{% import "saas/macros.html" as s %}
+{% block title %}Subscribe · Agentrix{% endblock %}
+{% block styles %}<link rel="stylesheet" href="/static/saas/saas.css?v={{ saas_v }}">{% endblock %}
+{% block nav %}{{ s.money_nav("plans") }}{% endblock %}
+{% block main %}
+{% if plan %}
+<div class="page-head"><p class="eyebrow">Step 1 of 3 · choose how to pay</p><h1>Subscribe to {{ plan.name }}</h1>
+<p class="lead">{{ plan.monthly }} a month, or {{ plan.annual }} for 12 months up front (save {{ plan.saving }}).</p></div>
+{{ s.sandbox_banner() }}
+{% if error %}{{ ui.banner("wait", error) }}{% endif %}
+{% call ui.card("How you pay") %}
+<div class="segmented" role="group" aria-label="Billing period">
+  <a class="seg{% if period == 'month' %} on{% endif %}" href="/subscribe?plan={{ plan.id }}&amp;period=month"{% if period == 'month' %} aria-current="true"{% endif %}>Monthly · {{ plan.monthly }}</a>
+  <a class="seg{% if period == 'year' %} on{% endif %}" href="/subscribe?plan={{ plan.id }}&amp;period=year"{% if period == 'year' %} aria-current="true"{% endif %}>12 months · {{ plan.annual }}</a>
+</div>
+<ul class="plain checklist">{% for i in plan.includes %}<li>{{ i }}</li>{% endfor %}</ul>
+{% if connected %}
+<form method="post" action="/subscribe" class="stack">
+  <input type="hidden" name="plan" value="{{ plan.id }}">
+  <input type="hidden" name="period" value="{{ period }}">
+  {{ ui.field("email", "Your email (optional, to fill in PayPal's page)", type="email", autocomplete="email") }}
+  {{ ui.button("Continue to PayPal", kind="primary", type="submit", size="lg") }}
+  <p class="small muted">You approve the plan on PayPal's own page. Your plan is active once PayPal's signed notice reaches us and the first payment is booked.</p>
+</form>
+{% else %}
+{{ ui.banner("wait", "PayPal checkout isn't connected on this node yet. Nothing can be charged here.") }}
+{% endif %}
+{% endcall %}
+{% else %}
+{{ ui.empty("No plan by that name", "Pick a plan from the price list.", action={"label": "See the plans", "href": "/plans"}) }}
+{% endif %}
+{% endblock %}
+{% block foot %}
+<footer class="foot"><div class="row"><span>Agentrix by Zavora · sandbox demo for the PayPal AI Hackathon · open source (MIT)</span></div></footer>
+{% endblock %}

@@ -1,0 +1,26 @@
+{% import "ui/kit.html" as ui %}
+<div class="field-head">
+  <div><h2>{{ m.subject }}</h2><div class="sub">{{ ui.chip(m.status, m.status_tone) }}{% if m.status_reason %} {{ m.status_reason }}{% endif %}</div></div>
+  {{ ui.button("All messages", href=base, size="sm") }}
+</div>
+<div class="cards">
+  <article class="fcard" aria-labelledby="facts-h">
+    <div class="fcard-head"><div class="who"><b id="facts-h">What, to whom and why</b></div></div>
+    {{ ui.kv(facts) }}
+    <details class="msg-text"><summary class="small">Details</summary>{{ ui.kv(details) }}</details>
+  </article>
+  <article class="fcard span2" aria-labelledby="body-h">
+    <div class="fcard-head"><div class="who"><b id="body-h">{% if channel_key == "email" %}The email{% elif channel_key == "push" %}The notification{% else %}The chat message{% endif %}</b><span class="state-line">The copy kept in the outbox. Codes are replaced with dots before it is stored.</span></div></div>
+    {% if has_html %}
+    <iframe class="msg-frame" title="The email as it would arrive" sandbox="allow-same-origin" src="/console/messages/{{ m.id }}/view"></iframe>
+    <details class="msg-text"><summary class="small">Plain-text version</summary><pre>{{ body_text }}</pre></details>
+    {% elif channel_key == "push" %}
+    <div class="msg-push"><b>{{ from_name }}</b><span>{{ body_text }}</span></div>
+    <p class="small muted">A notification says only that something is waiting. The details show only in the console, once you are past the lock screen.</p>
+    {% else %}
+    <pre class="msg-chat">{{ body_text }}</pre>
+    {% if replies %}<p class="msg-meta">{% for r in replies %}{{ ui.chip(r, "info") }} {% endfor %}</p>{% endif %}
+    {% endif %}
+  </article>
+</div>
+<link rel="stylesheet" href="/console/messages/assets/messages.css?v={{ ui_v }}">

@@ -1,0 +1,14 @@
+{% extends "classy/layout.html" %}
+{% block main %}
+<section class="cp-section first cp-missing">
+  <span class="cp-eyebrow">Not found</span>
+  <h1 class="cp-h1">That page isn't on this site.</h1>
+  <p class="sub">There's no page at <code>{{ path }}</code>. It may have moved, or the link has a typo.</p>
+  <form class="cp-bigsearch" role="search" action="/search" method="get">
+    <label class="sr-only" for="nq">Search or ask</label>
+    <input id="nq" name="q" autocomplete="off" placeholder="Search for a scent, a gift or delivery">
+    <button class="act primary" type="submit">Search</button>
+  </form>
+  <p class="row" style="margin-top:14px"><a class="act" href="/">Home</a><a class="act" href="/fragrances">Fragrances</a><a class="act" href="/gifts">Gifts</a><a class="act" href="/delivery">Delivery &amp; returns</a></p>
+</section>
+{% endblock %}

@@ -1,0 +1,471 @@
+{
+  "site": "agentrix-home",
+  "images": {
+    "film:01": {
+      "brief": "Eight in the morning outside Kilele Bakery, a small bright bakery in Westlands, Nairobi, with cream walls and wooden shelves of round sourdough loaves and croissants: a short queue of fictional customers forming under a plain coral awning on a leafy street, warm low sunlight",
+      "bytes": 129930,
+      "cost_micro_usd": 23593,
+      "description": {
+        "alt": "A cream-walled bakery stall with a coral awning and wooden shelves of bread, with a queue of customers on a leafy street.",
+        "check": "The description says a plain awning, but the awning has a scalloped edge, so confirm that matches the intended look.",
+        "photographic": true,
+        "shows_person": true,
+        "shows_text": false
+      },
+      "digest": "sha256:2ac8cf5f636cc2c9d839b0fd6a82d5a804264c1971392504f6c613435256a4d6",
+      "file": "film_01.webp",
+      "height": 1152,
+      "kind": "film",
+      "label": "Made with AI",
+      "media_type": "image/webp",
+      "model": "z-image-turbo",
+      "prompt": "Eight in the morning outside Kilele Bakery, a small bright bakery in Westlands, Nairobi, with cream walls and wooden shelves of round sourdough loaves and croissants: a short queue of fictional customers forming under a plain coral awning on a leafy street, warm low sunlight. Photoreal documentary film still, natural light, shallow depth of field, warm colour grade, Nairobi. The people are fictional and must not resemble any real or famous person. Colours and mood only: Warm colour grade, soft natural light, coral and cream accents. No readable text, letters, numbers, signs, logos, labels or watermarks anywhere.",
+      "seed": 5001,
+      "slot": "film:01",
+      "verdict": {
+        "categories": [],
+        "model": "nemotron-3.5-content-safety",
+        "safe": true,
+        "user_safety": "safe"
+      },
+      "width": 1024
+    },
+    "film:02": {
+      "brief": "A busy morning in a small bright Nairobi bakery with cream walls and wooden shelves of round sourdough loaves and croissants: Njeri, a Kenyan woman in her early twenties with long braids, wearing a cream apron hands a paper bag of bread across the wooden counter while Otieno, a Kenyan man in his mid twenties in a white baker's jacket and white baker's cap carries a tray of croissants behind her. Low in the foreground, under the counter, a thin grey laptop lies flat and shut, lid down, dusty with flour, forgotten on a shelf",
+      "bytes": 71122,
+      "cost_micro_usd": 23593,
+      "description": {
+        "alt": "Braided woman in cream apron packs bread at a counter with a laptop while a baker in white carries croissants behind",
+        "check": "The still shows an open laptop in use at the counter, but the brief calls for a shut, flour-dusted laptop forgotten on a shelf.",
+        "photographic": true,
+        "shows_person": true,
+        "shows_text": true
+      },
+      "digest": "sha256:67b6381b17ea03dfaa488a457361dc6b2c35362c4ec62380574407730c25530d",
+      "file": "film_02.webp",
+      "height": 1152,
+      "kind": "film",
+      "label": "Made with AI",
+      "media_type": "image/webp",
+      "model": "z-image-turbo",
+      "prompt": "A busy morning in a small bright Nairobi bakery with cream walls and wooden shelves of round sourdough loaves and croissants: Njeri, a Kenyan woman in her early twenties with long braids, wearing a cream apron hands a paper bag of bread across the wooden counter while Otieno, a Kenyan man in his mid twenties in a white baker's jacket and white baker's cap carries a tray of croissants behind her. Low in the foreground, under the counter, a thin grey laptop lies flat and shut, lid down, dusty with flour, forgotten on a shelf. Photoreal documentary film still, natural light, shallow depth of field, warm colour grade, Nairobi. The people are fictional and must not resemble any real or famous person. Colours and mood only: Warm colour grade, soft natural light, coral and cream accents. No readable text, letters, numbers, signs, logos, labels or watermarks anywhere.",
+      "seed": 5202,
+      "slot": "film:02",
+      "verdict": {
+        "categories": [],
+        "model": "nemotron-3.5-content-safety",
+        "safe": true,
+        "user_safety": "safe"
+      },
+      "width": 1024
+    },
+    "film:03": {
+      "brief": "Amani, a Kenyan woman in her early thirties in a bright orange and teal kitenge top, sitting on a sofa at home in the evening, frowning at her phone; a blank party invitation card lies on the coffee table",
+      "bytes": 72310,
+      "cost_micro_usd": 23593,
+      "description": {
+        "alt": "Woman in orange and teal kitenge top frowning at her phone while seated on a cream sofa with a card on the coffee table.",
+        "check": "The card on the table has printed text on it, not the blank invitation described.",
+        "photographic": true,
+        "shows_person": true,
+        "shows_text": true
+      },
+      "digest": "sha256:d3ff0bbb15845abf30c26443072b2df595d921eb6764b0c98c7189ddf0b67263",
+      "file": "film_03.webp",
+      "height": 1152,
+      "kind": "film",
+      "label": "Made with AI",
+      "media_type": "image/webp",
+      "model": "z-image-turbo",
+      "prompt": "Amani, a Kenyan woman in her early thirties in a bright orange and teal kitenge top, sitting on a sofa at home in the evening, frowning at her phone; a blank party invitation card lies on the coffee table. Photoreal documentary film still, natural light, shallow depth of field, warm colour grade, Nairobi. The people are fictional and must not resemble any real or famous person. Colours and mood only: Warm colour grade, soft natural light, coral and cream accents. No readable text, letters, numbers, signs, logos, labels or watermarks anywhere.",
+      "seed": 5003,
+      "slot": "film:03",
+      "verdict": {
+        "categories": [],
+        "model": "nemotron-3.5-content-safety",
+        "safe": true,
+        "user_safety": "safe"
+      },
+      "width": 1024
+    },
+    "film:04": {
+      "brief": "Six in the evening outside Kilele Bakery, a small bright bakery in Westlands, Nairobi, with cream walls and wooden shelves of round sourdough loaves and croissants: Wanjiru, a Kenyan woman in her late thirties with short natural black hair, wearing a coral apron over a dark brown shirt pulls down the metal shutter; the street lights are just coming on",
+      "bytes": 91130,
+      "cost_micro_usd": 23593,
+      "description": {
+        "alt": "A woman in a coral apron arranges sourdough loaves and croissants on wooden shelves at a bakery as the shutter lowers in the evening.",
+        "check": "The wall menu-board text is illegible and her hands are on the bread rather than pulling the shutter down.",
+        "photographic": true,
+        "shows_person": true,
+        "shows_text": true
+      },
+      "digest": "sha256:71f2d740ca6361099b0fb55ea827c5ee1e4070f1e50d96ac91d5e7f0e9c76d74",
+      "file": "film_04.webp",
+      "height": 1152,
+      "kind": "film",
+      "label": "Made with AI",
+      "media_type": "image/webp",
+      "model": "z-image-turbo",
+      "prompt": "Six in the evening outside Kilele Bakery, a small bright bakery in Westlands, Nairobi, with cream walls and wooden shelves of round sourdough loaves and croissants: Wanjiru, a Kenyan woman in her late thirties with short natural black hair, wearing a coral apron over a dark brown shirt pulls down the metal shutter; the street lights are just coming on. Photoreal documentary film still, natural light, shallow depth of field, warm colour grade, Nairobi. The people are fictional and must not resemble any real or famous person. Colours and mood only: Warm colour grade, soft natural light, coral and cream accents. No readable text, letters, numbers, signs, logos, labels or watermarks anywhere.",
+      "seed": 5004,
+      "slot": "film:04",
+      "verdict": {
+        "categories": [],
+        "model": "nemotron-3.5-content-safety",
+        "safe": true,
+        "user_safety": "safe"
+      },
+      "width": 1024
+    },
+    "film:05": {
+      "brief": "Late at night, a deserted Nairobi street: the dark front of a small bakery with its metal shutter pulled down under a plain coral awning, one street light glowing, the pavement completely empty, night sky",
+      "bytes": 52804,
+      "cost_micro_usd": 23593,
+      "description": {
+        "alt": "The front of a small bakery with its metal shutter closed under a coral awning on an empty street at night.",
+        "check": "photographic",
+        "photographic": true,
+        "shows_person": false,
+        "shows_text": false
+      },
+      "digest": "sha256:06935ae87dcd992ac3725332344e0cbc53ee8990bebb81970ee3478d6386ce9c",
+      "file": "film_05.webp",
+      "height": 1152,
+      "kind": "film",
+      "label": "Made with AI",
+      "media_type": "image/webp",
+      "model": "z-image-turbo",
+      "prompt": "Late at night, a deserted Nairobi street: the dark front of a small bakery with its metal shutter pulled down under a plain coral awning, one street light glowing, the pavement completely empty, night sky. Photoreal documentary film still, natural light, shallow depth of field, warm colour grade, Nairobi. The people are fictional and must not resemble any real or famous person. Colours and mood only: Warm colour grade, soft natural light, coral and cream accents. No readable text, letters, numbers, signs, logos, labels or watermarks anywhere.",
+      "seed": 5105,
+      "slot": "film:05",
+      "verdict": {
+        "categories": [],
+        "model": "nemotron-3.5-content-safety",
+        "safe": true,
+        "user_safety": "safe"
+      },
+      "width": 1024
+    },
+    "film:06": {
+      "brief": "Sunday seven in the morning, chaos inside Kilele Bakery, a small bright bakery in Westlands, Nairobi, with cream walls and wooden shelves of round sourdough loaves and croissants: a small printer spills a long ribbon of blank paper tickets, flour dusted everywhere, Wanjiru, a Kenyan woman in her late thirties with short natural black hair, wearing a coral apron over a dark brown shirt on the phone looking apologetic, a fictional customer waiting with arms crossed",
+      "bytes": 80308,
+      "cost_micro_usd": 23593,
+      "description": {
+        "alt": "Woman in a coral apron holds a phone to her ear beside a printer with a paper ticket, bread on wooden shelves behind her.",
+        "check": "The paper ticket shows printed lines of text and a barcode that are AI-generated; verify they contain no real or contradictory details before publishing.",
+        "photographic": true,
+        "shows_person": true,
+        "shows_text": true
+      },
+      "digest": "sha256:0c350663d2cec2b51ecb3ec1501e088e23ea70295620af611f37c985b8d595b5",
+      "file": "film_06.webp",
+      "height": 1152,
+      "kind": "film",
+      "label": "Made with AI",
+      "media_type": "image/webp",
+      "model": "z-image-turbo",
+      "prompt": "Sunday seven in the morning, chaos inside Kilele Bakery, a small bright bakery in Westlands, Nairobi, with cream walls and wooden shelves of round sourdough loaves and croissants: a small printer spills a long ribbon of blank paper tickets, flour dusted everywhere, Wanjiru, a Kenyan woman in her late thirties with short natural black hair, wearing a coral apron over a dark brown shirt on the phone looking apologetic, a fictional customer waiting with arms crossed. Photoreal documentary film still, natural light, shallow depth of field, warm colour grade, Nairobi. The people are fictional and must not resemble any real or famous person. Colours and mood only: Warm colour grade, soft natural light, coral and cream accents. No readable text, letters, numbers, signs, logos, labels or watermarks anywhere.",
+      "seed": 5006,
+      "slot": "film:06",
+      "verdict": {
+        "categories": [],
+        "model": "nemotron-3.5-content-safety",
+        "safe": true,
+        "user_safety": "safe"
+      },
+      "width": 1024
+    },
+    "film:07": {
+      "brief": "Amani, a Kenyan woman in her early thirties in a bright orange and teal kitenge top, walking in through the door of a different, larger bakery with glass display cases and white tiles",
+      "bytes": 104134,
+      "cost_micro_usd": 23593,
+      "description": {
+        "alt": "A woman in an orange and teal kitenge outfit walks through a bakery doorway beside a glass pastry display case.",
+        "check": "Extra people appear in the background and a small emblem is on the glass door; confirm these are intended.",
+        "photographic": true,
+        "shows_person": true,
+        "shows_text": true
+      },
+      "digest": "sha256:b299b2970136b3b9bf8fe2749ac525b9f48d7805a913854661e9422576bfe2eb",
+      "file": "film_07.webp",
+      "height": 1152,
+      "kind": "film",
+      "label": "Made with AI",
+      "media_type": "image/webp",
+      "model": "z-image-turbo",
+      "prompt": "Amani, a Kenyan woman in her early thirties in a bright orange and teal kitenge top, walking in through the door of a different, larger bakery with glass display cases and white tiles. Photoreal documentary film still, natural light, shallow depth of field, warm colour grade, Nairobi. The people are fictional and must not resemble any real or famous person. Colours and mood only: Warm colour grade, soft natural light, coral and cream accents. No readable text, letters, numbers, signs, logos, labels or watermarks anywhere.",
+      "seed": 5007,
+      "slot": "film:07",
+      "verdict": {
+        "categories": [],
+        "model": "nemotron-3.5-content-safety",
+        "safe": true,
+        "user_safety": "safe"
+      },
+      "width": 1024
+    },
+    "film:08": {
+      "brief": "Late at night: Wanjiru, a Kenyan woman in her late thirties with short natural black hair, wearing a coral apron over a dark brown shirt sits alone at a table in the empty, dim bakery, her face lit by an open laptop, looking hopeful",
+      "bytes": 45706,
+      "cost_micro_usd": 23593,
+      "description": {
+        "alt": "Woman in a coral apron at a table using a laptop in a dim empty bakery, her face lit by the screen",
+        "check": "Confirm the background baked goods and jars match the bakery's actual range before publishing.",
+        "photographic": true,
+        "shows_person": true,
+        "shows_text": false
+      },
+      "digest": "sha256:9c4345e24e2c1331923c995b153064c47786b64775fdf0b40c2074d8b02b4f47",
+      "file": "film_08.webp",
+      "height": 1152,
+      "kind": "film",
+      "label": "Made with AI",
+      "media_type": "image/webp",
+      "model": "z-image-turbo",
+      "prompt": "Late at night: Wanjiru, a Kenyan woman in her late thirties with short natural black hair, wearing a coral apron over a dark brown shirt sits alone at a table in the empty, dim bakery, her face lit by an open laptop, looking hopeful. Photoreal documentary film still, natural light, shallow depth of field, warm colour grade, Nairobi. The people are fictional and must not resemble any real or famous person. Colours and mood only: Warm colour grade, soft natural light, coral and cream accents. No readable text, letters, numbers, signs, logos, labels or watermarks anywhere.",
+      "seed": 5008,
+      "slot": "film:08",
+      "verdict": {
+        "categories": [],
+        "model": "nemotron-3.5-content-safety",
+        "safe": true,
+        "user_safety": "safe"
+      },
+      "width": 1024
+    },
+    "film:09": {
+      "brief": "Eight in the morning, calm, inside Kilele Bakery, a small bright bakery in Westlands, Nairobi, with cream walls and wooden shelves of round sourdough loaves and croissants: Njeri, a Kenyan woman in her early twenties with long braids, wearing a cream apron smiles as she hands a white cake box across the counter",
+      "bytes": 56618,
+      "cost_micro_usd": 23593,
+      "description": {
+        "alt": "Woman with braids in a cream apron holds a white cake box at a wooden counter, shelves of loaves and croissants behind",
+        "check": "Check the small mark on the cake box and the framed wall art match the bakery's actual branding.",
+        "photographic": true,
+        "shows_person": true,
+        "shows_text": true
+      },
+      "digest": "sha256:fcb2bc1152da314c3008eb709c01bd10b1c31871b7bda3deb9444cdb69243e12",
+      "file": "film_09.webp",
+      "height": 1152,
+      "kind": "film",
+      "label": "Made with AI",
+      "media_type": "image/webp",
+      "model": "z-image-turbo",
+      "prompt": "Eight in the morning, calm, inside Kilele Bakery, a small bright bakery in Westlands, Nairobi, with cream walls and wooden shelves of round sourdough loaves and croissants: Njeri, a Kenyan woman in her early twenties with long braids, wearing a cream apron smiles as she hands a white cake box across the counter. Photoreal documentary film still, natural light, shallow depth of field, warm colour grade, Nairobi. The people are fictional and must not resemble any real or famous person. Colours and mood only: Warm colour grade, soft natural light, coral and cream accents. No readable text, letters, numbers, signs, logos, labels or watermarks anywhere.",
+      "seed": 5009,
+      "slot": "film:09",
+      "verdict": {
+        "categories": [],
+        "model": "nemotron-3.5-content-safety",
+        "safe": true,
+        "user_safety": "safe"
+      },
+      "width": 1024
+    },
+    "film:10": {
+      "brief": "Wanjiru, a Kenyan woman in her late thirties with short natural black hair, wearing a coral apron over a dark brown shirt, standing at the bakery oven with a tray of loaves, glances at her phone in one hand and smiles as she types a reply with her thumb",
+      "bytes": 66174,
+      "cost_micro_usd": 23593,
+      "description": {
+        "alt": "Woman in a coral apron and dark shirt stands by a glass bread display, holding a phone with both hands and smiling.",
+        "check": "She is shown at a glass display case, not at the oven with a tray of loaves as described.",
+        "photographic": true,
+        "shows_person": true,
+        "shows_text": false
+      },
+      "digest": "sha256:a43f0aa4e3b101f74e1f2d0cf22ce7cd29407075e407110f78b9081202c4a1ef",
+      "file": "film_10.webp",
+      "height": 1152,
+      "kind": "film",
+      "label": "Made with AI",
+      "media_type": "image/webp",
+      "model": "z-image-turbo",
+      "prompt": "Wanjiru, a Kenyan woman in her late thirties with short natural black hair, wearing a coral apron over a dark brown shirt, standing at the bakery oven with a tray of loaves, glances at her phone in one hand and smiles as she types a reply with her thumb. Photoreal documentary film still, natural light, shallow depth of field, warm colour grade, Nairobi. The people are fictional and must not resemble any real or famous person. Colours and mood only: Warm colour grade, soft natural light, coral and cream accents. No readable text, letters, numbers, signs, logos, labels or watermarks anywhere.",
+      "seed": 5010,
+      "slot": "film:10",
+      "verdict": {
+        "categories": [],
+        "model": "nemotron-3.5-content-safety",
+        "safe": true,
+        "user_safety": "safe"
+      },
+      "width": 1024
+    },
+    "film:11": {
+      "brief": "Amani, a Kenyan woman in her early thirties in a bright orange and teal kitenge top, on the sofa at home designing a cake on her phone, with Zawadi, her six-year-old daughter, leaning in beside her, excited",
+      "bytes": 134780,
+      "cost_micro_usd": 23593,
+      "description": {
+        "alt": "Woman in orange and teal kitenge top and young girl on a sofa looking at a phone beside a small frosted cake.",
+        "check": "Confirm the physical cake and phone screen details fit the intended storyline before publishing.",
+        "photographic": true,
+        "shows_person": true,
+        "shows_text": false
+      },
+      "digest": "sha256:ec1bd4f230ff78185cdeb2d46271c0d248ec4771a72a01911e705937f78ef59a",
+      "file": "film_11.webp",
+      "height": 1152,
+      "kind": "film",
+      "label": "Made with AI",
+      "media_type": "image/webp",
+      "model": "z-image-turbo",
+      "prompt": "Amani, a Kenyan woman in her early thirties in a bright orange and teal kitenge top, on the sofa at home designing a cake on her phone, with Zawadi, her six-year-old daughter, leaning in beside her, excited. Photoreal documentary film still, natural light, shallow depth of field, warm colour grade, Nairobi. The people are fictional and must not resemble any real or famous person. Colours and mood only: Warm colour grade, soft natural light, coral and cream accents. No readable text, letters, numbers, signs, logos, labels or watermarks anywhere.",
+      "seed": 5011,
+      "slot": "film:11",
+      "verdict": {
+        "categories": [],
+        "model": "nemotron-3.5-content-safety",
+        "safe": true,
+        "user_safety": "safe"
+      },
+      "width": 1024
+    },
+    "film:12": {
+      "brief": "Six in the evening outside Kilele Bakery, a small bright bakery in Westlands, Nairobi, with cream walls and wooden shelves of round sourdough loaves and croissants: Wanjiru, a Kenyan woman in her late thirties with short natural black hair, wearing a coral apron over a dark brown shirt, relaxed, waves goodbye to Njeri, a Kenyan woman in her early twenties with long braids, wearing a cream apron and Otieno, a Kenyan man in his mid twenties in a white baker's jacket and white baker's cap as the shutter comes down",
+      "bytes": 70754,
+      "cost_micro_usd": 23593,
+      "description": {
+        "alt": "A woman in a coral apron smiles at closing time outside a bakery window with shelves of sourdough loaves and croissants behind her.",
+        "check": "Confirm the AI-generated faces do not resemble real identifiable people.",
+        "photographic": true,
+        "shows_person": true,
+        "shows_text": false
+      },
+      "digest": "sha256:c0707dfb1137b080362689c549e819f0acde84709c3aadf374fa24d67063d50f",
+      "file": "film_12.webp",
+      "height": 1152,
+      "kind": "film",
+      "label": "Made with AI",
+      "media_type": "image/webp",
+      "model": "z-image-turbo",
+      "prompt": "Six in the evening outside Kilele Bakery, a small bright bakery in Westlands, Nairobi, with cream walls and wooden shelves of round sourdough loaves and croissants: Wanjiru, a Kenyan woman in her late thirties with short natural black hair, wearing a coral apron over a dark brown shirt, relaxed, waves goodbye to Njeri, a Kenyan woman in her early twenties with long braids, wearing a cream apron and Otieno, a Kenyan man in his mid twenties in a white baker's jacket and white baker's cap as the shutter comes down. Photoreal documentary film still, natural light, shallow depth of field, warm colour grade, Nairobi. The people are fictional and must not resemble any real or famous person. Colours and mood only: Warm colour grade, soft natural light, coral and cream accents. No readable text, letters, numbers, signs, logos, labels or watermarks anywhere.",
+      "retouched": "A stray raised hand that belonged to no one, between Wanjiru and the woman in front, was painted out on 8 Nov 2026. The wall and rail behind it were rebuilt from the picture itself, with no model and no cost.",
+      "seed": 5012,
+      "slot": "film:12",
+      "verdict": {
+        "categories": [],
+        "model": "nemotron-3.5-content-safety",
+        "safe": true,
+        "user_safety": "safe"
+      },
+      "width": 1024
+    },
+    "film:13": {
+      "brief": "Sunday seven in the morning, a calm bakery kitchen: white cake boxes lined up on a steel counter with small blank paper tags, a plain sheet pinned on the wall behind, too far away to read. Njeri, a Kenyan woman in her early twenties with long braids, wearing a cream apron, and Otieno, a Kenyan man in his mid twenties in a plain white baker's jacket with no writing or embroidery and a white baker's cap, hold mugs of chai and smile",
+      "bytes": 48454,
+      "cost_micro_usd": 23593,
+      "description": {
+        "alt": "A woman in a cream apron and a man in a white baker's jacket and cap hold mugs of chai beside white cake boxes on a steel counter.",
+        "check": "the paper tags on the boxes show faint lines rather than being fully blank",
+        "photographic": true,
+        "shows_person": true,
+        "shows_text": true
+      },
+      "digest": "sha256:1cccedd3888a849c7e6898074b81567e0621a81c33258eb9439122a2fee58afd",
+      "file": "film_13.webp",
+      "height": 1152,
+      "kind": "film",
+      "label": "Made with AI",
+      "media_type": "image/webp",
+      "model": "z-image-turbo",
+      "prompt": "Sunday seven in the morning, a calm bakery kitchen: white cake boxes lined up on a steel counter with small blank paper tags, a plain sheet pinned on the wall behind, too far away to read. Njeri, a Kenyan woman in her early twenties with long braids, wearing a cream apron, and Otieno, a Kenyan man in his mid twenties in a plain white baker's jacket with no writing or embroidery and a white baker's cap, hold mugs of chai and smile. Photoreal documentary film still, natural light, shallow depth of field, warm colour grade, Nairobi. The people are fictional and must not resemble any real or famous person. Colours and mood only: Warm colour grade, soft natural light, coral and cream accents. No readable text, letters, numbers, signs, logos, labels or watermarks anywhere.",
+      "seed": 5313,
+      "slot": "film:13",
+      "verdict": {
+        "categories": [],
+        "model": "nemotron-3.5-content-safety",
+        "safe": true,
+        "user_safety": "safe"
+      },
+      "width": 1024
+    },
+    "film:14": {
+      "brief": "Amani, a Kenyan woman in her early thirties in a bright orange and teal kitenge top, collecting a white cake box at the counter of Kilele Bakery, a small bright bakery in Westlands, Nairobi, with cream walls and wooden shelves of round sourdough loaves and croissants; Njeri, a Kenyan woman in her early twenties with long braids, wearing a cream apron hands it over with a smile",
+      "bytes": 79380,
+      "cost_micro_usd": 23593,
+      "description": {
+        "alt": "A woman in an orange patterned top takes a white box from a braided woman in a cream apron at a bakery counter.",
+        "check": "Confirm the logo on the white box and the framed sign text match the bakery's real branding.",
+        "photographic": true,
+        "shows_person": true,
+        "shows_text": true
+      },
+      "digest": "sha256:b024bfba940835b784ee4a00f1a895dd5dd24311cc0f7cd02e3a027ab64f783e",
+      "file": "film_14.webp",
+      "height": 1152,
+      "kind": "film",
+      "label": "Made with AI",
+      "media_type": "image/webp",
+      "model": "z-image-turbo",
+      "prompt": "Amani, a Kenyan woman in her early thirties in a bright orange and teal kitenge top, collecting a white cake box at the counter of Kilele Bakery, a small bright bakery in Westlands, Nairobi, with cream walls and wooden shelves of round sourdough loaves and croissants; Njeri, a Kenyan woman in her early twenties with long braids, wearing a cream apron hands it over with a smile. Photoreal documentary film still, natural light, shallow depth of field, warm colour grade, Nairobi. The people are fictional and must not resemble any real or famous person. Colours and mood only: Warm colour grade, soft natural light, coral and cream accents. No readable text, letters, numbers, signs, logos, labels or watermarks anywhere.",
+      "seed": 5014,
+      "slot": "film:14",
+      "verdict": {
+        "categories": [],
+        "model": "nemotron-3.5-content-safety",
+        "safe": true,
+        "user_safety": "safe"
+      },
+      "width": 1024
+    },
+    "film:15": {
+      "brief": "Zawadi, her six-year-old daughter at her birthday party at home, about to blow out the candles on a cake decorated with gold swirls and no letters, Amani, a Kenyan woman in her early thirties in a bright orange and teal kitenge top beside her, balloons behind",
+      "bytes": 90664,
+      "cost_micro_usd": 23593,
+      "description": {
+        "alt": "A young girl blows out lit candles on a white cake with gold swirls as a woman in an orange and teal top stands behind her.",
+        "check": "A third person's arm is cropped in at the left edge, check it reads as intended.",
+        "photographic": true,
+        "shows_person": true,
+        "shows_text": false
+      },
+      "digest": "sha256:ad9edec014698d56223986cf89472b04cc70e57c38e1330086dd5188bee89691",
+      "file": "film_15.webp",
+      "height": 1152,
+      "kind": "film",
+      "label": "Made with AI",
+      "media_type": "image/webp",
+      "model": "z-image-turbo",
+      "prompt": "Zawadi, her six-year-old daughter at her birthday party at home, about to blow out the candles on a cake decorated with gold swirls and no letters, Amani, a Kenyan woman in her early thirties in a bright orange and teal kitenge top beside her, balloons behind. Photoreal documentary film still, natural light, shallow depth of field, warm colour grade, Nairobi. The people are fictional and must not resemble any real or famous person. Colours and mood only: Warm colour grade, soft natural light, coral and cream accents. No readable text, letters, numbers, signs, logos, labels or watermarks anywhere.",
+      "seed": 5015,
+      "slot": "film:15",
+      "verdict": {
+        "categories": [],
+        "model": "nemotron-3.5-content-safety",
+        "safe": true,
+        "user_safety": "safe"
+      },
+      "width": 1024
+    },
+    "film:16": {
+      "brief": "Months later, opening day of a second small bakery with a plain coral awning; a plain coral ribbon with no writing stretched across the open door; Wanjiru, a Kenyan woman in her late thirties with short natural black hair, wearing a coral apron over a dark brown shirt, Njeri, a Kenyan woman in her early twenties with long braids, wearing a cream apron and Otieno, a Kenyan man in his mid twenties in a white baker's jacket and white baker's cap stand together in front of it, smiling, a pair of scissors in Wanjiru's hand",
+      "bytes": 66286,
+      "cost_micro_usd": 23593,
+      "description": {
+        "alt": "Three people stand before a bakery doorway with a coral awning and ribbon; the centre woman holds scissors.",
+        "check": "The scissors are in the cream-apron woman's hand, not the coral-apron woman's as the script states.",
+        "photographic": true,
+        "shows_person": true,
+        "shows_text": false
+      },
+      "digest": "sha256:e474fa4811e116d2939c7bbd7b807faa7812263f97709904c841a03b814711f1",
+      "file": "film_16.webp",
+      "height": 1152,
+      "kind": "film",
+      "label": "Made with AI",
+      "media_type": "image/webp",
+      "model": "z-image-turbo",
+      "prompt": "Months later, opening day of a second small bakery with a plain coral awning; a plain coral ribbon with no writing stretched across the open door; Wanjiru, a Kenyan woman in her late thirties with short natural black hair, wearing a coral apron over a dark brown shirt, Njeri, a Kenyan woman in her early twenties with long braids, wearing a cream apron and Otieno, a Kenyan man in his mid twenties in a white baker's jacket and white baker's cap stand together in front of it, smiling, a pair of scissors in Wanjiru's hand. Photoreal documentary film still, natural light, shallow depth of field, warm colour grade, Nairobi. The people are fictional and must not resemble any real or famous person. Colours and mood only: Warm colour grade, soft natural light, coral and cream accents. No readable text, letters, numbers, signs, logos, labels or watermarks anywhere.",
+      "seed": 5116,
+      "slot": "film:16",
+      "verdict": {
+        "categories": [],
+        "model": "nemotron-3.5-content-safety",
+        "safe": true,
+        "user_safety": "safe"
+      },
+      "width": 1024
+    }
+  },
+  "blocked": []
+}

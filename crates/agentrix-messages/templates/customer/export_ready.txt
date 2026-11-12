@@ -1,0 +1,10 @@
+{% block subject %}Your data from {{ site.name }} is ready{% endblock %}
+{% block preheader %}The download lasts until {{ export.expires }}.{% endblock %}
+{% block body %}
+# Your data is ready to download
+It holds everything {{ site.name }} keeps about you: {{ export.contents }}.
+
+::button Download your data | {{ export.url }}
+
+You'll be asked to sign in first, so only you can open it. The link works until {{ export.expires }}.
+{% endblock %}

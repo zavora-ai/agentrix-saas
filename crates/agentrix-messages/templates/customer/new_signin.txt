@@ -1,0 +1,16 @@
+{% block subject %}New sign-in to your {{ site.name }} account{% endblock %}
+{% block preheader %}{{ signin.when }}. If it was you, there's nothing to do.{% endblock %}
+{% block body %}
+{% if signin.place %}
+# New sign-in on {{ signin.device }} in {{ signin.place }}. Not you?
+{% else %}
+# New sign-in on {{ signin.device }}. Not you?
+{% endif %}
+{{ signin.when }}. If it was you, there's nothing to do.
+
+If it wasn't, open your account and choose Sign out everywhere. That ends every session, including theirs.
+
+::button Open your account | {{ account_url }}
+
+{{ site.name }} never asks for a password, a code or payment details by email, WhatsApp or chat.
+{% endblock %}

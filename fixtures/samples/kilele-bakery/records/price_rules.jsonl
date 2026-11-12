@@ -1,0 +1,44 @@
+{"version": "v14", "code": "size.1", "grp": "size", "label": "1 tier", "amount": 3800, "meta": {"serves": "12–15", "notice_days": 2}, "sort": 0}
+{"version": "v14", "code": "size.2", "grp": "size", "label": "2 tiers", "amount": 4500, "meta": {"serves": "25–30", "notice_days": 2}, "sort": 1}
+{"version": "v14", "code": "size.3", "grp": "size", "label": "3 tiers", "amount": 6900, "meta": {"serves": "40–45", "notice_days": 3}, "sort": 2}
+{"version": "v14", "code": "sponge.vanilla", "grp": "sponge", "label": "Vanilla sponge", "amount": 0, "meta": {}, "sort": 3}
+{"version": "v14", "code": "sponge.lemon", "grp": "sponge", "label": "Lemon sponge", "amount": 0, "meta": {}, "sort": 4}
+{"version": "v14", "code": "sponge.chocolate", "grp": "sponge", "label": "Chocolate sponge", "amount": 200, "meta": {}, "sort": 5}
+{"version": "v14", "code": "sponge.redvelvet", "grp": "sponge", "label": "Red velvet sponge", "amount": 300, "meta": {}, "sort": 6}
+{"version": "v14", "code": "sponge.gf", "grp": "sponge", "label": "Gluten-free sponge", "amount": 600, "meta": {"only_sizes": ["size.1", "size.2"], "note": "Kilele's kitchen uses wheat flour, so it can't promise anything is safe for coeliac guests."}, "sort": 7}
+{"version": "v14", "code": "colour.cream", "grp": "colour", "label": "Cream buttercream", "amount": 0, "meta": {"swatch": "#f3e4c8"}, "sort": 8}
+{"version": "v14", "code": "colour.blush", "grp": "colour", "label": "Blush pink buttercream", "amount": 0, "meta": {"swatch": "#f0c3c4"}, "sort": 9}
+{"version": "v14", "code": "colour.forest", "grp": "colour", "label": "Forest green buttercream", "amount": 0, "meta": {"swatch": "#2f5d3a"}, "sort": 10}
+{"version": "v14", "code": "colour.chocolate", "grp": "colour", "label": "Chocolate buttercream", "amount": 0, "meta": {"swatch": "#5a3825"}, "sort": 11}
+{"version": "v14", "code": "colour.sky", "grp": "colour", "label": "Sky blue buttercream", "amount": 0, "meta": {"swatch": "#a9cbe6"}, "sort": 12}
+{"version": "v14", "code": "finish.smooth", "grp": "finish", "label": "Smooth finish", "amount": 0, "meta": {}, "sort": 13}
+{"version": "v14", "code": "finish.naked", "grp": "finish", "label": "Naked finish", "amount": 0, "meta": {}, "sort": 14}
+{"version": "v14", "code": "finish.ombre", "grp": "finish", "label": "Ombré finish", "amount": 250, "meta": {}, "sort": 15}
+{"version": "v14", "code": "finish.drip", "grp": "finish", "label": "Chocolate drip", "amount": 400, "meta": {}, "sort": 16}
+{"version": "v14", "code": "deco.none", "grp": "deco", "label": "No decoration", "amount": 0, "meta": {}, "sort": 17}
+{"version": "v14", "code": "deco.berries", "grp": "deco", "label": "Fresh berries", "amount": 500, "meta": {}, "sort": 18}
+{"version": "v14", "code": "deco.flowers", "grp": "deco", "label": "Edible flowers", "amount": 700, "meta": {}, "sort": 19}
+{"version": "v14", "code": "deco.sprinkles", "grp": "deco", "label": "Sprinkles", "amount": 150, "meta": {}, "sort": 20}
+{"version": "v14", "code": "message", "grp": "message", "label": "Message on the cake", "amount": 0, "meta": {"max_chars": 22}, "sort": 21}
+{"version": "v15", "code": "size.1", "grp": "size", "label": "1 tier", "amount": 4000, "meta": {"serves": "12–15", "notice_days": 2}, "sort": 0}
+{"version": "v15", "code": "size.2", "grp": "size", "label": "2 tiers", "amount": 4800, "meta": {"serves": "25–30", "notice_days": 2}, "sort": 1}
+{"version": "v15", "code": "size.3", "grp": "size", "label": "3 tiers", "amount": 6900, "meta": {"serves": "40–45", "notice_days": 3}, "sort": 2}
+{"version": "v15", "code": "sponge.vanilla", "grp": "sponge", "label": "Vanilla sponge", "amount": 0, "meta": {}, "sort": 3}
+{"version": "v15", "code": "sponge.lemon", "grp": "sponge", "label": "Lemon sponge", "amount": 0, "meta": {}, "sort": 4}
+{"version": "v15", "code": "sponge.chocolate", "grp": "sponge", "label": "Chocolate sponge", "amount": 200, "meta": {}, "sort": 5}
+{"version": "v15", "code": "sponge.redvelvet", "grp": "sponge", "label": "Red velvet sponge", "amount": 300, "meta": {}, "sort": 6}
+{"version": "v15", "code": "sponge.gf", "grp": "sponge", "label": "Gluten-free sponge", "amount": 600, "meta": {"only_sizes": ["size.1", "size.2"], "note": "Kilele's kitchen uses wheat flour, so it can't promise anything is safe for coeliac guests."}, "sort": 7}
+{"version": "v15", "code": "colour.cream", "grp": "colour", "label": "Cream buttercream", "amount": 0, "meta": {"swatch": "#f3e4c8"}, "sort": 8}
+{"version": "v15", "code": "colour.blush", "grp": "colour", "label": "Blush pink buttercream", "amount": 0, "meta": {"swatch": "#f0c3c4"}, "sort": 9}
+{"version": "v15", "code": "colour.forest", "grp": "colour", "label": "Forest green buttercream", "amount": 0, "meta": {"swatch": "#2f5d3a"}, "sort": 10}
+{"version": "v15", "code": "colour.chocolate", "grp": "colour", "label": "Chocolate buttercream", "amount": 0, "meta": {"swatch": "#5a3825"}, "sort": 11}
+{"version": "v15", "code": "colour.sky", "grp": "colour", "label": "Sky blue buttercream", "amount": 0, "meta": {"swatch": "#a9cbe6"}, "sort": 12}
+{"version": "v15", "code": "finish.smooth", "grp": "finish", "label": "Smooth finish", "amount": 0, "meta": {}, "sort": 13}
+{"version": "v15", "code": "finish.naked", "grp": "finish", "label": "Naked finish", "amount": 0, "meta": {}, "sort": 14}
+{"version": "v15", "code": "finish.ombre", "grp": "finish", "label": "Ombré finish", "amount": 250, "meta": {}, "sort": 15}
+{"version": "v15", "code": "finish.drip", "grp": "finish", "label": "Chocolate drip", "amount": 400, "meta": {}, "sort": 16}
+{"version": "v15", "code": "deco.none", "grp": "deco", "label": "No decoration", "amount": 0, "meta": {}, "sort": 17}
+{"version": "v15", "code": "deco.berries", "grp": "deco", "label": "Fresh berries", "amount": 500, "meta": {}, "sort": 18}
+{"version": "v15", "code": "deco.flowers", "grp": "deco", "label": "Edible flowers", "amount": 700, "meta": {}, "sort": 19}
+{"version": "v15", "code": "deco.sprinkles", "grp": "deco", "label": "Sprinkles", "amount": 150, "meta": {}, "sort": 20}
+{"version": "v15", "code": "message", "grp": "message", "label": "Message on the cake", "amount": 0, "meta": {"max_chars": 22}, "sort": 21}

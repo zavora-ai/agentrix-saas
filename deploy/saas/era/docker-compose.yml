@@ -1,0 +1,40 @@
+# Agentrix SaaS · the data services under Zavora ERA (hosted), compose project `saas-era`.
+#
+# Run it through `deploy/saas/era/era.sh up`, which reads the password from the repo's .env and
+# starts ERA's API next to these. Ports are this entry's own (slice A): Postgres 15433, Redis
+# 16380, ERA's API 18180. Everything listens on 127.0.0.1 only.
+#
+# ERA's own compose uses pgvector/pgvector:pg17 for its Amos assistant's memory; the API itself
+# needs only pgcrypto and uuid-ossp, which stock Postgres ships, so any Postgres 16+ image works
+# (ERA_PG_IMAGE). Redis is optional here: era.sh uses this service when the image is present and
+# a local redis-server otherwise.
+name: saas-era
+
+services:
+  postgres:
+    image: ${ERA_PG_IMAGE:-postgres:16-alpine}
+    environment:
+      POSTGRES_USER: zavora
+      POSTGRES_PASSWORD: ${ERA_DATABASE_PASSWORD:?ERA_DATABASE_PASSWORD is not set; run through era.sh}
+      POSTGRES_DB: zavora_era
+    ports:
+      - "127.0.0.1:${ERA_PG_PORT:-15433}:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U zavora -d zavora_era"]
+      interval: 2s
+      timeout: 3s
+      retries: 30
+    restart: unless-stopped
+
+  redis:
+    image: ${ERA_REDIS_IMAGE:-redis:7-alpine}
+    profiles: ["redis"]
+    command: ["redis-server", "--save", "", "--appendonly", "no"]
+    ports:
+      - "127.0.0.1:${ERA_REDIS_PORT:-16380}:6379"
+    restart: unless-stopped
+
+volumes:
+  pgdata:

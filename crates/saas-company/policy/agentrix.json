@@ -1,0 +1,613 @@
+{
+  "name": "agentrix-saas-agentrix-money-v1",
+  "company": "agentrix",
+  "about": "What Agentrix's AI staff may call. Rules match in order; a call no rule permits is denied. Limits marked `mandate` come from the mandate the founder signed with a passkey; with no mandate in force, every money tool is denied. `/facts/...` are read from the books (Zavora ERA) and PayPal before the policy decides, never from the model. `agent` is a role in this company.",
+  "money_tools": [
+    "start_subscription",
+    "create_recurring_invoice",
+    "issue_invoice",
+    "invoice_usage",
+    "propose_debt_plan",
+    "collect_instalment",
+    "pay_bill",
+    "change_vendor_payee",
+    "settle_invoice",
+    "refund_payment",
+    "cancel_subscription",
+    "suspend_subscription"
+  ],
+  "rules": [
+    {
+      "tool": "company_brief",
+      "agent": "chief",
+      "decision": "allow"
+    },
+    {
+      "tool": "brief_owner",
+      "agent": "chief",
+      "decision": "allow"
+    },
+    {
+      "tool": "wallet_status",
+      "agent": "chief",
+      "decision": "allow"
+    },
+    {
+      "tool": "wallet_checkpoint",
+      "agent": "payables",
+      "decision": "allow"
+    },
+    {
+      "tool": "post_payroll",
+      "agent": "payables",
+      "decision": "allow"
+    },
+    {
+      "tool": "bill_model_spend",
+      "agent": "payables",
+      "decision": "allow"
+    },
+    {
+      "tool": "crm_pipeline",
+      "agent": "revenue",
+      "decision": "allow"
+    },
+    {
+      "tool": "ar_ageing",
+      "agent": "receivables",
+      "decision": "allow"
+    },
+    {
+      "tool": "ar_ageing",
+      "agent": "chief",
+      "decision": "allow"
+    },
+    {
+      "tool": "counterparty_history",
+      "agent": "receivables",
+      "decision": "allow"
+    },
+    {
+      "tool": "ap_bills_due",
+      "agent": "payables",
+      "decision": "allow"
+    },
+    {
+      "tool": "ap_bills_due",
+      "agent": "chief",
+      "decision": "allow"
+    },
+    {
+      "tool": "lookup_capture",
+      "agent": "support",
+      "decision": "allow"
+    },
+    {
+      "tool": "crm_mark_won",
+      "agent": "revenue",
+      "decision": "allow"
+    },
+    {
+      "tool": "start_subscription",
+      "decision": "deny",
+      "reason": "that plan isn't in the catalogue",
+      "when": [
+        {
+          "equals": {
+            "pointer": "/facts/plan_listed",
+            "value": false
+          }
+        }
+      ]
+    },
+    {
+      "tool": "start_subscription",
+      "agent": "revenue",
+      "decision": "allow",
+      "when": [
+        {
+          "equals": {
+            "pointer": "/facts/plan_listed",
+            "value": true
+          }
+        },
+        {
+          "in_mandate": {
+            "pointer": "/plan_id",
+            "list": "plans"
+          }
+        }
+      ]
+    },
+    {
+      "tool": "start_subscription",
+      "agent": "revenue",
+      "decision": "require_approval",
+      "reason": "the founder's mandate doesn't list this plan"
+    },
+    {
+      "tool": "create_recurring_invoice",
+      "decision": "deny",
+      "reason": "that plan isn't in the catalogue",
+      "when": [
+        {
+          "equals": {
+            "pointer": "/facts/plan_listed",
+            "value": false
+          }
+        }
+      ]
+    },
+    {
+      "tool": "create_recurring_invoice",
+      "agent": "revenue",
+      "decision": "allow",
+      "when": [
+        {
+          "equals": {
+            "pointer": "/facts/plan_listed",
+            "value": true
+          }
+        }
+      ]
+    },
+    {
+      "tool": "issue_invoice",
+      "decision": "deny",
+      "reason": "the books have no such customer",
+      "when": [
+        {
+          "equals": {
+            "pointer": "/facts/customer_known",
+            "value": false
+          }
+        }
+      ]
+    },
+    {
+      "tool": "issue_invoice",
+      "agent": "receivables",
+      "decision": "allow",
+      "when": [
+        {
+          "equals": {
+            "pointer": "/facts/customer_known",
+            "value": true
+          }
+        },
+        {
+          "equals": {
+            "pointer": "/facts/within_credit_limit",
+            "value": true
+          }
+        }
+      ]
+    },
+    {
+      "tool": "issue_invoice",
+      "agent": "receivables",
+      "decision": "require_approval",
+      "reason": "the invoice would take the customer over their credit limit"
+    },
+    {
+      "tool": "invoice_usage",
+      "decision": "deny",
+      "reason": "the books have no such customer",
+      "when": [
+        {
+          "equals": {
+            "pointer": "/facts/customers_known",
+            "value": false
+          }
+        }
+      ]
+    },
+    {
+      "tool": "invoice_usage",
+      "agent": "receivables",
+      "decision": "allow",
+      "when": [
+        {
+          "equals": {
+            "pointer": "/facts/customers_known",
+            "value": true
+          }
+        },
+        {
+          "equals": {
+            "pointer": "/facts/within_credit_limit",
+            "value": true
+          }
+        }
+      ]
+    },
+    {
+      "tool": "invoice_usage",
+      "agent": "receivables",
+      "decision": "require_approval",
+      "reason": "a usage invoice would take the customer over their credit limit"
+    },
+    {
+      "tool": "send_reminder",
+      "decision": "deny",
+      "reason": "that invoice isn't overdue or is already paid",
+      "when": [
+        {
+          "equals": {
+            "pointer": "/facts/invoice_overdue",
+            "value": false
+          }
+        }
+      ]
+    },
+    {
+      "tool": "send_reminder",
+      "agent": "receivables",
+      "decision": "allow",
+      "when": [
+        {
+          "equals": {
+            "pointer": "/facts/invoice_overdue",
+            "value": true
+          }
+        }
+      ]
+    },
+    {
+      "tool": "propose_debt_plan",
+      "decision": "deny",
+      "reason": "the invoice isn't open",
+      "when": [
+        {
+          "equals": {
+            "pointer": "/facts/invoice_open",
+            "value": false
+          }
+        }
+      ]
+    },
+    {
+      "tool": "propose_debt_plan",
+      "decision": "deny",
+      "reason": "the instalments don't add up to what is owed",
+      "when": [
+        {
+          "equals": {
+            "pointer": "/facts/sums_to_balance",
+            "value": false
+          }
+        }
+      ]
+    },
+    {
+      "tool": "propose_debt_plan",
+      "agent": "receivables",
+      "decision": "allow",
+      "when": [
+        {
+          "equals": {
+            "pointer": "/facts/invoice_open",
+            "value": true
+          }
+        },
+        {
+          "equals": {
+            "pointer": "/facts/sums_to_balance",
+            "value": true
+          }
+        },
+        {
+          "at_most": {
+            "pointer": "/facts/instalment_count",
+            "mandate": "debt_plan_max_instalments"
+          }
+        },
+        {
+          "at_most": {
+            "pointer": "/facts/plan_days",
+            "mandate": "debt_plan_max_days"
+          }
+        }
+      ]
+    },
+    {
+      "tool": "propose_debt_plan",
+      "agent": "receivables",
+      "decision": "require_approval",
+      "reason": "the plan has more instalments or runs longer than the founder's mandate allows"
+    },
+    {
+      "tool": "collect_instalment",
+      "decision": "deny",
+      "reason": "that instalment isn't due, or is already paid",
+      "when": [
+        {
+          "equals": {
+            "pointer": "/facts/instalment_due",
+            "value": false
+          }
+        }
+      ]
+    },
+    {
+      "tool": "collect_instalment",
+      "agent": "receivables",
+      "decision": "allow",
+      "when": [
+        {
+          "equals": {
+            "pointer": "/facts/instalment_due",
+            "value": true
+          }
+        }
+      ]
+    },
+    {
+      "tool": "suspend_subscription",
+      "decision": "deny",
+      "reason": "PayPal hasn't reported a failed payment for that subscription",
+      "when": [
+        {
+          "equals": {
+            "pointer": "/facts/payment_failed",
+            "value": false
+          }
+        }
+      ]
+    },
+    {
+      "tool": "suspend_subscription",
+      "agent": "receivables",
+      "decision": "allow",
+      "when": [
+        {
+          "equals": {
+            "pointer": "/facts/payment_failed",
+            "value": true
+          }
+        },
+        {
+          "mandate_flag": "suspend_on_failed_payment"
+        }
+      ]
+    },
+    {
+      "tool": "suspend_subscription",
+      "agent": "receivables",
+      "decision": "require_approval",
+      "reason": "the founder's mandate doesn't let Receivables suspend a subscription on its own"
+    },
+    {
+      "tool": "pay_bill",
+      "decision": "deny",
+      "reason": "the books have no open bill with that id",
+      "when": [
+        {
+          "equals": {
+            "pointer": "/facts/bill_open",
+            "value": false
+          }
+        }
+      ]
+    },
+    {
+      "tool": "pay_bill",
+      "decision": "deny",
+      "reason": "that bill is from another agent-run company: it is settled at that company's agent door with settle_invoice, never paid out to an email",
+      "when": [
+        {
+          "equals": {
+            "pointer": "/facts/vendor_is_company",
+            "value": true
+          }
+        }
+      ]
+    },
+    {
+      "tool": "pay_bill",
+      "decision": "deny",
+      "reason": "that payee isn't the one the books hold for this vendor; a change of payee goes to the founder first, and nothing is paid to it until then",
+      "when": [
+        {
+          "equals": {
+            "pointer": "/facts/payee_on_file",
+            "value": false
+          }
+        }
+      ]
+    },
+    {
+      "tool": "pay_bill",
+      "decision": "deny",
+      "reason": "that is more than is left to pay on the bill",
+      "when": [
+        {
+          "equals": {
+            "pointer": "/facts/within_bill",
+            "value": false
+          }
+        }
+      ]
+    },
+    {
+      "tool": "pay_bill",
+      "agent": "payables",
+      "decision": "allow",
+      "when": [
+        {
+          "equals": {
+            "pointer": "/facts/bill_open",
+            "value": true
+          }
+        },
+        {
+          "equals": {
+            "pointer": "/facts/payee_on_file",
+            "value": true
+          }
+        },
+        {
+          "equals": {
+            "pointer": "/facts/within_bill",
+            "value": true
+          }
+        },
+        {
+          "in_mandate": {
+            "pointer": "/facts/vendor_id",
+            "list": "payees"
+          }
+        },
+        {
+          "at_most": {
+            "pointer": "/amount_usd",
+            "mandate": "payout_max_each_usd"
+          }
+        },
+        {
+          "at_most": {
+            "pointer": "/facts/day_total_after_usd",
+            "mandate": "payout_max_per_day_usd"
+          }
+        }
+      ]
+    },
+    {
+      "tool": "pay_bill",
+      "agent": "payables",
+      "decision": "require_approval",
+      "reason": "the payment is over the founder's mandate (per payment, per day, or a vendor it doesn't list)"
+    },
+    {
+      "tool": "change_vendor_payee",
+      "agent": "payables",
+      "decision": "require_approval",
+      "reason": "a change of a vendor's payee is always the founder's call"
+    },
+    {
+      "tool": "settle_invoice",
+      "decision": "deny",
+      "reason": "no open bill in the books matches that invoice",
+      "when": [
+        {
+          "equals": {
+            "pointer": "/facts/bill_matches",
+            "value": false
+          }
+        }
+      ]
+    },
+    {
+      "tool": "settle_invoice",
+      "agent": "payables",
+      "decision": "allow",
+      "when": [
+        {
+          "equals": {
+            "pointer": "/facts/bill_matches",
+            "value": true
+          }
+        },
+        {
+          "at_most": {
+            "pointer": "/facts/amount_usd",
+            "mandate": "payout_max_each_usd"
+          }
+        },
+        {
+          "at_most": {
+            "pointer": "/facts/day_total_after_usd",
+            "mandate": "payout_max_per_day_usd"
+          }
+        }
+      ]
+    },
+    {
+      "tool": "settle_invoice",
+      "agent": "payables",
+      "decision": "require_approval",
+      "reason": "settling this invoice is over the founder's mandate"
+    },
+    {
+      "tool": "refund_payment",
+      "decision": "deny",
+      "reason": "PayPal has no such capture",
+      "when": [
+        {
+          "equals": {
+            "pointer": "/facts/capture_found",
+            "value": false
+          }
+        }
+      ]
+    },
+    {
+      "tool": "refund_payment",
+      "decision": "deny",
+      "reason": "a refund goes only to the person who paid, taken from PayPal's capture record",
+      "when": [
+        {
+          "equals": {
+            "pointer": "/facts/to_original_payer",
+            "value": false
+          }
+        }
+      ]
+    },
+    {
+      "tool": "refund_payment",
+      "decision": "deny",
+      "reason": "a refund never exceeds what is left on the capture",
+      "when": [
+        {
+          "equals": {
+            "pointer": "/facts/within_capture",
+            "value": false
+          }
+        }
+      ]
+    },
+    {
+      "tool": "refund_payment",
+      "agent": "support",
+      "decision": "allow",
+      "when": [
+        {
+          "equals": {
+            "pointer": "/facts/capture_found",
+            "value": true
+          }
+        },
+        {
+          "equals": {
+            "pointer": "/facts/to_original_payer",
+            "value": true
+          }
+        },
+        {
+          "equals": {
+            "pointer": "/facts/within_capture",
+            "value": true
+          }
+        },
+        {
+          "at_most": {
+            "pointer": "/amount_usd",
+            "mandate": "refund_max_each_usd"
+          }
+        }
+      ]
+    },
+    {
+      "tool": "refund_payment",
+      "agent": "support",
+      "decision": "require_approval",
+      "reason": "the refund is over the founder's limit per refund"
+    },
+    {
+      "tool": "cancel_subscription",
+      "agent": "support",
+      "decision": "allow"
+    }
+  ]
+}

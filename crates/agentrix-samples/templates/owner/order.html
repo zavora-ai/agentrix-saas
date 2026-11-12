@@ -1,0 +1,90 @@
+{% extends "owner/base.html" %}
+{% block field %}{% import "owner/macros.html" as m %}
+{{ m.head(c) }}
+<div class="split">
+  <div class="col">
+    <article class="fcard">
+      <div class="spread"><h3>{% if o.kind == "custom" %}The design{% else %}What they ordered{% endif %}</h3>{{ m.chip(o.label, o.tone) }}</div>
+      <div class="tbl"><table class="procs lines">
+        <thead><tr><th>Item</th>{% if o.kind != "custom" %}<th>Qty</th><th class="hide-sm">Each</th>{% endif %}<th class="num">Amount</th></tr></thead>
+        <tbody>
+        {% for l in o.lines %}<tr><td>{{ l.name }}{% if o.kind == "custom" %}{% if l.rule %}<details class="rule-id"><summary>Details</summary><span class="muted">Price rule <code class="mono">{{ l.rule }}</code></span></details>{% endif %}{% endif %}</td>{% if o.kind != "custom" %}<td>{{ l.qty }}</td><td class="hide-sm">{{ l.unit }}</td>{% endif %}<td class="num">{{ l.amount }}</td></tr>{% endfor %}
+        </tbody>
+        <tfoot>
+          <tr><td colspan="{% if o.kind == 'custom' %}1{% else %}3{% endif %}" class="hide-sm-colspan">Subtotal</td><td class="num">{{ o.subtotal }}</td></tr>
+          {% if o.has_delivery %}<tr><td colspan="{% if o.kind == 'custom' %}1{% else %}3{% endif %}">Delivery{% if o.zone %} ({{ o.zone }}){% endif %}</td><td class="num">{{ o.delivery }}</td></tr>{% endif %}
+          <tr class="total"><td colspan="{% if o.kind == 'custom' %}1{% else %}3{% endif %}">Total{% if o.usd %} <small class="muted">({{ o.usd }} at {{ o.rate }})</small>{% endif %}</td><td class="num">{{ o.total }}</td></tr>
+        </tfoot>
+      </table></div>
+      {% if o.message %}<p>Message on the cake: <b>&ldquo;{{ o.message }}&rdquo;</b></p>{% endif %}
+      {% if o.idea %}<figure class="idea"><img src="{{ o.idea }}" alt="The idea of the cake {{ o.name }} saw in the studio" width="240" height="240" loading="lazy"><figcaption>The idea of the cake {{ o.name }} saw, made with AI from the options above. You bake the real one.</figcaption></figure>{% endif %}
+      {% if o.note or o.spec_note %}<p>Note from {{ o.name }}: <b>{{ o.note or o.spec_note }}</b></p>{% endif %}
+      {% if o.price_list %}<p class="muted small">Priced from price list {{ o.price_list }}{% if o.list_source %} ({{ o.list_source }}){% endif %}.{% if o.stale_list %} The live list is now {{ o.live_list }}; this order keeps its pinned price.{% endif %}</p>{% endif %}
+    </article>
+
+    <article class="fcard">
+      <h3>Timeline</h3>
+      {% if o.events %}
+      <ol class="tl">
+        {% for e in o.events %}<li class="{% if e.tone == 'ok' %}ok{% elif e.tone == 'wait' or e.tone == 'risk' %}warn{% endif %}"><span class="t">{{ e.at }}</span><span class="pin"></span><span><b>{{ e.label }}</b> · {{ e.actor }}{% if e.note %}<small class="tl-note">{{ e.note }}</small>{% endif %}</span></li>{% endfor %}
+      </ol>
+      {% else %}{{ m.empty("Nothing recorded on this order yet.") }}{% endif %}
+    </article>
+
+    <article class="fcard">
+      <h3>Payments</h3>
+      {% if o.payments %}
+      <div class="tbl"><table class="procs"><thead><tr><th>Payment</th><th>Paid with</th><th class="num">Amount</th><th>State</th><th class="hide-sm">When</th></tr></thead><tbody>
+      {% for p in o.payments %}<tr><td class="mono">{{ p.id }}</td><td>{{ p.rail }}</td><td class="num">{{ p.amount }}</td><td>{% if p.sample %}{{ m.chip("Sample, no money moved", "") }}{% else %}{{ m.chip(p.state, "ok" if p.state == "captured" else "") }}{% endif %}</td><td class="hide-sm">{{ p.at }}</td></tr>{% endfor %}
+      </tbody></table></div>
+      {% else %}{{ m.empty("No payment yet. " ~ ("The payment request appears on the customer's order page once you approve." if o.state == "held" else "The Cashier records it here when the customer pays.")) }}{% endif %}
+      {% if o.refunds %}
+      <h3 class="sub-h">Refunds</h3>
+      <div class="tbl"><table class="procs"><thead><tr><th>Refund</th><th class="num">Amount</th><th>Reason</th><th class="hide-sm">Rule</th><th class="hide-sm">When</th></tr></thead><tbody>
+      {% for r in o.refunds %}<tr><td class="mono">{{ r.id }}</td><td class="num">{{ r.amount }}</td><td>{{ r.reason }}</td><td class="hide-sm">{{ r.rule_words }}{% if r.rule and r.rule != r.rule_words %}<details class="rule-id"><summary>Details</summary><span class="muted">Rule <code class="mono">{{ r.rule }}</code></span></details>{% endif %}</td><td class="hide-sm">{{ r.at }}</td></tr>{% endfor %}
+      </tbody></table></div>
+      {% endif %}
+    </article>
+  </div>
+
+  <div class="col side">
+    <article class="fcard accent">
+      <h3>Move it along</h3>
+      {% if o.state == "held" %}
+      <p>{{ o.name }} is waiting for your OK. Nothing is charged until you approve.</p>
+      <div class="verbs"><a class="btn btn-primary btn-sm" href="{{ c.base }}custom#{{ o.id }}">Approve or decline</a></div>
+      {% endif %}
+      {% if o.cancel_asked %}
+      <p>{{ o.cancel_asked.who }} asked to cancel {{ o.cancel_asked.when }}, before it's made. Cancel and refund sends the whole amount back the way it was paid; keep it and the order goes ahead.</p>
+      {% endif %}
+      {% if o.steps %}
+      <form method="post" action="{{ o.href }}" class="verbs">
+        {% for s in o.steps %}<button class="btn btn-sm{% if loop.first and not s.danger and o.state != 'held' %} btn-primary{% endif %}{% if s.danger %} btn-ghost danger{% endif %}" name="step" value="{{ s.step }}">{{ s.label }}</button>{% endfor %}
+      </form>
+      <p class="muted small">{{ o.name }} sees each step on the order page. Changes here change the sample for everyone.</p>
+      {% elif o.state != "held" %}
+      <p class="muted">{{ o.label }}. Nothing more to do on this order.</p>
+      {% endif %}
+      <div class="verbs"><a class="btn btn-sm btn-ghost" href="{{ o.customer_page }}">{{ m.icon("open") }}The customer's order page</a></div>
+    </article>
+    <article class="fcard">
+      <h3>Customer</h3>
+      <dl class="facts">
+        <div><dt>Name</dt><dd>{{ o.name }}</dd></div>
+        {% if o.email %}<div><dt>Email</dt><dd>{{ o.email }}</dd></div>{% endif %}
+        {% if o.phone %}<div><dt>Phone</dt><dd>{{ o.phone }}</dd></div>{% endif %}
+        {% if o.recipient %}<div><dt>For</dt><dd>{{ o.recipient }}</dd></div>{% endif %}
+        <div><dt>Other orders</dt><dd>{{ o.past }}</dd></div>
+        <div><dt>Placed</dt><dd>{{ o.placed }} · {% if o.channel == "agent door" %}through the agent door{% if o.agent %} by {{ o.agent }}{% endif %}{% else %}on the {{ o.channel }}{% endif %}</dd></div>
+      </dl>
+    </article>
+    <article class="fcard">
+      <h3>{{ o.fulfilment }}</h3>
+      {% if o.slot %}
+      <p><b>{{ o.slot.label }}</b></p>
+      <p class="muted small">{{ o.slot.taken }} of {{ o.slot.capacity }} places in this slot taken{% if o.slot.full %}; the slot is full{% endif %}.</p>
+      {% else %}<p class="muted">No slot on this order.</p>{% endif %}
+    </article>
+  </div>
+</div>
+{% endblock %}

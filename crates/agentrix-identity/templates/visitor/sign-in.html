@@ -1,0 +1,18 @@
+<section class="acct" id="acct" data-acct="sign-in" data-next="{{ next }}">
+  {% if again %}<p class="note warn" role="status">Sign in again to change this. It keeps your account safe if someone else picks up this device.</p>{% endif %}
+  {% if expired %}<p class="note" role="status">You were signed out after a while away. Sign in to carry on; your bag is still here.</p>{% endif %}
+  <div>
+    <h1 class="acct-h">{{ heading }}</h1>
+    <p class="acct-why">{{ why }} New here? The same buttons create an account.</p>
+  </div>
+  <form class="acct-form" method="post" action="/account/code/send" novalidate>
+    <input type="hidden" name="purpose" value="sign-in">
+    <input type="hidden" name="next" value="{{ next }}">
+    <label class="field">Email<input id="acct-email" name="email" type="email" autocomplete="username webauthn" inputmode="email" required value="{{ email }}"></label>
+    <button class="btn wide" type="button" id="acct-passkey" hidden>Continue with a passkey</button>
+    <button class="btn ghost wide" type="submit" id="acct-code">Email me a code</button>
+  </form>
+  <p class="note warn" id="acct-error" role="alert"{% if not error %} hidden{% endif %}>{{ error }}</p>
+  <p class="small">You can still ask and browse without an account. <a class="link" href="/account/keeps">What {{ site }} keeps</a></p>
+  <p class="small">Lost the phone with your passkey? <a class="link" href="/account/recover?next={{ next_q }}">Get back in</a></p>
+</section>

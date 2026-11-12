@@ -1,0 +1,15 @@
+{
+ "person": {"name": null},
+ "issue": {
+  "title": "Put your opening hours where Google can read them",
+  "lines": [
+   "Write your hours as text on one page, not inside a picture.",
+   "Use the same hours on every page and on your Google profile.",
+   "Add the days you close, like public holidays.",
+   "Check them each time your hours change."
+  ],
+  "link": {"label": "Check your own site for free", "url": "https://agentrix.website/assess"}
+ },
+ "unsubscribe_url": "https://agentrix.website/_home/fix/stop?token=nl_3b8x",
+ "consent": {"words": "Send me the weekly fix", "given_at": "Sun 8 Nov, 10:20", "source": "agentrix.website footer"}
+}

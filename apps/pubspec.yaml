@@ -1,0 +1,13 @@
+# Agentrix apps (W13, specs/platform/13-mobile-and-channels.md §7): one Flutter workspace.
+name: agentrix_apps
+description: The Agentrix customer and owner apps, and the packages they share.
+publish_to: none
+environment:
+  sdk: ^3.11.0
+workspace:
+  - packages/agentrix_kit
+  - packages/agentrix_api
+  - owner
+  - customer
+dev_dependencies:
+  lints: ^6.0.0

@@ -1,0 +1,112 @@
+{% extends "console/base.html" %}
+{% import "macros.html" as m %}
+{#- Page::Move · view::MoveView (+ ConsoleChrome) {
+      move: { id, state: "running"|"waiting"|"live"|"stopped"|"none", started_words, progress_words },
+      steps: [ { key: "assess"|"claim"|"replay"|"clean"|"rebuild"|"prove"|"golive", name, state, summary, took_words, receipt? } ],
+      tick: { hosts, requests, bytes_words, refusals },
+      frame: { kind, src, page_url }?,
+      parity: { score_words ("97%"), score_pct (0–100), bar_ok (bool), pages: [ { url, state, score_words, verdict } ] }?,
+      quarantine: { count, items: [ { title, reason, where } ] },
+      card: { title, href }? (the go-live card, once raised),
+      spend_words? (what this Move's model calls cost, S2-11),
+      uploads: [ { name, size_words, when_words } ] (the owner's exports, R4.1),
+      start_href? (when no Move has started) }
+    R4–R6, R6.5 live over /moves/{id}/events. -#}
+{% block title %}The Move{% endblock %}
+{% block content %}
+<section class="stack">
+  <div class="row"><p class="eyebrow">The Move</p>{{ m.fixture_label(site.fixture) }}</div>
+  <h1>{% if move.state == "live" %}Live, and nothing broke{% elif move.state == "none" %}Ready to move {{ site.host }}{% elif move.state == "stopped" %}The Move stopped{% else %}Moving {{ site.host }}{% endif %}</h1>
+  {% if move.state != "none" %}<p class="muted small">Started {{ move.started_words }}{% if move.progress_words %} · <span id="move-progress">{{ move.progress_words }}</span>{% endif %} · your old site keeps serving the whole time</p>{% endif %}
+  {% if move.state == "live" and site.live_url %}<p>Your new site is live at <a href="{{ site.live_url }}" rel="noopener">{{ site.live_url }}</a></p>{% endif %}
+  {% if spend_words %}<p class="hint" id="move-spend">{{ spend_words }}</p>{% endif %}
+</section>
+
+{% if move.state == "live" %}
+<section class="card" aria-labelledby="undo-h">
+  <h2 id="undo-h">Undo</h2>
+  <p class="small">For 30 days after going live, you can undo in one step. Nothing is deleted: this release stays in your history and can go live again.</p>
+  <form method="post" action="/sites/{{ site.id }}/rollback"><input type="hidden" name="to" value="previous"><button class="btn btn-ghost btn-wide" type="submit">Go back to the release before this one</button></form>
+  <form method="post" action="/sites/{{ site.id }}/rollback"><input type="hidden" name="to" value="old-site"><button class="btn btn-ghost btn-wide" type="submit">Go back to your old site</button></form>
+  <p class="hint">If this is your first release, both take you back to your old site. Each undo is written as a receipt.</p>
+</section>
+{% endif %}
+
+{% if move.state == "stopped" %}
+<section class="card" aria-labelledby="again-h">
+  <h2 id="again-h">Start again</h2>
+  <p class="small">This Move ended without going live: it was declined, undone, or stopped on a fault. Your old site kept serving the whole time, and every step it took is on its receipts below.</p>
+  <form method="post" action="/sites/{{ site.id }}/moves"><button class="btn btn-primary btn-wide" type="submit">Start a new Move</button></form>
+  <p class="hint">A Move that stopped on a fault picks up where it stopped; otherwise a fresh Move starts from your site's exports.</p>
+</section>
+{% endif %}
+
+{% if (move.state == "none" or move.state == "stopped") and not site.fixture %}
+<section class="card" aria-labelledby="up-h">
+  <h2 id="up-h">Your WordPress export</h2>
+  <p class="small">In WordPress, go to Tools → Export → All content and upload the file here. If your host lets you, add the database dump and the wp-content folder as a .tar.gz too: the Move then replays your old site in a sealed room instead of reading only its export.</p>
+  <div class="stack" id="uploads" data-site="{{ site.id }}">
+    {% for slot in [["export.xml", "WordPress export (.xml)", ".xml,application/xml,text/xml"], ["dump.sql.gz", "Database dump (.sql.gz), optional", ".gz,application/gzip"], ["wp-content.tar.gz", "wp-content folder (.tar.gz), optional", ".gz,application/gzip"]] %}
+    {% set have = uploads | selectattr("name", "equalto", slot[0]) | list %}
+    <label class="field">{{ slot[1] }}<input type="file" id="up-{{ loop.index }}" data-name="{{ slot[0] }}" accept="{{ slot[2] }}"></label>
+    <p class="hint" id="up-{{ loop.index }}-status" role="status">{% if have %}Uploaded {{ have[0].size_words }} · {{ have[0].when_words }}{% else %}Not uploaded yet{% endif %}</p>
+    {% endfor %}
+  </div>
+  <p class="hint">Files stay on the platform, are checked by type before they're kept, and are only ever opened inside sealed rooms.</p>
+</section>
+{% endif %}
+
+{% if move.state == "none" %}
+<section class="card">
+  <p>The Mover will read your site in sealed rooms, leave anything suspicious behind, rebuild it, and prove the new site matches the old one before you decide to go live.</p>
+  <form method="post" action="/sites/{{ site.id }}/moves"><button class="btn btn-primary btn-wide" type="submit">Start the Move</button></form>
+</section>
+{% else %}
+<p class="okline" id="card-banner" {% if not card %}hidden{% endif %}>Your decision: <a href="{{ card.href if card else '#' }}">{{ card.title if card else '' }}</a></p>
+<p class="error" id="live-error" role="status" hidden></p>
+
+<section class="card" aria-labelledby="steps-h">
+  <h2 id="steps-h">Steps</h2>
+  <ol class="steps">
+    {% for s in steps %}
+    <li class="step" data-step="{{ s.key }}" data-state="{{ s.state }}">
+      <span class="dot" aria-hidden="true"></span>
+      <div><b>{{ s.name }} <span class="sr-only sr-state">{{ {"pending": "Not started", "running": "In progress", "waiting": "Waiting for you", "done": "Done", "failed": "Stopped"}[s.state] }}</span></b><p class="what">{{ s.summary }}</p>{% if s.receipt %}<a class="rcpt small" href="/receipts/{{ s.receipt }}">receipt</a>{% endif %}</div>
+      <span class="took">{{ s.took_words }}</span>
+    </li>
+    {% endfor %}
+  </ol>
+</section>
+
+{% if move.state == "running" %}
+<section class="card" aria-labelledby="room-h">
+  <div class="spread"><h2 id="room-h">The current sealed room</h2><span class="chip sealed">No keys</span></div>
+  {{ m.ticks(tick) }}
+  <div class="frame">
+    {% if frame %}<img id="frame-img" src="{{ frame.src }}" alt="What the sealed browser sees on {{ frame.page_url }}"><span class="label chip {{ 'ok' if frame.kind == 'live' else 'sealed' }}" id="frame-label">{{ "Live" if frame.kind == "live" else "Sealed screenshot, about 1 a second" }}</span>
+    {% else %}<img id="frame-img" alt="" hidden><span class="label chip sealed" id="frame-label" hidden></span><p class="empty" id="frame-empty">No frame from this room yet.</p>{% endif %}
+  </div>
+</section>
+{% endif %}
+
+<section class="card" aria-labelledby="parity-h">
+  <div class="spread"><h2 id="parity-h">Does the new site match the old one?</h2><b id="parity-score">{{ parity.score_words if parity else "—" }}</b></div>
+  <div class="meter" aria-hidden="true"><i id="parity-bar" style="width:{{ parity.score_pct if parity else 0 }}%"></i></div>
+  <p class="hint">Text, links, products and look, page by page, with a one-line verdict from a vision check. Below 95%, nothing can go live.</p>
+  <ul class="list" id="parity-pages" {% if not parity or not parity.pages %}hidden{% endif %}>
+    {% if parity %}{% for p in parity.pages %}
+    <li data-page="{{ p.url }}"><div class="spread"><b class="mono">{{ p.url }}</b><span class="chip {{ 'ok' if p.state == 'pass' else ('wait' if p.state == 'retry' else 'risk') }}">{{ p.score_words }}</span></div><p class="small muted">{{ p.verdict }}</p>{% if p.state == "flagged" %}<form method="post" action="/moves/{{ move.id }}/accept"><input type="hidden" name="page" value="{{ p.url }}"><button class="btn btn-ghost" type="submit">Accept this page as it is</button></form>{% endif %}</li>
+    {% endfor %}{% endif %}
+  </ul>
+</section>
+
+<section class="card" aria-labelledby="q-h">
+  <div class="spread"><h2 id="q-h">Left behind</h2><span class="chip risk"><span id="quarantine-count">{{ quarantine.count }}</span> items</span></div>
+  <ul class="list" id="quarantine-live" {% if not quarantine.items %}hidden{% endif %}>
+    {% for q in quarantine.items %}<li><b>{{ q.title }}</b><p class="small muted">{{ q.reason }} · {{ q.where }}</p></li>{% endfor %}
+  </ul>
+  <p class="hint">Each item stays behind unless you restore it, and restoring is a decision you sign. <a href="/os/quarantine">Review them</a></p>
+</section>
+{% endif %}
+{% endblock %}
+{% block scripts %}{% if move.state == "running" or move.state == "waiting" %}<script src="/static/live.js?v={{ asset_v }}" data-events="/moves/{{ move.id }}/events" defer></script>{% endif %}{% if (move.state == "none" or move.state == "stopped") and not site.fixture %}<script src="/static/upload.js?v={{ asset_v }}" defer></script>{% endif %}{% endblock %}

@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>{{ p.name }} · {{ domain }}</title>
+<link rel="stylesheet" href="{{ ui_base }}/tokens.css?v={{ ui_v }}">
+<link rel="stylesheet" href="{{ ui_base }}/kit.css?v={{ ui_v }}">
+<link rel="stylesheet" href="{{ ui_base }}/shell.css?v={{ ui_v }}">
+<link rel="stylesheet" href="/ops-static/ops.css?v={{ asset_v }}">
+<script src="/ops-static/grant.js?v={{ asset_v }}" defer></script>
+</head>
+<body class="owner-grant">
+{#- An owner grants a partner a charter role on their site (08 §2.5, decision contract ADR-014). -#}
+{%- set words = {"editor": "draft and edit pages, and lower or pause a WebAgent", "approver": "approve the cards your charter leaves to an Approver", "publisher": "publish releases and roll back to an earlier one", "viewer": "see your site's state, decisions and spend"} -%}
+<main class="wrap grant-wrap">
+  <a class="logo" href="/os"><span class="mark" aria-hidden="true"></span>Agentrix</a>
+  <article class="card decision{% if state != 'invited' %} done{% endif %}" id="grant" data-approve-url="/agency-access/{{ p.partner_id }}/{{ site }}/approve" data-method="{{ method }}"{% if options %} data-options="{{ options }}"{% endif %}>
+    <div class="head"><span class="from"><span class="avatar sm" style="background:var(--pf)">{{ p.name|initials }}</span>{{ p.name }} asks</span>
+      {%- if state == "invited" %}<span class="chip chip-wait">Waiting for you</span>{% elif state == "granted" %}<span class="chip chip-ok">Granted</span>{% else %}<span class="chip">{{ {"declined": "You declined", "revoked": "Taken back"}[state] }}</span>{% endif %}</div>
+    <h3>Make {{ p.name }} your site's {{ role }}</h3>
+    <p class="facts">{{ p.name }} is a{{ "n" if p.kind == "agency" else "" }} {{ p.kind }} on Agentrix. It's asking to work on {{ domain }}.</p>
+    <div class="effect"><h4>If you approve, exactly this happens</h4>
+      <ul>
+        <li>{{ p.name }}'s people can {{ words[role] }} on {{ domain }}. Each acts as themselves, and receipts name them and {{ p.name }}.</li>
+        <li>They can never raise a WebAgent's autonomy, read your customers' payment details, or stop you exporting or leaving.</li>
+        <li>You can take the role back here at any time, and it stops at once.</li>
+      </ul>
+    </div>
+    <div class="riskline"><span>You decide:</span><span class="chip">Zavora can't grant this for you</span><span class="chip">you can say no</span></div>
+    {%- if state == "invited" %}
+    <div class="actions">
+      {%- if method == "passkey" %}<button class="btn btn-primary" type="button" id="approve-passkey">Approve with passkey</button>{% endif %}
+      <form method="post" action="/agency-access/{{ p.partner_id }}/{{ site }}/decline"><button class="btn btn-ghost" type="submit">Decline</button></form>
+    </div>
+    <form class="code-form" id="code-form"{% if method == "passkey" %} hidden{% endif %}>
+      <label for="code">{% if method == "passkey" %}Or enter{% else %}Enter{% endif %} the code from your authenticator app</label>
+      <div class="row"><input id="code" class="code" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6}" maxlength="6"><button class="btn btn-primary" type="submit">Approve</button></div>
+    </form>
+    {%- if method == "passkey" %}<button class="stepup-link" type="button" id="use-code">No passkey on this device? Use a code from your authenticator app</button>{% endif %}
+    <div class="err" id="err" role="alert" hidden></div>
+    {%- elif state == "granted" %}
+    <div class="done-line" role="status">{{ p.name }} is your site's {{ role }}.</div>
+    <form method="post" action="/agency-access/{{ p.partner_id }}/{{ site }}/revoke" style="margin-top:12px"><button class="btn" type="submit">Take the role back</button></form>
+    {%- else %}
+    <div class="done-line" role="status">{{ "You declined. " ~ p.name ~ " has no role on your site." if state == "declined" else "You took the role back. " ~ p.name ~ " can't act on your site any more." }}</div>
+    {%- endif %}
+  </article>
+  <p class="small muted" style="margin-top:12px">Signed in as {{ owner_name }}. Receipts for this are in your <a href="/os/trust">Trust centre</a>.</p>
+</main>
+</body>
+</html>

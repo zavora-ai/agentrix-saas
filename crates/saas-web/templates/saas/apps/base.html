@@ -1,0 +1,16 @@
+{% extends "ui/layouts/shell.html" %}
+{% import "ui/kit.html" as ui %}
+{#- v3 console apps for one site, in Agentrix OS's shell. View: apps::routes::shell_view + the page's own. -#}
+{% block shell_styles %}<link rel="stylesheet" href="/static/saas/saas.css?v={{ saas_v }}">{% block app_styles %}{% endblock %}{% endblock %}
+{% block os_class %}no-lane no-cmd{% endblock %}
+{% block bar %}
+  {{ ui.site_chip(site) }}
+  <span class="grow"></span>
+  <span class="pill"><span class="hide-sm">Owner</span> <b>{{ owner }}</b></span>
+{% endblock %}
+{% block dock_label %}Apps{% endblock %}
+{% block dock %}
+  {{ ui.app_icon({"label": "Passkey", "href": base ~ "/passkey", "icon": "◉", "current": current == "passkey"}) }}
+  {{ ui.app_icon({"label": "Badges", "href": base ~ "/badges", "icon": "◈", "current": current == "badges"}) }}
+  {{ ui.app_icon({"label": "Wallet", "href": base ~ "/wallet", "icon": "▤", "current": current == "wallet"}) }}
+{% endblock %}

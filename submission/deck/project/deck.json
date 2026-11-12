@@ -1,0 +1,21 @@
+{
+  "v": 4,
+  "createdOnFiles": { "v": 1, "at": "2026-11-07T22:30:00+03:00" },
+  "lists": "css",
+  "title": "Agentrix: Upgrade your website into WebAgents",
+  "cover": "cover",
+  "order": ["cover", "problem", "the-move", "containment", "golive", "site-door", "console", "architecture", "business", "competition", "roadmap", "close"],
+  "sections": {
+    "s1": { "description": "The promise and the problem: small-business websites that wait, get hacked and can’t serve AI agents.", "start": "cover" },
+    "s2": { "description": "How the Move works, and why nothing the old site tries gets out.", "start": "the-move" },
+    "s3": { "description": "What the owner and the customers get: go-live on the owner’s say-so, a site that answers, a console on a phone.", "start": "golive" },
+    "s4": { "description": "How it runs on Vultr, and how it makes money for Zavora and for Vultr.", "start": "architecture" },
+    "s5": { "description": "The field, the plan and the team.", "start": "competition" }
+  },
+  "faces": {
+    "manrope": { "family": "Manrope", "href": "https://fonts.googleapis.com/css2?family=Manrope:wght@400..800&display=swap" },
+    "dm-sans": { "family": "DM Sans", "href": "https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" },
+    "jetbrains-mono": { "family": "JetBrains Mono", "href": "https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&display=swap" }
+  },
+  "designSystems": []
+}

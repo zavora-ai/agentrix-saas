@@ -1,0 +1,196 @@
+/* Kilele's cake studio (K-04) and the simple cake form (K-18).
+   Ported from concept/experience/creator.html, concept/journeys/customer-order.html (custom tab)
+   and concept/site.html #order. Scoped under .st and .oc so the header's own classes stay put. */
+
+@keyframes st-rise { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+
+.st { padding: 14px 0 28px; --wait: #8a5300; --wait-bg: #fff4dd; }
+.st-crumb { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; padding: 0 0 12px; }
+.st .crumb { font: 600 13px/1 var(--font-text); color: var(--brown-2); }
+.st .crumb a { color: var(--brown-2); }
+.st .crumb b { color: var(--brown); }
+.st-noscript { margin: 0 0 12px; padding: 12px 14px; border-radius: 14px; background: #fff4dd; border: 1px solid #f2dcae; color: #6b4300; font-size: 14px; }
+
+.st .studio { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); gap: 0; border: 1px solid var(--line-b); border-radius: 22px; background: var(--cream); overflow: clip; }
+.st .talk { display: flex; flex-direction: column; border-right: 1px solid var(--line-b); background: #fffdf9; min-width: 0; align-self: start; position: sticky; top: 12px; height: min(820px, calc(100vh - 24px)); }
+.st .talk-head { display: flex; align-items: center; gap: 10px; padding: 14px 16px; border-bottom: 1px solid var(--line-b); }
+.st .talk-head .who { flex: 1; min-width: 0; }
+.st .talk-head b { display: block; font: 800 16px/1.2 var(--serif); color: var(--brown); }
+.st .talk-head .who span { font-size: 12px; color: var(--brown-2); }
+.st .talk-body { flex: 1; min-height: 0; overflow: auto; padding: 0 16px 8px; }
+.st .wa-a .txt p { margin: 0; }
+.st .wa-a .txt p + p { margin-top: 6px; }
+.st .chips { display: flex; flex-wrap: wrap; gap: 6px; padding: 10px 16px 0; }
+.st .chips[hidden] { display: none; }
+.st .chip-opt { border: 1.5px solid var(--line-b); background: #fff; color: var(--brown); border-radius: 999px; padding: 8px 12px; min-height: 36px; font: 600 13px/1.1 var(--font-text); cursor: pointer; display: inline-flex; gap: 6px; align-items: center; }
+.st .chip-opt:hover, .st .chip-opt:focus-visible { border-color: var(--wa-accent); }
+.st .chip-opt[aria-pressed="true"] { border-color: var(--brown); background: var(--cream-2); }
+.st .chip-opt small { font-weight: 700; color: var(--brown-2); }
+.st .chip-opt small.only { font-weight: 600; }
+.st .chip-opt .sw { width: 12px; height: 12px; border-radius: 50%; border: 1px solid rgba(0,0,0,.12); flex: none; }
+.st .chip-opt[disabled] { opacity: .45; cursor: not-allowed; text-decoration: line-through; }
+
+/* The calendar: 21 days, closed days say why. */
+.st .cal { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 5px; }
+.st .day { display: grid; justify-items: center; align-content: start; gap: 2px; min-height: 58px; padding: 6px 3px; border: 1.5px solid var(--line-b); border-radius: 12px; background: #fff; color: var(--brown); cursor: pointer; font: 500 11px/1.15 var(--font-text); min-width: 0; }
+.st .day .dow { color: var(--brown-2); font-weight: 700; letter-spacing: .03em; }
+.st .day b { font: 800 16px/1 var(--serif); }
+.st .day .why { font-size: 9.5px; line-height: 1.15; color: var(--brown-2); text-align: center; overflow-wrap: anywhere; }
+.st .day:hover, .st .day:focus-visible { border-color: var(--wa-accent); }
+.st .day[aria-disabled="true"] { background: var(--cream-2); color: #a8927a; cursor: not-allowed; border-style: dashed; }
+.st .day[aria-disabled="true"] b { text-decoration: line-through; text-decoration-thickness: 1px; }
+.st .day[aria-pressed="true"] { border-color: var(--brown); background: var(--cream-2); }
+
+.st .talk-foot { border-top: 1px solid var(--line-b); padding-bottom: 12px; }
+.st .talk-foot .wa-disclose { padding: 8px 16px 0; }
+
+.st .cake-side { padding: clamp(14px, 2.5vw, 24px); display: grid; gap: 14px; align-content: start; min-width: 0; }
+.st .cake-card { background: #fff; border: 1px solid var(--line-b); border-radius: 22px; overflow: hidden; }
+.st .cake-stage { position: relative; background: radial-gradient(100% 80% at 50% 0%, #fff7ec, #f6e7d2); padding: 40px 12px 6px; }
+.st .cake-stage svg { display: block; width: 100%; max-width: 380px; height: auto; margin: 0 auto; }
+.st .cake-stage svg * { transition: fill .35s var(--ease), opacity .35s var(--ease); }
+.st .sketch-tag { position: absolute; left: 12px; top: 12px; display: inline-flex; gap: 6px; align-items: center; padding: 5px 9px; border-radius: 999px; background: rgba(255,255,255,.92); border: 1px solid var(--line-b); font: 700 11px/1.2 var(--font-text); color: var(--brown-2); }
+.st .cake-name { padding: 14px 16px 4px; display: flex; justify-content: space-between; gap: 10px; align-items: baseline; flex-wrap: wrap; }
+.st .cake-name h2 { font: 800 22px/1.15 var(--serif); color: var(--brown); min-width: 0; overflow-wrap: anywhere; }
+.st .cake-name .total { font: 800 22px/1 var(--serif); color: var(--brown); white-space: nowrap; }
+.st .serves { padding: 0 16px; font-size: 13px; color: var(--brown-2); }
+.st .spec { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0; padding: 6px 16px 14px; }
+.st .spec button { display: block; text-align: left; padding: 8px 0; border: 0; border-bottom: 1px dashed var(--line-b); background: none; font: 400 13.5px/1.35 var(--font-text); color: var(--brown); min-width: 0; cursor: pointer; overflow-wrap: anywhere; }
+.st .spec button:nth-child(odd) { padding-right: 10px; }
+.st .spec button:hover span, .st .spec button:focus-visible span { text-decoration: underline; text-underline-offset: 2px; }
+.st .spec i { display: block; font-style: normal; font: 700 10.5px/1.3 var(--font-text); letter-spacing: .06em; text-transform: uppercase; color: var(--brown-2); }
+.st .spec button.unset { color: #b09a80; }
+
+.st .flags { display: grid; gap: 8px; }
+.st .flags:empty { display: none; }
+.st .flag { display: flex; gap: 10px; align-items: flex-start; padding: 10px 12px; border-radius: 14px; font-size: 13px; line-height: 1.45; background: #fff4dd; color: #6b4300; border: 1px solid #f2dcae; animation: st-rise .3s var(--ease) both; }
+.st .flag.error { background: #fde8e4; color: #8a2a17; border-color: #f2c4b8; font-weight: 600; }
+.st .flag.ok { background: #e9f3e7; color: #24561f; border-color: #cfe3c9; }
+
+.st .price-card, .st .req-card { background: #fff; border: 1px solid var(--line-b); border-radius: 18px; padding: 14px 16px; }
+.st .price-card h3, .st .req-card h3 { font: 800 16px/1.2 var(--serif); color: var(--brown); display: flex; justify-content: space-between; gap: 8px; align-items: baseline; flex-wrap: wrap; }
+.st .price-card .pl { font: 600 12px/1.3 var(--font-text); color: var(--brown-2); }
+.st ul.lines { list-style: none; padding: 0; margin: 10px 0 0; display: grid; gap: 6px; font-size: 13.5px; }
+.st ul.lines li { display: flex; justify-content: space-between; gap: 10px; color: var(--brown-2); }
+.st ul.lines li > span:first-child { min-width: 0; overflow-wrap: anywhere; }
+.st ul.lines li > span:last-child { white-space: nowrap; }
+.st ul.lines li.tot { border-top: 1px solid var(--line-b); padding-top: 8px; margin-top: 2px; font: 800 15px/1.2 var(--font-text); color: var(--brown); }
+.st ul.lines li.usd { font-size: 12.5px; }
+.st ul.lines .rule { font: 500 11px/1.2 var(--font-mono); color: #a08b72; margin-left: 6px; white-space: nowrap; }
+.st .rules-note { margin-top: 10px; font-size: 12px; color: var(--brown-2); display: flex; gap: 8px; align-items: flex-start; }
+.st .rules-note .wa-ai { flex: none; }
+
+/* The request summary and the held state (customer-order.html, custom tab). */
+.st .req-card { display: grid; gap: 12px; }
+.st .k-facts { margin: 0; display: grid; }
+.st .k-facts > div { display: grid; grid-template-columns: 88px minmax(0, 1fr); gap: 10px; padding: 8px 0; border-top: 1px dashed var(--line-b); align-items: baseline; }
+.st .k-facts > div:first-child { border-top: 0; padding-top: 0; }
+.st .k-facts > div[hidden] { display: none; }
+.st .k-facts dt { font: 700 11.5px/1.5 var(--font-text); letter-spacing: .04em; text-transform: uppercase; color: var(--brown-2); }
+.st .k-facts dd { margin: 0; font-size: 14px; line-height: 1.45; color: var(--brown); overflow-wrap: anywhere; }
+.st .k-facts input, .oc input, .oc select { width: 100%; min-height: 42px; border: 1.5px solid var(--line-b); border-radius: 12px; padding: 0 12px; font: 500 15px/1 var(--font-text); color: var(--brown); background: var(--cream); outline: none; }
+.st .k-facts input:focus { border-color: var(--terra); }
+.st .cake-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.st .b-btn[disabled] { opacity: .5; cursor: not-allowed; }
+.st .b-btn.done, .st .b-btn.done:hover { opacity: 1; background: var(--cream-2); color: var(--brown); cursor: default; }
+.st .who-line { font-size: 12.5px; color: var(--brown-2); }
+.st .share-box { display: grid; gap: 6px; padding: 12px; border-radius: 14px; background: var(--cream); border: 1px dashed var(--line-b); font-size: 12.5px; color: var(--brown-2); }
+.st .share-box[hidden] { display: none; }
+.st .share-box label { font: 700 12px/1.2 var(--font-text); color: var(--brown); }
+.st .linkbox { display: flex; gap: 6px; }
+.st .linkbox input { flex: 1; min-width: 0; min-height: 40px; border: 1.5px solid var(--line-b); border-radius: 10px; padding: 0 10px; font: 500 12.5px/1 var(--font-mono); color: var(--brown); background: #fff; }
+.st .linkbox .b-btn { min-height: 40px; }
+.st .k-status { display: grid; gap: 8px; padding: 12px; border-radius: 14px; border: 1px solid var(--line-b); background: #fff; justify-items: start; }
+.st .k-desk { display: flex; align-items: center; gap: 10px; }
+.st .k-desk .who { display: grid; gap: 2px; min-width: 0; }
+.st .k-desk .who b { font: 700 15px/1.2 var(--font-text); color: var(--brown); display: inline-flex; gap: 6px; align-items: center; }
+.st .k-desk .who span { font-size: 12.5px; color: var(--brown-2); }
+.st .k-statusline { font: 600 14.5px/1.45 var(--font-text); color: var(--brown); }
+.st .k-pill { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 999px; font: 700 11.5px/1.3 var(--font-text); background: var(--cream-2); color: var(--brown-2); }
+.st .k-pill.wait { background: var(--wait-bg); color: var(--wait); }
+.st .k-pill.wait::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+.st .k-pill[hidden], .st .k-status [hidden] { display: none; }
+.st .k-next { display: grid; gap: 6px; padding: 12px; border-radius: 14px; background: var(--cream-2); }
+.st .k-next h4 { font: 800 15px/1.2 var(--serif); color: var(--brown); }
+.st .k-next ol { margin: 0; padding-left: 20px; display: grid; gap: 4px; font-size: 13.5px; line-height: 1.45; color: var(--brown); }
+.st .k-small, .oc .k-small { font-size: 12.5px; line-height: 1.45; color: var(--brown-2); }
+
+@media (max-width: 900px) {
+  .st .studio { grid-template-columns: 1fr; }
+  .st .talk { border-right: 0; border-bottom: 1px solid var(--line-b); position: static; height: auto; }
+  .st .talk-body { max-height: 420px; flex: none; }
+}
+@media (max-width: 480px) {
+  .st-crumb .wa-ai { display: none; }
+  .st .cake-actions .b-btn { flex: 1 1 100%; }
+  .st .spec { grid-template-columns: 1fr; }
+  .st .spec button:nth-child(odd) { padding-right: 0; }
+  .st .cal { gap: 3px; }
+  .st .day { min-height: 50px; padding: 5px 1px; }
+  .st .day .why { display: none; }
+  .st .k-facts > div { grid-template-columns: 1fr; gap: 4px; }
+}
+
+/* The simple cake form (concept/site.html #order). */
+.oc { padding-bottom: 20px; --wait: #8a5300; --wait-bg: #fff4dd; }
+.oc .order { display: grid; grid-template-columns: 1.1fr .9fr; gap: 20px; margin-top: 18px; align-items: start; }
+.oc .form { background: #fff; border: 1px solid var(--line-b); border-radius: 20px; padding: 18px; display: grid; gap: 12px; }
+.oc .form .two { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.oc .form label { display: grid; gap: 6px; font: 700 13px/1.2 var(--font-text); color: var(--brown-2); }
+.oc .form label small { font-weight: 500; }
+.oc .form input:focus, .oc .form select:focus { border-color: var(--terra); }
+.oc .form .b-btn { justify-self: start; }
+.oc .err { padding: 10px 12px; border-radius: 14px; background: #fde8e4; color: #8a2a17; border: 1px solid #f2c4b8; font: 600 13.5px/1.45 var(--font-text); }
+.oc .ai-pill { display: inline-flex; align-items: center; gap: 6px; padding: 5px 10px; border-radius: 999px; background: var(--wait-bg); border: 1px solid #f2dcae; font: 700 12px/1 var(--font-text); color: var(--wait); }
+.oc .held { background: #fff; border: 1.5px solid var(--terra); border-radius: 20px; padding: 18px; animation: st-rise .4s var(--ease) both; }
+.oc .held h3 { font: 800 22px/1.15 var(--serif); color: var(--brown); margin-top: 10px; }
+.oc .held p { margin-top: 6px; color: var(--brown-2); }
+.oc .track { list-style: none; padding: 0; margin: 14px 0 0; display: grid; gap: 10px; }
+.oc .track li { display: grid; grid-template-columns: 26px 1fr; gap: 10px; align-items: center; font-size: 15px; color: var(--brown-2); }
+.oc .track li i { width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; border: 2px solid var(--line-b); font: 800 12px/1 var(--font-text); font-style: normal; color: var(--brown-2); background: #fff; }
+.oc .track li.done i { background: #2c6a2a; border-color: #2c6a2a; color: #fff; }
+.oc .track li.now i { border-color: var(--terra); color: var(--terra); }
+.oc .track li.now { color: var(--brown); font-weight: 700; }
+.oc .why { background: var(--cream-2); border-radius: 18px; padding: 16px; font-size: 14px; color: var(--brown-2); margin-top: 14px; }
+.oc .why b { color: var(--brown); }
+.oc .side { display: grid; gap: 0; }
+.oc .summary { background: #fff; border: 1px solid var(--line-b); border-radius: 20px; padding: 18px; display: grid; gap: 12px; }
+.oc .summary h3 { font: 800 20px/1.2 var(--serif); color: var(--brown); }
+.oc .k-facts { margin: 0; display: grid; }
+.oc .k-facts > div { display: grid; grid-template-columns: 88px minmax(0, 1fr); gap: 10px; padding: 8px 0; border-top: 1px dashed var(--line-b); }
+.oc .k-facts > div:first-child { border-top: 0; padding-top: 0; }
+.oc .k-facts dt { font: 700 11.5px/1.5 var(--font-text); letter-spacing: .04em; text-transform: uppercase; color: var(--brown-2); }
+.oc .k-facts dd { margin: 0; font-size: 14px; line-height: 1.45; color: var(--brown); overflow-wrap: anywhere; }
+@media (max-width: 900px) {
+  .oc .order { grid-template-columns: 1fr; }
+}
+@media (max-width: 480px) {
+  .oc .form .two { grid-template-columns: 1fr; }
+  .oc .form .b-btn { justify-self: stretch; }
+  .oc .k-facts > div { grid-template-columns: 1fr; gap: 4px; }
+}
+
+/* The Cakes desk (ADR-032): the quiet "confirms" line, and an idea of the cake made with AI. */
+.st .st-confirms { display: inline-flex; align-items: center; padding: 5px 10px; border-radius: 999px; border: 1px solid var(--line-b); background: #fff; font: 700 11.5px/1.2 var(--font-text); color: var(--brown-2); }
+.st .talk-head .wa-ai[hidden] { display: none; }
+.st .idea { margin: 0 auto; max-width: 380px; position: relative; }
+.st .idea[hidden] { display: none; }
+.st .idea img { display: block; width: 100%; height: auto; aspect-ratio: 1; object-fit: cover; border-radius: 16px; background: #f6e7d2; animation: st-rise .35s var(--ease) both; }
+.st .idea .idea-tag { left: 8px; top: 8px; right: 8px; width: fit-content; max-width: calc(100% - 16px); white-space: normal; }
+.st .sketch-tag[hidden] { display: none; }
+.st .idea-bar { display: grid; gap: 8px; padding: 10px 16px 0; }
+.st .idea-acts { display: flex; gap: 8px; flex-wrap: wrap; }
+.st .idea-acts .b-btn[hidden] { display: none; }
+.st .idea-line { font-size: 12.5px; line-height: 1.45; color: var(--brown-2); }
+.st .idea-plaque { font-size: 13.5px; line-height: 1.45; color: var(--brown); }
+.st .idea-plaque[hidden] { display: none; }
+.st .pass-form { display: grid; gap: 6px; margin-top: 8px; }
+.st .pass-form textarea, .st .pass-form input { width: 100%; border: 1.5px solid var(--line-b); border-radius: 10px; padding: 8px 10px; font: 500 14px/1.4 var(--font-text); color: var(--brown); background: #fff; }
+.st .pass-form .act { justify-self: start; }
+@media (prefers-reduced-motion: reduce) { .st .idea img { animation: none; } }
+@media (max-width: 480px) { .st .idea-acts .b-btn { flex: 1 1 100%; } }
+
+/* The desk shows an idea of the cake in the conversation (ADR-032). */
+.st .chat-idea { margin: 8px 0 0; max-width: 260px; }
+.st .chat-idea img { display: block; width: 100%; height: auto; aspect-ratio: 1; object-fit: cover; border-radius: 12px; border: 1px solid var(--line-b); background: #f6e7d2; }
+.st .chat-idea figcaption { margin-top: 4px; font: 600 11.5px/1.35 var(--font-text); color: var(--brown-2); }

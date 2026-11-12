@@ -1,0 +1,18 @@
+{% block subject %}Someone is getting into your Agentrix account by email{% endblock %}
+{% block preheader %}Unless you stop it, the account opens to them at {{ recovery.opens_at }}.{% endblock %}
+{% block body %}
+# Account recovery started
+Someone asked to get into your Agentrix account with a code sent to {{ recovery.email }}, saying the passkey and authenticator are lost. Unless you stop it, the account opens to them at {{ recovery.opens_at }}, after the 24-hour hold.
+
+If this is you, there's nothing to do. Wait for the hold to end, then sign in with the code.
+
+If it isn't, stop it now: sign in with your passkey or authenticator before {{ recovery.opens_at }}, then press Stop the recovery. Your WebAgents keep working, and nothing else changes.
+
+::button Sign in to stop it | {{ recovery.stop_url }}
+{% endblock %}
+{% block push %}Someone started recovering your account. Open Agentrix to check.{% endblock %}
+{% block push_url %}{{ recovery.stop_url }}{% endblock %}
+{% block chat %}
+Agentrix: someone asked to get into your account with a code sent to {{ recovery.email }}. It opens to them at {{ recovery.opens_at }} unless you sign in with your passkey or authenticator and stop it.
+::button Sign in to stop it | {{ recovery.stop_url }}
+{% endblock %}

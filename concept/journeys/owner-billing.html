@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Billing and ownership</title>
+<meta name="description" content="Owner journey, step 9: invoices and AI spend, changing plan, cancelling without losing the site, and exporting everything, because the platform is MIT and the site is hers.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Manrope:wght@600;700;800&family=Fraunces:opsz,wght@9..144,600;9..144,800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../styles.css">
+<link rel="stylesheet" href="../console/console.css">
+<link rel="stylesheet" href="journeys.css">
+<link rel="stylesheet" href="owner.css">
+</head>
+<body data-lane="owner" data-step="9">
+<header class="j-top">
+  <a class="logo" href="../index.html"><span class="mark" aria-hidden="true"></span>Agentrix</a>
+  <a class="j-maplink" href="index.html">Journey map</a>
+  <span class="j-lane">Owner · Wanjiru</span>
+  <span class="concept-label">Concept · illustrative data</span>
+</header>
+<nav class="j-steps" aria-label="Owner journey" data-steps></nav>
+<main class="wrap j-main">
+  <header class="j-head">
+    <p class="eyebrow">Step 9 of 9 · Owner <span class="j-first">The fleet release</span></p>
+    <h1>Billing, and a site that stays hers</h1>
+    <p class="lead">Invoices she can read, AI spend inside the limit she set, and plan changes that say what starts and stops. Cancelling never strands her site: she can take everything with her, and the platform is MIT, so she can run it herself.</p>
+  </header>
+  <div class="j-grid">
+    <section class="j-stage" aria-label="What Wanjiru sees">
+      <div class="o-frame">
+        <div class="browser-bar"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="url"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>os.agentrix.ai/kilele/billing</span></div>
+        <div class="o-body">
+          <div class="spread" style="flex-wrap:wrap;gap:8px"><div><h2>Billing</h2><p class="sub">Commerce · $149 a month · PayPal subscription · next charge Mon 7 Dec</p></div><span class="chip chip-ok">Paid up</span></div>
+
+          <div class="j-tabs" role="tablist" aria-label="Billing">
+            <button role="tab" type="button" aria-selected="true" aria-controls="t-inv" id="tab-inv">Invoices</button>
+            <button role="tab" type="button" aria-selected="false" aria-controls="t-plan" id="tab-plan">Change plan</button>
+            <button role="tab" type="button" aria-selected="false" aria-controls="t-cancel" id="tab-cancel">Cancel</button>
+            <button role="tab" type="button" aria-selected="false" aria-controls="t-export" id="tab-export">Export everything</button>
+          </div>
+
+          <div role="tabpanel" id="t-inv" aria-labelledby="tab-inv" class="o-sec">
+            <table class="o-money">
+              <thead><tr><th>Invoice</th><th>Period</th><th>Amount</th><th>Paid</th></tr></thead>
+              <tbody>
+                <tr><td>INV-2026-11-0143<br><span class="o-hint">Commerce · AI above the included budget: $0.00 · eTIMS ✓</span></td><td>7 Nov – 6 Dec</td><td class="n">$149.00</td><td>PayPal subscription · 7 Nov</td></tr>
+              </tbody>
+            </table>
+            <div class="o-budget">
+              <div class="spread"><span><b>$3.40</b> of your $30 AI budget this period</span><span class="o-hint">illustrative</span></div>
+              <div style="height:8px;border-radius:99px;background:var(--surface-2);overflow:hidden"><div style="width:11%;height:100%;background:var(--indigo)"></div></div>
+              <p class="o-hint">Nothing above the included $30 is billed unless you raise your cap, and raising it is a card. Spend per WebAgent is in the brief.</p>
+            </div>
+          </div>
+
+          <div role="tabpanel" id="t-plan" aria-labelledby="tab-plan" hidden class="o-sec">
+            <p class="small" style="margin:0"><b>Upgrading</b> applies at once. The prorated difference is a one-off charge: through Steward for PayPal, Paystack's page for a card, or an M-Pesa prompt. <b>Downgrading</b> applies at the next period, and the card lists what stops then.</p>
+            <div class="o-card" data-decision>
+              <div class="from"><span class="j-mark" data-chief data-size="28"></span>Change plan<span class="chip">From Mon 7 Dec</span></div>
+              <h3>Move to Business, $79 a month?</h3>
+              <div class="o-effect"><h4>What stops on 7 Dec</h4><ul><li>The Cashier: customers can still send order requests, but nobody pays on the site</li><li>Your refund rule (up to KSh 2,000 per order) ends with it</li><li>The included AI budget drops from $30 to $15</li></ul></div>
+              <div class="o-acts"><button class="btn btn-primary" type="button" data-passkey data-sign="Change plan: Commerce → Business from 7 Dec 2026" data-fp="H(kilele, billing, plan.change, {commerce→business, effective 2026-12-07}) = 0ab3…77">Move to Business</button><button class="btn btn-ghost" type="button">Keep Commerce</button></div>
+              <div class="o-state done"><span class="o-ok" style="flex:1">✓ Business from 7 Dec · the subscription is revised by the Effects Gateway · receipt r-0ab3…77</span></div>
+            </div>
+          </div>
+
+          <div role="tabpanel" id="t-cancel" aria-labelledby="tab-cancel" hidden class="o-sec">
+            <ol class="o-tl">
+              <li><time>Today</time><div><b>Export everything first.</b> It takes a minute, and the link lasts 7 days.</div></li>
+              <li><time>to 6 Dec</time><div><b>Full service</b> until the end of the period you've paid for.</div></li>
+              <li><time>7 Dec</time><div><b>30 days read-only.</b> The last signed release keeps serving, the WebAgents stop, and nothing is billed. Use the time to point your domain wherever you like.</div></li>
+              <li><time>6 Jan</time><div><b>The site closes.</b> Your data is kept for 90 days.</div></li>
+              <li><time>6 Apr</time><div><b>Deleted</b>, with notice beforehand and a receipt after.</div></li>
+            </ol>
+            <p class="o-hint">Undo works any time until the site closes. There's no refund for the unused part of a period. This policy is a hypothesis, like dunning (08 §4.2).</p>
+            <div class="o-card" data-decision>
+              <div class="from"><span class="j-mark" data-chief data-size="28"></span>Cancel<span class="chip chip-risk">Ends your plan</span></div>
+              <h3>Cancel Commerce for kilele-bakery.example?</h3>
+              <div class="o-acts"><button class="btn" type="button" data-passkey data-sign="Cancel Commerce · full service to 6 Dec · read-only to 5 Jan · close 6 Jan" data-fp="H(kilele, billing, plan.cancel, {end 2026-12-06, read-only 30 d}) = e71d…3c">Cancel my plan</button><button class="btn btn-ghost" type="button">Keep it</button></div>
+              <div class="o-state done"><span class="o-wait" style="flex:1">Cancelled · full service until 6 Dec · undo any time until 6 Jan · receipt r-e71d…3c</span></div>
+            </div>
+          </div>
+
+          <div role="tabpanel" id="t-export" aria-labelledby="tab-export" hidden class="o-sec">
+            <p class="small" style="margin:0">One signed bundle with everything that is yours: your records (orders, customers, conversations), your site (every signed release), your receipts and your analytics. Erasure, if you ask for it, comes with a receipt from every store (07 §5.1).</p>
+            <button class="btn btn-primary" type="button" style="justify-self:start" data-next="#bundle" data-wait="1500" data-busy="Building your bundle…" data-done="Export again">Start export</button>
+            <div id="bundle" data-reveal class="o-ok">✓ Bundle ready · signed · the link lasts 7 days</div>
+            <div class="o-cost"><span aria-hidden="true">ⓘ</span><div><b>The platform is MIT open source.</b> You can run Kilele Bakery yourself, on Vultr or anywhere else, from this bundle. You can take your site and run it yourself at any time.</div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <aside class="j-notes" aria-label="What happens underneath">
+      <div class="j-note gate"><h3>Invoices, approved and posted</h3><p>The Billing WebAgent drafts each run, and finance approves it with a passkey or an authenticator code. Invoices post to zavora-era and go through eTIMS. PayPal collects each period, and verified webhooks post each payment against its invoice (08 §4.2).</p></div>
+      <div class="j-note"><h3>Plan changes are effects</h3><p>The Effects Gateway revises or cancels the PayPal subscription, and every change has a receipt. Overage and one-off charges never go on the subscription.</p></div>
+      <div class="j-note"><h3>Late payment</h3><p>Reminders on day 0, 3 and 7. Read-only from day 14, with the last signed release still serving. A closure notice with an export link on day 30. A person decides each suspension (08 §4.2).</p></div>
+      <div class="j-note never"><h3>Never</h3><ul><li>Hold her site or her data hostage</li><li>Bill AI above the cap she set</li><li>Delete without notice and a receipt</li></ul></div>
+    </aside>
+  </div>
+</main>
+<nav class="wrap j-pager" aria-label="Previous and next step" data-pager></nav>
+<script src="journeys.js"></script>
+<script src="../console/console.js"></script>
+<script src="owner.js"></script>
+</body>
+</html>

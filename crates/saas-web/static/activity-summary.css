@@ -1,0 +1,24 @@
+/* saas-web · the operators' activity summary panel, scoped to .ax-summary so it sits in any page. */
+.ax-summary { border: 1px solid var(--line, #e3e2ec); border-radius: 14px; padding: 14px 16px; background: var(--paper, #fff); }
+.ax-summary .ax-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+.ax-summary h2 { font-size: 17px; margin: 0; }
+.ax-summary .ax-open { font-weight: 700; font-size: 14px; }
+.ax-summary .ax-totals { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 8px; margin: 12px 0; }
+.ax-summary .ax-totals > div { border: 1px solid var(--line, #e3e2ec); border-radius: 10px; padding: 8px 10px; display: grid; gap: 2px; }
+.ax-summary .ax-totals span { font-size: 11px; text-transform: uppercase; letter-spacing: .04em; color: var(--muted, #6b6a80); }
+.ax-summary .ax-totals b { font-size: 14px; }
+.ax-summary .ax-totals small { font-size: 11px; color: var(--muted, #6b6a80); }
+.ax-summary .ax-off { font-size: 12px; color: var(--wait, #8a5300); margin: 0 0 8px; }
+.ax-summary .ax-rows { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; }
+.ax-summary .ax-rows a { display: grid; grid-template-columns: 64px minmax(110px, 1.2fr) 3fr auto; gap: 10px; padding: 6px 8px; border-radius: 8px; color: inherit; text-decoration: none; font-size: 13px; }
+.ax-summary .ax-rows a:hover { background: color-mix(in srgb, var(--link, #38356d) 7%, transparent); }
+.ax-summary .ax-when { font-family: var(--font-mono, ui-monospace, monospace); font-size: 12px; color: var(--muted, #6b6a80); }
+.ax-summary .ax-what em { font-style: normal; font-weight: 700; }
+.ax-summary .ax-what code { font-size: 11px; }
+.ax-summary .ax-refusal a { background: color-mix(in srgb, var(--risk, #a3302a) 7%, transparent); }
+.ax-summary .ax-chip { font-size: 11px; font-weight: 700; padding: 1px 8px; border-radius: 999px; border: 1px solid currentColor; }
+.ax-summary .ax-ok { color: var(--ok, #11734a); }
+.ax-summary .ax-wait { color: var(--wait, #8a5300); }
+.ax-summary .ax-risk { color: var(--risk, #a3302a); }
+.ax-summary .ax-empty { font-size: 13px; color: var(--muted, #6b6a80); padding: 6px 8px; }
+@media (max-width: 640px) { .ax-summary .ax-rows a { grid-template-columns: 56px 1fr; } .ax-summary .ax-what, .ax-summary .ax-decision { grid-column: 2; } }

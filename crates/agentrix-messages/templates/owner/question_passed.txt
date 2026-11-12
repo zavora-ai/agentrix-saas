@@ -1,0 +1,20 @@
+{% block subject %}A visitor asked something {{ site.name }} doesn't answer{% endblock %}
+{% block preheader %}{{ question.text }}{% endblock %}
+{% block body %}
+# A question for you
+A visitor asked at {{ question.page }}, {{ question.asked_at }}:
+
+::quote {{ question.text }}
+
+The {{ question.desk }} couldn't find the answer on your site, so it didn't guess and passed it to you. {% if question.reply_to %}They asked for a reply by {{ question.reply_to }}.{% else %}They didn't leave a way to reply.{% endif %}
+
+Answer it in the console. You can also teach the site the answer, so it can answer the next person itself.
+
+::button Answer it | {{ question.url }}
+{% endblock %}
+{% block push %}A visitor's question is waiting for you.{% endblock %}
+{% block push_url %}{{ question.url }}{% endblock %}
+{% block chat %}
+A visitor asked {{ site.name }}: "{{ question.text }}" The site doesn't say, so it's waiting for you.
+::button Answer it | {{ question.url }}
+{% endblock %}

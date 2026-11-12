@@ -1,0 +1,12 @@
+{% extends "classy/layout.html" %}
+{% block main %}
+<section class="cp-section first">
+  <h1 class="cp-h1">Journal</h1>
+  <p class="sub">Notes on scents and seasons. The Journal desk answers from these posts only.</p>
+  {% if posts %}
+  <div class="pages">{% for p in posts %}<a class="page-hit" href="/journal/{{ p.slug }}" id="post-{{ p.slug }}"><b>{{ p.title }}</b><div class="path">{{ p.date }}</div><p>{{ p.standfirst }}</p></a>{% endfor %}</div>
+  {% else %}
+  <p class="note">No posts yet. New posts appear here when the shop publishes them.</p>
+  {% endif %}
+</section>
+{% endblock %}

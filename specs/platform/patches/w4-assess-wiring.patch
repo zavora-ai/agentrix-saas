@@ -1,0 +1,310 @@
+# W4 wiring for agentrix-node: Assess, the claim and the Move render agentrix-onboarding's pages.
+#
+# Apply on platform after the first release's handover (assess/ is the first release Assess and broker's, claim/ the
+# control-plane session's, pages/ the first release spec's): `git apply specs/platform/patches/w4-assess-wiring.patch`.
+# Made against platform 6c621a7 (node already depends on agentrix-onboarding and mounts it in
+# wiring/host.rs). With it applied on W4's branch node's lib tests pass (134); Assess and the
+# signed-in claim page were checked through a local node, the Move page in W4's preview.
+#
+# - assess/mod.rs: AssessState::with_pages(Arc<Pages>); GET /assess beside POST; Start and
+#   Assess render through Pages when set, the console's templates otherwise.
+# - claim/mod.rs: ClaimState.pages (Option); the claim page renders through Pages when set.
+# - pages/mod.rs: PagesState.onboarding (Option); /console/move renders through Pages when set
+#   (tests and the doc example pass None).
+# - app.rs: one Pages for all three. Styles and scripts come through agentrix_onboarding::mount.
+#
+diff --git a/crates/agentrix-node/src/app.rs b/crates/agentrix-node/src/app.rs
+index b5a2868..54b4411 100644
+--- a/crates/agentrix-node/src/app.rs
++++ b/crates/agentrix-node/src/app.rs
+@@ -189,9 +189,14 @@ pub async fn build(config: &Config) -> anyhow::Result<App> {
+             decisions: decisions.clone(),
+         },
+     );
++    // W4's onboarding pages (agentrix-onboarding), drawn as the concepts: Assess, the claim and
++    // the Move. Their styles and scripts come through agentrix_onboarding::mount (wiring/host.rs).
++    let onboarding =
++        Arc::new(agentrix_onboarding::Pages::new().context("loading the onboarding templates")?);
+     let pages = PagesState {
+         console: console.clone(),
+         reads: Arc::new(reads),
++        onboarding: Some(onboarding.clone()),
+     };
+ 
+     let shared = Shared {
+@@ -245,13 +250,16 @@ pub async fn build(config: &Config) -> anyhow::Result<App> {
+     ])?;
+ 
+     // Assess (assess lane): `/`, `/assess`, `/assess/fixture`, `/assess/{id}`, its events.
+-    let assess = crate::assess::router(crate::assess::AssessState::for_node(
+-        broker.clone(),
+-        pool.clone(),
+-        console.clone(),
+-        crate::assess::AssessConfig::from_env()
+-            .with_fixture_domain(config.fixture_domain.as_deref()),
+-    ));
++    let assess = crate::assess::router(
++        crate::assess::AssessState::for_node(
++            broker.clone(),
++            pool.clone(),
++            console.clone(),
++            crate::assess::AssessConfig::from_env()
++                .with_fixture_domain(config.fixture_domain.as_deref()),
++        )
++        .with_pages(onboarding.clone()),
++    );
+ 
+     // The gauntlet (gauntlet lane): receipt listing and recorded runs, verdicts recomputed
+     // from verified receipts (R13.2).
+@@ -275,6 +283,7 @@ pub async fn build(config: &Config) -> anyhow::Result<App> {
+             claims,
+             auth: auth.clone(),
+             console: console.clone(),
++            pages: Some(onboarding.clone()),
+         }))
+         .merge(crate::pages::router(pages))
+         .merge(assess)
+diff --git a/crates/agentrix-node/src/assess/mod.rs b/crates/agentrix-node/src/assess/mod.rs
+index db9933a..3699d66 100644
+--- a/crates/agentrix-node/src/assess/mod.rs
++++ b/crates/agentrix-node/src/assess/mod.rs
+@@ -5,7 +5,7 @@
+ //!
+ //! | Route | What it does |
+ //! |---|---|
+-//! | `GET /` | The start page (`Page::Start`) |
++//! | `GET /`, `GET /assess` | The address bar (`agentrix_onboarding` Start; `Page::Start` without it) |
+ //! | `POST /assess` (form `url`) | Starts an assessment, no account, and redirects to it at once (R1.1, N2) |
+ //! | `GET /assess/fixture` | Starts (or reuses) an assessment of Zavora's fixture, labelled as such |
+ //! | `GET /assess/{id}` | The live receipt and frames while running; the report, or why there is none, after (`Page::Assess`) |
+@@ -35,7 +35,7 @@ use axum::extract::{Form, Path, State};
+ use axum::http::{HeaderMap, StatusCode};
+ use axum::response::sse::{Event, KeepAlive, Sse};
+ use axum::response::{Html, IntoResponse, Redirect, Response};
+-use axum::routing::{get, post};
++use axum::routing::get;
+ use chrono::Utc;
+ use futures::stream::{self, BoxStream, StreamExt as _};
+ use reqwest::Url;
+@@ -127,6 +127,8 @@ impl AssessConfig {
+ pub struct AssessState {
+     ctx: Arc<Ctx>,
+     console: Arc<Console>,
++    /// W4's pages, drawn as `concept/assess.html`. Without them the console's templates render.
++    pages: Option<Arc<agentrix_onboarding::Pages>>,
+ }
+ 
+ impl std::fmt::Debug for AssessState {
+@@ -170,9 +172,16 @@ impl AssessState {
+                 slots,
+             }),
+             console,
++            pages: None,
+         }
+     }
+ 
++    /// Renders Start and Assess with W4's onboarding pages (`agentrix-onboarding`).
++    pub fn with_pages(mut self, pages: Arc<agentrix_onboarding::Pages>) -> Self {
++        self.pages = Some(pages);
++        self
++    }
++
+     /// Starts an assessment of `url` (already normalised) and returns its id, or the id of a
+     /// recent one of the same host.
+     pub async fn start(&self, url: &Url) -> anyhow::Result<AssessmentId> {
+@@ -210,7 +219,31 @@ impl AssessState {
+     }
+ 
+     fn render<T: serde::Serialize>(&self, page: Page, view: &T, status: StatusCode) -> Response {
+-        match self.console.render(page, view) {
++        Self::respond(self.console.render(page, view), status)
++    }
++
++    fn render_start(&self, view: view::StartView, status: StatusCode) -> Response {
++        match &self.pages {
++            Some(p) => Self::respond(
++                p.render_start(&agentrix_onboarding::view::StartPage::from(view)),
++                status,
++            ),
++            None => self.render(Page::Start, &view, status),
++        }
++    }
++
++    fn render_assess(&self, view: view::AssessView) -> Response {
++        match &self.pages {
++            Some(p) => Self::respond(
++                p.render_assess(&agentrix_onboarding::view::AssessPage::from(view)),
++                StatusCode::OK,
++            ),
++            None => self.render(Page::Assess, &view, StatusCode::OK),
++        }
++    }
++
++    fn respond<E: std::fmt::Display>(html: Result<String, E>, status: StatusCode) -> Response {
++        match html {
+             Ok(html) => (status, Html(html)).into_response(),
+             Err(e) => {
+                 tracing::error!(error = %e, "rendering failed");
+@@ -224,12 +257,12 @@ impl AssessState {
+     }
+ }
+ 
+-/// The routes: `GET /`, `POST /assess`, `GET /assess/fixture`, `GET /assess/{id}` and
++/// The routes: `GET /`, `GET /assess`, `POST /assess`, `GET /assess/fixture`, `GET /assess/{id}` and
+ /// `GET /assess/{id}/events`.
+ pub fn router(state: AssessState) -> Router {
+     Router::new()
+         .route("/", get(start_page))
+-        .route("/assess", post(start_assess))
++        .route("/assess", get(start_page).post(start_assess))
+         .route("/assess/fixture", get(start_fixture))
+         .route("/assess/{id}", get(assess_page))
+         .route("/assess/{id}/events", get(events))
+@@ -300,7 +333,7 @@ async fn start_page(State(s): State<AssessState>) -> Response {
+             .as_ref()
+             .map(|_| "/assess/fixture".to_owned()),
+     };
+-    s.render(Page::Start, &view, StatusCode::OK)
++    s.render_start(view, StatusCode::OK)
+ }
+ 
+ /// The start form.
+@@ -326,7 +359,7 @@ async fn start_assess(State(s): State<AssessState>, Form(form): Form<StartForm>)
+                 url: Some(form.url.chars().take(200).collect()),
+                 fixture_url,
+             };
+-            return s.render(Page::Start, &view, StatusCode::UNPROCESSABLE_ENTITY);
++            return s.render_start(view, StatusCode::UNPROCESSABLE_ENTITY);
+         }
+     };
+     match s.start(&url).await {
+@@ -340,7 +373,7 @@ async fn start_assess(State(s): State<AssessState>, Form(form): Form<StartForm>)
+                 url: Some(form.url.chars().take(200).collect()),
+                 fixture_url,
+             };
+-            s.render(Page::Start, &view, StatusCode::SERVICE_UNAVAILABLE)
++            s.render_start(view, StatusCode::SERVICE_UNAVAILABLE)
+         }
+     }
+ }
+@@ -398,7 +431,7 @@ async fn assess_page(State(s): State<AssessState>, Path(id): Path<String>) -> Re
+         ));
+     }
+     let view = report::view(&a, live.as_ref());
+-    s.render(Page::Assess, &view, StatusCode::OK)
++    s.render_assess(view)
+ }
+ 
+ fn sse_event(env: &UiEnvelope) -> Event {
+diff --git a/crates/agentrix-node/src/claim/mod.rs b/crates/agentrix-node/src/claim/mod.rs
+index dfe1d14..1699611 100644
+--- a/crates/agentrix-node/src/claim/mod.rs
++++ b/crates/agentrix-node/src/claim/mod.rs
+@@ -510,6 +510,9 @@ pub struct ClaimState {
+     pub auth: AuthState,
+     /// Renders the claim page.
+     pub console: Arc<Console>,
++    /// W4's pages, drawn as `concept/journeys/owner-domain.html`. Without them the console's
++    /// template renders.
++    pub pages: Option<Arc<agentrix_onboarding::Pages>>,
+ }
+ 
+ impl axum::extract::FromRef<ClaimState> for AuthState {
+@@ -615,7 +618,13 @@ async fn render_page(state: &ClaimState, site: &str, account: Uuid, method: Opti
+             said,
+         },
+     };
+-    match state.console.render(Page::Claim, &view) {
++    let html = match &state.pages {
++        Some(p) => p
++            .render_claim(&agentrix_onboarding::view::ClaimPage::from(view))
++            .map_err(|e| e.to_string()),
++        None => state.console.render(Page::Claim, &view).map_err(|e| e.to_string()),
++    };
++    match html {
+         Ok(html) => Html(html).into_response(),
+         Err(e) => plain_error(ClaimError::Internal(format!("rendering the claim page: {e}"))),
+     }
+@@ -737,7 +746,7 @@ mod tests {
+         claims.ensure_schema().await.unwrap();
+         let cookie = auth.start_session(account, "passkey").await.unwrap();
+         let cookie = cookie.to_str().unwrap().split(';').next().unwrap().to_owned();
+-        let app = router(ClaimState { claims, auth, console: Arc::new(Console::new().unwrap()) });
++        let app = router(ClaimState { claims, auth, console: Arc::new(Console::new().unwrap()), pages: None });
+         let send = |req: Request<Body>| app.clone().oneshot(req);
+         let text = |r: Response| async move { String::from_utf8(axum::body::to_bytes(r.into_body(), 1 << 20).await.unwrap().to_vec()).unwrap() };
+ 
+diff --git a/crates/agentrix-node/src/pages/mod.rs b/crates/agentrix-node/src/pages/mod.rs
+index 40bc77b..043a87c 100644
+--- a/crates/agentrix-node/src/pages/mod.rs
++++ b/crates/agentrix-node/src/pages/mod.rs
+@@ -36,6 +36,8 @@ pub struct PagesState {
+     pub console: Arc<Console>,
+     /// The stores, through the port.
+     pub reads: Arc<dyn ConsoleReads>,
++    /// W4's pages: the Move drawn as `concept/move.html`. Without them the console's renders.
++    pub onboarding: Option<Arc<agentrix_onboarding::Pages>>,
+ }
+ 
+ /// The console's GET routes, for `app.rs` to merge.
+@@ -177,6 +179,12 @@ async fn move_page(State(state): State<PagesState>, headers: HeaderMap, uri: Uri
+         .iter()
+         .map(|u| view::UploadRow { name: u.name.clone(), size_words: map::bytes_words(u.size), when_words: map::when(u.at, site.utc_offset_minutes, now) })
+         .collect();
++    if let Some(p) = &state.onboarding {
++        let html = p
++            .render_move(&agentrix_onboarding::view::MovePage::from(view))
++            .map_err(|e| PageError::Internal(e.into()))?;
++        return Ok(Html(html).into_response());
++    }
+     render(&state, Page::Move, &view)
+ }
+ 
+diff --git a/crates/agentrix-node/src/pages/store.rs b/crates/agentrix-node/src/pages/store.rs
+index f26f7df..193f6dd 100644
+--- a/crates/agentrix-node/src/pages/store.rs
++++ b/crates/agentrix-node/src/pages/store.rs
+@@ -9,7 +9,7 @@
+ //! ```ignore
+ //! // app.rs
+ //! let reads = SqliteReads::new(pool.clone(), receipts.keys().clone(), AppDelegates { auth, decisions, cas, pool });
+-//! let pages = pages::router(PagesState { console, reads: Arc::new(reads) });
++//! let pages = pages::router(PagesState { console, reads: Arc::new(reads), onboarding: None });
+ //! ```
+ 
+ use agentrix_types::ui::{CardEvent, ParityEvent, StepName, TickEvent, UiEvent};
+diff --git a/crates/agentrix-node/src/pages/store_tests.rs b/crates/agentrix-node/src/pages/store_tests.rs
+index 99f5283..3152691 100644
+--- a/crates/agentrix-node/src/pages/store_tests.rs
++++ b/crates/agentrix-node/src/pages/store_tests.rs
+@@ -302,7 +302,7 @@ async fn page(app: &Router, path: &str) -> (StatusCode, String) {
+ #[tokio::test]
+ async fn every_console_page_renders_from_the_database() {
+     let seeded = seed().await;
+-    let app = router(PagesState { console: Arc::new(Console::new().expect("templates")), reads: Arc::new(reads(&seeded)) });
++    let app = router(PagesState { console: Arc::new(Console::new().expect("templates")), reads: Arc::new(reads(&seeded)), onboarding: None });
+     for (name, path, shows) in [
+         ("today", "/console/today", "A quiet night: nothing needed you."),
+         ("decisions", "/console/decisions", "Put back the casino redirect"),
+@@ -350,7 +350,7 @@ async fn today_shows_the_questions_visitors_passed() {
+     assert_eq!(rows.total, 2);
+     assert_eq!(rows.recent[0].question, "Open on Easter Monday?", "newest first");
+ 
+-    let app = router(PagesState { console: Arc::new(Console::new().expect("templates")), reads: Arc::new(reads(&seeded)) });
++    let app = router(PagesState { console: Arc::new(Console::new().expect("templates")), reads: Arc::new(reads(&seeded)), onboarding: None });
+     let (status, html) = page(&app, "/console/today").await;
+     assert_eq!(status, StatusCode::OK, "{html}");
+     assert!(html.contains("Questions visitors passed to you"), "{html}");
+diff --git a/crates/agentrix-node/src/pages/tests.rs b/crates/agentrix-node/src/pages/tests.rs
+index a683460..c569597 100644
+--- a/crates/agentrix-node/src/pages/tests.rs
++++ b/crates/agentrix-node/src/pages/tests.rs
+@@ -202,7 +202,7 @@ impl ConsoleReads for Fake {
+ }
+ 
+ fn app(fake: Fake) -> Router {
+-    router(PagesState { console: Arc::new(Console::new().expect("templates")), reads: Arc::new(fake) })
++    router(PagesState { console: Arc::new(Console::new().expect("templates")), reads: Arc::new(fake), onboarding: None })
+ }
+ 
+ async fn get(app: &Router, path: &str, accept: Option<&str>) -> (StatusCode, HeaderMap, String) {

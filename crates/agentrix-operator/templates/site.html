@@ -1,0 +1,130 @@
+{% extends "layout.html" %}
+{#- X8 Site detail, content-free (08 §6.2 `agentrix site show`): placement, releases, Moves,
+    rooms, receipts by kind and digest, owner cards by kind and state, spend against budgets. -#}
+{% block title %}{{ site.row.name or site.row.domain }}{% endblock %}
+{% block field %}
+{%- set r = site.row -%}
+<div class="field-head">
+  <div>
+    <div class="crumbs"><a href="/customers">Customers</a> /</div>
+    <h2>{{ r.name or r.domain }}</h2>
+    <div class="sub">{{ r.domain }} · {{ site.stage }}{% if r.owner_name %} · owned by {{ r.owner_name }}{% endif %}</div>
+  </div>
+  <div class="row">
+    {%- if site.kind == "sample" %}<span class="chip chip-sample">Sample</span>{% elif site.kind == "fixture" %}<span class="chip chip-fixture">Fixture</span>{% endif %}
+    <span class="chip{% if site.stage == 'Live' %} chip-ok{% elif site.stage == 'Moving' %} chip-info{% endif %}">{{ site.stage }}</span>
+    {%- if r.live_seq is not none %}<a class="btn btn-sm" href="https://{{ r.domain }}" rel="noopener">Open the live site</a>{% endif %}
+  </div>
+</div>
+
+<div class="cp-grid">
+{% include "hold_banner.html" %}
+  <div class="kpis">
+    <div class="kpi"><div class="label">Live release</div><div class="value">{% if r.live_seq is not none %}v{{ r.live_seq }}{% else %}<span class="none">None</span>{% endif %}</div><div class="foot">{% if r.live_signed_at %}signed {{ r.live_signed_at|when }}{% else %}not live{% endif %}</div></div>
+    <div class="kpi"><div class="label">Gauntlet, last run</div><div class="value">{% if r.gauntlet_score is not none %}{{ r.gauntlet_score }}<small>/ {{ r.gauntlet_out_of }}</small>{% else %}—{% endif %}</div><div class="foot">{% if site.gauntlet %}{{ site.gauntlet[0].started_at|ago }}{% else %}no runs yet{% endif %}</div></div>
+    <div class="kpi"><div class="label">AI spend · this month</div><div class="value">{{ r.spend_month|usd }}</div>{% if r.budget_month %}<div class="meter{% if r.spend_month > r.budget_month %} coral{% endif %}"><span style="width:{{ r.spend_month|pct(r.budget_month) }}%"></span></div>{% endif %}<div class="foot">{{ site.spend_total|usd }} since the start</div></div>
+    <div class="kpi"><div class="label">Owner decisions waiting</div><div class="value">{{ r.decisions_waiting }}</div><div class="foot">only the owner decides these</div></div>
+  </div>
+
+  <div class="cp-grid cols-2e">
+    <article class="card tight">
+      <div class="card-title"><h4>Owner and placement</h4><span class="small muted">platform records, no site content</span></div>
+      <dl class="kv">
+        <dt>Owner</dt><dd>{% if r.owner_name %}{{ r.owner_name }} · {{ r.owner_email }}{% else %}not claimed{% endif %}</dd>
+        <dt>Site id</dt><dd class="mono">{{ r.site_id }}</dd>
+        <dt>Cell</dt><dd>{{ shell.cell_id }}</dd>
+        <dt>Old site</dt><dd>{{ site.old_origin }}</dd>
+        <dt>First assessed</dt><dd>{{ r.created_at|when }} · {{ r.assessments }} assessment{{ "" if r.assessments == 1 else "s" }}</dd>
+        <dt>Plan</dt><dd>{{ plan or "No plan yet" }}</dd>
+        <dt>Left behind</dt><dd>{{ site.quarantined }} item{{ "" if site.quarantined == 1 else "s" }} held from the Move</dd>
+        <dt>Findings</dt><dd>{% for sev, n in site.findings %}{{ n }} {{ sev }}{{ "" if loop.last else " · " }}{% else %}none{% endfor %}</dd>
+      </dl>
+    </article>
+
+    <article class="card tight">
+      <div class="card-title"><h4>Spend by purpose and provider</h4><span class="small muted">this month, estimates</span></div>
+      {%- for x in site.spend_month %}
+      <div class="spend-bar"><span><b>{{ x.purpose }}</b> <span class="small muted">{{ x.provider }} · {{ x.calls|plural("call", "calls") }} · {{ x.tokens|plural("token", "tokens") }}</span></span><span>{{ x.micro_usd|usd }}</span><div class="meter"><span style="width:{{ x.micro_usd|pct(r.spend_month) }}%"></span></div></div>
+      {%- else %}
+      <div class="empty">No model calls this month.</div>
+      {%- endfor %}
+      <h4 style="margin-top:12px">Limits</h4>
+      {%- for b in site.budgets %}
+      <div class="spend-bar"><span>{{ "every purpose" if b.purpose == "*" else b.purpose }} · per {{ b.period }}</span><span>{{ b.spent_micro_usd|usd }} of {{ b.limit_micro_usd|usd }}</span><div class="meter{% if b.spent_micro_usd >= b.limit_micro_usd %} coral{% else %} ok{% endif %}"><span style="width:{{ b.spent_micro_usd|pct(b.limit_micro_usd) }}%"></span></div></div>
+      {%- else %}
+      <p class="gapnote">No budget rows. The gateway's daily cap per site still applies.</p>
+      {%- endfor %}
+    </article>
+  </div>
+
+  <article class="card tight">
+    <div class="card-title"><h4>Moves</h4><span class="small muted">steps, times and receipts</span></div>
+    {%- for m in site.moves %}
+    <div class="spread"><span><b class="mono">{{ m.move_id }}</b> · {{ m.state }}</span><span class="small muted">started {{ m.created_at|when }} · model spend {{ m.spend_micro_usd|usd }}</span></div>
+    <ul class="timeline" style="margin-top:10px">
+      {%- for st in m.steps %}
+      <li><span class="t">{{ st.started_at|clock }}</span><span class="ev{% if st.state == 'done' %} ok{% elif st.state == 'failed' %} risk{% elif st.state in ['waiting', 'running'] %} wait{% endif %}"><b>{{ st.step }}</b> {{ st.state }}{% if st.ended_at %} · {{ st.ended_at|ago }}{% endif %}{% if st.receipt %} · <span class="mono">{{ st.receipt|digest }}</span>{% endif %}</span></li>
+      {%- endfor %}
+    </ul>
+    {%- else %}
+    <div class="empty">No Move yet. A Move starts after the owner claims the domain and uploads the exports.</div>
+    {%- endfor %}
+  </article>
+
+  <div class="cp-grid cols-2e">
+    <article class="card tight">
+      <div class="card-title"><h4>Releases</h4><span class="small muted">signed manifests</span></div>
+      {%- if site.releases %}
+      <div class="tbl-wrap"><table class="tbl" style="min-width:0"><thead><tr><th>#</th><th>State</th><th>Manifest</th><th>Signed</th></tr></thead><tbody>
+        {%- for x in site.releases %}<tr><td><b>v{{ x.seq }}</b></td><td>{{ x.state }}</td><td class="mono-cell">{{ x.manifest_digest|digest }}</td><td>{{ x.signed_at|when if x.signed_at else "—" }}</td></tr>{% endfor %}
+      </tbody></table></div>
+      {%- else %}<div class="empty">No release yet.</div>{% endif %}
+    </article>
+    <article class="card tight">
+      <div class="card-title"><h4>Sealed-room jobs</h4><span class="small muted">latest 15</span></div>
+      {%- if site.jobs %}
+      <div class="tbl-wrap"><table class="tbl" style="min-width:0"><thead><tr><th>Kind</th><th>State</th><th>Queued</th><th class="num">Ran</th></tr></thead><tbody>
+        {%- for j in site.jobs %}<tr><td><b>{{ j.kind }}</b></td><td>{{ j.state }}</td><td>{{ j.created_at|when }}</td><td class="num">{{ j.ended_at|ago if j.ended_at else "—" }}</td></tr>{% endfor %}
+      </tbody></table></div>
+      {%- else %}<div class="empty">No sealed-room jobs.</div>{% endif %}
+    </article>
+  </div>
+
+  <div class="cp-grid cols-2e">
+    <article class="card tight">
+      <div class="card-title"><h4>Receipts</h4><span class="small muted">kind and digest only</span></div>
+      <div class="row" style="gap:6px">{% for kind, n in site.receipt_kinds %}<span class="chip">{{ kind }} · {{ n }}</span>{% else %}<span class="small muted">No receipts yet.</span>{% endfor %}</div>
+      <ul class="rows" style="margin-top:8px">
+        {%- for x in site.receipts %}
+        <li><span class="chip">{{ x.kind }}</span><span class="small">{{ x.subject_type }} <span class="mono">{{ x.subject_id }}</span></span><span class="ledger-id">{% if shell.platform_origin %}<a href="{{ shell.platform_origin }}/receipts/{{ x.digest }}" rel="noopener">{{ x.digest|digest }}</a>{% else %}{{ x.digest|digest }}{% endif %} · {{ x.issued_at|ago }}</span></li>
+        {%- endfor %}
+      </ul>
+    </article>
+    <article class="card tight">
+      <div class="card-title"><h4>Owner decisions</h4><span class="small muted">kind and state; operators never decide these</span></div>
+      {%- if site.decisions %}
+      <div class="tbl-wrap"><table class="tbl" style="min-width:0"><thead><tr><th>Kind</th><th>State</th><th>How</th><th>Raised</th></tr></thead><tbody>
+        {%- for d in site.decisions %}<tr><td><b>{{ d.kind }}</b></td><td>{{ d.state }}</td><td>{{ d.method or "—" }}</td><td>{{ d.created_at|ago }}</td></tr>{% endfor %}
+      </tbody></table></div>
+      {%- else %}<div class="empty">No decision cards yet.</div>{% endif %}
+      <h4 style="margin-top:12px">Gauntlet runs</h4>
+      {%- for g in site.gauntlet %}
+      <div class="spend-bar"><span><b>{{ g.score }}/{{ g.out_of }}</b> <span class="small muted">{{ g.started_at|when }}</span></span><span class="ledger-id">{{ g.receipt|digest if g.receipt else "" }}</span></div>
+      {%- else %}<p class="gapnote">No gauntlet runs. Every deploy re-runs it on live sites.</p>{% endfor %}
+    </article>
+  </div>
+
+{% include "access.html" %}
+
+  <article class="card tight">
+    <div class="card-title"><h4>Operator actions on this site</h4><span class="small muted">from the operator ledger; holds, break-glass and support access also reach the owner's Trust centre</span></div>
+    <ul class="rows">
+      {%- for e in ledger %}
+      <li><span class="avatar sm" style="background:var(--op)">{{ e.actor_name|initials }}</span><span>{{ e.summary }}</span><span class="ledger-id">{{ e.at|when }} · {{ e.entry_id }}</span></li>
+      {%- else %}
+      <li><span></span><span class="small muted">No operator has acted on this site.</span><span></span></li>
+      {%- endfor %}
+    </ul>
+  </article>
+</div>
+{% endblock %}

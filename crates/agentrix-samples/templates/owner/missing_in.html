@@ -1,0 +1,6 @@
+{% extends "owner/base.html" %}
+{% block field %}{% import "owner/macros.html" as m %}
+{{ m.head(c) }}
+<p class="quiet">{{ words }}</p>
+<div class="verbs"><a class="btn btn-primary btn-sm" href="{{ back }}">Back to the list</a></div>
+{% endblock %}

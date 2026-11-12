@@ -1,0 +1,60 @@
+[package]
+name = "saas-company"
+description = "Agentrix SaaS company: each company's AI staff (Chief, Revenue, Receivables, Payables, Support) on adk-rust v3, run by a resident kernel per company, with every money tool on the governed path and autonomous inside the mandate the founder signs."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+authors.workspace = true
+
+# Slice B (company) owns this crate. Books are Zavora ERA through saas-core's `Books`; money is
+# PayPal through agentrix-effects; every money tool runs through `adk_core::authorize_tool_call`.
+# The adk-rust crates below are not in the workspace table yet; they pin the workspace's rev.
+
+[features]
+default = []
+# PayPal through agentrix-effects (the node). Tests and judge mode use `FakeRails`.
+effects = ["dep:agentrix-effects", "dep:agentrix-types"]
+
+[dependencies]
+agentrix-models = { path = "../agentrix-models" }
+adk-core.workspace = true
+adk-auth = { workspace = true, features = ["signed-audit", "token-exchange"] }
+adk-agent = { git = "https://github.com/zavora-ai/adk-rust", rev = "3e797c38204ef21f603c84b5ee4270798270f2d6", default-features = false, features = ["guardrails"] }
+adk-runner = { git = "https://github.com/zavora-ai/adk-rust", rev = "3e797c38204ef21f603c84b5ee4270798270f2d6", default-features = false }
+adk-session = { git = "https://github.com/zavora-ai/adk-rust", rev = "3e797c38204ef21f603c84b5ee4270798270f2d6", default-features = false, features = ["sqlite"] }
+adk-graph = { git = "https://github.com/zavora-ai/adk-rust", rev = "3e797c38204ef21f603c84b5ee4270798270f2d6", default-features = false, features = ["sqlite"] }
+adk-kernel = { git = "https://github.com/zavora-ai/adk-rust", rev = "3e797c38204ef21f603c84b5ee4270798270f2d6", default-features = false, features = ["sqlite"] }
+adk-server = { git = "https://github.com/zavora-ai/adk-rust", rev = "3e797c38204ef21f603c84b5ee4270798270f2d6", default-features = false, features = ["background"] }
+adk-guardrail = { git = "https://github.com/zavora-ai/adk-rust", rev = "3e797c38204ef21f603c84b5ee4270798270f2d6", default-features = false }
+adk-memory = { git = "https://github.com/zavora-ai/adk-rust", rev = "3e797c38204ef21f603c84b5ee4270798270f2d6", default-features = false }
+agentrix-decisions.workspace = true
+saas-core.workspace = true
+agentrix-effects = { workspace = true, optional = true }
+agentrix-types = { workspace = true, optional = true }
+anyhow.workspace = true
+axum.workspace = true
+async-trait.workspace = true
+chrono.workspace = true
+cron = "0.15"
+futures.workspace = true
+regex = "1"
+reqwest.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+sha2.workspace = true
+sqlx.workspace = true
+hex.workspace = true
+tokio.workspace = true
+tracing.workspace = true
+uuid.workspace = true
+
+[dev-dependencies]
+agentrix-host.workspace = true
+wiremock = "0.6"
+saas-core = { workspace = true, features = ["fake"] }
+tempfile.workspace = true
+
+[lints]
+workspace = true

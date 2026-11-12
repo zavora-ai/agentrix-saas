@@ -1,0 +1,5 @@
+{"site": {"name": "Kilele Bakery", "host": "kilele-bakery-sample.agentrix.website", "sample": true, "owner": "Wanjiru", "accent": "#3b2416", "url": "https://kilele-bakery-sample.agentrix.website"}, "person": {"name": null},
+ "erasure": {"done_at": "Thu 12 Nov, 09:12",
+   "rows": [{"store": "Account", "state": "Erased 09:12"}, {"store": "Orders", "state": "Kept without your name, for tax records"}, {"store": "Threads with the desks", "state": "Erased 09:12"}, {"store": "Backups", "state": "Erased as backups expire, by Sat 12 Dec"}],
+   "kept": "Kenyan tax law needs order totals kept for five years. They no longer carry your name, email or phone.",
+   "receipt_id": "E-2026-1112-04"}}

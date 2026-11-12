@@ -1,0 +1,24 @@
+{
+ "site": {
+  "name": "Kilele Bakery",
+  "host": "kilele-bakery-sample.agentrix.website",
+  "sample": true
+ },
+ "person": {
+  "name": "Wanjiru"
+ },
+ "console_url": "https://agentrix.website/console/kilele-bakery-sample",
+ "dunning": {
+  "day": 0,
+  "plan": "Commerce",
+  "amount": 149,
+  "currency": "USD",
+  "method": "PayPal",
+  "reason": null,
+  "retry_on": "Thu 17 Dec",
+  "read_only_on": "Mon 28 Dec",
+  "read_only_since": null,
+  "closes_on": null,
+  "pay_url": "https://agentrix.website/billing?site=kilele-bakery-sample"
+ }
+}

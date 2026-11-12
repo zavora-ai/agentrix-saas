@@ -1,0 +1,49 @@
+{#- Shared pieces. Views pass display-ready strings; templates don't format numbers or dates. -#}
+
+{% macro mark(a, size="") -%}
+<span class="mark {{ size }}" style="--c: {{ a.color }}" data-state="{{ a.state }}" role="img" aria-label="{{ a.name }}{% if a.state_words %}, {{ a.state_words }}{% endif %}">{{ a.glyph }}</span>
+{%- endmacro %}
+
+{% macro fixture_label(fixture) -%}
+{% if fixture %}<span class="fixture" title="This site is a fixture: an infected WordPress that Zavora hosts for demonstrations.">Zavora's fixture</span>{% endif %}
+{%- endmacro %}
+
+{% macro severity(sev) -%}
+{% if sev == "urgent" %}<span class="chip risk">Urgent</span>{% elif sev == "warn" %}<span class="chip wait">Worth fixing</span>{% else %}<span class="chip">Good to know</span>{% endif %}
+{%- endmacro %}
+
+{% macro ticks(t, id_prefix="tick") -%}
+<div class="ticks" aria-live="off">
+  <div class="tick"><b id="{{ id_prefix }}-hosts">{{ t.hosts }}</b><span>hosts contacted</span></div>
+  <div class="tick"><b id="{{ id_prefix }}-requests">{{ t.requests }}</b><span>requests</span></div>
+  <div class="tick"><b id="{{ id_prefix }}-bytes">{{ t.bytes_words }}</b><span>downloaded</span></div>
+  <div class="tick"><b id="{{ id_prefix }}-refusals">{{ t.refusals }}</b><span>refused by the room</span></div>
+</div>
+{%- endmacro %}
+
+{% macro finding(f) -%}
+<li class="finding" id="finding-{{ f.id }}">
+  {{ severity(f.severity) }}
+  <b>{{ f.title }}</b>
+  <p class="small">{{ f.plain }}</p>
+  {% if f.evidence %}
+  <details>
+    <summary>Evidence ({{ f.evidence|length }})</summary>
+    {% for e in f.evidence %}
+    <p class="small" style="margin-top:8px">{{ e.label }}{% if e.receipt %} · <a href="/receipts/{{ e.receipt }}">receipt</a>{% endif %}</p>
+    {% if e.excerpt %}<pre class="evidence">{{ e.excerpt }}</pre>{% endif %}
+    {% endfor %}
+  </details>
+  {% endif %}
+</li>
+{%- endmacro %}
+
+{% macro receipt_row(r) -%}
+<li>
+  <div class="spread">
+    <b><a href="/receipts/{{ r.digest }}">{{ r.title }}</a></b>
+    {% if r.verified %}<span class="chip ok">Verified</span>{% else %}<span class="chip risk">Not verified</span>{% endif %}
+  </div>
+  <p class="small muted">{{ r.kind_words }} · {{ r.at_words }} · <span class="mono">{{ r.digest_short }}</span></p>
+</li>
+{%- endmacro %}

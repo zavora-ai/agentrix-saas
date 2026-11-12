@@ -1,0 +1,64 @@
+{% extends "onboarding/base.html" %}
+{% import "onboarding/macros.html" as m %}
+{#- OnboardingPage::Claim · view::ClaimPage {
+      site_id, host, fixture, method: "dns"|"file", dns_short, dns_name, dns_value, file_name,
+      file_url, token, file_download, state: "pending"|"checking"|"verified"|"failed",
+      checked_words?, said?, verify_action, next_href }
+    concept/journeys/owner-domain.html (O4.1): the Caretaker speaks, one DNS record or one file,
+    checked from the sandbox; nothing on the live site changes until go-live. -#}
+{% block title %}Prove {{ host }} is yours{% endblock %}
+{% block body_class %}page-setup page-claim{% endblock %}
+{% block topright %}<span class="chip chip-outline">{{ host }}</span><a class="btn btn-ghost btn-sm" href="/os">Console</a>{% endblock %}
+{% block main %}
+<section class="panel setup" aria-labelledby="claim-h">
+  <div class="o-body setup-body">
+    <div class="spread">
+      <div class="o-who"><span class="avatar av-caretaker">Ct</span><div><b>Caretaker</b><span>Looks after your domain, certificates and backups</span></div></div>
+      {{ m.fixture_label(fixture) }}
+    </div>
+    <div>
+      <h1 class="h2" id="claim-h">Prove {{ host }} is yours</h1>
+      <p class="sub">One DNS record or one uploaded file: pick whichever is easier. Nothing on your live site changes, and Agentrix never asks for your registrar or hosting password.</p>
+    </div>
+
+    {% if state == "verified" %}
+    <div class="o-sec">
+      <div class="o-ok" role="status">✓ Found it. {{ host }} is yours{% if checked_words %} · {{ checked_words }}{% endif %}</div>
+      <p class="small muted">Nothing on your live site has changed. Your domain moves to your new site only when you approve the go-live card, and undo is one tap for 30 days after that.</p>
+      <a class="btn btn-primary self-start" href="/sites/{{ site_id }}/concepts">Next: choose your new look</a>
+      <p class="small muted">Three WebAgents design a new look for your site from its own words and photos, and you pick one. Or <a href="{{ next_href }}">keep your current look and start the Move</a>.</p>
+    </div>
+    {% else %}
+    <nav class="j-tabs" aria-label="How to prove it">
+      <a href="?method=dns"{% if method == "dns" %} aria-current="page"{% endif %}>Add a DNS record</a>
+      <a href="?method=file"{% if method == "file" %} aria-current="page"{% endif %}>Upload a file</a>
+    </nav>
+    <div class="o-proof">
+      {% if method == "dns" %}
+      <ol class="o-steps">
+        <li>Sign in where {{ host }} is registered and open its DNS page. Agentrix never asks for that password.</li>
+        <li>Add a <b>TXT</b> record. Name: <span class="o-code">{{ dns_short }}</span> Value: <span class="o-code">{{ dns_value }}</span>
+          {% if dns_short != dns_name %}<span class="o-hint block-hint">If your registrar wants the full name, use <span class="mono">{{ dns_name }}</span>.</span>{% endif %}</li>
+        <li>Save it, come back, and press Check. Some registrars take a few minutes.</li>
+      </ol>
+      {% else %}
+      <ol class="o-steps">
+        <li><a href="{{ file_download }}" download="{{ file_name }}">Download {{ file_name }}</a>. It holds only this line: <span class="o-code">{{ token }}</span></li>
+        <li>Upload it with your host's file manager so it opens at <span class="o-code">{{ file_url }}</span></li>
+        <li>Come back and press Check.</li>
+      </ol>
+      {% endif %}
+    </div>
+
+    {% if state == "failed" %}
+    <div class="o-wait" role="status">{{ said or "We looked and didn't find it yet." }}{% if checked_words %} · {{ checked_words }}{% endif %}</div>
+    {% endif %}
+    <form method="post" action="{{ verify_action }}" class="self-start">
+      <input type="hidden" name="method" value="{{ method }}">
+      <button class="btn btn-primary" type="submit">{% if state == "failed" %}Check again{% else %}Check now{% endif %}</button>
+    </form>
+    <p class="o-hint">The Caretaker checks from the sandbox, which can reach only your domain's DNS and site. What it saw is written into a receipt.</p>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

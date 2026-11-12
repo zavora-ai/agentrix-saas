@@ -1,0 +1,20 @@
+{
+ "site": {
+  "name": "Kilele Bakery",
+  "host": "kilele-bakery-sample.agentrix.website",
+  "sample": true,
+  "owner": "Wanjiru",
+  "accent": "#3b2416",
+  "url": "https://kilele-bakery-sample.agentrix.website"
+ },
+ "person": {
+  "name": null
+ },
+ "question": {
+  "text": "Do you make a gluten-free version of the bake box?",
+  "asked_at": "Tue 10 Nov, 16:22"
+ },
+ "answer": {
+  "text": "Not the bake box, sorry. Cakes, yes: a gluten-free sponge is KSh 600 extra on 1 or 2 tiers. We bake with wheat flour in the same kitchen, so we can't promise no traces."
+ }
+}

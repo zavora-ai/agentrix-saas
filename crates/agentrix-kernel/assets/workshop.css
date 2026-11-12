@@ -1,0 +1,66 @@
+/* The Workshop (concept/identity/marks.html, "Workshop"), on agentrix-ui's tokens. Controls on
+   the left, the preview on the right once the Workshop itself is wide enough; one column in a
+   narrow field (the console's, beside the dock and lane) or on a phone. Breakpoints are container
+   queries on <wa-workshop>, not the window. The stage, sizes and site context wear the site's
+   colours (--sbg, --sink, --sfont, set by workshop.js); the rest is the console's. */
+wa-workshop { display: block; container-type: inline-size; }
+.wsk { font: 400 var(--fs-14, 14px)/1.5 var(--font-text, system-ui, sans-serif); color: var(--ink, #23223a); }
+.wsk-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 20px; align-items: start; }
+.wsk *, .wsk *::before, .wsk *::after { box-sizing: border-box; }
+.wsk-controls { background: var(--paper, #fff); border: 1px solid var(--line, #e3e2ec); border-radius: var(--r-lg, 18px); padding: 18px; display: grid; gap: 18px; }
+.wsk fieldset { border: 0; margin: 0; padding: 0; display: grid; gap: 8px; min-width: 0; }
+.wsk-lbl { font: 700 12px/1.3 var(--font-mono, ui-monospace, Menlo, monospace); letter-spacing: .05em; text-transform: uppercase; color: var(--muted, #656479); padding: 0; margin-bottom: 8px; display: block; }
+.wsk select, .wsk input[type="text"] { font: 500 14px/1.3 var(--font-text, system-ui, sans-serif); color: var(--ink, #23223a); background: var(--paper, #fff); border: 1px solid var(--line-strong, #cfcedd); border-radius: 10px; padding: 8px 10px; width: 100%; min-height: 40px; }
+.wsk select:focus-visible, .wsk input:focus-visible, .wsk button:focus-visible { outline: 2px solid var(--coral, #de4060); outline-offset: 2px; }
+.wsk-swatches { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.wsk-swatch { width: 30px; height: 30px; border-radius: 9px; cursor: pointer; border: 2px solid transparent; box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .12); padding: 0; }
+.wsk-swatch[aria-pressed="true"] { border-color: var(--ink, #23223a); box-shadow: inset 0 0 0 2px var(--paper, #fff); }
+.wsk input[type="color"] { width: 38px; height: 32px; padding: 0; border: 1px solid var(--line-strong, #cfcedd); border-radius: 9px; background: var(--paper, #fff); cursor: pointer; }
+.wsk input[type="range"] { width: 100%; accent-color: var(--indigo, #38356d); }
+.wsk-ends { display: flex; justify-content: space-between; font-size: 12px; color: var(--muted, #656479); }
+.wsk-glyphs { display: grid; grid-template-columns: repeat(auto-fill, 42px); gap: 6px; }
+.wsk-tile { display: grid; place-items: center; aspect-ratio: 1; border-radius: 10px; border: 1px solid var(--line-strong, #cfcedd); color: var(--ink-2, #4a4960); cursor: pointer; background: var(--paper, #fff); padding: 0; min-height: 36px; }
+.wsk-tile svg { width: 20px; height: 20px; }
+.wsk-tile[aria-pressed="true"], .wsk-family[aria-pressed="true"], .wsk-chip[aria-pressed="true"] { border-color: var(--indigo, #38356d); background: var(--indigo-50, #f6f6fb); color: var(--indigo, #38356d); }
+.wsk-mono { display: grid; grid-template-columns: auto 1fr; gap: 8px; align-items: center; }
+.wsk-aa { width: 44px; font: 800 15px/1 var(--font-display, system-ui, sans-serif); }
+.wsk-families { display: grid; grid-template-columns: repeat(auto-fill, minmax(56px, 72px)); gap: 6px; }
+.wsk-family { display: grid; justify-items: center; gap: 4px; padding: 8px 2px 6px; border-radius: 10px; border: 1px solid var(--line-strong, #cfcedd); background: var(--paper, #fff); font: 600 11px/1.2 var(--font-text, system-ui, sans-serif); color: var(--ink-2, #4a4960); cursor: pointer; --wa-ground: var(--paper, #fff); }
+.wsk-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.wsk-seed { font: 600 12px/1.2 var(--font-mono, ui-monospace, Menlo, monospace); color: var(--muted, #656479); }
+.wsk-seg { display: flex; flex-wrap: wrap; gap: 6px; }
+.wsk-chip { display: inline-block; padding: 6px 10px; border-radius: 999px; border: 1px solid var(--line-strong, #cfcedd); font: 600 13px/1.2 var(--font-text, system-ui, sans-serif); color: var(--ink-2, #4a4960); cursor: pointer; background: var(--paper, #fff); min-height: 32px; }
+.wsk-note { margin: 0; font-size: 13px; color: var(--muted, #656479); }
+.wsk-preview { display: grid; gap: 16px; min-width: 0; }
+.wsk-stage { background: var(--sbg); color: var(--sink); border: 1px solid var(--line, #e3e2ec); border-radius: var(--r-lg, 18px); padding: 22px; display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 24px; align-items: center; --wa-ground: var(--sbg); }
+.wsk-big { display: grid; place-items: center; min-width: 174px; }
+.wsk-cap { display: grid; gap: 12px; min-width: 0; }
+.wsk-name { font-family: var(--sfont); font-size: 1.75rem; line-height: 1.1; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.wsk-ai { display: inline-flex; align-items: center; padding: 1px 6px; border-radius: 999px; border: 1px solid currentColor; font: 700 10px/1.4 var(--font-text, system-ui, sans-serif); letter-spacing: .04em; opacity: .8; }
+.wsk-stage dl { margin: 0; display: grid; gap: 8px; }
+.wsk-stage dt { font: 600 11px/1.3 var(--font-mono, ui-monospace, Menlo, monospace); letter-spacing: .05em; text-transform: uppercase; opacity: .75; }
+.wsk-stage dd { margin: 2px 0 0; font-size: 14.5px; }
+.wsk-sizes { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 18px; padding: 16px 18px; background: var(--paper, #fff); border: 1px solid var(--line, #e3e2ec); border-radius: var(--r-lg, 18px); }
+.wsk-sizes figure { margin: 0; display: grid; justify-items: center; gap: 4px; --wa-ground: var(--paper, #fff); }
+.wsk-sizes figcaption { font: 600 11px/1.2 var(--font-mono, ui-monospace, Menlo, monospace); color: var(--muted, #656479); }
+.wsk-contexts { display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; }
+.wsk-ctx { border-radius: 14px; padding: 14px; display: grid; gap: 10px; align-content: start; min-width: 0; background: var(--paper, #fff); border: 1px solid var(--line, #e3e2ec); --wa-ground: var(--paper, #fff); }
+.wsk-ctx-site { background: var(--sbg); color: var(--sink); --wa-ground: var(--sbg); }
+.wsk-ctx-lbl { font: 600 11px/1.3 var(--font-mono, ui-monospace, Menlo, monospace); letter-spacing: .05em; text-transform: uppercase; opacity: .75; }
+.wsk-peek { display: flex; align-items: center; gap: 10px; }
+.wsk-peek b { font: 700 14px/1.2 var(--font-text, system-ui, sans-serif); }
+.wsk-round { width: 64px; height: 64px; border-radius: 50%; display: grid; place-items: center; background: var(--sbg); box-shadow: inset 0 0 0 1px var(--line, #e3e2ec); --wa-ground: var(--sbg); }
+.wsk-checks { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.wsk-checks .chip { font-variant-numeric: tabular-nums; }
+.wsk-actions { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.wsk-status { margin: 0; font-size: 13px; color: var(--ink-2, #4a4960); flex-basis: 100%; }
+@container (min-width: 760px) {
+  .wsk-grid { grid-template-columns: 340px minmax(0, 1fr); }
+}
+@container (min-width: 900px) {
+  .wsk-contexts { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+@container (max-width: 520px) {
+  .wsk-stage { grid-template-columns: 1fr; justify-items: start; }
+  .wsk-big { min-width: 0; }
+}

@@ -1,0 +1,205 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 1012" width="1280" height="1012" role="img" aria-labelledby="t d">
+<title id="t">Agentrix WebAgent Platform control plane</title><desc id="d">Tenancy from operator to site; the people and surfaces; the change path that keeps coding agents governed; the global control layer; the operator tenant whose WebAgents run Zavora; and the cells, sandbox runner pools and Vultr account underneath.</desc>
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#38356d"/></marker><marker id="ac" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#de4060"/></marker><marker id="aa" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#c2620a"/></marker></defs>
+<rect width="1280" height="1012" fill="#ffffff"/>
+<g font-family="Inter, 'DM Sans', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" fill="#1d1b33">
+<text x="24" y="38" font-size="21" font-weight="800" fill="#38356d" text-anchor="start">Agentrix WebAgent Platform · the control plane</text>
+<text x="24" y="60" font-size="12" font-weight="400" fill="#5d5a78" text-anchor="start">Zavora runs on Zavora: operator work is done by WebAgents under human authority. Blue = Vultr product · coral = holds secrets · amber dashed = sealed, untrusted work.</text>
+<rect x="24" y="84" width="380" height="356" rx="16" fill="#f6f5fb" stroke="#d8d5ea" stroke-width="1.2"/>
+<text x="40" y="106" font-size="11" font-weight="700" fill="#5d5a78" text-anchor="start" letter-spacing="1.2">TENANCY · DOWN ONLY BY SIGNED GRANT</text>
+<rect x="44" y="112" width="340" height="72" rx="12" fill="#ffffff" stroke="#38356d" stroke-width="1.6"/>
+<text x="58" y="136" font-size="13.5" font-weight="700" fill="#38356d" text-anchor="start">Operator</text>
+<text x="58" y="156" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">Zavora Cloud, or a self-hoster</text>
+<text x="58" y="173" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">fleet · platform levers · books</text>
+<rect x="58" y="192" width="326" height="72" rx="12" fill="#ffffff" stroke="#38356d" stroke-width="1.6"/>
+<text x="72" y="216" font-size="13.5" font-weight="700" fill="#38356d" text-anchor="start">Partner</text>
+<text x="72" y="236" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">agency · reseller · referral</text>
+<text x="72" y="253" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">white-label · roles by owner grant</text>
+<rect x="72" y="272" width="312" height="72" rx="12" fill="#ffffff" stroke="#38356d" stroke-width="1.6"/>
+<text x="86" y="296" font-size="13.5" font-weight="700" fill="#38356d" text-anchor="start">Organisation</text>
+<text x="86" y="316" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">the business: owns its sites,</text>
+<text x="86" y="333" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">data, receipts and billing</text>
+<rect x="86" y="352" width="298" height="72" rx="12" fill="#ffffff" stroke="#38356d" stroke-width="1.6"/>
+<text x="100" y="376" font-size="13.5" font-weight="700" fill="#38356d" text-anchor="start">Site</text>
+<text x="100" y="396" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">TenantKernel · charter · WebAgents</text>
+<text x="100" y="413" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">the site wall: SiteId everywhere</text>
+<path d="M52,184 V198 H62" fill="none" stroke="#9a97b0" stroke-width="1.4"/>
+<path d="M66,264 V278 H76" fill="none" stroke="#9a97b0" stroke-width="1.4"/>
+<path d="M80,344 V358 H90" fill="none" stroke="#9a97b0" stroke-width="1.4"/>
+<rect x="424" y="84" width="520" height="356" rx="16" fill="#f6f5fb" stroke="#d8d5ea" stroke-width="1.2"/>
+<text x="440" y="106" font-size="11" font-weight="700" fill="#5d5a78" text-anchor="start" letter-spacing="1.2">PEOPLE &amp; SURFACES · ONE SHELL, THREE SCOPES</text>
+<rect x="440" y="112" width="238" height="96" rx="12" fill="#ffffff" stroke="#d8d5ea" stroke-width="1.6"/>
+<text x="454" y="136" font-size="13.5" font-weight="700" fill="#1d1b33" text-anchor="start">Operator console</text>
+<text x="454" y="156" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">Zavora · Operator scope</text>
+<text x="454" y="173" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">Fleet · Rollouts · Incidents</text>
+<text x="454" y="190" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">Money · Partners · Trust</text>
+<rect x="690" y="112" width="238" height="96" rx="12" fill="#ffffff" stroke="#d8d5ea" stroke-width="1.6"/>
+<text x="704" y="136" font-size="13.5" font-weight="700" fill="#1d1b33" text-anchor="start">Portfolio console</text>
+<text x="704" y="156" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">agency or reseller scope</text>
+<text x="704" y="173" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">white-label · client cards</text>
+<text x="704" y="190" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">acts only by owner grant</text>
+<rect x="440" y="218" width="238" height="96" rx="12" fill="#ffffff" stroke="#d8d5ea" stroke-width="1.6"/>
+<text x="454" y="242" font-size="13.5" font-weight="700" fill="#1d1b33" text-anchor="start">Owner console</text>
+<text x="454" y="262" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">Site scope (doc 07)</text>
+<text x="454" y="279" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">Today · Decisions · Trust</text>
+<text x="454" y="296" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">operator actions shown here</text>
+<rect x="690" y="218" width="238" height="96" rx="12" fill="#ffffff" stroke="#38356d" stroke-width="1.6"/>
+<text x="704" y="242" font-size="13.5" font-weight="700" fill="#38356d" text-anchor="start">agentrix CLI · API · MCP</text>
+<text x="704" y="262" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">one API, one authority model</text>
+<text x="704" y="279" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">mutations become cards</text>
+<text x="704" y="296" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">mcp serve: read + propose</text>
+<rect x="440" y="324" width="238" height="96" rx="12" fill="#ffffff" stroke="#38356d" stroke-width="1.6"/>
+<text x="454" y="348" font-size="13.5" font-weight="700" fill="#38356d" text-anchor="start">On-call channels</text>
+<text x="454" y="368" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">WhatsApp: ack, evidence, extend</text>
+<text x="454" y="385" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">push: a decision is waiting</text>
+<text x="454" y="402" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">email: briefs, never approvals</text>
+<rect x="690" y="324" width="238" height="96" rx="12" fill="#ffffff" stroke="#38356d" stroke-width="1.6"/>
+<text x="704" y="348" font-size="13.5" font-weight="700" fill="#38356d" text-anchor="start">Partners&#x27; systems</text>
+<text x="704" y="368" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">signed webhooks</text>
+<text x="704" y="385" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">scoped, expiring tokens</text>
+<text x="704" y="402" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">never database access</text>
+<rect x="964" y="84" width="292" height="528" rx="16" fill="#f6f5fb" stroke="#d8d5ea" stroke-width="1.2"/>
+<text x="980" y="106" font-size="11" font-weight="700" fill="#5d5a78" text-anchor="start" letter-spacing="1.2">CHANGE PATH · AGENTS PROPOSE</text>
+<rect x="980" y="112" width="260" height="58" rx="12" fill="#ffffff" stroke="#38356d" stroke-width="1.6"/>
+<text x="994" y="136" font-size="13.5" font-weight="700" fill="#38356d" text-anchor="start">Zavora CLI</text>
+<text x="994" y="156" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">worker + bounded planner · guard</text>
+<path d="M1110,170 V181" fill="none" stroke="#38356d" stroke-width="1.6" marker-end="url(#a)"/>
+<rect x="980" y="182" width="260" height="58" rx="12" fill="#ffffff" stroke="#38356d" stroke-width="1.6"/>
+<text x="994" y="206" font-size="13.5" font-weight="700" fill="#38356d" text-anchor="start">Pull request</text>
+<text x="994" y="226" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">pack · theme · fix · fleet change</text>
+<path d="M1110,240 V251" fill="none" stroke="#38356d" stroke-width="1.6" marker-end="url(#a)"/>
+<rect x="980" y="252" width="260" height="58" rx="12" fill="#fff7ed" stroke="#c2620a" stroke-width="1.6" stroke-dasharray="6 4"/>
+<text x="994" y="276" font-size="13.5" font-weight="700" fill="#c2620a" text-anchor="start">CI in sealed rooms</text>
+<text x="994" y="296" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">S1–S19 · gauntlet · evals</text>
+<path d="M1110,310 V321" fill="none" stroke="#38356d" stroke-width="1.6" marker-end="url(#a)"/>
+<rect x="980" y="322" width="260" height="58" rx="12" fill="#ffffff" stroke="#d8d5ea" stroke-width="1.6"/>
+<text x="994" y="346" font-size="13.5" font-weight="700" fill="#1d1b33" text-anchor="start">Human review + merge</text>
+<text x="994" y="366" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">a merge is not an approval</text>
+<path d="M1110,380 V391" fill="none" stroke="#38356d" stroke-width="1.6" marker-end="url(#a)"/>
+<rect x="980" y="392" width="260" height="58" rx="12" fill="#ffffff" stroke="#38356d" stroke-width="1.6"/>
+<text x="994" y="416" font-size="13.5" font-weight="700" fill="#38356d" text-anchor="start">Reconciler plans</text>
+<text x="994" y="436" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">agentrix-fleet · plan digest</text>
+<path d="M1110,450 V461" fill="none" stroke="#38356d" stroke-width="1.6" marker-end="url(#a)"/>
+<rect x="980" y="462" width="260" height="58" rx="12" fill="#ffffff" stroke="#d8d5ea" stroke-width="1.6"/>
+<text x="994" y="486" font-size="13.5" font-weight="700" fill="#1d1b33" text-anchor="start">Approval</text>
+<text x="994" y="506" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">passkey, or MFA step-up · 1 or 2 people</text>
+<path d="M1110,520 V531" fill="none" stroke="#38356d" stroke-width="1.6" marker-end="url(#a)"/>
+<rect x="980" y="532" width="260" height="58" rx="12" fill="#fff1f3" stroke="#de4060" stroke-width="1.6"/>
+<text x="994" y="556" font-size="13.5" font-weight="700" fill="#de4060" text-anchor="start">Effects Gateway applies</text>
+<text x="994" y="576" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">exactly once → receipt</text>
+<rect x="24" y="460" width="440" height="260" rx="16" fill="#f6f5fb" stroke="#d8d5ea" stroke-width="1.2"/>
+<text x="40" y="482" font-size="11" font-weight="700" fill="#5d5a78" text-anchor="start" letter-spacing="1.2">CONTROL PLANE · GLOBAL LAYER (ams-1, standby fra-1)</text>
+<rect x="40" y="490" width="200" height="98" rx="12" fill="#ffffff" stroke="#38356d" stroke-width="1.6"/>
+<text x="54" y="514" font-size="13.5" font-weight="700" fill="#38356d" text-anchor="start">agentrix-control</text>
+<text x="54" y="534" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">accounts · orgs · partners</text>
+<text x="54" y="551" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">grants · decisions · sign-in</text>
+<text x="54" y="568" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">console + partner API</text>
+<rect x="252" y="490" width="200" height="98" rx="12" fill="#ffffff" stroke="#38356d" stroke-width="1.6"/>
+<text x="266" y="514" font-size="13.5" font-weight="700" fill="#38356d" text-anchor="start">agentrix-fleet</text>
+<text x="266" y="534" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">registry · reconciler</text>
+<text x="266" y="551" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">trains → rings → waves</text>
+<text x="266" y="568" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">gates · rollback by pin</text>
+<rect x="40" y="600" width="200" height="98" rx="12" fill="#ffffff" stroke="#38356d" stroke-width="1.6"/>
+<text x="54" y="624" font-size="13.5" font-weight="700" fill="#38356d" text-anchor="start">agentrix-billing</text>
+<text x="54" y="644" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">rating · invoices · dunning</text>
+<text x="54" y="661" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">partner statements, payouts</text>
+<text x="54" y="678" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">posts to zavora-era (eTIMS)</text>
+<rect x="252" y="600" width="200" height="98" rx="12" fill="#ffffff" stroke="#38356d" stroke-width="1.6"/>
+<text x="266" y="624" font-size="13.5" font-weight="700" fill="#38356d" text-anchor="start">Operator ledger</text>
+<text x="266" y="644" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">hash-chained receipts</text>
+<text x="266" y="661" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">every operator action</text>
+<text x="266" y="678" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">matched to Vultr Audit Logs</text>
+<rect x="484" y="460" width="460" height="260" rx="16" fill="#f6f5fb" stroke="#d8d5ea" stroke-width="1.2"/>
+<text x="500" y="482" font-size="11" font-weight="700" fill="#5d5a78" text-anchor="start" letter-spacing="1.2">OPERATOR TENANT · ZAVORA RUNS ON ZAVORA</text>
+<rect x="500" y="490" width="181.29999999999998" height="22" rx="11" fill="#f1f0fa" stroke="#38356d" stroke-width="1"/>
+<text x="590.65" y="505" font-size="11" font-weight="600" fill="#38356d" text-anchor="middle">Operator Chief WebAgent</text>
+<rect x="500" y="520" width="39.3" height="22" rx="11" fill="#f1f0fa" stroke="#38356d" stroke-width="1"/>
+<text x="519.65" y="535" font-size="11" font-weight="600" fill="#38356d" text-anchor="middle">SRE</text>
+<rect x="547.3" y="520" width="67.69999999999999" height="22" rx="11" fill="#f1f0fa" stroke="#38356d" stroke-width="1"/>
+<text x="581.15" y="535" font-size="11" font-weight="600" fill="#38356d" text-anchor="middle">Release</text>
+<rect x="623.0" y="520" width="74.8" height="22" rx="11" fill="#f1f0fa" stroke="#38356d" stroke-width="1"/>
+<text x="660.4" y="535" font-size="11" font-weight="600" fill="#38356d" text-anchor="middle">Capacity</text>
+<rect x="705.8" y="520" width="67.69999999999999" height="22" rx="11" fill="#f1f0fa" stroke="#38356d" stroke-width="1"/>
+<text x="739.65" y="535" font-size="11" font-weight="600" fill="#38356d" text-anchor="middle">Billing</text>
+<rect x="781.5" y="520" width="67.69999999999999" height="22" rx="11" fill="#f1f0fa" stroke="#38356d" stroke-width="1"/>
+<text x="815.35" y="535" font-size="11" font-weight="600" fill="#38356d" text-anchor="middle">Support</text>
+<rect x="500" y="550" width="60.599999999999994" height="22" rx="11" fill="#f1f0fa" stroke="#38356d" stroke-width="1"/>
+<text x="530.3" y="565" font-size="11" font-weight="600" fill="#38356d" text-anchor="middle">Growth</text>
+<rect x="566.6" y="550" width="131.6" height="22" rx="11" fill="#f1f0fa" stroke="#38356d" stroke-width="1"/>
+<text x="632.4" y="565" font-size="11" font-weight="600" fill="#38356d" text-anchor="middle">Security &amp; Abuse</text>
+<rect x="704.2" y="550" width="124.5" height="22" rx="11" fill="#f1f0fa" stroke="#38356d" stroke-width="1"/>
+<text x="766.45" y="565" font-size="11" font-weight="600" fill="#38356d" text-anchor="middle">Partner Success</text>
+<rect x="834.7" y="550" width="89.0" height="22" rx="11" fill="#f1f0fa" stroke="#38356d" stroke-width="1"/>
+<text x="879.2" y="565" font-size="11" font-weight="600" fill="#38356d" text-anchor="middle">Compliance</text>
+<text x="500" y="594" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">Same governed path, plus an operator token (target × verb).</text>
+<text x="500" y="611" font-size="11.5" font-weight="600" fill="#de4060" text-anchor="start">Never read site content · never approve an owner&#x27;s card.</text>
+<rect x="500" y="626" width="206" height="78" rx="12" fill="#fff1f3" stroke="#de4060" stroke-width="1.6"/>
+<text x="514" y="650" font-size="13" font-weight="700" fill="#de4060" text-anchor="start">Operator Model GW</text>
+<text x="514" y="670" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">own Inference subscription</text>
+<text x="514" y="687" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">Zavora&#x27;s cost, never a site&#x27;s</text>
+<rect x="718" y="626" width="210" height="78" rx="12" fill="#fff1f3" stroke="#de4060" stroke-width="1.6"/>
+<text x="732" y="650" font-size="13" font-weight="700" fill="#de4060" text-anchor="start">Operator Effects GW</text>
+<text x="732" y="670" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">Vultr service users · payouts</text>
+<text x="732" y="687" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">Zavora&#x27;s email and WhatsApp</text>
+<rect x="24" y="744" width="920" height="254" rx="16" fill="#f6f5fb" stroke="#d8d5ea" stroke-width="1.2"/>
+<text x="40" y="766" font-size="11" font-weight="700" fill="#5d5a78" text-anchor="start" letter-spacing="1.2">CELLS ON VULTR · ONE REGION&#x27;S STACK, ONE BLAST RADIUS</text>
+<rect x="40" y="774" width="212" height="96" rx="12" fill="#eef4ff" stroke="#0b6cff" stroke-width="1.6"/>
+<text x="54" y="798" font-size="13" font-weight="700" fill="#0752c4" text-anchor="start">ams-1 · Amsterdam</text>
+<text x="54" y="818" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">VKE: edge · control · kernels</text>
+<text x="54" y="835" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">Postgres · Valkey · Kafka · CDN</text>
+<text x="54" y="852" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">a TenantKernel per site</text>
+<rect x="264" y="774" width="212" height="96" rx="12" fill="#eef4ff" stroke="#0b6cff" stroke-width="1.6"/>
+<text x="278" y="798" font-size="13" font-weight="700" fill="#0752c4" text-anchor="start">fra-1 · Frankfurt</text>
+<text x="278" y="818" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">standby: compute · DB replica</text>
+<text x="278" y="835" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">no Object Storage in Frankfurt</text>
+<text x="278" y="852" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">copies kept in Milan</text>
+<rect x="488" y="774" width="212" height="96" rx="12" fill="#eef4ff" stroke="#0b6cff" stroke-width="1.6"/>
+<text x="502" y="798" font-size="13" font-weight="700" fill="#0752c4" text-anchor="start">jnb-1 · Johannesburg</text>
+<text x="502" y="818" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">edge cell for African sites</text>
+<text x="502" y="835" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">kernels stay in ams-1</text>
+<rect x="712" y="774" width="212" height="96" rx="12" fill="#eef4ff" stroke="#0b6cff" stroke-width="1.6"/>
+<text x="726" y="798" font-size="13" font-weight="700" fill="#0752c4" text-anchor="start">atl-0 · Atlanta</text>
+<text x="726" y="818" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">the first release · single node</text>
+<text x="726" y="835" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">control VM + sandbox VM</text>
+<rect x="40" y="884" width="888" height="100" rx="16" fill="#fffbf5" stroke="#c2620a" stroke-width="1.4" stroke-dasharray="8 5"/>
+<text x="56" y="906" font-size="11" font-weight="700" fill="#c2620a" text-anchor="start" letter-spacing="1.2">SANDBOX RUNNER POOLS · NO SECRETS · OUTSIDE KUBERNETES</text>
+<rect x="56" y="916" width="124.5" height="22" rx="11" fill="#ffffff" stroke="#c2620a" stroke-width="1"/>
+<text x="118.25" y="931" font-size="11" font-weight="600" fill="#c2620a" text-anchor="middle">gVisor · any VM</text>
+<rect x="188.5" y="916" width="110.3" height="22" rx="11" fill="#ffffff" stroke="#c2620a" stroke-width="1"/>
+<text x="243.65" y="931" font-size="11" font-weight="600" fill="#c2620a" text-anchor="middle">microVM · VX1</text>
+<rect x="306.8" y="916" width="188.39999999999998" height="22" rx="11" fill="#ffffff" stroke="#c2620a" stroke-width="1"/>
+<text x="401.0" y="931" font-size="11" font-weight="600" fill="#c2620a" text-anchor="middle">throwaway VM · Vultr API</text>
+<text x="56" y="966" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">Migration Factory: one fair-share queue for owners and agencies · per-job egress allowlists · polite crawler fleet-wide</text>
+<rect x="964" y="632" width="292" height="366" rx="16" fill="#f6f5fb" stroke="#d8d5ea" stroke-width="1.2"/>
+<text x="980" y="654" font-size="11" font-weight="700" fill="#5d5a78" text-anchor="start" letter-spacing="1.2">VULTR ACCOUNT</text>
+<rect x="980" y="662" width="260" height="72" rx="12" fill="#eef4ff" stroke="#0b6cff" stroke-width="1.6"/>
+<text x="994" y="686" font-size="13" font-weight="700" fill="#0752c4" text-anchor="start">Serverless Inference</text>
+<text x="994" y="706" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">a subscription per site,</text>
+<text x="994" y="723" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">partner or operator tenant</text>
+<rect x="980" y="744" width="260" height="72" rx="12" fill="#eef4ff" stroke="#0b6cff" stroke-width="1.6"/>
+<text x="994" y="768" font-size="13" font-weight="700" fill="#0752c4" text-anchor="start">IAM · sub-accounts</text>
+<text x="994" y="788" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">service users · assume-role</text>
+<text x="994" y="805" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">zc-prod · zc-sandbox · dedicated</text>
+<rect x="980" y="826" width="260" height="72" rx="12" fill="#eef4ff" stroke="#0b6cff" stroke-width="1.6"/>
+<text x="994" y="850" font-size="13" font-weight="700" fill="#0752c4" text-anchor="start">Audit Logs</text>
+<text x="994" y="870" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">matched to the operator ledger;</text>
+<text x="994" y="887" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">an unmatched event pages Security</text>
+<rect x="980" y="908" width="260" height="72" rx="12" fill="#eef4ff" stroke="#0b6cff" stroke-width="1.6"/>
+<text x="994" y="932" font-size="13" font-weight="700" fill="#0752c4" text-anchor="start">Marketplace · partners</text>
+<text x="994" y="952" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">single-node one-click listing</text>
+<text x="994" y="969" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">Vultr partner programme</text>
+<path d="M600,440 V450 H190 V488" fill="none" stroke="#38356d" stroke-width="1.6" marker-end="url(#a)"/>
+<rect x="291.6" y="438" width="216.8" height="18" rx="9" fill="#ffffff" stroke="#d8d5ea" stroke-width="0.8"/>
+<text x="400" y="451" font-size="10.5" font-weight="600" fill="#38356d" text-anchor="middle">one API · console, CLI, partners</text>
+<path d="M84,440 V488" fill="none" stroke="#38356d" stroke-width="1.6" marker-end="url(#a)"/>
+<rect x="58.8" y="440" width="50.400000000000006" height="18" rx="9" fill="#ffffff" stroke="#d8d5ea" stroke-width="0.8"/>
+<text x="84" y="453" font-size="10.5" font-weight="600" fill="#38356d" text-anchor="middle">grants</text>
+<path d="M498,561 H456" fill="none" stroke="#38356d" stroke-width="1.6" marker-end="url(#a)"/>
+<path d="M454,540 H474 V742" fill="none" stroke="#38356d" stroke-width="1.6" marker-end="url(#a)"/>
+<rect x="397.6" y="719" width="152.8" height="18" rx="9" fill="#ffffff" stroke="#d8d5ea" stroke-width="0.8"/>
+<text x="474" y="732" font-size="10.5" font-weight="600" fill="#38356d" text-anchor="middle">trains → rings → waves</text>
+<path d="M1180,604 V660" fill="none" stroke="#de4060" stroke-width="1.6" marker-end="url(#ac)"/>
+<rect x="1106.8" y="610" width="146.4" height="18" rx="9" fill="#ffffff" stroke="#d8d5ea" stroke-width="0.8"/>
+<text x="1180" y="623" font-size="10.5" font-weight="600" fill="#de4060" text-anchor="middle">Vultr API · Terraform</text>
+<path d="M928,690 H952 V780 H978" fill="none" stroke="#de4060" stroke-width="1.6" marker-end="url(#ac)"/>
+</g></svg>

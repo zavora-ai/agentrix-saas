@@ -1,0 +1,12 @@
+{"subscriber_id": "sub-halima", "customer": "cus-halima", "plan": "Supporter", "source": "owner grant", "since": "d-380 10:00"}
+{"subscriber_id": "sub-r01", "customer": "cus-r01", "plan": "Supporter", "since": "d-43 10:00", "source": "owner grant"}
+{"subscriber_id": "sub-r02", "customer": "cus-r02", "plan": "Supporter", "since": "d-66 10:00", "source": "owner grant"}
+{"subscriber_id": "sub-r03", "customer": "cus-r03", "plan": "Supporter", "since": "d-89 10:00", "source": "owner grant"}
+{"subscriber_id": "sub-r04", "customer": "cus-r04", "plan": "Supporter", "since": "d-22 10:00", "source": "sandbox payment", "until": "d+8 10:00"}
+{"subscriber_id": "sub-r05", "customer": "cus-r05", "plan": "Supporter", "since": "d-135 10:00", "source": "owner grant"}
+{"subscriber_id": "sub-r06", "customer": "cus-r06", "plan": "Supporter", "since": "d-158 10:00", "source": "owner grant"}
+{"subscriber_id": "sub-r07", "customer": "cus-r07", "plan": "Supporter", "since": "d-181 10:00", "source": "owner grant"}
+{"subscriber_id": "sub-r08", "customer": "cus-r08", "plan": "Supporter", "since": "d-14 10:00", "source": "sandbox payment", "until": "d+16 10:00"}
+{"subscriber_id": "sub-r09", "customer": "cus-r09", "plan": "Supporter", "since": "d-227 10:00", "source": "owner grant"}
+{"subscriber_id": "sub-r10", "customer": "cus-r10", "plan": "Supporter", "since": "d-250 10:00", "source": "owner grant"}
+{"subscriber_id": "sub-r11", "customer": "cus-r11", "plan": "Supporter", "since": "d-273 10:00", "source": "owner grant"}

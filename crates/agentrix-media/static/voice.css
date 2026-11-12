@@ -1,0 +1,29 @@
+/* Talk to your Chief WebAgent: the voice panel from concept/console/live.html (#voice) with
+   adk-surface's voice decision card (Voice.dc.html), in the console's own tokens. */
+.voice-panel { display: grid; gap: 14px; max-width: 720px; }
+.voice-ctl { display: flex; align-items: center; gap: 12px; padding: 12px; border-radius: 16px; background: var(--os-pane-2); border: 1px solid var(--os-line); }
+.voice-ctl .vstate { font: 700 var(--fs-13, 13px)/1.2 var(--font-text, inherit); color: var(--os-head); }
+.voice-ctl .vstate small { display: block; font-weight: 500; color: var(--os-muted); margin-top: 2px; }
+.voice-level { display: flex; align-items: center; gap: 4px; height: 32px; }
+.voice-level i { display: block; width: 5px; height: 8px; border-radius: 3px; background: var(--coral, #e8506e); transition: height .08s linear; }
+.voice-panel[data-mode="idle"] .voice-level i { opacity: .35; }
+.vrow { display: flex; gap: 8px; flex-wrap: wrap; }
+.vrow [data-talk] { touch-action: none; user-select: none; -webkit-user-select: none; min-height: 44px; }
+.vrow [data-talk][aria-pressed="true"] { box-shadow: 0 0 0 3px color-mix(in srgb, var(--coral, #e8506e) 45%, transparent); }
+.vtype { display: flex; gap: 8px; }
+.vtype input { flex: 1; min-width: 0; font: inherit; padding: 9px 12px; border-radius: 10px; border: 1px solid var(--os-line); background: var(--os-pane); color: var(--os-ink); }
+.captions { display: grid; gap: 6px; min-height: 2.6em; }
+.cap { font-size: var(--fs-14, 14px); line-height: 1.45; color: var(--os-ink-2); margin: 0; }
+.cap b { color: var(--os-head); margin-right: 6px; }
+.cap.owner b { color: var(--coral-strong, #b72d50); }
+.cap.partial { opacity: .7; }
+.vdecision { border: 1px solid color-mix(in srgb, var(--coral, #e8506e) 40%, var(--os-line)); background: color-mix(in srgb, var(--coral, #e8506e) 7%, var(--os-pane)); border-radius: 18px; padding: 16px; display: grid; gap: 10px; }
+.vdecision[hidden] { display: none; }
+.vdecision .vtop { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 8px; font-size: var(--fs-13, 13px); color: var(--os-muted); }
+.vdecision .vcount { display: inline-flex; align-items: center; gap: 7px; padding: 4px 10px; border-radius: 999px; background: color-mix(in srgb, var(--coral, #e8506e) 14%, transparent); color: var(--coral-strong, #b72d50); font-weight: 600; }
+.vdecision .vcount::before { content: ""; width: 7px; height: 7px; border-radius: 4px; background: var(--coral, #e8506e); }
+.vdecision h3 { margin: 0; font-size: 18px; color: var(--os-head); }
+.vdecision .vfoot { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; justify-content: space-between; }
+.verror { color: var(--coral-strong, #b72d50); font-size: var(--fs-13, 13px); margin: 0; }
+.verror:empty { display: none; }
+@media (prefers-reduced-motion: reduce) { .voice-level i { transition: none; } }

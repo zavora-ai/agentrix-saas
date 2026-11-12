@@ -1,0 +1,56 @@
+# Agentrix SaaS · Zavora ERA (hosted) on saas-node: ERA's API and UI, added to the data services
+# in deploy/saas/era/docker-compose.yml (the books slice's file, used as is). Compose project
+# saas-era. deploy/saas/deploy.sh runs, from /opt/agentrix-saas/src/deploy/saas:
+#
+#   docker compose -p saas-era --env-file /etc/agentrix-saas/era.env \
+#     -f era/docker-compose.yml -f era.compose.yml --profile redis up -d
+#
+# ERA's code is proprietary: deploy.sh rsyncs ERA's committed sources from
+# ~/Developer/projects/zavora-era to /opt/zavora-era on the VM only (ERA_SRC), and these services
+# build them with ERA's own Dockerfiles. Nothing of ERA enters this repo.
+#
+# /etc/agentrix-saas/era.env (root, 0600) holds ERA_DATABASE_PASSWORD, ERA_JWT_ACCESS_SECRET and
+# ERA_JWT_REFRESH_SECRET from the repo's .env, plus ERA_ENTITY_ID (the tenant ERA's customer
+# portal serves: Agentrix Ltd's after the seed) and ERA_NOTIF_ENC_KEY, generated on the VM, and
+# ERA_PUBLIC_URL (https://books.<SAAS_PLATFORM_HOST> in spec v3's shapes).
+# Everything listens on 127.0.0.1 only; Caddy serves books.agentrix.website from the UI.
+
+services:
+  api:
+    build:
+      context: ${ERA_SRC:-/opt/zavora-era}
+      dockerfile: zavora-erp-api/Dockerfile
+    image: saas-era-api:local
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    environment:
+      DATABASE_URL: postgres://zavora:${ERA_DATABASE_PASSWORD:?run through deploy.sh}@postgres:5432/zavora_era
+      REDIS_URL: redis://redis:6379
+      BIND_ADDR: 0.0.0.0:8080
+      APP_ENV: production
+      JWT_ACCESS_SECRET: ${ERA_JWT_ACCESS_SECRET:?run through deploy.sh}
+      JWT_REFRESH_SECRET: ${ERA_JWT_REFRESH_SECRET:?run through deploy.sh}
+      ENTITY_ID: ${ERA_ENTITY_ID:?run through deploy.sh}
+      NOTIF_ENC_KEY: ${ERA_NOTIF_ENC_KEY:?run through deploy.sh}
+      APP_BASE_URL: ${ERA_PUBLIC_URL:-https://books.agentrix.website}
+      PUBLIC_BASE_URL: ${ERA_PUBLIC_URL:-https://books.agentrix.website}
+      CORS_ALLOWED_ORIGINS: ${ERA_PUBLIC_URL:-https://books.agentrix.website}
+      LOGIN_RATE_LIMIT: ${ERA_LOGIN_RATE_LIMIT:-120}
+      RUST_LOG: ${ERA_RUST_LOG:-info}
+    ports:
+      - "127.0.0.1:18180:8080"
+    restart: unless-stopped
+
+  ui:
+    build:
+      context: ${ERA_SRC:-/opt/zavora-era}
+      dockerfile: zavora-erp-ui/Dockerfile
+    image: saas-era-ui:local
+    depends_on:
+      - api
+    ports:
+      - "127.0.0.1:18181:80"
+    restart: unless-stopped

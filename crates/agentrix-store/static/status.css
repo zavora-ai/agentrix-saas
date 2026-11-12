@@ -1,0 +1,15 @@
+/* agentrix-store · the status page's 30-day strip. Kit tokens only (agentrix-ui tokens.css). */
+.status-headline { font-size: var(--fs-32); line-height: 1.2; margin-top: var(--s2); }
+.status-headline[data-overall="ok"] { color: var(--ok); }
+.status-headline[data-overall="slow"] { color: var(--wait); }
+.status-headline[data-overall="down"] { color: var(--risk); }
+.status-part .covers { margin: 0; color: var(--muted); font-size: var(--fs-13); }
+.status-part .detail { margin: var(--s2) 0 var(--s3); color: var(--ink-2); font-size: var(--fs-14); }
+.uptime { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(30, 1fr); gap: 3px; height: 32px; }
+.uptime li { border-radius: 3px; background: var(--surface-2); }
+.uptime li.ok { background: var(--ok); }
+.uptime li.slow { background: var(--wait); }
+.uptime li.down { background: var(--risk); }
+.uptime-axis { display: flex; justify-content: space-between; margin-top: var(--s2); color: var(--muted); font-size: var(--fs-12); }
+.uptime-axis b { color: var(--ink-2); font-weight: 600; }
+@media (max-width: 520px) { .status-headline { font-size: var(--fs-24); } .uptime { gap: 2px; height: 28px; } }

@@ -1,0 +1,296 @@
+{
+  "site": "tana-valley-times-sample",
+  "images": {
+    "hero": {
+      "brief": "A wide river valley with terraced green hills, a small town of tin roofs by the river and a railway line along the far hillside, early morning",
+      "bytes": 91232,
+      "cost_micro_usd": 15729,
+      "description": {
+        "alt": "Illustration of a river valley with terraced green hills, a tin-roofed town along the water, and a railway on the hillside.",
+        "check": "",
+        "photographic": false,
+        "shows_person": false,
+        "shows_text": false
+      },
+      "digest": "sha256:c21e45337daca7be5a76ee76e153c52920cce701bbc5f64592649546faaab237",
+      "file": "hero.webp",
+      "height": 768,
+      "kind": "news-illustration",
+      "label": "Sample image, made with AI",
+      "media_type": "image/webp",
+      "model": "z-image-turbo",
+      "prompt": "A wide river valley with terraced green hills, a small town of tin roofs by the river and a railway line along the far hillside, early morning. Flat editorial illustration with simple shapes and a limited palette, clearly drawn by hand, not a photograph. Colours and mood only: Muted newsprint palette of ink blue, river green and warm paper, clean lines. No people, no faces, no hands. No text, letters, numbers, logos, labels or watermarks.",
+      "seed": 3101,
+      "slot": "hero",
+      "verdict": {
+        "categories": [],
+        "model": "nemotron-3.5-content-safety",
+        "safe": true,
+        "user_safety": "safe"
+      },
+      "width": 1024
+    },
+    "section:business": {
+      "brief": "Rows of closed market stalls at dawn under folded shade cloths, crates of mangoes and bolts of fabric stacked on the counters, empty walkways",
+      "bytes": 35560,
+      "cost_micro_usd": 15729,
+      "description": {
+        "alt": "Closed market stalls with folded blue shade cloths, crates of fruit and stacked fabric on counters, empty walkways between.",
+        "check": "",
+        "photographic": false,
+        "shows_person": false,
+        "shows_text": false
+      },
+      "digest": "sha256:cb4286cc3ca66a176e6f1f5601a376c07fd34e2f2eaf81579c35e554ea7b9190",
+      "file": "section_business.webp",
+      "height": 768,
+      "kind": "news-illustration",
+      "label": "Sample image, made with AI",
+      "media_type": "image/webp",
+      "model": "z-image-turbo",
+      "prompt": "Rows of closed market stalls at dawn under folded shade cloths, crates of mangoes and bolts of fabric stacked on the counters, empty walkways. Flat editorial illustration with simple shapes and a limited palette, clearly drawn by hand, not a photograph. Colours and mood only: Muted newsprint palette of ink blue, river green and warm paper, clean lines. No people, no faces, no hands. No text, letters, numbers, logos, labels or watermarks.",
+      "seed": 3132,
+      "slot": "section:business",
+      "verdict": {
+        "categories": [],
+        "model": "nemotron-3.5-content-safety",
+        "safe": true,
+        "user_safety": "safe"
+      },
+      "width": 1024
+    },
+    "section:community": {
+      "brief": "A small-town community hall with a tin roof and a wide veranda, a few market stalls with shade cloths in the yard in front, trees around it, morning",
+      "bytes": 52694,
+      "cost_micro_usd": 15729,
+      "description": {
+        "alt": "Community hall with a sloped tin roof and wide veranda, one market stall with a canopy in the front yard, trees around",
+        "check": "Only one market stall is shown, not several.",
+        "photographic": false,
+        "shows_person": false,
+        "shows_text": false
+      },
+      "digest": "sha256:2c595a4c108cd0372846d59251c62d89ba40c271ebb7b0fc9aa47cb46c0fdc61",
+      "file": "section_community.webp",
+      "height": 768,
+      "kind": "news-illustration",
+      "label": "Sample image, made with AI",
+      "media_type": "image/webp",
+      "model": "z-image-turbo",
+      "prompt": "A small-town community hall with a tin roof and a wide veranda, a few market stalls with shade cloths in the yard in front, trees around it, morning. Flat editorial illustration with simple shapes and a limited palette, clearly drawn by hand, not a photograph. Colours and mood only: Muted newsprint palette of ink blue, river green and warm paper, clean lines. No people, no faces, no hands. No text, letters, numbers, logos, labels or watermarks.",
+      "seed": 3141,
+      "slot": "section:community",
+      "verdict": {
+        "categories": [],
+        "model": "nemotron-3.5-content-safety",
+        "safe": true,
+        "user_safety": "safe"
+      },
+      "width": 1024
+    },
+    "section:council": {
+      "brief": "A county assembly building with a flag pole and steps, seen from the front",
+      "bytes": 19478,
+      "cost_micro_usd": 15729,
+      "description": {
+        "alt": "Flat illustration of a county assembly building with a central columned entrance, steps, and a flagpole on the roof, flanked by trees.",
+        "check": "",
+        "photographic": false,
+        "shows_person": false,
+        "shows_text": false
+      },
+      "digest": "sha256:2c68e6f0df711dc85c127b76fd21b005f47cf02b0b0ed67dd0fc378da4a5cf02",
+      "file": "section_politics.webp",
+      "height": 768,
+      "kind": "news-illustration",
+      "label": "Sample image, made with AI",
+      "media_type": "image/webp",
+      "model": "z-image-turbo",
+      "prompt": "A county assembly building with a flag pole and steps, seen from the front. Flat editorial illustration with simple shapes and a limited palette, clearly drawn by hand, not a photograph. Colours and mood only: Muted newsprint palette of ink blue, river green and warm paper, clean lines. No people, no faces, no hands. No text, letters, numbers, logos, labels or watermarks.",
+      "seed": 3121,
+      "slot": "section:council",
+      "verdict": {
+        "categories": [],
+        "model": "nemotron-3.5-content-safety",
+        "safe": true,
+        "user_safety": "safe"
+      },
+      "width": 1024
+    },
+    "section:farming": {
+      "brief": "A river with a dry cracked bank on one side and green reeds on the other, sun and cloud overhead",
+      "bytes": 69712,
+      "cost_micro_usd": 15729,
+      "description": {
+        "alt": "A river curves between a dry cracked mud bank and green reeds under a bright sun and a pale cloud.",
+        "check": "",
+        "photographic": false,
+        "shows_person": false,
+        "shows_text": false
+      },
+      "digest": "sha256:35b744b4d4f686efb58c347c07e5e669e8b8b460087a044e1e74f1806fdf0d83",
+      "file": "section_climate.webp",
+      "height": 768,
+      "kind": "news-illustration",
+      "label": "Sample image, made with AI",
+      "media_type": "image/webp",
+      "model": "z-image-turbo",
+      "prompt": "A river with a dry cracked bank on one side and green reeds on the other, sun and cloud overhead. Flat editorial illustration with simple shapes and a limited palette, clearly drawn by hand, not a photograph. Colours and mood only: Muted newsprint palette of ink blue, river green and warm paper, clean lines. No people, no faces, no hands. No text, letters, numbers, logos, labels or watermarks.",
+      "seed": 3123,
+      "slot": "section:farming",
+      "verdict": {
+        "categories": [],
+        "model": "nemotron-3.5-content-safety",
+        "safe": true,
+        "user_safety": "safe"
+      },
+      "width": 1024
+    },
+    "section:transport": {
+      "brief": "A road and a railway crossing a river on two bridges, a minibus on the road",
+      "bytes": 88008,
+      "cost_micro_usd": 15729,
+      "description": {
+        "alt": "A white minibus drives on a road bridge crossing a river next to a railway bridge",
+        "check": "",
+        "photographic": false,
+        "shows_person": false,
+        "shows_text": false
+      },
+      "digest": "sha256:973d36ce902b64fc6ed8ab5df8c4ebb335fedf69d4e5b3dd6a0780631dfde0f4",
+      "file": "section_transport.webp",
+      "height": 768,
+      "kind": "news-illustration",
+      "label": "Sample image, made with AI",
+      "media_type": "image/webp",
+      "model": "z-image-turbo",
+      "prompt": "A road and a railway crossing a river on two bridges, a minibus on the road. Flat editorial illustration with simple shapes and a limited palette, clearly drawn by hand, not a photograph. Colours and mood only: Muted newsprint palette of ink blue, river green and warm paper, clean lines. No people, no faces, no hands. No text, letters, numbers, logos, labels or watermarks.",
+      "seed": 3124,
+      "slot": "section:transport",
+      "verdict": {
+        "categories": [],
+        "model": "nemotron-3.5-content-safety",
+        "safe": true,
+        "user_safety": "safe"
+      },
+      "width": 1024
+    },
+    "story:council-approves-first-phase-of-the-northern-rail-extension": {
+      "brief": "A railway line curving north through farmland toward distant hills, survey pegs beside the track, an empty passenger train",
+      "bytes": 67286,
+      "cost_micro_usd": 15729,
+      "description": {
+        "alt": "A white passenger train on a curved rail line through green farmland toward blue hills, with survey pegs beside the track.",
+        "check": "",
+        "photographic": false,
+        "shows_person": false,
+        "shows_text": false
+      },
+      "digest": "sha256:a8d18afda3c38efe4f772474351ae8fc87ec137cd8ec3d5401eb04cb8e1543d9",
+      "file": "story_northern-rail-extension.webp",
+      "height": 768,
+      "kind": "news-illustration",
+      "label": "Sample image, made with AI",
+      "media_type": "image/webp",
+      "model": "z-image-turbo",
+      "prompt": "A railway line curving north through farmland toward distant hills, survey pegs beside the track, an empty passenger train. Flat editorial illustration with simple shapes and a limited palette, clearly drawn by hand, not a photograph. Colours and mood only: Muted newsprint palette of ink blue, river green and warm paper, clean lines. No people, no faces, no hands. No text, letters, numbers, logos, labels or watermarks.",
+      "seed": 3111,
+      "slot": "story:council-approves-first-phase-of-the-northern-rail-extension",
+      "verdict": {
+        "categories": [],
+        "model": "nemotron-3.5-content-safety",
+        "safe": true,
+        "user_safety": "safe"
+      },
+      "width": 1024
+    },
+    "story:residents-split-over-the-northern-line-route": {
+      "brief": "A simple map of a valley with two dotted route lines for a railway, a river and a few houses, seen from above",
+      "bytes": 47754,
+      "cost_micro_usd": 15729,
+      "description": {
+        "alt": "Top-down map of a valley showing a river, a railway line, a road, two dashed route lines, and scattered houses and trees.",
+        "check": "One line is drawn as a finished railway with track ties, not a proposed dotted route, which may not match the story's two proposed lines.",
+        "photographic": false,
+        "shows_person": false,
+        "shows_text": false
+      },
+      "digest": "sha256:4c32f79176107207ebb6f193a233414378f834d01b6d6b11bebbd09f6070d10e",
+      "file": "story_northern-line-route.webp",
+      "height": 768,
+      "kind": "news-illustration",
+      "label": "Sample image, made with AI",
+      "media_type": "image/webp",
+      "model": "z-image-turbo",
+      "prompt": "A simple map of a valley with two dotted route lines for a railway, a river and a few houses, seen from above. Flat editorial illustration with simple shapes and a limited palette, clearly drawn by hand, not a photograph. Colours and mood only: Muted newsprint palette of ink blue, river green and warm paper, clean lines. No people, no faces, no hands. No text, letters, numbers, logos, labels or watermarks.",
+      "seed": 3114,
+      "slot": "story:residents-split-over-the-northern-line-route",
+      "verdict": {
+        "categories": [],
+        "model": "nemotron-3.5-content-safety",
+        "safe": true,
+        "user_safety": "safe"
+      },
+      "width": 1024
+    },
+    "story:short-rains-arrive-early-across-the-valley": {
+      "brief": "Heavy rain clouds over green tea fields on rolling highland hills, rain falling in soft streaks",
+      "bytes": 65706,
+      "cost_micro_usd": 15729,
+      "description": {
+        "alt": "Green tea fields on rolling highland hills under heavy rain falling from dark blue clouds",
+        "check": "",
+        "photographic": false,
+        "shows_person": false,
+        "shows_text": false
+      },
+      "digest": "sha256:c7c6373ee00e53587d785f273cb3ee2c0fc2520c12b60811cad380ce974f9096",
+      "file": "story_long-rains-highlands.webp",
+      "height": 768,
+      "kind": "news-illustration",
+      "label": "Sample image, made with AI",
+      "media_type": "image/webp",
+      "model": "z-image-turbo",
+      "prompt": "Heavy rain clouds over green tea fields on rolling highland hills, rain falling in soft streaks. Flat editorial illustration with simple shapes and a limited palette, clearly drawn by hand, not a photograph. Colours and mood only: Muted newsprint palette of ink blue, river green and warm paper, clean lines. No people, no faces, no hands. No text, letters, numbers, logos, labels or watermarks.",
+      "seed": 3112,
+      "slot": "story:short-rains-arrive-early-across-the-valley",
+      "verdict": {
+        "categories": [],
+        "model": "nemotron-3.5-content-safety",
+        "safe": true,
+        "user_safety": "safe"
+      },
+      "width": 1024
+    },
+    "story:what-the-fuel-price-review-means-for-fares": {
+      "brief": "A fuel pump nozzle beside a row of empty minibuses parked at a stage, simple shapes",
+      "bytes": 27714,
+      "cost_micro_usd": 15729,
+      "description": {
+        "alt": "Green minibus parked beside a dark blue fuel pump on a cream background, in flat vector illustration style.",
+        "check": "The picture shows one minibus, but the brief asked for a row of empty minibuses.",
+        "photographic": false,
+        "shows_person": false,
+        "shows_text": false
+      },
+      "digest": "sha256:699d34fd16000b036efe6384b40efb627f7d14d75df6a131c77383a7b9f3403a",
+      "file": "story_fuel-price-fares.webp",
+      "height": 768,
+      "kind": "news-illustration",
+      "label": "Sample image, made with AI",
+      "media_type": "image/webp",
+      "model": "z-image-turbo",
+      "prompt": "A fuel pump nozzle beside a row of empty minibuses parked at a stage, simple shapes. Flat editorial illustration with simple shapes and a limited palette, clearly drawn by hand, not a photograph. Colours and mood only: Muted newsprint palette of ink blue, river green and warm paper, clean lines. No people, no faces, no hands. No text, letters, numbers, logos, labels or watermarks.",
+      "seed": 4113,
+      "slot": "story:what-the-fuel-price-review-means-for-fares",
+      "verdict": {
+        "categories": [],
+        "model": "nemotron-3.5-content-safety",
+        "safe": true,
+        "user_safety": "safe"
+      },
+      "width": 1024
+    }
+  },
+  "blocked": []
+}

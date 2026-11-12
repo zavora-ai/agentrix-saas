@@ -1,0 +1,47 @@
+{
+  "_source": "Names, tags and colours from concept/identity/marks.html; host labels and lines from W2 (agentrix-samples). Each lives at {slug}.{platform host}.",
+  "samples": [
+    {
+      "id": "kilele",
+      "name": "Kilele Bakery",
+      "tag": "Cakes and bread · Nairobi",
+      "slug": "kilele-bakery-sample",
+      "line": "A Nairobi bakery where each menu item is a WebAgent: today's bread, a cake designed with you, orders Wanjiru confirms.",
+      "try_this": "Ask it: Are you open on Sunday? The Visit desk answers from Kilele's own hours.",
+      "walk": [
+        "Ask the front desk: Are you open on Sunday? The Visit desk answers from Kilele's own hours and shows the page.",
+        "Ask the Cakes desk to price a cake for 30 people, then design one with it.",
+        "Sign up with your email and place an order. Payment runs in PayPal's sandbox, so no money moves.",
+        "Open the owner's side to see the order arrive and the custom cake wait for Wanjiru's OK."
+      ]
+    },
+    {
+      "id": "classy",
+      "name": "Classy Perfumes",
+      "tag": "Fragrance and gifts · Westlands",
+      "slug": "classy-perfumes-sample",
+      "line": "A perfume shop with search that answers, gift plans for a group, and orders the shop confirms.",
+      "try_this": "Search for a gift under KSh 5,000 for someone who loves vanilla. It says what's over budget.",
+      "walk": [
+        "Search in your own words: something fresh for my mum under KSh 8,000.",
+        "Compare three scents side by side.",
+        "Ask the Gifts desk to plan a gift, wrapping included.",
+        "Open the owner's side to see stock, orders and questions."
+      ]
+    },
+    {
+      "id": "tana",
+      "name": "Tana Valley Times",
+      "tag": "Local news · weekly",
+      "slug": "tana-valley-times-sample",
+      "line": "A local weekly whose desks answer only from published stories, with corrections, catch me up and a Friday digest.",
+      "try_this": "Ask how much phase one of the northern rail will cost. The answer quotes the paper's correction.",
+      "walk": [
+        "Ask the Newsroom: what's the latest on the northern rail line?",
+        "Tap Catch me up for the week's stories, each with its byline.",
+        "Subscribe to the Friday five.",
+        "Open the owner's side to see stories, corrections and subscribers."
+      ]
+    }
+  ]
+}

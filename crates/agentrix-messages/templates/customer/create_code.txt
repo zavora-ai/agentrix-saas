@@ -1,0 +1,12 @@
+{% block subject %}Your code to create your {{ site.name }} account{% endblock %}
+{% block preheader %}It works for {{ minutes }} minutes, once.{% endblock %}
+{% block body %}
+# Your code to create an account
+Type this code at {{ site.host }} to finish making your account. It proves this email is yours.
+
+::code {{ code }}
+
+It works for {{ minutes }} minutes and only once.
+
+Didn't start making an account at {{ site.name }}? Ignore this email. Without the code, no account uses this address.
+{% endblock %}

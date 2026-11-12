@@ -1,0 +1,27 @@
+# agentrix-models on control, installed by deploy/deploy.sh (S1-12; first written by the spec
+# session for the first deploy, S2-10). The Model Gateway is the only process with provider keys (R11.1, N6): they are in
+# /etc/agentrix/secrets/models.env (root, 0600, in a 0700 directory), which systemd reads as root
+# before dropping to agentrix-models. agentrix-node runs as another user and cannot read them.
+[Unit]
+Description=Agentrix Model Gateway
+After=network-online.target agentrix-node.service
+Wants=network-online.target
+
+[Service]
+User=agentrix-models
+Group=agentrix
+EnvironmentFile=/etc/agentrix/models.env
+EnvironmentFile=/etc/agentrix/secrets/models.env
+ExecStart=/opt/agentrix/bin/agentrix-models
+WorkingDirectory=/var/lib/agentrix
+UMask=0007
+Restart=on-failure
+RestartSec=3
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=yes
+ReadWritePaths=/var/lib/agentrix
+
+[Install]
+WantedBy=multi-user.target

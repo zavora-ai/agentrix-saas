@@ -1,0 +1,72 @@
+{% extends "kilele/layout.html" %}
+{% block main %}
+<section class="b-section" id="bakes" style="border-top:0">
+  <h1 class="sr-only">Today's bread</h1>
+  <h2>Today's bakes</h2>
+  <p class="sub">Stock updates as the morning goes · {{ asof }}</p>
+  {% if bakes %}
+  <div class="bakes">
+    {% for c in bakes %}
+    <article class="bake-card tone-{{ c.tone }}" id="item-{{ c.slug }}">
+      {% if ("product:" ~ c.sku) in shell.pictures %}{% set pic = shell.pictures["product:" ~ c.sku] %}<div class="img pic"><img src="{{ pic.url }}" alt="{{ pic.alt }}" loading="lazy">{% if pic.label %}<span class="rtag">{{ pic.label }}</span>{% endif %}</div>{% else %}<div class="img"></div>{% endif %}
+      <div class="body">
+        <h3>{{ c.name }}</h3>
+        <div class="price">{{ c.price }}</div>
+        <span class="stock{% if c.out %} out{% endif %}">{{ c.stock }}</span>
+        <p class="desc">{{ c.description }}</p>
+        <p class="ingredients">{{ c.ingredients }}</p>
+        {% if not c.out %}
+        <div class="add"><form method="post" action="/bag/add"><input type="hidden" name="sku" value="{{ c.sku }}"><input type="hidden" name="qty" value="1"><input type="hidden" name="back" value="/bread#item-{{ c.slug }}"><button class="b-btn sm">Add to bag</button></form></div>
+        {% endif %}
+      </div>
+    </article>
+    {% endfor %}
+  </div>
+  {% else %}
+  <p class="b-card" style="margin-top:18px">Nothing is on today's bake list yet. {{ shell.site.owner }} posts it before the shop opens.</p>
+  {% endif %}
+
+  <aside class="hold-note" id="holds" aria-label="Holding loaves">
+    <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg></span>
+    <div>
+      <p><b>Holding loaves.</b> {{ hold.words }}</p>
+      {% if hold.open %}
+      <p>To hold some, ask Bread in the menu or type in the Ask bar below.</p>
+      {% else %}
+      <p>Holds are for the morning and closed at {{ hold.until }} today. Come in, or add loaves to your bag for a delivery or collection slot.</p>
+      {% endif %}
+      {% if hold.held > 0 %}<p class="small">Held for collection today: {{ hold.held }} {% if hold.held == 1 %}loaf{% else %}loaves{% endif %}, already taken off the counts above.</p>{% endif %}
+    </div>
+  </aside>
+</section>
+
+{% for b in boxes %}
+<section class="b-section" id="box-{{ b.slug }}">
+  <h2>{{ b.name }}</h2>
+  <p class="sub">{% if b.days %}Baked on {{ b.days }} only.{% endif %} Order ahead for a delivery or collection slot.</p>
+  <article class="box-feature tone-{{ b.tone }}" id="item-{{ b.slug }}">
+    <div class="p-art" aria-hidden="true"></div>
+    <div class="body">
+      <h3><a href="/shop/{{ b.slug }}">{{ b.name }}</a></h3>
+      <div class="price">{{ b.price }}</div>
+      <p>{{ b.description }}</p>
+      <span class="stock{% if b.out %} out{% endif %}">{{ b.stock }}</span>
+      <p class="ingredients">{{ b.ingredients }}</p>
+      <div class="row">
+        {% if not b.out %}<form method="post" action="/bag/add"><input type="hidden" name="sku" value="{{ b.sku }}"><input type="hidden" name="qty" value="1"><input type="hidden" name="back" value="/bread#item-{{ b.slug }}"><button class="b-btn sm">Add to bag</button></form>{% endif %}
+        <a class="b-btn ghost sm" href="/shop/{{ b.slug }}">What's in it</a>
+      </div>
+    </div>
+  </article>
+</section>
+{% endfor %}
+
+<section class="b-section" id="bread-more">
+  <h2>Before you come in</h2>
+  <div class="visit">
+    <div><b>Hours</b>{% for d, t in hours.rows %}{{ d }} {{ t }}{% if not loop.last %}<br>{% endif %}{% endfor %}<span class="small">{{ hours.now }}</span></div>
+    <div><b>Allergens</b>{{ shell.site.name }} lists what each bake contains. <a href="/allergens">See the allergen table</a></div>
+    <div><b>Delivery</b>{% for z in zones %}{{ z.areas | join(" & ") }} · {{ z.fee_minor | ksh }}{% if not loop.last %}<br>{% endif %}{% endfor %}<br>{{ delivery_days }}. <a href="/delivery">Delivery times</a></div>
+  </div>
+</section>
+{% endblock %}

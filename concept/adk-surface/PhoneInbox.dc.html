@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Phone: decisions</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap">
+<style>body{margin:0}</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; font-family: Inter, system-ui, sans-serif; color: {{t.text}}; background: {{t.glow}}, {{t.bg}}; display: flex; flex-direction: column; position: relative">
+
+  <div role="status" style="position: absolute; top: 12px; left: 12px; right: 12px; background: {{t.surface}}; border: 1px solid {{t.border}}; border-radius: 18px; padding: 12px 14px; display: flex; gap: 12px; align-items: center; box-shadow: {{t.popShadow}}; z-index: 2">
+    <span aria-hidden="true" style="flex: 0 0 36px; height: 36px; border-radius: 10px; background: {{t.accentSoft}}; display: flex; align-items: center; justify-content: center"><span style="width: 10px; height: 10px; border-radius: 5px; background: {{t.brand}}"></span></span>
+    <span style="display: flex; flex-direction: column; flex-grow: 1; gap: 1px"><span style="font-weight: 600; font-size: 14px">A decision is waiting</span><span style="font-size: 12px; color: {{t.muted}}">Open the app to see it</span></span>
+    <span style="font-size: 12px; color: {{t.muted}}">now</span>
+  </div>
+
+  <header style="padding: 102px 20px 18px; display: flex; justify-content: space-between; align-items: flex-end">
+    <span style="display: flex; flex-direction: column; gap: 6px"><span style="font-size: 13px; color: {{t.muted}}">Asks first · $1.84 of $5.00 today</span><h1 style="margin: 0; font-size: 36px; line-height: 1; font-weight: 800; letter-spacing: -0.035em; display: flex; align-items: flex-start; gap: 6px">Decisions<span aria-label="2 waiting" style="margin-top: -6px; min-width: 24px; height: 24px; padding: 0 7px; box-sizing: border-box; border-radius: 12px; background: {{t.accentFill}}; color: {{t.onAccent}}; font-size: 13px; font-weight: 700; letter-spacing: 0; line-height: 24px; text-align: center; box-shadow: 0 0 0 3px {{t.bg}}">2</span></h1></span>
+    <button type="button" style="font: inherit; font-size: 14px; font-weight: 600; padding: 10px 14px; border-radius: 12px; border: none; background: {{t.ink}}; color: {{t.onInk}}; cursor: pointer; min-height: 44px">Stop all</button>
+  </header>
+
+  <div style="flex-grow: 1; padding: 0 20px; display: flex; flex-direction: column; gap: 12px; overflow: hidden">
+    <a href="PhoneDecide.dc.html" style="text-decoration: none; color: {{t.text}}; background: {{t.decision}}; border: 1px solid {{t.accentLine}}; border-radius: 20px; padding: 16px; display: flex; flex-direction: column; gap: 12px; box-shadow: {{t.shadow}}">
+      <span style="display: flex; justify-content: space-between; align-items: center"><span style="display: flex; align-items: center; gap: 10px"><span style="flex: 0 0 28px; height: 28px; border-radius: 9px; background: {{t.blueSoft}}; color: {{t.blue}}; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 11px; font-family: 'JetBrains Mono', monospace">{ }</span><span style="font-size: 14px; font-weight: 600">Code</span></span><span style="display: flex; align-items: center; gap: 6px; padding: 3px 10px; border-radius: 999px; background: {{t.accentSoft}}; color: {{t.accent}}; font-size: 12px; font-weight: 600"><span style="width: 6px; height: 6px; border-radius: 3px; background: {{t.brand}}"></span>High risk</span></span>
+      <span style="display: flex; flex-direction: column; gap: 3px"><span style="font-weight: 700; font-size: 18px; letter-spacing: -0.01em">Publish a release</span><span style="font-size: 14px; color: {{t.muted}}">Can't be undone · needs your face or fingerprint</span></span>
+    </a>
+
+    <div style="background: {{t.surface}}; border: 1px solid {{t.border}}; border-radius: 20px; padding: 16px; display: flex; flex-direction: column; gap: 12px">
+      <span style="align-self: flex-start; padding: 3px 10px; border-radius: 999px; background: {{t.raised}}; border: 1px solid {{t.border}}; color: {{t.text2}}; font-size: 12px; font-weight: 600">Question</span>
+      <span style="font-size: 16px; line-height: 1.45">You seem to start work at <span style="font-weight: 700">08:30</span> on Fridays now. Is that right?</span>
+      <span style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px"><button type="button" style="font: inherit; font-size: 15px; padding: 10px; border-radius: 12px; border: 1px solid {{t.line}}; background: transparent; color: {{t.text}}; cursor: pointer; min-height: 44px">Yes, remember it</button><button type="button" style="font: inherit; font-size: 15px; padding: 10px; border-radius: 12px; border: 1px solid {{t.line}}; background: transparent; color: {{t.text}}; cursor: pointer; min-height: 44px">No</button></span>
+    </div>
+
+    <div style="border-radius: 20px; padding: 16px; background: {{t.raised}}; display: flex; flex-direction: column; gap: 6px">
+      <span style="align-self: flex-start; padding: 3px 10px; border-radius: 999px; background: {{t.greenSoft}}; color: {{t.green}}; font-size: 12px; font-weight: 600">Decided</span>
+      <span style="font-size: 15px; font-weight: 600">Send the October invoice</span>
+      <span style="font-size: 13px; color: {{t.muted}}">You said yes in Telegram at 07:31 · done once</span>
+    </div>
+  </div>
+
+  <nav aria-label="Sections" style="border-top: 1px solid {{t.border}}; background: {{t.surface}}; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr))">
+    <a href="#" style="min-height: 58px; display: flex; align-items: center; justify-content: center; text-decoration: none; color: {{t.muted}}; font-size: 13px">Threads</a>
+    <a href="#" aria-current="page" style="min-height: 58px; display: flex; align-items: center; justify-content: center; text-decoration: none; color: {{t.accent}}; font-weight: 700; font-size: 13px">Decisions<span aria-label="2 waiting" style="margin-left: 6px; min-width: 18px; height: 18px; padding: 0 5px; box-sizing: border-box; border-radius: 9px; background: {{t.accentFill}}; color: {{t.onAccent}}; font-size: 11px; font-weight: 700; line-height: 18px; text-align: center">2</span></a>
+    <a href="WebToday.dc.html" style="min-height: 58px; display: flex; align-items: center; justify-content: center; text-decoration: none; color: {{t.muted}}; font-size: 13px">Today</a>
+    <a href="WebTrust.dc.html" style="min-height: 58px; display: flex; align-items: center; justify-content: center; text-decoration: none; color: {{t.muted}}; font-size: 13px">Memory</a>
+  </nav>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"dark":{"editor":"boolean","default":false},"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() {
+    var L = {bg: '#FFFFFF', surface: '#FFFFFF', raised: '#F6F7F9', border: '#E6E8EC', line: '#D3D7DE', text: '#0F172A', text2: '#475569', muted: '#64748B', brand: '#F74C00', accent: '#C03A00', accentFill: '#C03A00', onAccent: '#FFFFFF', accentSoft: '#FFF4EE', accentLine: '#FFD6C2', decision: '#FFF8F3', ink: '#0A1628', onInk: '#FFFFFF', green: '#12774B', greenSoft: '#E8F6EF', blue: '#2563EB', blueSoft: '#EAF1FE', shadow: '0 1px 2px rgba(15,23,42,0.04), 0 12px 32px rgba(15,23,42,0.06)', popShadow: '0 12px 30px rgba(15,23,42,0.12)', glow: 'radial-gradient(420px 300px at 0% 0%, #FFE9DE 0%, rgba(255,233,222,0) 70%)'};
+    var D = {bg: '#0A1628', surface: '#15233B', raised: '#1C2B45', border: '#2A3D5C', line: '#3A5075', text: '#F1F5F9', text2: '#D5DEE8', muted: '#A7B4C6', brand: '#F74C00', accent: '#FF9C78', accentFill: '#F74C00', onAccent: '#0A1628', accentSoft: 'rgba(247,76,0,0.14)', accentLine: 'rgba(255,156,120,0.38)', decision: '#2A2432', ink: '#F1F5F9', onInk: '#0A1628', green: '#61E7A5', greenSoft: 'rgba(97,231,165,0.12)', blue: '#79B2FF', blueSoft: 'rgba(121,178,255,0.12)', shadow: 'none', popShadow: 'none', glow: 'radial-gradient(420px 300px at 0% 0%, rgba(247,76,0,0.18) 0%, rgba(247,76,0,0) 70%)'};
+    return { t: this.props.dark ? D : L };
+  }
+}
+</script>
+</body>
+</html>

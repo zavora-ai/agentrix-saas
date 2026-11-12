@@ -1,0 +1,40 @@
+{% extends "owner/base.html" %}
+{% block field %}{% import "owner/macros.html" as m %}
+{{ m.head(c) }}
+<article class="fcard">
+  {% if rows %}
+  <div class="tbl"><table class="procs">
+    <thead><tr><th>Product</th><th>Left</th><th class="hide-sm">State</th><th class="hide-sm">{% if bakery %}Next batch{% else %}Back{% endif %}</th><th class="hide-sm">As of</th><th>Count now</th></tr></thead>
+    <tbody>
+    {% for s in rows %}
+    <tr id="s-{{ s.sku }}">
+      <td><b>{{ s.name }}</b>{% if s.draft %} <small class="muted">draft</small>{% endif %}</td>
+      <td class="num">{% if s.kept %}<b>{{ s.left }}</b>{% else %}<span class="muted">not kept</span>{% endif %}</td>
+      <td class="hide-sm">{{ m.chip(s.label, s.tone) }}</td>
+      <td class="hide-sm">{% if s.next_batch %}{{ s.next_batch }}{% elif s.back %}back {{ s.back }}{% else %}<span class="muted">none today</span>{% endif %}</td>
+      <td class="hide-sm">{{ s.as_of }}</td>
+      <td>
+        <form method="post" action="{{ s.href }}" class="inline">
+          <label class="sr-only" for="count-{{ s.sku }}">How many {{ s.name }} you have now</label>
+          <input id="count-{{ s.sku }}" class="count" name="count" type="number" min="0" max="10000" value="{{ s.left }}" inputmode="numeric" required>
+          <button class="btn btn-sm">Count now</button>
+        </form>
+      </td>
+    </tr>
+    {% endfor %}
+    </tbody>
+  </table></div>
+  <p class="muted small">{% if bakery %}Count what's on the shelf now. Today's orders and holds are kept on top of your count, so the site shows exactly what you counted.{% else %}Your count becomes the new baseline; orders placed after it come off it.{% endif %}</p>
+  {% else %}{{ m.empty("No products, so no stock to keep. Products come from the Catalogue.") }}{% endif %}
+</article>
+<article class="fcard">
+  <h3>Holds today</h3>
+  {% if grant %}<p class="muted small">{{ grant }}</p>{% endif %}
+  {% if holds %}
+  <div class="tbl"><table class="procs">
+    <thead><tr><th>Hold</th><th>Product</th><th>Qty</th><th>For</th><th>Until</th><th class="hide-sm">State</th></tr></thead>
+    <tbody>{% for h in holds %}<tr><td class="mono">{{ h.id }}</td><td>{{ h.product }}</td><td class="num">{{ h.qty }}</td><td>{{ h.name }}</td><td>{{ h.until }}</td><td class="hide-sm">{{ m.chip(h.state, "ok" if h.state == "held" else "") }}</td></tr>{% endfor %}</tbody>
+  </table></div>
+  {% else %}{{ m.empty("No holds today. Visitors can ask a desk to hold a few items until midday; they show here and come off the stock.") }}{% endif %}
+</article>
+{% endblock %}

@@ -1,0 +1,38 @@
+[package]
+name = "saas-federation"
+description = "Agentrix SaaS: compatibility with the cloud providers' agent identities. Out: each site is a small OIDC issuer for its own agents (RS256, iss = the site, sub = the agent's did:web). In: tokens from trusted cloud issuers (Microsoft Entra Agent ID, Amazon Bedrock AgentCore Identity, Google Agent Identity, any OIDC issuer) are checked against the issuer's published keys and mapped onto adk-core's AgentPrincipal."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+authors.workspace = true
+
+# Owner: slice C (cloud identities). saas-badge calls it.
+
+[dependencies]
+saas-core.workspace = true
+adk-auth = { workspace = true, features = ["sso"] }
+adk-core.workspace = true
+# The same versions adk-auth's sso feature uses, so one copy is built.
+jsonwebtoken = { version = "11", default-features = false, features = ["aws_lc_rs", "use_pem"] }
+aws-lc-rs = "1.18"
+anyhow.workspace = true
+async-trait.workspace = true
+axum.workspace = true
+base64.workspace = true
+chrono.workspace = true
+reqwest.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+sha2.workspace = true
+thiserror.workspace = true
+tokio.workspace = true
+uuid.workspace = true
+
+[dev-dependencies]
+tower.workspace = true
+wiremock = "0.6"
+
+[lints]
+workspace = true

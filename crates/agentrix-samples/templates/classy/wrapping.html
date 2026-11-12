@@ -1,0 +1,18 @@
+{% extends "classy/layout.html" %}
+{% from "classy/parts.html" import card %}
+{% block main %}
+<section class="cp-section first">
+  <h1 class="cp-h1">Gift wrapping</h1>
+  <div class="cp-prose">
+    <p id="wrap">{{ wrapping }}</p>
+    <p id="how">{{ how }}</p>
+  </div>
+</section>
+{% if sets %}
+<section class="cp-section" id="sets">
+  <h2>Gift sets, already wrapped</h2>
+  <p class="sub">Stock {{ asof }}</p>
+  <div class="shortlist four">{% for s in sets %}{{ card(s) }}{% endfor %}</div>
+</section>
+{% endif %}
+{% endblock %}

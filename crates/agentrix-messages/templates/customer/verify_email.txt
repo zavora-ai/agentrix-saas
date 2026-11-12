@@ -1,0 +1,12 @@
+{% block subject %}Confirm your email for {{ site.name }}{% endblock %}
+{% block preheader %}One code, then you can order.{% endblock %}
+{% block body %}
+# Confirm your email
+Type this code at {{ site.host }} to confirm this address is yours. Then you can order.
+
+::code {{ code }}
+
+It works for {{ minutes }} minutes. Receipts and order updates will come to this address.
+
+Didn't make an account at {{ site.name }}? Ignore this email. The account can't order until someone types this code.
+{% endblock %}

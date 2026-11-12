@@ -1,0 +1,34 @@
+{% extends "console/base.html" %}
+{% import "macros.html" as m %}
+{#- Page::Trust · view::TrustView (+ ConsoleChrome) {
+      gauntlet: { held, of, score_words, run_words, receipt, attacks: [ { name, plain, held, receipt? } ] }?,
+      receipts: [ ReceiptRow { digest, digest_short, title, kind_words, at_words, verified } ],
+      key_id }
+    R10.1, R10.3, R13. The gauntlet score is a function over receipts only. -#}
+{% block title %}Trust{% endblock %}
+{% block content %}
+<section class="stack">
+  <p class="eyebrow">Trust</p>
+  <h1>Every action has a receipt</h1>
+  <p class="small muted">Each receipt is signed. Open one to check its signature against our published key, <span class="mono">{{ key_id }}</span>.</p>
+</section>
+
+<section class="card" aria-labelledby="g-h">
+  <h2 id="g-h">The containment gauntlet</h2>
+  {% if gauntlet %}
+    <div class="spread"><b style="font:800 var(--fs-32)/1 var(--font-display);color:var(--head)">{{ gauntlet.score_words }}</b><span class="chip {{ 'ok' if gauntlet.held == gauntlet.of else 'risk' }}">{{ gauntlet.held }} of {{ gauntlet.of }} held</span></div>
+    <p class="hint">Ten test attacks, hidden in a copy of an infected site we keep for testing, run against your site {{ gauntlet.run_words }}. The score counts only what the receipts show. <a href="/receipts/{{ gauntlet.receipt }}">The run's receipt</a></p>
+    <ul class="list">
+      {% for a in gauntlet.attacks %}<li><div class="spread"><b>{{ a.name }}</b><span class="chip {{ 'ok' if a.held else 'risk' }}">{{ "Held" if a.held else "Got through" }}</span></div><p class="small muted">{{ a.plain }}{% if a.receipt %} · <a href="/receipts/{{ a.receipt }}">receipt</a>{% endif %}</p></li>{% endfor %}
+    </ul>
+  {% else %}
+    <p class="small">The test attacks haven't been run against your site yet, so there's no score to show.</p>
+  {% endif %}
+</section>
+
+<section class="card" aria-labelledby="r-h">
+  <h2 id="r-h">Receipts</h2>
+  {% if receipts %}<ul class="list">{% for r in receipts %}{{ m.receipt_row(r) }}{% endfor %}</ul>
+  {% else %}<p class="small muted">No receipts yet. They appear as soon as anything runs.</p>{% endif %}
+</section>
+{% endblock %}

@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Chat channel</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap">
+<style>body{margin:0}</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; font-family: Inter, system-ui, sans-serif; color: {{t.text}}; background: {{t.chat}}; display: flex; flex-direction: column">
+  <header style="background: {{t.surface}}; border-bottom: 1px solid {{t.border}}; padding: 16px 18px; display: flex; align-items: center; gap: 12px">
+    <span aria-hidden="true" style="flex: 0 0 40px; height: 40px; border-radius: 12px; background: {{t.accentSoft}}; color: {{t.accent}}; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 16px">C</span>
+    <span style="display: flex; flex-direction: column; gap: 2px"><span style="font-weight: 700; font-size: 16px">Chief of staff</span><span style="font-size: 13px; color: {{t.muted}}">Your assistant · runs on your computer</span></span>
+  </header>
+
+  <div style="flex-grow: 1; padding: 16px; display: flex; flex-direction: column; gap: 12px; overflow: hidden">
+    <div style="align-self: flex-start; max-width: 300px; background: {{t.surface}}; border: 1px solid {{t.border}}; border-radius: 16px; padding: 12px 14px; font-size: 15px; line-height: 1.5">Morning. Two jobs finished, the backup failed, and Finance has a proposal. $0.62 spent overnight. <a href="WebToday.dc.html" style="font-weight: 600; color: {{t.accent}}">See all</a></div>
+
+    <div style="align-self: flex-start; width: 314px; box-sizing: border-box; background: {{t.decision}}; border: 1px solid {{t.accentLine}}; border-radius: 18px; padding: 14px; display: flex; flex-direction: column; gap: 12px">
+      <span style="display: flex; justify-content: space-between; align-items: center"><span style="display: flex; align-items: center; gap: 6px; padding: 3px 10px; border-radius: 999px; background: {{t.accentSoft}}; color: {{t.accent}}; font-size: 12px; font-weight: 600"><span style="width: 6px; height: 6px; border-radius: 3px; background: {{t.brand}}"></span>Waiting for you</span><span style="font-size: 12px; color: {{t.muted}}">since 18:00</span></span>
+      <span style="display: flex; flex-direction: column; gap: 3px"><span style="font-weight: 700; font-size: 16px; line-height: 1.3">Send the October invoice to [CLIENT]</span><span style="font-size: 13px; color: {{t.muted}}">Finance · Medium risk</span></span>
+      <span style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px">
+        <button type="button" style="font: inherit; font-size: 15px; font-weight: 600; padding: 10px; border-radius: 10px; border: none; background: {{t.accentFill}}; color: {{t.onAccent}}; cursor: pointer; min-height: 44px">Allow once</button>
+        <button type="button" style="font: inherit; font-size: 15px; padding: 10px; border-radius: 10px; border: 1px solid {{t.line}}; background: transparent; color: {{t.text}}; cursor: pointer; min-height: 44px">Deny</button>
+      </span>
+      <a href="WebHome.dc.html" style="text-align: center; font-size: 14px; font-weight: 600; color: {{t.accent}}">Open in home</a>
+    </div>
+
+    <span style="align-self: center; font-size: 12px; color: {{t.muted}}">You allowed it once · 07:31</span>
+
+    <div style="align-self: flex-start; max-width: 300px; background: {{t.surface}}; border: 1px solid {{t.border}}; border-radius: 16px; padding: 12px 14px; font-size: 15px; line-height: 1.5">Sent, once. Code also wants to publish a release. That one needs the home app. <a href="PhoneDecide.dc.html" style="font-weight: 600; color: {{t.accent}}">Open</a></div>
+
+    <div style="align-self: flex-end; background: {{t.ink}}; color: {{t.onInk}}; border-radius: 16px; padding: 10px 14px; font-size: 15px">stop all</div>
+
+    <div style="align-self: flex-start; max-width: 300px; background: {{t.surface}}; border: 1px solid {{t.border}}; border-radius: 16px; padding: 12px 14px; font-size: 15px; line-height: 1.5">All agents stopped. Use Resume all in the home app.</div>
+  </div>
+
+  <div style="background: {{t.surface}}; border-top: 1px solid {{t.border}}; padding: 12px 14px; display: flex; gap: 8px; align-items: center">
+    <label style="flex-grow: 1; display: flex"><span style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Message</span><input placeholder="Message" style="font: inherit; font-size: 15px; flex-grow: 1; padding: 11px 14px; border: 1px solid {{t.line}}; border-radius: 22px; background: transparent; color: {{t.text}}"></label>
+    <button type="button" aria-label="Send" style="width: 44px; height: 44px; border-radius: 22px; border: none; background: {{t.accentFill}}; cursor: pointer; display: flex; align-items: center; justify-content: center"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="{{t.onAccent}}" stroke-width="1.8" aria-hidden="true"><path d="M2 8h11M9 4l4 4-4 4"></path></svg></button>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"dark":{"editor":"boolean","default":false},"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() {
+    var L = {chat: '#F6F7F9', surface: '#FFFFFF', border: '#E6E8EC', line: '#D3D7DE', text: '#0F172A', muted: '#64748B', brand: '#F74C00', accent: '#C03A00', accentFill: '#C03A00', onAccent: '#FFFFFF', accentSoft: '#FFF4EE', accentLine: '#FFD6C2', decision: '#FFF8F3', ink: '#0A1628', onInk: '#FFFFFF'};
+    var D = {chat: '#0A1628', surface: '#15233B', border: '#2A3D5C', line: '#3A5075', text: '#F1F5F9', muted: '#A7B4C6', brand: '#F74C00', accent: '#FF9C78', accentFill: '#F74C00', onAccent: '#0A1628', accentSoft: 'rgba(247,76,0,0.14)', accentLine: 'rgba(255,156,120,0.38)', decision: '#2A2432', ink: '#F1F5F9', onInk: '#0A1628'};
+    return { t: this.props.dark ? D : L };
+  }
+}
+</script>
+</body>
+</html>

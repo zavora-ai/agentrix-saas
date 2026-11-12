@@ -1,0 +1,92 @@
+{% extends "os/base.html" %}
+{#- ShellPage::Gestures · view::GesturesView (+ Chrome) { freeze_url }
+    01b C42 (concept/console/gestures.html): six held hand gestures run the shell's verbs on this device. They act
+    on the real lane: swipe moves focus, point opens the card, thumb up raises the approval sheet (never approves),
+    two fingers switches world, an open palm held still stops everything after a 5-second countdown. Every gesture
+    has a key and a tap. The camera is opt-in; frames never leave the browser. -#}
+{% block title %}Gestures · {{ site.name }}{% endblock %}
+{% block bar_extra %}<button class="pill camera" type="button" aria-pressed="false" data-cam title="Camera for gestures: on this device only"><span class="dot" aria-hidden="true"></span><span class="hide-sm" data-cam-text>Gestures off</span></button>{% endblock %}
+{% block field %}
+<section class="view on" aria-labelledby="g-h" id="gos" data-freeze-url="{% if freeze_enabled and not freeze %}{{ base }}/freeze{% endif %}" data-home="{{ base }}">
+  <div class="field-head"><div><h2 id="g-h">Hand gestures</h2><div class="sub">Move between cards and stop everything without touching the screen</div></div></div>
+  <div class="opened" data-opened><b>Nothing open.</b><p class="small muted">Swipe to focus a card in Needs you, then point up (or press Enter) to open it.</p></div>
+  <div class="gbar" data-gbar data-state="off" aria-live="polite">
+    <div class="ring"><svg viewBox="0 0 52 52" aria-hidden="true"><circle class="track" cx="26" cy="26" r="23"/><circle class="fill" data-fill cx="26" cy="26" r="23"/></svg><span class="glyph" data-glyph aria-hidden="true">📷</span></div>
+    <div><b data-gtitle>Gestures are off</b><small data-gsub>Turn on the camera. Recognition runs on this device; no frames leave it.</small></div>
+    <div class="camtile" data-camtile hidden><video data-camvideo autoplay muted playsinline aria-label="Your camera, mirrored"></video><canvas data-camcanvas width="160" height="120" aria-hidden="true"></canvas><span class="live">on this device</span></div>
+    <button class="btn btn-sm" type="button" data-cam>Turn on</button>
+  </div>
+  <p class="readout" data-readout>Camera off. Turn it on to see what it recognises: each finger, the thumb, the shape, whether the hand is still, and the frame rate.</p>
+
+  <div class="sim">
+    <article class="fcard" aria-labelledby="sim-h">
+      <div class="spread-h"><h3 id="sim-h">No camera? Hold a hand here</h3><button class="btn btn-ghost btn-sm" type="button" data-mute aria-pressed="false">Mute</button></div>
+      <p class="small muted">Press and hold, the way you would hold the shape in front of the camera. Let go early and nothing happens. A swipe acts at once because it only moves focus and can be undone.</p>
+      <div class="sim-pad">
+        <button type="button" data-g="swipe_left"><span aria-hidden="true">👈</span>Swipe left<small>previous card</small></button>
+        <button type="button" data-g="swipe_right"><span aria-hidden="true">👉</span>Swipe right<small>next card</small></button>
+        <button type="button" data-g="point"><span aria-hidden="true">☝️</span>Point up<small>open · 0.8 s</small></button>
+        <button type="button" data-g="thumb"><span aria-hidden="true">👍</span>Thumb up<small>review and approve · 1.2 s</small></button>
+        <button type="button" data-g="fist"><span aria-hidden="true">✊</span>Fist<small>snooze · 1.2 s</small></button>
+        <button type="button" data-g="victory"><span aria-hidden="true">✌️</span>Two fingers<small>Front of house · 0.8 s</small></button>
+        <button class="wide" type="button" data-g="palm"><span aria-hidden="true">✋</span>Open palm, held still<small>stop everything · 2 s, then 5 s to cancel</small></button>
+      </div>
+    </article>
+    <article class="fcard" aria-labelledby="glog-h">
+      <h3 id="glog-h">On this device</h3>
+      <p class="small muted">What your gestures did, shown on this page only. No images, hand points or gestures are sent anywhere, except a stop, which goes in as a Freeze like the button.</p>
+      <ul class="glog" data-log><li>No gestures yet</li></ul>
+    </article>
+  </div>
+
+  <article class="fcard after-cards" aria-labelledby="vocab-h">
+    <h3 id="vocab-h">Six gestures, each with a key</h3>
+    <div class="tablewrap">
+      <table class="surface-table vocab">
+        <thead><tr><th></th><th>Gesture</th><th>Hold</th><th>What it does</th><th>Key</th><th>Touch</th></tr></thead>
+        <tbody>
+          <tr><td>👈👉</td><td><b>Swipe</b></td><td>None (reversible)</td><td>Previous or next card</td><td>← / →</td><td>Scroll Needs you</td></tr>
+          <tr><td>☝️</td><td><b>Point up</b></td><td>0.8 s</td><td>Open the focused card</td><td>Enter</td><td>Tap the card</td></tr>
+          <tr><td>👍</td><td><b>Thumb up</b></td><td>1.2 s</td><td>Opens the approval sheet for the focused card. It never approves</td><td>A</td><td>Tap Approve</td></tr>
+          <tr><td>✊</td><td><b>Fist</b></td><td>1.2 s</td><td>Snooze until the next brief. Not available yet: nothing changes</td><td>S</td><td>None yet</td></tr>
+          <tr><td>✌️</td><td><b>Two fingers</b></td><td>0.8 s</td><td>Opens Front of house</td><td>W</td><td>Tap Front of house</td></tr>
+          <tr><td>✋</td><td><b>Open palm, still</b></td><td>2 s, then a 5 s countdown</td><td><b>Stop everything</b> (Freeze); only you unfreeze, with your passkey or a code</td><td>⇧F</td><td>Freeze</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="small muted">A gesture never approves, declines, edits or unfreezes. With two hands in view, nothing fires. Gestures are optional and never the only way to do anything.</p>
+  </article>
+
+  <article class="fcard after-cards" aria-labelledby="cal-h">
+    <h3 id="cal-h">Calibrate gestures for your hands and your lighting</h3>
+    <div class="steps4">
+      <div><span class="n">01 · Light and framing</span><p>Checks that your hand is found. Advice comes in words: "Too dark, face the window."</p></div>
+      <div><span class="n">02 · Which hand</span><p>Left or right, and whether the image is mirrored, so a swipe always goes the way you mean.</p></div>
+      <div><span class="n">03 · Your shapes</span><p>Hold each shape once, so the thresholds fit your hand.</p></div>
+      <div><span class="n">04 · Hold times</span><p>Make the rings fill more slowly if you need. Reduced motion shows a plain progress bar.</p></div>
+    </div>
+    <p class="small muted">Calibration isn't available yet, so every hand uses the same default settings.</p>
+  </article>
+</section>
+{% endblock %}
+{% block overlays %}{{ super() }}
+  <div class="stopwin" data-stopwin role="alertdialog" aria-label="Stopping everything">
+    <div><b>Stopping every WebAgent</b><div class="count" data-count>5</div><p>The stop goes in when the countdown ends. Your site keeps serving its signed release. Press Esc or tap Cancel.</p><button class="btn btn-lg" type="button" data-stopcancel>Cancel</button></div>
+  </div>
+  <div class="overlay" id="camsheet" role="dialog" aria-modal="true" aria-labelledby="cam-h" hidden>
+    <div class="window cam-sheet">
+      <div class="window-bar"><h3 id="cam-h">Turn on gestures on this device?</h3></div>
+      <div class="window-body">
+        <ul class="steps">
+          <li class="done">The camera is read <b>only on this device</b>. No frame is uploaded or stored: a small hand tracker in this browser turns each frame into 21 points per hand, and the frame is dropped.</li>
+          <li class="done">Plain rules, not an AI model, decide which of six hand shapes it is. You hold each one until a ring fills.</li>
+          <li class="done">A gesture can never approve. Approving always needs your passkey, or a code from your authenticator app.</li>
+          <li class="done">The camera turns off after 2 minutes without a hand, when you leave the tab and after a Freeze. The green pill shows whenever it is on.</li>
+        </ul>
+        <div class="row after-cards"><button class="btn btn-primary" type="button" data-camyes>Turn on camera</button><button class="btn btn-ghost" type="button" data-close>Not now</button></div>
+        <p class="small muted after-cards">Your browser asks for camera permission next. The hand tracker (MediaPipe Tasks Vision 0.10.14) loads from jsDelivr and its model from Google's model store, both pinned by version. Those hosts see a download, never a frame.</p>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+{% block scripts %}{{ super() }}<script src="/static/os/gestures-core.js?v={{ asset_v }}" defer></script><script type="module" src="/static/os/gestures.js?v={{ asset_v }}"></script>{% endblock %}

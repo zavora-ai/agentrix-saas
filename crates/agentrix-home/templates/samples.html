@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{#- Samples · view::HomeView · the three sample sites and the films -#}
+{% from "macros.html" import ask_box, paste, person %}
+{% block title %}Samples · Agentrix{% endblock %}
+{% block description %}Three made-up businesses run by WebAgents: a bakery, a perfume shop and a local paper. Open one and ask it something.{% endblock %}
+{% block path %}/samples{% endblock %}
+{% block desk %}samples{% endblock %}
+{% block main %}
+{{ ask_box(front_desks[2], desks_ai) }}
+<section class="section section-alt" id="samples" aria-labelledby="samples-title">
+  <div class="wrap">
+    <p class="eyebrow">Try it</p>
+    <h1 id="samples-title">Websites run by WebAgents</h1>
+    <p class="lead">Each is an invented business on its own sample address, marked Sample on every page. Payments run in PayPal's sandbox, so no money moves.</p>
+    <ul class="samples">
+      {% for s in samples %}
+      <li class="sample s-{{ s.id }}">
+        {% if s.picture %}
+        <figure class="sample-pic"><img src="{{ s.picture.url }}"{% if s.picture.width and s.picture.height %} width="{{ s.picture.width }}" height="{{ s.picture.height }}"{% endif %} alt="{{ s.picture.alt }}" loading="lazy">{% if s.picture.label %}<figcaption class="rtag">{{ s.picture.label }}</figcaption>{% endif %}</figure>
+        {% else %}
+        <img class="sample-shot" src="/_home/shot-{{ s.id }}.webp?v={{ v }}" width="640" height="400" alt="The front page of the {{ s.name }} sample" loading="lazy">
+        {% endif %}
+        <p class="sample-chip">Sample</p>
+        <h3>{{ s.name }}</h3>
+        <p class="sample-tagline">{{ s.tag }}</p>
+        <p>{{ s.line }}</p>
+        {% if s.walk %}<ol class="walk" aria-label="Try it, step by step">{% for step in s.walk %}<li>{{ step }}</li>{% endfor %}</ol>
+        <p class="walk-owner"><a href="/samples/{{ s.slug }}/">Open the owner's side</a></p>{% endif %}
+        {% if s.team %}
+        <figure class="team">
+          <img src="{{ s.team.src }}" width="{{ s.team.width }}" height="{{ s.team.height }}" alt="" loading="lazy">
+          <figcaption>Its WebAgents: {% for m in s.team.members %}{{ m.name }}{{ ", " if not loop.last }}{% endfor %}.</figcaption>
+        </figure>
+        {% endif %}
+        {% if s.url %}<a class="btn btn-sm sample-go" href="{{ s.url }}">Open {{ s.name }}<span class="sr-only"> (sample)</span></a>{% else %}<p class="sample-soon">Opening soon at {{ s.host }}</p>{% endif %}
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+</section>
+<section class="section wrap" id="films" aria-labelledby="films-title">
+  <p class="eyebrow">Films</p>
+  <h2 id="films-title">The same idea, four kinds of business.</h2>
+  <p class="lead">Each film is a sample story. The people in them are made with AI. The screens are Agentrix's own pages with sample data.</p>
+  <ul class="film-list">
+    <li><h3>A bakery</h3><p>The same Saturday, twice. Orders, a custom cake, and a shop that closes at six.</p>{% if film.film %}<a href="/film">Watch it, 2 min 24 s</a>{% endif %}</li>
+    {% for f in film.more %}<li><h3>{{ f.kind }}</h3><p>{{ f.line }}</p><a href="{{ f.mp4 }}">Watch it, {{ f.length }}</a></li>{% endfor %}
+  </ul>
+</section>
+<section class="band band-cta" aria-labelledby="cta-title">
+  <div class="wrap cta">
+    <h2 id="cta-title">See what your site could do.</h2>
+    {{ paste("url-end", assess_action, false) }}
+    {{ person(contact) }}
+  </div>
+</section>
+{% endblock %}

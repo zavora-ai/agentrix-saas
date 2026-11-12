@@ -1,0 +1,92 @@
+{
+  "site": "agentrix-home",
+  "sample": false,
+  "tier": "fast",
+  "look": "Rich evening colour grade, warm lamplight, plum and cream accents",
+  "images": [
+    {
+      "slot": "classy:01",
+      "kind": "film",
+      "seed": 6101,
+      "brief": "Friday evening inside a small elegant perfume boutique with no sign or lettering anywhere in Westlands, Nairobi, with plum walls, cream shelves and glass shelves of plain perfume bottles with blank labels and ribboned gift boxes: Makena, a Kenyan woman in her mid forties with short silver-streaked locs, gold hoop earrings and a plum wrap dress wraps a gift box in cream paper at the counter while three fictional customers browse the shelves, busy and warm",
+      "context": "Still 1 of 12 for a short film about a fictional perfume and gift shop in Westlands, Nairobi on the Agentrix home page; fictional people, made with AI. No readable text, logos or brand marks anywhere."
+    },
+    {
+      "slot": "classy:02",
+      "kind": "film",
+      "seed": 6102,
+      "brief": "Friday night at home in a Nairobi apartment: Achieng, a Kenyan woman in her late twenties with long braids tied up and a mustard-yellow top sits cross-legged on her bed with an open plain grey laptop with a blank lid and a handwritten list beside her, frowning at the screen, lamp light",
+      "context": "Still 2 of 12 for a short film about a fictional perfume and gift shop in Westlands, Nairobi on the Agentrix home page; fictional people, made with AI. No readable text, logos or brand marks anywhere."
+    },
+    {
+      "slot": "classy:03",
+      "kind": "film",
+      "seed": 6003,
+      "brief": "Friday night, close up: Achieng, a Kenyan woman in her late twenties with long braids tied up and a mustard-yellow top types a message on her phone with a tired, impatient expression, the laptop glowing behind her",
+      "context": "Still 3 of 12 for a short film about a fictional perfume and gift shop in Westlands, Nairobi on the Agentrix home page; fictional people, made with AI. No readable text, logos or brand marks anywhere."
+    },
+    {
+      "slot": "classy:04",
+      "kind": "film",
+      "seed": 6004,
+      "brief": "Late at night in a dim Nairobi living room: Brian, a Kenyan man in his early thirties with round glasses and a navy shirt sits on a sofa holding his phone up and speaking to it, the screen lighting his face, a quiet street light outside the window",
+      "context": "Still 4 of 12 for a short film about a fictional perfume and gift shop in Westlands, Nairobi on the Agentrix home page; fictional people, made with AI. No readable text, logos or brand marks anywhere."
+    },
+    {
+      "slot": "classy:05",
+      "kind": "film",
+      "seed": 6005,
+      "brief": "Saturday eight in the morning at the glass door of Classy Perfumes, a small elegant perfume boutique in Westlands, Nairobi, with plum walls, cream shelves and glass shelves of plain unlabelled perfume bottles and ribboned gift boxes: Makena, a Kenyan woman in her mid forties with short silver-streaked locs, gold hoop earrings and a plum wrap dress reads her phone with a worried look, keys in her other hand, the shop still dark behind her",
+      "context": "Still 5 of 12 for a short film about a fictional perfume and gift shop in Westlands, Nairobi on the Agentrix home page; fictional people, made with AI. No readable text, logos or brand marks anywhere."
+    },
+    {
+      "slot": "classy:06",
+      "kind": "film",
+      "seed": 6406,
+      "brief": "Late at night inside a small elegant perfume boutique with no sign or lettering anywhere, plum walls, cream shelves and glass shelves of plain perfume bottles with blank labels, the shop closed and lit by one warm lamp: Makena, a Kenyan woman in her mid forties whose hair is short loose silver-streaked locs about two inches long standing out from her head, gold hoop earrings, a plum wrap dress, sits alone at the counter typing on a laptop with a plain matte black lid with nothing on it, looking hopeful",
+      "context": "Still 6 of 12 for a short film about a fictional perfume and gift shop in Westlands, Nairobi on the Agentrix home page; fictional people, made with AI. No readable text, logos or brand marks anywhere."
+    },
+    {
+      "slot": "classy:07",
+      "kind": "film",
+      "seed": 6107,
+      "brief": "Friday evening inside a small elegant perfume boutique with no sign or lettering anywhere in Westlands, Nairobi, with plum walls, cream shelves and glass shelves of plain perfume bottles with blank labels and ribboned gift boxes, calm: Makena, a Kenyan woman in her mid forties with short silver-streaked locs, gold hoop earrings and a plum wrap dress smiles as she ties a plum ribbon on a gift box, neat rows of wrapped boxes on the counter",
+      "context": "Still 7 of 12 for a short film about a fictional perfume and gift shop in Westlands, Nairobi on the Agentrix home page; fictional people, made with AI. No readable text, logos or brand marks anywhere."
+    },
+    {
+      "slot": "classy:08",
+      "kind": "film",
+      "seed": 6308,
+      "brief": "Friday night at home: Achieng, a Kenyan woman in her late twenties with long braids tied up and a mustard-yellow top smiles at a laptop on her bed, seen from behind her shoulder, the laptop screen a soft unreadable blur, relieved, ticking a handwritten list with a pen",
+      "context": "Still 8 of 12 for a short film about a fictional perfume and gift shop in Westlands, Nairobi on the Agentrix home page; fictional people, made with AI. No readable text, logos or brand marks anywhere."
+    },
+    {
+      "slot": "classy:09",
+      "kind": "film",
+      "seed": 6009,
+      "brief": "Late at night on the sofa: Brian, a Kenyan man in his early thirties with round glasses and a navy shirt smiles at his phone, relaxed, a cup of tea on the table, the room calm",
+      "context": "Still 9 of 12 for a short film about a fictional perfume and gift shop in Westlands, Nairobi on the Agentrix home page; fictional people, made with AI. No readable text, logos or brand marks anywhere."
+    },
+    {
+      "slot": "classy:10",
+      "kind": "film",
+      "seed": 6110,
+      "brief": "Saturday morning inside a small elegant perfume boutique with no sign or lettering anywhere in Westlands, Nairobi, with plum walls, cream shelves and glass shelves of plain perfume bottles with blank labels and ribboned gift boxes: Makena, a Kenyan woman in her mid forties with short silver-streaked locs, gold hoop earrings and a plum wrap dress taps her phone at the counter beside five identical wrapped gift boxes with plum ribbons, pleased",
+      "context": "Still 10 of 12 for a short film about a fictional perfume and gift shop in Westlands, Nairobi on the Agentrix home page; fictional people, made with AI. No readable text, logos or brand marks anywhere."
+    },
+    {
+      "slot": "classy:11",
+      "kind": "film",
+      "seed": 6011,
+      "brief": "A garden wedding in Nairobi on a sunny day: Achieng, a Kenyan woman in her late twenties with long braids tied up, in a white wedding dress laughs with four bridesmaids in matching plum dresses, each holding a small gift box with a plum ribbon",
+      "context": "Still 11 of 12 for a short film about a fictional perfume and gift shop in Westlands, Nairobi on the Agentrix home page; fictional people, made with AI. No readable text, logos or brand marks anywhere."
+    },
+    {
+      "slot": "classy:12",
+      "kind": "film",
+      "seed": 6212,
+      "brief": "Months later, a busy evening inside a small elegant perfume boutique with no sign or lettering anywhere in Westlands, Nairobi, with plum walls, cream shelves and glass shelves of plain perfume bottles with blank labels and ribboned gift boxes: Makena, a Kenyan woman in her mid forties with short silver-streaked locs, gold hoop earrings and a plum wrap dress serves smiling fictional customers at a counter that holds only gift boxes, no cards or signs, festive lights, every shelf full",
+      "context": "Still 12 of 12 for a short film about a fictional perfume and gift shop in Westlands, Nairobi on the Agentrix home page; fictional people, made with AI. No readable text, logos or brand marks anywhere."
+    }
+  ]
+}

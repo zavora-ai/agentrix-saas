@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Keep it</title>
+<meta name="description" content="Owner journey, step 2: Wanjiru keeps her rebuilt site by creating an account, with a passkey first, or email and password or Google, LinkedIn or GitHub, always with an authenticator code.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Manrope:wght@600;700;800&family=Fraunces:opsz,wght@9..144,600;9..144,800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../styles.css">
+<link rel="stylesheet" href="../console/console.css">
+<link rel="stylesheet" href="journeys.css">
+<link rel="stylesheet" href="owner.css">
+</head>
+<body data-lane="owner" data-step="2">
+<header class="j-top">
+  <a class="logo" href="../index.html"><span class="mark" aria-hidden="true"></span>Agentrix</a>
+  <a class="j-maplink" href="index.html">Journey map</a>
+  <span class="j-lane">Owner · Wanjiru</span>
+  <span class="concept-label">Concept · illustrative data</span>
+</header>
+<nav class="j-steps" aria-label="Owner journey" data-steps></nav>
+<main class="wrap j-main">
+  <header class="j-head">
+    <p class="eyebrow">Step 2 of 9 · Owner</p>
+    <h1>"Keep it": create the account</h1>
+    <p class="lead">A passkey comes first: one touch, and nothing to remember or leak. If her device has no passkey, she can use email and password, or Google, LinkedIn or GitHub, and every one of those also needs a code from an authenticator app.</p>
+  </header>
+  <div class="j-grid">
+    <section class="j-stage" aria-label="What Wanjiru sees">
+      <div class="o-frame">
+        <div class="browser-bar"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="url"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>agentrix.ai/keep</span></div>
+        <div class="o-body">
+          <div><h2>Keep Kilele Bakery</h2><p class="sub">Your preview becomes your site in setup. Your old site keeps running, untouched, until you choose to go live.</p></div>
+
+          <div class="j-tabs" role="tablist" aria-label="How to create your account">
+            <button role="tab" type="button" aria-selected="true" aria-controls="t-passkey" id="tab-passkey">With a passkey</button>
+            <button role="tab" type="button" aria-selected="false" aria-controls="t-other" id="tab-other">Without a passkey</button>
+          </div>
+
+          <div role="tabpanel" id="t-passkey" aria-labelledby="tab-passkey" class="o-sec">
+            <label class="o-field">Your name<input type="text" value="Wanjiru Kamau"></label>
+            <label class="o-field">Email, for your brief and receipts<input type="email" value="wanjiru@kilele-bakery.example"></label>
+            <button class="btn btn-primary o-big" type="button" data-next="#made-passkey" data-wait="1300" data-busy="Touch ID…">Create with a passkey</button>
+            <p class="o-hint">Your phone or laptop makes the passkey and keeps it. Face ID, Touch ID, Windows Hello or your screen lock unlocks it. Agentrix never sees it.</p>
+            <div id="made-passkey" data-reveal class="o-ok">✓ Account created · passkey on Wanjiru's iPhone · signed in on this device</div>
+          </div>
+
+          <div role="tabpanel" id="t-other" aria-labelledby="tab-other" hidden class="o-sec">
+            <div class="o-providers">
+              <button class="btn" type="button" data-next="#totp">Continue with Google</button>
+              <button class="btn" type="button" data-next="#totp">Continue with LinkedIn</button>
+              <button class="btn" type="button" data-next="#totp">Continue with GitHub</button>
+            </div>
+            <div class="o-or">or</div>
+            <label class="o-field">Email<input type="email" value="wanjiru@kilele-bakery.example"></label>
+            <label class="o-field">Password<input type="password" value="correct horse battery"></label>
+            <button class="btn" type="button" data-next="#totp">Continue</button>
+            <div id="totp" data-reveal class="o-sec">
+              <h3>Set up your authenticator app (required)</h3>
+              <div class="o-totp">
+                <div class="o-qr" role="img" aria-label="QR code placeholder"></div>
+                <div class="o-sec">
+                  <p class="small" style="margin:0">Scan this with an authenticator app on your phone, or type the key: <span class="o-code">KILE LEB4 KRY7 Q2XM</span></p>
+                  <label class="o-field">The 6-digit code it shows<input type="text" inputmode="numeric" maxlength="6" placeholder="6 digits" value="318 204"></label>
+                  <button class="btn btn-primary" type="button" data-next="#made-other">Confirm</button>
+                </div>
+              </div>
+              <p class="o-hint">You'll use a code each time you sign in, and to approve anything important on a device without a passkey. There are no magic links, and the code is never sent by SMS.</p>
+              <div id="made-other" data-reveal class="o-ok">✓ Account created · signed in with email, password and an authenticator code</div>
+            </div>
+          </div>
+
+          <div class="o-chief">
+            <span class="j-mark" data-chief data-size="40"></span>
+            <p><b>Chief WebAgent:</b> Karibu, Wanjiru. I'm your Chief WebAgent. I speak for your WebAgents and plan their work, and nothing important happens without your OK. Next, choose a plan, then prove the domain is yours, and the Mover will start.</p>
+          </div>
+          <a class="btn btn-primary" href="owner-plan.html" style="justify-self:start">Next: choose a plan</a>
+        </div>
+      </div>
+    </section>
+
+    <aside class="j-notes" aria-label="What happens underneath">
+      <div class="j-note gate"><h3>Passkeys first (02 §8)</h3><ul><li><b>Primary:</b> a passkey (WebAuthn).</li><li><b>Without one:</b> email and password, or Google, LinkedIn or GitHub, always with an authenticator app.</li><li>Sessions are bound to the device. Wanjiru is the owner; managers, viewers and an agency can be added later (07 §5.6).</li></ul></div>
+      <div class="j-note"><h3>The same order for approvals</h3><p>Later, approving a go-live or an order uses her passkey. On a device without one, a single-use code from the same authenticator app is bound to the exact effect, and the receipt says which method approved it (07 §5.2).</p></div>
+      <div class="j-note never"><h3>Never</h3><ul><li>Magic links or SMS codes</li><li>Her old site's admin password; the Move works from the public site and her own export</li></ul></div>
+    </aside>
+  </div>
+</main>
+<nav class="wrap j-pager" aria-label="Previous and next step" data-pager></nav>
+<script src="journeys.js"></script>
+<script src="owner.js"></script>
+</body>
+</html>

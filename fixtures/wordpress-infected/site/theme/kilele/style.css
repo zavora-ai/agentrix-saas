@@ -1,0 +1,40 @@
+/*
+Theme Name: Kilele
+Theme URI: https://kilele-bakery.example/
+Author: Kilele Bakery (fictional; Zavora's fixture)
+Description: A small classic theme for Kilele Bakery, the fictional bakery in Zavora's Agentrix gauntlet fixture. build.sh compiles the colour and font tokens into build/theme.css.
+Version: 1.4.2
+Requires PHP: 8.1
+License: MIT
+Text Domain: kilele
+*/
+
+:root {
+	--kl-crust: #8a4b1f;
+	--kl-flour: #fbf6ee;
+	--kl-ink: #2b2118;
+	--kl-icing: #f2c6c2;
+	--kl-leaf: #3f6b4a;
+	--kl-font-body: "Source Serif 4", Georgia, serif;
+	--kl-font-head: "Fraunces", Georgia, serif;
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--kl-flour); color: var(--kl-ink); font: 17px/1.6 var(--kl-font-body); }
+a { color: var(--kl-crust); }
+.kl-wrap { max-width: 46rem; margin: 0 auto; padding: 0 1rem; }
+.kl-header { background: var(--kl-crust); color: var(--kl-flour); padding: 1rem 0; }
+.kl-header a { color: var(--kl-flour); text-decoration: none; }
+.kl-brand { font: 600 1.5rem/1.2 var(--kl-font-head); }
+.kl-tagline { margin: 0; opacity: .85; font-size: .95rem; }
+.kl-nav ul { list-style: none; display: flex; flex-wrap: wrap; gap: 1rem; margin: .75rem 0 0; padding: 0; }
+.kl-main { padding: 2rem 0; }
+.kl-main h1, .kl-main h2 { font-family: var(--kl-font-head); line-height: 1.2; }
+.kl-entry { margin-bottom: 2.5rem; }
+.kl-meta { color: #6b5a4b; font-size: .9rem; }
+.kl-card { background: #fff; border: 1px solid var(--kl-icing); border-radius: 12px; padding: 1rem 1.25rem; }
+.kl-footer { border-top: 4px solid var(--kl-icing); padding: 1.5rem 0 3rem; font-size: .9rem; color: #5a4a3c; }
+.kl-fixture { background: var(--kl-leaf); color: #fff; padding: .5rem .75rem; border-radius: 8px; display: inline-block; }
+form.kl-order label { display: block; margin: .75rem 0 .25rem; font-weight: 600; }
+form.kl-order input, form.kl-order textarea, form.kl-order select { width: 100%; padding: .5rem; border: 1px solid #c9b8a6; border-radius: 6px; font: inherit; }
+form.kl-order button { margin-top: 1rem; background: var(--kl-crust); color: #fff; border: 0; border-radius: 6px; padding: .6rem 1.2rem; font: inherit; }

@@ -1,0 +1,54 @@
+{% extends "classy/layout.html" %}
+{% from "macros.html" import mark %}
+{% from "classy/parts.html" import card %}
+{% block main %}
+<section class="cp-hero" id="top">
+  <div>
+    <span class="cp-eyebrow">Sample shop · Westlands, Nairobi</span>
+    <h1>{% for line in headline %}{{ line }}{% if not loop.last %}<br>{% endif %}{% endfor %}</h1>
+    <p>{{ intro }}</p>
+    <form class="cp-bigsearch" role="search" action="/search" method="get">
+      <label class="sr-only" for="hq">Search or ask</label>
+      <input id="hq" name="q" autocomplete="off" placeholder="A gift under KSh 5,000 for someone who loves vanilla">
+      <button class="act primary" type="submit">Search</button>
+    </form>
+    <div class="team-line"><span class="marks">{% for d in shell.desks %}{{ mark(d, 20, shell.site, "sm") }}{% endfor %}</span><span>Each menu item is an AI WebAgent that answers from this site. Anything it can't answer goes to {{ shell.site.owner }}.</span></div>
+  </div>
+  {% if "hero" in shell.pictures %}{% set pic = shell.pictures["hero"] %}
+  <figure class="cp-art pic"><img src="{{ pic.url }}" alt="{{ pic.alt }}"{% if pic.width %} width="{{ pic.width }}" height="{{ pic.height }}"{% endif %}>{% if pic.label %}<span class="rtag">{{ pic.label }}</span>{% endif %}</figure>
+  {% else %}
+  <div class="cp-art" aria-hidden="true"><span class="cp-bottle big"></span><span class="cp-bottle small"></span><span class="rtag">Sample image</span></div>
+  {% endif %}
+</section>
+
+<section class="cp-section" id="collections">
+  <h2>Collections</h2>
+  <div class="cp-cols">
+    <a class="cp-col" href="/fragrances" id="col-fragrances"><b>Fragrances</b><span>{{ count }} scents across {{ families }} families, in {{ sizes }} sizes.</span><i>Browse by family</i></a>
+    <a class="cp-col plum" href="/gifts" id="col-gifts"><b>Gifts</b><span>{{ gifts }} gift sets, ready wrapped with a card. Any order can be wrapped free.</span><i>Gift ideas by budget</i></a>
+  </div>
+</section>
+
+<section class="cp-section" id="featured">
+  <h2>Featured scents</h2>
+  <p class="sub">Stock {{ asof }}{% if prices %} · prices from {{ prices }}{% endif %}</p>
+  <div class="shortlist four">{% for s in featured %}{{ card(s) }}{% endfor %}</div>
+  <p class="more-link"><a href="/fragrances">See all {{ count }} scents</a></p>
+</section>
+
+<section class="cp-section" id="delivery">
+  <h2>Delivery and returns</h2>
+  <div class="cp-promise">
+    {% for z in zones %}<div id="promise-{{ z.zone }}"><b>{{ z.label }} · {{ z.fee_minor | ksh }}</b>{{ z.note }}{% if loop.first %}<br><span class="small">{{ same_day }}</span>{% endif %}</div>{% endfor %}
+    <div id="promise-returns"><b>Returns and wrapping</b>Unopened bottles can be returned within {{ returns_days }} days. {{ wrapping }}</div>
+  </div>
+  <p class="more-link"><a href="/delivery">Delivery &amp; returns</a></p>
+</section>
+
+{% if posts %}
+<section class="cp-section" id="journal">
+  <h2>From the journal</h2>
+  <div class="pages">{% for p in posts %}<a class="page-hit" href="/journal/{{ p.slug }}"><b>{{ p.title }}</b><div class="path">{{ p.date }}</div><p>{{ p.standfirst }}</p></a>{% endfor %}</div>
+</section>
+{% endif %}
+{% endblock %}

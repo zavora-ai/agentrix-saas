@@ -1,0 +1,199 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 1090" width="1280" height="1090" role="img" aria-labelledby="t d">
+<title id="t">Agentrix WebAgent Platform data architecture</title><desc id="d">Where each class of data lives in both profiles, what may cross the content-free boundary, the outbox to Kafka to lakehouse path, the observability pipeline, the visualisation surfaces, and the lifecycle controls (erasure, retention, backup, residency) that reach every store.</desc>
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#38356d"/></marker><marker id="ac" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#de4060"/></marker><marker id="aa" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#c2620a"/></marker></defs>
+<rect width="1280" height="1090" fill="#ffffff"/>
+<g font-family="Inter, 'DM Sans', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" fill="#1d1b33">
+<text x="24" y="38" font-size="21" font-weight="800" fill="#38356d" text-anchor="start">Agentrix WebAgent Platform · data architecture</text>
+<text x="24" y="60" font-size="12" font-weight="400" fill="#5d5a78" text-anchor="start">Personal data stays inside its site&#x27;s stores; only content-free rows cross the boundary. Blue = Vultr product · coral = holds keys · amber dashed = sealed, untrusted work.</text>
+<rect x="24" y="84" width="262" height="648" rx="16" fill="#f6f5fb" stroke="#d8d5ea" stroke-width="1.2"/>
+<text x="40" y="106" font-size="11" font-weight="700" fill="#5d5a78" text-anchor="start" letter-spacing="1.2">PRODUCERS</text>
+<rect x="40" y="112" width="230" height="78" rx="12" fill="#ffffff" stroke="#d8d5ea" stroke-width="1.6"/>
+<text x="54" y="136" font-size="13" font-weight="700" fill="#1d1b33" text-anchor="start">Visitors &amp; AI agents</text>
+<text x="54" y="156" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">pages from the CDN (no data)</text>
+<text x="54" y="173" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">Ask · artifacts · requests</text>
+<rect x="40" y="199" width="230" height="78" rx="12" fill="#ffffff" stroke="#d8d5ea" stroke-width="1.6"/>
+<text x="54" y="223" font-size="13" font-weight="700" fill="#1d1b33" text-anchor="start">Owner &amp; team</text>
+<text x="54" y="243" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">console · WhatsApp · email</text>
+<text x="54" y="260" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">decisions · facts · rules</text>
+<rect x="40" y="286" width="230" height="78" rx="12" fill="#ffffff" stroke="#38356d" stroke-width="1.6"/>
+<text x="54" y="310" font-size="13" font-weight="700" fill="#38356d" text-anchor="start">WebAgents</text>
+<text x="54" y="330" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">TenantKernel per site</text>
+<text x="54" y="347" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">runs · drafts · agenda · ledger</text>
+<rect x="40" y="373" width="230" height="78" rx="12" fill="#fff1f3" stroke="#de4060" stroke-width="1.6"/>
+<text x="54" y="397" font-size="13" font-weight="700" fill="#de4060" text-anchor="start">Model Gateway</text>
+<text x="54" y="417" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">reserve and settle per call</text>
+<text x="54" y="434" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">usage ledger · no prompts kept</text>
+<rect x="40" y="460" width="230" height="78" rx="12" fill="#fff1f3" stroke="#de4060" stroke-width="1.6"/>
+<text x="54" y="484" font-size="13" font-weight="700" fill="#de4060" text-anchor="start">Effects Gateway</text>
+<text x="54" y="504" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">receipts for every effect</text>
+<text x="54" y="521" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">orders · payments · sends</text>
+<rect x="40" y="547" width="230" height="78" rx="12" fill="#fff7ed" stroke="#c2620a" stroke-width="1.6" stroke-dasharray="6 4"/>
+<text x="54" y="571" font-size="13" font-weight="700" fill="#c2620a" text-anchor="start">Sealed rooms</text>
+<text x="54" y="591" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">crawl · replay · render</text>
+<text x="54" y="608" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">evidence by digest only</text>
+<rect x="40" y="634" width="230" height="78" rx="12" fill="#f6f5fb" stroke="#d8d5ea" stroke-width="1.6" stroke-dasharray="4 4"/>
+<text x="54" y="658" font-size="13" font-weight="700" fill="#1d1b33" text-anchor="start">Owner&#x27;s tools via MCP</text>
+<text x="54" y="678" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">CRM · calendar · books · mail</text>
+<text x="54" y="695" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">read per run · never mirrored</text>
+<rect x="306" y="84" width="500" height="648" rx="16" fill="#f6f5fb" stroke="#d8d5ea" stroke-width="1.2"/>
+<text x="322" y="106" font-size="11" font-weight="700" fill="#5d5a78" text-anchor="start" letter-spacing="1.2">INSIDE THE SITE WALL · ONE SITE · C0–C3</text>
+<rect x="322" y="112" width="226" height="116" rx="12" fill="#ffffff" stroke="#38356d" stroke-width="1.6"/>
+<text x="336" y="136" font-size="13.5" font-weight="700" fill="#38356d" text-anchor="start">Records</text>
+<text x="336" y="156" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">conversations · leads · orders</text>
+<text x="336" y="173" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">facts · drafts · kernel runs</text>
+<text x="336" y="190" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">1-node: SQLite file per site</text>
+<text x="336" y="207" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">fleet: Postgres schema + role</text>
+<rect x="560" y="112" width="226" height="116" rx="12" fill="#ffffff" stroke="#38356d" stroke-width="1.6"/>
+<text x="574" y="136" font-size="13.5" font-weight="700" fill="#38356d" text-anchor="start">Vectors</text>
+<text x="574" y="156" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">site corpus · owner facts</text>
+<text x="574" y="173" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">1-node: LanceDB in site dir</text>
+<text x="574" y="190" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">fleet: pgvector, same schema</text>
+<text x="574" y="207" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">the first release: Vultr vector store</text>
+<rect x="322" y="240" width="226" height="116" rx="12" fill="#eef4ff" stroke="#0b6cff" stroke-width="1.6"/>
+<text x="336" y="264" font-size="13.5" font-weight="700" fill="#0752c4" text-anchor="start">Objects (CAS)</text>
+<text x="336" y="284" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">releases · evidence · artifacts</text>
+<text x="336" y="301" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">legacy archive (Archive tier)</text>
+<text x="336" y="318" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">1-node: local dir, mirrored</text>
+<text x="336" y="335" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">fleet: Object Storage prefix</text>
+<rect x="560" y="240" width="226" height="116" rx="12" fill="#fff1f3" stroke="#de4060" stroke-width="1.6"/>
+<text x="574" y="264" font-size="13.5" font-weight="700" fill="#de4060" text-anchor="start">Site keys</text>
+<text x="574" y="284" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">a data key per site, wrapped</text>
+<text x="574" y="301" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">personal blobs · exports</text>
+<text x="574" y="318" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">backups · archive</text>
+<text x="574" y="335" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">destroyed = crypto-shredded</text>
+<rect x="322" y="368" width="226" height="116" rx="12" fill="#eef4ff" stroke="#0b6cff" stroke-width="1.6"/>
+<text x="336" y="392" font-size="13.5" font-weight="700" fill="#0752c4" text-anchor="start">Fast state</text>
+<text x="336" y="412" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">rate limits · wake queues</text>
+<text x="336" y="429" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">presence · cache pub/sub</text>
+<text x="336" y="446" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">1-node: in process</text>
+<text x="336" y="463" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">fleet: Valkey · TTL · no records</text>
+<rect x="560" y="368" width="226" height="116" rx="12" fill="#ffffff" stroke="#38356d" stroke-width="1.6"/>
+<text x="574" y="392" font-size="13.5" font-weight="700" fill="#38356d" text-anchor="start">Site log + outbox</text>
+<text x="574" y="412" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">hash-chained receipts</text>
+<text x="574" y="429" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">content-free events, written</text>
+<text x="574" y="446" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">in the same transaction</text>
+<text x="574" y="463" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">as the row they describe</text>
+<text x="322" y="516" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">The owner reads all of it. The back office reads by partition.</text>
+<text x="322" y="533" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">Visitor memory: public desks only, with a consent receipt.</text>
+<rect x="322" y="550" width="468" height="166" rx="12" fill="#ffffff" stroke="#d8d5ea" stroke-width="1.6"/>
+<text x="336" y="574" font-size="13" font-weight="700" fill="#1d1b33" text-anchor="start">Data classes</text>
+<text x="338" y="590" font-size="11.5" font-weight="700" fill="#0b6cff" text-anchor="start">C0 public</text>
+<text x="458" y="590" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">signed releases, published facts</text>
+<text x="338" y="614" font-size="11.5" font-weight="700" fill="#0b6cff" text-anchor="start">C1 content-free</text>
+<text x="458" y="614" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">ids · kinds · durations · counts · money</text>
+<text x="338" y="638" font-size="11.5" font-weight="700" fill="#38356d" text-anchor="start">C2 business</text>
+<text x="458" y="638" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">owner facts · drafts · playbooks · receipts</text>
+<text x="338" y="662" font-size="11.5" font-weight="700" fill="#38356d" text-anchor="start">C3 personal</text>
+<text x="458" y="662" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">conversations · leads · orders · memory</text>
+<text x="338" y="686" font-size="11.5" font-weight="700" fill="#de4060" text-anchor="start">C4 secret</text>
+<text x="458" y="686" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">in key holders only; sign-in secrets sealed</text>
+<path d="M815,92 V722" stroke="#de4060" stroke-width="2" stroke-dasharray="7 5" fill="none"/>
+<text x="809" y="410" font-size="10.5" font-weight="700" fill="#de4060" letter-spacing="1.2" text-anchor="middle" transform="rotate(-90 809 410)">CONTENT-FREE BOUNDARY · ONLY C0 AND C1 CROSS</text>
+<rect x="826" y="84" width="430" height="648" rx="16" fill="#f6f5fb" stroke="#d8d5ea" stroke-width="1.2"/>
+<text x="842" y="106" font-size="11" font-weight="700" fill="#5d5a78" text-anchor="start" letter-spacing="1.2">ACROSS SITES · CONTENT-FREE · C0–C1</text>
+<rect x="842" y="112" width="250" height="96" rx="12" fill="#eef4ff" stroke="#0b6cff" stroke-width="1.6"/>
+<text x="856" y="136" font-size="13" font-weight="700" fill="#0752c4" text-anchor="start">Kafka topics</text>
+<text x="856" y="156" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">ledger · usage · receipt index · edge</text>
+<text x="856" y="173" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">keyed by site_id · typed, versioned</text>
+<text x="856" y="190" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">1-node: an in-process channel</text>
+<rect x="842" y="222" width="250" height="78" rx="12" fill="#ffffff" stroke="#38356d" stroke-width="1.6"/>
+<text x="856" y="246" font-size="13" font-weight="700" fill="#38356d" text-anchor="start">agentrix-lake ingester</text>
+<text x="856" y="266" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">Rust: arrow-rs → Parquet files</text>
+<text x="856" y="283" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">Iceberg commits · erasure deletes</text>
+<rect x="842" y="314" width="250" height="96" rx="12" fill="#eef4ff" stroke="#0b6cff" stroke-width="1.6"/>
+<text x="856" y="338" font-size="13" font-weight="700" fill="#0752c4" text-anchor="start">Lakehouse on Object Storage</text>
+<text x="856" y="358" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">bronze → silver → gold, per cell</text>
+<text x="856" y="375" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">Iceberg tables over Parquet</text>
+<text x="856" y="392" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">catalog in the cell&#x27;s Postgres</text>
+<rect x="842" y="424" width="250" height="78" rx="12" fill="#ffffff" stroke="#38356d" stroke-width="1.6"/>
+<text x="856" y="448" font-size="13" font-weight="700" fill="#38356d" text-anchor="start">Query engines</text>
+<text x="856" y="468" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">DataFusion inside services</text>
+<text x="856" y="485" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">DuckDB for analysts and exports</text>
+<path d="M967,208 V220" fill="none" stroke="#38356d" stroke-width="1.6" marker-end="url(#a)"/>
+<path d="M967,300 V312" fill="none" stroke="#38356d" stroke-width="1.6" marker-end="url(#a)"/>
+<path d="M967,410 V422" fill="none" stroke="#38356d" stroke-width="1.6" marker-end="url(#a)"/>
+<rect x="1104" y="112" width="138" height="168" rx="12" fill="#ffffff" stroke="#38356d" stroke-width="1.6"/>
+<text x="1118" y="136" font-size="13" font-weight="700" fill="#38356d" text-anchor="start">Telemetry</text>
+<text x="1118" y="156" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">OTel collector</text>
+<text x="1118" y="173" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">per cell</text>
+<text x="1118" y="190" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">metrics, traces,</text>
+<text x="1118" y="207" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">logs: content-free</text>
+<rect x="1104" y="292" width="138" height="130" rx="12" fill="#eef4ff" stroke="#0b6cff" stroke-width="1.6"/>
+<text x="1118" y="316" font-size="13" font-weight="700" fill="#0752c4" text-anchor="start">Observability</text>
+<text x="1118" y="336" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">Object Storage</text>
+<text x="1118" y="353" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">short windows</text>
+<text x="1118" y="370" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">SLO burn alerts</text>
+<path d="M1173,280 V290" fill="none" stroke="#38356d" stroke-width="1.6" marker-end="url(#a)"/>
+<rect x="842" y="516" width="400" height="96" rx="12" fill="#ffffff" stroke="#38356d" stroke-width="1.6"/>
+<text x="856" y="540" font-size="13" font-weight="700" fill="#38356d" text-anchor="start">Privacy gate (fleet learning)</text>
+<text x="856" y="560" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">min cohort · k-anonymity · DP noise</text>
+<text x="856" y="577" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">aggregates only → signed playbook packs</text>
+<rect x="842" y="624" width="400" height="92" rx="12" fill="#ffffff" stroke="#d8d5ea" stroke-width="1.6"/>
+<text x="856" y="648" font-size="13" font-weight="700" fill="#1d1b33" text-anchor="start">Global layer (ams-1, standby fra-1)</text>
+<text x="856" y="668" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">gold aggregates only · fleet registry</text>
+<text x="856" y="685" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">billing rating → zavora-era books</text>
+<path d="M967,502 V514" fill="none" stroke="#38356d" stroke-width="1.6" marker-end="url(#a)"/>
+<path d="M270,151 H296" stroke="#38356d" stroke-width="1.6" fill="none"/>
+<path d="M270,238 H296" stroke="#38356d" stroke-width="1.6" fill="none"/>
+<path d="M270,325 H296" stroke="#38356d" stroke-width="1.6" fill="none"/>
+<path d="M270,412 H296" stroke="#38356d" stroke-width="1.6" fill="none"/>
+<path d="M270,499 H296" stroke="#38356d" stroke-width="1.6" fill="none"/>
+<path d="M270,586 H296" stroke="#38356d" stroke-width="1.6" fill="none"/>
+<path d="M296,151 V586" stroke="#38356d" stroke-width="1.6" fill="none"/>
+<path d="M296,170 H320" fill="none" stroke="#38356d" stroke-width="1.6" marker-end="url(#a)"/>
+<path d="M296,298 H320" fill="none" stroke="#38356d" stroke-width="1.6" marker-end="url(#a)"/>
+<path d="M296,426 H320" fill="none" stroke="#38356d" stroke-width="1.6" marker-end="url(#a)"/>
+<path d="M674,484 V500 H830 V160 H840" fill="none" stroke="#de4060" stroke-width="1.6" marker-end="url(#ac)"/>
+<rect x="622.8" y="488" width="178.4" height="18" rx="9" fill="#ffffff" stroke="#d8d5ea" stroke-width="0.8"/>
+<text x="712" y="501" font-size="10.5" font-weight="600" fill="#de4060" text-anchor="middle">outbox · content-free only</text>
+<rect x="24" y="752" width="1232" height="176" rx="16" fill="#f6f5fb" stroke="#d8d5ea" stroke-width="1.2"/>
+<text x="40" y="774" font-size="11" font-weight="700" fill="#5d5a78" text-anchor="start" letter-spacing="1.2">VISUALISATION AND USE</text>
+<rect x="40" y="790" width="230" height="122" rx="12" fill="#ffffff" stroke="#38356d" stroke-width="1.6"/>
+<text x="54" y="814" font-size="13" font-weight="700" fill="#38356d" text-anchor="start">Owner analytics</text>
+<text x="54" y="834" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">console: plain words + a number</text>
+<text x="54" y="851" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">typed queries, no free SQL</text>
+<text x="54" y="868" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">own records + own lake slice</text>
+<rect x="282" y="790" width="230" height="122" rx="12" fill="#ffffff" stroke="#38356d" stroke-width="1.6"/>
+<text x="296" y="814" font-size="13" font-weight="700" fill="#38356d" text-anchor="start">WebAgent documents</text>
+<text x="296" y="834" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">zavora-xlsx · slide · docx</text>
+<text x="296" y="851" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">printpdf · charts with sources</text>
+<text x="296" y="868" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">saved as signed artifacts</text>
+<rect x="524" y="790" width="230" height="122" rx="12" fill="#ffffff" stroke="#38356d" stroke-width="1.6"/>
+<text x="538" y="814" font-size="13" font-weight="700" fill="#38356d" text-anchor="start">Owner export</text>
+<text x="538" y="834" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">one click · open formats</text>
+<text x="538" y="851" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">Parquet · JSONL · CSV</text>
+<text x="538" y="868" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">static site · receipts</text>
+<rect x="766" y="790" width="230" height="122" rx="12" fill="#ffffff" stroke="#38356d" stroke-width="1.6"/>
+<text x="780" y="814" font-size="13" font-weight="700" fill="#38356d" text-anchor="start">Operator BI</text>
+<text x="780" y="834" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">operator console: fleet, money</text>
+<text x="780" y="851" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">Grafana for SLOs and burn</text>
+<text x="780" y="868" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">Superset on DuckDB, gold only</text>
+<rect x="1008" y="790" width="230" height="122" rx="12" fill="#ffffff" stroke="#38356d" stroke-width="1.6"/>
+<text x="1022" y="814" font-size="13" font-weight="700" fill="#38356d" text-anchor="start">Partner views</text>
+<text x="1022" y="834" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">their sites only, by</text>
+<text x="1022" y="851" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">tenant path · content-free</text>
+<text x="1022" y="868" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">more only if the owner grants</text>
+<path d="M397,732 V781" fill="none" stroke="#38356d" stroke-width="1.6" marker-end="url(#a)"/>
+<rect x="403.2" y="732" width="133.60000000000002" height="18" rx="9" fill="#ffffff" stroke="#d8d5ea" stroke-width="0.8"/>
+<text x="470" y="745" font-size="10.5" font-weight="600" fill="#38356d" text-anchor="middle">own records · C0–C3</text>
+<path d="M48,785 H746" stroke="#38356d" stroke-width="1.6" fill="none"/>
+<path d="M1002,732 V781" fill="none" stroke="#38356d" stroke-width="1.6" marker-end="url(#a)"/>
+<rect x="1023.2" y="732" width="133.60000000000002" height="18" rx="9" fill="#ffffff" stroke="#d8d5ea" stroke-width="0.8"/>
+<text x="1090" y="745" font-size="10.5" font-weight="600" fill="#38356d" text-anchor="middle">gold tables · C0–C1</text>
+<path d="M774,785 H1230" stroke="#38356d" stroke-width="1.6" fill="none"/>
+<rect x="24" y="948" width="1232" height="126" rx="16" fill="#f6f5fb" stroke="#d8d5ea" stroke-width="1.2"/>
+<text x="40" y="970" font-size="11" font-weight="700" fill="#5d5a78" text-anchor="start" letter-spacing="1.2">LIFECYCLE · REACHES EVERY STORE</text>
+<rect x="40" y="980" width="373.0" height="22" rx="11" fill="#f1f0fa" stroke="#38356d" stroke-width="1"/>
+<text x="226.5" y="995" font-size="11" font-weight="600" fill="#38356d" text-anchor="middle">Erasure orchestrator: each store returns a receipt</text>
+<rect x="423.0" y="980" width="266.5" height="22" rx="11" fill="#f1f0fa" stroke="#38356d" stroke-width="1"/>
+<text x="556.25" y="995" font-size="11" font-weight="600" fill="#38356d" text-anchor="middle">Erasures replayed after any restore</text>
+<rect x="699.5" y="980" width="223.89999999999998" height="22" rx="11" fill="#f1f0fa" stroke="#38356d" stroke-width="1"/>
+<text x="811.45" y="995" font-size="11" font-weight="600" fill="#38356d" text-anchor="middle">Retention jobs leave receipts</text>
+<rect x="40" y="1012" width="365.9" height="22" rx="11" fill="#f1f0fa" stroke="#38356d" stroke-width="1"/>
+<text x="222.95" y="1027" font-size="11" font-weight="600" fill="#38356d" text-anchor="middle">PITR + nightly per-site export to the copy region</text>
+<rect x="415.9" y="1012" width="373.0" height="22" rx="11" fill="#f1f0fa" stroke="#38356d" stroke-width="1"/>
+<text x="602.4" y="1027" font-size="11" font-weight="600" fill="#38356d" text-anchor="middle">Residency: home cell; inference location disclosed</text>
+<rect x="798.9" y="1012" width="252.29999999999998" height="22" rx="11" fill="#f1f0fa" stroke="#38356d" stroke-width="1"/>
+<text x="925.05" y="1027" font-size="11" font-weight="600" fill="#38356d" text-anchor="middle">Schema: expand, migrate, contract</text>
+<text x="40" y="1058" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">Single node: the same stores as files under data/sites/&lt;site&gt;/, WAL shipped to Object Storage. Fleet: Managed PostgreSQL + pgvector, Valkey, Kafka, Object Storage per cell.</text>
+</g></svg>

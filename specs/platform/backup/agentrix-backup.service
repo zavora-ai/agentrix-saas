@@ -1,0 +1,24 @@
+# agentrix-backup on control: one checked, encrypted copy of control.db and node's keys
+# (proposed by W8 for deploy/systemd/, Sun 8 Nov 2026). Started by agentrix-backup.timer.
+[Unit]
+Description=Agentrix backup of control.db and node's keys
+After=agentrix-node.service
+
+[Service]
+Type=oneshot
+User=agentrix
+Group=agentrix
+EnvironmentFile=-/etc/agentrix/backup.env
+# The same Object Storage keys node uses; empty means the copy stays on control.
+LoadCredential=objects.json:/etc/agentrix/secrets/objects.json
+ExecStart=/opt/agentrix/bin/agentrix-backup
+UMask=0077
+Nice=10
+IOSchedulingClass=idle
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=yes
+# Writes go to /var/lib/agentrix/backups; VACUUM INTO only reads control.db, but SQLite opens
+# its -wal and -shm files read-write, so the whole data folder is writable as for node.
+ReadWritePaths=/var/lib/agentrix

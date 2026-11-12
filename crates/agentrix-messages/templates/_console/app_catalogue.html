@@ -1,0 +1,24 @@
+{% import "ui/kit.html" as ui %}
+<div class="field-head">
+  <div><h2>Every message</h2><div class="sub">{{ count }} messages: when each is sent and on which channels. The examples use the sample businesses, so names and numbers are made up.</div></div>
+  {{ ui.segmented(tabs, "Messages") }}
+</div>
+<div class="cards">
+{% for g in groups %}
+  <article class="fcard span2" aria-labelledby="g-{{ loop.index }}">
+    <div class="fcard-head"><div class="who"><b id="g-{{ loop.index }}">{{ g.label }}</b><span class="state-line">{{ g.items|length }} messages</span></div></div>
+    <table class="surface-table">
+      <thead><tr><th scope="col">Message</th><th scope="col">When it's sent</th><th scope="col">Channels</th></tr></thead>
+      <tbody>
+      {% for i in g.items %}
+        <tr>
+          <td><b>{% if i.has_email %}<a href="/console/messages/catalogue/{{ i.id }}/view">{{ i.subject }}</a>{% else %}{{ i.subject }}{% endif %}</b><br><span class="small muted">{{ i.audience }} · {{ i.kind }}</span></td>
+          <td>{{ i.trigger }}</td>
+          <td>{% for c in i.channels %}{{ ui.chip(c, "outline") }} {% endfor %}</td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </article>
+{% endfor %}
+</div>

@@ -1,0 +1,21 @@
+{
+ "site": {
+  "name": "Kilele Bakery",
+  "host": "kilele-bakery-sample.agentrix.website",
+  "sample": true
+ },
+ "person": {
+  "name": "Wanjiru"
+ },
+ "console_url": "https://agentrix.website/console/kilele-bakery-sample",
+ "plan": {
+  "name": "Commerce",
+  "price": 149,
+  "currency": "USD",
+  "local": "KSh 19,221",
+  "ai_budget": "USD 30 of AI a month included (KSh 3,870)",
+  "method": "PayPal",
+  "next_charge": "Mon 14 Dec",
+  "url": "https://agentrix.website/billing?site=kilele-bakery-sample"
+ }
+}

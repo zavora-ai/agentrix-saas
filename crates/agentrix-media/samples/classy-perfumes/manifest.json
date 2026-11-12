@@ -1,0 +1,876 @@
+{
+  "site": "classy-perfumes-sample",
+  "images": {
+    "hero": {
+      "brief": "Three glass perfume bottles with blank labels of different heights on a dark stone shelf, warm side light, soft shadows, a sprig of dried flowers beside them",
+      "bytes": 99262,
+      "cost_micro_usd": 20644,
+      "description": {
+        "alt": "Three glass perfume bottles with blank cream labels and varied caps stand on a dark stone shelf, flanked by dried flowers.",
+        "check": "Labels are blank; consider adding the shop name or fragrance names before publishing.",
+        "photographic": true,
+        "shows_person": false,
+        "shows_text": false
+      },
+      "digest": "sha256:016c954add59ec10daf6146713f8da6677a2a4d6e2dfefe89c8973e92b9450f8",
+      "file": "hero.webp",
+      "height": 768,
+      "kind": "hero",
+      "label": "Sample image, made with AI",
+      "media_type": "image/webp",
+      "model": "z-image-turbo",
+      "prompt": "Three glass perfume bottles with blank labels of different heights on a dark stone shelf, warm side light, soft shadows, a sprig of dried flowers beside them. Natural light, realistic photographic style, calm composition with room for a headline on one side. Colours and mood only: Warm amber, deep brown and soft gold, dark velvet studio backdrop, quiet and expensive, like the shop's concept renders. No people, no faces, no hands. No text, letters, numbers, logos, labels or watermarks.",
+      "seed": 2101,
+      "slot": "hero",
+      "verdict": {
+        "categories": [],
+        "model": "nemotron-3.5-content-safety",
+        "safe": true,
+        "user_safety": "safe"
+      },
+      "width": 1344
+    },
+    "post:amber-in-cold-air": {
+      "brief": "An amber perfume bottle on a window sill on a cold misty morning, condensation on the window, a wool scarf folded beside it",
+      "bytes": 37308,
+      "cost_micro_usd": 15729,
+      "description": {
+        "alt": "Square amber perfume bottle with black cap on a windowsill beside a folded brown wool scarf, condensation on the glass",
+        "check": "",
+        "photographic": true,
+        "shows_person": false,
+        "shows_text": false
+      },
+      "digest": "sha256:192a2674e837504bcdface456aefdc564191c075211e982a23e64ab5025ed638",
+      "file": "post_how-amber-wears-in-cold-air.webp",
+      "height": 768,
+      "kind": "post",
+      "label": "Sample image, made with AI",
+      "media_type": "image/webp",
+      "model": "z-image-turbo",
+      "prompt": "An amber perfume bottle on a window sill on a cold misty morning, condensation on the window, a wool scarf folded beside it. Natural light, realistic photographic style, calm composition with room for a headline on one side. Colours and mood only: Warm amber, deep brown and soft gold, dark velvet studio backdrop, quiet and expensive, like the shop's concept renders. No people, no faces, no hands. No text, letters, numbers, logos, labels or watermarks.",
+      "seed": 2121,
+      "slot": "post:amber-in-cold-air",
+      "verdict": {
+        "categories": [],
+        "model": "nemotron-3.5-content-safety",
+        "safe": true,
+        "user_safety": "safe"
+      },
+      "width": 1024
+    },
+    "post:long-rains": {
+      "brief": "Raindrops on a window with green leaves outside, a small perfume bottle and an open notebook on the sill, soft grey daylight",
+      "bytes": 68986,
+      "cost_micro_usd": 15729,
+      "description": {
+        "alt": "A small perfume bottle and open notebook on a windowsill by a rain-spotted window, green leaves outside in grey daylight.",
+        "check": "",
+        "photographic": true,
+        "shows_person": false,
+        "shows_text": false
+      },
+      "digest": "sha256:7be7ea164678a3e0eedab1729887efd55af7afee851bf3d254c61c90a9d1c015",
+      "file": "post_scents-for-the-long-rains.webp",
+      "height": 768,
+      "kind": "post",
+      "label": "Sample image, made with AI",
+      "media_type": "image/webp",
+      "model": "z-image-turbo",
+      "prompt": "Raindrops on a window with green leaves outside, a small perfume bottle and an open notebook on the sill, soft grey daylight. Natural light, realistic photographic style, calm composition with room for a headline on one side. Colours and mood only: Warm amber, deep brown and soft gold, dark velvet studio backdrop, quiet and expensive, like the shop's concept renders. No people, no faces, no hands. No text, letters, numbers, logos, labels or watermarks.",
+      "seed": 2122,
+      "slot": "post:long-rains",
+      "verdict": {
+        "categories": [],
+        "model": "nemotron-3.5-content-safety",
+        "safe": true,
+        "user_safety": "safe"
+      },
+      "width": 1024
+    },
+    "product:amber-evening-set": {
+      "brief": "An amber glass perfume bottle with a blank label and an amber candle in a glass jar, in an open kraft gift box with a plain card",
+      "bytes": 20642,
+      "cost_micro_usd": 11797,
+      "description": {
+        "alt": "Amber glass bottle with a black cap and blank label in an open kraft gift box with a plain card.",
+        "check": "The set is sold with an amber candle, but no candle appears in the photo.",
+        "photographic": true,
+        "shows_person": false,
+        "shows_text": false
+      },
+      "digest": "sha256:32fcf715f4e2e8aa2ce1cc5adc4b2fd825b6603523ec438a4fab312bc4926a99",
+      "file": "product_amber-evening-set.webp",
+      "height": 768,
+      "kind": "product",
+      "label": "Sample image, made with AI",
+      "media_type": "image/webp",
+      "model": "z-image-turbo",
+      "prompt": "An amber glass perfume bottle with a blank label and an amber candle in a glass jar, in an open kraft gift box with a plain card. Product photograph, the item alone and centred on a plain surface, soft studio light, shallow depth of field. Show only what is described: no toppings, fillings, garnishes or props that were not asked for. Colours and mood only: Warm amber, deep brown and soft gold, dark velvet studio backdrop, quiet and expensive, like the shop's concept renders. No people, no faces, no hands. No text, letters, numbers, logos, labels or watermarks.",
+      "seed": 2143,
+      "slot": "product:amber-evening-set",
+      "verdict": {
+        "categories": [],
+        "model": "nemotron-3.5-content-safety",
+        "safe": true,
+        "user_safety": "safe"
+      },
+      "width": 768
+    },
+    "product:amber-lantern": {
+      "brief": "A 50 ml amber glass perfume bottle with dark liquid, a black cap and a blank cream label, a few green cardamom pods beside it in warm lamp light",
+      "bytes": 13764,
+      "cost_micro_usd": 11797,
+      "description": {
+        "alt": "Square amber glass perfume bottle with black cap and blank cream label, green cardamom pods at its base, lit by warm light.",
+        "check": "The bottle label is blank; confirm a printed label with the product name is shown, as a blank label can look unfinished.",
+        "photographic": true,
+        "shows_person": false,
+        "shows_text": false
+      },
+      "digest": "sha256:85b751aaed0bd819660a4b465c32486437dccfbb85c1c0c08ba9944e8004a5aa",
+      "file": "product_amber-lantern.webp",
+      "height": 768,
+      "kind": "product",
+      "label": "Sample image, made with AI",
+      "media_type": "image/webp",
+      "model": "z-image-turbo",
+      "prompt": "A 50 ml amber glass perfume bottle with dark liquid, a black cap and a blank cream label, a few green cardamom pods beside it in warm lamp light. Product photograph, the item alone and centred on a plain surface, soft studio light, shallow depth of field. Show only what is described: no toppings, fillings, garnishes or props that were not asked for. Colours and mood only: Warm amber, deep brown and soft gold, dark velvet studio backdrop, quiet and expensive, like the shop's concept renders. No people, no faces, no hands. No text, letters, numbers, logos, labels or watermarks.",
+      "seed": 2140,
+      "slot": "product:amber-lantern",
+      "verdict": {
+        "categories": [],
+        "model": "nemotron-3.5-content-safety",
+        "safe": true,
+        "user_safety": "safe"
+      },
+      "width": 768
+    },
+    "product:amber-noir": {
+      "brief": "A 50 ml amber glass perfume bottle with dark liquid, a black cap and a blank cream label, on a dark brown velvet surface",
+      "bytes": 18002,
+      "cost_micro_usd": 11797,
+      "description": {
+        "alt": "Amber glass perfume bottle with black cap and blank cream label on dark brown velvet",
+        "check": "The label in the photo is blank, so confirm it actually shows the product name before publishing.",
+        "photographic": true,
+        "shows_person": false,
+        "shows_text": false
+      },
+      "digest": "sha256:8396f995e854b9a46c94da6a89b0d388dd179dd8076d8a3bb06246d87f9ee91c",
+      "file": "product_amber-noir.webp",
+      "height": 768,
+      "kind": "product",
+      "label": "Sample image, made with AI",
+      "media_type": "image/webp",
+      "model": "z-image-turbo",
+      "prompt": "A 50 ml amber glass perfume bottle with dark liquid, a black cap and a blank cream label, on a dark brown velvet surface. Product photograph, the item alone and centred on a plain surface, soft studio light, shallow depth of field. Show only what is described: no toppings, fillings, garnishes or props that were not asked for. Colours and mood only: Warm amber, deep brown and soft gold, dark velvet studio backdrop, quiet and expensive, like the shop's concept renders. No people, no faces, no hands. No text, letters, numbers, logos, labels or watermarks.",
+      "seed": 2113,
+      "slot": "product:amber-noir",
+      "verdict": {
+        "categories": [],
+        "model": "nemotron-3.5-content-safety",
+        "safe": true,
+        "user_safety": "safe"
+      },
+      "width": 768
+    },
+    "product:citrus-dawn": {
+      "brief": "A clear 50 ml glass perfume bottle with pale golden liquid and a blank label, a few slices of fresh orange and lemon beside it, bright morning light",
+      "bytes": 25892,
+      "cost_micro_usd": 11797,
+      "description": {
+        "alt": "Clear glass perfume bottle with white cap and blank label beside two cut orange halves, dark brown background.",
+        "check": "The bottle label is blank; confirm it will carry the Citrus Dawn name and branding before publishing.",
+        "photographic": true,
+        "shows_person": false,
+        "shows_text": false
+      },
+      "digest": "sha256:9c6328924096192c8b5dd25d4ba28bac2a893df80959aa23815c05621e8b2400",
+      "file": "product_citrus-dawn.webp",
+      "height": 768,
+      "kind": "product",
+      "label": "Sample image, made with AI",
+      "media_type": "image/webp",
+      "model": "z-image-turbo",
+      "prompt": "A clear 50 ml glass perfume bottle with pale golden liquid and a blank label, a few slices of fresh orange and lemon beside it, bright morning light. Product photograph, the item alone and centred on a plain surface, soft studio light, shallow depth of field. Show only what is described: no toppings, fillings, garnishes or props that were not asked for. Colours and mood only: Warm amber, deep brown and soft gold, dark velvet studio backdrop, quiet and expensive, like the shop's concept renders. No people, no faces, no hands. No text, letters, numbers, logos, labels or watermarks.",
+      "seed": 2112,
+      "slot": "product:citrus-dawn",
+      "verdict": {
+        "categories": [],
+        "model": "nemotron-3.5-content-safety",
+        "safe": true,
+        "user_safety": "safe"
+      },
+      "width": 768
+    },
+    "product:citrus-travel-duo": {
+      "brief": "Two small 15 ml glass travel sprays with blank labels in an open kraft gift box with tissue paper and a plain card",
+      "bytes": 17406,
+      "cost_micro_usd": 11797,
+      "description": {
+        "alt": "Two small glass spray bottles with black pumps and blank white labels in an open kraft box with cream tissue paper.",
+        "check": "The bottles have blank white labels, so the product names Citrus Dawn and Lime Market are not visible in the image.",
+        "photographic": true,
+        "shows_person": false,
+        "shows_text": false
+      },
+      "digest": "sha256:ccfef85b4a7c24d4c8c4702f819e63893b71470204c030b4576875389a8142c4",
+      "file": "product_citrus-travel-duo.webp",
+      "height": 768,
+      "kind": "product",
+      "label": "Sample image, made with AI",
+      "media_type": "image/webp",
+      "model": "z-image-turbo",
+      "prompt": "Two small 15 ml glass travel sprays with blank labels in an open kraft gift box with tissue paper and a plain card. Product photograph, the item alone and centred on a plain surface, soft studio light, shallow depth of field. Show only what is described: no toppings, fillings, garnishes or props that were not asked for. Colours and mood only: Warm amber, deep brown and soft gold, dark velvet studio backdrop, quiet and expensive, like the shop's concept renders. No people, no faces, no hands. No text, letters, numbers, logos, labels or watermarks.",
+      "seed": 2139,
+      "slot": "product:citrus-travel-duo",
+      "verdict": {
+        "categories": [],
+        "model": "nemotron-3.5-content-safety",
+        "safe": true,
+        "user_safety": "safe"
+      },
+      "width": 768
+    },
+    "product:cocoa-velvet": {
+      "brief": "A 50 ml glass perfume bottle with honey-coloured liquid, a gold cap and a blank cream label, a broken cacao pod and a sandalwood chip beside it on dark velvet",
+      "bytes": 29872,
+      "cost_micro_usd": 11797,
+      "description": {
+        "alt": "Glass perfume bottle with gold cap and blank cream label, amber liquid, set before two dark cacao pods and a sandalwood chip.",
+        "check": "The label is blank; add the product name and branding before publishing.",
+        "photographic": true,
+        "shows_person": false,
+        "shows_text": false
+      },
+      "digest": "sha256:8f8fed6e3d5b190d5a24197c42984cef67162353fa5e2e5955348b6bd6eac30d",
+      "file": "product_cocoa-velvet.webp",
+      "height": 768,
+      "kind": "product",
+      "label": "Sample image, made with AI",
+      "media_type": "image/webp",
+      "model": "z-image-turbo",
+      "prompt": "A 50 ml glass perfume bottle with honey-coloured liquid, a gold cap and a blank cream label, a broken cacao pod and a sandalwood chip beside it on dark velvet. Product photograph, the item alone and centred on a plain surface, soft studio light, shallow depth of field. Show only what is described: no toppings, fillings, garnishes or props that were not asked for. Colours and mood only: Warm amber, deep brown and soft gold, dark velvet studio backdrop, quiet and expensive, like the shop's concept renders. No people, no faces, no hands. No text, letters, numbers, logos, labels or watermarks.",
+      "seed": 2133,
+      "slot": "product:cocoa-velvet",
+      "verdict": {
+        "categories": [],
+        "model": "nemotron-3.5-content-safety",
+        "safe": true,
+        "user_safety": "safe"
+      },
+      "width": 768
+    },
+    "product:floral-discovery-set": {
+      "brief": "Three small 10 ml glass perfume sprays in pale pink, white and violet with blank labels, in an open kraft gift box with a plain card",
+      "bytes": 28280,
+      "cost_micro_usd": 11797,
+      "description": {
+        "alt": "Three small glass perfume sprays in pink, white, and violet sit in an open kraft gift box with a blank white card on the lid.",
+        "check": "The card in the box is blank; confirm a printed or inscribed card is expected, as the product says it comes with a card.",
+        "photographic": true,
+        "shows_person": false,
+        "shows_text": false
+      },
+      "digest": "sha256:eec07f1d31c59980c10ae811ca61808f9d58c6323e54d4b2102101f9bdc7457a",
+      "file": "product_floral-discovery-set.webp",
+      "height": 768,
+      "kind": "product",
+      "label": "Sample image, made with AI",
+      "media_type": "image/webp",
+      "model": "z-image-turbo",
+      "prompt": "Three small 10 ml glass perfume sprays in pale pink, white and violet with blank labels, in an open kraft gift box with a plain card. Product photograph, the item alone and centred on a plain surface, soft studio light, shallow depth of field. Show only what is described: no toppings, fillings, garnishes or props that were not asked for. Colours and mood only: Warm amber, deep brown and soft gold, dark velvet studio backdrop, quiet and expensive, like the shop's concept renders. No people, no faces, no hands. No text, letters, numbers, logos, labels or watermarks.",
+      "seed": 2152,
+      "slot": "product:floral-discovery-set",
+      "verdict": {
+        "categories": [],
+        "model": "nemotron-3.5-content-safety",
+        "safe": true,
+        "user_safety": "safe"
+      },
+      "width": 768
+    },
+    "product:frangipani-coast": {
+      "brief": "A pale blush-pink 50 ml glass perfume bottle with a soft gold cap and a blank label, a white frangipani flower and a halved coconut beside it",
+      "bytes": 25282,
+      "cost_micro_usd": 11797,
+      "description": {
+        "alt": "Frosted glass perfume bottle with gold cap, beside a white frangipani flower and halved coconut on a beige surface.",
+        "check": "The bottle label is blank; add the product name and branding before publishing.",
+        "photographic": true,
+        "shows_person": false,
+        "shows_text": false
+      },
+      "digest": "sha256:0a843e833cec91baf05d6e1657f102ca79201e1816c9f78f452db697b033f21d",
+      "file": "product_frangipani-coast.webp",
+      "height": 768,
+      "kind": "product",
+      "label": "Sample image, made with AI",
+      "media_type": "image/webp",
+      "model": "z-image-turbo",
+      "prompt": "A pale blush-pink 50 ml glass perfume bottle with a soft gold cap and a blank label, a white frangipani flower and a halved coconut beside it. Product photograph, the item alone and centred on a plain surface, soft studio light, shallow depth of field. Show only what is described: no toppings, fillings, garnishes or props that were not asked for. Colours and mood only: Warm amber, deep brown and soft gold, dark velvet studio backdrop, quiet and expensive, like the shop's concept renders. No people, no faces, no hands. No text, letters, numbers, logos, labels or watermarks.",
+      "seed": 2149,
+      "slot": "product:frangipani-coast",
+      "verdict": {
+        "categories": [],
+        "model": "nemotron-3.5-content-safety",
+        "safe": true,
+        "user_safety": "safe"
+      },
+      "width": 768
+    },
+    "product:grapefruit-run": {
+      "brief": "A clear 50 ml glass perfume bottle with pale golden liquid, a white cap and a blank label, a halved pink grapefruit and a few mint leaves beside it",
+      "bytes": 25004,
+      "cost_micro_usd": 11797,
+      "description": {
+        "alt": "Clear glass perfume bottle with pale golden liquid, beside a halved pink grapefruit and mint leaves on a light surface",
+        "check": "The label is blank; confirm whether it should carry the product name or branding before publishing.",
+        "photographic": true,
+        "shows_person": false,
+        "shows_text": false
+      },
+      "digest": "sha256:8c58d21a6bb96b07be6f6924d3266072031350eaf4bf25f833e35015cb378a81",
+      "file": "product_grapefruit-run.webp",
+      "height": 768,
+      "kind": "product",
+      "label": "Sample image, made with AI",
+      "media_type": "image/webp",
+      "model": "z-image-turbo",
+      "prompt": "A clear 50 ml glass perfume bottle with pale golden liquid, a white cap and a blank label, a halved pink grapefruit and a few mint leaves beside it. Product photograph, the item alone and centred on a plain surface, soft studio light, shallow depth of field. Show only what is described: no toppings, fillings, garnishes or props that were not asked for. Colours and mood only: Warm amber, deep brown and soft gold, dark velvet studio backdrop, quiet and expensive, like the shop's concept renders. No people, no faces, no hands. No text, letters, numbers, logos, labels or watermarks.",
+      "seed": 2138,
+      "slot": "product:grapefruit-run",
+      "verdict": {
+        "categories": [],
+        "model": "nemotron-3.5-content-safety",
+        "safe": true,
+        "user_safety": "safe"
+      },
+      "width": 768
+    },
+    "product:highland-cedar": {
+      "brief": "A smoky grey 50 ml glass perfume bottle with a wooden cap and a blank label, a cedar sprig and juniper berries beside it on a slate surface",
+      "bytes": 30780,
+      "cost_micro_usd": 11797,
+      "description": {
+        "alt": "Grey glass perfume bottle with a wooden cap and blank label, a gilded cedar sprig and dark berries on a slate slab",
+        "check": "The bottle's label is blank, so the product name or brand is not visible in the image",
+        "photographic": true,
+        "shows_person": false,
+        "shows_text": false
+      },
+      "digest": "sha256:a6cf3d06e3ee948a0efcd5d9cbb6b4c7c2b3d420e651d4929506c20dc4322eb3",
+      "file": "product_highland-cedar.webp",
+      "height": 768,
+      "kind": "product",
+      "label": "Sample image, made with AI",
+      "media_type": "image/webp",
+      "model": "z-image-turbo",
+      "prompt": "A smoky grey 50 ml glass perfume bottle with a wooden cap and a blank label, a cedar sprig and juniper berries beside it on a slate surface. Product photograph, the item alone and centred on a plain surface, soft studio light, shallow depth of field. Show only what is described: no toppings, fillings, garnishes or props that were not asked for. Colours and mood only: Warm amber, deep brown and soft gold, dark velvet studio backdrop, quiet and expensive, like the shop's concept renders. No people, no faces, no hands. No text, letters, numbers, logos, labels or watermarks.",
+      "seed": 2144,
+      "slot": "product:highland-cedar",
+      "verdict": {
+        "categories": [],
+        "model": "nemotron-3.5-content-safety",
+        "safe": true,
+        "user_safety": "safe"
+      },
+      "width": 768
+    },
+    "product:highland-rose": {
+      "brief": "A pale blush-pink 50 ml glass perfume bottle with a soft gold cap and a blank label, a single deep pink rose and a few pink peppercorns beside it",
+      "bytes": 24846,
+      "cost_micro_usd": 11797,
+      "description": {
+        "alt": "Square glass perfume bottle, pink liquid, cream cap, blank label, deep pink rose and pink peppercorns on dark brown surface.",
+        "check": "The label is blank; ensure the product name and branding are visible before publishing.",
+        "photographic": true,
+        "shows_person": false,
+        "shows_text": false
+      },
+      "digest": "sha256:6692c499281a47b1eba3a294ba1fe064014eacac693e28b75608cc505e0e8ee1",
+      "file": "product_highland-rose.webp",
+      "height": 768,
+      "kind": "product",
+      "label": "Sample image, made with AI",
+      "media_type": "image/webp",
+      "model": "z-image-turbo",
+      "prompt": "A pale blush-pink 50 ml glass perfume bottle with a soft gold cap and a blank label, a single deep pink rose and a few pink peppercorns beside it. Product photograph, the item alone and centred on a plain surface, soft studio light, shallow depth of field. Show only what is described: no toppings, fillings, garnishes or props that were not asked for. Colours and mood only: Warm amber, deep brown and soft gold, dark velvet studio backdrop, quiet and expensive, like the shop's concept renders. No people, no faces, no hands. No text, letters, numbers, logos, labels or watermarks.",
+      "seed": 2150,
+      "slot": "product:highland-rose",
+      "verdict": {
+        "categories": [],
+        "model": "nemotron-3.5-content-safety",
+        "safe": true,
+        "user_safety": "safe"
+      },
+      "width": 768
+    },
+    "product:honey-baobab": {
+      "brief": "A 50 ml glass perfume bottle with honey-coloured liquid, a gold cap and a blank cream label, a piece of honeycomb and a cracked baobab pod beside it",
+      "bytes": 23300,
+      "cost_micro_usd": 11797,
+      "description": {
+        "alt": "Glass perfume bottle with honey-coloured liquid and a gold cap, with a honeycomb and a cracked brown baobab pod beside it.",
+        "check": "The bottle label is blank — add the product name and branding before publishing so customers can see what they are buying.",
+        "photographic": true,
+        "shows_person": false,
+        "shows_text": false
+      },
+      "digest": "sha256:cbdfca838dae86238f64835f054274b85cd263551c33bb91321c8031a7d0c956",
+      "file": "product_honey-baobab.webp",
+      "height": 768,
+      "kind": "product",
+      "label": "Sample image, made with AI",
+      "media_type": "image/webp",
+      "model": "z-image-turbo",
+      "prompt": "A 50 ml glass perfume bottle with honey-coloured liquid, a gold cap and a blank cream label, a piece of honeycomb and a cracked baobab pod beside it. Product photograph, the item alone and centred on a plain surface, soft studio light, shallow depth of field. Show only what is described: no toppings, fillings, garnishes or props that were not asked for. Colours and mood only: Warm amber, deep brown and soft gold, dark velvet studio backdrop, quiet and expensive, like the shop's concept renders. No people, no faces, no hands. No text, letters, numbers, logos, labels or watermarks.",
+      "seed": 2132,
+      "slot": "product:honey-baobab",
+      "verdict": {
+        "categories": [],
+        "model": "nemotron-3.5-content-safety",
+        "safe": true,
+        "user_safety": "safe"
+      },
+      "width": 768
+    },
+    "product:jacaranda-walk": {
+      "brief": "A pale blush-pink 50 ml glass perfume bottle with a soft gold cap and a blank label, a few fallen purple jacaranda flowers beside it",
+      "bytes": 14482,
+      "cost_micro_usd": 11797,
+      "description": {
+        "alt": "Frosted glass perfume bottle with a gold cap and blank pink label, with purple jacaranda flowers beside it.",
+        "check": "The bottle label is blank with no brand name or product text, so the real branded label should be applied before publishing.",
+        "photographic": true,
+        "shows_person": false,
+        "shows_text": false
+      },
+      "digest": "sha256:7a29f20b7147f45ed58d693ff81e37ba183e62be61f631d63532f77e4767b8af",
+      "file": "product_jacaranda-walk.webp",
+      "height": 768,
+      "kind": "product",
+      "label": "Sample image, made with AI",
+      "media_type": "image/webp",
+      "model": "z-image-turbo",
+      "prompt": "A pale blush-pink 50 ml glass perfume bottle with a soft gold cap and a blank label, a few fallen purple jacaranda flowers beside it. Product photograph, the item alone and centred on a plain surface, soft studio light, shallow depth of field. Show only what is described: no toppings, fillings, garnishes or props that were not asked for. Colours and mood only: Warm amber, deep brown and soft gold, dark velvet studio backdrop, quiet and expensive, like the shop's concept renders. No people, no faces, no hands. No text, letters, numbers, logos, labels or watermarks.",
+      "seed": 2148,
+      "slot": "product:jacaranda-walk",
+      "verdict": {
+        "categories": [],
+        "model": "nemotron-3.5-content-safety",
+        "safe": true,
+        "user_safety": "safe"
+      },
+      "width": 768
+    },
+    "product:kahawa-crema": {
+      "brief": "A 50 ml glass perfume bottle with honey-coloured liquid, a gold cap and a blank cream label, a few roasted coffee beans and a vanilla pod beside it on dark linen",
+      "bytes": 31988,
+      "cost_micro_usd": 11797,
+      "description": {
+        "alt": "Glass bottle of amber liquid with gold cap and blank cream label, coffee beans and vanilla pods on dark linen",
+        "check": "The label is blank; add product name and branding before publishing.",
+        "photographic": true,
+        "shows_person": false,
+        "shows_text": false
+      },
+      "digest": "sha256:400e357f2b024125bb9ee4bec3dc1b6e9b000137f6409480cdae824b2835f441",
+      "file": "product_kahawa-crema.webp",
+      "height": 768,
+      "kind": "product",
+      "label": "Sample image, made with AI",
+      "media_type": "image/webp",
+      "model": "z-image-turbo",
+      "prompt": "A 50 ml glass perfume bottle with honey-coloured liquid, a gold cap and a blank cream label, a few roasted coffee beans and a vanilla pod beside it on dark linen. Product photograph, the item alone and centred on a plain surface, soft studio light, shallow depth of field. Show only what is described: no toppings, fillings, garnishes or props that were not asked for. Colours and mood only: Warm amber, deep brown and soft gold, dark velvet studio backdrop, quiet and expensive, like the shop's concept renders. No people, no faces, no hands. No text, letters, numbers, logos, labels or watermarks.",
+      "seed": 2131,
+      "slot": "product:kahawa-crema",
+      "verdict": {
+        "categories": [],
+        "model": "nemotron-3.5-content-safety",
+        "safe": true,
+        "user_safety": "safe"
+      },
+      "width": 768
+    },
+    "product:karura-moss": {
+      "brief": "A smoky grey 50 ml glass perfume bottle with a wooden cap and a blank label, a patch of green moss and wet leaves beside it",
+      "bytes": 28036,
+      "cost_micro_usd": 11797,
+      "description": {
+        "alt": "Clear glass perfume bottle with wooden cap and blank label, beside green moss and wet leaves on a light surface",
+        "check": "The label is blank; confirm whether a finished product shot with the name on it is needed instead.",
+        "photographic": true,
+        "shows_person": false,
+        "shows_text": false
+      },
+      "digest": "sha256:833286578154b96f5509d1ad653c406df6640ba453540609e29ec5c2a61f1e28",
+      "file": "product_karura-moss.webp",
+      "height": 768,
+      "kind": "product",
+      "label": "Sample image, made with AI",
+      "media_type": "image/webp",
+      "model": "z-image-turbo",
+      "prompt": "A smoky grey 50 ml glass perfume bottle with a wooden cap and a blank label, a patch of green moss and wet leaves beside it. Product photograph, the item alone and centred on a plain surface, soft studio light, shallow depth of field. Show only what is described: no toppings, fillings, garnishes or props that were not asked for. Colours and mood only: Warm amber, deep brown and soft gold, dark velvet studio backdrop, quiet and expensive, like the shop's concept renders. No people, no faces, no hands. No text, letters, numbers, logos, labels or watermarks.",
+      "seed": 2145,
+      "slot": "product:karura-moss",
+      "verdict": {
+        "categories": [],
+        "model": "nemotron-3.5-content-safety",
+        "safe": true,
+        "user_safety": "safe"
+      },
+      "width": 768
+    },
+    "product:lime-market": {
+      "brief": "A clear 50 ml glass perfume bottle with pale golden liquid, a white cap and a blank label, halved limes and a knob of fresh ginger beside it",
+      "bytes": 27206,
+      "cost_micro_usd": 11797,
+      "description": {
+        "alt": "A clear perfume bottle with pale golden liquid and white cap sits between halved limes and fresh ginger on brown velvet.",
+        "check": "The bottle label is blank; add the brand or product name before publishing.",
+        "photographic": true,
+        "shows_person": false,
+        "shows_text": false
+      },
+      "digest": "sha256:079ac1905973283eba75a824d37e2180dc639fda81f798b6afd71b78ba8a7ce3",
+      "file": "product_lime-market.webp",
+      "height": 768,
+      "kind": "product",
+      "label": "Sample image, made with AI",
+      "media_type": "image/webp",
+      "model": "z-image-turbo",
+      "prompt": "A clear 50 ml glass perfume bottle with pale golden liquid, a white cap and a blank label, halved limes and a knob of fresh ginger beside it. Product photograph, the item alone and centred on a plain surface, soft studio light, shallow depth of field. Show only what is described: no toppings, fillings, garnishes or props that were not asked for. Colours and mood only: Warm amber, deep brown and soft gold, dark velvet studio backdrop, quiet and expensive, like the shop's concept renders. No people, no faces, no hands. No text, letters, numbers, logos, labels or watermarks.",
+      "seed": 2135,
+      "slot": "product:lime-market",
+      "verdict": {
+        "categories": [],
+        "model": "nemotron-3.5-content-safety",
+        "safe": true,
+        "user_safety": "safe"
+      },
+      "width": 768
+    },
+    "product:marula-milk-set": {
+      "brief": "An open kraft gift box holding a 30 ml glass perfume spray with a blank label and a matching white lotion tube, tissue paper and a plain card",
+      "bytes": 20090,
+      "cost_micro_usd": 11797,
+      "description": {
+        "alt": "Open kraft gift box holding a glass marula and coconut milk spray, a white lotion tube and a plain card on tissue paper.",
+        "check": "The spray label shows only '30 ml' with no brand or product name, and the gift card is blank.",
+        "photographic": true,
+        "shows_person": false,
+        "shows_text": true
+      },
+      "digest": "sha256:f92128115047ab31c0091310055eeb46edfda7710e2da1e36a7eb3bd6d537ee8",
+      "file": "product_marula-milk-set.webp",
+      "height": 768,
+      "kind": "product",
+      "label": "Sample image, made with AI",
+      "media_type": "image/webp",
+      "model": "z-image-turbo",
+      "prompt": "An open kraft gift box holding a 30 ml glass perfume spray with a blank label and a matching white lotion tube, tissue paper and a plain card. Product photograph, the item alone and centred on a plain surface, soft studio light, shallow depth of field. Show only what is described: no toppings, fillings, garnishes or props that were not asked for. Colours and mood only: Warm amber, deep brown and soft gold, dark velvet studio backdrop, quiet and expensive, like the shop's concept renders. No people, no faces, no hands. No text, letters, numbers, logos, labels or watermarks.",
+      "seed": 2134,
+      "slot": "product:marula-milk-set",
+      "verdict": {
+        "categories": [],
+        "model": "nemotron-3.5-content-safety",
+        "safe": true,
+        "user_safety": "safe"
+      },
+      "width": 768
+    },
+    "product:myrrh-night": {
+      "brief": "A 50 ml amber glass perfume bottle with dark liquid, a black cap and a blank cream label, a few pieces of myrrh resin beside it at night, low warm light",
+      "bytes": 13346,
+      "cost_micro_usd": 11797,
+      "description": {
+        "alt": "Amber glass perfume bottle with black cap and blank cream label beside myrrh resin pieces in warm low light",
+        "check": "The label is blank, so the product name Myrrh Night is not shown on the bottle.",
+        "photographic": true,
+        "shows_person": false,
+        "shows_text": false
+      },
+      "digest": "sha256:e5b0cb649429b86d4645857da06e4818217b70a5779bb323f12a45b55455ae8b",
+      "file": "product_myrrh-night.webp",
+      "height": 768,
+      "kind": "product",
+      "label": "Sample image, made with AI",
+      "media_type": "image/webp",
+      "model": "z-image-turbo",
+      "prompt": "A 50 ml amber glass perfume bottle with dark liquid, a black cap and a blank cream label, a few pieces of myrrh resin beside it at night, low warm light. Product photograph, the item alone and centred on a plain surface, soft studio light, shallow depth of field. Show only what is described: no toppings, fillings, garnishes or props that were not asked for. Colours and mood only: Warm amber, deep brown and soft gold, dark velvet studio backdrop, quiet and expensive, like the shop's concept renders. No people, no faces, no hands. No text, letters, numbers, logos, labels or watermarks.",
+      "seed": 2142,
+      "slot": "product:myrrh-night",
+      "verdict": {
+        "categories": [],
+        "model": "nemotron-3.5-content-safety",
+        "safe": true,
+        "user_safety": "safe"
+      },
+      "width": 768
+    },
+    "product:neroli-terrace": {
+      "brief": "A clear 50 ml glass perfume bottle with pale golden liquid, a white cap and a blank label, a sprig of orange blossom on a sunny stone terrace ledge beside it",
+      "bytes": 23722,
+      "cost_micro_usd": 11797,
+      "description": {
+        "alt": "Clear glass perfume bottle with pale golden liquid, white cap and blank label, with an orange flower on a sunlit stone ledge.",
+        "check": "The label is blank, so add the real brand label design before publishing.",
+        "photographic": true,
+        "shows_person": false,
+        "shows_text": false
+      },
+      "digest": "sha256:1a32185f07ee9ac42af5732a4948a347b05f62117fb216fa4047fb2c056de301",
+      "file": "product_neroli-terrace.webp",
+      "height": 768,
+      "kind": "product",
+      "label": "Sample image, made with AI",
+      "media_type": "image/webp",
+      "model": "z-image-turbo",
+      "prompt": "A clear 50 ml glass perfume bottle with pale golden liquid, a white cap and a blank label, a sprig of orange blossom on a sunny stone terrace ledge beside it. Product photograph, the item alone and centred on a plain surface, soft studio light, shallow depth of field. Show only what is described: no toppings, fillings, garnishes or props that were not asked for. Colours and mood only: Warm amber, deep brown and soft gold, dark velvet studio backdrop, quiet and expensive, like the shop's concept renders. No people, no faces, no hands. No text, letters, numbers, logos, labels or watermarks.",
+      "seed": 2137,
+      "slot": "product:neroli-terrace",
+      "verdict": {
+        "categories": [],
+        "model": "nemotron-3.5-content-safety",
+        "safe": true,
+        "user_safety": "safe"
+      },
+      "width": 768
+    },
+    "product:rain-oud": {
+      "brief": "A smoky grey 30 ml glass perfume bottle with a blank label on wet dark stone, a few drops of rain on the glass, a piece of agarwood beside it",
+      "bytes": 25374,
+      "cost_micro_usd": 11797,
+      "description": {
+        "alt": "Glass perfume bottle with grey cap and blank label on dark stone slab, water drops on glass, piece of agarwood beside it.",
+        "check": "The label and cap are blank; verify the final photo shows the actual brand name before publishing.",
+        "photographic": true,
+        "shows_person": false,
+        "shows_text": false
+      },
+      "digest": "sha256:b02855f348f47e3ed998ff409a7b1ee60476655f97a9dfaa75ebbff79dff8ef7",
+      "file": "product_rain-oud.webp",
+      "height": 768,
+      "kind": "product",
+      "label": "Sample image, made with AI",
+      "media_type": "image/webp",
+      "model": "z-image-turbo",
+      "prompt": "A smoky grey 30 ml glass perfume bottle with a blank label on wet dark stone, a few drops of rain on the glass, a piece of agarwood beside it. Product photograph, the item alone and centred on a plain surface, soft studio light, shallow depth of field. Show only what is described: no toppings, fillings, garnishes or props that were not asked for. Colours and mood only: Warm amber, deep brown and soft gold, dark velvet studio backdrop, quiet and expensive, like the shop's concept renders. No people, no faces, no hands. No text, letters, numbers, logos, labels or watermarks.",
+      "seed": 2114,
+      "slot": "product:rain-oud",
+      "verdict": {
+        "categories": [],
+        "model": "nemotron-3.5-content-safety",
+        "safe": true,
+        "user_safety": "safe"
+      },
+      "width": 768
+    },
+    "product:sandal-shore": {
+      "brief": "A smoky grey 50 ml glass perfume bottle with a wooden cap and a blank label, a piece of pale driftwood and coarse sea salt beside it on sand-coloured stone",
+      "bytes": 25482,
+      "cost_micro_usd": 11797,
+      "description": {
+        "alt": "Smoky grey glass perfume bottle with a wooden cap and blank white label, beside driftwood and coarse sea salt on stone.",
+        "check": "The label is blank; add the product name and branding before publishing.",
+        "photographic": true,
+        "shows_person": false,
+        "shows_text": false
+      },
+      "digest": "sha256:7fbc35833006f3318e0616b1f9f6f9d4027c22131b6279b002f71a7bd88c3f08",
+      "file": "product_sandal-shore.webp",
+      "height": 768,
+      "kind": "product",
+      "label": "Sample image, made with AI",
+      "media_type": "image/webp",
+      "model": "z-image-turbo",
+      "prompt": "A smoky grey 50 ml glass perfume bottle with a wooden cap and a blank label, a piece of pale driftwood and coarse sea salt beside it on sand-coloured stone. Product photograph, the item alone and centred on a plain surface, soft studio light, shallow depth of field. Show only what is described: no toppings, fillings, garnishes or props that were not asked for. Colours and mood only: Warm amber, deep brown and soft gold, dark velvet studio backdrop, quiet and expensive, like the shop's concept renders. No people, no faces, no hands. No text, letters, numbers, logos, labels or watermarks.",
+      "seed": 2147,
+      "slot": "product:sandal-shore",
+      "verdict": {
+        "categories": [],
+        "model": "nemotron-3.5-content-safety",
+        "safe": true,
+        "user_safety": "safe"
+      },
+      "width": 768
+    },
+    "product:spice-route": {
+      "brief": "A 50 ml amber glass perfume bottle with dark liquid, a black cap and a blank cream label, cinnamon sticks and whole cloves beside it on a dark wooden tray",
+      "bytes": 23080,
+      "cost_micro_usd": 11797,
+      "description": {
+        "alt": "Amber glass perfume bottle with black cap and blank cream label on a wooden tray beside cinnamon sticks and cloves.",
+        "check": "The label is blank; add the product name and branding before publishing.",
+        "photographic": true,
+        "shows_person": false,
+        "shows_text": false
+      },
+      "digest": "sha256:c45fd185a5012ffb4b8c54704a7181e031781f34a73e1a1afacd9219d345f981",
+      "file": "product_spice-route.webp",
+      "height": 768,
+      "kind": "product",
+      "label": "Sample image, made with AI",
+      "media_type": "image/webp",
+      "model": "z-image-turbo",
+      "prompt": "A 50 ml amber glass perfume bottle with dark liquid, a black cap and a blank cream label, cinnamon sticks and whole cloves beside it on a dark wooden tray. Product photograph, the item alone and centred on a plain surface, soft studio light, shallow depth of field. Show only what is described: no toppings, fillings, garnishes or props that were not asked for. Colours and mood only: Warm amber, deep brown and soft gold, dark velvet studio backdrop, quiet and expensive, like the shop's concept renders. No people, no faces, no hands. No text, letters, numbers, logos, labels or watermarks.",
+      "seed": 2141,
+      "slot": "product:spice-route",
+      "verdict": {
+        "categories": [],
+        "model": "nemotron-3.5-content-safety",
+        "safe": true,
+        "user_safety": "safe"
+      },
+      "width": 768
+    },
+    "product:tangerine-kiosk": {
+      "brief": "A clear 50 ml glass perfume bottle with pale golden liquid, a white cap and a blank label, a peeled tangerine and a sprig of green basil beside it",
+      "bytes": 22228,
+      "cost_micro_usd": 11797,
+      "description": {
+        "alt": "Clear glass perfume bottle with pale golden liquid and white cap, flanked by green basil and a peeled tangerine.",
+        "check": "The label is blank; add the product name or branding before publishing.",
+        "photographic": true,
+        "shows_person": false,
+        "shows_text": false
+      },
+      "digest": "sha256:0d0ef0bdc7d49362aa60b72b6a3be6c73b2f0356b830dc916ce82b7f1c08f330",
+      "file": "product_tangerine-kiosk.webp",
+      "height": 768,
+      "kind": "product",
+      "label": "Sample image, made with AI",
+      "media_type": "image/webp",
+      "model": "z-image-turbo",
+      "prompt": "A clear 50 ml glass perfume bottle with pale golden liquid, a white cap and a blank label, a peeled tangerine and a sprig of green basil beside it. Product photograph, the item alone and centred on a plain surface, soft studio light, shallow depth of field. Show only what is described: no toppings, fillings, garnishes or props that were not asked for. Colours and mood only: Warm amber, deep brown and soft gold, dark velvet studio backdrop, quiet and expensive, like the shop's concept renders. No people, no faces, no hands. No text, letters, numbers, logos, labels or watermarks.",
+      "seed": 2136,
+      "slot": "product:tangerine-kiosk",
+      "verdict": {
+        "categories": [],
+        "model": "nemotron-3.5-content-safety",
+        "safe": true,
+        "user_safety": "safe"
+      },
+      "width": 768
+    },
+    "product:tuberose-night": {
+      "brief": "A pale blush-pink 50 ml glass perfume bottle with a soft gold cap and a blank label, a stem of white tuberose and jasmine flowers beside it in low evening light",
+      "bytes": 13008,
+      "cost_micro_usd": 11797,
+      "description": {
+        "alt": "Clear glass perfume bottle with a pale pink cap and blank label, with white tuberose and jasmine flowers at its base.",
+        "check": "The label is blank and the cap looks pink rather than gold; confirm these match the final product.",
+        "photographic": true,
+        "shows_person": false,
+        "shows_text": false
+      },
+      "digest": "sha256:6b0ffeea827bba41acf405573b32c97e32095b6b5591b9be2a245aaf2ff10ac0",
+      "file": "product_tuberose-night.webp",
+      "height": 768,
+      "kind": "product",
+      "label": "Sample image, made with AI",
+      "media_type": "image/webp",
+      "model": "z-image-turbo",
+      "prompt": "A pale blush-pink 50 ml glass perfume bottle with a soft gold cap and a blank label, a stem of white tuberose and jasmine flowers beside it in low evening light. Product photograph, the item alone and centred on a plain surface, soft studio light, shallow depth of field. Show only what is described: no toppings, fillings, garnishes or props that were not asked for. Colours and mood only: Warm amber, deep brown and soft gold, dark velvet studio backdrop, quiet and expensive, like the shop's concept renders. No people, no faces, no hands. No text, letters, numbers, logos, labels or watermarks.",
+      "seed": 2151,
+      "slot": "product:tuberose-night",
+      "verdict": {
+        "categories": [],
+        "model": "nemotron-3.5-content-safety",
+        "safe": true,
+        "user_safety": "safe"
+      },
+      "width": 768
+    },
+    "product:vanilla-gift-set": {
+      "brief": "A gift set: a small 30 ml glass perfume bottle with a cream blank label beside a vanilla-coloured candle in a glass jar, with a few vanilla pods",
+      "bytes": 17056,
+      "cost_micro_usd": 11797,
+      "description": {
+        "alt": "Small glass perfume bottle with blank cream label and white candle in a glass jar, with vanilla pods on a beige surface.",
+        "check": "",
+        "photographic": true,
+        "shows_person": false,
+        "shows_text": false
+      },
+      "digest": "sha256:6d97cab7ae921d24c43db6416e583422ce3164187c3024ae97b6431a0d69e33b",
+      "file": "product_vanilla-gift-set.webp",
+      "height": 768,
+      "kind": "product",
+      "label": "Sample image, made with AI",
+      "media_type": "image/webp",
+      "model": "z-image-turbo",
+      "prompt": "A gift set: a small 30 ml glass perfume bottle with a cream blank label beside a vanilla-coloured candle in a glass jar, with a few vanilla pods. Product photograph, the item alone and centred on a plain surface, soft studio light, shallow depth of field. Show only what is described: no toppings, fillings, garnishes or props that were not asked for. Colours and mood only: Warm amber, deep brown and soft gold, dark velvet studio backdrop, quiet and expensive, like the shop's concept renders. No people, no faces, no hands. No text, letters, numbers, logos, labels or watermarks.",
+      "seed": 2111,
+      "slot": "product:vanilla-gift-set",
+      "verdict": {
+        "categories": [],
+        "model": "nemotron-3.5-content-safety",
+        "safe": true,
+        "user_safety": "safe"
+      },
+      "width": 768
+    },
+    "product:vetiver-ember": {
+      "brief": "A smoky grey 50 ml glass perfume bottle with a wooden cap and a blank label, a bundle of dried vetiver roots and a piece of charred birch beside it",
+      "bytes": 27026,
+      "cost_micro_usd": 11797,
+      "description": {
+        "alt": "Clear glass perfume bottle with wooden cap and grey label, with dried vetiver roots and charred birch wood beside it.",
+        "check": "The label is blank with no product name or branding visible.",
+        "photographic": true,
+        "shows_person": false,
+        "shows_text": false
+      },
+      "digest": "sha256:f55f9fbe21c650f5321203da1dddebe17cceacb76bd322bbc824ff73a95a388c",
+      "file": "product_vetiver-ember.webp",
+      "height": 768,
+      "kind": "product",
+      "label": "Sample image, made with AI",
+      "media_type": "image/webp",
+      "model": "z-image-turbo",
+      "prompt": "A smoky grey 50 ml glass perfume bottle with a wooden cap and a blank label, a bundle of dried vetiver roots and a piece of charred birch beside it. Product photograph, the item alone and centred on a plain surface, soft studio light, shallow depth of field. Show only what is described: no toppings, fillings, garnishes or props that were not asked for. Colours and mood only: Warm amber, deep brown and soft gold, dark velvet studio backdrop, quiet and expensive, like the shop's concept renders. No people, no faces, no hands. No text, letters, numbers, logos, labels or watermarks.",
+      "seed": 2146,
+      "slot": "product:vetiver-ember",
+      "verdict": {
+        "categories": [],
+        "model": "nemotron-3.5-content-safety",
+        "safe": true,
+        "user_safety": "safe"
+      },
+      "width": 768
+    },
+    "section:gifts": {
+      "brief": "A small perfume bottle and a lit candle in a kraft gift box with tissue paper and a plain card tied with ribbon, on a dark wooden table",
+      "bytes": 43884,
+      "cost_micro_usd": 15729,
+      "description": {
+        "alt": "Kraft gift box on a wooden table holding a perfume bottle, a lit candle, and a plain card tied with pink ribbon.",
+        "check": "The card in the box is blank, not handwritten as the gift wrap is described.",
+        "photographic": true,
+        "shows_person": false,
+        "shows_text": false
+      },
+      "digest": "sha256:d4ca593a0f3d11e7c7c4bad5ba88998268c74098205bb7677df8413b9cd348e2",
+      "file": "section_gifts.webp",
+      "height": 768,
+      "kind": "section",
+      "label": "Sample image, made with AI",
+      "media_type": "image/webp",
+      "model": "z-image-turbo",
+      "prompt": "A small perfume bottle and a lit candle in a kraft gift box with tissue paper and a plain card tied with ribbon, on a dark wooden table. Natural light, realistic photographic style, calm composition with room for a headline on one side. Colours and mood only: Warm amber, deep brown and soft gold, dark velvet studio backdrop, quiet and expensive, like the shop's concept renders. No people, no faces, no hands. No text, letters, numbers, logos, labels or watermarks.",
+      "seed": 2102,
+      "slot": "section:gifts",
+      "verdict": {
+        "categories": [],
+        "model": "nemotron-3.5-content-safety",
+        "safe": true,
+        "user_safety": "safe"
+      },
+      "width": 1024
+    }
+  },
+  "blocked": []
+}

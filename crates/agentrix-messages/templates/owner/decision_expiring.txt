@@ -1,0 +1,7 @@
+{% block push %}A decision expires within the hour.{% endblock %}
+{% block push_url %}{{ card.url }}{% endblock %}
+{% block chat %}
+{{ card.title }} expires at {{ card.expires_at }}. If nobody decides, it expires and nothing is done.
+
+::button Open in the console | {{ card.url }}
+{% endblock %}

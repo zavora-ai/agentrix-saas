@@ -1,0 +1,18 @@
+{% block subject %}{% if invoice.paid %}Paid: invoice {{ invoice.number }}{% else %}Invoice {{ invoice.number }} for {{ site.name }}{% endif %}, {{ invoice.amount|money(invoice.currency) }}{% endblock %}
+{% block preheader %}{{ invoice.period }}{% if invoice.paid %}, paid {{ invoice.paid_at }}{% else %}, due {{ invoice.due }}{% endif %}.{% endblock %}
+{% block body %}
+{% if invoice.paid %}
+# Payment received
+We received {{ invoice.amount|money(invoice.currency) }} for invoice {{ invoice.number }} on {{ invoice.paid_at }}. Thank you.
+{% else %}
+# Invoice {{ invoice.number }}
+Here is the invoice for {{ invoice.period }}. {{ invoice.method }} pays it on {{ invoice.due }}; there's nothing for you to do.
+{% endif %}
+
+{% for line in invoice.lines %}
+::fact {{ line.label }} | {{ line.amount|money(invoice.currency) }}
+{% endfor %}
+::fact Total | {{ invoice.amount|money(invoice.currency) }}
+
+::button Open billing | {{ invoice.url }}
+{% endblock %}

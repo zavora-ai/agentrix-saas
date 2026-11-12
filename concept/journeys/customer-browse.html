@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Arrive as a Guest</title>
+<meta name="description" content="Customer journey, step 1: Njeri arrives at Kilele Bakery as a guest, meets desks that say they are AI, and gets a cited answer without signing in.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Manrope:wght@600;700;800&family=Fraunces:opsz,wght@9..144,600;9..144,800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../styles.css">
+<link rel="stylesheet" href="../experience/experience.css">
+<link rel="stylesheet" href="journeys.css">
+<style>
+  .k-nav { display: flex; gap: 4px; margin-left: auto; flex-wrap: wrap; }
+  .k-nav a { display: inline-flex; align-items: center; gap: 6px; padding: 7px 9px; border-radius: 999px; font: 600 13px/1 var(--font-text); color: var(--k-brown-2); text-decoration: none; }
+  .k-nav a[aria-current="true"] { background: var(--k-cream-2); color: var(--k-brown); }
+  .k-hero { padding: 18px 16px 4px; }
+  .k-hero h2 { font: 800 26px/1.05 var(--k-serif); }
+  .k-hero p { margin: 8px 0 0; font-size: 14px; color: var(--k-brown-2); }
+  .k-peek { margin: 0 12px 14px; border: 1px solid var(--k-line); border-radius: 18px; background: var(--wa-bg); box-shadow: var(--wa-shadow); padding: 14px; display: grid; gap: 10px; }
+  .k-first { font-size: 12.5px; color: var(--k-brown-2); background: var(--k-cream); border-radius: 10px; padding: 8px 10px; }
+  .k-starters { display: flex; gap: 6px; flex-wrap: wrap; }
+  .k-starters button { border: 1px solid var(--k-line); background: #fff; color: var(--k-brown); border-radius: 999px; padding: 7px 10px; font: 600 12.5px/1.2 var(--font-text); cursor: pointer; }
+  .k-starters button:hover { border-color: var(--k-terra); }
+  .k-foot { padding: 14px 16px 16px; border-top: 1px solid var(--k-line); display: grid; gap: 10px; font-size: 13px; color: var(--k-brown-2); }
+  .k-foot blockquote { margin: 0; padding: 10px 12px; border-radius: 12px; background: #fff; border: 1px solid var(--k-line); }
+  .k-foot blockquote b { color: var(--k-brown); }
+  .k-foot .link { color: var(--k-terra-2); font-weight: 700; text-decoration: underline; text-underline-offset: 3px; background: none; border: 0; padding: 0; font-size: inherit; cursor: pointer; }
+</style>
+</head>
+<body data-lane="customer" data-step="1">
+<header class="j-top">
+  <a class="logo" href="../index.html"><span class="mark" aria-hidden="true"></span>Agentrix</a>
+  <a class="j-maplink" href="index.html">Journey map</a>
+  <span class="j-lane">Customer · Njeri</span>
+  <span class="concept-label">Concept · illustrative data</span>
+</header>
+<nav class="j-steps" aria-label="Customer journey" data-steps></nav>
+<main class="wrap j-main">
+  <header class="j-head">
+    <p class="eyebrow">Step 1 of 7 · Customer</p>
+    <h1>Arrive and browse, as a guest</h1>
+    <p class="lead">Njeri, in London, opens a link her sister sent on WhatsApp. Nothing asks her to sign in. The desks say they are AI, and the first answer cites the bakery's own pages.</p>
+  </header>
+  <div class="j-grid">
+    <section class="j-stage" aria-label="What Njeri sees">
+      <div class="j-screens">
+        <div class="j-screen">
+          <p class="j-cap"><span class="n">1</span>The page loads as itself. No pop-up, no greeting.</p>
+          <div class="j-device kilele">
+            <div class="j-url"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg><span>kilele-bakery.example</span></div>
+            <div class="k-bar">
+              <a class="k-logo" href="#" onclick="return false"><i aria-hidden="true"></i>Kilele</a>
+              <nav class="k-nav" aria-label="Kilele menu (desks)">
+                <a href="#" onclick="return false"><span class="j-mark" data-agent="bread" data-size="20"></span>Bread</a>
+                <a href="#" onclick="return false" aria-current="true"><span class="j-mark" data-agent="cakes" data-size="20" data-state="listening"></span>Cakes</a>
+                <a href="#" onclick="return false"><span class="j-mark" data-agent="orders" data-size="20"></span>Orders</a>
+              </nav>
+            </div>
+            <div class="k-hero">
+              <h2>Baked at dawn in Kilimani.</h2>
+              <p>Sourdough, cakes to order, and a weekend bake box.</p>
+            </div>
+            <div class="k-peek" role="group" aria-label="Cakes desk">
+              <div class="k-desk">
+                <span class="j-mark" data-agent="cakes" data-size="40" data-state="answering" id="peekMark"></span>
+                <div class="who"><b>Cakes <span class="k-ai">AI</span></b><span>WebAgent · answers from this site</span></div>
+              </div>
+              <p class="k-first">You're talking to AI. It never guesses prices, dates or allergens.</p>
+              <div class="k-thread" aria-live="polite" id="thread">
+                <p class="k-msg me">Do you deliver to Kilimani on Saturday the 14th?</p>
+                <div class="k-msg desk">Yes. Saturday deliveries to Kilimani run 10:00–12:00 and cost KSh 300<span class="cite">1</span>. Saturday 14 Nov is still open for cakes<span class="cite">2</span>.
+                  <div class="k-sources"><span>1 · Delivery: zones and fees</span><span>2 · Cakes: order calendar (live)</span></div>
+                </div>
+              </div>
+              <div class="k-starters" aria-label="Starters">
+                <button type="button" data-q="What's in the weekend bake box?">What's in the bake box?</button>
+                <button type="button" data-q="Can I design a birthday cake?">Design a birthday cake</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="j-screen">
+          <p class="j-cap"><span class="n">2</span>The footer says who counts what, and who the desks are.</p>
+          <div class="j-device kilele">
+            <div class="j-url"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg><span>kilele-bakery.example</span></div>
+            <div class="k-foot">
+              <blockquote><b>Visit counts.</b> This site counts visits without cookies. It records the page, the site you came from, your type of device and your country, as daily totals. Your IP address is used only to find your country and is then dropped. Nothing is shared with anyone else. <button class="link" type="button" id="optOut">Don't count my visits</button></blockquote>
+              <p id="optMsg" hidden>Done. This device won't be counted. You can change this in the footer at any time.</p>
+              <p>The WebAgents on this site are AI. A person is one tap away: <b>Talk to Wanjiru</b>.</p>
+              <p>© Kilele Bakery · Made with Agentrix</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <aside class="j-notes" aria-label="What happens underneath">
+      <div class="j-note"><h3>A guest by default</h3><p>Asking, comparing and designing need no account. An account is asked for only when she orders, saves or tracks (step 2).</p></div>
+      <div class="j-note"><h3>AI, said three times</h3><p>The AI chip by every desk, the first line of the thread, and the footer (06 §4.6). The marks are squircles, never faces or circles.</p></div>
+      <div class="j-note"><h3>Numbers come from rules</h3><p>The fee comes from the delivery page and the date from the live order calendar. The desk cites both and never guesses (06 §5.6).</p></div>
+      <div class="j-note"><h3>Nothing is remembered</h3><p>The thread lasts the session. Remembering her on this device is a separate, opt-in choice.</p></div>
+      <div class="j-note"><h3>Counted without cookies</h3><p>Daily totals only, with no identifier, and "Don't count my visits" is honoured (06 §4.9).</p></div>
+    </aside>
+  </div>
+</main>
+<nav class="wrap j-pager" aria-label="Previous and next step" data-pager></nav>
+<script src="journeys.js"></script>
+<script>
+(() => {
+  const answers = {
+    "What's in the weekend bake box?": ["The weekend bake box has a sourdough loaf, four cinnamon buns and a banana loaf, for KSh 1,350<span class=\"cite\">1</span>. It's baked on Saturday morning<span class=\"cite\">2</span>.", ["1 · Shop: weekend bake box", "2 · Bread: bake schedule"]],
+    "Can I design a birthday cake?": ["Yes. Cakes are designed from Kilele's own options and priced from the price list<span class=\"cite\">1</span>. Ordering one asks you to sign in, so you can follow it<span class=\"cite\">2</span>.", ["1 · Cakes: options and prices", "2 · Orders: how ordering works"]]
+  };
+  const thread = document.getElementById("thread"), mark = document.getElementById("peekMark");
+  document.querySelectorAll("[data-q]").forEach(b => b.addEventListener("click", () => {
+    const q = b.dataset.q, a = answers[q];
+    thread.insertAdjacentHTML("beforeend", `<p class="k-msg me">${q}</p>`);
+    J.setState(mark, "working");
+    setTimeout(() => {
+      J.setState(mark, "answering");
+      thread.insertAdjacentHTML("beforeend", `<div class="k-msg desk">${a[0]}<div class="k-sources">${a[1].map(s => `<span>${s}</span>`).join("")}</div></div>`);
+    }, 700);
+    b.disabled = true;
+  }));
+  document.getElementById("optOut").addEventListener("click", () => { document.getElementById("optMsg").hidden = false; });
+})();
+</script>
+</body>
+</html>

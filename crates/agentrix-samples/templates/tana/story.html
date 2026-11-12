@@ -1,0 +1,40 @@
+{% extends "tana/layout.html" %}
+{% from "tana/macros.html" import card, timeline %}
+{% block main %}
+<div class="n-grid story-grid">
+  <article class="story" id="story">
+    <nav class="crumbs" aria-label="Where this story sits"><a href="/{{ story.section }}">{{ story.section_name }}</a>{% if story.topic %} · <a href="/stories/{{ story.topic }}">Story so far: {{ topic_title }}</a>{% endif %} · <a href="/archive#m-{{ story.iso[:7] }}">Issue {{ story.issue }}</a></nav>
+    {% if ("story:" ~ story.slug) in shell.pictures %}{% set pic = shell.pictures[("story:" ~ story.slug)] %}<figure class="pic story-pic"><img src="{{ pic.url }}" alt="{{ pic.alt }}"{% if pic.width and pic.height %} width="{{ pic.width }}" height="{{ pic.height }}"{% endif %}>{% if pic.label %}<span class="rtag">{{ pic.label }}</span>{% endif %}</figure>{% endif %}
+    {% if correction %}<div class="corr-note" id="correction" role="note"><span class="corr">Correction</span> <b>{{ correction.when }}.</b> {{ correction.note }}</div>{% endif %}
+    <span class="kicker">{{ story.kicker }}</span>{% if story.locked %} <span class="n-lock">Subscriber</span>{% endif %}
+    <h1>{{ story.title }}</h1>
+    {% if open %}<p class="standfirst">{{ story.standfirst }}</p>{% endif %}
+    <div class="by">By <b>{{ story.author }}</b>, {{ story.author_role | lower }} · <time datetime="{{ story.iso }}">{{ story.date_long }}, {{ story.clock }}</time>{% if story.corrected %} · <a class="corr" href="#correction">Corrected {{ story.corrected }}</a>{% endif %}</div>
+    {% if open %}
+    <div class="story-body">
+      {% for p in paragraphs %}<p id="{{ p.id }}">{{ p.text }}</p>{% endfor %}
+    </div>
+    {% else %}
+    <div class="lockbox" id="lock">
+      <span class="n-lock">Subscriber</span>
+      <h2>Subscribe or sign in to read the rest</h2>
+      {% if shell.account %}<p>You're signed in as {{ shell.account.name }}, without a subscription. Subscribers read every subscriber story in full.</p>
+      <div class="row"><a class="n-btn" href="/subscribe">See the offer</a></div>
+      {% else %}<p>This story is for subscribers. If you subscribe already, sign in and it opens in full.</p>
+      <div class="row"><a class="n-btn" href="/subscribe">Subscribe</a><a class="n-btn ghost" href="{{ sign_in }}">Sign in</a></div>{% endif %}
+      <p class="small">The desks show this story to non-subscribers as its headline and link only, never a summary.</p>
+    </div>
+    {% endif %}
+    <p class="sample-note">Sample story. The paper, the people, the places and the figures are invented.</p>
+    <div class="byline-box"><b>{{ story.author }}</b><span>{{ story.author_role }}</span><p>{{ bio }}</p></div>
+    {% if story.topic %}<a class="sofar" href="/stories/{{ story.topic }}"><span class="kicker">Story so far</span><b>{{ topic_title }}</b><i>{{ steps | length }} steps, each linked to its story</i></a>{% endif %}
+  </article>
+  <aside class="rail-n">
+    {% if steps %}<div class="box" id="timeline"><span class="kicker">Story so far</span><h4>{{ topic_title }}</h4>{{ timeline(steps) }}</div>{% endif %}
+    {% if more %}<div class="box"><span class="kicker">More in {{ story.section_name }}</span>
+      <div class="side-list">{% for c in more %}{{ card(c, subscriber) }}{% endfor %}</div>
+      <p class="box-link"><a href="/{{ story.section }}">All {{ story.section_name | lower }} stories</a></p></div>{% endif %}
+  </aside>
+</div>
+<script type="application/ld+json">{{ ld | tojson }}</script>
+{% endblock %}

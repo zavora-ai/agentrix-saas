@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Trust centre · Agentrix OS</title>
+<meta name="description" content="Concept: the trust centre. The walls, Freeze, the autonomy ladder for every job, signed standing grants, what the WebAgents believe about the business, and every decision as a receipt anyone can verify.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Manrope:wght@600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../styles.css">
+<link rel="stylesheet" href="console.css">
+<style>
+  .trust-os { --lane-w: 380px; height: 900px; }
+  .walls-card { background: linear-gradient(135deg, #0f5c3c, #1a8a5c); color: #fff; border: 0; }
+  .walls-card h3 { color: #fff; display: flex; align-items: center; gap: 10px; margin: 0; }
+  .walls-card h3 svg { width: 22px; height: 22px; }
+  .walls-card ul { margin: 10px 0 0; padding-left: 18px; display: grid; gap: 4px; font-size: var(--fs-13); color: rgba(255,255,255,.92); }
+  .walls-card .inv { margin-top: 10px; padding: 8px 10px; border-radius: 10px; background: rgba(255,255,255,.12); font: 700 var(--fs-13)/1.4 var(--font-text); }
+  .jobrow { display: grid; grid-template-columns: minmax(0, 210px) minmax(0, 1fr); gap: 14px; align-items: start; padding: 14px 0 22px; border-top: 1px dashed var(--os-line); }
+  .jobrow:first-of-type { border-top: 0; }
+  .jobrow .who { display: flex; gap: 10px; align-items: center; }
+  .jobrow .who .avatar { width: 32px; height: 32px; border-radius: 10px; font-size: 11px; }
+  .jobrow .who b { display: block; font: 700 var(--fs-14)/1.2 var(--font-display); color: var(--os-head); }
+  .jobrow .who small { display: block; font-size: 11.5px; color: var(--os-muted); }
+  .jobrow .note-line { font-size: var(--fs-12); color: var(--os-muted); margin-top: 18px; }
+  .jobrow .lowered-note { margin-top: 18px; padding: 8px 10px; border-radius: 10px; background: var(--wait-bg); color: var(--wait); font: 600 var(--fs-12)/1.4 var(--font-text); }
+  .earned { display: grid; grid-template-columns: 32px 1fr; gap: 10px; margin-top: 18px; padding: 10px 12px; border-radius: 12px; background: linear-gradient(135deg, var(--indigo-50), #fff); border: 1px solid var(--indigo-100); font-size: var(--fs-13); color: var(--ink-2); }
+  .earned b { color: var(--indigo-900); }
+  .earned.done .verbs { display: none; }
+  .earned .done-line { display: none; margin-top: 6px; color: var(--ok); font-weight: 700; }
+  .earned.done .done-line { display: block; }
+  .fixed-rules { display: flex; flex-wrap: wrap; gap: 6px; }
+  .trust-sec + .trust-sec { margin-top: 12px; }
+  .ladder-wrap { min-width: 0; }
+  .levels { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 8px; margin-top: 14px; }
+  .levels div { padding: 10px; border-radius: 12px; background: var(--paper); border: 1px solid var(--line); font-size: var(--fs-13); color: var(--ink-2); }
+  .levels b { display: block; font: 700 var(--fs-14)/1.2 var(--font-display); color: var(--indigo-900); margin-bottom: 4px; }
+  @media (max-width: 900px) { .jobrow { grid-template-columns: 1fr; gap: 8px; } .trust-os { height: auto; } .levels { grid-template-columns: 1fr 1fr; } }
+</style>
+</head>
+<body class="os-page">
+<header class="conceptbar">
+  <a class="logo" href="../index.html"><span class="mark" aria-hidden="true"></span>Agentrix</a>
+  <nav aria-label="Agentrix OS concepts">
+    <a href="index.html">Agentrix OS</a>
+    <a href="shell.html">Shell</a>
+    <a href="store.html">Store</a>
+    <a href="mission.html">Missions</a>
+    <a href="live.html">Live</a>
+    <a href="phone.html">Phone</a>
+    <a href="trust.html" aria-current="page">Trust centre</a>
+    <a href="gestures.html">Gestures</a>
+  </nav>
+  <span class="concept-label">Concept · illustrative data</span>
+</header>
+
+<main class="wrap">
+  <div class="page-head">
+    <span class="eyebrow">Agentrix OS · 6 of 6 · Trust centre</span>
+    <h1 style="margin-top:12px">Trust centre: what your WebAgents may do, what they did, and the switch to stop them</h1>
+    <p class="lead">Everything that keeps the owner in charge, in one app: whether the walls hold, one switch that freezes everything, how much each WebAgent may do alone (job by job, earned and never assumed), the standing grants you signed, what your WebAgents believe about your business, and every decision as a receipt anyone can verify.</p>
+    <div class="tryline"><span>Try:</span><span class="chip chip-outline">Freeze</span><span class="chip chip-outline">accept Sales' promotion</span><span class="chip chip-outline">Verify a receipt</span><span class="chip chip-outline">confirm or forget a fact</span></div>
+  </div>
+
+  <section class="os-frame" aria-label="Trust centre, Kilele Bakery">
+    <div class="browser-bar"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="url"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>os.agentrix.ai/kilele/trust</span></div>
+    <div class="os trust-os" data-world="back" data-time="day">
+      <div class="os-bar">
+        <button class="site-chip" type="button"><span class="logo-bake">K</span><span>Kilele Bakery<small>charter v4 · signed 7 Nov</small></span></button>
+        <div class="worlds" role="group" aria-label="Worlds"><button type="button" data-world="front" aria-pressed="false">Front of house</button><button type="button" data-world="back" aria-pressed="true">Back office</button></div>
+        <div class="bar-right"><button class="pill freeze" type="button" data-freeze aria-pressed="false" data-on="Frozen" data-off="Freeze"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></svg><span data-freeze-text>Freeze</span></button></div>
+      </div>
+      <nav class="dock" aria-label="System">
+        <span class="app-ico" aria-current="true"><span class="sys"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></span>Trust</span>
+        <a class="app-ico" href="#memory"><span class="sys"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V3H6.5A2.5 2.5 0 0 0 4 5.5z"/><path d="M8 7h8M8 11h6"/></svg></span>Memory</a>
+        <a class="app-ico" href="shell.html"><span class="sys"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></span>Activity</a>
+      </nav>
+
+      <div class="field">
+        <section class="view" data-view="back">
+          <div class="field-head"><div><h2>Trust centre</h2><div class="sub">Kilele Bakery · proof and control</div></div><div class="row"><button class="btn btn-sm" type="button">Export everything</button></div></div>
+
+          <article class="fcard walls-card trust-sec">
+            <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>Protections on · last check 2 min ago</h3>
+            <ul>
+              <li>Your site matches signed release v14 · checked 2 min ago</li>
+              <li>No WebAgent holds a password or card credential</li>
+              <li>41 typed signals crossed from Front of house today; no raw text crossed</li>
+              <li>Quiet hours 22:00–06:00 (Nairobi) · AI budget KSh 38 of 1,500</li>
+            </ul>
+            <div class="inv">Consequential actions taken without the authority you granted: 0. Always.</div>
+          </article>
+
+          <div class="freeze-big trust-sec" style="margin-top:12px">
+            <div><h3>Freeze everything</h3><p class="small" style="margin-top:4px;color:var(--ink-2)">Every WebAgent stops at its next safe point. Your site keeps serving release v14 and the Concierge answers from your pages only, then offers the contact form. Nothing is sent, published or paid. Unfreezing needs your passkey in the app.</p><div class="row" style="margin-top:8px"><span class="chip">Also: reply STOP on WhatsApp</span><span class="chip">Also: say "stop everything"</span></div></div>
+            <button class="btn btn-lg" type="button" data-freeze aria-pressed="false" data-on="Frozen · unfreeze" data-off="Freeze"><span data-freeze-text>Freeze</span></button>
+          </div>
+
+          <article class="fcard trust-sec" style="margin-top:12px">
+            <div class="spread"><div><h3 style="margin:0">How much each WebAgent may do alone</h3><p style="margin-top:2px">Set per job. Promotions are offered with evidence and only you accept them; a breach or two declines in a row lowers a job by one step automatically.</p></div></div>
+
+            <div class="jobrow">
+              <div class="who"><span class="avatar av-concierge">Co</span><div><b>Concierge</b><small>3 desks · Front of house</small></div></div>
+              <div><div class="fixed-rules"><span class="chip chip-info">Your rules, not a dial</span><span class="chip">Orders over KSh 3,000 wait for you</span><span class="chip">English, Swahili</span><span class="chip">Visitor memory: this visit only</span></div><p class="note-line">Public desks read untrusted text, so they follow fixed rules you set, never a dial.</p></div>
+            </div>
+
+            <div class="jobrow">
+              <div class="who"><span class="avatar av-sales">Sa</span><div><b>Sales · follow-ups</b><small>job: nurture</small></div></div>
+              <div class="ladder-wrap">
+                <div class="ladder" role="group" aria-label="Sales follow-ups"><button type="button">Watch</button><button type="button">Suggest</button><button type="button" aria-pressed="true">Ask me first</button><button type="button" data-note="Draft: Sales may send follow-ups to consented leads and tell you after. Sign it to apply.">Do it, tell me</button><button type="button" disabled>Within budget</button></div>
+                <div class="earned" data-decision><span class="orb sm" style="--s:28px" aria-hidden="true"></span><div><b>Let Sales send follow-ups to consenting leads without asking?</b> You approved 20 of Sales' follow-ups unchanged in the last 30 days, with no breach, and its evaluation suite passes. Let it send follow-ups to consented leads and tell you after?<div class="verbs"><button class="btn btn-primary btn-sm" type="button" data-passkey data-sign="Promote Sales · nurture: Ask me first → Do it and tell me · max 10 a day · consented leads only" data-fp="H(kilele, ladder, promote, {sales/nurture, ActWithApproval→ActWithinBudget, at_most 10/day, consent=required}) = e04c…7f">Allow, and tell me</button><button class="btn btn-ghost btn-sm" type="button" data-dismiss="Not yet · asked again in 30 days">Not yet</button></div><div class="done-line">Promoted · signed grant g-7 · Sales tells you in each brief.</div></div></div>
+              </div>
+            </div>
+
+            <div class="jobrow">
+              <div class="who"><span class="avatar av-editor">Ed</span><div><b>Editor · fixes</b><small>job: freshness</small></div></div>
+              <div class="ladder-wrap"><div class="ladder" role="group" aria-label="Editor fixes"><button type="button">Watch</button><button type="button">Suggest</button><button type="button">Ask me first</button><button type="button" aria-pressed="true">Do it, tell me</button><button type="button">Within budget</button></div><p class="note-line" data-ladder-note>Within standing grant g-2 below: typos and broken links only.</p></div>
+            </div>
+
+            <div class="jobrow">
+              <div class="who"><span class="avatar av-editor">Ed</span><div><b>Editor · new pages</b><small>job: seo, publishing</small></div></div>
+              <div class="ladder-wrap"><div class="ladder" role="group" aria-label="Editor new pages"><button type="button">Watch</button><button type="button">Suggest</button><button type="button" aria-pressed="true">Ask me first</button><button type="button">Do it, tell me</button><button type="button">Within budget</button></div><p class="note-line" data-ladder-note>Publishing is public, so every release is a card you sign.</p></div>
+            </div>
+
+            <div class="jobrow">
+              <div class="who"><span class="avatar av-reputation">Re</span><div><b>Reputation · replies</b><small>job: social</small></div></div>
+              <div class="ladder-wrap"><div class="ladder lowered" role="group" aria-label="Reputation replies"><button type="button">Watch</button><button type="button">Suggest</button><button type="button" aria-pressed="true">Ask me first</button><button type="button">Do it, tell me</button><button type="button" disabled>Within budget</button></div><div class="lowered-note" data-ladder-note>Lowered from "Do it, tell me" on 3 Nov: you declined two replies in a row. It asks first until you raise it again.</div></div>
+            </div>
+
+            <div class="jobrow">
+              <div class="who"><span class="avatar av-cashier">Ca</span><div><b>Cashier · payments</b><small>job: payments</small></div></div>
+              <div class="ladder-wrap"><div class="ladder" role="group" aria-label="Cashier payments"><button type="button">Watch</button><button type="button">Suggest</button><button type="button" aria-pressed="true">Ask me first</button><button type="button" disabled>Do it, tell me</button><button type="button" disabled>Within budget</button></div><p class="note-line">Money stays at Ask me first above grant g-3. Refunds always ask.</p></div>
+            </div>
+
+            <div class="jobrow">
+              <div class="who"><span class="avatar av-guardian">Gu</span><div><b>Guardian · protect</b><small>job: protect, alarms</small></div></div>
+              <div><div class="fixed-rules"><span class="chip chip-ok">Undo only</span><span class="chip">Roll back to a signed release</span><span class="chip">Switch the site to read-only</span></div><p class="note-line">Guardian may only make things safer and undoable. It can't publish or spend.</p></div>
+            </div>
+          </article>
+
+          <article class="fcard trust-sec" style="margin-top:12px">
+            <h3 style="margin:0">Standing grants you signed</h3>
+            <p style="margin-top:2px">The only way a WebAgent acts without asking. Each has exact bounds, an expiry and your signature; the payment and messaging gateway checks all three before every action.</p>
+            <div class="grant"><span class="avatar av-editor">Ed</span><div><b>g-2 · Fix typos and broken links</b><p>Signed on Wanjiru's iPhone, 1 Nov · expires 1 Feb · used 6 times</p><div class="bounds"><span class="chip">at most 10 a day</span><span class="chip">never prices</span><span class="chip">never new pages</span><span class="chip">undo for 30 days</span></div></div><button class="btn btn-ghost btn-sm" type="button">Revoke</button></div>
+            <div class="grant"><span class="avatar av-cashier">Ca</span><div><b>g-3 · Confirm small orders from returning customers</b><p>Signed on Wanjiru's iPhone, 2 Nov · expires 2 Feb · used 4 times</p><div class="bounds"><span class="chip">up to KSh 3,000</span><span class="chip">returning customers only</span><span class="chip">slot must be free</span></div></div><button class="btn btn-ghost btn-sm" type="button">Revoke</button></div>
+          </article>
+
+          <article class="fcard trust-sec" style="margin-top:12px">
+            <h3 style="margin:0">Platform notices</h3>
+            <p style="margin-top:2px">What Zavora, as the operator, did or is doing that touches your site. The operator can't approve your cards, change a dial or read your content without your grant.</p>
+            <div class="grant"><span class="avatar" style="background:var(--indigo-900)">Z</span><div><b>Platform update 3.4 reached your site</b><p>Ring 2 of a release train · 5 Nov · no change to what your WebAgents may do · evaluation gates passed</p></div><span class="chip">done</span></div>
+            <div class="grant"><span class="avatar" style="background:var(--indigo-900)">Z</span><div><b>Incident: slow answers, 2 Nov 21:10–21:40</b><p>Model provider latency. Your desks said "answers are slower" and fell back to the contact form twice. No action was needed on your site.</p></div><span class="chip">closed</span></div>
+            <div class="grant"><span class="avatar" style="background:var(--indigo-900)">Z</span><div><b>Holds on your site</b><p>None. A platform hold (abuse or safety) would show here with its reason. It is separate from your own Freeze: you can't lift a hold, and Zavora can't lift your freeze.</p></div><span class="chip chip-ok">none</span></div>
+          </article>
+
+          <article class="fcard trust-sec" style="margin-top:12px">
+            <h3 style="margin:0">Support access</h3>
+            <p style="margin-top:2px">Nobody at Zavora or your agency reads your content without a grant you sign: limited in time and scope, and every access is a receipt.</p>
+            <div class="grant" data-decision><span class="avatar" style="background:var(--indigo-900)">Z</span><div><b>Zavora Support asks: read your pages and releases for 4 hours</b><p>Ticket #218 "Easter banner shows twice". Read-only · pages, releases, receipts · never payments or customer data</p><span class="done-line" style="display:none"></span></div><span class="row"><button class="btn btn-primary btn-sm" type="button" data-passkey data-sign="Support grant: Zavora Support · read-only · pages, releases, receipts · 4 h" data-fp="H(kilele, grant, support, {op:zavora/support, read, [pages, releases, receipts], 4h}) = 6c10…aa">Grant</button><button class="btn btn-ghost btn-sm" type="button" data-dismiss="Declined">Decline</button></span></div>
+            <div class="grant"><span class="avatar" style="background:linear-gradient(135deg,#0f6b62,#22a394)">M</span><div><b>Studio Mwangaza (your agency) · Editor role</b><p>Njeri M. and Otieno K., named people. May draft and approve cards the Editor role covers, lower or pause a WebAgent, and freeze. May never raise authority, export or grant roles.</p></div><button class="btn btn-ghost btn-sm" type="button">Revoke</button></div>
+          </article>
+
+          <article class="fcard trust-sec" style="margin-top:12px">
+            <h3 style="margin:0">Export and erasure</h3>
+            <p style="margin-top:2px">Every request gets a receipt that lists each store's answer, so you can see it really happened.</p>
+            <div class="grant"><span class="avatar" style="background:var(--indigo)">⇩</span><div><b>Export everything · ready</b><p>Signed bundle: your records, the site as it runs today, receipts and analytics. Vectors aren't included because they rebuild from the rest; the manifest says so.</p></div><span class="row"><button class="btn btn-primary btn-sm" type="button">Download</button><button class="btn btn-ghost btn-sm" type="button">Verify</button></span></div>
+            <div class="grant"><span class="avatar" style="background:var(--risk)">✕</span><div><b>Amani W. asked to be forgotten · 7 Nov 09:20</b><p>Receipt r-e7a2…0b · due within 30 days · 11 of 13 stores done</p>
+              <div class="bounds">
+                <span class="chip chip-ok">Sessions · Hard</span><span class="chip chip-ok">Memory and facts · Hard</span><span class="chip chip-ok">Search index · Hard</span><span class="chip chip-ok">Leads, orders, threads · Hard</span><span class="chip chip-ok">Artifacts · Hard</span><span class="chip chip-ok">Receipts · bodies redacted, hashes kept</span><span class="chip chip-wait">Analytics · Eventual, within 7 days</span><span class="chip">Backups · replayed on any restore</span>
+              </div>
+              <p style="margin-top:8px"><b style="color:var(--indigo-900)">Copies we can't reach (External):</b> your WhatsApp Business chat with Amani and your PayPal statements. Agentrix can't erase inside your own tools. <a href="#" onclick="return false">How to delete them there</a>.</p>
+            </div><span class="chip chip-wait">in progress</span></div>
+          </article>
+
+          <article class="fcard trust-sec" id="memory" style="margin-top:12px">
+            <h3 style="margin:0">What your WebAgents believe about Kilele</h3>
+            <p style="margin-top:2px">Only facts you told them (<b>Known</b>) are ever published or promised. Things they inferred (<b>Assumed</b>) can only shape a question to you.</p>
+            <div class="fact-row"><span>Open Sundays 09:00–14:00<small>Known · you told me, 2 Nov · on /visit</small></span><span class="chip chip-ok">Known</span></div>
+            <div class="fact-row"><span>Gluten-free tiers on request<small>Known · your words to Mary K., today · draft for /cakes</small></span><span class="chip chip-ok">Known</span></div>
+            <div class="fact-row" data-decision><span>Most cake orders are collected on Saturdays<small>Assumed · from 41 orders since 2 Nov</small><span class="done-line" style="display:none"></span></span><span class="row"><button class="btn btn-sm" type="button" data-dismiss="Confirmed">Confirm</button><button class="btn btn-ghost btn-sm" type="button">Forget</button></span></div>
+            <div class="fact-row"><span>Delivery to Karen costs KSh 500<small>Assumed · from an old 2023 page, never published since</small></span><span class="row"><button class="btn btn-sm" type="button">Correct</button><button class="btn btn-ghost btn-sm" type="button">Forget</button></span></div>
+            <div class="fact-row"><span>Visitor memory<small>Your policy: this visit only. No visitor profiles are kept.</small></span><button class="btn btn-ghost btn-sm" type="button">Change</button></div>
+          </article>
+        </section>
+        <section class="view" data-view="front">
+          <div class="field-head"><div><h2>Front of house rules</h2><div class="sub">What the desks and the agent door may do</div></div></div>
+          <p class="note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg><span>Desks answer only from your signed pages, say they are AI, never promise a price, date or refund your site doesn't state, and hold any order above KSh 3,000 for you. Verified AI agents get the same prices and the same rules.</span></p>
+        </section>
+      </div>
+
+      <aside class="lane" aria-label="Receipts">
+        <div class="lane-scroll">
+          <h4>Signed decisions and receipts</h4>
+          <div class="receipt"><span class="when">07:01</span><div>You approved order o-118, KSh 4,500, on your iPhone.<div class="meta"><span>r-4c19…e7</span><a href="#" data-verify>Verify</a></div><div class="verify"><b>Fingerprint</b> H(kilele, cashier, order.confirm, {o-118, 4500 KES, 2026-11-14T10:00}, exp 2026-11-07T19:00+03)<br><b>Passkey</b> Wanjiru's iPhone · credential …a91f · challenge = fingerprint<br><b>Checked by</b> the Effects Gateway · ran once · idempotency key = fingerprint<br><b>Chain</b> follows r-51c0…aa · log signed</div></div></div>
+          <div class="receipt"><span class="when">Fri 16:05</span><div>You approved a refund of KSh 800 to Peter O. from the shop's tablet, with a code from your authenticator app (no passkey on that device).<div class="meta"><span>r-7d20…b3</span><a href="#" data-verify>Verify</a></div><div class="verify"><b>Fingerprint</b> H(kilele, cashier, refund, {o-102, 800 KES, Peter O.}, exp 2026-11-06T18:00+03)<br><b>Method</b> authenticator code (step-up) · single use · bound to the fingerprint · shop tablet, signed in with email, password and code<br><b>What it proves</b> you held your authenticator at 16:05. The platform attests it; it is not your own signature, as a passkey is<br><b>Checked by</b> the Effects Gateway · ran once</div></div></div>
+          <div class="receipt"><span class="when">06:41</span><div>Guardian blocked 212 requests probing /wp-login.php. Within its role; no decision needed.<div class="meta"><span>r-51c0…aa</span><a href="#" data-verify>Verify</a></div><div class="verify"><b>Role</b> Guardian · protect · Undo only<br><b>Effect</b> edge rule, reversible · no model call<br><b>Chain</b> follows r-8f3a…19</div></div></div>
+          <div class="receipt"><span class="when">Sat 18:20</span><div>You signed release v14 on your iPhone.<div class="meta"><span>r-0d92…6b</span><a href="#" data-verify>Verify</a></div><div class="verify"><b>Release</b> v14 · content digest 3e7b…c2 · built by the release builder · admitted by the launch gate<br><b>Passkey</b> Wanjiru's iPhone · challenge = release fingerprint</div></div></div>
+          <div class="receipt"><span class="when">6 Nov</span><div><b>Njeri M., Studio Mwangaza</b> (agency, Editor role) drafted the Christmas page. You signed release v12.<div class="meta"><span>r-91aa…3d</span><a href="#" data-verify>Verify</a></div><div class="verify"><b>Drafted by</b> principal mwangaza/njeri (a person, agency Editor on kilele)<br><b>Signed by</b> Wanjiru's iPhone · challenge = release fingerprint</div></div></div>
+          <div class="receipt"><span class="when">7 Nov</span><div>You signed charter v4: added Sales.<div class="meta"><span>r-5be1…90</span><a href="#" data-verify>Verify</a></div><div class="verify"><b>Charter</b> v3 → v4 · +sales · jobs nurture:ask, handoff:tell, sell:ask · budget 300 KES/mo</div></div></div>
+          <div class="receipt"><span class="when">2 Nov</span><div>Mover destroyed the sealed room "replay" after 3 m 42 s. Nothing left running.<div class="meta"><span>r-2f88…41</span><a href="#" data-verify>Verify</a></div><div class="verify"><b>Sandbox</b> network: your old site only · keys: none · destroyed ✓</div></div></div>
+          <h4>Devices and people</h4>
+          <div class="quiet"><b>Wanjiru's iPhone</b> · passkey · can decide everything<br><b>MacBook</b> · passkey · can decide everything<br><b>Shop tablet</b> · no passkey · signed in with email, password and a code · approves with a code from your authenticator app<br><b>Authenticator app</b> · your phone · codes for sign-in and approvals without a passkey<br><b>WhatsApp</b> · paired · everyday cards and STOP<br><b>Studio Mwangaza</b> · agency, Editor role · 2 named people</div>
+          <h4>Your data</h4>
+          <div class="quiet">Content, customers, receipts, the built site and the code. The platform is MIT open source: you can run it yourself on your own Vultr server.<div class="verbs"><button class="btn btn-primary btn-sm" type="button">Export everything</button></div></div>
+        </div>
+      </aside>
+
+      <div class="cmd">
+        <div class="askline"><span class="orb sm" aria-hidden="true"></span><input type="text" aria-label="Ask your Chief WebAgent" placeholder="Ask… e.g. why did Reputation get lowered?"><button class="icon-btn" type="button" aria-label="Send"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button></div>
+      </div>
+
+      <div class="overlay" id="passkey" role="dialog" aria-modal="true" aria-label="Confirm with your passkey">
+        <div class="passkey">
+          <div class="fp"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 11c0 3-1 6-3 8M8.5 7.5A5 5 0 0 1 17 11c0 1.5-.2 3-.6 4.4M6.3 10A6.5 6.5 0 0 1 9 5.6M12 14.5c-.2 1.8-.8 3.5-1.7 5M15.3 17.5c-.3 1-.7 2-1.2 2.9M4 13.5c.4-1 .6-2 .6-3"/></svg></div>
+          <h3>Confirm it's you</h3>
+          <p data-sign-what>This exact action</p>
+          <div class="sig"><b>Your passkey signs:</b> <span data-sign-fp></span></div>
+          <div class="row"><button class="btn" type="button" data-close>Cancel</button><button class="btn btn-primary" type="button" data-do-sign>Use passkey</button></div>
+          <button class="stepup-link" type="button" data-stepup>No passkey on this device? Use a code from your authenticator app</button>
+          <div class="stepup-box">
+            <label for="stepup-code">Code from your authenticator app</label>
+            <input id="stepup-code" class="stepup-code" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="6 digits">
+            <p>Single use, and bound to this exact effect. Your receipt will say a code approved it, not a passkey.</p>
+            <div class="row"><button class="btn" type="button" data-stepup-back>Back to passkey</button><button class="btn btn-primary" type="button" data-do-sign data-method="code">Approve with code</button></div>
+          </div>
+          <div class="ok">Signed · grant written · receipt written</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-label="The ladder">
+    <span class="eyebrow">The autonomy ladder</span>
+    <h2 style="margin-top:8px">Five steps, per job, in plain words.</h2>
+    <div class="levels">
+      <div><b>Watch</b>Reads and reports. Changes nothing.</div>
+      <div><b>Suggest</b>Drafts and proposals only.</div>
+      <div><b>Ask me first</b>Every change is a card you sign.</div>
+      <div><b>Do it, tell me</b>Acts inside a signed grant; it's in tomorrow's brief, with undo.</div>
+      <div><b>Within budget</b>Acts inside a grant and its budget; it's in the weekly review.</div>
+    </div>
+    <p class="small muted" style="margin-top:12px">Guardian alone has a sixth position, Undo only. The site can lower its own autonomy; only the owner can raise it.</p>
+  </section>
+</main>
+<footer class="concept-foot">
+  <div class="wrap row">
+    <span><a href="phone.html">← The phone</a> · Back to <a href="index.html">Agentrix OS →</a></span>
+    <span>Concept screens with illustrative data. Kilele Bakery is fictional.</span>
+  </div>
+</footer>
+<script src="console.js"></script>
+<script>
+  // Mark the promotion card done after signing (console.js marks [data-decision] done).
+  document.querySelectorAll('.fact-row[data-decision]').forEach(r => r.querySelector('[data-dismiss]').addEventListener('click', () => { r.querySelector('small').textContent = 'Known · you confirmed it, just now'; r.querySelector('.row').innerHTML = '<span class="chip chip-ok">Known</span>'; }));
+</script>
+</body>
+</html>

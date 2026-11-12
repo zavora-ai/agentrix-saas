@@ -1,0 +1,20 @@
+{% block push %}{% if waiting > 1 %}{{ waiting }} decisions are waiting.{% else %}A decision is waiting.{% endif %}{% endblock %}
+{% block push_url %}{{ card.url }}{% endblock %}
+{% block chat %}
+# Waiting for you, since {{ card.since }}
+
+{{ card.title }}
+
+{{ card.agent }} · {{ card.risk|capitalize }} risk
+
+{% if card.risk in ["low", "medium"] and not card.money %}
+Approve it in the console. You can decline it here.
+
+::button Open in the console | {{ card.url }}
+::reply Decline
+{% else %}
+This one needs the console{% if card.money %}, because it moves money{% else %}, because it's high risk{% endif %}. Your passkey or an authenticator code approves it there.
+
+::button Open in the console | {{ card.url }}
+{% endif %}
+{% endblock %}

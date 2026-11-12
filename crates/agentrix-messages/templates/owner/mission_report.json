@@ -1,0 +1,27 @@
+{
+ "site": {
+  "name": "Kilele Bakery",
+  "host": "kilele-bakery-sample.agentrix.website",
+  "sample": true
+ },
+ "person": {
+  "name": "Wanjiru"
+ },
+ "console_url": "https://agentrix.website/console/kilele-bakery-sample",
+ "mission": {
+  "name": "Christmas cakes: 60 preorders by 18 Dec",
+  "status": "On track: 23 of 60 preordered, 8 this week.",
+  "lines": [
+   "Sales posted the Christmas cake page; 412 people saw it.",
+   "3 people asked about delivery outside Westlands and Kilimani; the site now says where Kilele delivers."
+  ],
+  "goal": "60 preorders",
+  "spend": {
+   "used": 220,
+   "budget": 3000,
+   "currency": "KES"
+  },
+  "ends": "Fri 18 Dec",
+  "url": "https://agentrix.website/console/kilele-bakery-sample/missions/m-2"
+ }
+}

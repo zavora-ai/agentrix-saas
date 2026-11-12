@@ -1,0 +1,21 @@
+{% block subject %}A sign-in method changed on your {{ site.name }} account{% endblock %}
+{% block preheader %}{{ change.when }}. If it was you, there's nothing to do.{% endblock %}
+{% block body %}
+{% if change.kind == "passkey_added" %}
+# A passkey was added
+{{ change.when }}: a passkey on {{ change.device }} can now sign in to your {{ site.name }} account.
+{% elif change.kind == "passkey_removed" %}
+# A passkey was removed
+{{ change.when }}: the passkey on {{ change.device }} can no longer sign in to your {{ site.name }} account.
+{% elif change.kind == "authenticator_reset" %}
+# Your authenticator was reset
+{{ change.when }}: your old authenticator codes stopped working and a new authenticator was set up.
+{% else %}
+# New recovery codes were made
+{{ change.when }}: new recovery codes were made, and the old ones stopped working.
+{% endif %}
+
+If it was you, there's nothing to do. If it wasn't, open your account, choose Sign out everywhere, and remove anything you don't recognise.
+
+::button Open your account | {{ account_url }}
+{% endblock %}

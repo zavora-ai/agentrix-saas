@@ -1,0 +1,452 @@
+<title>Agentrix Program Hub</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&family=JetBrains+Mono:wght@400;500&family=Manrope:wght@600;700;800&display=swap">
+<style>
+/* Layout: a program cockpit. Sticky bar (name, two countdowns, views), then one view at a time:
+   overview lanes, the artifact graph in workstream swimlanes, boards, asks, decisions, timeline. */
+:root {
+  --bg: #f6f5fa; --surface: #ffffff; --sunken: #efedf6; --ink: #1d1b33; --muted: #5f5c7a; --faint: #8b88a6;
+  --line: #e2dfee; --brand: #38356d; --accent: #de4060; --accent-ink: #b8233f;
+  --ok: #1f7a52; --ok-bg: #e5f4ec; --warn: #9a6512; --warn-bg: #fbf0dc; --bad: #b4332a; --bad-bg: #fbe7e4;
+  --info: #2457c5; --info-bg: #e7eefc; --idle: #6b6f80; --idle-bg: #ecedf2;
+  --ws-arch: #5b54c9; --ws-exp: #de4060; --ws-console: #0f8487; --ws-control: #b07514; --ws-framework: #2563d6; --ws-platform: #1f7a52; --ws-program: #6b6f80;
+  --display: "Manrope", "Segoe UI", system-ui, sans-serif;
+  --body: "DM Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --r: 12px;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #11101b; --surface: #1a1928; --sunken: #15141f; --ink: #ecebf6; --muted: #a9a6c2; --faint: #7c7996;
+  --line: #2c2a40; --brand: #b3aef5; --accent: #ff6c84; --accent-ink: #ff8ea1;
+  --ok: #5fd39d; --ok-bg: #173327; --warn: #f0bd62; --warn-bg: #3a2c12; --bad: #ff8b7e; --bad-bg: #3d1c19;
+  --info: #8fb2ff; --info-bg: #1b2744; --idle: #a3a6b6; --idle-bg: #262635;
+  --ws-arch: #9c96ff; --ws-exp: #ff6c84; --ws-console: #4fd1cf; --ws-control: #f0bd62; --ws-framework: #7aa7ff; --ws-platform: #5fd39d; --ws-program: #a3a6b6;
+  color-scheme: dark; } }
+:root[data-theme="dark"] {
+  --bg: #11101b; --surface: #1a1928; --sunken: #15141f; --ink: #ecebf6; --muted: #a9a6c2; --faint: #7c7996;
+  --line: #2c2a40; --brand: #b3aef5; --accent: #ff6c84; --accent-ink: #ff8ea1;
+  --ok: #5fd39d; --ok-bg: #173327; --warn: #f0bd62; --warn-bg: #3a2c12; --bad: #ff8b7e; --bad-bg: #3d1c19;
+  --info: #8fb2ff; --info-bg: #1b2744; --idle: #a3a6b6; --idle-bg: #262635;
+  --ws-arch: #9c96ff; --ws-exp: #ff6c84; --ws-console: #4fd1cf; --ws-control: #f0bd62; --ws-framework: #7aa7ff; --ws-platform: #5fd39d; --ws-program: #a3a6b6;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font: 15px/1.5 var(--body); }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--surface); }
+a { color: var(--brand); }
+button { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 6px; }
+
+.bar { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--surface); border-bottom: 1px solid var(--line); }
+.bar-in { max-width: 1320px; margin: 0 auto; padding-block: 12px 0; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.row { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; justify-content: space-between; }
+.brand { display: flex; gap: 10px; align-items: center; min-width: 0; }
+.mark { width: 30px; height: 30px; border-radius: 9px; background: var(--brand); display: grid; place-items: center; flex: none; }
+.mark i { width: 12px; height: 12px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 30%, transparent); }
+h1 { font: 800 19px/1.2 var(--display); letter-spacing: -0.01em; margin: 0; }
+.sub { color: var(--muted); font-size: 12.5px; }
+.clocks { display: flex; gap: 10px; flex-wrap: wrap; }
+.clock { display: flex; flex-direction: column; padding: 6px 12px; border-radius: 10px; background: var(--sunken); border: 1px solid var(--line); min-width: 150px; }
+.clock b { font: 700 16px/1.2 var(--display); font-variant-numeric: tabular-nums; }
+.clock span { font-size: 11px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); }
+.clock.hot b { color: var(--accent-ink); }
+.tabs-wrap { overflow-x: auto; margin-top: 10px; scrollbar-width: none; }
+.tabs { display: flex; gap: 4px; min-width: max-content; }
+.tab { border: 0; background: none; padding: 10px 12px 11px; border-bottom: 2px solid transparent; color: var(--muted); font-weight: 600; cursor: pointer; text-decoration: none; display: inline-flex; gap: 6px; align-items: center; }
+.tab[aria-current="page"] { color: var(--ink); border-bottom-color: var(--accent); }
+.tab .n { font: 500 11px var(--mono); background: var(--sunken); border-radius: 6px; padding: 1px 6px; color: var(--muted); }
+
+main { max-width: 1320px; margin: 0 auto; padding-block: 22px 60px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.note { display: flex; gap: 10px; align-items: center; padding: 10px 14px; border-radius: 10px; background: var(--warn-bg); color: var(--warn); margin-bottom: 18px; font-weight: 500; }
+.note[data-kind="info"] { background: var(--info-bg); color: var(--info); }
+h2 { font: 700 15px/1.3 var(--display); margin: 0; letter-spacing: -0.005em; }
+.eyebrow { font-size: 11px; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); font-weight: 600; }
+.section { display: grid; gap: 12px; margin-bottom: 28px; }
+.section-head { display: flex; gap: 12px; align-items: baseline; justify-content: space-between; flex-wrap: wrap; }
+
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; }
+.stat { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 12px 14px; }
+.stat b { display: block; font: 800 24px/1.1 var(--display); font-variant-numeric: tabular-nums; }
+.stat span { color: var(--muted); font-size: 12.5px; }
+.stat.alert b { color: var(--accent-ink); }
+
+.split { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); gap: 18px; align-items: start; }
+@media (max-width: 900px) { .split { grid-template-columns: minmax(0, 1fr); } }
+
+.ws-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; }
+.ws { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 14px 14px 12px; display: grid; gap: 8px; min-width: 0; }
+.ws-top { display: flex; gap: 10px; align-items: center; justify-content: space-between; }
+.ws-name { display: flex; gap: 8px; align-items: center; font: 700 14.5px/1.25 var(--display); min-width: 0; }
+.dot { width: 10px; height: 10px; border-radius: 50%; flex: none; background: var(--c, var(--idle)); }
+.ws p { margin: 0; color: var(--muted); font-size: 13.5px; overflow-wrap: anywhere; }
+.ws-meta { display: flex; gap: 12px; flex-wrap: wrap; font-size: 12px; color: var(--faint); font-variant-numeric: tabular-nums; }
+.ws-meta b { color: var(--ink); font-weight: 600; }
+
+.pill { display: inline-flex; align-items: center; gap: 5px; font-size: 11.5px; font-weight: 600; padding: 2px 9px; border-radius: 999px; background: var(--idle-bg); color: var(--idle); white-space: nowrap; }
+.pill::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+.s-ok, .s-on-track, .s-done, .s-approved, .s-decided, .s-accepted { background: var(--ok-bg); color: var(--ok); }
+.s-at-risk, .s-review, .s-doing, .s-proposed, .s-pushed-back, .s-next { background: var(--warn-bg); color: var(--warn); }
+.s-blocked, .s-missed { background: var(--bad-bg); color: var(--bad); }
+.s-draft, .s-todo, .s-open, .s-planned { background: var(--info-bg); color: var(--info); }
+.s-superseded { background: var(--idle-bg); color: var(--idle); text-decoration: line-through; }
+
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 14px; display: grid; gap: 10px; min-width: 0; }
+.list { display: grid; gap: 0; }
+.li { display: grid; gap: 3px; padding: 10px 0; border-top: 1px solid var(--line); min-width: 0; }
+.li:first-child { border-top: 0; padding-top: 0; }
+.li-top { display: flex; gap: 8px; align-items: center; justify-content: space-between; flex-wrap: wrap; }
+.li-title { font-weight: 600; overflow-wrap: anywhere; }
+.li small, .meta { color: var(--faint); font-size: 12px; }
+.li p { margin: 0; color: var(--muted); font-size: 13.5px; overflow-wrap: anywhere; }
+.empty { color: var(--muted); font-size: 13.5px; padding: 14px; border: 1px dashed var(--line); border-radius: var(--r); background: var(--sunken); }
+.mono { font-family: var(--mono); font-size: 12px; }
+.ws-tag { display: inline-flex; gap: 6px; align-items: center; font-size: 12px; color: var(--muted); white-space: nowrap; }
+.arrow { color: var(--faint); }
+
+.chips { display: flex; gap: 6px; flex-wrap: wrap; }
+.chip { border: 1px solid var(--line); background: var(--surface); border-radius: 999px; padding: 4px 11px; font-size: 12.5px; cursor: pointer; display: inline-flex; gap: 6px; align-items: center; color: var(--muted); }
+.chip[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.chip[aria-pressed="true"] .dot { box-shadow: 0 0 0 2px var(--bg); }
+
+.graph-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: var(--r); background: var(--surface); }
+.graph-wrap svg { display: block; }
+.g-lane-label { font: 700 12.5px var(--display); fill: var(--ink); }
+.g-lane-sub { font: 400 11px var(--body); fill: var(--faint); }
+.g-node rect.box { fill: var(--surface); stroke: var(--line); stroke-width: 1.2; }
+.g-node:hover rect.box, .g-node.sel rect.box { stroke: var(--brand); stroke-width: 2; }
+.g-node.dim { opacity: .25; }
+.g-node text.t { font: 600 11.5px var(--body); fill: var(--ink); }
+.g-node text.k { font: 500 9.5px var(--mono); fill: var(--faint); text-transform: uppercase; }
+.g-edge { fill: none; stroke-width: 1.4; opacity: .55; }
+.g-edge.hi { opacity: 1; stroke-width: 2.2; }
+.g-edge.dim { opacity: .08; }
+.legend { display: flex; gap: 14px; flex-wrap: wrap; font-size: 12px; color: var(--muted); }
+.legend span { display: inline-flex; gap: 6px; align-items: center; }
+.legend i { width: 18px; height: 3px; border-radius: 2px; background: var(--c); }
+.detail { max-width: 760px; }
+
+.board { display: grid; grid-template-columns: repeat(4, minmax(220px, 1fr)); gap: 12px; overflow-x: auto; padding-bottom: 4px; }
+.col { background: var(--sunken); border: 1px solid var(--line); border-radius: var(--r); padding: 10px; display: grid; gap: 8px; align-content: start; min-width: 220px; }
+.col h3 { margin: 0 0 2px; font: 700 13px var(--display); display: flex; justify-content: space-between; }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 10px; display: grid; gap: 6px; min-width: 0; }
+.card .li-title { font-size: 13.5px; }
+.card.blocked { border-color: color-mix(in srgb, var(--bad) 45%, var(--line)); }
+.prio { font: 500 10.5px var(--mono); text-transform: uppercase; color: var(--muted); }
+.prio.demo { color: var(--accent-ink); }
+
+.asks { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 12px; }
+.decision blockquote { margin: 0; padding-left: 12px; border-left: 3px solid var(--brand); color: var(--ink); font-size: 14px; }
+
+.tl { display: grid; gap: 0; position: relative; }
+.tl-item { display: grid; grid-template-columns: 120px 20px minmax(0, 1fr); gap: 12px; padding: 10px 0; }
+.tl-date { text-align: right; font: 600 12.5px var(--display); color: var(--muted); font-variant-numeric: tabular-nums; }
+.tl-rail { position: relative; }
+.tl-rail::before { content: ""; position: absolute; left: 9px; top: -10px; bottom: -10px; width: 2px; background: var(--line); }
+.tl-rail i { position: absolute; left: 4px; top: 4px; width: 12px; height: 12px; border-radius: 50%; background: var(--surface); border: 2px solid var(--brand); }
+.tl-item.done .tl-rail i { background: var(--ok); border-color: var(--ok); }
+.tl-item.next .tl-rail i { background: var(--accent); border-color: var(--accent); }
+@media (max-width: 560px) { .tl-item { grid-template-columns: 78px 20px minmax(0, 1fr); } .clock { min-width: 0; flex: 1; } }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+</style>
+
+<header class="bar">
+  <div class="bar-in">
+    <div class="row">
+      <div class="brand">
+        <div class="mark" aria-hidden="true"><i></i></div>
+        <div>
+          <h1>Agentrix Program Hub</h1>
+          <div class="sub">Agentrix WebAgent Platform · Zavora · every session, artifact and decision in one place</div>
+        </div>
+      </div>
+      <div class="clocks" id="clocks"></div>
+    </div>
+    <div class="tabs-wrap"><nav class="tabs" id="tabs" aria-label="Views"></nav></div>
+  </div>
+</header>
+<main id="main" aria-live="polite"></main>
+
+<script>
+(() => {
+  "use strict";
+  const COLLECTIONS = ["workstreams", "artifacts", "edges", "requirements", "decisions", "tasks", "milestones", "log"];
+  const VIEWS = [
+    ["overview", "Overview"], ["graph", "Artifact graph"], ["board", "Boards"],
+    ["asks", "Cross-session asks"], ["decisions", "Decisions"], ["timeline", "Timeline"],
+  ];
+  const TARGET = "2026-11-08T20:00:00+03:00";
+  const HARD = "2026-11-09T02:00:00+03:00";
+  const WS_COLOR = { architecture: "--ws-arch", experience: "--ws-exp", console: "--ws-console", "control-plane": "--ws-control", framework: "--ws-framework", platform: "--ws-platform", program: "--ws-program" };
+  const REL_COLOR = { "depends-on": "--brand", implements: "--ok", feeds: "--info", requires: "--accent", supersedes: "--idle", informs: "--warn" };
+  const KIND_ORDER = ["doc", "adr", "diagram", "concept", "prototype", "research", "code", "pr", "page"];
+
+  const data = Object.fromEntries(COLLECTIONS.map((c) => [c, []]));
+  const answered = new Set();
+  let status = "loading";
+  let errorNote = "";
+  const ui = { view: "overview", graphSel: null, kinds: new Set(), hideSuperseded: true, boardWs: "all" };
+
+  const $ = (id) => document.getElementById(id);
+  const esc = (v) => String(v ?? "").replace(/[&<>"']/g, (ch) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[ch]);
+  const slug = (v) => String(v ?? "").toLowerCase().replace(/[^a-z0-9]+/g, "-");
+  const byId = (col) => new Map(data[col].map((d) => [d.id, d]));
+  const wsColor = (ws) => `var(${WS_COLOR[ws] || "--ws-program"})`;
+  const wsName = (id) => (data.workstreams.find((w) => w.id === id) || {}).name || id || "Unassigned";
+  const pill = (s) => `<span class="pill s-${esc(slug(s))}">${esc(s || "unknown")}</span>`;
+  const time = (iso) => { const t = Date.parse(iso); return Number.isFinite(t) ? t : 0; };
+  function ago(iso) {
+    const t = time(iso); if (!t) return "";
+    const s = Math.round((Date.now() - t) / 1000);
+    if (s < 60) return "just now";
+    if (s < 3600) return `${Math.round(s / 60)} min ago`;
+    if (s < 86400) return `${Math.round(s / 3600)} h ago`;
+    return new Date(t).toLocaleDateString(undefined, { day: "numeric", month: "short" });
+  }
+  function until(iso) {
+    const ms = time(iso) - Date.now();
+    if (ms <= 0) return "closed";
+    const h = Math.floor(ms / 3600000), m = Math.floor((ms % 3600000) / 60000);
+    return h >= 48 ? `${Math.floor(h / 24)}d ${h % 24}h` : `${h}h ${String(m).padStart(2, "0")}m`;
+  }
+  function wsTag(id) { return `<span class="ws-tag"><span class="dot" style="--c:${wsColor(id)}"></span>${esc(wsName(id))}</span>`; }
+  function link(a) {
+    if (a.url && /^https:\/\//.test(a.url)) return `<a href="${esc(a.url)}" target="_blank" rel="noopener">${esc(a.url.replace(/^https:\/\//, ""))}</a>`;
+    return a.path ? `<span class="mono">${esc(a.path)}</span>` : "";
+  }
+
+  function renderClocks() {
+    const target = (data.milestones.find((m) => m.id === "the first release-submit") || {}).due || TARGET;
+    const hard = (data.milestones.find((m) => m.id === "the first release-close") || {}).due || HARD;
+    const hot = time(target) - Date.now() < 12 * 3600000;
+    $("clocks").innerHTML =
+      `<div class="clock${hot ? " hot" : ""}"><span>The first release · target submit</span><b>${esc(until(target))}</b></div>` +
+      `<div class="clock"><span>lablab closes</span><b>${esc(until(hard))}</b></div>`;
+  }
+
+  function renderTabs() {
+    const counts = {
+      graph: data.artifacts.length, board: data.tasks.filter((t) => t.status !== "done").length,
+      asks: data.requirements.filter((r) => r.status === "open" || r.status === "pushed-back").length,
+      decisions: data.decisions.filter((d) => d.status === "proposed").length,
+    };
+    $("tabs").innerHTML = VIEWS.map(([id, label]) =>
+      `<a class="tab" href="#${id}"${ui.view === id ? ' aria-current="page"' : ""}>${esc(label)}${counts[id] ? `<span class="n">${counts[id]}</span>` : ""}</a>`).join("");
+  }
+
+  function noteHtml() {
+    if (status === "nodb") return `<div class="note">Shared data isn't available in this view. Open the hub on claude.ai while signed in to see the program.</div>`;
+    if (status === "error") return `<div class="note">The hub's data stopped updating (${esc(errorNote)}). Reload the page to reconnect.</div>`;
+    if (status === "slow") return `<div class="note" data-kind="info">The hub's data can't be reached yet. What you see may be out of date.</div>`;
+    if (status === "loading") return `<div class="note" data-kind="info">Loading the program…</div>`;
+    return "";
+  }
+  const empty = (what) => `<div class="empty">No ${esc(what)} yet. Sessions add them through the hub protocol (the <span class="mono">ArtifactData</span> tool).</div>`;
+
+  function viewOverview() {
+    const openAsks = data.requirements.filter((r) => r.status === "open" || r.status === "pushed-back");
+    const blocked = data.tasks.filter((t) => t.status === "blocked");
+    const proposed = data.decisions.filter((d) => d.status === "proposed");
+    const forJames = [
+      ...proposed.map((d) => ({ kind: "Decision", title: d.title, text: d.decision, ws: d.workstream, at: d.date })),
+      ...openAsks.filter((r) => r.to === "james").map((r) => ({ kind: "Ask", title: r.title, text: r.detail, ws: r.from, at: r.updatedAt })),
+      ...blocked.filter((t) => /james/i.test(t.blockedBy || "")).map((t) => ({ kind: "Blocked on you", title: t.title, text: t.blockedBy, ws: t.workstream, at: t.updatedAt })),
+    ];
+    const ws = [...data.workstreams].sort((a, b) => (a.order ?? 99) - (b.order ?? 99));
+    const log = [...data.log].sort((a, b) => time(b.at) - time(a.at)).slice(0, 14);
+    const stats = [
+      [data.workstreams.length, "workstreams"], [data.artifacts.filter((a) => a.status !== "superseded").length, "live artifacts"],
+      [openAsks.length, "open cross-session asks", openAsks.length > 0], [blocked.length, "blocked tasks", blocked.length > 0],
+      [forJames.length, "waiting on James", forJames.length > 0],
+    ];
+    return `
+      <section class="section"><div class="stats">${stats.map(([n, l, alert]) => `<div class="stat${alert ? " alert" : ""}"><b>${n}</b><span>${esc(l)}</span></div>`).join("")}</div></section>
+      <div class="split">
+        <section class="section">
+          <div class="section-head"><h2>Workstreams</h2><span class="meta">one per session · latest report first-hand from each</span></div>
+          ${ws.length ? `<div class="ws-grid">${ws.map((w) => {
+            const arts = data.artifacts.filter((a) => a.workstream === w.id && a.status !== "superseded").length;
+            const open = data.tasks.filter((t) => t.workstream === w.id && t.status !== "done").length;
+            const inbound = openAsks.filter((r) => r.to === w.id).length;
+            return `<article class="ws">
+              <div class="ws-top"><div class="ws-name"><span class="dot" style="--c:${wsColor(w.id)}"></span><span>${esc(w.name)}</span></div>${pill(w.status)}</div>
+              <p>${esc(w.summary || w.mission || "")}</p>
+              <div class="ws-meta"><span><b>${arts}</b> artifacts</span><span><b>${open}</b> open tasks</span><span><b>${inbound}</b> asks waiting</span>${w.updatedAt ? `<span>${esc(ago(w.updatedAt))}</span>` : ""}</div>
+              ${w.session ? `<div class="meta">Session <span class="mono">${esc(w.session)}</span></div>` : ""}
+            </article>`; }).join("")}</div>` : empty("workstreams")}
+        </section>
+        <aside class="section">
+          <div class="section-head"><h2>Waiting on James</h2></div>
+          <div class="panel">${forJames.length ? `<div class="list">${forJames.map((f) => `<div class="li"><div class="li-top"><span class="eyebrow">${esc(f.kind)}</span>${f.ws ? wsTag(f.ws) : ""}</div><div class="li-title">${esc(f.title)}</div>${f.text ? `<p>${esc(f.text)}</p>` : ""}</div>`).join("")}</div>` : `<div class="meta">Nothing waiting on you right now.</div>`}</div>
+          <div class="section-head"><h2>Recent activity</h2></div>
+          <div class="panel">${log.length ? `<div class="list">${log.map((l) => `<div class="li"><div class="li-top">${wsTag(l.workstream)}<small>${esc(ago(l.at))}</small></div><p>${esc(l.text)}</p></div>`).join("")}</div>` : `<div class="meta">No activity logged yet.</div>`}</div>
+        </aside>
+      </div>`;
+  }
+
+  function viewGraph() {
+    const lanes = [...data.workstreams].sort((a, b) => (a.order ?? 99) - (b.order ?? 99));
+    const kinds = [...new Set(data.artifacts.map((a) => a.kind || "doc"))].sort((a, b) => KIND_ORDER.indexOf(a) - KIND_ORDER.indexOf(b));
+    const visible = data.artifacts.filter((a) => (!ui.hideSuperseded || a.status !== "superseded") && (ui.kinds.size === 0 || ui.kinds.has(a.kind || "doc")));
+    const chips = `<div class="chips">${kinds.map((k) => `<button class="chip" data-kind="${esc(k)}" aria-pressed="${ui.kinds.has(k)}">${esc(k)}</button>`).join("")}
+      <button class="chip" data-toggle="superseded" aria-pressed="${!ui.hideSuperseded}">show superseded</button></div>`;
+    if (!lanes.length || !visible.length) return `<section class="section"><div class="section-head"><h2>Artifact graph</h2></div>${chips}${empty("artifacts")}</section>`;
+
+    const LW = 280, NW = 210, NH = 46, GAP = 12, TOP = 64;
+    const pos = new Map();
+    let maxRows = 0;
+    lanes.forEach((lane, i) => {
+      const items = visible.filter((a) => a.workstream === lane.id)
+        .sort((a, b) => KIND_ORDER.indexOf(a.kind || "doc") - KIND_ORDER.indexOf(b.kind || "doc") || String(a.title).localeCompare(String(b.title)));
+      items.forEach((a, j) => pos.set(a.id, { x: i * LW + (LW - NW) / 2, y: TOP + j * (NH + GAP), a, lane: i }));
+      maxRows = Math.max(maxRows, items.length);
+    });
+    const W = lanes.length * LW, H = TOP + Math.max(1, maxRows) * (NH + GAP) + 24;
+    const sel = ui.graphSel && pos.has(ui.graphSel) ? ui.graphSel : null;
+    const edges = data.edges.filter((e) => pos.has(e.from) && pos.has(e.to));
+    const linked = new Set(sel ? edges.filter((e) => e.from === sel || e.to === sel).flatMap((e) => [e.from, e.to]) : []);
+    const fit = (s, n) => (s.length > n ? s.slice(0, n - 1) + "…" : s);
+
+    const laneBg = lanes.map((l, i) => `<rect x="${i * LW + 4}" y="6" width="${LW - 8}" height="${H - 12}" rx="10" fill="var(--sunken)" />
+      <circle cx="${i * LW + 20}" cy="28" r="5" fill="${wsColor(l.id)}" />
+      <text class="g-lane-label" x="${i * LW + 32}" y="32">${esc(fit(l.name || l.id, 24))}</text>
+      <text class="g-lane-sub" x="${i * LW + 20}" y="50">${visible.filter((a) => a.workstream === l.id).length} artifacts</text>`).join("");
+    const paths = edges.map((e) => {
+      const a = pos.get(e.from), b = pos.get(e.to);
+      const ax = a.lane <= b.lane ? a.x + NW : a.x, bx = a.lane <= b.lane ? b.x : b.x + NW;
+      const same = a.lane === b.lane;
+      const ay = a.y + NH / 2, by = b.y + NH / 2;
+      const bulge = Math.min(60, 16 + Math.abs(by - ay) * 0.1);
+      const d = same ? `M${a.x + NW},${ay} C${a.x + NW + bulge},${ay} ${b.x + NW + bulge},${by} ${b.x + NW},${by}`
+        : `M${ax},${ay} C${(ax + bx) / 2},${ay} ${(ax + bx) / 2},${by} ${bx},${by}`;
+      const cls = sel ? (e.from === sel || e.to === sel ? " hi" : " dim") : "";
+      const col = `var(${REL_COLOR[e.rel] || "--faint"})`;
+      return `<path class="g-edge${cls}" d="${d}" stroke="${col}" marker-end="url(#ah-${esc(slug(e.rel || "x"))})"><title>${esc(`${e.rel}: ${(a.a.title)} → ${(b.a.title)}`)}</title></path>`;
+    }).join("");
+    const markers = Object.entries(REL_COLOR).concat([["x", "--faint"]]).map(([r, c]) =>
+      `<marker id="ah-${r}" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(${c})"/></marker>`).join("");
+    const nodes = [...pos.values()].map(({ x, y, a }) => {
+      const cls = (a.id === sel ? " sel" : "") + (sel && !linked.has(a.id) && a.id !== sel ? " dim" : "");
+      const statusCol = { approved: "--ok", review: "--warn", draft: "--info", superseded: "--idle" }[a.status] || "--faint";
+      return `<g class="g-node${cls}" data-id="${esc(a.id)}" tabindex="0" role="button" aria-label="${esc(a.title)}" style="cursor:pointer">
+        <rect class="box" x="${x}" y="${y}" width="${NW}" height="${NH}" rx="9" />
+        <rect x="${x}" y="${y + 8}" width="3" height="${NH - 16}" rx="1.5" fill="var(${statusCol})" />
+        <text class="k" x="${x + 12}" y="${y + 17}">${esc(a.kind || "doc")} · ${esc(a.status || "draft")}</text>
+        <text class="t" x="${x + 12}" y="${y + 34}">${esc(fit(String(a.title || a.id), 30))}</text></g>`;
+    }).join("");
+    const legend = `<div class="legend">${Object.entries(REL_COLOR).map(([r, c]) => `<span><i style="--c:var(${c})"></i>${esc(r)}</span>`).join("")}</div>`;
+    const s = sel ? pos.get(sel).a : null;
+    const detail = s ? (() => {
+      const out = edges.filter((e) => e.from === s.id), inn = edges.filter((e) => e.to === s.id);
+      const arts = byId("artifacts");
+      const rows = (list, dir) => list.map((e) => `<div class="li"><small>${esc(e.rel)} ${dir}</small><div class="li-title">${esc((arts.get(dir === "→" ? e.to : e.from) || {}).title || "")}</div>${e.note ? `<p>${esc(e.note)}</p>` : ""}</div>`).join("");
+      return `<div class="panel detail"><div class="li-top"><span class="eyebrow">${esc(s.kind)}</span>${pill(s.status)}</div>
+        <h2>${esc(s.title)}</h2>${wsTag(s.workstream)}${s.summary ? `<p class="meta" style="font-size:13.5px;color:var(--muted)">${esc(s.summary)}</p>` : ""}
+        <div>${link(s)}</div>${s.version ? `<div class="meta">Version ${esc(s.version)} · updated ${esc(ago(s.updatedAt))}</div>` : ""}
+        <div class="list">${rows(out, "→") + rows(inn, "←") || `<div class="meta">No links yet.</div>`}</div></div>`;
+    })() : `<div class="panel detail"><div class="meta">Select an artifact to see where it lives, what it depends on and what builds on it.</div></div>`;
+    return `<section class="section">
+      <div class="section-head"><h2>Artifact graph</h2><span class="meta">lanes are workstreams · arrows show how artifacts depend on and build on each other</span></div>
+      ${chips}${legend}
+      ${detail}<div class="graph-wrap"><svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" aria-label="Artifact graph">${`<defs>${markers}</defs>`}${laneBg}${paths}${nodes}</svg></div>
+    </section>`;
+  }
+
+  function viewBoard() {
+    const ws = [...data.workstreams].sort((a, b) => (a.order ?? 99) - (b.order ?? 99));
+    const tasks = data.tasks.filter((t) => ui.boardWs === "all" || t.workstream === ui.boardWs);
+    const cols = [["todo", "To do"], ["doing", "Doing"], ["blocked", "Blocked"], ["done", "Done"]];
+    const chips = `<div class="chips"><button class="chip" data-ws="all" aria-pressed="${ui.boardWs === "all"}">All workstreams</button>${ws.map((w) => `<button class="chip" data-ws="${esc(w.id)}" aria-pressed="${ui.boardWs === w.id}"><span class="dot" style="--c:${wsColor(w.id)}"></span>${esc(w.name)}</button>`).join("")}</div>`;
+    const prioRank = { demo: 0, mvp: 1, later: 2 };
+    return `<section class="section"><div class="section-head"><h2>Boards</h2><span class="meta">demo-critical first</span></div>${chips}
+      ${data.tasks.length ? `<div class="board">${cols.map(([id, label]) => {
+        const list = tasks.filter((t) => (t.status || "todo") === id).sort((a, b) => (prioRank[a.priority] ?? 3) - (prioRank[b.priority] ?? 3));
+        return `<div class="col"><h3><span>${label}</span><span class="mono">${list.length}</span></h3>${list.map((t) => `
+          <div class="card${id === "blocked" ? " blocked" : ""}"><div class="li-top">${wsTag(t.workstream)}${t.priority ? `<span class="prio ${esc(t.priority)}">${esc(t.priority)}</span>` : ""}</div>
+          <div class="li-title">${esc(t.title)}</div>${t.blockedBy ? `<small style="color:var(--bad)">Blocked by ${esc(t.blockedBy)}</small>` : ""}${t.due ? `<small class="meta">Due ${esc(new Date(time(t.due)).toLocaleString(undefined, { weekday: "short", hour: "2-digit", minute: "2-digit" }))}</small>` : ""}</div>`).join("") || `<div class="meta">Nothing here.</div>`}</div>`; }).join("")}</div>` : empty("tasks")}
+    </section>`;
+  }
+
+  function viewAsks() {
+    const order = { open: 0, "pushed-back": 1, accepted: 2, done: 3 };
+    const list = [...data.requirements].sort((a, b) => (order[a.status] ?? 4) - (order[b.status] ?? 4) || time(b.updatedAt) - time(a.updatedAt));
+    return `<section class="section"><div class="section-head"><h2>Cross-session asks</h2><span class="meta">what one workstream needs from another · open → accepted or pushed back → done</span></div>
+      ${list.length ? `<div class="asks">${list.map((r) => `<article class="panel">
+        <div class="li-top"><span>${wsTag(r.from)} <span class="arrow">→</span> ${r.to === "james" ? `<span class="ws-tag"><span class="dot" style="--c:var(--accent)"></span>James</span>` : wsTag(r.to)}</span>${pill(r.status)}</div>
+        <div class="li-title">${esc(r.title)}</div>${r.detail ? `<p class="meta" style="font-size:13.5px;color:var(--muted)">${esc(r.detail)}</p>` : ""}
+        ${r.response ? `<div class="li"><small>Response</small><p>${esc(r.response)}</p></div>` : ""}
+        <div class="li-top"><span class="prio ${esc(r.priority || "")}">${esc(r.priority || "")}</span><small class="meta">${esc(ago(r.updatedAt))}</small></div></article>`).join("")}</div>` : empty("cross-session asks")}
+    </section>`;
+  }
+
+  function viewDecisions() {
+    const arts = byId("artifacts");
+    const list = [...data.decisions].sort((a, b) => time(b.date) - time(a.date));
+    return `<section class="section"><div class="section-head"><h2>Decisions</h2><span class="meta">James's calls are the program's constitution; sessions propose, James decides</span></div>
+      ${list.length ? `<div class="list panel">${list.map((d) => `<div class="li decision">
+        <div class="li-top"><span class="li-title">${esc(d.title)}</span><span style="display:flex;gap:8px;align-items:center">${pill(d.status)}<small class="meta">${esc(d.by || "")} · ${esc(d.date ? new Date(time(d.date)).toLocaleDateString(undefined, { day: "numeric", month: "short" }) : "")}</small></span></div>
+        <blockquote>${esc(d.decision)}</blockquote>${d.why ? `<p>${esc(d.why)}</p>` : ""}
+        ${(d.affects || []).length ? `<small class="meta">Affects: ${(d.affects || []).map((id) => esc((arts.get(id) || {}).title || id)).join(" · ")}</small>` : ""}</div>`).join("")}</div>` : empty("decisions")}
+    </section>`;
+  }
+
+  function viewTimeline() {
+    const ms = [...data.milestones].sort((a, b) => time(a.due) - time(b.due));
+    const nextId = (ms.find((m) => m.status !== "done" && time(m.due) > Date.now()) || {}).id;
+    const log = [...data.log].sort((a, b) => time(b.at) - time(a.at));
+    return `<div class="split"><section class="section"><div class="section-head"><h2>Milestones</h2></div>
+      ${ms.length ? `<div class="tl panel">${ms.map((m) => `<div class="tl-item${m.status === "done" ? " done" : ""}${m.id === nextId ? " next" : ""}">
+        <div class="tl-date">${esc(new Date(time(m.due)).toLocaleDateString(undefined, { day: "numeric", month: "short" }))}<br><span class="meta">${esc(new Date(time(m.due)).toLocaleTimeString(undefined, { hour: "2-digit", minute: "2-digit" }))}</span></div>
+        <div class="tl-rail"><i></i></div><div><div class="li-top"><span class="li-title">${esc(m.title)}</span>${pill(m.id === nextId ? "next" : m.status)}</div>${m.detail ? `<p class="meta" style="font-size:13.5px;color:var(--muted)">${esc(m.detail)}</p>` : ""}</div></div>`).join("")}</div>` : empty("milestones")}
+      </section><aside class="section"><div class="section-head"><h2>Activity log</h2></div>
+      <div class="panel">${log.length ? `<div class="list">${log.map((l) => `<div class="li"><div class="li-top">${wsTag(l.workstream)}<small>${esc(ago(l.at))}</small></div><p>${esc(l.text)}</p></div>`).join("")}</div>` : `<div class="meta">No activity logged yet.</div>`}</div></aside></div>`;
+  }
+
+  function render() {
+    renderClocks();
+    renderTabs();
+    const views = { overview: viewOverview, graph: viewGraph, board: viewBoard, asks: viewAsks, decisions: viewDecisions, timeline: viewTimeline };
+    $("main").innerHTML = noteHtml() + (views[ui.view] || viewOverview)();
+  }
+
+  function route() {
+    const h = location.hash.replace(/^#/, "");
+    ui.view = VIEWS.some(([id]) => id === h) ? h : "overview";
+    render();
+  }
+
+  document.addEventListener("click", (ev) => {
+    const node = ev.target.closest(".g-node");
+    if (node) { ui.graphSel = ui.graphSel === node.dataset.id ? null : node.dataset.id; render(); return; }
+    const chip = ev.target.closest(".chip");
+    if (!chip) return;
+    if (chip.dataset.kind) { const k = chip.dataset.kind; ui.kinds.has(k) ? ui.kinds.delete(k) : ui.kinds.add(k); }
+    else if (chip.dataset.toggle === "superseded") ui.hideSuperseded = !ui.hideSuperseded;
+    else if (chip.dataset.ws) ui.boardWs = chip.dataset.ws;
+    render();
+  });
+  document.addEventListener("keydown", (ev) => {
+    const node = ev.target.closest && ev.target.closest(".g-node");
+    if (node && (ev.key === "Enter" || ev.key === " ")) { ev.preventDefault(); ui.graphSel = ui.graphSel === node.dataset.id ? null : node.dataset.id; render(); }
+  });
+  window.addEventListener("hashchange", route);
+  setInterval(renderClocks, 30000);
+  route();
+
+  async function connect() {
+    const db = window.claude && window.claude.use ? await window.claude.use("db") : null;
+    if (!db) { status = "nodb"; render(); return; }
+    const timer = setTimeout(() => { if (status === "loading") { status = "slow"; render(); } }, 10000);
+    COLLECTIONS.forEach((col) => {
+      db.collection(col).onSnapshot((snap) => {
+        data[col] = snap.docs.filter((d) => d.exists).map((d) => ({ id: d.id, ...d.data() }));
+        if (!snap.metadata.fromCache) answered.add(col);
+        if (answered.size === COLLECTIONS.length && (status === "loading" || status === "slow")) { status = "live"; clearTimeout(timer); }
+        render();
+      }, (err) => { status = "error"; errorNote = err && err.code ? err.code : "unknown"; clearTimeout(timer); render(); });
+    });
+  }
+  connect();
+})();
+</script>

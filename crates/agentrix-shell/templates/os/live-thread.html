@@ -1,0 +1,38 @@
+{% extends "os/base.html" %}
+{#- ShellPage::LiveThread · view::LiveThreadView (+ Chrome) { thread: LiveRow, turns: [LiveTurnView], after, owner_name, turns_url, act_url }
+    concept/console/live.html: sit in, take over, hand back. The page polls turns_url for new turns; the forms work
+    without script (each redirects back here). Replies go out as "{owner_name} · a person"; the desk stays quiet until
+    the owner hands back or has said nothing for 10 minutes. -#}
+{% block title %}{{ thread.who }} · Live · {{ site.name }}{% endblock %}
+{% block field %}
+<section class="view on" aria-labelledby="th-h" data-live data-turns="{{ turns_url }}" data-after="{{ after }}">
+  <div class="convo-head">
+    <span class="vdot vdot-lg{{ ' talking' if thread.live else '' }}" aria-hidden="true">V</span>
+    <div class="who"><b id="th-h">{{ thread.who }}</b><span class="state-line {{ 'answering' if thread.live else '' }}" data-state><span class="dot"></span>{{ thread.state_words }}</span></div>
+    <span class="chip {{ 'chip-ok' if thread.owner else 'chip-coral' }}" data-mode>{{ "You have it · the visitor sees your name" if thread.owner else "You're sitting in · the visitor can't see you" }}</span>
+  </div>
+  <div class="thread" aria-live="polite" data-thread>
+    {% for t in turns %}
+    <div class="msg {{ t.who }}" data-seq="{{ t.seq }}">{% if t.by %}<span class="by">{{ t.by }} <time>{{ t.at_words }}</time></span>{% endif %}{{ t.text }}{% if t.cites %}<span class="cites">{% for c in t.cites %}<span class="cite">{{ c }}</span>{% endfor %}</span>{% endif %}</div>
+    {% else %}
+    <p class="small muted">Nothing said yet.</p>
+    {% endfor %}
+  </div>
+  <div class="composer{{ ' taken' if thread.owner else '' }}" data-composer>
+    {% if thread.owner %}
+    <form class="row-in" method="post" action="{{ act_url }}/say" data-say>
+      <label class="sr-only" for="say">Reply as {{ owner_name }}</label>
+      <input id="say" name="text" maxlength="2000" required autocomplete="off" placeholder="Reply as {{ owner_name }}">
+      <button class="btn btn-primary" type="submit">Send</button>
+    </form>
+    <div class="sitting"><span>Replying as <b>{{ owner_name }} · a person</b>. {{ thread.desk }} is quiet in this conversation only, and takes it back if you don't reply for 10 minutes.</span>
+      <form method="post" action="{{ act_url }}/back"><button class="btn btn-sm" type="submit">Hand back to {{ thread.desk }}</button></form></div>
+    {% else %}
+    <div class="sitting"><span>You're sitting in. The visitor sees only {{ thread.desk }}.</span>
+      <form method="post" action="{{ act_url }}/take"><button class="btn btn-primary btn-sm" type="submit">Take over</button></form></div>
+    {% endif %}
+  </div>
+  <p class="small muted after-cards">What you write here reaches this visitor only. If the desk didn't know, add the answer to your site so it can answer the next person; open questions are listed on <a href="{{ base }}/website#teach-h2">Website</a>.</p>
+</section>
+{% endblock %}
+{% block scripts %}{{ super() }}<script type="module" src="/static/os/live.js?v={{ asset_v }}"></script>{% endblock %}

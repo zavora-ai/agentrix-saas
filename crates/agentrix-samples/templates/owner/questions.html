@@ -1,0 +1,52 @@
+{% extends "owner/base.html" %}
+{% block field %}{% import "owner/macros.html" as m %}
+{{ m.head(c) }}
+<h2 class="sec">Open</h2>
+{% for q in open %}
+<article class="fcard question">
+  <div class="from">{{ m.chip(q.desk ~ " desk", "info") }}<span class="muted small">asked {{ q.asked }}{% if q.page %} on {{ q.page }}{% endif %}</span></div>
+  <p class="q">&ldquo;{{ q.question }}&rdquo;</p>
+  <p class="muted small">{% if q.contact %}Reply to {{ q.contact }}.{% else %}No contact left; the answer stays here.{% endif %} The desk couldn't answer from the site's pages, so it passed this to {{ owner }}. The desks give your answer to the next visitor who asks the same thing.</p>
+  <form method="post" action="{{ q.href }}" class="decide">
+    <label for="a-{{ q.id }}">Your answer</label>
+    <textarea id="a-{{ q.id }}" name="answer" rows="2" maxlength="2000" required placeholder="Answer in a sentence or two."></textarea>
+    <div class="verbs"><button class="btn btn-primary btn-sm">Save answer</button></div>
+  </form>
+</article>
+{% else %}
+<article class="fcard">{{ m.empty("No questions waiting. When a desk can't answer from the site's pages, the visitor can pass the question to " ~ owner ~ " and it shows here.") }}</article>
+{% endfor %}
+<h2 class="sec" id="marks">Was this right?</h2>
+<article class="fcard">
+  {% if marks.total %}
+  <p class="muted small">Every desk answer ends with &ldquo;Was this right? Yes / No&rdquo;. In the last {{ marks.days }} days visitors said Yes {{ marks.yes }} {% if marks.yes == 1 %}time{% else %}times{% endif %} and No {{ marks.no }} {% if marks.no == 1 %}time{% else %}times{% endif %}.</p>
+  <div class="tbl"><table class="procs">
+    <thead><tr><th>Desk</th><th>Yes</th><th>No</th></tr></thead>
+    <tbody>{% for d in marks.desks %}<tr><td>{{ d.desk }}</td><td>{{ d.yes }}</td><td>{{ d.no }}</td></tr>{% endfor %}</tbody>
+  </table></div>
+  {% else %}{{ m.empty("No answers marked in the last " ~ marks.days ~ " days. Every desk answer ends with “Was this right? Yes / No”, and what visitors say shows here.") }}{% endif %}
+</article>
+{% for w in marks.wrong %}
+<article class="fcard question">
+  <div class="from">{{ m.chip(w.desk ~ " desk", "risk") }}<span class="muted small">marked wrong {{ w.when }}</span></div>
+  <p class="q">&ldquo;{{ w.question }}&rdquo;</p>
+  {% if w.answer %}<p class="muted small">The desk said: {{ w.answer }}</p>{% endif %}
+  {% if w.note %}<p class="small">Their note: &ldquo;{{ w.note }}&rdquo;</p>{% endif %}
+  {% if w.taught %}
+  <p class="muted small">{{ m.chip("Taught", "ok") }} You taught an answer on {{ w.taught }}. The desks give it to the next visitor who asks this.</p>
+  {% else %}
+  <form method="post" action="{{ w.href }}" class="decide">
+    <label for="t-{{ w.id }}">The right answer</label>
+    <textarea id="t-{{ w.id }}" name="answer" rows="2" maxlength="2000" required placeholder="Answer in a sentence or two. The desks give it to the next visitor who asks."></textarea>
+    <div class="verbs"><button class="btn btn-primary btn-sm">Teach this answer</button></div>
+  </form>
+  {% endif %}
+</article>
+{% endfor %}
+<h2 class="sec">Answered</h2>
+<article class="fcard">
+  {% if answered %}
+  <ul class="answered">{% for q in answered %}<li><span class="muted small">{{ q.desk }} desk · {{ q.asked }}{% if q.contact %} · {{ q.contact }}{% endif %}</span><b>&ldquo;{{ q.question }}&rdquo;</b><span>{{ q.answer }}</span></li>{% endfor %}</ul>
+  {% else %}{{ m.empty("Nothing answered yet. Answers you save appear here.") }}{% endif %}
+</article>
+{% endblock %}

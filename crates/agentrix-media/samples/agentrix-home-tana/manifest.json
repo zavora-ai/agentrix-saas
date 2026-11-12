@@ -1,0 +1,354 @@
+{
+  "site": "agentrix-home",
+  "images": {
+    "tana:01": {
+      "brief": "Thursday at dawn in the small newsroom of a local weekly newspaper in a Kenyan valley town, with three cluttered desks, bundles of newspapers wrapped in plain brown paper, and a corkboard on the wall pinned with blank index cards and red string: Nduku, a Kenyan woman in her early fifties with short grey natural hair, reading glasses on a cord and a rust-red cardigan and Daniel, a Kenyan man in his late twenties with a neat beard and a denim shirt work at their desks with coffee, the window still blue, bundles of newspapers wrapped in plain brown paper and tied with string, by the door",
+      "bytes": 90198,
+      "cost_micro_usd": 23593,
+      "description": {
+        "alt": "A woman in a red cardigan reads a newspaper while a man uses a laptop at desks with newspaper bundles by a blue window.",
+        "check": "The bundles are tied stacks of paper, not wrapped in brown paper as described.",
+        "photographic": true,
+        "shows_person": true,
+        "shows_text": false
+      },
+      "digest": "sha256:b621f72fbc3e8b3d350764c841f2652bd5bbbd6a4d7487a42903d760931d1a18",
+      "file": "tana_01.webp",
+      "height": 1152,
+      "kind": "film",
+      "label": "Made with AI",
+      "media_type": "image/webp",
+      "model": "z-image-turbo",
+      "prompt": "Thursday at dawn in the small newsroom of a local weekly newspaper in a Kenyan valley town, with three cluttered desks, bundles of newspapers wrapped in plain brown paper, and a corkboard on the wall pinned with blank index cards and red string: Nduku, a Kenyan woman in her early fifties with short grey natural hair, reading glasses on a cord and a rust-red cardigan and Daniel, a Kenyan man in his late twenties with a neat beard and a denim shirt work at their desks with coffee, the window still blue, bundles of newspapers wrapped in plain brown paper and tied with string, by the door. Photoreal documentary film still, natural light, shallow depth of field, warm colour grade, Nairobi. The people are fictional and must not resemble any real or famous person. Colours and mood only: Cool morning colour grade, soft daylight, newsprint greys with rust-red accents. No readable text, letters, numbers, signs, logos, labels or watermarks anywhere.",
+      "seed": 7201,
+      "slot": "tana:01",
+      "verdict": {
+        "categories": [],
+        "model": "nemotron-3.5-content-safety",
+        "safe": true,
+        "user_safety": "safe"
+      },
+      "width": 1024
+    },
+    "tana:02": {
+      "brief": "Thursday morning at a busy open-air market in a Kenyan valley town: Mzee Otieno, a Kenyan man in his sixties with a grey flat cap and a tweed jacket sits at his vegetable stall arranging tomatoes in the morning light",
+      "bytes": 104914,
+      "cost_micro_usd": 23593,
+      "description": {
+        "alt": "Older man in a grey flat cap and tweed jacket sits at a market stall arranging red tomatoes in morning light.",
+        "check": "",
+        "photographic": true,
+        "shows_person": true,
+        "shows_text": false
+      },
+      "digest": "sha256:5a192b23121e2e9e7c10fc5cf0fa7ffe431cfb2e14e5aeca7c2e68a8cb17b3f4",
+      "file": "tana_02.webp",
+      "height": 1152,
+      "kind": "film",
+      "label": "Made with AI",
+      "media_type": "image/webp",
+      "model": "z-image-turbo",
+      "prompt": "Thursday morning at a busy open-air market in a Kenyan valley town: Mzee Otieno, a Kenyan man in his sixties with a grey flat cap and a tweed jacket sits at his vegetable stall arranging tomatoes in the morning light. Photoreal documentary film still, natural light, shallow depth of field, warm colour grade, Nairobi. The people are fictional and must not resemble any real or famous person. Colours and mood only: Cool morning colour grade, soft daylight, newsprint greys with rust-red accents. No readable text, letters, numbers, signs, logos, labels or watermarks anywhere.",
+      "seed": 7302,
+      "slot": "tana:02",
+      "verdict": {
+        "categories": [],
+        "model": "nemotron-3.5-content-safety",
+        "safe": true,
+        "user_safety": "safe"
+      },
+      "width": 1024
+    },
+    "tana:03": {
+      "brief": "Thursday afternoon inside a crowded matatu minibus: Wanjiku, a Kenyan woman in her thirties with a short afro, a green blazer and a shoulder bag sits by the window of a plain matatu interior with no stickers, asking a question to her phone, the valley passing outside",
+      "bytes": 77150,
+      "cost_micro_usd": 23593,
+      "description": {
+        "alt": "A woman in a green blazer sits by a matatu window looking at her phone, a black bag resting on her lap.",
+        "check": "The bag rests on her lap rather than over the shoulder as described, which may matter for shot-to-shot continuity.",
+        "photographic": true,
+        "shows_person": true,
+        "shows_text": false
+      },
+      "digest": "sha256:1c2adb6566fd9d31b173d48b439f5e14f3ab987a43e1629a539f2a5f144b83f6",
+      "file": "tana_03.webp",
+      "height": 1152,
+      "kind": "film",
+      "label": "Made with AI",
+      "media_type": "image/webp",
+      "model": "z-image-turbo",
+      "prompt": "Thursday afternoon inside a crowded matatu minibus: Wanjiku, a Kenyan woman in her thirties with a short afro, a green blazer and a shoulder bag sits by the window of a plain matatu interior with no stickers, asking a question to her phone, the valley passing outside. Photoreal documentary film still, natural light, shallow depth of field, warm colour grade, Nairobi. The people are fictional and must not resemble any real or famous person. Colours and mood only: Cool morning colour grade, soft daylight, newsprint greys with rust-red accents. No readable text, letters, numbers, signs, logos, labels or watermarks anywhere.",
+      "seed": 7103,
+      "slot": "tana:03",
+      "verdict": {
+        "categories": [],
+        "model": "nemotron-3.5-content-safety",
+        "safe": true,
+        "user_safety": "safe"
+      },
+      "width": 1024
+    },
+    "tana:04": {
+      "brief": "Thursday evening in the small newsroom of the Tana Valley Times, a local weekly in a Kenyan valley town, with three cluttered desks, stacks of folded newspapers whose print is too small to read, and a hand-drawn map on the wall: Daniel, a Kenyan man in his late twenties with a neat beard and a denim shirt on a desk phone with a pained expression, Nduku, a Kenyan woman in her early fifties with short grey natural hair, reading glasses on a cord and a rust-red cardigan standing behind him reading a printout, the light going orange",
+      "bytes": 95556,
+      "cost_micro_usd": 23593,
+      "description": {
+        "alt": "A bearded man in a denim shirt talks on a desk phone as a woman in a rust-red cardigan reads a paper in a newsroom.",
+        "check": "A third person sits at a desk in the background, and the wall map looks printed rather than hand-drawn.",
+        "photographic": true,
+        "shows_person": true,
+        "shows_text": false
+      },
+      "digest": "sha256:0e850cad47c1e2361f49d136780f8902d2448611faf74c0e52877da871a70fee",
+      "file": "tana_04.webp",
+      "height": 1152,
+      "kind": "film",
+      "label": "Made with AI",
+      "media_type": "image/webp",
+      "model": "z-image-turbo",
+      "prompt": "Thursday evening in the small newsroom of the Tana Valley Times, a local weekly in a Kenyan valley town, with three cluttered desks, stacks of folded newspapers whose print is too small to read, and a hand-drawn map on the wall: Daniel, a Kenyan man in his late twenties with a neat beard and a denim shirt on a desk phone with a pained expression, Nduku, a Kenyan woman in her early fifties with short grey natural hair, reading glasses on a cord and a rust-red cardigan standing behind him reading a printout, the light going orange. Photoreal documentary film still, natural light, shallow depth of field, warm colour grade, Nairobi. The people are fictional and must not resemble any real or famous person. Colours and mood only: Cool morning colour grade, soft daylight, newsprint greys with rust-red accents. No readable text, letters, numbers, signs, logos, labels or watermarks anywhere.",
+      "seed": 7004,
+      "slot": "tana:04",
+      "verdict": {
+        "categories": [],
+        "model": "nemotron-3.5-content-safety",
+        "safe": true,
+        "user_safety": "safe"
+      },
+      "width": 1024
+    },
+    "tana:05": {
+      "brief": "Friday morning at the market: Mzee Otieno, a Kenyan man in his sixties with a grey flat cap and a tweed jacket shows his phone to a fictional customer who shakes his head, both looking doubtful",
+      "bytes": 150006,
+      "cost_micro_usd": 23593,
+      "description": {
+        "alt": "Older man in a grey flat cap and tweed jacket frowns at a phone in a market; a younger man in blue holds his head.",
+        "check": "The younger man's gesture reads as holding his head in frustration rather than a clear head-shake, so confirm it matches the script beat.",
+        "photographic": true,
+        "shows_person": true,
+        "shows_text": false
+      },
+      "digest": "sha256:8a110f585ac6b565f30dabba800fe4c2e330608c10296c45aec1f4bd5e437971",
+      "file": "tana_05.webp",
+      "height": 1152,
+      "kind": "film",
+      "label": "Made with AI",
+      "media_type": "image/webp",
+      "model": "z-image-turbo",
+      "prompt": "Friday morning at the market: Mzee Otieno, a Kenyan man in his sixties with a grey flat cap and a tweed jacket shows his phone to a fictional customer who shakes his head, both looking doubtful. Photoreal documentary film still, natural light, shallow depth of field, warm colour grade, Nairobi. The people are fictional and must not resemble any real or famous person. Colours and mood only: Cool morning colour grade, soft daylight, newsprint greys with rust-red accents. No readable text, letters, numbers, signs, logos, labels or watermarks anywhere.",
+      "seed": 7005,
+      "slot": "tana:05",
+      "verdict": {
+        "categories": [],
+        "model": "nemotron-3.5-content-safety",
+        "safe": true,
+        "user_safety": "safe"
+      },
+      "width": 1024
+    },
+    "tana:06": {
+      "brief": "Friday late at night in the small newsroom of a local weekly newspaper in a Kenyan valley town, with three cluttered desks, bundles of newspapers wrapped in plain brown paper, and a corkboard on the wall pinned with blank index cards and red string: Nduku, a Kenyan woman in her early fifties with short grey natural hair, reading glasses on a cord and a rust-red cardigan sits alone at her desk under a single lamp with a laptop, seen from behind her shoulder, the laptop screen a soft unreadable blur, looking determined",
+      "bytes": 79312,
+      "cost_micro_usd": 23593,
+      "description": {
+        "alt": "Woman in a rust-red cardigan works at a laptop, surrounded by newspaper stacks, with a corkboard of cards behind her.",
+        "check": "The corkboard cards appear to have writing on them, but the brief describes them as blank.",
+        "photographic": true,
+        "shows_person": true,
+        "shows_text": true
+      },
+      "digest": "sha256:78bab9bc33f82c1a9a11fa7fd76cbb4aa55a8f1905bf6a9d787d99c6ce0df1b4",
+      "file": "tana_06.webp",
+      "height": 1152,
+      "kind": "film",
+      "label": "Made with AI",
+      "media_type": "image/webp",
+      "model": "z-image-turbo",
+      "prompt": "Friday late at night in the small newsroom of a local weekly newspaper in a Kenyan valley town, with three cluttered desks, bundles of newspapers wrapped in plain brown paper, and a corkboard on the wall pinned with blank index cards and red string: Nduku, a Kenyan woman in her early fifties with short grey natural hair, reading glasses on a cord and a rust-red cardigan sits alone at her desk under a single lamp with a laptop, seen from behind her shoulder, the laptop screen a soft unreadable blur, looking determined. Photoreal documentary film still, natural light, shallow depth of field, warm colour grade, Nairobi. The people are fictional and must not resemble any real or famous person. Colours and mood only: Cool morning colour grade, soft daylight, newsprint greys with rust-red accents. No readable text, letters, numbers, signs, logos, labels or watermarks anywhere.",
+      "seed": 7306,
+      "slot": "tana:06",
+      "verdict": {
+        "categories": [],
+        "model": "nemotron-3.5-content-safety",
+        "safe": true,
+        "user_safety": "safe"
+      },
+      "width": 1024
+    },
+    "tana:07": {
+      "brief": "Thursday evening in the small newsroom of a local weekly newspaper in a Kenyan valley town, with three cluttered desks, cardboard boxes, and a corkboard on the wall pinned with blank white index cards, calm: Nduku, a Kenyan woman in her early fifties with short grey natural hair, reading glasses on a cord and a rust-red cardigan types on her laptop seen from the side, its lid edge-on to the camera, nodding, Daniel, a Kenyan man in his late twenties with a neat beard and a denim shirt beside her with his notebook, relieved. No newspapers or printed pages anywhere in the room; laptops are seen from behind with blurred screens",
+      "bytes": 73090,
+      "cost_micro_usd": 23593,
+      "description": {
+        "alt": "A woman with short grey hair in a rust-red cardigan types on a laptop, a man in a denim shirt seated behind her in an office.",
+        "check": "A newspaper with a printed headline sits on the desk and a text poster hangs on the wall, but the brief specifies no printed pages or readable text.",
+        "photographic": true,
+        "shows_person": true,
+        "shows_text": true
+      },
+      "digest": "sha256:559479f0b21486206d8bce862878f05c71434c709114bc7c5843c31df86d25ec",
+      "file": "tana_07.webp",
+      "height": 1152,
+      "kind": "film",
+      "label": "Made with AI",
+      "media_type": "image/webp",
+      "model": "z-image-turbo",
+      "prompt": "Thursday evening in the small newsroom of a local weekly newspaper in a Kenyan valley town, with three cluttered desks, cardboard boxes, and a corkboard on the wall pinned with blank white index cards, calm: Nduku, a Kenyan woman in her early fifties with short grey natural hair, reading glasses on a cord and a rust-red cardigan types on her laptop seen from the side, its lid edge-on to the camera, nodding, Daniel, a Kenyan man in his late twenties with a neat beard and a denim shirt beside her with his notebook, relieved. No newspapers or printed pages anywhere in the room; laptops are seen from behind with blurred screens. Photoreal documentary film still, natural light, shallow depth of field, warm colour grade, Nairobi. The people are fictional and must not resemble any real or famous person. Colours and mood only: Cool morning colour grade, soft daylight, newsprint greys with rust-red accents. No readable text, letters, numbers, signs, logos, labels or watermarks anywhere.",
+      "seed": 7307,
+      "slot": "tana:07",
+      "verdict": {
+        "categories": [],
+        "model": "nemotron-3.5-content-safety",
+        "safe": true,
+        "user_safety": "safe"
+      },
+      "width": 1024
+    },
+    "tana:08": {
+      "brief": "Thursday evening inside a matatu: Wanjiku, a Kenyan woman in her thirties with a short afro, a green blazer and a shoulder bag reads her phone and nods, satisfied, warm evening light",
+      "bytes": 71052,
+      "cost_micro_usd": 23593,
+      "description": {
+        "alt": "Woman in a green blazer with a short afro reads her phone at the open doorway of a matatu in warm evening light.",
+        "check": "She stands at the open doorway rather than seated inside, and her expression is neutral, not the satisfied nod described.",
+        "photographic": true,
+        "shows_person": true,
+        "shows_text": false
+      },
+      "digest": "sha256:29b215e50eda48575853293aaf82f4fe52a191dd73db89a3a290f0f4bf6cb8c5",
+      "file": "tana_08.webp",
+      "height": 1152,
+      "kind": "film",
+      "label": "Made with AI",
+      "media_type": "image/webp",
+      "model": "z-image-turbo",
+      "prompt": "Thursday evening inside a matatu: Wanjiku, a Kenyan woman in her thirties with a short afro, a green blazer and a shoulder bag reads her phone and nods, satisfied, warm evening light. Photoreal documentary film still, natural light, shallow depth of field, warm colour grade, Nairobi. The people are fictional and must not resemble any real or famous person. Colours and mood only: Cool morning colour grade, soft daylight, newsprint greys with rust-red accents. No readable text, letters, numbers, signs, logos, labels or watermarks anywhere.",
+      "seed": 7008,
+      "slot": "tana:08",
+      "verdict": {
+        "categories": [],
+        "model": "nemotron-3.5-content-safety",
+        "safe": true,
+        "user_safety": "safe"
+      },
+      "width": 1024
+    },
+    "tana:09": {
+      "brief": "Thursday evening at the market as stalls close: Mzee Otieno, a Kenyan man in his sixties with a grey flat cap and a tweed jacket reads his phone and smiles, packing his vegetables",
+      "bytes": 106538,
+      "cost_micro_usd": 23593,
+      "description": {
+        "alt": "An older man in a grey flat cap and tweed jacket smiles at his phone beside a vegetable stall at an evening market.",
+        "check": "",
+        "photographic": true,
+        "shows_person": true,
+        "shows_text": false
+      },
+      "digest": "sha256:01e3e48f4f21377e3654aa420ceb157fa29680c9c7cfe6e887674efa6511b98c",
+      "file": "tana_09.webp",
+      "height": 1152,
+      "kind": "film",
+      "label": "Made with AI",
+      "media_type": "image/webp",
+      "model": "z-image-turbo",
+      "prompt": "Thursday evening at the market as stalls close: Mzee Otieno, a Kenyan man in his sixties with a grey flat cap and a tweed jacket reads his phone and smiles, packing his vegetables. Photoreal documentary film still, natural light, shallow depth of field, warm colour grade, Nairobi. The people are fictional and must not resemble any real or famous person. Colours and mood only: Cool morning colour grade, soft daylight, newsprint greys with rust-red accents. No readable text, letters, numbers, signs, logos, labels or watermarks anywhere.",
+      "seed": 7009,
+      "slot": "tana:09",
+      "verdict": {
+        "categories": [],
+        "model": "nemotron-3.5-content-safety",
+        "safe": true,
+        "user_safety": "safe"
+      },
+      "width": 1024
+    },
+    "tana:10": {
+      "brief": "Friday at seven in the morning inside a matatu: Wanjiku, a Kenyan woman in her thirties with a short afro, a green blazer and a shoulder bag reads her phone with interest, a coffee cup in her other hand, soft morning light",
+      "bytes": 74956,
+      "cost_micro_usd": 23593,
+      "description": {
+        "alt": "Woman with a short afro in a green blazer reads her phone, holding a takeaway coffee cup, beside a red and white matatu.",
+        "check": "",
+        "photographic": true,
+        "shows_person": true,
+        "shows_text": false
+      },
+      "digest": "sha256:c31156504f01cfbec77af979674fcf0e6ed6f560d8167e4224e87c3ee0e5bb89",
+      "file": "tana_10.webp",
+      "height": 1152,
+      "kind": "film",
+      "label": "Made with AI",
+      "media_type": "image/webp",
+      "model": "z-image-turbo",
+      "prompt": "Friday at seven in the morning inside a matatu: Wanjiku, a Kenyan woman in her thirties with a short afro, a green blazer and a shoulder bag reads her phone with interest, a coffee cup in her other hand, soft morning light. Photoreal documentary film still, natural light, shallow depth of field, warm colour grade, Nairobi. The people are fictional and must not resemble any real or famous person. Colours and mood only: Cool morning colour grade, soft daylight, newsprint greys with rust-red accents. No readable text, letters, numbers, signs, logos, labels or watermarks anywhere.",
+      "seed": 7010,
+      "slot": "tana:10",
+      "verdict": {
+        "categories": [],
+        "model": "nemotron-3.5-content-safety",
+        "safe": true,
+        "user_safety": "safe"
+      },
+      "width": 1024
+    },
+    "tana:11": {
+      "brief": "Friday at seven in the morning at a kitchen table in a valley home: Mzee Otieno, a Kenyan man in his sixties with a grey flat cap and a tweed jacket reads his phone over tea and toast, his reading glasses on, content",
+      "bytes": 84722,
+      "cost_micro_usd": 23593,
+      "description": {
+        "alt": "An older man in a grey flat cap and tweed jacket reads his phone at a kitchen table with tea and toast.",
+        "check": "",
+        "photographic": true,
+        "shows_person": true,
+        "shows_text": false
+      },
+      "digest": "sha256:1082e4b30f363646d00250d11831558f2b9cb98d436141a97ae46385b3145045",
+      "file": "tana_11.webp",
+      "height": 1152,
+      "kind": "film",
+      "label": "Made with AI",
+      "media_type": "image/webp",
+      "model": "z-image-turbo",
+      "prompt": "Friday at seven in the morning at a kitchen table in a valley home: Mzee Otieno, a Kenyan man in his sixties with a grey flat cap and a tweed jacket reads his phone over tea and toast, his reading glasses on, content. Photoreal documentary film still, natural light, shallow depth of field, warm colour grade, Nairobi. The people are fictional and must not resemble any real or famous person. Colours and mood only: Cool morning colour grade, soft daylight, newsprint greys with rust-red accents. No readable text, letters, numbers, signs, logos, labels or watermarks anywhere.",
+      "seed": 7011,
+      "slot": "tana:11",
+      "verdict": {
+        "categories": [],
+        "model": "nemotron-3.5-content-safety",
+        "safe": true,
+        "user_safety": "safe"
+      },
+      "width": 1024
+    },
+    "tana:12": {
+      "brief": "Months later in the small newsroom of a local weekly newspaper in a Kenyan valley town, with three cluttered desks, cardboard boxes, and a corkboard on the wall pinned with blank white index cards, now with five desks: Nduku, a Kenyan woman in her early fifties with short grey natural hair, reading glasses on a cord and a rust-red cardigan, Daniel, a Kenyan man in his late twenties with a neat beard and a denim shirt and two new fictional reporters, four people in all, laugh together around a desk, mugs and laptops seen from the side all around. No newspapers or printed pages anywhere in the room; laptops are seen from behind with blurred screens",
+      "bytes": 61934,
+      "cost_micro_usd": 23593,
+      "description": {
+        "alt": "Five people sit around a newsroom desk with laptops, mugs and folded newspapers, a corkboard of blank cards behind them.",
+        "check": "Image shows printed newspapers and a text-bearing wall poster, and five people, though the brief said no printed pages and four people.",
+        "photographic": true,
+        "shows_person": true,
+        "shows_text": true
+      },
+      "digest": "sha256:b9a3fe71b2482ec0de930746c2e66f18b30ef373227771f255fe80047eed2287",
+      "file": "tana_12.webp",
+      "height": 1152,
+      "kind": "film",
+      "label": "Made with AI",
+      "media_type": "image/webp",
+      "model": "z-image-turbo",
+      "prompt": "Months later in the small newsroom of a local weekly newspaper in a Kenyan valley town, with three cluttered desks, cardboard boxes, and a corkboard on the wall pinned with blank white index cards, now with five desks: Nduku, a Kenyan woman in her early fifties with short grey natural hair, reading glasses on a cord and a rust-red cardigan, Daniel, a Kenyan man in his late twenties with a neat beard and a denim shirt and two new fictional reporters, four people in all, laugh together around a desk, mugs and laptops seen from the side all around. No newspapers or printed pages anywhere in the room; laptops are seen from behind with blurred screens. Photoreal documentary film still, natural light, shallow depth of field, warm colour grade, Nairobi. The people are fictional and must not resemble any real or famous person. Colours and mood only: Cool morning colour grade, soft daylight, newsprint greys with rust-red accents. No readable text, letters, numbers, signs, logos, labels or watermarks anywhere.",
+      "seed": 7312,
+      "slot": "tana:12",
+      "verdict": {
+        "categories": [],
+        "model": "nemotron-3.5-content-safety",
+        "safe": true,
+        "user_safety": "safe"
+      },
+      "width": 1024
+    }
+  },
+  "blocked": []
+}

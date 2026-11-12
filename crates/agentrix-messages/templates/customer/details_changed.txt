@@ -1,0 +1,14 @@
+{% block subject %}Your {{ change.what }} at {{ site.name }} was changed{% endblock %}
+{% block preheader %}{{ change.when }}. We're telling the address that was on file.{% endblock %}
+{% block body %}
+# Your {{ change.what }} was changed
+{{ change.when }}, someone signed in to your {{ site.name }} account and changed your {{ change.what }}. We're writing to this address because it was the one on file.
+
+If it was you, there's nothing to do.
+
+If it wasn't, sign in with your passkey, choose Sign out everywhere, and change it back. A desk can't change account details, so nobody can do this through a chat.
+
+::button Open your account | {{ account_url }}
+
+Can't sign in any more? {{ site.owner }} can help through {{ help_url }}.
+{% endblock %}

@@ -1,0 +1,2 @@
+# Rendered cloud-init, the inventory and the SSH config written by provision.sh.
+.state/

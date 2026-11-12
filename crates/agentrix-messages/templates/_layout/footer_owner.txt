@@ -1,0 +1,9 @@
+{% if site is defined and site.name %}
+::note Agentrix sent this about {{ site.name }}. Email can't approve anything: decisions open in the console, with your passkey or an authenticator code.
+{% else %}
+::note Agentrix sent this about your account. Email can't approve anything: decisions open in the console, with your passkey or an authenticator code.
+{% endif %}
+::link Questions? Message us on WhatsApp | https://wa.me/254721490933
+{% if preferences_url is defined %}
+::link Choose what reaches you, and when | {{ preferences_url }}
+{% endif %}

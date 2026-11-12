@@ -1,0 +1,27 @@
+{% extends "owner/base.html" %}
+{% block field %}{% import "owner/macros.html" as m %}
+{{ m.head(c) }}
+<nav class="tabs" aria-label="Orders by state">
+  {% for t in tabs %}<a href="{{ t.href }}"{% if t.current %} aria-current="page"{% endif %}>{{ t.label }} <span class="ct">{{ t.count }}</span></a>{% endfor %}
+</nav>
+<article class="fcard">
+  {% if rows %}
+  <div class="tbl"><table class="procs">
+    <thead><tr><th>Order</th><th class="hide-sm">Placed</th><th>Customer</th><th class="hide-sm">Items</th><th class="hide-sm">Slot</th><th>Total</th><th>State</th></tr></thead>
+    <tbody>
+    {% for o in rows %}
+    <tr>
+      <td><a href="{{ o.href }}"><b>{{ o.id }}</b></a>{% if o.channel == "agent door" %} {{ m.chip("Agent door", "info") }}{% endif %}</td>
+      <td class="hide-sm">{{ o.placed }}</td>
+      <td>{{ o.name }}</td>
+      <td class="hide-sm">{{ o.items }}</td>
+      <td class="hide-sm">{% if o.slot %}{{ o.fulfilment }} · {{ o.slot }}{% else %}{{ o.fulfilment }}{% endif %}</td>
+      <td class="num">{{ o.total }}</td>
+      <td>{{ m.chip(o.label, o.tone) }}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+  </table></div>
+  {% else %}{{ m.empty(empty) }}{% endif %}
+</article>
+{% endblock %}

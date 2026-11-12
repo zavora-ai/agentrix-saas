@@ -1,0 +1,28 @@
+{% block subject %}Your website check for {{ check.site }}{% endblock %}
+{% block preheader %}{{ check.headline }} The report stays up until {{ check.expires }}.{% endblock %}
+{% block body %}
+# Your website check
+{% if person.name %}
+{{ person.name }}, here is what we found when we read {{ check.site }} on {{ check.checked_at }}.
+{% else %}
+Here is what we found when we read {{ check.site }} on {{ check.checked_at }}.
+{% endif %}
+
+{{ check.headline }}
+
+{% for line in check.findings %}
+- {{ line }}
+{% endfor %}
+
+::button See the full report | {{ check.report_url }}
+
+The report stays up until {{ check.expires }}, 30 days from the check. Nothing on your site has changed.
+
+One next step, when you're ready: keep the new site we made from yours. It looks the same, and its WebAgents (AI) answer your customers and take orders. Nothing moves until you say so, and your old site stays on standby for 30 days.
+
+::link Keep my new site | {{ check.keep_url }}
+{% endblock %}
+{% block chat %}
+Agentrix: your website check for {{ check.site }} is ready. {{ check.headline }} The report stays up until {{ check.expires }}.
+::button See the report | {{ check.report_url }}
+{% endblock %}

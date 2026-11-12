@@ -1,0 +1,28 @@
+[package]
+name = "agentrix-host"
+description = "The seam every platform crate mounts into agentrix-node through (contract C11)"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+authors.workspace = true
+
+[dependencies]
+agentrix-types.workspace = true
+anyhow.workspace = true
+async-trait.workspace = true
+axum.workspace = true
+bytes.workspace = true
+futures.workspace = true
+http.workspace = true
+reqwest.workspace = true
+serde_json.workspace = true
+sqlx.workspace = true
+tokio.workspace = true
+url.workspace = true
+uuid.workspace = true
+
+
+[lints]
+workspace = true

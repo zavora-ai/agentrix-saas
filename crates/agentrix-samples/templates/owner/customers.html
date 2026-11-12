@@ -1,0 +1,19 @@
+{% extends "owner/base.html" %}
+{% block field %}{% import "owner/macros.html" as m %}
+{{ m.head(c) }}
+<article class="fcard">
+  {% if rows %}
+  <div class="tbl"><table class="procs">
+    {% if news %}
+    <thead><tr><th>Reader</th><th>Email</th><th class="hide-sm">Since</th><th>Subscription</th></tr></thead>
+    <tbody>{% for r in rows %}<tr><td><b>{{ r.name }}</b>{% if r.place %}<small class="muted"> {{ r.place }}</small>{% endif %}</td><td>{{ r.email }}</td><td class="hide-sm">{{ r.since }}</td><td>{% if r.subscriber == "active" %}{{ m.chip(r.plan, "ok") }}{% elif r.subscriber %}{{ m.chip("Ended", "") }}{% else %}<span class="muted">none</span>{% endif %}</td></tr>{% endfor %}</tbody>
+    {% else %}
+    <thead><tr><th>Customer</th><th class="hide-sm">Contact</th><th>Orders</th><th class="hide-sm">Spent</th><th>Last order</th></tr></thead>
+    <tbody>{% for r in rows %}<tr><td><b>{{ r.name }}</b>{% if r.place %}<small class="muted"> {{ r.place }}</small>{% endif %}{% if r.kind == "business" %} {{ m.chip("Business", "info") }}{% endif %}</td><td class="hide-sm">{{ r.email }}{% if r.phone %}<small class="muted"> {{ r.phone }}</small>{% endif %}</td><td class="num">{{ r.orders }}</td><td class="hide-sm num">{{ r.spent }}</td><td>{{ r.last or "none yet" }}</td></tr>{% endfor %}</tbody>
+    {% endif %}
+  </table></div>
+  <p class="muted small">{% if news %}Sample readers with example.com addresses.{% else %}Sample people with example.com addresses. Spent leaves out declined, lapsed, cancelled and refunded orders.{% endif %}</p>
+  {% elif news %}{{ m.empty("No readers yet. They appear here after they sign in on the site.") }}
+  {% else %}{{ m.empty("No customers yet. They appear after their first order or sign-in on the site.") }}{% endif %}
+</article>
+{% endblock %}

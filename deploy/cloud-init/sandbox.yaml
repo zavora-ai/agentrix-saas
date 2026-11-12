@@ -1,0 +1,131 @@
+#cloud-config
+# Agentrix · sandbox VM, VX1 (design §1 D1, D6; §2; §3.1). Rendered by
+# deploy/provision.sh, which fills the @@…@@ tokens after control exists, so this host's
+# firewall can name control's VPC address.
+#
+# What this host runs: agentrix-runner and agentrix-egress (installed by the deploy script,
+# task S1-12) and the sealed rooms, as Docker containers on gVisor (runsc, the default runtime).
+# It holds no secret (N6, D6): only control's public key for job specs, which the deploy
+# script places in /etc/agentrix/control.pub.
+
+hostname: agx-sandbox
+fqdn: agx-sandbox
+preserve_hostname: false
+timezone: Africa/Nairobi
+
+package_update: true
+package_upgrade: true
+packages:
+  - nftables
+  - ca-certificates
+  - curl
+  - gnupg
+  - jq
+  - unattended-upgrades
+
+ssh_pwauth: false
+users:
+  - default
+  - name: deploy
+    gecos: Agentrix deploy
+    groups: [sudo]
+    shell: /bin/bash
+    sudo: "ALL=(ALL) NOPASSWD:ALL"
+    lock_passwd: true
+  - name: agentrix
+    system: true
+    shell: /usr/sbin/nologin
+    homedir: /var/lib/agentrix
+    no_create_home: false
+
+write_files:
+  - path: /etc/nftables.conf
+    encoding: b64
+    permissions: "0644"
+    content: @@NFT_B64@@
+  - path: /etc/docker/daemon.json
+    encoding: b64
+    permissions: "0644"
+    content: @@DOCKER_DAEMON_B64@@
+  - path: /etc/agentrix/host.env
+    permissions: "0644"
+    content: |
+      # Non-secret facts about this host, written by cloud-init.
+      AGENTRIX_ROLE=sandbox
+      AGENTRIX_RUNNER_LISTEN=0.0.0.0:@@RUNNER_PORT@@
+      AGENTRIX_CONTROL_VPC_IP=@@CONTROL_VPC_IP@@
+      AGENTRIX_ROOMS_NETWORK=agx-rooms
+      AGENTRIX_ROOMS_BRIDGE=agx-r0
+      AGENTRIX_ROOMS_SUBNET=@@ROOMS_SUBNET@@
+      AGENTRIX_ROOMS_GATEWAY=@@ROOMS_GATEWAY@@
+      AGENTRIX_ROOMS_IP_RANGE=@@ROOMS_IP_RANGE@@
+      AGENTRIX_EGRESS_PORTS=@@EGRESS_PORTS@@
+      AGENTRIX_EGRESS_USER=65533:65533
+      AGENTRIX_DATA_DIR=/var/lib/agentrix
+  # sshd keeps the first value it reads, and Vultr's image ships 50-cloud-init.conf (password
+  # login on), so this file must sort before it. Root login is off; deploys use `deploy`.
+  - path: /etc/ssh/sshd_config.d/00-agentrix.conf
+    permissions: "0644"
+    content: |
+      PasswordAuthentication no
+      KbdInteractiveAuthentication no
+      PermitRootLogin no
+      AllowAgentForwarding no
+      AllowTcpForwarding no
+      X11Forwarding no
+  - path: /etc/sysctl.d/90-agentrix.conf
+    permissions: "0644"
+    content: |
+      net.ipv4.conf.all.rp_filter = 1
+      net.ipv4.conf.default.rp_filter = 1
+      net.ipv4.conf.all.accept_redirects = 0
+      net.ipv6.conf.all.accept_redirects = 0
+      net.ipv4.conf.all.send_redirects = 0
+      kernel.kptr_restrict = 2
+      kernel.dmesg_restrict = 1
+      kernel.unprivileged_bpf_disabled = 1
+  - path: /etc/apt/apt.conf.d/20auto-upgrades
+    permissions: "0644"
+    content: |
+      APT::Periodic::Update-Package-Lists "1";
+      APT::Periodic::Unattended-Upgrade "1";
+
+runcmd:
+  # Firewall first: rooms can reach only the egress proxies, and only control can reach us.
+  - [systemctl, enable, --now, nftables]
+  # Fail closed: if the firewall does not load, power off before Docker or any room exists.
+  - [sh, -c, "nft -f /etc/nftables.conf && nft list table inet agentrix >/dev/null || { echo 'agentrix: nftables did not load; powering off' > /dev/console; shutdown -h now; }"]
+  - [sysctl, --system]
+  # Vultr's image enables ufw with only 22 open; a packet must pass both ufw and our table. The
+  # runner port from control only, and the rooms' bridge to the egress proxies only.
+  - [sh, -c, "command -v ufw >/dev/null || exit 0; ufw allow from @@CONTROL_VPC_IP@@ to any port @@RUNNER_PORT@@ proto tcp && ufw allow in on agx-r0 to @@ROOMS_GATEWAY@@ port @@EGRESS_PORT_RANGE@@ proto tcp"]
+  - [systemctl, try-reload-or-restart, ssh]
+  # Docker from its official apt repository.
+  - [sh, -c, "install -m 0755 -d /etc/apt/keyrings && curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc && chmod a+r /etc/apt/keyrings/docker.asc"]
+  - [sh, -c, "echo \"deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu $(. /etc/os-release && echo $VERSION_CODENAME) stable\" > /etc/apt/sources.list.d/docker.list"]
+  # gVisor (runsc) from its official apt repository.
+  - [sh, -c, "curl -fsSL https://gvisor.dev/archive.key | gpg --dearmor -o /usr/share/keyrings/gvisor-archive-keyring.gpg"]
+  - [sh, -c, "echo \"deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/gvisor-archive-keyring.gpg] https://storage.googleapis.com/gvisor/releases release main\" > /etc/apt/sources.list.d/gvisor.list"]
+  - [sh, -c, "apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y docker-ce docker-ce-cli containerd.io runsc"]
+  - [systemctl, enable, docker]
+  - [systemctl, restart, docker]
+  # The rooms network: internal (Docker's embedded DNS does not forward outside names, so DNS
+  # is no side channel; the proxies resolve names), no masquerade and no inter-container
+  # traffic. Its bridge name matches the firewall's agx-r* rules; the gateway address stays on
+  # the host and is where agentrix-egress listens. Docker assigns only from the upper half
+  # (@@ROOMS_IP_RANGE@@); the runner gives room slot i the fixed address .(10+i).
+  - [sh, -c, "docker network inspect agx-rooms >/dev/null 2>&1 || docker network create --driver bridge --internal --subnet @@ROOMS_SUBNET@@ --ip-range @@ROOMS_IP_RANGE@@ --gateway @@ROOMS_GATEWAY@@ -o com.docker.network.bridge.name=agx-r0 -o com.docker.network.bridge.enable_ip_masquerade=false -o com.docker.network.bridge.enable_icc=false agx-rooms"]
+  # Re-apply our table after Docker has added its own (ours only drops, so order is not a
+  # correctness issue; this makes the counters start clean).
+  - [sh, -c, "nft -f /etc/nftables.conf || { echo 'agentrix: nftables did not reload; powering off' > /dev/console; shutdown -h now; }"]
+  # Directories and the runner's user (the runner starts rooms, so it is in the docker group).
+  - [usermod, -aG, docker, agentrix]
+  # The egress proxies' user: uid and gid 65533, no shell, no home, not in the docker group.
+  - [sh, -c, "getent group 65533 >/dev/null || groupadd --system --gid 65533 agentrix-egress; getent passwd 65533 >/dev/null || useradd --system --uid 65533 --gid 65533 --no-create-home --home-dir /nonexistent --shell /usr/sbin/nologin agentrix-egress"]
+  - [install, -d, -m, "0755", /opt/agentrix, /opt/agentrix/bin]
+  - [install, -d, -m, "0750", -o, agentrix, -g, agentrix, /var/lib/agentrix, /var/lib/agentrix/jobs, /var/lib/agentrix-runner]
+  - [sh, -c, "install -d -m 0700 -o deploy -g deploy /home/deploy/.ssh && install -m 0600 -o deploy -g deploy /root/.ssh/authorized_keys /home/deploy/.ssh/authorized_keys"]
+  # Facts: is KVM exposed (microVM rooms need it), and which runsc and Docker are installed.
+  - [sh, -c, "printf '{\"role\":\"sandbox\",\"kvm\":%s,\"runsc\":\"%s\",\"docker\":\"%s\",\"default_runtime\":\"%s\",\"nft_agentrix\":%s}\\n' \"$( [ -e /dev/kvm ] && echo true || echo false )\" \"$(runsc --version 2>/dev/null | head -1)\" \"$(docker version --format '{{.Server.Version}}' 2>/dev/null)\" \"$(docker info --format '{{.DefaultRuntime}}' 2>/dev/null)\" \"$(nft list table inet agentrix >/dev/null 2>&1 && echo true || echo false)\" > /var/lib/agentrix/host-facts.json"]
+
+final_message: "agx-sandbox ready after $UPTIME s"

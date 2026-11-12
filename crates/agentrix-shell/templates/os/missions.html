@@ -1,0 +1,79 @@
+{% extends "os/base.html" %}
+{#- ShellPage::Missions · view::MissionsView (+ Chrome) { missions: [MissionRow], workers: [[id, name]], counts_orders, default_end,
+      contract: ContractForm { said, drafted, goal, measure, target?, members: [id], ends }, checking: DraftNote { drafted, words, question? }? }
+    concept/console/mission.html ("How a mission starts"), 07 §3.5: say the goal, read the contract, approve it. "Draft the
+    contract" posts the owner's words to …/missions/draft, where the Chief WebAgent drafts the contract through the Model
+    Gateway; the page comes back with the draft in the form (`checking`) for the owner to check and change. The contract is
+    a card v2 (tool mission.start); the mission starts only when it's approved. A mission never raises a job's level, and
+    no WebAgent works towards one in the background yet: a mission is the goal and its count. -#}
+{% block title %}Missions · {{ site.name }}{% endblock %}
+{% block field %}
+<section class="view on" aria-labelledby="ms-h">
+  <div class="field-head"><div><h2 id="ms-h">Missions</h2><div class="sub">Goals you set, counted from your site's records</div></div></div>
+  {% if missions %}
+  <div class="cards">
+    {% for x in missions %}
+    <article class="fcard">
+      <div class="fcard-head"><span class="sysmark" aria-hidden="true">{{ m.icon("missions") }}</span><div class="who"><b><a href="{{ x.href }}">{{ x.goal }}</a></b><span class="state-line {{ 'ok' if x.state == 'active' else ('wait' if x.state == 'proposed' else '') }}"><span class="dot"></span>{{ x.state_words }} · {{ x.left_words }}</span></div></div>
+      {% if x.count is not none and x.target %}
+      <div class="progress"><div class="spread"><span><b>{{ x.count }}</b> of {{ x.target }}</span><span>ends {{ x.ends_words }}</span></div>{{ ui.meter(x.count, x.target, tone="ok", label=x.count ~ " of " ~ x.target) }}</div>
+      {% endif %}
+      <p class="small muted">{{ x.lead }} named to lead it{% if x.members|length > 1 %}, with {{ x.members[1:]|join(", ") }}{% endif %}</p>
+      <div class="verbs">{% if x.card_href %}<a class="btn btn-primary btn-sm" href="{{ x.card_href }}">Read the contract</a>{% endif %}<a class="btn btn-sm" href="{{ x.href }}">Open</a></div>
+    </article>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  <article class="fcard after-cards" aria-labelledby="new-h">
+    <h3 id="new-h">{% if checking %}Check the contract{% elif missions %}Start another mission{% else %}Start a mission{% endif %}</h3>
+    {% if workers %}
+    {% if checking %}
+    <p class="note" role="status"><span>{{ checking.words }}</span></p>
+    {% if checking.question %}<p><b>Your Chief WebAgent asks:</b> {{ checking.question }}</p>{% endif %}
+    {% if contract.said %}<p class="small muted">You said: &ldquo;{{ contract.said }}&rdquo;</p>{% endif %}
+    {% else %}
+    <p class="small muted">Say the goal in your own words. Your Chief WebAgent (AI) drafts the contract from them: what counts, who's named on it and when it ends. You check the draft, then approve the contract. Nothing starts before that.</p>
+    <form method="post" action="{{ base }}/missions/draft" class="mission-form">
+      {{ ui.textarea("said", "The goal", rows=2, required=true, hint="For example: get us 60 Christmas cake orders by 18 December.") }}
+      <div class="verbs"><button class="btn btn-primary" type="submit">Draft the contract</button></div>
+    </form>
+    <details class="after-cards"><summary>Fill in the contract yourself</summary>
+    {% endif %}
+    <form method="post" action="{{ base }}/missions" class="mission-form">
+      {% if contract.said %}<input type="hidden" name="said" value="{{ contract.said }}">{% endif %}
+      {% if contract.drafted %}<input type="hidden" name="drafted" value="chief">{% endif %}
+      {{ ui.field("goal", "The goal", value=contract.goal, required=true, placeholder="60 Christmas cake orders by 18 December", attrs={"maxlength": "200"}) }}
+      <fieldset>
+        <legend>What counts</legend>
+        <label class="o-check"><input type="radio" name="measure" value="orders"{% if not counts_orders %} disabled{% elif contract.measure == "orders" %} checked{% endif %}><span>Orders placed on your site{% if not counts_orders %} (your site doesn't take orders yet){% endif %}</span></label>
+        <label class="o-check"><input type="radio" name="measure" value="questions"{% if contract.measure == "questions" %} checked{% endif %}><span>Questions visitors pass to you</span></label>
+        <label class="o-check"><input type="radio" name="measure" value="none"{% if contract.measure == "none" %} checked{% endif %}><span>Nothing: the mission only records what you want</span></label>
+      </fieldset>
+      {{ ui.field("target", "How many", type="number", value=(contract.target if contract.target else ""), inputmode="numeric", placeholder="60", hint="Leave it empty when nothing is counted.", attrs={"min": "1", "max": "100000"}) }}
+      <fieldset>
+        <legend>Who's named on it</legend>
+        {% for t in workers %}{{ ui.check("member", t[1], checked=(t[0] in contract.members), value=t[0]) }}{% endfor %}
+        <p class="o-hint">The first one ticked in this list leads it. Each keeps its own levels; a mission can't raise any.</p>
+      </fieldset>
+      {{ ui.field("ends", "Ends", type="date", value=contract.ends, required=true) }}
+      <div class="verbs"><button class="btn btn-primary" type="submit">Write the contract</button>{% if checking %}<a class="btn btn-ghost" href="{{ base }}/missions">Start again</a>{% endif %}</div>
+    </form>
+    {% if not checking %}</details>{% endif %}
+    {% else %}
+    <p>Your WebAgents start when your site goes live. Missions come after that.</p>
+    {% endif %}
+  </article>
+
+  <article class="fcard after-cards" aria-labelledby="how-h">
+    <h3 id="how-h">How a mission starts</h3>
+    <div class="steps4">
+      <div><span class="n">01 · You say it</span><p>"Get us 60 Christmas cake orders by 18 December." Typed here. Voice and WhatsApp can't start one yet.</p></div>
+      <div><span class="n">02 · The contract</span><p>Your Chief WebAgent drafts what counts, who's named on it and when it ends. You check it, and it becomes a decision you read before anything starts.</p></div>
+      <div><span class="n">03 · You approve it</span><p>With your passkey, or a code from your authenticator app. The receipt names the contract.</p></div>
+      <div><span class="n">04 · It reports in</span><p>Its count and pace show here and on your Back office page. Pause or end it with one tap.</p></div>
+    </div>
+    <p class="small muted">What a mission does today: it counts progress from your site's records. The WebAgents named on it don't yet change what they do to reach it.</p>
+  </article>
+</section>
+{% endblock %}

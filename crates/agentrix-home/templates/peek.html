@@ -1,0 +1,15 @@
+{#- A desk's peek in the header (desks.js fetches it the first time the desk opens). -#}
+<div class="peek" role="dialog" aria-label="{{ desk.name }}">
+  <p class="peek-head"><b>{{ desk.name }}</b>{% if desks_ai %} <span class="ai-chip">AI</span>{% endif %}</p>
+  <p class="peek-job">{{ desk.job }}</p>
+  {% if fact %}<p class="peek-fact">{{ fact }}{% if as_of %} <span>· as of {{ as_of }}</span>{% endif %}</p>{% endif %}
+  <div class="peek-starters">{% for s in desk.starters %}<button type="button" class="starter" data-q="{{ s }}">{{ s }}</button>{% endfor %}</div>
+  <div class="answers" role="log" aria-live="polite" aria-label="{{ desk.name }}'s answers"></div>
+  <form class="ask" method="get" action="/_home/ask" data-ask="{{ desk.id }}">
+    <input type="hidden" name="desk" value="{{ desk.id }}">
+    <label class="sr-only" for="peek-q-{{ desk.id }}">Ask {{ desk.name }}</label>
+    <input id="peek-q-{{ desk.id }}" name="q" type="text" maxlength="400" autocomplete="off" placeholder="Ask {{ desk.name }}…" required>
+    <button class="btn btn-sm btn-primary" type="submit">Ask</button>
+  </form>
+  <p class="peek-foot">{% if desks_ai %}You're talking to AI. It answers only from this site's pages and never guesses.{% else %}Answers come from this site's pages.{% endif %} <a href="{{ desk.href }}">Open the page</a></p>
+</div>

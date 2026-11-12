@@ -1,0 +1,14 @@
+<section class="acct" id="acct" data-acct="passkey-offer" data-next="{{ next }}">
+  <div class="card">
+    <h1 class="acct-h">Next time, sign in with this device's screen lock</h1>
+    <p>No code to type. It works on {{ host }} only.</p>
+    <div class="acct-row">
+      <button class="btn" type="button" id="acct-passkey">Create a passkey</button>
+      <button class="btn ghost" type="button" id="acct-not-now">Not now</button>
+    </div>
+    <p class="note ok" id="acct-done" role="status" hidden></p>
+    <p class="note warn" id="acct-error" role="alert" hidden></p>
+  </div>
+  <p class="small">Asked once on each device. Choose Not now and this device won't ask again.</p>
+  <p><a class="link" id="acct-carry-on" href="{{ next }}">Carry on</a></p>
+</section>

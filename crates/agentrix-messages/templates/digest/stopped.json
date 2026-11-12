@@ -1,0 +1,17 @@
+{
+ "site": {
+  "name": "Tana Valley Times",
+  "host": "tana-valley-times-sample.agentrix.website",
+  "sample": true,
+  "owner": "Nduku",
+  "accent": "#b3261e",
+  "url": "https://tana-valley-times-sample.agentrix.website"
+ },
+ "person": {
+  "name": null
+ },
+ "digest": {
+  "name": "your Friday five"
+ },
+ "resubscribe_url": "https://tana-valley-times-sample.agentrix.website/digest"
+}

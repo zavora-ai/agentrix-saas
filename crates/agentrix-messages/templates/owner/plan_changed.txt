@@ -1,0 +1,27 @@
+{% block subject %}{% if change.kind == "cancelled" %}Your {{ site.name }} plan is cancelled{% else %}Your plan for {{ site.name }} is now {{ change.plan }}{% endif %}{% endblock %}
+{% block preheader %}{{ change.effective }}{% endblock %}
+{% block body %}
+{% if change.kind == "cancelled" %}
+# Your plan is cancelled
+{{ site.name }} keeps full service until {{ change.paid_until }}. Then it stays online read-only for 30 days, until {{ change.closes_on }}, so you can move your domain. After that it closes, and your data is deleted 90 days later.
+
+Changed your mind? Undo works until {{ change.closes_on }}.
+
+A one-file export of your site isn't ready yet. Every receipt stays on your Trust page.
+{% else %}
+# Your plan is now {{ change.plan }}
+{{ change.effective }}
+
+::fact Plan | {{ change.plan }}
+::fact Price | {{ change.price|money(change.currency) }} a month
+{% if change.charge %}
+::fact Charged today | {{ change.charge|money(change.currency) }} for the rest of this month
+{% endif %}
+{% if change.stops %}
+
+What stops: {{ change.stops }}.
+{% endif %}
+{% endif %}
+
+::button Open billing | {{ change.url }}
+{% endblock %}

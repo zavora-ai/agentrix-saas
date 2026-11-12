@@ -1,0 +1,66 @@
+[package]
+name = "saas-web"
+description = "Agentrix SaaS's face: one axum server routing by Host across money., kilele.money., pay. and books., the JSON feed the treasury board and consoles read, and the adk-rust agent the board's swapped-in AG Studio harness streams from."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+authors.workspace = true
+
+# Owner: slice D (face). Pages and feeds only: money moves in slice C, books in slice A,
+# agents in slice B. Each of those plugs into a seam here (see `lib.rs`).
+
+[[bin]]
+name = "saas-web"
+path = "src/main.rs"
+
+[dependencies]
+adk-core.workspace = true
+adk-server.workspace = true
+# adk-session is not a workspace dependency yet; same pinned rev as every adk crate.
+adk-session = { git = "https://github.com/zavora-ai/adk-rust", rev = "3e797c38204ef21f603c84b5ee4270798270f2d6", default-features = false }
+adk-awp.workspace = true
+awp-types.workspace = true
+agentrix-ui.workspace = true
+agentrix-billing.workspace = true
+# The node's seams: `Approvals`, so settle's ceremonies ask the owner's console passkey.
+agentrix-host.workspace = true
+# Agentrix OS's console apps (contract C9): the face's apps inside the owner console.
+agentrix-shell.workspace = true
+# The books contract; `fake` for FakeBooks, which this node reads until slice A's ERA books land.
+saas-core = { workspace = true, features = ["fake"] }
+anyhow.workspace = true
+async-trait.workspace = true
+base64.workspace = true
+axum.workspace = true
+chrono.workspace = true
+futures.workspace = true
+hex.workspace = true
+minijinja.workspace = true
+# PROOFS.md on /proofs; the version and features agentrix-move already builds.
+pulldown-cmark = { version = "0.13", default-features = false, features = ["html"] }
+rand.workspace = true
+reqwest.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+sha2.workspace = true
+thiserror.workspace = true
+tokio.workspace = true
+tower.workspace = true
+tower-http.workspace = true
+tracing.workspace = true
+tracing-subscriber.workspace = true
+uuid.workspace = true
+# Owners' passkeys (design D9), the version and features the workspace pins.
+webauthn-rs.workspace = true
+# The model gateway's usage in control.db, for the operators' activity page.
+sqlx.workspace = true
+
+[dev-dependencies]
+tempfile.workspace = true
+tokio.workspace = true
+tower.workspace = true
+
+[lints]
+workspace = true

@@ -1,0 +1,22 @@
+{% extends "os/base.html" %}
+{#- ShellPage::Apps · view::AppsView (+ Chrome) { talk_href? }
+    concept/console/phone.html (Apps, 01b C38): the dock as a home screen. Presence rings and badges come from the
+    same dock items; talk opens W11's Talk app; Freeze is the bar's own form when it's switched on. -#}
+{% block title %}Apps · {{ site.name }}{% endblock %}
+{% block field %}
+<section class="view on" aria-labelledby="apps-h">
+  <div class="field-head"><div><h2 id="apps-h">Your WebAgents</h2><div class="sub">{% if dock %}{{ dock|length }} on the team. Asleep, a WebAgent spends nothing on AI.{% else %}They start when your site goes live{% endif %}</div></div></div>
+  <div class="appgrid">
+    {% for d in dock %}{{ m.dock_item(d) }}{% endfor %}
+    {% for d in system %}{{ m.dock_item(d) }}{% endfor %}
+    {% for d in apps %}{{ m.dock_item(d) }}{% endfor %}
+  </div>
+  {% if talk_href %}
+  <a class="talk-tile" href="{{ talk_href }}">{{ ui.team_mark({"name": site.name, "monogram": monogram, "team": team}, size=44) }}<span><b>Talk to your Chief WebAgent</b><span class="small muted">"How did the weekend go?" · "What's waiting for me?" · "What did we spend on AI this week?"</span></span></a>
+  {% endif %}
+  {% if freeze_enabled and not freeze %}
+  <form method="post" action="{{ base }}/freeze" class="after-cards"><input type="hidden" name="back" value="{{ base }}/apps"><button class="btn btn-lg freeze-wide" type="submit">Freeze all WebAgents</button></form>
+  {% endif %}
+  <p class="small muted after-cards">Decisions about money, publishing or anything high-risk always open here, for your passkey or a code; see <a href="{{ base }}/settings#surf-h">where you can decide</a>.</p>
+</section>
+{% endblock %}

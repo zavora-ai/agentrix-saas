@@ -1,0 +1,29 @@
+{% block subject %}{{ site.name }} has your order {{ order.number }}{% endblock %}
+{% block preheader %}{{ order.total|money(order.currency) }} · {{ order.fulfilment.label }} {{ order.fulfilment.when }}{% endblock %}
+{% block body %}
+{% if person.name %}
+# Thank you, {{ person.name }}. Your order is in.
+{% else %}
+# Thank you. Your order is in.
+{% endif %}
+{% for line in order.lines %}
+::fact {{ line.qty }} × {{ line.name }} | {{ line.total|money(order.currency) }}
+{% endfor %}
+::fact Total | {{ order.total|money(order.currency) }}
+{% if order.charged %}
+::fact Paid | {{ order.charged.amount|money(order.charged.currency) }} with {{ order.charged.method }}
+{% endif %}
+::fact {{ order.fulfilment.label }} | {{ order.fulfilment.when }}
+
+{% if order.cutoff %}
+You can change or cancel it for free until {{ order.cutoff }}. {{ site.name }} will email you each time the order's status changes.
+{% else %}
+{{ site.name }} will email you each time the order's status changes.
+{% endif %}
+
+::button See your order | {{ order.url }}
+{% endblock %}
+{% block chat %}
+{{ site.name }}: we have your order {{ order.number }}, {{ order.total|money(order.currency) }}. {{ order.fulfilment.label }}: {{ order.fulfilment.when }}.
+::button See your order | {{ order.url }}
+{% endblock %}

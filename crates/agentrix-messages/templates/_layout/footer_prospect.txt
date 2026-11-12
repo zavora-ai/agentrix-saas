@@ -1,0 +1,10 @@
+{% if consent is defined and consent %}
+::note Agentrix sent this because you asked for it at agentrix.website on {{ consent.given_at }}, with the words "{{ consent.words }}".
+{% else %}
+::note Agentrix sent this because you asked for it at agentrix.website.
+{% endif %}
+{% if unsubscribe_url is defined %}
+::link Stop these emails | {{ unsubscribe_url }}
+{% endif %}
+::link Questions? Message us on WhatsApp | https://wa.me/254721490933
+::note Agentrix is made by Zavora Technologies Ltd, Nairobi, Kenya. We never ask for a password, a code or payment details by email.

@@ -1,0 +1,76 @@
+{% extends "tana/layout.html" %}
+{% block main %}
+<div class="n-grid">
+  <div>
+    <header class="front-head" id="top">
+      <span class="kicker">Privacy</span>
+      <h2>What the paper keeps about you</h2>
+      <p>What {{ shell.site.name }} keeps, why, and for how long. It's a sample: the paper, its stories and its people are invented, and payments run in PayPal's sandbox, so no real money moves. Agentrix runs this site.</p>
+    </header>
+
+    <section class="box wide" id="account">
+      <span class="kicker">Your account</span>
+      <p>You can read free stories and ask the desks without one. Subscribing needs one, and it works on <b>{{ shell.site.host }}</b> only. It keeps:</p>
+      <ul class="keeps">
+        <li>Your name and email, and your phone if you give it.</li>
+        <li>Your passkey's public key and your recovery codes, stored so nobody can read them back.</li>
+        <li>Which devices signed in and when, so the site can warn you about a sign-in that wasn't you.</li>
+        <li>Anything extra you turn on in <a href="/account/choices">Your choices</a>, with a receipt each time you turn it on or off.</li>
+      </ul>
+      <p class="box-link"><a href="/account/keeps">Everything your account keeps</a></p>
+    </section>
+
+    <section class="box wide" id="codes">
+      <span class="kicker">Sign-in codes</span>
+      <p>Without a passkey, you sign in with a 6-digit code sent to your email. It works once, for {{ privacy.code_minutes }} minutes, and stops after {{ privacy.code_tries }} wrong tries. The site holds the code in memory only while it works, and the copy of the email it keeps has the code taken out. Nobody from {{ shell.site.name }} will ever ask you for a code.</p>
+    </section>
+
+    <section class="box wide" id="subscriptions">
+      <span class="kicker">Subscriptions and the Friday five</span>
+      <p>When you subscribe, the site keeps your plan, when it started and ends, the PayPal reference for the payment and the receipt. You pay on PayPal's own page, so the site never sees a card number or a PayPal password.</p>
+      <p style="margin-top:8px">If you ask for the Friday five, the site keeps your email and the topics you pick. Nothing is sent until you confirm from the first email, and every Friday five ends with a link that stops it and deletes your topics.</p>
+      <p style="margin-top:8px">When this sample is reset with fresh data, its subscriptions and Friday five sign-ups are cleared.</p>
+    </section>
+
+    <section class="box wide" id="desks">
+      <span class="kicker">What you ask the desks</span>
+      <p>The desks are AI. The site doesn't save what you ask them: the conversation stays in this tab and is gone when you close it. If a desk passes your question to {{ shell.site.owner }}, the site keeps the question, the page you asked on and any contact you leave, so {{ shell.site.owner }} can reply.</p>
+      <p style="margin-top:8px">Catch me up remembers your last visit and the sections you follow only after you tap Remember, and only in this browser. They're sent only when you ask to catch up.</p>
+    </section>
+
+    <section class="box wide" id="visits">
+      <span class="kicker">Visits</span>
+      <p>The site counts visits without cookies. For each day it keeps totals: which page, the website you came from (just its name, such as google.com), and whether it was a phone, a tablet or a computer.</p>
+      <p style="margin-top:8px">It never keeps your internet address, your browser's details or anything that says who you are, and it deletes the totals after {{ privacy.visit_months }} months. Browsers that send Global Privacy Control aren't counted. To stop counting on this device, tap Don't count my visits at the bottom of the page; this browser remembers that choice.</p>
+    </section>
+
+    <section class="box wide" id="cookies">
+      <span class="kicker">Cookies</span>
+      <p>A cookie appears only when you use what it's for, and only {{ shell.site.host }} can read it: one keeps you signed in for {{ privacy.session_days }} days, and one remembers if you said Not now to a passkey. There are no tracking or advertising cookies, and nothing from other companies loads on these pages.</p>
+    </section>
+
+    <section class="box wide" id="others">
+      <span class="kicker">Who else sees it</span>
+      <ul class="keeps">
+        <li><b>Agentrix</b> runs this site, so what this page lists is kept on its servers. Write to <a href="mailto:{{ privacy.report_to }}">{{ privacy.report_to }}</a> about any of it.</li>
+        <li><b>PayPal</b>, when you pay on its page.</li>
+        <li><b>The AI service</b> that writes the desks' answers gets what you ask, with the published stories it needs to answer.</li>
+        <li><b>The email service</b> that delivers sign-in codes and the Friday five gets your email address and the message.</li>
+      </ul>
+    </section>
+
+    <section class="box wide" id="your-data">
+      <span class="kicker">Your data</span>
+      <p>Sign in and open <a href="/account/data">Your data</a>. Download my data gives you one file with what the site keeps about you. Delete my account erases your account, sign-ins, devices and choices. Subscription payments and receipts stay as the paper's records.</p>
+    </section>
+  </div>
+  <aside class="rail-n">
+    <div class="box" id="report"><span class="kicker">Look-alike sites</span><h4>Report a site pretending to be this one</h4>
+      <p class="sub">The desks on {{ shell.site.name }} never ask for a password, a sign-in code or card details. Your passkey works on {{ shell.site.host }} only, so a copy at another address can't use it.</p>
+      <p class="sub">If a site that looks like this one asks for any of those, don't type anything. Tell Agentrix, which runs this sample: write to <a href="{{ privacy.report_href }}">{{ privacy.report_to }}</a> with the address you saw and what it asked for.</p>
+      <div class="row" style="margin-top:10px"><a class="n-btn teal" href="{{ privacy.report_href }}">Email a report to Agentrix</a></div>
+    </div>
+    <div class="box"><span class="kicker">House rule</span><p class="sub">The desks answer only from published stories and link every one. They never write news or give opinions.</p></div>
+  </aside>
+</div>
+{% endblock %}

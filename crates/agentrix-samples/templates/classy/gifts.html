@@ -1,0 +1,24 @@
+{% extends "classy/layout.html" %}
+{% from "classy/parts.html" import card %}
+{% block main %}
+<section class="cp-section first">
+  <h1 class="cp-h1">Gifts</h1>
+  <p class="sub">{{ ready }} gift sets in stock, ready wrapped with a card · stock {{ asof }}{% if prices %} · prices from {{ prices }}{% endif %}</p>
+  {% if "section:gifts" in shell.pictures %}{% set pic = shell.pictures["section:gifts"] %}
+  <figure class="cp-banner pic"><img src="{{ pic.url }}" alt="{{ pic.alt }}"{% if pic.width %} width="{{ pic.width }}" height="{{ pic.height }}"{% endif %}>{% if pic.label %}<span class="rtag">{{ pic.label }}</span>{% endif %}</figure>
+  {% endif %}
+  <div class="cp-cols">
+    <a class="cp-col plum" href="/gifts/plan"><b>Gifts for a group</b><span>Tell the Gifts desk about each person and your budget. It drafts a plan from the catalogue, a pick and one alternative each.</span><i>Plan gifts</i></a>
+    <a class="cp-col" href="/gifts/wrapping" id="wrap"><b>Free gift wrapping</b><span>{{ wrapping }}</span><i>How wrapping works</i></a>
+  </div>
+</section>
+{% for g in groups %}
+<section class="cp-section" id="{{ g.anchor }}">
+  <h2>{{ g.title }}</h2>
+  <p class="sub">Gift sets first, then scents by price.</p>
+  <div class="shortlist four">{% for s in g.items %}{{ card(s) }}{% endfor %}</div>
+</section>
+{% else %}
+<section class="cp-section"><p class="note">No gifts are listed right now. They appear here when the shop adds stock.</p></section>
+{% endfor %}
+{% endblock %}

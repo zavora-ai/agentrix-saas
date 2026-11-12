@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% import "macros.html" as m %}
+{#- Page::Assess · view::AssessView {
+      id, url, host, fixture, state: "running"|"done"|"unreachable"|"refused",
+      progress_words ("14 of 50 pages read"), started_words,
+      tick: {hosts, requests, bytes_words, refusals},
+      frame: {kind: "live"|"sealed-screenshot", src, page_url}?,
+      report: { summary_words, counts: {urgent, warn, info}, sections: [{title, findings: [Finding]}], pages_read, receipt }?,
+      unreachable: { said, next_step }?,
+      move_href }
+    R1.1–R1.7. Live parts update over /assess/{id}/events (design §4.3a). -#}
+{% block title %}Health report for {{ host }}{% endblock %}
+{% block topright %}<a class="btn btn-ghost" href="/auth/signin">Sign in</a>{% endblock %}
+{% block main %}
+<section class="stack">
+  <div class="row"><p class="eyebrow">Health report</p>{{ m.fixture_label(fixture) }}</div>
+  <h1>{{ host }}</h1>
+  <p class="muted small" id="assess-state">{% if state == "running" %}Reading your site · <span id="assess-progress">{{ progress_words }}</span>{% elif state == "done" %}Finished · {{ report.pages_read }} pages read · started {{ started_words }}{% else %}We couldn't finish this check{% endif %}</p>
+</section>
+
+{% if state == "running" %}
+<section class="card" aria-labelledby="room-h">
+  <div class="spread"><h2 id="room-h">The sealed room, live</h2><span class="chip sealed">Network: {{ host }} only</span></div>
+  {{ m.ticks(tick) }}
+  <div class="frame" id="frame" data-kind="{{ frame.kind if frame else '' }}">
+    {% if frame %}
+      <img id="frame-img" src="{{ frame.src }}" alt="What the sealed browser sees on {{ frame.page_url }}">
+      <span class="label chip {{ 'ok' if frame.kind == 'live' else 'sealed' }}" id="frame-label">{{ "Live" if frame.kind == "live" else "Sealed screenshot, about 1 a second" }}</span>
+    {% else %}
+      <img id="frame-img" alt="" hidden>
+      <span class="label chip sealed" id="frame-label" hidden></span>
+      <p class="empty" id="frame-empty">The sealed browser hasn't sent a frame yet.</p>
+    {% endif %}
+  </div>
+  <p class="hint">The room can reach only {{ host }}. Anything else it tries is refused and counted. It's destroyed when the check ends, and its receipt is signed.</p>
+</section>
+<ul class="card list" id="live-findings" aria-live="polite" aria-label="Findings so far" hidden></ul>
+{% endif %}
+
+{% if state == "unreachable" or state == "refused" %}
+<section class="card">
+  <h2>{% if state == "refused" %}Your site asked us not to read it{% else %}We couldn't reach your site{% endif %}</h2>
+  <p>{{ unreachable.said }}</p>
+  <p class="small"><b>What you can do:</b> {{ unreachable.next_step }}</p>
+  <p class="hint">We haven't guessed at any findings. A report only shows what we actually saw.</p>
+  <a class="btn" href="/">Try another address</a>
+</section>
+{% endif %}
+
+{% if state == "done" and report %}
+<section class="card">
+  <h2>In short</h2>
+  <p>{{ report.summary_words }}</p>
+  <div class="row">
+    {% if report.counts.urgent %}<span class="chip risk">{{ report.counts.urgent }} urgent</span>{% endif %}
+    {% if report.counts.warn %}<span class="chip wait">{{ report.counts.warn }} worth fixing</span>{% endif %}
+    {% if report.counts.info %}<span class="chip">{{ report.counts.info }} good to know</span>{% endif %}
+  </div>
+</section>
+{% for s in report.sections %}
+<section class="card">
+  <h2>{{ s.title }}</h2>
+  {% if s.findings %}
+  <ul class="list">{% for f in s.findings %}{{ m.finding(f) }}{% endfor %}</ul>
+  {% else %}
+  <p class="small muted">{{ s.empty_words }}</p>
+  {% endif %}
+</section>
+{% endfor %}
+<section class="card">
+  <h2>Move this site</h2>
+  <p class="small">Sign in, prove the domain is yours, and watch the Move: your site rebuilt clean, checked against the old one, and live only when you approve it. Your old site stays as it is until then.</p>
+  <a class="btn btn-primary btn-wide" href="{{ move_href }}">Move this site</a>
+  {% if report.receipt %}<p class="hint">This check's receipt: <a class="mono" href="/receipts/{{ report.receipt }}">{{ report.receipt[:16] }}…</a></p>{% endif %}
+</section>
+{% endif %}
+{% endblock %}
+{% block scripts %}{% if state == "running" %}<script src="/static/live.js?v={{ asset_v }}" data-events="/assess/{{ id }}/events" defer></script>{% endif %}{% endblock %}

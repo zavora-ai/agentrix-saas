@@ -1,0 +1,11 @@
+name: agentrix_api
+description: Typed clients for the owner app's API (/api/m/v1) and a site's own Ask and account API.
+publish_to: none
+version: 0.1.0
+resolution: workspace
+environment:
+  sdk: ^3.11.0
+dependencies:
+  http: ^1.2.0
+dev_dependencies:
+  test: ^1.25.0

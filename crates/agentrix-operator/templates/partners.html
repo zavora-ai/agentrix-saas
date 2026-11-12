@@ -1,0 +1,32 @@
+{% extends "layout.html" %}
+{#- X35 Partners: agencies, resellers and referral partners (08 §2.2, §4.4). -#}
+{% block title %}Partners{% endblock %}
+{% block field %}
+<div class="field-head">
+  <div><h2>Partners</h2><div class="sub">Agencies build and run their clients' sites, resellers sell under their own brand, and referral partners introduce clients.</div></div>
+  <div class="row"><span class="chip">{{ partners|length }} partner{{ "" if partners|length == 1 else "s" }}</span></div>
+</div>
+<div class="cp-grid">
+  <article class="card tight">
+    {%- if partners %}
+    <div class="tbl-wrap"><table class="tbl">
+      <thead><tr><th>Partner</th><th>Kind</th><th class="num">Clients</th><th class="num">Waiting for owners</th><th class="num">People</th><th>Since</th></tr></thead>
+      <tbody>{% for p in partners %}<tr><td><a href="/partners/{{ p.partner_id }}">{{ p.name }}</a></td><td>{{ p.kind }}</td><td class="num">{{ p.clients }}</td><td class="num">{{ p.invited or "—" }}</td><td class="num">{{ p.members }}</td><td>{{ p.created_at|day }}</td></tr>{% endfor %}</tbody>
+    </table></div>
+    {%- else %}
+    <div class="empty"><b>No partners yet.</b> Add an agency or reseller here; it gets its own portfolio of client sites once each owner grants it a role.</div>
+    {%- endif %}
+  </article>
+  {%- if can_manage %}
+  <article class="card tight">
+    <div class="card-title"><h4>Add a partner</h4><span class="small muted">op.partners or op.admin</span></div>
+    <form class="access-form" method="post" action="/partners">
+      <label for="pt-name">Name</label>
+      <input id="pt-name" type="text" name="name" required maxlength="120" value="{{ kept|field("name") }}">
+      <div class="row"><select name="kind" aria-label="Kind"><option value="agency" selected>Agency: builds and runs client sites</option><option value="reseller">Reseller: sells under its own brand</option><option value="referral">Referral partner: introduces clients</option></select></div>
+      <div class="row"><button class="btn btn-sm btn-primary" type="submit">Add the partner</button></div>
+    </form>
+  </article>
+  {%- endif %}
+</div>
+{% endblock %}

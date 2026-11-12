@@ -1,0 +1,14 @@
+{
+ "site": {
+  "name": "Classy Perfumes",
+  "host": "classy-perfumes-sample.agentrix.website",
+  "sample": true,
+  "owner": "Makena",
+  "accent": "#5b2a4a"
+ },
+ "person": {
+  "name": null
+ },
+ "code": "305117",
+ "minutes": 10
+}

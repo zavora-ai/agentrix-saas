@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The first order</title>
+<meta name="description" content="Owner journey, step 8: Njeri's custom cake order arrives as a card, Wanjiru approves it, the PayPal payment lands, and the payout, fees and refunds show in Kilele's books.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Manrope:wght@600;700;800&family=Fraunces:opsz,wght@9..144,600;9..144,800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../styles.css">
+<link rel="stylesheet" href="../console/console.css">
+<link rel="stylesheet" href="journeys.css">
+<link rel="stylesheet" href="owner.css">
+</head>
+<body data-lane="owner" data-step="8">
+<header class="j-top">
+  <a class="logo" href="../index.html"><span class="mark" aria-hidden="true"></span>Agentrix</a>
+  <a class="j-maplink" href="index.html">Journey map</a>
+  <span class="j-lane">Owner · Wanjiru</span>
+  <span class="concept-label">Concept · illustrative data</span>
+</header>
+<nav class="j-steps" aria-label="Owner journey" data-steps></nav>
+<main class="wrap j-main">
+  <header class="j-head">
+    <p class="eyebrow">Step 8 of 9 · Owner · where the two journeys meet</p>
+    <h1>The first customer order</h1>
+    <p class="lead">Njeri, in London, orders her niece Amina's birthday cake. Orders holds the custom request for Wanjiru's OK. She approves it with the card open, Njeri pays by PayPal, and the payment, PayPal's fee and the payout appear in Kilele's books. Small refunds run alone under her rule; bigger ones ask her.</p>
+  </header>
+  <div class="j-grid">
+    <section class="j-stage" aria-label="What Wanjiru sees">
+      <div class="o-sec">
+        <div class="spread"><h3>1 · The order card</h3><span class="j-who owner">The first release ends here, at her approval</span></div>
+        <div class="o-card" data-decision>
+          <div class="from"><span class="j-mark" data-agent="orders" data-size="28" data-state="waiting"></span>Orders asks, for Njeri<span class="chip chip-wait">Medium</span></div>
+          <h3>Custom order K-1043 · Amina's 2-tier forest cake</h3>
+          <div class="o-effect">
+            <h4>If you approve, exactly this happens</h4>
+            <ul>
+              <li>K-1043 is confirmed for <b>KSh 5,250</b>, which is <b>USD 40.70</b> at Kilele's rate of KSh 129.00 to the dollar. The rate is pinned to this order</li>
+              <li>Delivery Sat 14 Nov, 10:00–12:00, to Amina's home in Kilimani</li>
+              <li>Njeri is told, and the Cashier asks the Effects Gateway for a PayPal order of exactly USD 40.70, payable to Kilele Bakery</li>
+              <li>The bake goes on Friday night's list</li>
+            </ul>
+          </div>
+          <p class="small muted" style="margin:0">Why Medium: a custom cake with a new customer, but within your usual prices. Njeri asked for "forest" decoration and no nuts; Orders checked both against your custom-cake page.</p>
+          <div class="o-acts">
+            <button class="btn btn-primary" type="button" data-passkey data-sign="Confirm K-1043 · KSh 5,250 (USD 40.70) · Njeri · deliver Sat 14 Nov" data-fp="H(kilele, orders, order.confirm, {K-1043, 5250 KES, 40.70 USD @129.00, 2026-11-14T10:00}, exp 8 Nov 20:00) = 9d41…2e" data-then="#awaiting">Approve</button>
+            <button class="btn" type="button">Edit</button>
+            <button class="btn btn-ghost" type="button">Decline</button>
+          </div>
+          <div class="o-state done"><span class="o-ok" style="flex:1">✓ Approved with the card open, so it counts as reviewed · receipt r-9d41…2e</span></div>
+        </div>
+      </div>
+
+      <div id="awaiting" data-reveal class="o-sec">
+        <div class="spread"><h3>2 · The payment</h3><span class="j-first">The fleet release</span></div>
+        <div id="waitrow" data-reveal class="on o-sec">
+          <div class="o-wait">Njeri has been told. Waiting for her to pay by PayPal from her orders page.</div>
+          <div class="row" style="gap:8px;flex-wrap:wrap">
+            <button class="btn" type="button" data-next="#paid" data-hide="#waitrow" data-wait="1200" data-busy="Njeri is paying…">Show Njeri paying</button>
+            <a class="btn btn-ghost" href="customer-pay.html">See it from Njeri's side</a>
+          </div>
+        </div>
+        <div id="paid" data-reveal class="o-sec">
+          <div class="o-card">
+            <div class="from"><span class="j-mark" data-agent="cashier" data-size="28"></span>Cashier<span class="chip chip-ok">Paid</span></div>
+            <p class="small" style="margin:0"><b>K-1043 paid · PayPal · USD 40.70.</b> The Effects Gateway captured exactly the amount you approved, and a verified PayPal webhook posted it to your books. Cakes has told Njeri; the bake is on Friday night's list.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="o-sec">
+        <div class="spread"><h3>3 · The payout and the fees</h3><span class="j-first">The fleet release</span></div>
+        <div class="o-card">
+          <div class="spread"><b>Kilele's books · PayPal balance, in USD</b><span class="chip">This week</span></div>
+          <table class="o-money">
+            <thead><tr><th>Entry</th><th>Gross</th><th>PayPal fee*</th><th>Net</th></tr></thead>
+            <tbody>
+              <tr><td>K-1042 · 2 sourdough loaves, bake box, delivery (KSh 2,550)</td><td class="n">19.77</td><td class="n">−1.17</td><td class="n">18.60</td></tr>
+              <tr><td>K-1043 · Amina's 2-tier forest cake (KSh 5,250)</td><td class="n">40.70</td><td class="n">−2.09</td><td class="n">38.61</td></tr>
+              <tr><td>Refund · K-1042 bake box, crushed (KSh 1,350)</td><td class="n">−10.47</td><td class="n">—</td><td class="n">−10.47</td></tr>
+              <tr class="total"><td>PayPal balance</td><td class="n"></td><td class="n"></td><td class="n">46.74</td></tr>
+              <tr><td>Withdrawal to your Kenyan bank ••4410, Mon 16 Nov</td><td class="n"></td><td class="n"></td><td class="n">−46.74</td></tr>
+            </tbody>
+          </table>
+          <p class="o-hint">*Fees are illustrative (4.4% + USD 0.30), not PayPal's quoted rate. PayPal doesn't settle in KES, so orders are charged in USD at Kilele's posted rate. The KES you receive is set by PayPal's conversion when you withdraw: about KSh 5,900 here, also illustrative.</p>
+        </div>
+      </div>
+
+      <div class="o-sec">
+        <div class="spread"><h3>4 · Refunds</h3><span class="j-first">The fleet release</span></div>
+        <div class="o-card">
+          <div class="from"><span class="j-mark" data-agent="cashier" data-size="28"></span>Cashier · ran alone under your rule<span class="chip">In your brief</span></div>
+          <p class="small" style="margin:0"><b>Refunded KSh 1,350 (USD 10.47)</b> to Njeri's PayPal for the crushed bake box on K-1042. Your rule allows up to KSh 2,000 per order, only to the original payment method, at most 5 a week, until 31 Dec 2026. This was the first this week. The refund used the order's pinned rate.</p>
+        </div>
+        <div class="o-card" data-decision>
+          <div class="from"><span class="j-mark" data-agent="cashier" data-size="28" data-state="waiting"></span>Cashier asks<span class="chip chip-risk">Above your rule</span></div>
+          <h3>Refund the whole cake? K-1043 · KSh 5,250 (USD 40.70)</h3>
+          <p class="small muted" style="margin:0">Njeri asked on Saturday afternoon. It's above your rule's KSh 2,000 limit, so it needs you. Orders attached her message and the delivery photo.</p>
+          <div class="o-acts"><button class="btn btn-primary" type="button" data-passkey data-sign="Refund K-1043 · KSh 5,250 (USD 40.70) · to Njeri's PayPal" data-fp="H(kilele, cashier, refund, {K-1043, 40.70 USD @129.00, original method}, exp 15 Nov 20:00) = 4c7a…10">Refund</button><button class="btn" type="button">Offer a partial refund</button><button class="btn btn-ghost" type="button">Decline</button></div>
+          <div class="o-state done"><span class="o-ok" style="flex:1">✓ Refunded · USD 40.70 to Njeri's PayPal · receipt r-4c7a…10</span></div>
+        </div>
+      </div>
+
+      <div class="overlay" id="passkey" role="dialog" aria-modal="true" aria-label="Confirm with your passkey">
+        <div class="passkey">
+          <div class="fp"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 11c0 3-1 6-3 8M8.5 7.5A5 5 0 0 1 17 11c0 1.5-.2 3-.6 4.4M6.3 10A6.5 6.5 0 0 1 9 5.6M12 14.5c-.2 1.8-.8 3.5-1.7 5M15.3 17.5c-.3 1-.7 2-1.2 2.9M4 13.5c.4-1 .6-2 .6-3"/></svg></div>
+          <h3>Confirm it's you</h3>
+          <p data-sign-what>This exact action</p>
+          <div class="sig"><b>Your passkey signs:</b> <span data-sign-fp></span></div>
+          <div class="row"><button class="btn" type="button" data-close>Cancel</button><button class="btn btn-primary" type="button" data-do-sign>Use passkey</button></div>
+          <button class="stepup-link" type="button" data-stepup>No passkey on this device? Use a code from your authenticator app</button>
+          <div class="stepup-box">
+            <label for="stepup-code">Code from your authenticator app</label>
+            <input id="stepup-code" class="stepup-code" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="6 digits">
+            <p>Single use, and bound to this exact effect. Your receipt will say a code approved it, not a passkey.</p>
+            <div class="row"><button class="btn" type="button" data-stepup-back>Back to passkey</button><button class="btn btn-primary" type="button" data-do-sign data-method="code">Approve with code</button></div>
+          </div>
+          <div class="ok">Signed · the effect runs once · receipt written</div>
+        </div>
+      </div>
+    </section>
+
+    <aside class="j-notes" aria-label="What happens underneath">
+      <a class="j-meet" href="index.html#meet-order"><span>Meets the customer lane</span><b>The order card: Njeri's request, held for Wanjiru</b></a>
+      <a class="j-meet" href="index.html#meet-payment"><span>Meets the customer lane</span><b>The payment: Njeri pays, Wanjiru sees it settle</b></a>
+      <a class="j-meet" href="index.html#meet-payout"><span>Meets the customer lane</span><b>The payout: PayPal balance to Wanjiru's bank, fees in the books</b></a>
+      <a class="j-meet" href="index.html#meet-refund"><span>Meets the customer lane</span><b>The refund: under her rule it runs alone; above it, a card</b></a>
+      <div class="j-note gate"><h3>Reviewed, so it counts</h3><p>Wanjiru approved with the card open, so the approval is <code>reviewed</code> and counts toward Orders' promotion. A one-tap approval from WhatsApp would work but wouldn't count (07 §5.3).</p></div>
+      <div class="j-note"><h3>One door for money</h3><p>The PayPal order is created only by the Effects Gateway, for exactly the approved amount, and only after the approval. Verified webhooks post each payment and fee to the books. No WebAgent holds PayPal credentials (08 §4.2, ADR-004).</p></div>
+      <div class="j-note"><h3><span class="j-first">The fleet release</span> This weekend</h3><p>PayPal is in the journeys and mockups only (d-paypal-first-scope). The first release build and video end the custom order at Wanjiru's approval.</p></div>
+    </aside>
+  </div>
+</main>
+<nav class="wrap j-pager" aria-label="Previous and next step" data-pager></nav>
+<script src="journeys.js"></script>
+<script src="../console/console.js"></script>
+<script src="owner.js"></script>
+</body>
+</html>

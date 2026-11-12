@@ -1,0 +1,395 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Search that answers · Agentrix</title>
+<meta name="description" content="Concept: agentic site search on a perfume shop. Answers with citations and actions, an editable reading of the question, and plain results always one tap away.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Manrope:wght@600;700;800&family=Cormorant+Garamond:wght@600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../styles.css">
+<link rel="stylesheet" href="experience.css">
+<style>
+  .shop {
+    --cp-ink: #1c1719; --cp-ink-2: #5b5056; --cp-bg: #f7f3ee; --cp-line: #e7ddd2; --cp-gold: #a8842f; --cp-plum: #4a2340; --cp-dark: #1a1418;
+    --serif: "Cormorant Garamond", Georgia, serif;
+    --wa-bg: #ffffff; --wa-soft: #f7f3ee; --wa-ink: #1c1719; --wa-ink-2: #5b5056; --wa-line: #e7ddd2;
+    --wa-accent: #4a2340; --wa-accent-2: #a8842f; --wa-on-accent: #fff; --wa-display: "Cormorant Garamond", Georgia, serif;
+    background: var(--cp-bg); color: var(--cp-ink); font-family: var(--font-text);
+  }
+  .s-head { background: var(--cp-dark); color: #efe7dc; padding: 12px clamp(14px, 3vw, 28px); display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 16px; align-items: center; }
+  .s-logo { font: 700 26px/1 var(--serif); letter-spacing: .01em; color: #f4ece1; text-decoration: none; white-space: nowrap; }
+  .s-logo span { color: var(--cp-gold); }
+  .s-nav { display: flex; gap: 2px; }
+  .s-nav a { color: #cfc4b8; text-decoration: none; font: 600 13.5px/1 var(--font-text); padding: 9px 10px; border-radius: 999px; display: inline-flex; gap: 6px; align-items: center; }
+  .s-nav a:hover { background: rgba(255,255,255,.08); color: #fff; }
+  .s-nav .dotm { width: 7px; height: 7px; border-radius: 2px; background: var(--cp-gold); transform: rotate(45deg); }
+  .s-search { position: relative; }
+  .s-search form { display: flex; align-items: center; gap: 8px; background: #fff; border-radius: 14px; padding: 5px 5px 5px 12px; border: 1.5px solid transparent; }
+  .s-search form:focus-within { border-color: var(--cp-gold); }
+  .s-search input { flex: 1; min-width: 0; border: 0; outline: 0; font: 500 15px/1.2 var(--font-text); color: var(--cp-ink); padding: 8px 0; background: transparent; }
+  .s-search svg.lens { width: 18px; height: 18px; color: var(--cp-ink-2); flex: none; }
+  .s-search .wa-send { background: var(--cp-plum); }
+  .suggest { position: absolute; left: 0; right: 0; top: calc(100% + 6px); z-index: 40; background: #fff; color: var(--cp-ink); border-radius: 14px; border: 1px solid var(--cp-line); box-shadow: var(--wa-shadow); padding: 6px; display: none; }
+  .suggest.open { display: block; }
+  .suggest .grp { font: 700 10.5px/1 var(--font-text); letter-spacing: .08em; text-transform: uppercase; color: var(--cp-ink-2); padding: 8px 8px 4px; display: flex; justify-content: space-between; }
+  .suggest .grp em { font-style: normal; letter-spacing: 0; text-transform: none; font-weight: 600; color: #2c7a4b; }
+  .suggest button { display: flex; width: 100%; align-items: center; gap: 10px; border: 0; background: none; text-align: left; padding: 8px; border-radius: 10px; font: 500 14px/1.3 var(--font-text); color: var(--cp-ink); cursor: pointer; }
+  .suggest button:hover, .suggest button:focus-visible { background: var(--cp-bg); }
+  .suggest img { width: 34px; height: 34px; border-radius: 8px; object-fit: cover; }
+  .suggest mark { background: #f6e7b8; color: inherit; border-radius: 3px; }
+
+  .tries { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin: 0 0 10px; }
+  .tries span { font: 600 12px/1 var(--font-text); color: var(--muted); margin-right: 4px; }
+  .tries button { border: 1px solid var(--line-strong); background: #fff; border-radius: 999px; padding: 7px 11px; font: 600 12.5px/1.2 var(--font-text); color: var(--indigo-900); cursor: pointer; }
+  .tries button[aria-pressed="true"] { background: var(--indigo-900); color: #fff; border-color: var(--indigo-900); }
+
+  .s-body { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: clamp(16px, 2.5vw, 28px); padding: clamp(16px, 2.5vw, 26px) clamp(14px, 3vw, 28px) 30px; }
+  .qline { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; margin-bottom: 12px; }
+  .qline h2 { font: 700 clamp(24px, 3vw, 32px)/1.1 var(--serif); color: var(--cp-ink); }
+  .mode { display: inline-grid; grid-auto-flow: column; padding: 3px; border-radius: 12px; background: #fff; border: 1px solid var(--cp-line); }
+  .mode button { border: 0; background: transparent; color: var(--cp-ink-2); font: 700 12px/1 var(--font-text); padding: 8px 10px; border-radius: 9px; cursor: pointer; white-space: nowrap; }
+  .mode button[aria-pressed="true"] { background: var(--cp-plum); color: #fff; }
+  .answer { background: #fff; border: 1px solid var(--cp-line); border-radius: 20px; padding: 16px 18px; box-shadow: 0 18px 40px -32px rgba(40,20,30,.5); }
+  .answer .wa-thread { padding: 0; }
+  .answer .wa-a .txt { font-size: 15.5px; }
+  .shortlist { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-top: 14px; }
+  .p-card { background: #fff; border: 1px solid var(--cp-line); border-radius: 18px; overflow: hidden; display: flex; flex-direction: column; animation: rise .35s var(--ease) both; }
+  .p-card img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; }
+  .p-card .pb { padding: 12px 14px 14px; display: grid; gap: 6px; flex: 1; }
+  .p-card h3 { font: 700 21px/1.1 var(--serif); color: var(--cp-ink); }
+  .p-card .pr { font: 700 14px/1 var(--font-text); }
+  .p-card .why { font-size: 13px; color: var(--cp-ink-2); line-height: 1.45; }
+  .p-card .rank { position: relative; }
+  .p-card .rank .rtag { position: absolute; right: 8px; bottom: 8px; background: rgba(255,255,255,.88); color: #5b5056; font: 600 10px/1 var(--font-text); padding: 4px 6px; border-radius: 6px; }
+  .p-card .rank b { position: absolute; left: 10px; top: 10px; background: rgba(28,23,25,.82); color: #fff; font: 700 11px/1 var(--font-text); padding: 6px 8px; border-radius: 8px; }
+  .fits { display: flex; flex-wrap: wrap; gap: 4px; }
+  .fit { font: 700 11px/1.2 var(--font-text); padding: 4px 7px; border-radius: 6px; background: #e9f3ec; color: #24613c; }
+  .fit.no { background: #f6ebe6; color: #8a3b1c; }
+  .p-card .act { margin-top: auto; justify-content: center; }
+  .pages { margin-top: 18px; display: grid; gap: 0; background: #fff; border: 1px solid var(--cp-line); border-radius: 18px; overflow: hidden; }
+  .pages h4 { font: 700 11px/1 var(--font-text); letter-spacing: .08em; text-transform: uppercase; color: var(--cp-ink-2); padding: 12px 14px 4px; }
+  .page-hit { display: block; padding: 10px 14px 12px; border-top: 1px solid var(--cp-line); text-decoration: none; color: var(--cp-ink); }
+  .page-hit:first-of-type { border-top: 0; }
+  .page-hit b { font: 700 18px/1.2 var(--serif); }
+  .page-hit .path { font: 500 11.5px/1.2 var(--font-mono); color: #2c7a4b; margin-top: 2px; }
+  .page-hit p { font-size: 13.5px; color: var(--cp-ink-2); margin-top: 4px; }
+  .page-hit mark { background: #f6e7b8; color: inherit; }
+  .page-hit.pointed { outline-offset: -3px; }
+
+  aside.side { display: grid; gap: 12px; align-content: start; }
+  .panel { background: #fff; border: 1px solid var(--cp-line); border-radius: 18px; padding: 14px; }
+  .panel h4 { font: 700 11px/1 var(--font-text); letter-spacing: .08em; text-transform: uppercase; color: var(--cp-ink-2); margin-bottom: 10px; }
+  .intent { display: flex; flex-wrap: wrap; gap: 6px; }
+  .intent button { display: inline-flex; gap: 6px; align-items: center; border: 1.5px solid var(--cp-line); background: var(--cp-bg); color: var(--cp-ink); border-radius: 10px; padding: 7px 9px; font: 600 12.5px/1.2 var(--font-text); cursor: pointer; }
+  .intent button i { font-style: normal; color: var(--cp-ink-2); font-weight: 500; }
+  .intent button:hover { border-color: var(--cp-plum); }
+  .refine { display: flex; flex-wrap: wrap; gap: 6px; }
+  .refine button { border: 1px solid var(--cp-line); background: #fff; border-radius: 999px; padding: 7px 10px; font: 600 12.5px/1 var(--font-text); color: var(--cp-ink); cursor: pointer; }
+  .refine button[aria-disabled="true"] { color: #a99ea3; border-style: dashed; cursor: help; }
+  .used { display: grid; gap: 6px; font-size: 12.5px; color: var(--cp-ink-2); }
+  .used div { display: flex; justify-content: space-between; gap: 8px; }
+  .compare { margin-top: 14px; background: #fff; border: 1px solid var(--cp-line); border-radius: 18px; overflow: auto; animation: rise .35s var(--ease) both; }
+  .compare table { width: 100%; border-collapse: collapse; font-size: 13.5px; min-width: 520px; }
+  .compare th, .compare td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--cp-line); vertical-align: top; }
+  .compare th { font: 700 18px/1.1 var(--serif); }
+  .compare td:first-child { font: 700 11px/1.3 var(--font-text); letter-spacing: .06em; text-transform: uppercase; color: var(--cp-ink-2); width: 120px; }
+  .compare .foot { display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; align-items: center; padding: 10px 12px; font-size: 12px; color: var(--cp-ink-2); }
+  .plain { display: none; }
+  .plain-on .plain { display: block; }
+  .plain-on .agentic { display: none; }
+  .plain .page-hit img { float: left; width: 54px; height: 54px; border-radius: 10px; object-fit: cover; margin-right: 12px; }
+  .plain .page-hit::after { content: ""; display: block; clear: both; }
+
+  @media (max-width: 960px) {
+    .s-body { grid-template-columns: 1fr; }
+    .s-head { grid-template-columns: auto minmax(0, 1fr); }
+    .s-nav { display: none; }
+  }
+  @media (max-width: 720px) {
+    .shortlist { grid-template-columns: 1fr; }
+    .p-card { display: grid; grid-template-columns: 110px 1fr; }
+    .p-card img { aspect-ratio: auto; height: 100%; }
+    .s-head { grid-template-columns: minmax(0, 1fr); gap: 10px; }
+    .s-search .wa-ai { display: none; }
+    .s-logo { font-size: 22px; }
+  }
+</style>
+</head>
+<body>
+<header class="conceptbar">
+  <a class="logo" href="index.html"><span class="mark" aria-hidden="true"></span>Agentrix</a>
+  <nav aria-label="Experience concepts">
+    <a href="index.html">Experience</a>
+    <a href="nav-agents.html">Menu as WebAgents</a>
+    <a href="creator.html">Make it with me</a>
+    <a href="search.html" aria-current="page">Agentic search</a>
+    <a href="artifact.html">Artifacts</a>
+    <a href="presentation.html">Presentations</a>
+    <a href="news.html">News publisher</a>
+    <a href="../index.html">All concepts</a>
+  </nav>
+  <span class="concept-label">Concept · illustrative data</span>
+</header>
+
+<main class="wrap">
+  <div class="xp-head">
+    <span class="eyebrow">Experience 03 · Agentic search</span>
+    <h1>Search that answers from the shop's own pages.</h1>
+    <p class="lead">The search box understands a request rather than matching keywords. It shows how it read the question and lets you edit that reading. It answers with sources from this shop's own pages and offers the next step. When a plain lookup is better, it simply finds the product. Plain results are always one tap away and work without a model.</p>
+  </div>
+
+  <div class="tries" role="group" aria-label="Example searches"><span>Try:</span>
+    <button type="button" data-try="gift" aria-pressed="true">a gift under KSh 5,000 for someone who loves vanilla</button>
+    <button type="button" data-try="mombasa" aria-pressed="false">do you deliver to Mombasa, how fast?</button>
+    <button type="button" data-try="vegan" aria-pressed="false">is Amber Noir vegan?</button>
+    <button type="button" data-try="rain" aria-pressed="false">rain oud</button>
+  </div>
+
+  <div class="browser">
+    <div class="browser-bar"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="url"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg><span id="urlq">classyperfumes.shop/search</span></span></div>
+    <div class="shop frame-body" id="shop">
+      <div class="s-head">
+        <a class="s-logo" href="#">classy <span>perfumes</span></a>
+        <div class="s-search">
+          <form id="sform" role="search">
+            <svg class="lens" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="6"/><path d="M20 20l-4-4"/></svg>
+            <label class="sr-only" for="sq">Search or ask Classy Perfumes</label>
+            <input id="sq" autocomplete="off" placeholder="Search or ask: a scent, a gift, delivery…" aria-controls="suggest" aria-expanded="false">
+            <span class="wa-ai">AI answers</span>
+            <button class="wa-send" type="submit" aria-label="Search"></button>
+          </form>
+          <div class="suggest" id="suggest" role="listbox" aria-label="Suggestions"></div>
+        </div>
+        <nav class="s-nav" aria-label="Classy Perfumes WebAgents"><a href="#"><span class="dotm"></span>Scents</a><a href="#"><span class="dotm"></span>Gifts</a><a href="#"><span class="dotm"></span>Orders</a><a href="#"><span class="dotm"></span>Journal</a></nav>
+      </div>
+
+      <div class="s-body" id="sbody">
+        <div>
+          <div class="qline"><h2 id="qtitle">“a gift under KSh 5,000 for someone who loves vanilla”</h2>
+            <div class="mode" role="group" aria-label="Result style"><button type="button" aria-pressed="true" data-mode="answer">Answer</button><button type="button" aria-pressed="false" data-mode="plain">Plain results</button></div></div>
+          <div class="agentic">
+            <div class="answer"><div class="wa-thread" id="athread"></div></div>
+            <div class="shortlist" id="shortlist"></div>
+            <div id="compareBox"></div>
+          </div>
+          <div class="plain" id="plain"></div>
+          <div class="pages agentic" id="pages"></div>
+        </div>
+        <aside class="side">
+          <div class="panel"><h4>How I read your question</h4><div class="intent" id="intent"></div><p class="small" style="color:var(--cp-ink-2);margin-top:8px">Tap a part to change it. Results re-rank instantly, from the catalogue, without a model.</p></div>
+          <div class="panel"><h4>Refine</h4><div class="refine" id="refine"></div></div>
+          <div class="panel"><h4>What I used</h4><div class="used" id="used"></div></div>
+        </aside>
+      </div>
+    </div>
+  </div>
+
+  <section class="notes" aria-label="Design notes">
+    <div class="card">
+      <h3>Three speeds of search</h3>
+      <ol class="budget">
+        <li><span class="t">&lt;50 ms</span><span>Suggestions while typing, from the release's static index</span><span class="m">no model</span></li>
+        <li><span class="t">instant</span><span>Navigational queries ("rain oud") go straight to the product</span><span class="m">no model</span></li>
+        <li><span class="t">&lt;1.5 s</span><span>Requests ("a gift under…") stream an answer with citations</span><span class="m model">model</span></li>
+        <li><span class="t">&lt;100 ms</span><span>Editing the reading re-ranks the catalogue by rules</span><span class="m">no model</span></li>
+      </ol>
+    </div>
+    <div class="card">
+      <h3>Why it beats the old box</h3>
+      <ul>
+        <li><b>It shows its reading.</b> "≤ KSh 5,000 · vanilla · a gift" are chips the visitor can correct, so a misread is visible and fixable.</li>
+        <li><b>Honest fit, not just matches.</b> "Over budget by KSh 1,400" and "Not vanilla" are said plainly.</li>
+        <li><b>Answers lead to actions:</b> add to bag, compare, write the gift card. Comparisons save as a shareable artifact.</li>
+        <li><b>Gaps teach the shop.</b> "Is it vegan?" goes to the owner's "teach your site" list.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Search never</h3>
+      <ul class="never">
+        <li>Invents a product attribute the catalogue doesn't hold (longevity, vegan, "similar to" another brand)</li>
+        <li>Ranks by margin while claiming to rank by fit</li>
+        <li>Hides the plain results or the filters</li>
+        <li>Writes an essay when the visitor typed a product name</li>
+      </ul>
+    </div>
+  </section>
+</main>
+
+<footer class="concept-foot"><div class="wrap row"><span><a href="creator.html">← Make it with me</a> · <a href="artifact.html">Next: artifacts →</a></span><span>Concept screens with illustrative data. Products and prices are illustrative.</span></div></footer>
+
+<script src="experience.js"></script>
+<script>
+(() => {
+  const { I, esc, answer, presence, point, toast } = XP;
+  document.querySelector(".wa-send").innerHTML = I.send;
+  const DESK = { name: "Gifts", color: "#4a2340", icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="9" width="16" height="11" rx="1.5"/><path d="M3 9h18M12 9v11M12 9c-2.5 0-4-1.2-4-2.7S9.5 4 12 9zm0 0c2.5 0 4-1.2 4-2.7S14.5 4 12 9z"/></svg>' };
+  const FRONT = { name: "Shop desk", color: "#1c1719", icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="6"/><path d="M20 20l-4-4"/></svg>' };
+  const C = {
+    vanilla: { name: "Vanilla Gift Set", size: "candle + 30 ml", price: 4500, img: "img/vanilla.jpg", notes: "A vanilla candle and a travel spray, gift-wrapped with a card.", vanilla: 3, gift: true, stock: 7, family: "Gourmand" },
+    citrus: { name: "Citrus Dawn", size: "50 ml", price: 4900, img: "img/citrus.jpg", notes: "Bergamot and neroli over a clean musk. The morning one.", vanilla: 0, gift: false, stock: 3, family: "Fresh citrus" },
+    amber: { name: "Amber Noir", size: "50 ml", price: 6400, img: "img/amber.jpg", notes: "Amber and smoked vanilla with a little oud. A warm evening scent.", vanilla: 2, gift: false, stock: 14, family: "Amber" },
+    rain: { name: "Rain Oud", size: "30 ml", price: 5800, img: "img/rain.jpg", notes: "Petrichor and oud. The long-rains limited run.", vanilla: 0, gift: false, stock: 9, family: "Woody" },
+  };
+  const PAGES = [
+    { id: "pg-delivery", t: "Delivery & returns", path: "/delivery", s: "Nairobi orders placed before 2 pm arrive the same day (KSh 300). Mombasa and other towns: 2–3 working days by courier (KSh 650). Unopened bottles can be returned within 14 days. Opened bottles can't be returned, so ask for a free 2 ml sample first." },
+    { id: "pg-gift", t: "Gift wrapping", path: "/gifts/wrapping", s: "Every order can be gift-wrapped free, with a handwritten card. Add your message at checkout." },
+    { id: "pg-amber", t: "How amber wears in cold air", path: "/journal/amber-in-cold-air", s: "Journal: why Amber Noir's smoked vanilla opens slowly on a cool evening, and lasts into the night." },
+    { id: "pg-rains", t: "Scents for the long rains", path: "/journal/long-rains", s: "Journal: Rain Oud and the petrichor accord behind this season's limited run." },
+  ];
+  const ksh = n => "KSh " + n.toLocaleString("en-KE");
+  const c = n => `<a href="#" class="cite" data-n="${n}">${n}</a>`;
+  let budget = 5000, plainMode = false, current = "gift";
+
+  const thread = document.getElementById("athread"), shortlist = document.getElementById("shortlist"), pagesEl = document.getElementById("pages");
+  function pagesHTML(ids, terms) {
+    const hl = s => terms ? s.replace(new RegExp(`(${terms})`, "gi"), "<mark>$1</mark>") : s;
+    return `<h4>From the site</h4>` + PAGES.filter(p => ids.includes(p.id)).map(p => `<a class="page-hit" id="${p.id}" href="#"><b>${p.t}</b><div class="path">classyperfumes.shop${p.path}</div><p>${hl(p.s)}</p></a>`).join("");
+  }
+  function card(k, rank, fits, why) {
+    const p = C[k];
+    return `<article class="p-card" id="prod-${k}"><div class="rank"><img src="${p.img}" alt="${esc(p.name)} bottle, concept render" loading="lazy">${rank ? `<b>${rank}</b>` : ""}<span class="rtag">Concept render</span></div><div class="pb"><h3>${p.name}</h3><div class="pr">${ksh(p.price)} · ${p.size}</div><div class="fits">${fits.map(([ok, t]) => `<span class="fit ${ok ? "" : "no"}">${ok ? "✓ " : ""}${t}</span>`).join("")}</div><p class="why">${why}</p><button class="act ${rank === "Best fit" ? "primary" : ""}" type="button" data-add="${k}">Add to bag</button></div></article>`;
+  }
+  function wireCards() { shortlist.querySelectorAll("[data-add]").forEach(b => b.addEventListener("click", () => toast(`${C[b.dataset.add].name} added. Gift wrap and card are free at checkout.`))); }
+
+  const SCEN = {
+    gift: {
+      title: "“a gift under KSh 5,000 for someone who loves vanilla”",
+      intent: () => [["budget", `≤ ${ksh(budget)}`, "budget"], ["likes", "vanilla", "loves"], ["for", "a gift", "for"]],
+      refine: [["Gift-wrapped only"], ["Under KSh 4,000"], ["Deliver by Friday"], ["Long-lasting", true]],
+      run: async () => {
+        const fitsBudget = k => C[k].price <= budget;
+        const order = budget <= 5000 ? ["vanilla", "amber", "citrus"] : ["amber", "vanilla", "citrus"];
+        const phrases = budget <= 5000 ? [
+          `One fits perfectly: the <b>Vanilla Gift Set</b> (${ksh(4500)}), a vanilla candle and a travel spray, already gift-wrapped with a card ${c(1)}.`,
+          `<b>Amber Noir</b> has the most vanilla of the perfumes (smoked vanilla over amber), but at ${ksh(6400)} it's over your budget ${c(2)}.`,
+          `If they like something lighter, <b>Citrus Dawn</b> fits at ${ksh(4900)}, though it isn't a vanilla scent ${c(3)}. Any order can be gift-wrapped free ${c(4)}.`]
+          : [`With up to ${ksh(budget)}, <b>Amber Noir</b> (${ksh(6400)}) is the richest vanilla here: smoked vanilla over warm amber ${c(2)}.`,
+             `The <b>Vanilla Gift Set</b> (${ksh(4500)}) is still the easiest gift, wrapped with a card already ${c(1)}. Any order can be gift-wrapped free ${c(4)}.`];
+        await ans({ desk: DESK, steps: ["Reading the catalogue", "Checking stock and gift options"], phrases,
+          sources: [{ n: 1, label: "Vanilla Gift Set", target: "#prod-vanilla" }, { n: 2, label: "Amber Noir", target: "#prod-amber" }, { n: 3, label: "Citrus Dawn", target: "#prod-citrus" }, { n: 4, label: "Gift wrapping", target: "#pg-gift" }],
+          actions: [{ label: "Add the gift set · " + ksh(4500), primary: true, on: () => toast("Vanilla Gift Set added. Write the card message at checkout, or ask me to help.") }, { label: "Compare these three", on: compare }, { label: "Help me write the card", on: () => toast("Opens a short card-writing step with the Gifts WebAgent.") }],
+          meta: "Prices and stock as of 11:02. Ranked by how well each fits your request." }, () => {
+          shortlist.innerHTML = order.map((k, i) => {
+            const p = C[k], fits = [];
+            fits.push(fitsBudget(k) ? [1, "Fits budget"] : [0, `Over budget by ${ksh(p.price - budget)}`]);
+            fits.push(p.vanilla ? [1, "Vanilla"] : [0, "Not vanilla"]);
+            if (p.gift) fits.push([1, "Gift-wrapped"]);
+            const why = k === "vanilla" ? "Candle and travel spray, wrapped with a card. 7 in stock." : k === "amber" ? "Smoked vanilla over amber; the evening one. 14 in stock." : "Bergamot and neroli; light and clean. 3 in stock.";
+            return card(k, i === 0 ? "Best fit" : "", fits, why);
+          }).join("");
+          wireCards();
+        });
+        pagesEl.innerHTML = pagesHTML(["pg-gift", "pg-amber"], "vanilla|gift");
+      },
+      used: [["Catalogue", "release v31"], ["Stock", "as of 11:02"], ["Pages", "Gift wrapping, Journal"], ["Model", "1 answer"]],
+    },
+    mombasa: {
+      title: "“do you deliver to Mombasa, how fast?”",
+      intent: () => [["to", "Mombasa", "deliver to"], ["need", "delivery time", "asking"]],
+      refine: [["Cost to Mombasa"], ["Same-day areas"], ["Track an order"]],
+      run: async () => {
+        shortlist.innerHTML = "";
+        pagesEl.innerHTML = pagesHTML(["pg-delivery"], "Mombasa|2–3 working days");
+        await ans({ desk: FRONT, steps: ["Reading Delivery & returns"], phrases: [`Yes. Mombasa orders go by courier and take <b>2–3 working days</b>, for <b>${ksh(650)}</b> ${c(1)}.`, `Same-day delivery is for Nairobi orders placed before 2 pm ${c(1)}.`],
+          sources: [{ n: 1, label: "Delivery & returns", target: "#pg-delivery" }], firstPoint: 1,
+          actions: [{ label: "Shop with Mombasa delivery", primary: true, on: () => toast("Your delivery town is remembered for this visit only.") }] });
+      },
+      used: [["Pages", "Delivery & returns"], ["Model", "1 answer"]],
+    },
+    vegan: {
+      title: "“is Amber Noir vegan?”",
+      intent: () => [["product", "Amber Noir", "about"], ["need", "vegan", "is it"]],
+      refine: [["Ingredients", true], ["Ask the shop"]],
+      run: async () => {
+        shortlist.innerHTML = card("amber", "", [[1, "In stock"]], "Warm amber, smoked vanilla, a whisper of oud.");
+        wireCards();
+        pagesEl.innerHTML = "";
+        await ans({ desk: DESK, steps: ["Reading Amber Noir's page"], phrases: [`The site doesn't say whether Amber Noir is vegan, so I won't guess.`, `Its notes are amber, smoked vanilla and oud ${c(1)}. I've asked the shop. Want the answer by email or WhatsApp?`],
+          sources: [{ n: 1, label: "Amber Noir", target: "#prod-amber" }],
+          actions: [{ label: "WhatsApp me", primary: true, on: e => toast("Sent to the owner with your question. Usually answered within a day.") }, { label: "Email me", on: () => toast("Sent to the owner with your question.") }],
+          meta: "The site doesn't say · added to the owner's “teach your site” list" });
+      },
+      used: [["Pages", "Amber Noir"], ["Gap", "filed for the owner"], ["Model", "1 answer"]],
+    },
+    rain: {
+      title: "“rain oud”",
+      intent: () => [["product", "Rain Oud", "found"]],
+      refine: [["Scents for the long rains"], ["Samples"]],
+      run: async () => {
+        shortlist.innerHTML = card("rain", "Exact match", [[1, "9 in stock"], [1, "Limited run"]], "Petrichor and oud. The long-rains limited run.");
+        wireCards();
+        pagesEl.innerHTML = pagesHTML(["pg-rains"], "Rain Oud");
+        await ans({ desk: FRONT, instant: true, phrases: [`<b>Rain Oud</b>, 30 ml, ${ksh(5800)}. 9 in stock ${c(1)}.`],
+          sources: [{ n: 1, label: "Rain Oud", target: "#prod-rain" }],
+          meta: "Matched a product directly · no AI model used" });
+      },
+      used: [["Index", "release v31 (static)"], ["Model", "none"]],
+    },
+  };
+
+  async function ans(o, before) {
+    thread.innerHTML = ""; document.getElementById("compareBox").innerHTML = "";
+    if (before) before();
+    await answer({ thread, desk: o.desk, mark: null, steps: o.instant ? [] : o.steps, phrases: o.phrases, sources: o.sources, actions: o.actions, meta: o.meta, firstPoint: o.firstPoint });
+  }
+  function renderSide(s) {
+    document.getElementById("intent").innerHTML = s.intent().map(([k, v, l]) => `<button type="button" data-k="${k}"><i>${l}</i>${esc(v)}</button>`).join("");
+    document.getElementById("refine").innerHTML = s.refine.map(([t, na]) => `<button type="button" ${na ? 'aria-disabled="true" title="The site doesn\'t publish this, so search can\'t filter by it"' : ""}>${t}</button>`).join("");
+    document.getElementById("used").innerHTML = s.used.map(([a, b]) => `<div><span>${a}</span><b>${b}</b></div>`).join("");
+    document.querySelectorAll("#intent [data-k='budget']").forEach(b => b.addEventListener("click", () => { budget = budget === 5000 ? 7000 : 5000; run(current, true); }));
+    document.querySelectorAll("#intent button:not([data-k='budget'])").forEach(b => b.addEventListener("click", () => toast("Each part of the reading can be edited or removed.")));
+    document.querySelectorAll("#refine button").forEach(b => b.addEventListener("click", () => b.getAttribute("aria-disabled") === "true" ? toast("The site doesn't publish this, so search won't pretend to filter by it.") : toast(`Refined: ${b.textContent}`)));
+  }
+  function renderPlain(key) {
+    const q = { gift: ["vanilla", "gift"], mombasa: ["Mombasa", "delivery"], vegan: ["Amber Noir"], rain: ["Rain Oud"] }[key];
+    const re = new RegExp(`(${q.join("|")})`, "gi");
+    const hits = Object.entries(C).filter(([k, p]) => re.test(p.name + " " + p.notes)).map(([k, p]) => `<a class="page-hit" href="#"><img src="${p.img}" alt=""><b>${p.name}</b><div class="path">${ksh(p.price)} · ${p.size}</div><p>${p.notes.replace(re, "<mark>$1</mark>")}</p></a>`);
+    const pages = PAGES.filter(p => { re.lastIndex = 0; return re.test(p.t + " " + p.s); }).map(p => `<a class="page-hit" href="#"><b>${p.t}</b><div class="path">classyperfumes.shop${p.path}</div><p>${p.s.replace(re, "<mark>$1</mark>")}</p></a>`);
+    document.getElementById("plain").innerHTML = `<div class="pages" style="margin-top:0"><h4>${hits.length + pages.length} results · static index, no AI</h4>${hits.join("")}${pages.join("")}</div>`;
+  }
+  async function run(key, keepQuery) {
+    current = key; const s = SCEN[key];
+    document.querySelectorAll("[data-try]").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.try === key)));
+    document.getElementById("qtitle").textContent = s.title;
+    if (!keepQuery) document.getElementById("sq").value = s.title.replace(/[“”]/g, "");
+    document.getElementById("urlq").textContent = "classyperfumes.shop/search?q=" + encodeURIComponent(s.title.replace(/[“”]/g, "")).replace(/%20/g, "+");
+    renderSide(s); renderPlain(key);
+    await s.run();
+  }
+  function compare() {
+    const keys = ["vanilla", "amber", "citrus"];
+    const row = (label, f) => `<tr><td>${label}</td>${keys.map(k => `<td>${f(C[k])}</td>`).join("")}</tr>`;
+    document.getElementById("compareBox").innerHTML = `<div class="compare"><table><thead><tr><th></th>${keys.map(k => `<th>${C[k].name}</th>`).join("")}</tr></thead><tbody>
+      ${row("Price", p => ksh(p.price) + (p.price > budget ? ` <span class="fit no">over budget</span>` : ""))}${row("Size", p => p.size)}${row("Family", p => p.family)}${row("Notes", p => p.notes)}${row("Vanilla", p => ["—", "", "Smoked vanilla", "Vanilla candle and vanilla spray"][p.vanilla] || "—")}${row("Gift-ready", p => p.gift ? "Wrapped, with a card" : "Free wrap at checkout")}${row("In stock", p => p.stock)}
+      </tbody></table><div class="foot"><span>Built from the catalogue (release v31) without a model. Longevity isn't published, so it isn't compared.</span><a class="act" href="artifact.html">Save &amp; share this comparison</a></div></div>`;
+    point("#compareBox .compare", "Comparison");
+  }
+
+  /* Instant suggestions from the static index */
+  const sq = document.getElementById("sq"), sug = document.getElementById("suggest");
+  sq.addEventListener("input", () => {
+    const v = sq.value.trim(); if (!v) { sug.classList.remove("open"); sq.setAttribute("aria-expanded", "false"); return; }
+    const re = new RegExp(`(${v.split(/\s+/).filter(w => w.length > 2).map(w => w.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join("|") || "^$"})`, "gi");
+    const prods = Object.entries(C).filter(([k, p]) => { re.lastIndex = 0; return re.test(p.name + " " + p.notes); }).slice(0, 3);
+    sug.innerHTML = `<div class="grp">Products <em>&lt;50 ms · no AI</em></div>` + (prods.length ? prods.map(([k, p]) => `<button type="button" data-p="${k}"><img src="${p.img}" alt="">${p.name.replace(re, "<mark>$1</mark>")} · ${ksh(p.price)}</button>`).join("") : `<button type="button" disabled>No product names match</button>`) +
+      `<div class="grp">Ask</div><button type="button" data-ask>Ask: “${esc(v)}”</button>`;
+    sug.classList.add("open"); sq.setAttribute("aria-expanded", "true");
+    sug.querySelectorAll("[data-p]").forEach(b => b.addEventListener("click", () => { sug.classList.remove("open"); run(b.dataset.p === "rain" ? "rain" : b.dataset.p === "amber" ? "vegan" : "gift"); }));
+    sug.querySelector("[data-ask]").addEventListener("click", () => { sug.classList.remove("open"); route(v); });
+  });
+  document.addEventListener("click", e => { if (!e.target.closest(".s-search")) sug.classList.remove("open"); });
+  const route = v => { const t = v.toLowerCase(); run(/mombasa|deliver|ship/.test(t) ? "mombasa" : /vegan|ingredient/.test(t) ? "vegan" : /^rain( oud)?$/.test(t.trim()) ? "rain" : "gift", true); };
+  document.getElementById("sform").addEventListener("submit", e => { e.preventDefault(); sug.classList.remove("open"); if (sq.value.trim()) route(sq.value); });
+  document.querySelectorAll("[data-try]").forEach(b => b.addEventListener("click", () => run(b.dataset.try)));
+  document.querySelectorAll("[data-mode]").forEach(b => b.addEventListener("click", () => {
+    plainMode = b.dataset.mode === "plain";
+    document.querySelectorAll("[data-mode]").forEach(x => x.setAttribute("aria-pressed", String(x === b)));
+    document.getElementById("sbody").classList.toggle("plain-on", plainMode);
+  }));
+  run("gift");
+})();
+</script>
+</body>
+</html>

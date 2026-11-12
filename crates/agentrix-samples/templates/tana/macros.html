@@ -1,0 +1,28 @@
+{#- Tana's own pieces: a story card, the story so far, the digest box, the house rules. -#}
+{% macro card(c, subscriber, tag="article", big=false) -%}
+<{{ tag }} class="n-card{% if big %} big{% endif %}" id="st-{{ c.slug }}"><span class="kicker">{{ c.kicker }}</span>{% if c.locked %} <span class="n-lock">Subscriber</span>{% endif %}<h4><a href="{{ c.href }}">{{ c.title }}</a></h4>{% if not c.locked or subscriber %}<p>{{ c.standfirst }}</p>{% endif %}<div class="by">By {{ c.author }} · <time datetime="{{ c.iso }}">{{ c.date }}</time>{% if c.corrected %} · <span class="corr">Corrected {{ c.corrected }}</span>{% endif %}</div></{{ tag }}>
+{%- endmacro %}
+
+{% macro timeline(steps) -%}
+<ol class="tl">
+  {% for s in steps %}<li class="{% if s.kind == 'correction' %}c{% elif s.kind == 'scheduled' %}next{% endif %}"><time>{{ s.when }}</time>{% if s.href %}<a href="{{ s.href }}">{{ s.line }}</a>{% else %}<span class="tl-next">{{ s.line }}</span>{% endif %}</li>{% endfor %}
+</ol>
+{%- endmacro %}
+
+{% macro digest_form(digest, sections, chosen=[], email="", error="", compact=false) -%}
+<form class="digest-form" action="/digest" method="post" data-digest>
+  <fieldset class="topics"><legend class="sr-only">Topics</legend>
+    {% for s in sections %}<label><input type="checkbox" name="t-{{ s.id }}" value="on" data-name="{{ s.name }}"{% if s.name in chosen %} checked{% endif %}><span>{{ s.name }}</span></label>{% endfor %}
+  </fieldset>
+  <div class="contract" id="contract">
+    {% for r in digest.rows %}<div><b>{{ r.k }}</b><span{% if "{topics}" in r.template %} data-template="{{ r.template }}"{% endif %}>{{ r.text }}</span></div>{% endfor %}
+  </div>
+  {% if error %}<p class="note risk" role="alert">{{ error }}</p>{% endif %}
+  <label class="field{% if compact %} sr-label{% endif %}"><span{% if compact %} class="sr-only"{% endif %}>Your email</span><input type="email" name="email" value="{{ email }}" autocomplete="email" placeholder="name@example.com" required></label>
+  <div class="row" style="margin-top:10px;gap:8px"><button class="n-btn teal" type="submit">Subscribe by email</button><span class="small">We email you a link to confirm first</span></div>
+</form>
+{%- endmacro %}
+
+{% macro rules(list) -%}
+<div class="rules-n">{% for r in list %}<div>{{ r }}</div>{% endfor %}</div>
+{%- endmacro %}

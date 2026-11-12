@@ -1,0 +1,98 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" width="1280" height="720" role="img" aria-labelledby="t d">
+<title id="t">Deployment on Vultr</title><desc id="d">Single-node profile for the first release and self-hosting, and the fleet profile for the managed service.</desc>
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#38356d"/></marker><marker id="ac" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#de4060"/></marker><marker id="aa" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#c2620a"/></marker></defs>
+<rect width="1280" height="720" fill="#ffffff"/>
+<g font-family="Inter, 'DM Sans', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" fill="#1d1b33">
+<text x="24" y="38" font-size="21" font-weight="800" fill="#38356d" text-anchor="start">Deployment on Vultr · one codebase, two profiles</text>
+<text x="24" y="60" font-size="12" font-weight="400" fill="#5d5a78" text-anchor="start">Single-node runs the hackathon entry and Marketplace self-host. Fleet runs Zavora Cloud. Same binaries, different stores.</text>
+<rect x="24" y="80" width="600" height="620" rx="16" fill="#f6f5fb" stroke="#d8d5ea" stroke-width="1.2"/>
+<text x="40" y="102" font-size="11" font-weight="700" fill="#5d5a78" text-anchor="start" letter-spacing="1.2">SINGLE-NODE · the first release · self-host · Marketplace · Vultr Atlanta</text>
+<rect x="44" y="112" width="270" height="330" rx="12" fill="#ffffff" stroke="#38356d" stroke-width="1.6"/>
+<text x="58" y="136" font-size="13.5" font-weight="700" fill="#38356d" text-anchor="start">control VM</text>
+<text x="58" y="156" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">VX1 or High Frequency</text>
+<text x="58" y="173" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start"></text>
+<text x="58" y="190" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">agentrix-edge</text>
+<text x="58" y="207" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">agentrix-control</text>
+<text x="58" y="224" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">agentrix-kernel</text>
+<text x="58" y="241" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">agentrix-models (Model Gateway)</text>
+<text x="58" y="258" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">agentrix-effects (Effects Gateway)</text>
+<text x="58" y="275" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">sandbox broker</text>
+<text x="58" y="292" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">Caddy (TLS) · SQLite · local CAS</text>
+<text x="58" y="309" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start"></text>
+<text x="58" y="326" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">firewall group: in 80/443 only</text>
+<text x="58" y="343" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">to sandbox VM: private VPC, mTLS</text>
+<rect x="336" y="112" width="268" height="330" rx="12" fill="#fff7ed" stroke="#c2620a" stroke-width="1.6" stroke-dasharray="6 4"/>
+<text x="350" y="136" font-size="13.5" font-weight="700" fill="#c2620a" text-anchor="start">sandbox VM</text>
+<text x="350" y="156" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">VX1 · nested virtualisation</text>
+<text x="350" y="173" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start"></text>
+<text x="350" y="190" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">agentrix-runner</text>
+<text x="350" y="207" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">agentrix-egress</text>
+<text x="350" y="224" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">gVisor (runsc)</text>
+<text x="350" y="241" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">Microsandbox microVMs</text>
+<text x="350" y="258" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">no secrets · no public inbound</text>
+<text x="350" y="275" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">in: broker port from control only</text>
+<text x="350" y="292" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">out: proxy only (nftables)</text>
+<text x="350" y="309" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start"></text>
+<text x="350" y="326" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">destroyed rooms, signed receipts</text>
+<path d="M314,300 H334" fill="none" stroke="#c2620a" stroke-width="1.6" marker-end="url(#aa)"/>
+<rect x="44" y="486" width="180" height="70" rx="12" fill="#eef4ff" stroke="#0b6cff" stroke-width="1.6"/>
+<text x="58" y="510" font-size="12.5" font-weight="700" fill="#0752c4" text-anchor="start">Serverless Inference</text>
+<text x="58" y="530" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">six model roles</text>
+<rect x="236" y="486" width="180" height="70" rx="12" fill="#eef4ff" stroke="#0b6cff" stroke-width="1.6"/>
+<text x="250" y="510" font-size="12.5" font-weight="700" fill="#0752c4" text-anchor="start">Object Storage</text>
+<text x="250" y="530" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">releases · evidence</text>
+<rect x="428" y="486" width="176" height="70" rx="12" fill="#eef4ff" stroke="#0b6cff" stroke-width="1.6"/>
+<text x="442" y="510" font-size="12.5" font-weight="700" fill="#0752c4" text-anchor="start">Firewall groups</text>
+<text x="442" y="530" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">inbound only</text>
+<rect x="44" y="576" width="560" height="104" rx="12" fill="#ffffff" stroke="#d8d5ea" stroke-width="1.6"/>
+<text x="58" y="600" font-size="12.5" font-weight="700" fill="#1d1b33" text-anchor="start">Why two VMs, even for a hackathon</text>
+<text x="58" y="620" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">The host that renders hostile pages and replays compromised WordPress sites</text>
+<text x="58" y="637" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">holds no key and cannot reach the control plane. A sandbox escape finds</text>
+<text x="58" y="654" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">nothing to steal. Egress is enforced on the host because Vultr firewall</text>
+<text x="58" y="671" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">groups filter inbound traffic only.</text>
+<path d="M180,442 V484" fill="none" stroke="#de4060" stroke-width="1.6" marker-end="url(#ac)"/>
+<path d="M220,442 C220,470 300,460 320,484" fill="none" stroke="#38356d" stroke-width="1.6" marker-end="url(#a)"/>
+<rect x="656" y="80" width="600" height="620" rx="16" fill="#f6f5fb" stroke="#d8d5ea" stroke-width="1.2"/>
+<text x="672" y="102" font-size="11" font-weight="700" fill="#5d5a78" text-anchor="start" letter-spacing="1.2">FLEET · Zavora Cloud · Amsterdam/Frankfurt + Johannesburg edge</text>
+<rect x="676" y="112" width="270" height="66" rx="12" fill="#eef4ff" stroke="#0b6cff" stroke-width="1.6"/>
+<text x="690" y="136" font-size="12.5" font-weight="700" fill="#0752c4" text-anchor="start">CDN pull zone</text>
+<text x="690" y="156" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">custom domains · purge on rollback</text>
+<rect x="966" y="112" width="270" height="66" rx="12" fill="#eef4ff" stroke="#0b6cff" stroke-width="1.6"/>
+<text x="980" y="136" font-size="12.5" font-weight="700" fill="#0752c4" text-anchor="start">Load Balancer · DNS API</text>
+<text x="980" y="156" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">ACME for customer domains</text>
+<rect x="676" y="198" width="560" height="150" rx="12" fill="#eef4ff" stroke="#0b6cff" stroke-width="1.6"/>
+<text x="690" y="222" font-size="13" font-weight="700" fill="#0752c4" text-anchor="start">VKE · free control plane · autoscaled node pools</text>
+<rect x="692" y="240" width="81.9" height="22" rx="11" fill="#f1f0fa" stroke="#38356d" stroke-width="1"/>
+<text x="732.95" y="255" font-size="11" font-weight="600" fill="#38356d" text-anchor="middle">edge pool</text>
+<rect x="783.9" y="240" width="103.19999999999999" height="22" rx="11" fill="#f1f0fa" stroke="#38356d" stroke-width="1"/>
+<text x="835.5" y="255" font-size="11" font-weight="600" fill="#38356d" text-anchor="middle">control pool</text>
+<rect x="897.0999999999999" y="240" width="96.1" height="22" rx="11" fill="#f1f0fa" stroke="#38356d" stroke-width="1"/>
+<text x="945.1499999999999" y="255" font-size="11" font-weight="600" fill="#38356d" text-anchor="middle">kernel pool</text>
+<rect x="1003.1999999999999" y="240" width="110.3" height="22" rx="11" fill="#f1f0fa" stroke="#38356d" stroke-width="1"/>
+<text x="1058.35" y="255" font-size="11" font-weight="600" fill="#38356d" text-anchor="middle">gateways pool</text>
+<text x="692" y="296" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">TenantKernels sleep for free and wake on signals; gateways are HA.</text>
+<text x="692" y="314" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">Signed images from Container Registry · Terraform (Vultr provider).</text>
+<rect x="676" y="366" width="560" height="70" rx="12" fill="#fff7ed" stroke="#c2620a" stroke-width="1.6" stroke-dasharray="6 4"/>
+<text x="690" y="390" font-size="13" font-weight="700" fill="#c2620a" text-anchor="start">VX1 runner pool · outside Kubernetes</text>
+<text x="690" y="410" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">scaled by the broker through the Vultr API · throwaway VMs for risky replays</text>
+<rect x="676" y="454" width="178" height="74" rx="12" fill="#eef4ff" stroke="#0b6cff" stroke-width="1.6"/>
+<text x="690" y="478" font-size="12" font-weight="700" fill="#0752c4" text-anchor="start">Managed PostgreSQL</text>
+<text x="690" y="498" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">pgvector · replicas · PITR</text>
+<rect x="866" y="454" width="178" height="74" rx="12" fill="#eef4ff" stroke="#0b6cff" stroke-width="1.6"/>
+<text x="880" y="478" font-size="12" font-weight="700" fill="#0752c4" text-anchor="start">Managed Valkey</text>
+<text x="880" y="498" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">queues · limits</text>
+<rect x="1056" y="454" width="180" height="74" rx="12" fill="#eef4ff" stroke="#0b6cff" stroke-width="1.6"/>
+<text x="1070" y="478" font-size="12" font-weight="700" fill="#0752c4" text-anchor="start">Object Storage</text>
+<text x="1070" y="498" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">CAS · Archive tier</text>
+<rect x="676" y="546" width="178" height="70" rx="12" fill="#eef4ff" stroke="#0b6cff" stroke-width="1.6"/>
+<text x="690" y="570" font-size="12" font-weight="700" fill="#0752c4" text-anchor="start">Serverless Inference</text>
+<text x="690" y="590" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">a subscription per site</text>
+<rect x="866" y="546" width="178" height="70" rx="12" fill="#eef4ff" stroke="#0b6cff" stroke-width="1.6"/>
+<text x="880" y="570" font-size="12" font-weight="700" fill="#0752c4" text-anchor="start">IAM · Audit Logs</text>
+<text x="880" y="590" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">assume-role · no host keys</text>
+<rect x="1056" y="546" width="180" height="70" rx="12" fill="#eef4ff" stroke="#0b6cff" stroke-width="1.6"/>
+<text x="1070" y="570" font-size="12" font-weight="700" fill="#0752c4" text-anchor="start">Managed Kafka</text>
+<text x="1070" y="590" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">events at scale</text>
+<rect x="676" y="630" width="560" height="54" rx="12" fill="#f6f5fb" stroke="#d8d5ea" stroke-width="1.6" stroke-dasharray="4 4"/>
+<text x="690" y="654" font-size="12" font-weight="700" fill="#1d1b33" text-anchor="start">Later: Cloud GPU for in-region models · Marketplace one-click listing · partner programme</text>
+</g></svg>

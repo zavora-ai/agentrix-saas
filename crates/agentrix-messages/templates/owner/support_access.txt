@@ -1,0 +1,33 @@
+{% block subject %}{% if access.state == "requested" %}Agentrix support asks to see {{ site.name }}{% elif access.state == "started" %}Support access to {{ site.name }} has started{% else %}Support access to {{ site.name }} has ended{% endif %}{% endblock %}
+{% block preheader %}{{ access.scope }} · {{ access.length }}{% endblock %}
+{% block body %}
+{% if access.state == "requested" %}
+# Support asks to see your site
+{{ access.who }} asks to see {{ site.name }} to help with: {{ access.reason }}
+
+::fact What they'd see | {{ access.scope }}
+::fact For | {{ access.length }}
+::fact Never | Payment details, and anything you don't name
+
+Nothing is shared unless you grant it in the console with your passkey or an authenticator code. You can end it at any time, and every look is a receipt.
+
+::button Review the request | {{ access.url }}
+{% elif access.state == "started" %}
+# Support access has started
+{{ access.who }} started looking at {{ site.name }} at {{ access.at }}, under the grant you signed.
+
+::fact Scope | {{ access.scope }}
+::fact Ends | {{ access.ends }}
+
+Every look is a receipt you can read in the Trust centre. End it there at any time.
+
+::button See the access | {{ access.url }}
+{% else %}
+# Support access has ended
+{{ access.who }}'s access to {{ site.name }} ended at {{ access.at }}. {{ access.summary }}
+
+::button Read the receipts | {{ access.url }}
+{% endif %}
+{% endblock %}
+{% block push %}{% if access.state == "requested" %}Support asks to see your site.{% elif access.state == "started" %}Support access to your site has started.{% else %}Support access to your site has ended.{% endif %}{% endblock %}
+{% block push_url %}{{ access.url }}{% endblock %}

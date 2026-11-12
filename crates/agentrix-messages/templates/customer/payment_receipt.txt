@@ -1,0 +1,22 @@
+{% block subject %}Receipt for order {{ order.number }}: {{ payment.charge|money(payment.charge_currency) }}{% endblock %}
+{% block preheader %}Paid to {{ site.name }} with {{ payment.method }}. Receipt {{ payment.receipt_id }}.{% endblock %}
+{% block body %}
+# Paid: {{ payment.charge|money(payment.charge_currency) }}
+{% for line in order.lines %}
+::fact {{ line.qty }} × {{ line.name }} | {{ line.total|money(order.currency) }}
+{% endfor %}
+::fact Total | {{ order.total|money(order.currency) }}
+::fact Charged | {{ payment.charge|money(payment.charge_currency) }} with {{ payment.method }}
+{% if payment.rate %}
+::fact Rate | {{ payment.rate }}
+{% endif %}
+::fact Paid to | {{ site.name }} ({{ site.host }})
+::fact Paid at | {{ payment.paid_at }}
+::fact Receipt | {{ payment.receipt_id }}
+
+Anyone with this receipt can check it's genuine: it's signed by the payments service, and the page shows whether the signature holds.
+
+::button Verify this receipt | {{ payment.receipt_url }}
+
+{{ payment.method }} also emails its own receipt for {{ payment.charge|money(payment.charge_currency) }}. Both show the same amount and payee.
+{% endblock %}

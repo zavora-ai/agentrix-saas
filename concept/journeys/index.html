@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Two journeys, one order · Agentrix</title>
+<meta name="description" content="The dual journey map: the owner's lane and the customer's lane on a migrated site, and the four points where they meet.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Manrope:wght@600;700;800&family=Fraunces:opsz,wght@9..144,600;9..144,800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../styles.css">
+<link rel="stylesheet" href="journeys.css">
+<style>
+  body[data-lane="map"] .j-lane { background: var(--j-meet-bg); color: var(--j-meet); }
+  .m-hero { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: clamp(16px, 3vw, 40px); align-items: center; padding: clamp(22px, 4vw, 44px) 0 clamp(16px, 3vw, 28px); }
+  .m-hero h1 { margin-top: 10px; font-size: clamp(30px, 4.6vw, 50px); }
+  .m-hero .lead { margin-top: 12px; }
+  .m-cast { display: grid; gap: 10px; }
+  .m-person { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 12px; align-items: center; padding: 12px 14px; border-radius: var(--r); background: var(--paper); border: 1px solid var(--line); }
+  .m-person .init { display: grid; place-items: center; width: 40px; height: 40px; border-radius: 50%; color: #fff; font: 800 15px/1 var(--font-display); }
+  .m-person b { display: block; color: var(--indigo-900); }
+  .m-person span { font-size: var(--fs-13); color: var(--ink-2); }
+  .m-team { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 12px; align-items: center; padding: 12px 14px; border-radius: var(--r); background: #fffdf9; border: 1px solid #ecdcc6; }
+  .m-team b { display: block; color: #3b2416; }
+  .m-team span { font-size: var(--fs-13); color: #6b4b36; }
+  .m-marks { display: flex; gap: 2px; flex-wrap: wrap; margin-top: 6px; }
+
+  .m-sub { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; font: 800 var(--fs-20)/1.25 var(--font-display); color: var(--indigo-900); margin: var(--s5) 0 var(--s3); }
+  .m-setup-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 140px), 1fr)); gap: 10px; }
+  .m-setup .m-card { grid-column: auto !important; grid-row: auto !important; }
+  .m-setup .m-card .lane { display: none !important; }
+  .m-legend { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin: 0 0 var(--s4); font-size: var(--fs-13); color: var(--ink-2); }
+
+  /* The map: owner | spine | customer on wide screens; one interleaved column on phones */
+  .m-map { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr) minmax(0, 1fr); column-gap: 14px; row-gap: 10px; align-items: stretch; }
+  .m-head { font: 700 var(--fs-12)/1 var(--font-text); letter-spacing: .1em; text-transform: uppercase; padding: 8px 0; }
+  .m-head.o { color: var(--j-owner); grid-column: 1; grid-row: 1; }
+  .m-head.s { color: var(--j-meet); grid-column: 2; grid-row: 1; text-align: center; }
+  .m-head.c { color: var(--j-customer); grid-column: 3; grid-row: 1; }
+  .m-card { position: relative; display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 4px 10px; align-content: start; text-decoration: none; padding: 12px 14px 12px 12px; border-radius: var(--r); background: var(--paper); border: 1px solid var(--line); border-left: 4px solid var(--c); color: var(--ink-2); }
+  .m-card:hover { border-color: var(--c); color: var(--ink-2); box-shadow: var(--shadow-2); }
+  .m-card .n { grid-row: span 2; display: grid; place-items: center; width: 26px; height: 26px; border-radius: 8px; background: var(--c); color: #fff; font: 700 12px/1 var(--font-mono); }
+  .m-card b { font: 700 var(--fs-16)/1.25 var(--font-display); color: var(--indigo-900); display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .m-card p { margin: 0; font-size: var(--fs-13); line-height: 1.45; }
+  .m-card .lane { display: none; }
+  .m-card.o { --c: var(--j-owner); grid-column: 1; }
+  .m-card.c { --c: var(--j-customer); grid-column: 3; }
+  .m-gate { grid-column: 1 / -1; display: flex; align-items: center; gap: 10px; padding: 6px 0; font: 700 var(--fs-12)/1.2 var(--font-text); letter-spacing: .06em; text-transform: uppercase; color: var(--ok); }
+  .m-gate::before, .m-gate::after { content: ""; flex: 1; height: 2px; background: repeating-linear-gradient(90deg, var(--ok) 0 6px, transparent 6px 10px); }
+  .m-meet { grid-column: 2; display: grid; gap: 6px; align-content: center; padding: 12px 14px; border-radius: var(--r); background: var(--j-meet-bg); border: 1px solid var(--j-meet-line); color: #4d2f00; scroll-margin-top: 90px; position: relative; }
+  .m-meet::before, .m-meet::after { content: ""; position: absolute; top: 50%; width: 14px; height: 2px; background: var(--j-meet); }
+  .m-meet::before { left: -14px; } .m-meet::after { right: -14px; }
+  .m-meet:target { outline: 3px solid var(--j-meet); outline-offset: 2px; }
+  .m-meet h3 { font: 800 var(--fs-16)/1.25 var(--font-display); color: #4d2f00; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .m-meet .tag { font: 700 11px/1 var(--font-text); letter-spacing: .08em; text-transform: uppercase; color: var(--j-meet); }
+  .m-meet .side { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 8px; font-size: var(--fs-13); line-height: 1.45; }
+  .m-meet .side .j-who { align-self: start; }
+
+  /* rows (desktop) */
+  .r2{grid-row:2}.r3{grid-row:3}.r4{grid-row:4}.r5{grid-row:5}.r6{grid-row:6}.r7{grid-row:7}.r8{grid-row:8}.r9{grid-row:9}.r10{grid-row:10}.r11{grid-row:11}.r12{grid-row:12}.r13{grid-row:13}.r14{grid-row:14}.r15{grid-row:15}.r16{grid-row:16}
+  .o8 { grid-row: 5 / 9; }
+
+  @media (max-width: 900px) {
+    .m-hero { grid-template-columns: 1fr; }
+    .m-map { grid-template-columns: minmax(0, 1fr); }
+    .m-map > * { grid-column: 1 !important; grid-row: auto !important; }
+    .m-head { display: none; }
+    .m-card .lane { display: inline-flex; }
+    .m-meet::before, .m-meet::after { display: none; }
+    .m-meet { margin: 4px 0; }
+  }
+
+  .m-facts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s4); margin: var(--s6) 0; }
+  .m-facts .card h3 { font-size: var(--fs-16); }
+  .m-facts .card p, .m-facts .card li { font-size: var(--fs-14); color: var(--ink-2); }
+  .m-facts ul { margin: 10px 0 0; padding-left: 18px; display: grid; gap: 6px; }
+  @media (max-width: 960px) { .m-facts { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body data-lane="map">
+<header class="j-top">
+  <a class="logo" href="../index.html"><span class="mark" aria-hidden="true"></span>Agentrix</a>
+  <a class="j-maplink" href="index.html" aria-current="page">Journey map</a>
+  <span class="j-lane">Both lanes</span>
+  <span class="concept-label">Concept · illustrative data</span>
+</header>
+<main class="wrap j-main">
+  <section class="m-hero" aria-labelledby="mapTitle">
+    <div>
+      <p class="eyebrow">The dual journeys</p>
+      <h1 id="mapTitle">Two journeys, one order</h1>
+      <p class="lead">Wanjiru moves Kilele Bakery onto the platform. Njeri, in London, orders a birthday cake from it. Each lane is a set of screens; the amber points are where the two lanes meet: the order card, the payment, the payout and a refund.</p>
+    </div>
+    <div class="m-cast">
+      <div class="m-person"><span class="init" style="background:var(--j-owner)" aria-hidden="true">W</span><div><b>Wanjiru · the owner</b><span>Runs Kilele Bakery in Kilimani, Nairobi. A person, so her chip is a circle.</span></div></div>
+      <div class="m-person"><span class="init" style="background:var(--j-customer)" aria-hidden="true">N</span><div><b>Njeri · the customer</b><span>Amina's aunt, ordering from London for Amina's 7th birthday.</span></div></div>
+      <div class="m-team"><span class="j-mark" data-chief data-size="40" data-busy="orders,cashier"></span><div><b>Kilele's WebAgents</b><span>One team, one pattern family, one seed each. AI, so never a face or a circle.</span>
+        <div class="m-marks" aria-hidden="true"><span class="j-mark" data-agent="cakes" data-size="28"></span><span class="j-mark" data-agent="bread" data-size="28"></span><span class="j-mark" data-agent="orders" data-size="28"></span><span class="j-mark" data-agent="cashier" data-size="28"></span><span class="j-mark" data-agent="mover" data-size="28"></span><span class="j-mark" data-agent="caretaker" data-size="28"></span><span class="j-mark" data-agent="editor" data-size="28"></span><span class="j-mark" data-agent="guardian" data-size="28"></span></div>
+      </div></div>
+    </div>
+  </section>
+
+  <p class="m-legend"><span class="j-who owner">Owner lane</span><span class="j-who customer">Customer lane</span><span class="j-who" style="background:var(--j-meet-bg);color:var(--j-meet)">Meeting point</span><span class="j-first">The fleet release</span><span>marks what is mockups-only this weekend: the first release ends the custom order at Wanjiru's approval.</span></p>
+
+  <section class="m-setup" aria-labelledby="setupH">
+    <h2 id="setupH" class="m-sub"><span class="j-who owner">Owner</span> Before the site opens</h2>
+    <div class="m-setup-grid">
+      <a class="m-card o" href="owner-discover.html"><span class="n">1</span><b>Discover and assess</b><p>A no-account assessment of her current site.</p></a>
+      <a class="m-card o" href="owner-account.html"><span class="n">2</span><b>Keep it</b><p>Her account: a passkey first; otherwise a password or social sign-in, with an authenticator code.</p></a>
+      <a class="m-card o" href="owner-plan.html"><span class="n">3</span><b>Plan and pay</b><p>Chooses a plan and pays.</p></a>
+      <a class="m-card o" href="owner-domain.html"><span class="n">4</span><b>Claim the domain</b><p>Proves kilele-bakery.example with a file or DNS.</p></a>
+      <a class="m-card o" href="owner-move.html"><span class="n">5</span><b>The Move</b><p>The Mover rebuilds the site as signed releases, with desks drafted from the old menu.</p></a>
+      <a class="m-card o" href="owner-golive.html"><span class="n">6</span><b>Go live</b><p>One card, a passkey or a step-up code; the old site kept; undo for 30 days.</p></a>
+    </div>
+  </section>
+
+  <h2 class="m-sub" id="liveH">The site is live: both lanes, in time order</h2>
+  <div class="m-map">
+    <span class="m-head o" aria-hidden="true">Owner · Wanjiru</span>
+    <span class="m-head s" aria-hidden="true">Where they meet</span>
+    <span class="m-head c" aria-hidden="true">Customer · Njeri</span>
+
+    <div class="m-gate r2">Live · undo kept for 30 days</div>
+    <a class="m-card o r3" href="owner-day1.html"><span class="n">7</span><b>The first brief <span class="j-who owner lane">Owner</span></b><p>Day 1: what the WebAgents did overnight, and what waits for her.</p></a>
+
+    <a class="m-card c r3" href="customer-browse.html"><span class="n">1</span><b>Arrive and browse <span class="j-who customer lane">Customer</span></b><p>A guest. Desks say they are AI; the first answer is cited.</p></a>
+    <a class="m-card c r4" href="customer-account.html"><span class="n">2</span><b>An account when needed <span class="j-who customer lane">Customer</span></b><p>Only to order, save or track. A passkey first; what the site keeps; a receipt for every choice.</p></a>
+
+    <section class="m-meet r5" id="meet-order" aria-labelledby="mo-h">
+      <span class="tag">Meeting point 1</span>
+      <h3 id="mo-h">The order card</h3>
+      <div class="side"><span class="j-who customer">Njeri</span><span>Requests the cake: "Waiting for Wanjiru's OK. Nothing charged."</span></div>
+      <div class="side"><span class="j-who owner">Wanjiru</span><span>One card on her phone: the design, KSh 5,250, the date. She approves with her passkey, or a code without one.</span></div>
+      <div class="side"><span class="j-who gateway">Gateway</span><span><code>request_custom_order</code> is held; the approval is bound to the order's fingerprint. The first release's demo ends here.</span></div>
+    </section>
+    <a class="m-card c r5" href="customer-order.html"><span class="n">3</span><b>Place an order <span class="j-who customer lane">Customer</span></b><p>K-1042 from the catalogue; K-1043 custom. Every price, date and stock figure comes from rules.</p></a>
+
+    <a class="m-card o o8" href="owner-order.html"><span class="n">8</span><b>The first order <span class="j-mark" data-agent="cashier" data-size="20"></span> <span class="j-who owner lane">Owner</span></b><p>Njeri's cake card, the payment landing on the order, the payout and fees in the books, and refunds under and above her rule.</p></a>
+
+    <section class="m-meet r6" id="meet-payment" aria-labelledby="mp-h">
+      <span class="tag">Meeting point 2</span>
+      <h3 id="mp-h">The payment <span class="j-first">The fleet release</span></h3>
+      <div class="side"><span class="j-who customer">Njeri</span><span>Pays USD 40.70 on PayPal's own page, after seeing the amount, the payee and Kilele's rate.</span></div>
+      <div class="side"><span class="j-who owner">Wanjiru</span><span>K-1043 turns "Paid". She never sees Njeri's PayPal details.</span></div>
+      <div class="side"><span class="j-who gateway">Gateway</span><span>Holds the PayPal keys, creates the PayPal order for the exact amount and captures it once.</span></div>
+    </section>
+    <a class="m-card c r6" href="customer-pay.html"><span class="n">4</span><b>Pay with PayPal <span class="j-first">The fleet release</span> <span class="j-who customer lane">Customer</span></b><p>In USD at Kilele's posted rate, on PayPal's own surface.</p></a>
+
+    <section class="m-meet r7" id="meet-payout" aria-labelledby="mpo-h">
+      <span class="tag">Meeting point 3</span>
+      <h3 id="mpo-h">The payout <span class="j-first">The fleet release</span></h3>
+      <div class="side"><span class="j-who provider">PayPal</span><span>Funds settle in Kilele's PayPal balance, in USD.</span></div>
+      <div class="side"><span class="j-who owner">Wanjiru</span><span>Sees gross, fee and net in the books (fees illustrative) and withdraws to her bank.</span></div>
+    </section>
+
+    <section class="m-meet r8" id="meet-refund" aria-labelledby="mr-h">
+      <span class="tag">Meeting point 4</span>
+      <h3 id="mr-h">A refund <span class="j-first">The fleet release</span></h3>
+      <div class="side"><span class="j-who customer">Njeri</span><span>"The bake box arrived crushed." USD 10.47 goes back to her PayPal.</span></div>
+      <div class="side"><span class="j-who owner">Wanjiru</span><span>Under her signed rule (up to KSh 2,000 an order, 5 a week, to the original method, until 31 Dec) it runs alone and shows in her brief. Above it, a card.</span></div>
+    </section>
+    <a class="m-card c r8" href="customer-after.html"><span class="n">5</span><b>After the order <span class="j-who customer lane">Customer</span></b><p>A receipt she can verify, the status, a date change held for Wanjiru, and "Something's wrong".</p></a>
+
+    <a class="m-card o r9" href="owner-billing.html"><span class="n">9</span><b>Billing and ownership <span class="j-who owner lane">Owner</span></b><p>Invoices, changing plan, cancelling, and exporting everything.</p></a>
+    <a class="m-card c r9" href="customer-agent.html"><span class="n">6</span><b>Her AI agent orders <span class="j-who customer lane">Customer</span></b><p>Her own assistant uses the agent door; she still pays on PayPal's page.</p></a>
+    <a class="m-card c r10" href="customer-security.html"><span class="n">7</span><b>Security moments <span class="j-who customer lane">Customer</span></b><p>A takeover attempt, a changed payment link, a look-alike site, and export and erasure.</p></a>
+  </div>
+
+  <div class="m-facts">
+    <div class="card"><h3>The figures (illustrative)</h3>
+      <ul>
+        <li><b>K-1042:</b> 2 sourdough loaves (KSh 450 each), a weekend bake box (KSh 1,350), delivery (KSh 300). KSh 2,550 = USD 19.77.</li>
+        <li><b>K-1043:</b> Amina's 2-tier forest cake, KSh 5,250 = USD 40.70.</li>
+        <li><b>Kilele's rate:</b> 1 USD = KSh 129.00, posted in the price list and pinned on each order. PayPal doesn't settle in shillings.</li>
+        <li><b>Delivery:</b> Sat 14 Nov, 10:00–12:00, Kilimani.</li>
+      </ul>
+    </div>
+    <div class="card"><h3>What never crosses the lanes</h3>
+      <ul>
+        <li>Njeri's passkey, password, PayPal login, or card number. Desks see "customer", not the account.</li>
+        <li>Any number a model made up. Prices, dates and stock come from rules.</li>
+        <li>A payment request Wanjiru hasn't approved.</li>
+      </ul>
+    </div>
+    <div class="card"><h3>Where this is written down</h3>
+      <ul>
+        <li>The customer's lane: 06 §6.3, with sign-in in 06 §4.10.</li>
+        <li>The owner's lane: the console work (07).</li>
+        <li>Approvals: 02 §8. Refund limits: ADR-012, amendment 1.</li>
+        <li>The marks: ADR-031.</li>
+      </ul>
+    </div>
+  </div>
+</main>
+<script src="journeys.js"></script>
+</body>
+</html>

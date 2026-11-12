@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sign in as the owner · {{ site.name }} · Sample owner view</title>
+<meta name="description" content="Sign in as the owner of a sample site on Agentrix. The sample's sign-in details are filled in.">
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="/static/ui/tokens.css?v={{ ui_v }}">
+<link rel="stylesheet" href="/samples/_s/agentrix.css?v={{ v }}">
+<link rel="stylesheet" href="/samples/_s/owner.css?v={{ v }}">
+</head>
+<body class="ow ow-signin-page">
+<div class="ow-band" role="note">
+  <b>Sample</b>
+  <span>This sample's owner sign-in is filled in, so anyone can see the owner's side. On a real site only the owner and their team sign in, with a passkey, and approvals need it too.</span>
+</div>
+<main class="ow-signin" id="main">
+  <p class="ow-signin-kicker"><a href="/samples/">Sample owner views</a></p>
+  <h1>Sign in to {{ site.name }}</h1>
+  <p class="ow-signin-why">You're signing in as {{ site.owner }}, the sample's owner.</p>
+  {% if error %}<p class="note warn" role="alert">{{ error }}</p>{% endif %}
+  <form class="ow-signin-form" method="post" action="/samples/{{ site.slug }}/sign-in">
+    <input type="hidden" name="next" value="{{ next }}">
+    <label class="ow-f">Email
+      <input name="email" type="email" autocomplete="username" value="{{ email }}" required>
+    </label>
+    <label class="ow-f">Password
+      <input name="password" type="password" autocomplete="current-password" value="{{ password }}" required>
+      <span class="hint">Sample password: <code>{{ password }}</code></span>
+    </label>
+    <button class="btn ow-btn" type="submit">Sign in as {{ site.first }}</button>
+  </form>
+  <p class="ow-signin-foot"><a href="{{ site.url }}">Open {{ site.name }} as a visitor instead</a></p>
+</main>
+</body>
+</html>

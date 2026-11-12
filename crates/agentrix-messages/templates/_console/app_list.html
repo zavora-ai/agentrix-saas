@@ -1,0 +1,37 @@
+{#- The Messages app's home inside W5's shell (C9): the field only; the shell draws the rest. -#}
+{% import "ui/kit.html" as ui %}
+<div class="field-head">
+  <div><h2>Messages</h2><div class="sub">What {{ site_name }} sent to customers and to you, or would have. One-time codes never show here.</div></div>
+  {{ ui.segmented(tabs, "Messages") }}
+</div>
+{% if not email_ready %}
+<p class="note"><span>Email isn't switched on yet, so no email has left Agentrix. Each one is kept here, marked Not sent. Open one to read it as it would have arrived.</span></p>
+{% endif %}
+<div class="cards">
+  <article class="fcard span2" aria-labelledby="sent-h">
+    <div class="spread">
+      <b id="sent-h">Sent and not sent</b>
+      {{ ui.segmented(chips, "Filter messages") }}
+    </div>
+    {% if rows %}
+    <table class="surface-table">
+      <thead><tr><th scope="col">When</th><th scope="col">Message</th><th scope="col">To</th><th scope="col">Status</th></tr></thead>
+      <tbody>
+      {% for m in rows %}
+        <tr>
+          <td class="mono">{{ m.when }}</td>
+          <td><b><a href="{{ base }}/m/{{ m.id }}">{{ m.subject }}</a></b><br><span class="small muted">Why: {{ m.reason }}</span></td>
+          <td>{{ m.channel }} to {{ m.to }}</td>
+          <td>{{ ui.chip(m.status, m.status_tone) }}{% if m.status_reason %}<br><span class="small muted">{{ m.status_reason }}</span>{% endif %}</td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+    {% if older %}<div class="verbs">{{ ui.button("Older messages", href=older, size="sm") }}</div>{% endif %}
+    {% elif filtered %}
+    {{ ui.empty("No messages match this filter", "Messages with this status will show here as they happen.", action={"label": "Show all messages", "href": base}, level=3) }}
+    {% else %}
+    {{ ui.empty("No messages yet", "They appear here the moment your site sends one: a customer's sign-in code, an order receipt, your morning brief.", level=3) }}
+    {% endif %}
+  </article>
+</div>

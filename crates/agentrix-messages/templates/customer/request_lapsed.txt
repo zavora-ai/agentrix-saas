@@ -1,0 +1,16 @@
+{% block subject %}Your request {{ request.number }} ran out of time{% endblock %}
+{% block preheader %}Nothing was charged. You can send it again.{% endblock %}
+{% block body %}
+# Your request ran out of time
+{{ site.owner }} didn't answer request {{ request.number }} before {{ request.expired_at }}, so it closed. Nothing was charged.
+
+{{ request.summary }}
+
+You can send it again from your order page, with a new date if you need one.
+
+::button Send it again | {{ request.url }}
+{% endblock %}
+{% block chat %}
+{{ site.name }}: request {{ request.number }} closed at {{ request.expired_at }} without an answer from {{ site.owner }}. Nothing was charged. You can send it again from your order page.
+::button Open the order | {{ request.url }}
+{% endblock %}

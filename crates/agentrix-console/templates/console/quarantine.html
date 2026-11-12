@@ -1,0 +1,38 @@
+{% extends "console/base.html" %}
+{% import "macros.html" as m %}
+{#- Page::Quarantine · view::QuarantineView (+ ConsoleChrome) {
+      items: [ { id, title, plain, where, evidence: [Evidence], state: "left-behind"|"restore-asked"|"restored",
+                 decision_href?, restore_url } ] }
+    R5, S2-06: restoring is a decision the owner signs, with a reason. -#}
+{% block title %}Left behind{% endblock %}
+{% block content %}
+<section class="stack">
+  <p class="eyebrow">Left behind · {{ items|length }}</p>
+  <h1>What the Move didn't bring across</h1>
+  <p class="small muted">Each item was found in your old site and kept out of the new one. If one is a false alarm, restore it: you'll sign that decision, with your reason, and it goes on the receipt.</p>
+</section>
+{% for q in items %}
+<article class="card">
+  <div class="spread"><h2>{{ q.title }}</h2>{% if q.state == "restored" %}<span class="chip ok">Restored</span>{% elif q.state == "restore-asked" %}<span class="chip wait">Waiting for your signature</span>{% else %}<span class="chip risk">Left behind</span>{% endif %}</div>
+  <p class="small">{{ q.plain }}</p>
+  <p class="hint">Found in {{ q.where }}</p>
+  {% if q.evidence %}
+  <details class="small"><summary style="cursor:pointer;font-weight:700;min-height:32px;display:flex;align-items:center">Evidence</summary>
+    {% for e in q.evidence %}<p style="margin-top:8px">{{ e.label }}{% if e.receipt %} · <a href="/receipts/{{ e.receipt }}">receipt</a>{% endif %}</p>{% if e.excerpt %}<pre class="evidence">{{ e.excerpt }}</pre>{% endif %}{% endfor %}
+  </details>
+  {% endif %}
+  {% if q.state == "left-behind" %}
+  <details>
+    <summary style="cursor:pointer;font-weight:700;min-height:32px;display:flex;align-items:center">This is a false alarm: restore it</summary>
+    <form class="stack" method="post" action="{{ q.restore_url }}" style="margin-top:var(--s3)">
+      <label class="field">Why it's safe<textarea name="reason" required minlength="10" placeholder="For example: this is our own booking widget from our web developer."></textarea></label>
+      <button class="btn btn-wide" type="submit">Ask to restore it</button>
+      <p class="hint">This raises a decision card. Nothing is restored until you sign it.</p>
+    </form>
+  </details>
+  {% elif q.state == "restore-asked" and q.decision_href %}
+  <a class="btn btn-primary" href="{{ q.decision_href }}">Review and sign</a>
+  {% endif %}
+</article>
+{% endfor %}
+{% endblock %}

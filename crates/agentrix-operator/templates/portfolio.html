@@ -1,0 +1,121 @@
+{% extends "layout.html" %}
+{#- P1 Portfolio · Clients (concept/control-plane/portfolio.html) on the partner's real clients.
+    `p` is partners::Portfolio. An operator sees it read-only, with the tools to invite. -#}
+{% block title %}Clients{% endblock %}
+{% block field %}
+{%- set wholesale = (p.wholesale_cents * 10000)|usd -%}
+<div class="field-head">
+  <div>{% if as_operator %}<div class="crumbs"><a href="/partners">Partners</a> /</div>{% endif %}<h2>{{ p.partner.name }} · Clients</h2><div class="sub">{{ p.partner.kind|capitalize }} · {{ p.clients|selectattr("state", "eq", "granted")|list|length }} client{{ "" if p.clients|selectattr("state", "eq", "granted")|list|length == 1 else "s" }} · {{ p.invited }} waiting for the owner</div></div>
+  <div class="row">{% if as_operator %}<span class="pf-tag">Portfolio · on Agentrix</span><span class="chip">Viewing as Zavora</span>{% endif %}</div>
+</div>
+
+<div class="cp-grid">
+  <article class="card tight pfbrief">
+    <div class="spread"><span class="row" style="gap:8px"><span class="avatar sm av-chief">CW</span><b class="small" style="color:var(--indigo-900)">Portfolio brief · from the records</b></span><span class="small muted">written from counts, not by a model</span></div>
+    <p>{% if p.live %}<b>{{ p.live }} client site{{ "" if p.live == 1 else "s" }}</b> {{ "is" if p.live == 1 else "are" }} live{% if p.moving %} and {{ p.moving }} {{ "is" if p.moving == 1 else "are" }} moving{% endif %}.{% else %}No client site is live yet.{% endif %}
+    {% if p.waiting %}Owners have <b>{{ p.waiting }} decision{{ "" if p.waiting == 1 else "s" }}</b> waiting on your clients' sites.{% endif %}
+    {% if p.invited %}<b>{{ p.invited }} owner{{ "" if p.invited == 1 else "s" }}</b> {{ "hasn't" if p.invited == 1 else "haven't" }} answered your request for a role yet.{% endif %}
+    Models cost <b>{{ p.spend_micro_usd|usd }}</b> across your clients this month.</p>
+  </article>
+
+  <div class="kpis five">
+    <div class="kpi"><div class="label">Sites live</div><div class="value">{{ p.live }}</div><div class="foot">{{ p.moving }} moving · {{ p.invited }} invited</div></div>
+    <div class="kpi"><div class="label">Waiting on owners</div><div class="value">{{ p.waiting }}</div><div class="foot">decisions on your clients' sites</div></div>
+    <div class="kpi"><div class="label">Client health</div><div class="value none">Not scored yet</div><div class="foot">no health scores yet</div></div>
+    <div class="kpi"><div class="label">AI spend · this month</div><div class="value">{{ p.spend_micro_usd|usd }}</div><div class="foot">gateway estimates</div></div>
+    <div class="kpi"><div class="label">Wholesale · this month</div><div class="value">{{ wholesale }}</div><div class="foot">{{ (p.wholesale_each_cents * 10000)|usd }} a live site, {{ p.wholesale_minimum }}-site minimum</div></div>
+  </div>
+
+  <article class="card tight" id="clients">
+    <div class="card-title"><h4>Clients</h4><span class="small muted">granted first, then what needs you</span></div>
+    {%- if p.clients %}
+    <div class="tbl-wrap"><table class="tbl" style="min-width:720px">
+      <thead><tr><th>Client</th><th>Plan</th><th>State</th><th class="num">Waiting</th><th>AI spend / included</th><th>Your role</th><th>Ring</th></tr></thead>
+      <tbody>
+        {%- for c in p.clients %}
+        <tr>
+          <td><div class="client"><span class="logo-c">{{ (c.site.name or c.site.domain)|initials }}</span><span><b>{% if as_operator %}<a href="/sites/{{ c.site.site_id }}">{{ c.site.name or c.site.domain }}</a>{% else %}{{ c.site.name or c.site.domain }}{% endif %}</b>{% if c.kind == "sample" %} <span class="chip chip-sample">Sample</span>{% endif %}<small>{{ c.site.domain }}</small></span></div></td>
+          <td>{{ c.plan or "No plan yet" }}</td>
+          <td>{% if c.state == "invited" %}<span class="chip chip-wait">Waiting for the owner's grant</span>{% elif c.stage == "Live" %}<span class="chip chip-ok"><span class="dot"></span>Live · v{{ c.site.live_seq }}</span>{% elif c.stage == "Moving" %}<span class="chip chip-info">Moving · {{ c.site.move_state }}</span>{% else %}<span class="chip">{{ c.stage }}</span>{% endif %}</td>
+          <td class="num">{% if c.site.decisions_waiting %}<span class="badge">{{ c.site.decisions_waiting }}</span>{% else %}0{% endif %}</td>
+          <td>{% if c.state == "granted" %}{{ c.site.spend_month|usd }}{% if c.plan %} / {{ c.included_ai|usd }}{% endif %}{% else %}—{% endif %}</td>
+          <td>{{ c.role|capitalize }}</td>
+          <td>{{ c.ring }}</td>
+        </tr>
+        {%- endfor %}
+      </tbody>
+    </table></div>
+    {%- else %}
+    <div class="empty"><b>No clients yet.</b> A site joins once its owner grants a role. {% if as_operator %}Invite one below.{% endif %}</div>
+    {%- endif %}
+    <p class="gapnote">Content-free: you see each client's state, plan, decisions waiting and spend, never its conversations or leads.</p>
+    {%- if as_operator and can_manage %}
+    <form class="access-form" method="post" action="/partners/{{ p.partner.partner_id }}/clients">
+      <label for="cl-site">Invite a client: the site's address</label>
+      <input id="cl-site" type="text" name="site" required maxlength="200" placeholder="kilele-bakery-sample.agentrix.website" value="{{ kept|field("client_site") }}">
+      <div class="row">
+        <select name="role" aria-label="Role the owner is asked to grant"><option value="editor" selected>Editor</option><option value="approver">Approver</option><option value="publisher">Publisher</option><option value="viewer">Viewer</option></select>
+        <select name="ring" aria-label="Ring"><option value="stable" selected>Stable ring</option><option value="canary">Canary ring</option></select>
+      </div>
+      <div class="row"><button class="btn btn-sm btn-primary" type="submit">Ask the owner</button></div>
+      {%- if owner_link %}<p class="gapnote">The owner answers at {{ owner_link }}{{ p.partner.partner_id }}/&lt;site id&gt;, and sees the request in their console.</p>{% endif %}
+    </form>
+    {%- endif %}
+  </article>
+
+  <div class="cp-grid cols-2e">
+    <article class="card tight" id="import">
+      <div class="card-title"><h4>Moves for your clients</h4><span class="chip chip-info">Migration Factory</span></div>
+      <div class="factory">{% for st in p.stages %}<div><b>{{ st.count }}</b><span>{{ st.label }}</span></div>{% endfor %}</div>
+      <p class="gapnote">Bulk imports with reserved capacity come with the import planner.</p>
+    </article>
+
+    <article class="card tight" id="margin">
+      <div class="card-title"><h4>This month</h4><span class="small muted">estimate until invoices post</span></div>
+      <div class="money">
+        <div><span>Your invoices to your clients</span><span>your prices</span></div>
+        <div><span>Wholesale to Zavora Cloud ({{ p.live }} live, {{ p.wholesale_minimum }}-site minimum)</span><span>− {{ wholesale }}</span></div>
+        <div><span>AI above what each client's plan includes{% if p.clients_with_plan %} ({{ p.clients_with_plan|plural("client", "clients") }} with a plan){% endif %}</span><span>{% if p.clients_with_plan %}{{ p.ai_over_micro_usd|usd }}{% else %}no client has a plan yet{% endif %}</span></div>
+      </div>
+      <p class="gapnote">AI above a plan is a gateway estimate and isn't billed on this build. Your margin shows once your own prices to clients are in billing.</p>
+    </article>
+
+    <article class="card tight" id="ring">
+      <div class="card-title"><h4>Your ring</h4><span class="small muted">where your packs and themes roll first</span></div>
+      <div class="factory"><div><b>{{ p.ring_canary }}</b><span>in your canary ring</span></div><div><b>{{ p.ring_stable }}</b><span>in the stable ring</span></div></div>
+      <p class="gapnote">No pack or theme of yours has rolled out yet, so there are no waves to show. Each client's ring is set when it's invited.</p>
+    </article>
+
+    <article class="card tight" id="team">
+      <div class="card-title"><h4>Your people</h4><span class="small muted">platform roles at the partner</span></div>
+      <ul class="rows">
+        {%- for name, email, role in p.members %}
+        <li><span class="avatar sm" style="background:var(--pf)">{{ name|initials }}</span><span><b>{{ name }}</b><div class="small muted">{{ email }}</div></span><span class="meta">{{ role }}</span></li>
+        {%- else %}
+        <li><span></span><span class="small muted">No one yet.</span><span></span></li>
+        {%- endfor %}
+      </ul>
+      {%- if as_operator and can_manage %}
+      <form class="access-form" method="post" action="/partners/{{ p.partner.partner_id }}/members">
+        <div class="row"><input type="text" name="email" required maxlength="254" placeholder="Their sign-in email" aria-label="Email" value="{{ kept|field("member_email") }}"><select name="role" aria-label="Role"><option value="partner.admin">partner.admin</option><option value="partner.manager" selected>partner.manager</option><option value="partner.operator">partner.operator</option><option value="partner.billing">partner.billing</option><option value="partner.viewer">partner.viewer</option></select></div>
+        <div class="row"><button class="btn btn-sm" type="submit">Add to the partner</button></div>
+      </form>
+      {%- endif %}
+    </article>
+
+    <article class="card tight" id="brand">
+      <div class="card-title"><h4>Your brand</h4><span class="small muted">white-label settings</span></div>
+      <dl class="kv"><dt>Console</dt><dd>{{ p.partner.console_host or "Not set" }}</dd><dt>Email sender</dt><dd>{{ p.partner.email_sender or "Not set" }}</dd></dl>
+      <p class="gapnote">Never white-labelled: the AI disclosure on every reply, the crawler's identity, and receipts, which name the real operator chain.</p>
+    </article>
+
+    <article class="card tight span-all">
+      <div class="card-title"><h4>Your authority, per client</h4><span class="small muted">granted by each owner</span></div>
+      <div class="authority">
+        <div class="can"><b>You can</b><ul><li>Approve or draft on a client's cards where the owner made you Approver or Editor</li><li>Roll your own packs and themes to clients who opted into your ring</li><li>Set your own prices to your clients</li></ul></div>
+        <div class="never"><b>You never</b><ul><li>Raise a WebAgent's autonomy: only the owner can</li><li>Act on a site whose owner took your role back</li><li>Stop a client from exporting or leaving you</li><li>See another partner's clients, or Zavora's fleet</li></ul></div>
+      </div>
+    </article>
+  </div>
+</div>
+{% endblock %}

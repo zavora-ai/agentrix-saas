@@ -1,0 +1,289 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A news site with desks · Agentrix</title>
+<meta name="description" content="Concept: a national news publisher after migration. Desks are WebAgents that answer only from published reporting, catch readers up, track stories and corrections, and send consented digests.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Manrope:wght@600;700;800&family=Newsreader:opsz,wght@6..72,500;6..72,700;6..72,800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../styles.css">
+<link rel="stylesheet" href="experience.css">
+<style>
+  .np {
+    --ink-n: #141414; --ink-n2: #4b4b4b; --rule: #d9d6cf; --paper-n: #fbfaf7; --rust: #9a3b17; --teal: #0f4c5c;
+    --serif: "Newsreader", Georgia, serif;
+    --wa-bg: #ffffff; --wa-soft: #f4f2ec; --wa-ink: #141414; --wa-ink-2: #4b4b4b; --wa-line: #d9d6cf;
+    --wa-accent: #0f4c5c; --wa-accent-2: #9a3b17; --wa-on-accent: #fff; --wa-display: "Newsreader", Georgia, serif;
+    background: var(--paper-n); color: var(--ink-n); font-family: var(--font-text);
+  }
+  .frame-wrap { height: 860px; }
+  .mast { text-align: center; padding: 16px clamp(14px, 3vw, 28px) 10px; border-bottom: 1px solid var(--ink-n); }
+  .mast .top { display: flex; justify-content: space-between; gap: 10px; font: 600 12px/1.2 var(--font-text); color: var(--ink-n2); flex-wrap: wrap; }
+  .mast h1 { font: 800 clamp(34px, 6vw, 64px)/1 var(--serif); letter-spacing: -.02em; color: var(--ink-n); margin: 10px 0 4px; }
+  .desks { position: sticky; top: 0; z-index: 30; display: flex; justify-content: center; gap: 2px; padding: 6px 10px; background: var(--paper-n); border-bottom: 3px double var(--ink-n); flex-wrap: wrap; }
+  .desks .wa-navitem > a { display: inline-flex; align-items: center; gap: 6px; text-decoration: none; color: var(--ink-n); font: 700 13.5px/1 var(--font-text); padding: 9px 10px; border-radius: 8px; }
+  .desks .wa-navitem > a:hover, .desks .wa-navitem > a[aria-expanded="true"] { background: #eeebe3; }
+  .desks .wa-navitem > a .wa-mark { width: 16px; height: 16px; border-radius: 5px; }
+  .desks .wa-navitem > a .wa-mark svg { width: 9px; height: 9px; }
+  .n-grid { display: grid; grid-template-columns: minmax(0, 1fr) 320px; gap: clamp(16px, 2.5vw, 28px); padding: 18px clamp(14px, 3vw, 28px) 40px; }
+  .catch { background: #fff; border: 1px solid var(--rule); border-radius: 16px; padding: 16px 18px; }
+  .catch-top { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .catch-top h2 { font: 800 24px/1.1 var(--serif); }
+  .devmem { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin-top: 10px; font-size: 12.5px; color: var(--ink-n2); }
+  .devmem .memchip { display: inline-flex; gap: 6px; align-items: center; padding: 5px 9px; border-radius: 8px; background: #eef4f5; color: var(--teal); font: 700 12px/1.2 var(--font-text); border: 1px solid #cfe0e3; }
+  .devmem button.lnk { border: 0; background: none; color: var(--ink-n2); text-decoration: underline; font: 600 12px/1 var(--font-text); cursor: pointer; padding: 4px; }
+  .catch .wa-thread { padding-top: 6px; }
+  .catch .txt ol { margin: 6px 0 0; padding-left: 20px; display: grid; gap: 8px; }
+  .catch .txt li::marker { font: 700 14px var(--serif); color: var(--rust); }
+  .corr { display: inline-flex; align-items: center; gap: 4px; padding: 2px 6px; border-radius: 5px; background: #fdecea; color: #a3302a; font: 700 10.5px/1.3 var(--font-text); letter-spacing: .03em; text-transform: uppercase; vertical-align: 1px; }
+  .lead-story { display: grid; grid-template-columns: 1fr; gap: 14px; margin-top: 18px; padding-top: 18px; border-top: 1px solid var(--rule); }
+  .lead-story .ph { aspect-ratio: 16 / 6; border-radius: 6px; background: linear-gradient(160deg, #3d5a66, #0f4c5c 50%, #1b2f36); position: relative; overflow: hidden; }
+  .lead-story .ph::before { content: ""; position: absolute; left: -10%; right: -10%; bottom: 22%; height: 10px; background: #c9c2b4; transform: rotate(-4deg); box-shadow: 0 16px 0 #8f8a7f; }
+  .lead-story .ph::after { content: "Illustration"; position: absolute; right: 8px; bottom: 8px; font: 600 10.5px/1 var(--font-text); color: rgba(255,255,255,.7); }
+  .kicker { font: 700 11.5px/1 var(--font-text); letter-spacing: .1em; text-transform: uppercase; color: var(--rust); }
+  .lead-story h3 { font: 800 clamp(24px, 3vw, 32px)/1.08 var(--serif); margin-top: 8px; }
+  .lead-story p { font: 500 16px/1.5 var(--serif); color: #2b2b2b; margin-top: 8px; }
+  .by { font: 600 12px/1.3 var(--font-text); color: var(--ink-n2); margin-top: 8px; }
+  .more { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--rule); }
+  .more article h4 { font: 700 19px/1.15 var(--serif); margin-top: 6px; }
+  .more article p { font-size: 13.5px; color: var(--ink-n2); margin-top: 6px; }
+  .n-lock { display: inline-flex; align-items: center; gap: 4px; font: 700 10.5px/1 var(--font-text); color: var(--ink-n2); background: #eeebe3; border-radius: 5px; padding: 3px 6px; letter-spacing: .03em; text-transform: uppercase; }
+  aside.rail-n { display: grid; gap: 14px; align-content: start; }
+  .box { background: #fff; border: 1px solid var(--rule); border-radius: 14px; padding: 14px; }
+  .box h4 { font: 800 18px/1.15 var(--serif); }
+  .box .sub { font-size: 12.5px; color: var(--ink-n2); margin-top: 4px; }
+  .tl { list-style: none; margin: 12px 0 0; padding: 0 0 0 14px; border-left: 2px solid var(--rule); display: grid; gap: 12px; }
+  .tl li { position: relative; font-size: 13.5px; }
+  .tl li::before { content: ""; position: absolute; left: -20px; top: 4px; width: 10px; height: 10px; border-radius: 50%; background: #fff; border: 2px solid var(--teal); }
+  .tl li.c::before { border-color: #a3302a; background: #fdecea; }
+  .tl li.next::before { border-style: dashed; border-color: var(--ink-n2); }
+  .tl time { display: block; font: 700 11px/1.2 var(--font-text); color: var(--ink-n2); letter-spacing: .03em; }
+  .tl a { color: var(--ink-n); text-decoration: none; font: 700 15px/1.25 var(--serif); }
+  .tl a:hover { text-decoration: underline; }
+  .contract { margin-top: 10px; display: grid; gap: 6px; font-size: 13px; color: var(--ink-n2); }
+  .contract div { display: grid; grid-template-columns: 88px 1fr; gap: 8px; padding: 6px 0; border-top: 1px dashed var(--rule); }
+  .contract b { color: var(--ink-n); font-size: 12px; }
+  .topics { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+  .topics button { border: 1.5px solid var(--rule); background: #fff; border-radius: 999px; padding: 6px 10px; font: 700 12px/1 var(--font-text); color: var(--ink-n); cursor: pointer; }
+  .topics button[aria-pressed="true"] { background: var(--teal); border-color: var(--teal); color: #fff; }
+  .n-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 42px; padding: 0 16px; border-radius: 10px; border: 0; background: var(--ink-n); color: #fff; font: 700 13.5px/1 var(--font-text); cursor: pointer; }
+  .n-btn.teal { background: var(--teal); }
+  .rules-n { font-size: 13px; color: var(--ink-n2); display: grid; gap: 6px; margin-top: 8px; }
+  .rules-n div { display: flex; gap: 8px; }
+  .rules-n div::before { content: "—"; color: var(--rust); font-weight: 800; }
+  @media (max-width: 960px) {
+    .n-grid { grid-template-columns: 1fr; }
+    .lead-story { grid-template-columns: 1fr; }
+    .more { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 720px) {
+    .desks { justify-content: flex-start; flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; }
+    .frame-wrap { height: 800px; }
+    .mast .top span:last-child { display: none; }
+  }
+</style>
+</head>
+<body>
+<header class="conceptbar">
+  <a class="logo" href="index.html"><span class="mark" aria-hidden="true"></span>Agentrix</a>
+  <nav aria-label="Experience concepts">
+    <a href="index.html">Experience</a>
+    <a href="nav-agents.html">Menu as WebAgents</a>
+    <a href="creator.html">Make it with me</a>
+    <a href="search.html">Agentic search</a>
+    <a href="artifact.html">Artifacts</a>
+    <a href="presentation.html">Presentations</a>
+    <a href="news.html" aria-current="page">News publisher</a>
+    <a href="../index.html">All concepts</a>
+  </nav>
+  <span class="concept-label">Concept · illustrative data</span>
+</header>
+
+<main class="wrap">
+  <div class="xp-head">
+    <span class="eyebrow">Archetype · National news publisher</span>
+    <h1>A news site whose desks answer from published stories</h1>
+    <p class="lead">The Kestrel Post is a fictional national publisher with thousands of stories a week. After migration its sections become <b>desks</b>: WebAgents that answer only from published, dated, bylined reporting, link every claim, and never write news. Readers can catch up since their last visit, follow a story with its corrections, and set up a digest they control. The front page stays static and instant.</p>
+    <p class="xp-tryline">Try: <b>Catch me up</b> · hover the <b>Transport</b> desk · set up a digest on the right.</p>
+  </div>
+
+  <div class="browser">
+    <div class="browser-bar"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="url"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>kestrelpost.example</span></div>
+    <div class="frame-wrap np">
+      <div class="frame-body" id="nbody">
+        <div class="mast"><div class="top"><span>Saturday 7 November 2026</span><span>Fictional publisher · illustrative stories</span></div><h1>The Kestrel Post</h1></div>
+        <nav class="desks" id="desks" aria-label="Desks: each is a WebAgent"></nav>
+
+        <div class="n-grid">
+          <div>
+            <section class="catch" aria-label="Catch me up">
+              <div class="catch-top"><span class="wa-mark" id="cmMark" style="--c:#0f4c5c"></span><h2>Catch me up</h2><span class="wa-ai">AI · from published stories only</span></div>
+              <div class="devmem" id="devmem"></div>
+              <div class="wa-thread" id="cmThread"></div>
+              <div class="acts" style="margin-top:8px" id="cmActs"><button class="act primary" type="button" id="cmBtn">Catch me up since Tuesday</button><button class="act" type="button" id="cmAll">Just today's front page</button></div>
+            </section>
+
+            <article class="lead-story" id="st-approve">
+              <div class="ph" aria-hidden="true"></div>
+              <div><span class="kicker">Transport</span><h3>Council approves first phase of the northern rail extension</h3>
+                <p>Councillors voted 31 to 12 on Thursday to approve phase one of the commuter rail extension, with construction tenders to open in January.</p>
+                <div class="by">By Amani Otieno · Thu 5 Nov, 11:04 · <span class="corr">Corrected 16:20</span></div></div>
+            </article>
+
+            <div class="more">
+              <article id="st-rains"><span class="kicker">Climate</span><h4>Long rains arrive early across the highlands</h4><p>The meteorological service expects above-average rainfall through December.</p><div class="by">By Lea Mwangi · Fri 6 Nov</div></article>
+              <article id="st-fuel"><span class="kicker">Explainer</span> <span class="n-lock">Subscriber</span><h4>What the fuel price review means for fares</h4><p>Subscribers only.</p><div class="by">By Daniel Kiprop · Wed 4 Nov</div></article>
+              <article id="st-split"><span class="kicker">Transport</span><h4>Residents split over the northern line's route</h4><p>Two neighbourhoods, two very different hopes for the stations.</p><div class="by">By Lea Mwangi · Wed 4 Nov</div></article>
+            </div>
+          </div>
+
+          <aside class="rail-n">
+            <div class="box" id="timeline"><span class="kicker">Story so far</span><h4 style="margin-top:6px">The northern rail extension</h4><p class="sub">Every step links to the published story. Corrections stay visible.</p>
+              <ol class="tl">
+                <li><time>Mon 2 Nov</time><a href="#">Council publishes the extension proposal</a></li>
+                <li><time>Wed 4 Nov</time><a href="#st-split">Residents split over the route</a></li>
+                <li><time>Thu 5 Nov, 11:04</time><a href="#st-approve">Phase one approved, 31–12</a></li>
+                <li class="c" id="tl-corr"><time>Thu 5 Nov, 16:20 · correction</time><a href="#st-approve">Projected cost corrected to KSh 41bn (not 48bn)</a></li>
+                <li class="next"><time>January · scheduled</time><span style="font:600 14px/1.3 var(--serif);color:var(--ink-n2)">Construction tenders open</span></li>
+              </ol></div>
+
+            <div class="box" id="digest"><span class="kicker">Your digest</span><h4 style="margin-top:6px">Your Friday five</h4><p class="sub">Choose topics. A desk picks the five most important published stories and explains each in two lines.</p>
+              <div class="topics" id="topics"></div>
+              <div class="contract" id="contract"></div>
+              <div class="row" style="margin-top:10px;gap:8px"><button class="n-btn teal" type="button" id="subBtn">Subscribe by email</button><span class="small" style="color:var(--ink-n2)">Double opt-in</span></div>
+            </div>
+
+            <div class="box"><span class="kicker">House rules for desks</span>
+              <div class="rules-n"><div>Desks never write news. They answer from published reporting.</div><div>Every claim links to a dated, bylined story.</div><div>Subscriber stories: headline and link only, unless you subscribe.</div><div>Corrections reach answers and digests within minutes.</div><div>Editors approve each desk's scope and wording.</div></div></div>
+          </aside>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <section class="notes" aria-label="Design notes">
+    <div class="card">
+      <h3>Why a publisher moves</h3>
+      <ul>
+        <li><b>Readers get answers from the archive, with links back to the stories.</b> Years of reporting answer "what happened since" with links, so readers return to the publisher, not to a third-party summary.</li>
+        <li><b>Corrections propagate.</b> An answer or digest that cited the old figure is flagged, an integrity feature print never had.</li>
+        <li><b>Desks drive subscriptions honestly.</b> Locked stories appear as headline and link, never paraphrased.</li>
+        <li><b>Same truth for AI assistants</b> through the agent door, with attribution and entitlements intact.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Memory without tracking</h3>
+      <p>"Since Tuesday" and "your topics" are kept <b>on this device</b> after the reader taps "Remember". They are sent only with a "Catch me up" request, shown as chips, and treated as untrusted input. The site stores nothing and assigns no identifier. Signed-in readers can opt into memory that follows them across devices.</p>
+      <p class="small muted" style="margin-top:8px">Device memory is settled with the architecture (S2): items are schema-checked, never count as identity or consent, and are off by default for government, health and education sites.</p>
+    </div>
+    <div class="card">
+      <h3>Desks never</h3>
+      <ul class="never">
+        <li>Generate a news story, a quote or a headline</li>
+        <li>Answer from unpublished, embargoed or subscriber text for non-subscribers</li>
+        <li>Drop the byline or the date from a claim</li>
+        <li>Personalise what counts as news. Topics filter; editors rank</li>
+      </ul>
+    </div>
+  </section>
+</main>
+
+<footer class="concept-foot"><div class="wrap row"><span><a href="presentation.html">← Presentations</a> · <a href="index.html">Experience overview →</a></span><span>Concept screens with illustrative data. The Kestrel Post, its reporters and its stories are fictional.</span></div></footer>
+
+<script src="experience.js"></script>
+<script>
+(() => {
+  const { I, esc, answer, visitor, presence, point, toast, wait } = XP;
+  const svg = p => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${p}</svg>`;
+  const DESK_ICON = svg('<path d="M4 5h13v14H6a2 2 0 0 1-2-2z"/><path d="M17 8h3v9a2 2 0 0 1-2 2"/><path d="M7 9h7M7 12h7M7 15h4"/>');
+  const DESKS = [["Politics", "#5a2a6b"], ["Business", "#2d5a2a"], ["Climate", "#1d6a5a"], ["Transport", "#0f4c5c"], ["Sport", "#9a3b17"], ["Explainers", "#3b3b3b"]];
+  const desksEl = document.getElementById("desks");
+  DESKS.forEach(([n, col], k) => {
+    const w = document.createElement("div"); w.className = "wa-navitem";
+    const isT = n === "Transport";
+    w.innerHTML = `<a href="#" aria-haspopup="dialog" aria-expanded="false"><span class="wa-mark" style="--c:${col}">${DESK_ICON}</span>${n}</a>` + (isT ? `
+      <div class="peek ${k > 3 ? "right" : ""}" id="peek-transport" role="dialog" aria-label="Transport desk WebAgent">
+        <div class="peek-head"><span class="wa-mark lg" id="tMark" style="--c:${col}">${DESK_ICON}</span><div class="who"><b>Transport desk</b><span>WebAgent · answers from published reporting</span></div><span class="wa-ai">AI</span><button class="icon-btn peek-x" type="button" aria-label="Close Transport desk">${I.close}</button></div>
+        <p class="peek-mandate">I answer from The Kestrel Post's published transport reporting and link every story, with its byline and date. I never write news.</p>
+        <div class="peek-facts"><span class="fact"><span class="dot"></span>This week <i>12 stories</i></span><span class="fact"><span class="dot"></span>Updated <i>09:10</i></span></div>
+        <div class="peek-starters"><button class="starter" type="button" data-s="rail"><span>Where does the rail extension stand?</span></button><button class="starter" type="button" data-s="who"><span>Who has been reporting it?</span><small>INSTANT</small></button><button class="starter" type="button" data-s="opinion"><span>Is the extension a good idea?</span></button></div>
+        <div class="peek-body"><div class="wa-thread" id="tThread"></div></div>
+        <form class="wa-input" id="tForm"><label class="sr-only" for="tq">Ask the Transport desk</label><input id="tq" autocomplete="off" placeholder="Ask the Transport desk…"><button class="wa-send" type="submit" aria-label="Send">${I.send}</button></form>
+        <div class="peek-foot"><span>Click <b>Transport</b> for the section front</span><span>Esc to close</span></div>
+      </div>` : "");
+    desksEl.appendChild(w);
+    if (!isT) w.querySelector("a").addEventListener("click", e => { e.preventDefault(); toast(`${n} desk: the same pattern as Transport, scoped to ${n.toLowerCase()} reporting.`); });
+  });
+
+  /* Transport desk peek */
+  const tWrap = document.getElementById("peek-transport").parentElement, peek = document.getElementById("peek-transport"), tA = tWrap.querySelector("a");
+  const tMark = document.getElementById("tMark"), tThread = document.getElementById("tThread"), tBody = peek.querySelector(".peek-body");
+  let tIn, tOut; const open = () => { peek.classList.add("open"); tA.setAttribute("aria-expanded", "true"); }, close = () => { peek.classList.remove("open"); peek.dataset.pinned = ""; tA.setAttribute("aria-expanded", "false"); };
+  tWrap.addEventListener("mouseenter", () => { clearTimeout(tOut); tIn = setTimeout(open, 120); });
+  tWrap.addEventListener("mouseleave", () => { clearTimeout(tIn); if (!peek.dataset.pinned) tOut = setTimeout(close, 260); });
+  tA.addEventListener("focus", open); tA.addEventListener("click", e => { e.preventDefault(); open(); peek.dataset.pinned = "1"; });
+  document.addEventListener("keydown", e => { if (e.key === "Escape") close(); });
+  peek.querySelector(".peek-x").addEventListener("click", e => { e.stopPropagation(); close(); });
+  document.addEventListener("click", e => { if (!tWrap.contains(e.target)) close(); });
+  const c = n => `<a href="#" class="cite" data-n="${n}">${n}</a>`;
+  const T = {
+    rail: { steps: ["Searching published transport stories"], phrases: [`Phase one was approved on Thursday, 31 votes to 12, and construction tenders open in January ${c(1)}.`, `The projected cost was <b>corrected</b> that afternoon to KSh 41bn, from 48bn ${c(2)}. Residents on the route are divided over station locations ${c(3)}.`],
+      sources: [{ n: 1, label: "Amani Otieno · Thu 5 Nov", target: "#st-approve" }, { n: 2, label: "Correction · Thu 5 Nov 16:20", target: "#tl-corr" }, { n: 3, label: "Lea Mwangi · Wed 4 Nov", target: "#st-split" }], meta: "From 3 published stories · desks never write news" },
+    who: { instant: true, phrases: [`<b>Amani Otieno</b> has covered the votes, and <b>Lea Mwangi</b> the residents and the route ${c(1)}.`], sources: [{ n: 1, label: "Story so far", target: "#timeline" }], meta: "From bylines · no AI model used" },
+    opinion: { steps: ["Searching published opinion and analysis"], phrases: [`I don't give opinions. The Kestrel Post hasn't published an editorial on it.`, `The reporting sets out both sides: what the council says the line will do, and residents' concerns about the route ${c(1)}.`], sources: [{ n: 1, label: "Lea Mwangi · Wed 4 Nov", target: "#st-split" }], meta: "Desks report what was published; they don't editorialise" },
+  };
+  const runT = async (k, q) => { peek.dataset.pinned = "1"; peek.querySelector(".peek-starters").style.display = "none"; peek.querySelector(".peek-facts").style.display = "none"; visitor(tThread, q); const s = T[k];
+    await answer({ thread: tThread, desk: { name: "Transport desk", color: "#0f4c5c", icon: DESK_ICON }, mark: tMark, steps: s.instant ? [] : s.steps, phrases: s.phrases, sources: s.sources, meta: s.meta, scroller: tBody }); };
+  peek.querySelectorAll("[data-s]").forEach(b => b.addEventListener("click", () => runT(b.dataset.s, b.querySelector("span").textContent)));
+  document.getElementById("tForm").addEventListener("submit", e => { e.preventDefault(); const i = document.getElementById("tq"); const q = i.value.trim(); if (!q) return; i.value = ""; runT(/who|report/i.test(q) ? "who" : /good|should|opinion|think/i.test(q) ? "opinion" : "rail", q); });
+
+  /* Catch me up, with device memory (S2) */
+  const cmMark = document.getElementById("cmMark"); cmMark.innerHTML = DESK_ICON;
+  const dev = document.getElementById("devmem"), cmThread = document.getElementById("cmThread");
+  let remembered = true;
+  function renderDev() {
+    dev.innerHTML = remembered
+      ? `<span>Using, from this device:</span><span class="memchip">Last visit · Tue 3 Nov</span><span class="memchip">Follows · Transport</span><span class="memchip">Follows · Climate</span><button class="lnk" type="button" id="forget">Forget this device</button>`
+      : `<span>Nothing remembered on this device.</span><button class="lnk" type="button" id="rem">Remember my topics here</button>`;
+    const f = document.getElementById("forget"); if (f) f.addEventListener("click", () => { remembered = false; renderDev(); document.getElementById("cmBtn").textContent = "Catch me up on today"; toast("Forgotten. Nothing about you was stored on our side."); });
+    const r = document.getElementById("rem"); if (r) r.addEventListener("click", () => { remembered = true; renderDev(); document.getElementById("cmBtn").textContent = "Catch me up since Tuesday"; toast("Saved in this browser only. Sent with a request only when you ask to catch up."); });
+  }
+  renderDev();
+  document.getElementById("cmBtn").addEventListener("click", async e => {
+    cmThread.innerHTML = ""; e.currentTarget.disabled = true;
+    const since = remembered;
+    await answer({ thread: cmThread, desk: { name: "Front page desk", color: "#0f4c5c", icon: DESK_ICON }, mark: cmMark,
+      steps: since ? ["Finding stories published since Tue 3 Nov", "Keeping to Transport and Climate"] : ["Reading today's front page"],
+      phrases: since ? [
+        `Since your visit on Tuesday, three things happened in your topics:`,
+        `<ol><li>The council <b>approved phase one</b> of the northern rail extension on Thursday, 31 to 12. Tenders open in January ${c(1)}.</li><li><span class="corr">Correction</span> The projected cost is <b>KSh 41bn, not 48bn</b>; the story was corrected at 16:20 on Thursday ${c(2)}.</li><li>The <b>long rains arrived early</b> in the highlands on Friday, with above-average rain expected through December ${c(3)}.</li></ol>`,
+        `Outside your topics, there's a fuel-price explainer for subscribers ${c(4)}.`]
+        : [`Today's front page leads with the council's approval of phase one of the northern rail extension ${c(1)}, and the early long rains ${c(3)}.`],
+      sources: since ? [{ n: 1, label: "Amani Otieno · Thu 5 Nov", target: "#st-approve" }, { n: 2, label: "Correction · Thu 16:20", target: "#tl-corr" }, { n: 3, label: "Lea Mwangi · Fri 6 Nov", target: "#st-rains" }, { n: 4, label: "Daniel Kiprop · Wed 4 Nov", target: "#st-fuel", lock: true }]
+        : [{ n: 1, label: "Amani Otieno · Thu 5 Nov", target: "#st-approve" }, { n: 3, label: "Lea Mwangi · Fri 6 Nov", target: "#st-rains" }],
+      actions: [{ label: "Follow the rail story", on: () => point("#timeline", "Following") }, { label: "Get this every Friday", on: () => point("#digest", "Digest") }],
+      meta: "From 4 published stories · every claim dated and bylined · subscriber story: headline and link only" });
+    e.currentTarget.disabled = false;
+  });
+  document.getElementById("cmAll").addEventListener("click", () => { const r = remembered; remembered = false; document.getElementById("cmBtn").click(); remembered = r; });
+
+  /* Digest contract (consented, plain words) */
+  const topics = { Transport: true, Climate: true, Politics: false, Business: false, Sport: false };
+  function renderDigest() {
+    document.getElementById("topics").innerHTML = Object.entries(topics).map(([t, on]) => `<button type="button" aria-pressed="${on}" data-t="${t}">${t}</button>`).join("");
+    const chosen = Object.keys(topics).filter(t => topics[t]);
+    document.getElementById("contract").innerHTML = `
+      <div><b>You get</b><span>Every Friday at 07:00: five ${chosen.length ? chosen.join(" and ").toLowerCase() : "front-page"} stories, two lines each, with links</span></div>
+      <div><b>Made from</b><span>Only stories The Kestrel Post published that week. A desk writes the two lines; editors set the rules</span></div>
+      <div><b>We keep</b><span>Your email and these topics. Not your reading history</span></div>
+      <div><b>Stop</b><span>One tap in any email. Your topics are deleted with it</span></div>`;
+    document.querySelectorAll("#topics [data-t]").forEach(b => b.addEventListener("click", () => { topics[b.dataset.t] = !topics[b.dataset.t]; renderDigest(); }));
+  }
+  renderDigest();
+  document.getElementById("subBtn").addEventListener("click", () => toast("Check your email to confirm. Nothing is sent until you do."));
+})();
+</script>
+</body>
+</html>

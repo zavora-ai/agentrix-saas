@@ -1,0 +1,52 @@
+{% extends "console/base.html" %}
+{% import "macros.html" as m %}
+{#- Page::Claim · view::ClaimView (+ ConsoleChrome) {
+      site: {id, host, fixture},
+      claim: { method: "dns"|"file", dns_name, dns_value, file_url, file_name, token,
+               state: "pending"|"checking"|"verified"|"failed", checked_words?, said? } }
+    R3.1–R3.3. Verified from the sandbox VM; nothing non-public is touched until verified. -#}
+{% block title %}Prove {{ site.host }} is yours{% endblock %}
+{% block content %}
+<section class="stack">
+  <div class="row"><p class="eyebrow">Step 2 of the Move · claim</p>{{ m.fixture_label(site.fixture) }}</div>
+  <h1>Prove {{ site.host }} is yours</h1>
+  <p class="lead">Add one DNS record or upload one file. We check it from our sandbox. Nothing on your live site changes, and we never ask for your registrar or hosting password.</p>
+</section>
+
+{% if claim.state == "verified" %}
+<section class="card">
+  <p class="okline">✓ {{ site.host }} is yours{% if claim.checked_words %} · {{ claim.checked_words }}{% endif %}</p>
+  <p class="small">Your domain moves to the new site only when you approve the go-live card, and undo is one tap for 30 days after that.</p>
+  <a class="btn btn-primary btn-wide" href="/console/move">Next: start the Move</a>
+</section>
+{% else %}
+<nav class="tabs" aria-label="How to prove it">
+  <a href="?method=dns" {% if claim.method == "dns" %}aria-current="page"{% endif %}>Add a DNS record</a>
+  <a href="?method=file" {% if claim.method == "file" %}aria-current="page"{% endif %}>Upload a file</a>
+</nav>
+<section class="card">
+  {% if claim.method == "dns" %}
+  <ol class="small" style="margin:0;padding-left:20px;display:grid;gap:10px">
+    <li>Sign in to where your domain is registered and open its DNS settings.</li>
+    <li>Add a <b>TXT</b> record.
+      <dl class="kv" style="margin-top:6px"><dt>Name</dt><dd class="mono">{{ claim.dns_name }}</dd><dt>Value</dt><dd class="mono">{{ claim.dns_value }}</dd></dl>
+    </li>
+    <li>Save it, then check below. Some registrars take a few minutes.</li>
+  </ol>
+  {% else %}
+  <ol class="small" style="margin:0;padding-left:20px;display:grid;gap:10px">
+    <li>Make a plain text file named <span class="mono">{{ claim.file_name }}</span> that contains exactly:
+      <p class="mono" style="margin-top:6px;padding:10px;border-radius:10px;background:var(--surface-2)">{{ claim.token }}</p></li>
+    <li>Upload it with your host's file manager so it opens at <span class="mono">{{ claim.file_url }}</span></li>
+    <li>Then check below.</li>
+  </ol>
+  {% endif %}
+  {% if claim.state == "failed" %}<p class="waitline" role="status">{{ claim.said or 'We looked and didn\'t find it yet.' }}{% if claim.checked_words %} · {{ claim.checked_words }}{% endif %}</p>{% endif %}
+  <form method="post" action="/sites/{{ site.id }}/claim/verify">
+    <input type="hidden" name="method" value="{{ claim.method }}">
+    <button class="btn btn-primary btn-wide" type="submit">Check now</button>
+  </form>
+  <p class="hint">We check from the sandbox, which can reach only your domain's DNS and site. The result is written as a receipt.</p>
+</section>
+{% endif %}
+{% endblock %}

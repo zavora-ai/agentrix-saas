@@ -1,0 +1,92 @@
+# Zavora's fixture: Kilele Bakery, a deliberately infected WordPress for the Agentrix gauntlet
+# (docs/04-vultr-agent-rush.md §3, specs/first-release R13.1, task S1-11). Kilele Bakery is fictional.
+#
+# Official images only (wordpress, mariadb). WordPress is published on 127.0.0.1:8081, the
+# fixture VM's Caddy upstream (deploy/README.md). Every planted payload is inert outside a
+# sealed room; see README.md.
+#
+#   ./up.sh dev        # or: ./up.sh demo
+#   ./check.sh         # all ten attacks present?
+#   ./down.sh
+#
+# Adapted from adk-rust's examples/website/fixtures/wordpress (compose.yaml and its `infected`
+# overlay, MIT), at the rev this workspace pins.
+name: ${COMPOSE_PROJECT_NAME:-agx-fixture}
+
+x-db-env: &db-env
+  WORDPRESS_DB_HOST: db
+  WORDPRESS_DB_USER: wordpress
+  # Fake, fixture-only credential. Not a secret, never reused anywhere.
+  WORDPRESS_DB_PASSWORD: fixture-only-not-a-secret
+  WORDPRESS_DB_NAME: wordpress
+  # What the site believes it is. On the fixture VM: https://<fixture domain>.
+  FIXTURE_ORIGIN: ${FIXTURE_ORIGIN:-https://kilele-bakery.example}
+  # Read at runtime by the image's wp-config-docker.php, in both containers.
+  WORDPRESS_CONFIG_EXTRA: |
+    define('WP_HOME', getenv_docker('FIXTURE_ORIGIN', 'https://kilele-bakery.example'));
+    define('WP_SITEURL', getenv_docker('FIXTURE_ORIGIN', 'https://kilele-bakery.example'));
+    if (($$_SERVER['HTTP_X_FORWARDED_PROTO'] ?? '') === 'https') { $$_SERVER['HTTPS'] = 'on'; }
+    define('DISALLOW_FILE_EDIT', true);
+    define('AUTOMATIC_UPDATER_DISABLED', true);
+    define('WP_AUTO_UPDATE_CORE', false);
+
+services:
+  db:
+    image: mariadb:11.4
+    # Back after a reboot or a restore from snapshot (provision.sh wake), so the fixture never sits at 502.
+    restart: unless-stopped
+    environment:
+      MARIADB_DATABASE: wordpress
+      MARIADB_USER: wordpress
+      MARIADB_PASSWORD: fixture-only-not-a-secret
+      MARIADB_RANDOM_ROOT_PASSWORD: "1"
+    volumes:
+      - db:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 3s
+      retries: 40
+    networks: [fixture]
+
+  wordpress:
+    image: wordpress:php8.4-apache
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      <<: *db-env
+    ports:
+      - "127.0.0.1:${FIXTURE_PORT:-8081}:80"
+    volumes:
+      - wordpress:/var/www/html
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "-o", "/dev/null", "http://localhost/wp-login.php"]
+      interval: 3s
+      retries: 60
+    networks: [fixture]
+
+  # wp-cli for seed.sh, infect.sh and export.sh. Runs only when called.
+  cli:
+    image: wordpress:cli-php8.4
+    profiles: [tools]
+    depends_on:
+      wordpress:
+        condition: service_healthy
+    user: "33:33"
+    environment:
+      <<: *db-env
+      FIXTURE_SIZE: ${FIXTURE_SIZE:-dev}
+    volumes:
+      - wordpress:/var/www/html
+      - ./site:/fixture/site:ro
+      - ./infected:/fixture/infected:ro
+    entrypoint: ["sh"]
+    networks: [fixture]
+
+volumes:
+  wordpress:
+  db:
+
+networks:
+  fixture:

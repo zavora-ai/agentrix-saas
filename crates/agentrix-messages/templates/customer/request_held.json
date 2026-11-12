@@ -1,0 +1,23 @@
+{
+ "site": {
+  "name": "Kilele Bakery",
+  "host": "kilele-bakery-sample.agentrix.website",
+  "sample": true,
+  "owner": "Wanjiru",
+  "accent": "#3b2416",
+  "url": "https://kilele-bakery-sample.agentrix.website"
+ },
+ "person": {
+  "name": "Njeri"
+ },
+ "request": {
+  "number": "KB-1043",
+  "summary": "A 2-tier lemon sponge for Amina, forest-green ombré with berries.",
+  "quote": 5250,
+  "currency": "KES",
+  "when": "Collection, Sat 21 Nov, 10:00",
+  "answer_within": "2 hours",
+  "expires": "Thu 19 Nov, 20:00",
+  "url": "https://kilele-bakery-sample.agentrix.website/orders/KB-1043"
+ }
+}

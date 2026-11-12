@@ -1,0 +1,43 @@
+{% extends "os/base.html" %}
+{#- ShellPage::Live · view::LiveView (+ Chrome) { threads: [LiveRow], live_count }
+    concept/console/live.html, 01b C20: Front of house conversations from the last 24 hours, newest first. Opening one
+    sits in (the visitor can't see you); take over and hand back are on the conversation. Walk your site sits beside.
+    Until the site's desks send Live a conversation (chrome's live_on), the page says it isn't connected, and the dock,
+    the phone's tabs and the command bar leave it out. -#}
+{% block title %}Live · {{ site.name }}{% endblock %}
+{% block field %}
+{% if not live_on %}
+<section class="view on" aria-labelledby="live-h">
+  <div class="field-head"><div><h2 id="live-h">Live</h2><div class="sub">Not connected yet</div></div><a class="btn btn-sm" href="{{ base }}/walk">Walk your site</a></div>
+  <article class="fcard">
+    <p>Live isn't connected to your desks yet. Your desks answer visitors, but those conversations aren't sent here, so you can't read along or take one over.</p>
+    <p class="small">Your site tells visitors that it doesn't save what they ask the desks. That stays true until Live is connected, and your site's privacy page will say so first.</p>
+    {% if site.live_url %}<div class="verbs"><a class="btn btn-sm" href="{{ site.live_url }}" rel="noopener" target="_blank">Open your site</a></div>{% endif %}
+  </article>
+</section>
+{% else %}
+<section class="view on" aria-labelledby="live-h">
+  <div class="field-head"><div><h2 id="live-h">Live</h2><div class="sub">{% if live_count %}{{ live_count }} conversation{{ "" if live_count == 1 else "s" }} in the last 10 minutes{% else %}No conversations with your desks in the last 10 minutes{% endif %}</div></div><a class="btn btn-sm" href="{{ base }}/walk">Walk your site</a></div>
+  {% if threads %}
+  <ul class="live-list">
+    {% for t in threads %}
+    <li><a href="{{ t.href }}">
+      <span class="vdot vdot-lg{{ ' talking' if t.live else '' }}" aria-hidden="true">{{ "You" if t.owner else "V" }}</span>
+      <span><b>{{ t.who }}</b><span class="said">{% if t.last_text %}"{{ t.last_text }}"{% else %}No question yet{% endif %}</span></span>
+      <span class="state-line {{ 'answering' if t.live else '' }}"><span class="dot"></span>{{ t.state_words }} · {{ t.last_words }}</span>
+    </a></li>
+    {% endfor %}
+  </ul>
+  {% else %}
+  <article class="fcard">
+    <p>No conversations in the last 24 hours. When a visitor asks your desks something, it shows here: open it to read along without the visitor seeing you, take over to reply as yourself, and hand it back when you're done.</p>
+    {% if site.live_url %}<div class="verbs"><a class="btn btn-sm" href="{{ site.live_url }}" rel="noopener" target="_blank">Open your site</a></div>{% endif %}
+  </article>
+  {% endif %}
+  <div class="cards after-cards">
+    <article class="fcard"><h3>What your back office never sees</h3><p class="small">You may read and join Front of house conversations. Your back office never sees them: your WebAgents there only get the signals they would get anyway.</p></article>
+    <article class="fcard"><h3>What visitors see</h3><p class="small">Visitors always see who is speaking: the desk's name with "AI", or your name with "a person". Joining and handing back show in the conversation.</p></article>
+  </div>
+</section>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,50 @@
+[package]
+name = "agentrix-store"
+description = "Platform core: the metric catalogue every screen reads, the store traits (per-site stores, blobs, receipt issuers, outbox), visit counts, export and erasure, health checks."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+authors.workspace = true
+
+# Owner: W8 Platform core (specs/platform/00-plan.md). Tables go in migrations/control/
+# (control.db, run by `agentrix_store::migrate`) and migrations/site/ (each site's records.db),
+# numbered in W8's range (0800-0899).
+
+[features]
+# A migrated in-memory control.db for other crates' tests, built from the real migrations.
+testing = []
+
+[dependencies]
+adk-core.workspace = true
+agentrix-billing.workspace = true
+agentrix-host.workspace = true
+agentrix-types.workspace = true
+agentrix-ui.workspace = true
+anyhow.workspace = true
+async-trait.workspace = true
+axum.workspace = true
+chrono.workspace = true
+futures.workspace = true
+minijinja.workspace = true
+reqwest.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+sqlx.workspace = true
+thiserror.workspace = true
+tokio.workspace = true
+tracing.workspace = true
+url.workspace = true
+
+[dev-dependencies]
+tempfile.workspace = true
+tokio.workspace = true
+tower.workspace = true
+
+[[example]]
+name = "status_preview"
+required-features = ["testing"]
+
+[lints]
+workspace = true

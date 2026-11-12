@@ -1,0 +1,23 @@
+{% block subject %}Your week at {{ site.name }}, {{ review.period }}{% endblock %}
+{% block preheader %}{{ review.headline }} Spend {{ review.spend.used|money(review.spend.currency) }} of {{ review.spend.budget|money(review.spend.currency) }}.{% endblock %}
+{% block body %}
+# Your week, {{ review.period }}
+{{ review.headline }}
+
+{% for line in review.lines %}
+- {{ line }}
+{% endfor %}
+
+::fact Spend | {{ review.spend.used|money(review.spend.currency) }} of {{ review.spend.budget|money(review.spend.currency) }}
+::fact Decisions you made | {{ review.decided }}
+{% if review.offers %}
+
+Your WebAgents could do more without asking. Each is only a suggestion; nothing changes until you approve it in the console:
+
+{% for offer in review.offers %}
+- {{ offer }}
+{% endfor %}
+{% endif %}
+
+::button Open the console | {{ console_url }}
+{% endblock %}

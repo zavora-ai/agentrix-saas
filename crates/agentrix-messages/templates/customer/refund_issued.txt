@@ -1,0 +1,19 @@
+{% block subject %}Refunded {{ refund.amount|money(refund.currency) }} for order {{ order.number }}{% endblock %}
+{% block preheader %}To your {{ refund.method }}. Receipt {{ refund.receipt_id }}.{% endblock %}
+{% block body %}
+# Refunded {{ refund.amount|money(refund.currency) }}
+{{ refund.by }} refunded {{ refund.amount|money(refund.currency) }} to your {{ refund.method }} for {{ refund.what }}.
+
+::fact Refund | {{ refund.amount|money(refund.currency) }}{% if refund.local %} ({{ refund.local }}){% endif %}
+
+::fact To | Your {{ refund.method }}
+::fact Order | {{ order.number }}
+::fact Receipt | {{ refund.receipt_id }}
+
+{{ refund.method }} also emails you its own refund receipt. It can take a few days to show in your account.
+
+::button See your order | {{ order.url }}
+{% endblock %}
+{% block chat %}
+{{ site.name }}: refunded {{ refund.amount|money(refund.currency) }} to your {{ refund.method }} for {{ refund.what }} (order {{ order.number }}). Receipt {{ refund.receipt_id }}.
+{% endblock %}

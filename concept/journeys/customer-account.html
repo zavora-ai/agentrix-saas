@@ -1,0 +1,381 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>An account when needed · Agentrix</title>
+<meta name="description" content="Customer journey, step 2: Njeri is asked to sign in only when she orders. A passkey comes first, the page lists what Kilele keeps, and each optional choice leaves its own consent receipt.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Manrope:wght@600;700;800&family=Fraunces:opsz,wght@9..144,600;9..144,800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../styles.css">
+<link rel="stylesheet" href="../experience/experience.css">
+<link rel="stylesheet" href="journeys.css">
+<style>
+  [hidden] { display: none !important; }
+  .st-h { font: 700 var(--fs-12)/1.2 var(--font-text); letter-spacing: .08em; text-transform: uppercase; color: var(--j-ink-2); margin-top: 8px; }
+  .j-note.never { margin: 0; }
+  .j-note.never ul { padding-left: 0; }
+  .k-h { font: 800 24px/1.1 var(--k-serif); }
+  .k-why { margin: 6px 0 0; font-size: 14px; color: var(--k-brown-2); }
+  .k-small { margin: 0; font-size: 12.5px; line-height: 1.45; color: var(--k-brown-2); }
+  .k-link { color: var(--k-terra-2); font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
+  .k-link:hover { color: var(--k-brown); }
+  .k-from { display: flex; align-items: center; gap: 8px; margin: 0; padding: 8px 10px; border-radius: 10px; background: var(--k-cream-2); font-size: 12.5px; line-height: 1.4; color: var(--k-brown-2); }
+  .k-from b { color: var(--k-brown); }
+  .k-me { display: inline-grid; place-items: center; width: 24px; height: 24px; border-radius: 50%; background: var(--k-brown); color: #fff; font: 700 11px/1 var(--font-text); }
+  .k-ways { display: grid; gap: 8px; }
+  .k-or { display: flex; align-items: center; gap: 10px; margin: 2px 0; font: 600 12px/1 var(--font-text); color: var(--k-brown-2); }
+  .k-or::before, .k-or::after { content: ""; flex: 1; height: 1px; background: var(--k-line); }
+  .k-alt { min-height: 44px; width: 100%; border-radius: 999px; border: 1px solid #cdb79c; background: #fff; color: var(--k-brown); font: 600 14px/1 var(--font-text); cursor: pointer; }
+  .k-alt:hover { border-color: var(--k-brown-2); }
+  .k-keeps { list-style: none; margin: 0; padding: 0; display: grid; }
+  .k-keeps li { display: grid; gap: 2px; padding: 9px 0; border-top: 1px dashed var(--k-line); font-size: 13px; line-height: 1.45; color: var(--k-brown-2); }
+  .k-keeps li:first-child { border-top: 0; padding-top: 0; }
+  .k-keeps b { font: 700 14px/1.35 var(--font-text); color: var(--k-brown); }
+  .k-keeps .kept { font-weight: 600; color: var(--k-brown); }
+  .k-never { margin: 0; padding: 10px 12px; border-radius: 12px; background: #fff; border: 1px solid var(--k-line); font-size: 13px; line-height: 1.45; color: var(--k-brown); }
+  .k-done { display: flex; gap: 10px; align-items: flex-start; margin: 0; padding: 12px 14px; border-radius: 14px; background: #e4f1e4; color: var(--k-ok); font: 600 14px/1.45 var(--font-text); }
+  .k-row { display: flex; gap: 8px; flex-wrap: wrap; }
+  .k-mfa { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+  .k-qr { flex: none; width: 104px; height: 104px; display: grid; place-items: center; padding: 8px; text-align: center; border: 1.5px dashed var(--k-brown-2); border-radius: 10px; background: #fff; font-size: 11.5px; line-height: 1.3; color: var(--k-brown-2); }
+  .k-mfa p { flex: 1 1 140px; min-width: 0; }
+  .k-key { display: inline-block; margin-top: 4px; font: 600 13px/1.4 var(--font-mono); color: var(--k-brown); overflow-wrap: anywhere; }
+  .k-field input.code { font: 600 20px/1 var(--font-mono); letter-spacing: .3em; text-align: center; }
+  .k-codes { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; }
+  .k-codes li { padding: 8px; border: 1px solid var(--k-line); border-radius: 8px; background: #fff; text-align: center; font: 600 13px/1 var(--font-mono); color: var(--k-brown); }
+  .k-choices { display: grid; gap: 8px; }
+  .k-choice { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 12px; align-items: center; padding: 12px 14px; border: 1px solid var(--k-line); border-radius: 14px; background: var(--wa-bg); }
+  .k-choice .t { display: grid; gap: 3px; min-width: 0; }
+  .k-choice .t b { font: 700 14.5px/1.3 var(--font-text); color: var(--k-brown); }
+  .k-choice .t span { font-size: 12.5px; line-height: 1.4; color: var(--k-brown-2); overflow-wrap: anywhere; }
+  .k-swrap { display: inline-flex; align-items: center; gap: 8px; font: 700 12px/1 var(--font-text); color: var(--k-brown); }
+  .k-sw { position: relative; display: inline-block; flex: none; width: 46px; height: 28px; }
+  .k-sw input { appearance: none; -webkit-appearance: none; display: block; margin: 0; width: 100%; height: 100%; border-radius: 999px; border: 1.5px solid var(--k-brown-2); background: var(--k-cream-2); cursor: pointer; }
+  .k-sw input:checked { background: var(--k-ok); border-color: var(--k-ok); }
+  .k-sw i { position: absolute; top: 4px; left: 4px; width: 20px; height: 20px; border-radius: 50%; background: var(--k-brown-2); pointer-events: none; transition: transform .2s ease; }
+  .k-sw input:checked + i { transform: translateX(18px); background: #fff; }
+  .k-receipts { display: grid; gap: 10px; }
+  .k-receipt { display: grid; gap: 10px; padding: 14px; border: 1.5px dashed var(--k-brown-2); border-radius: 14px; background: #fff; }
+  .k-receipt header { display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .k-receipt h3 { font-size: 16px; }
+  .k-receipt dl { margin: 0; display: grid; grid-template-columns: minmax(0, 7.2em) minmax(0, 1fr); gap: 6px 12px; font-size: 13px; line-height: 1.45; }
+  .k-receipt dl > div { display: contents; }
+  .k-receipt dt { font-weight: 700; color: var(--k-brown); }
+  .k-receipt dd { margin: 0; color: var(--k-brown-2); overflow-wrap: anywhere; }
+  .k-receipt .sig { margin: 0; padding-top: 8px; border-top: 1px dashed var(--k-line); font: 600 11.5px/1.45 var(--font-mono); color: var(--k-brown-2); overflow-wrap: anywhere; }
+  @media (max-width: 420px) {
+    .k-receipt dl { grid-template-columns: minmax(0, 1fr); gap: 2px; }
+    .k-receipt dd { margin-bottom: 6px; }
+  }
+  @media (max-width: 560px) {
+    .j-tabs { flex-wrap: wrap; }
+    .j-tabs button { flex: 1 1 auto; }
+  }
+  @media (prefers-reduced-motion: reduce) { .k-sw i { transition: none; } }
+</style>
+</head>
+<body data-lane="customer" data-step="2">
+<header class="j-top">
+  <a class="logo" href="../index.html"><span class="mark" aria-hidden="true"></span>Agentrix</a>
+  <a class="j-maplink" href="index.html">Journey map</a>
+  <span class="j-lane">Customer · Njeri</span>
+  <span class="concept-label">Concept · illustrative data</span>
+</header>
+<nav class="j-steps" aria-label="Customer journey" data-steps></nav>
+<main class="wrap j-main">
+  <header class="j-head">
+    <p class="eyebrow">Step 2 of 7 · Customer</p>
+    <h1>An account, only when she needs one</h1>
+    <p class="lead">Njeri has a basket for Saturday and a cake design for Amina. When she taps Order, Kilele asks her to sign in for the first time and says why. A passkey comes first. Every extra use of her details is a separate choice, and each choice leaves a receipt.</p>
+  </header>
+  <div class="j-grid">
+    <section class="j-stage" aria-label="What Njeri sees">
+      <div class="j-screens">
+        <div class="j-screen">
+          <p class="j-cap"><span class="n">1</span>She taps Order. The page says why it asks.</p>
+          <div class="j-device kilele">
+            <div class="j-url"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg><span>kilele-bakery.example/sign-in</span></div>
+            <div class="k-bar">
+              <a class="k-logo" href="#" onclick="return false"><i aria-hidden="true"></i>Kilele</a>
+              <span class="k-acct">Guest</span>
+            </div>
+            <div class="k-screen">
+              <p class="k-from"><span class="j-mark" data-agent="cakes" data-size="20" data-state="waiting"></span><span>Your basket, Amina's cake design and your thread with <b>Cakes</b> <span class="k-ai">AI</span> are waiting. They pick up again once you're signed in.</span></p>
+              <div>
+                <h2 class="k-h">Sign in to order</h2>
+                <p class="k-why">So you can follow your order and get a receipt. New here? The same buttons create an account.</p>
+              </div>
+              <div class="k-ways">
+                <button class="k-btn wide" type="button" data-go="tab-pk">Continue with a passkey</button>
+                <button class="k-btn ghost wide" type="button" data-go="tab-pw">Use email and password</button>
+                <p class="k-or">or</p>
+                <button class="k-alt" type="button" data-go="tab-pw">Continue with Google</button>
+                <button class="k-alt" type="button" data-go="tab-pw">Continue with LinkedIn</button>
+                <button class="k-alt" type="button" data-go="tab-pw">Continue with GitHub</button>
+              </div>
+              <p class="k-small">You can still ask and browse without an account. <a class="k-link" href="#keeps">What Kilele keeps</a></p>
+            </div>
+          </div>
+        </div>
+        <div class="j-screen" id="keeps">
+          <p class="j-cap"><span class="n">2</span>Before she makes anything, the page lists what Kilele keeps. Her account shows it again at any time.</p>
+          <div class="j-device kilele">
+            <div class="j-url"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg><span>kilele-bakery.example/sign-in</span></div>
+            <div class="k-screen">
+              <h3>What Kilele keeps</h3>
+              <ul class="k-keeps">
+                <li><b>Name, email, phone</b><span>For receipts, delivery and order updates</span><span class="kept">Kept for the life of the account</span></li>
+                <li><b>Delivery addresses</b><span>For delivery</span><span class="kept">Kept until you delete them</span></li>
+                <li><b>Your passkey's public key, or a password hash and your authenticator set-up</b><span>For signing in</span><span class="kept">Kept for the life of the account</span></li>
+                <li><b>Sign-in history: device, rough place, time</b><span>To warn you about a sign-in that wasn't you</span><span class="kept">Kept for 13 months</span></li>
+                <li><b>Orders and receipts</b><span>Your history, and Kilele's business records</span><span class="kept">Kept as long as the law requires for business records, then erased</span></li>
+                <li><b>Account memory, only if you turn it on</b><span>"Since your last visit" and your saved designs</span><span class="kept">Kept until you delete an item</span></li>
+              </ul>
+              <p class="k-never">Kilele never keeps a card number or a PayPal password. Those stay with PayPal.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <h2 class="st-h">Two ways in</h2>
+      <div class="j-tabs" role="tablist" aria-label="Two ways to create her account">
+        <button type="button" role="tab" id="tab-pk" aria-selected="true" aria-controls="p-pk">With a passkey</button>
+        <button type="button" role="tab" id="tab-pw" aria-selected="false" aria-controls="p-pw">Without a passkey</button>
+      </div>
+
+      <div role="tabpanel" id="p-pk" aria-labelledby="tab-pk">
+        <div class="j-screens">
+          <div class="j-screen">
+            <p class="j-cap"><span class="n">3a</span>A name and an email for receipts. No password to invent.</p>
+            <div class="j-device kilele">
+              <div class="j-url"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg><span>kilele-bakery.example/sign-in</span></div>
+              <div class="k-screen">
+                <h3>Create your account</h3>
+                <label class="k-field">Your name<input type="text" value="Njeri" autocomplete="name" readonly></label>
+                <label class="k-field">Email, for receipts<input type="email" value="njeri@example.com" autocomplete="email" readonly></label>
+                <label class="k-field">Phone, for order updates (optional)<input type="tel" value="+44 7700 900418" autocomplete="tel" readonly></label>
+                <button class="k-btn wide" type="button">Create a passkey</button>
+                <p class="k-small">Your phone or laptop makes the passkey. Kilele gets a public key, never your face, fingerprint or screen-lock PIN.</p>
+              </div>
+            </div>
+          </div>
+          <div class="j-screen">
+            <p class="j-cap"><span class="n">3b</span>Her device asks, not Kilele. Then one line says what that means.</p>
+            <div class="j-provider">
+              <div class="bar">Your device's own passkey prompt (not drawn here)</div>
+              <div class="body">
+                <div class="stand-in">Her phone asks for her face, fingerprint or screen-lock PIN, and saves a passkey for <b>kilele-bakery.example</b>. That check stays on the phone.</div>
+              </div>
+            </div>
+            <div class="j-device kilele">
+              <div class="j-url"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg><span>kilele-bakery.example/sign-in</span></div>
+              <div class="k-bar">
+                <a class="k-logo" href="#" onclick="return false"><i aria-hidden="true"></i>Kilele</a>
+                <span class="k-acct"><span class="k-me" aria-hidden="true">N</span>Njeri</span>
+              </div>
+              <div class="k-screen">
+                <p class="k-done"><span aria-hidden="true">✓</span><span>Done: this device's screen lock signs you in to kilele-bakery.example only.</span></p>
+                <p class="k-small">Next, three optional choices. Then back to your order.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div role="tabpanel" id="p-pw" aria-labelledby="tab-pw" hidden>
+        <div class="j-screens">
+          <div class="j-screen">
+            <p class="j-cap"><span class="n">3a</span>Email and a password, or a provider's own page.</p>
+            <div class="j-device kilele">
+              <div class="j-url"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg><span>kilele-bakery.example/sign-in</span></div>
+              <div class="k-screen">
+                <h3>Create your account</h3>
+                <label class="k-field">Your name<input type="text" value="Njeri" autocomplete="name" readonly></label>
+                <label class="k-field">Email<input type="email" value="njeri@example.com" autocomplete="email" readonly></label>
+                <label class="k-field">Password<input type="password" autocomplete="new-password" aria-describedby="pwHint"></label>
+                <p class="k-small" id="pwHint">A long one you don't use anywhere else. Next, you'll add an authenticator app.</p>
+                <button class="k-btn wide" type="button">Continue</button>
+              </div>
+            </div>
+            <div class="j-provider">
+              <div class="bar">Google, LinkedIn or GitHub: their own page (not drawn here)</div>
+              <div class="body">
+                <div class="stand-in">If she picks one of these, that provider's own page opens. Kilele asks it for her name and a verified email only. The authenticator step follows, just as with a password.</div>
+              </div>
+            </div>
+          </div>
+          <div class="j-screen">
+            <p class="j-cap"><span class="n">3b</span>An authenticator app, every time. This is always on.</p>
+            <div class="j-device kilele">
+              <div class="j-url"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg><span>kilele-bakery.example/sign-in</span></div>
+              <div class="k-screen">
+                <h3>Add an authenticator app</h3>
+                <p class="k-small">Without a passkey, Kilele asks for a 6-digit code from an authenticator app each time you sign in. You can't turn this off.</p>
+                <div class="k-mfa">
+                  <div class="k-qr">QR code for your authenticator app</div>
+                  <p class="k-small">Or type this key into the app:<br><code class="k-key">KILE LEXA MPLE 7Q2M</code></p>
+                </div>
+                <label class="k-field">6-digit code from the app<input class="code" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="6" pattern="[0-9]{6}"></label>
+                <button class="k-btn wide" type="button">Verify</button>
+                <p class="k-small">No authenticator app? <a class="k-link" href="#tab-pk" data-go="tab-pk">Create a passkey instead</a>.</p>
+              </div>
+            </div>
+          </div>
+          <div class="j-screen">
+            <p class="j-cap"><span class="n">3c</span>Recovery codes, shown once.</p>
+            <div class="j-device kilele">
+              <div class="j-url"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg><span>kilele-bakery.example/sign-in</span></div>
+              <div class="k-screen">
+                <h3>Save your recovery codes</h3>
+                <p class="k-small">We show these once. Each one works one time, if you lose the phone that has your authenticator app.</p>
+                <ol class="k-codes" aria-label="Recovery codes (illustrative)">
+                  <li>4kx7-q2mp</li><li>9tdw-h3rc</li><li>m8fz-6vna</li><li>c2jy-p7ke</li>
+                  <li>w5rb-x9gu</li><li>h7ns-3qte</li><li>z6pd-k4wm</li><li>e3va-r8jx</li>
+                </ol>
+                <div class="k-row"><button class="k-btn ghost" type="button">Download</button><button class="k-btn" type="button">I've saved them</button></div>
+              </div>
+            </div>
+          </div>
+          <div class="j-screen">
+            <p class="j-cap"><span class="n">3d</span>After a password sign-in, one passkey offer on each device.</p>
+            <div class="j-device kilele">
+              <div class="j-url"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg><span>kilele-bakery.example</span></div>
+              <div class="k-bar">
+                <a class="k-logo" href="#" onclick="return false"><i aria-hidden="true"></i>Kilele</a>
+                <span class="k-acct"><span class="k-me" aria-hidden="true">N</span>Njeri</span>
+              </div>
+              <div class="k-screen">
+                <div class="k-card">
+                  <h3>Next time, sign in with this device's screen lock</h3>
+                  <p>No password or code to type. It works on kilele-bakery.example only.</p>
+                  <div class="k-row" style="margin-top:12px"><button class="k-btn" type="button">Create a passkey</button><button class="k-btn ghost" type="button" id="notNow">Not now</button></div>
+                  <p class="k-small" id="offerMsg" role="status" style="margin-top:8px"></p>
+                </div>
+                <p class="k-small">Asked once on each device. Choose Not now and this device won't ask again.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <h2 class="st-h">Then, her choices</h2>
+      <div class="j-screens">
+        <div class="j-screen">
+          <p class="j-cap"><span class="n">4</span>Three extras, each off until she picks. She turns on WhatsApp updates.</p>
+          <div class="j-device kilele">
+            <div class="j-url"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg><span>kilele-bakery.example/account/choices</span></div>
+            <div class="k-bar">
+              <a class="k-logo" href="#" onclick="return false"><i aria-hidden="true"></i>Kilele</a>
+              <span class="k-acct"><span class="k-me" aria-hidden="true">N</span>Njeri</span>
+            </div>
+            <div class="k-screen">
+              <div>
+                <h3>Your choices</h3>
+                <p class="k-small" style="margin-top:6px">Receipts and order updates by email come with every order. These are extra. Each one is separate, and each gives you a receipt.</p>
+              </div>
+              <div class="k-choices" role="group" aria-label="Optional choices">
+                <div class="k-choice">
+                  <div class="t"><b id="c-wa">Order updates on WhatsApp</b><span id="c-wa-d">Confirmed, out for delivery, delivered. Sent to +44 7700 900418.</span></div>
+                  <span class="k-swrap"><span id="s-wa" aria-hidden="true">On</span><span class="k-sw"><input type="checkbox" role="switch" checked aria-labelledby="c-wa" aria-describedby="c-wa-d" data-receipt="r-wa" data-state="s-wa"><i aria-hidden="true"></i></span></span>
+                </div>
+                <div class="k-choice">
+                  <div class="t"><b id="c-mem">Remember me and my designs</b><span id="c-mem-d">Account memory: "Since your last visit" and saved designs, until you delete them.</span></div>
+                  <span class="k-swrap"><span id="s-mem" aria-hidden="true">Off</span><span class="k-sw"><input type="checkbox" role="switch" aria-labelledby="c-mem" aria-describedby="c-mem-d" data-receipt="r-mem" data-state="s-mem"><i aria-hidden="true"></i></span></span>
+                </div>
+                <div class="k-choice">
+                  <div class="t"><b id="c-off">Offers by email</b><span id="c-off-d">New bakes and seasonal offers.</span></div>
+                  <span class="k-swrap"><span id="s-off" aria-hidden="true">Off</span><span class="k-sw"><input type="checkbox" role="switch" aria-labelledby="c-off" aria-describedby="c-off-d" data-receipt="r-off" data-state="s-off"><i aria-hidden="true"></i></span></span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="j-screen">
+          <p class="j-cap"><span class="n">5</span>Her yes leaves a receipt she can keep. Try the switches.</p>
+          <div class="j-device kilele">
+            <div class="j-url"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg><span>kilele-bakery.example/account/choices</span></div>
+            <div class="k-screen k-receipts">
+              <article class="k-receipt" id="r-wa" aria-labelledby="r-wa-h">
+                <header><h3 id="r-wa-h">Consent receipt · WhatsApp updates</h3><span class="k-pill ok">Active</span></header>
+                <dl>
+                  <div><dt>Purpose</dt><dd>Order updates on WhatsApp: confirmed, out for delivery, delivered</dd></div>
+                  <div><dt>What</dt><dd>Your phone number, your order numbers and their status. No offers.</dd></div>
+                  <div><dt>Shared with</dt><dd>WhatsApp, only to deliver these messages</dd></div>
+                  <div><dt>Kept for</dt><dd>Until you turn it off</dd></div>
+                  <div><dt>Given</dt><dd>Sat 7 Nov 2026, 18:40 Nairobi time (15:40 in London)</dd></div>
+                  <div data-withdrawn hidden><dt>Withdrawn</dt><dd>Sat 7 Nov 2026, 18:42 Nairobi time</dd></div>
+                  <div><dt>To withdraw</dt><dd>Account → Choices, one tap</dd></div>
+                </dl>
+                <p class="sig">Receipt cr-4e1b…9a07 · signed by kilele-bakery.example</p>
+              </article>
+              <article class="k-receipt" id="r-mem" aria-labelledby="r-mem-h" hidden>
+                <header><h3 id="r-mem-h">Consent receipt · Account memory</h3><span class="k-pill ok">Active</span></header>
+                <dl>
+                  <div><dt>Purpose</dt><dd>"Since your last visit" and your saved designs</dd></div>
+                  <div><dt>What</dt><dd>Designs and preferences you save, item by item</dd></div>
+                  <div><dt>Shared with</dt><dd>No one. Only Kilele's desks read it, while you're signed in.</dd></div>
+                  <div><dt>Kept for</dt><dd>Until you delete an item, or turn this off</dd></div>
+                  <div><dt>Given</dt><dd>Sat 7 Nov 2026, 18:41 Nairobi time (15:41 in London)</dd></div>
+                  <div data-withdrawn hidden><dt>Withdrawn</dt><dd>Sat 7 Nov 2026, 18:42 Nairobi time</dd></div>
+                  <div><dt>To withdraw</dt><dd>Account → Choices, one tap</dd></div>
+                </dl>
+                <p class="sig">Receipt cr-91d0…3b4e · signed by kilele-bakery.example</p>
+              </article>
+              <article class="k-receipt" id="r-off" aria-labelledby="r-off-h" hidden>
+                <header><h3 id="r-off-h">Consent receipt · Offers by email</h3><span class="k-pill ok">Active</span></header>
+                <dl>
+                  <div><dt>Purpose</dt><dd>New bakes and seasonal offers</dd></div>
+                  <div><dt>What</dt><dd>Your email address</dd></div>
+                  <div><dt>Shared with</dt><dd>No one</dd></div>
+                  <div><dt>Kept for</dt><dd>Until you turn it off</dd></div>
+                  <div><dt>Given</dt><dd>Sat 7 Nov 2026, 18:41 Nairobi time (15:41 in London)</dd></div>
+                  <div data-withdrawn hidden><dt>Withdrawn</dt><dd>Sat 7 Nov 2026, 18:42 Nairobi time</dd></div>
+                  <div><dt>To withdraw</dt><dd>Account → Choices, one tap, or the link in any offer</dd></div>
+                </dl>
+                <p class="sig">Receipt cr-c75a…e810 · signed by kilele-bakery.example</p>
+              </article>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <aside class="j-notes" aria-label="What happens underneath">
+      <div class="j-note"><h3>Only when needed</h3><p>Asking, designing and sharing by link need no account. Ordering, saving a design or tracking an order asks, and says why. The desk links to this page, and the thread resumes afterwards (06 §4.10).</p></div>
+      <div class="j-note gate"><h3>A passkey first, and why</h3><p>A passkey can't be typed into the wrong site. It is bound to kilele-bakery.example, so a look-alike can't use it (W3C WebAuthn). Kilele stores only its public key, so there is no password to leak.</p></div>
+      <div class="j-note gate"><h3>MFA is always on without one</h3><p>Email and password, Google, LinkedIn or GitHub: each adds an authenticator code. There are no magic links. Social sign-in asks for a name and a verified email only, and Wanjiru picks which providers appear. Decided by James, 7 Nov 2026 (<code>d-auth-passkey-first</code>).</p></div>
+      <div class="j-note"><h3>The honest cost</h3><p>Many bakery customers don't have an authenticator app. Passkeys first and one passkey offer per device reduce the hurdle, and 06 §9 measures drop-off at the MFA step. If people leave there, the open question is whether visitor accounts may rely on the provider's own MFA (06 §4.10).</p></div>
+      <div class="j-note"><h3>Desks see "customer"</h3><p><span class="j-who desk">Desks</span> see the entitlement and what Njeri chose to share. Never her credentials, how she signs in, or a social profile.</p></div>
+      <div class="j-note never"><h3>Never</h3><ul><li>A desk asking for a password, code or card in a chat</li><li>Device memory merged into her account without her confirming each item</li><li>An extra choice switched on for her</li><li>A card number or PayPal password kept by Kilele</li></ul></div>
+    </aside>
+  </div>
+</main>
+<nav class="wrap j-pager" aria-label="Previous and next step" data-pager></nav>
+<script src="journeys.js"></script>
+<script>
+(() => {
+  document.querySelectorAll("[data-go]").forEach(b => b.addEventListener("click", e => {
+    e.preventDefault();
+    const tab = document.getElementById(b.dataset.go);
+    if (!tab) return;
+    tab.click();
+    tab.focus();
+  }));
+  document.getElementById("notNow").addEventListener("click", () => {
+    document.getElementById("offerMsg").textContent = "Done. This device won't offer a passkey again. You can add one any time in Account → Sign-in.";
+  });
+  document.querySelectorAll("[data-receipt]").forEach(sw => {
+    const r = document.getElementById(sw.dataset.receipt), state = document.getElementById(sw.dataset.state);
+    sw.addEventListener("change", () => {
+      state.textContent = sw.checked ? "On" : "Off";
+      r.hidden = false;
+      const pill = r.querySelector(".k-pill");
+      pill.textContent = sw.checked ? "Active" : "Withdrawn";
+      pill.classList.toggle("ok", sw.checked);
+      r.querySelector("[data-withdrawn]").hidden = sw.checked;
+    });
+  });
+})();
+</script>
+</body>
+</html>

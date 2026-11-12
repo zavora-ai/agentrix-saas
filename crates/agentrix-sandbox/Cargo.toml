@@ -1,0 +1,45 @@
+[package]
+name = "agentrix-sandbox"
+description = "The sandbox plane: the broker client library used by agentrix-node, and agentrix-runner, which verifies signed job specs and runs sealed rooms."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+authors.workspace = true
+
+[[bin]]
+name = "agentrix-runner"
+path = "src/bin/agentrix-runner.rs"
+
+# Test bench only: signs job specs the way control does.
+[[bin]]
+name = "agentrix-jobctl"
+path = "src/bin/agentrix-jobctl.rs"
+
+[dependencies]
+anyhow.workspace = true
+clap.workspace = true
+tokio.workspace = true
+tracing.workspace = true
+tracing-subscriber.workspace = true
+serde.workspace = true
+# agentrix-runner (architecture lane, S1-01).
+agentrix-types.workspace = true
+axum.workspace = true
+base64.workspace = true
+chrono.workspace = true
+ed25519-dalek.workspace = true
+futures.workspace = true
+hex.workspace = true
+serde_jcs.workspace = true
+serde_json.workspace = true
+sha2.workspace = true
+thiserror.workspace = true
+tokio-stream.workspace = true
+
+[dev-dependencies]
+tempfile.workspace = true
+
+[lints]
+workspace = true

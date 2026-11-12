@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light">
+<title>Choose your new look · Agentrix</title>
+<meta name="description" content="Three WebAgents design a new look for your Agentrix Website. Pick the one that feels like your business.">
+<link rel="stylesheet" href="/static/ui/brand.css?v={{ ui_v }}">
+<link rel="stylesheet" href="/static/onboarding/onboarding.css?v={{ onboarding_v }}">
+<link rel="stylesheet" href="/static/concepts/concepts.css">
+</head>
+<body class="concepts">
+<a class="skip" href="#main">Skip to content</a>
+<header class="topbar">
+  <a class="logo" href="/"><span class="mark" aria-hidden="true"></span>Agentrix</a>
+  <div class="topbar-right">{% if host is defined and host %}<span class="chip chip-outline">{{ host }}</span>{% endif %}<a class="btn btn-ghost btn-sm" href="/console/today">Console</a></div>
+</header>
+<main id="main" class="c-wrap">
+{% if mode == "not-yours" %}
+  <h1 class="h2">Only the site's owner can design its new look</h1>
+  <p class="sub">Prove the site is yours first. It takes one DNS record or one uploaded file.</p>
+  <p><a class="btn btn-primary" href="/sites/{{ site_id }}/claim">Prove it's yours</a></p>
+{% elif mode == "enough" %}
+  <h1 class="h2">That's {{ runs }} sets of looks in the last 24 hours</h1>
+  <p class="sub">Each set takes the designers a few minutes of model time, so a site gets {{ runs }} sets in any 24 hours. Pick one of your newest three looks, or start another set 24 hours after the first of these.</p>
+  <p><a class="btn btn-primary" href="/sites/{{ site_id }}/concepts">See your newest looks</a></p>
+{% elif mode == "enough-changes" %}
+  <h1 class="h2">That's {{ runs }} changes in the last 24 hours</h1>
+  <p class="sub">Each change takes a designer a few minutes of model time, so a site gets {{ runs }} changes in any 24 hours. Pick one of your newest three looks as it is now.</p>
+  <p><a class="btn btn-primary" href="/sites/{{ site_id }}/concepts">See your newest looks</a></p>
+{% elif mode == "no-report" %}
+  <h1 class="h2">There's no health report to design from yet</h1>
+  <p class="sub">The designers work from the words and photos the health check read on your site. Check your site first, then come back.</p>
+  <p><a class="btn btn-primary" href="/assess">Check my site</a> <a class="btn btn-ghost" href="/sites/{{ site_id }}/concepts">Back</a></p>
+{% else %}
+  <div class="c-head">
+    <div>
+      <p class="c-step">Before the Move</p>
+      <h1 class="h2">Choose your new look</h1>
+      <p class="sub">Three WebAgents each design a home page for your new Agentrix Website from {{ name }}'s own words and photos. Watch them work, tell any of them what to change, then pick one. The Move rebuilds your site with the colours and fonts of the look you choose.</p>
+    </div>
+    <span class="c-badge"><i aria-hidden="true"></i>Every model call runs on Vultr Serverless Inference</span>
+  </div>
+
+  {% if not off %}
+  <ol class="c-pipe" id="c-pipe" data-stage="{{ stage }}" aria-label="How the new look is made">
+    <li class="c-stepbox" data-k="facts"><b>Your site</b>Pages, prices, hours, photos</li>
+    <li class="c-stepbox" data-k="plan"><b>Planner</b>GLM 5.3 picks three directions</li>
+    <li class="c-stepbox" data-k="agents"><b>Three designers</b>DeepSeek v4.1, one room each</li>
+    <li class="c-stepbox" data-k="check"><b>Checked</b>Missing basics sent back to fix</li>
+    <li class="c-stepbox" data-k="choose"><b>You choose</b>Or tell a designer what to change</li>
+    <li class="c-stepbox" data-k="move"><b>The Move</b>Rebuilds your site with the look's colours and fonts</li>
+  </ol>
+  {% endif %}
+
+  {% if off %}
+  <div class="c-off" role="status">
+    <p>{{ off }}</p>
+    <p>Your site keeps its current colours and fonts. You can go straight on to the Move.</p>
+    <a class="btn btn-primary" href="{{ move_href }}">Next: start the Move</a>
+  </div>
+  {% endif %}
+
+  {% if chosen %}
+  <div class="c-chosen" id="chosen" role="status">
+    <p><b>You chose "{{ chosen.name }}".</b> {{ chosen.sentence }}</p>
+    <p class="small muted">The Move rebuilds your site with this look's colours and fonts. You can still pick another before it starts.</p>
+    <a class="btn btn-primary" href="{{ move_href }}">Next: start the Move</a>
+  </div>
+  {% endif %}
+
+  {% if run %}
+  <p class="c-words" id="c-words" aria-live="polite">{{ run.words }}</p>
+  <div class="c-cols" id="c-cols" data-site="{{ site_id }}" data-state="{{ run.state }}" data-agents="{{ run.agents | length }}">
+    {% for a in run.agents %}
+    <section class="c-col{% if a.chosen %} is-chosen{% endif %}" id="c-col-{{ a.n }}" data-n="{{ a.n }}" data-concept="{{ a.concept_id }}" data-status="{{ a.status }}" aria-labelledby="c-name-{{ a.n }}">
+      <div class="c-meta">
+        <h2 class="c-name" id="c-name-{{ a.n }}">{{ a.n }}. {{ a.name }}</h2>
+        <p class="c-sentence">{{ a.sentence }}</p>
+        <p class="c-model">DeepSeek v4.1 Flash on Vultr Serverless Inference</p>
+        <p class="c-state" id="c-state-{{ a.n }}" aria-live="polite">{{ a.words }}</p>
+      </div>
+      <div class="c-bar" aria-hidden="true"><i id="c-bar-{{ a.n }}"{% if a.status == "done" %} style="width:100%"{% endif %}></i></div>
+      <pre class="c-tail" id="c-tail-{{ a.n }}" aria-label="The newest code from design {{ a.n }}"{% if not a.tail %} hidden{% endif %}>{{ a.tail }}</pre>
+      <div class="c-frame">
+        <iframe sandbox title="Design {{ a.n }}: {{ a.name }}" id="c-frame-{{ a.n }}" loading="lazy"
+          src="/sites/{{ site_id }}/concepts/{{ a.concept_id }}/{% if a.status == "done" %}preview{% else %}draft{% endif %}"></iframe>
+      </div>
+      <div class="c-facts" id="c-facts-{{ a.n }}">
+        {%- if a.digest %}<span class="c-chip c-mono">sha256 {{ a.digest[:10] }}</span>{% endif %}
+        {%- if a.writes %}<span class="c-chip">{{ a.writes }} save{% if a.writes != 1 %}s{% endif %}</span>{% endif %}
+        {%- for tool, count in a.refused | items %}<span class="c-chip c-warn">{{ tool }} refused &times;{{ count }}</span>{% endfor %}
+        {%- if a.rounds %}<span class="c-chip">{{ a.rounds }} fix round{% if a.rounds != 1 %}s{% endif %}</span>{% endif %}
+        {%- for m in a.missing %}<span class="c-chip c-warn">missing: {{ m }}</span>{% endfor %}
+      </div>
+      <div class="c-act">
+        <form method="post" action="/sites/{{ site_id }}/concepts/{{ a.concept_id }}/choose">
+          <input type="hidden" name="token" value="{{ token }}">
+          <button class="btn btn-primary btn-sm" id="c-choose-{{ a.n }}" type="submit"{% if a.status != "done" or a.busy %} disabled{% endif %}>{% if a.chosen %}Chosen{% else %}Choose this look{% endif %}</button>
+        </form>
+        <button class="btn btn-ghost btn-sm c-phone" type="button" data-n="{{ a.n }}" aria-pressed="false">Phone width</button>
+        <a class="btn btn-ghost btn-sm" href="/sites/{{ site_id }}/concepts/{{ a.concept_id }}/preview" target="_blank" rel="noopener">Open full size</a>
+      </div>
+      {% if can_guide and not chosen %}
+      <form class="c-guide" method="post" action="/sites/{{ site_id }}/concepts/{{ a.concept_id }}/guide">
+        <input type="hidden" name="token" value="{{ token }}">
+        <input type="text" name="words" maxlength="400" placeholder="Tell this designer what to change" aria-label="Tell designer {{ a.n }} what to change" id="c-guide-{{ a.n }}"{% if a.status != "done" or a.busy %} disabled{% endif %}>
+        <button class="btn btn-ghost btn-sm" type="submit" id="c-send-{{ a.n }}"{% if a.status != "done" or a.busy %} disabled{% endif %}>Send</button>
+      </form>
+      {% endif %}
+    </section>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  {% if not off %}
+  <div class="c-start">
+    {% if running %}
+    <p class="small muted">A design takes a few minutes. You can leave this page; the designers keep working.</p>
+    {% else %}
+    <form method="post" action="/sites/{{ site_id }}/concepts">
+      <button class="btn {% if run %}btn-ghost{% else %}btn-primary{% endif %}" type="submit">{% if run %}Try three more{% else %}Design three looks{% endif %}</button>
+    </form>
+    <p class="small muted">The planner and designers are told to treat your site's text as content, not instructions. Agentrix strips scripts from every page before you see it.</p>
+    {% if not chosen %}<p class="small"><a href="{{ move_href }}">Skip this and keep the current look</a></p>{% endif %}
+    {% endif %}
+  </div>
+  {% endif %}
+
+  {% if not off %}
+  <section class="c-panel" aria-labelledby="c-req-h">
+    <h2 class="c-panel-h" id="c-req-h">How this meets Vultr Agent Rush · Challenge 1</h2>
+    <p class="c-panel-sub">Once a run starts, each line fills in from its records as it happens.</p>
+    <div id="c-reqs" data-site="{{ site_id }}">{% include "concepts/evidence.html" %}</div>
+  </section>
+  {% endif %}
+{% endif %}
+</main>
+<footer class="concept-foot">
+  <div class="wrap row">
+    <span>Agentrix WebAgent Platform · a Zavora product · built on ADK-Rust · runs on Vultr</span>
+    <span>Open source (MIT) · <a href="/.well-known/agentrix/keys">The key our receipts are signed with</a></span>
+  </div>
+</footer>
+<script src="/static/concepts/concepts.js" defer></script>
+</body>
+</html>

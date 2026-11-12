@@ -1,0 +1,57 @@
+{% extends shell.layout %}
+{% import "shop/parts.html" as p %}
+{% from "macros.html" import mark %}
+{% block styles %}{{ super() }}{{ p.styles(shell) }}{% endblock %}
+{% block main %}
+<div class="shop wide">
+  <p class="k-crumb"><a href="/orders">Your orders</a> · {{ o.id }}</p>
+  <div class="s-cols">
+    <div>
+      <div class="k-card">
+        <div class="k-head"><h1>{{ o.id }}</h1><span class="k-pill {{ o.tone }}">{{ o.pill }}</span></div>
+        <p><b>{{ o.title }}</b></p>
+        <p>{{ o.summary }}</p>
+        {% if o.agent %}
+        <span class="k-pill">Prepared by your assistant</span>
+        <p class="k-small">Prepared through the agent door by {{ o.agent }}. Nothing is charged until you pay.</p>
+        {% endif %}
+        {{ p.timeline(steps, o.id) }}
+        <div class="k-acts">
+          {% if o.payable %}<a class="k-btn" href="/orders/{{ o.id }}/pay">Pay {{ o.usd }}</a>{% endif %}
+          {% if receipt %}<a class="k-btn ghost" href="/orders/{{ o.id }}/receipt">Receipt</a>{% endif %}
+          {% if can_change %}<a class="k-btn ghost" href="/orders/{{ o.id }}/change">Change</a>{% endif %}
+          {% if can_help %}<a class="k-btn ghost" href="/orders/{{ o.id }}/help">Something's wrong</a>{% endif %}
+        </div>
+        {% if cancel.can != "none" %}
+        <div id="cancel">
+          <p class="k-small">{{ cancel.words }}</p>
+          {% if cancel.button %}<form method="post" action="/orders/{{ o.id }}/cancel"><button class="k-btn ghost" type="submit">{{ cancel.button }}</button></form>{% endif %}
+        </div>
+        {% endif %}
+      </div>
+      {% if o.state == "approved" %}
+      <div class="k-card k-order" id="payment-request">
+        <span class="k-pill ok">Approved by {{ owner }}{% if o.approved_at %} · {{ o.approved_at }}{% endif %}</span>
+        <p class="k-deskline"><span>This payment request comes straight from the approved order. Its amount can't change.</span></p>
+        {{ p.request(request, o, short) }}
+        <div class="k-ways"><a class="k-btn wide" href="/orders/{{ o.id }}/pay">Pay with PayPal</a></div>
+        <p class="k-small">Payment requests appear only here, on your orders page. If a message asks you to pay anywhere else, it isn't from {{ short }}.</p>
+      </div>
+      {% endif %}
+    </div>
+    <div>
+      <div class="k-card">
+        <div class="k-desk">{{ mark(desk, 40, shell.site, "lg") }}<div class="who"><b>{{ desk.name }} <span class="k-ai">AI</span></b><span>WebAgent · follows your orders</span></div></div>
+        <div class="k-thread" role="log" aria-label="Updates on {{ o.id }}">
+          {% for u in updates %}<div class="k-msg desk">{{ u.text }}<small>{{ u.who }} · {{ u.when }}</small></div>{% endfor %}
+          <div class="k-msg desk">{{ line }}{% if extra %} {{ extra }}{% endif %}</div>
+        </div>
+      </div>
+      <div class="k-where">
+        <h4>Where updates arrive</h4>
+        <ul><li><b>This order page</b>, always.</li><li><b>This thread</b>, when you open it.</li>{% if shell.sample %}<li>Messages about this order link only to {{ shell.site.host }}, the site you're on.</li>{% elif domain %}<li>Messages about this order link only to {{ domain }}.</li>{% endif %}</ul>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

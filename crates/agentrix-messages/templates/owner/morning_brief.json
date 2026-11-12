@@ -1,0 +1,27 @@
+{
+ "site": {
+  "name": "Kilele Bakery",
+  "host": "kilele-bakery-sample.agentrix.website",
+  "sample": true
+ },
+ "person": {
+  "name": "Wanjiru"
+ },
+ "console_url": "https://agentrix.website/console/kilele-bakery-sample",
+ "brief": {
+  "headline": "Overnight: 41 visitors, 9 questions answered (2 in Swahili).",
+  "lines": [
+   "1 cake order is waiting for your OK: KSh 4,500, collect Saturday.",
+   "The Editor drafted price list v15 (two cake prices) for you to check.",
+   "The Guardian blocked 212 probes at 01:30."
+  ],
+  "waiting": 2,
+  "spend": {
+   "used": 1240,
+   "budget": 3870,
+   "currency": "KES",
+   "period": "month",
+   "words": "KSh 1,240 of KSh 3,870 this month"
+  }
+ }
+}

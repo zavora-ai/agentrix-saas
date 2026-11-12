@@ -1,0 +1,26 @@
+{% extends "os/base.html" %}
+{#- ShellPage::Decisions · view::DecisionsView (+ Chrome) { waiting: [LaneCard], decided: [LaneCard], expired: [LaneCard] }
+    01b C6. Every card, waiting first. -#}
+{% block title %}Decisions · {{ site.name }}{% endblock %}
+{% block field %}
+<section class="view on" aria-labelledby="dec-h">
+  <div class="field-head"><div><h2 id="dec-h">Decisions</h2><div class="sub">{% if waiting %}{{ waiting|length }} waiting for you{% else %}Nothing waiting{% endif %} · {{ decided|length }} decided{% if expired %} · {{ expired|length }} expired{% endif %}</div></div></div>
+  {% if waiting %}
+  <div class="cards">{% for c in waiting %}<article class="fcard">{{ m.lane_card(c, false) }}</article>{% endfor %}</div>
+  {% else %}
+  <div class="cards"><article class="fcard span2"><h3>Nothing needs you</h3><p>When a WebAgent needs your approval, its card waits here and in the lane. Nothing happens until you answer, and an unanswered card is never approved for you.</p></article></div>
+  {% endif %}
+
+  {% if decided or expired %}
+  <h3 class="section-h">Decided</h3>
+  <div class="fcard">
+    {% for c in decided + expired %}
+    <div class="decided-row">
+      {{ m.mark(c.asked_by) }}
+      <div><b><a href="{{ c.href }}">{{ c.title }}</a></b><p class="small muted">{{ c.outcome_words }} · {{ c.created_words }}</p></div>
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+</section>
+{% endblock %}

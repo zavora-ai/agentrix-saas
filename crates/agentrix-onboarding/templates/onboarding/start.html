@@ -1,0 +1,41 @@
+{% extends "onboarding/base.html" %}
+{% import "onboarding/macros.html" as m %}
+{#- OnboardingPage::Start · view::StartPage { error, url, fixture_url, sample_site, signed_in }.
+    concept/assess.html scene 1, "Paste your address" (O1.1), at GET /assess. The home page at /
+    (W10) holds the same form; when what was typed there isn't a public address, POST /assess
+    answers with this page, the error and the address typed. -#}
+{% block title %}Check your website{% endblock %}
+{% block body_class %}page-start{% endblock %}
+{% block topright %}{% if signed_in %}<form method="post" action="/auth/signout"><button class="btn btn-ghost btn-sm" type="submit">Sign out</button></form>{% else %}<a class="btn btn-ghost btn-sm" href="/account/signin">Sign in</a>{% endif %}{% endblock %}
+{% block main %}
+<section class="center paste">
+  <span class="eyebrow">{% if signed_in %}Signed in · add your website{% else %}Free · about three minutes{% endif %}</span>
+  <h1 class="h2 paste-title">Paste your website address</h1>
+  <p class="muted paste-sub">{% if signed_in %}You don't have a site on Agentrix yet. Paste your address: we'll read what's public and show you what we find, then you can move it.{% else %}We'll read what's public and show you what we find, with evidence for every finding.{% endif %} Nothing is installed and your site isn't changed.</p>
+  <form class="addr-form" method="post" action="/assess" id="address" novalidate>
+    {% if error %}<p class="addr-error" role="alert" id="addr-error">{{ error }}</p>{% endif %}
+    <label class="sr-only" for="url">Your website address</label>
+    <div class="addr{% if error %} has-error{% endif %}">
+      <div class="input">{{ m.icon("globe") }}<input id="url" name="url" type="text" inputmode="url" autocomplete="url" autocapitalize="off" spellcheck="false" placeholder="your-business.example" value="{{ url or '' }}" required autofocus{% if error %} aria-invalid="true" aria-describedby="addr-error"{% endif %}></div>
+      <button class="btn btn-primary btn-lg" type="submit">Check my site</button>
+    </div>
+  </form>
+  <div class="assure">
+    {% if not signed_in %}<span>{{ m.icon("check") }}No account</span>{% endif %}
+    <span>{{ m.icon("check") }}No passwords</span>
+    <span>{{ m.icon("check") }}Only what's already public</span>
+  </div>
+  {% if fixture_url or sample_site %}
+  <p class="small muted paste-more">
+    {%- if fixture_url %}Want to see it find a real infection? <a href="{{ fixture_url }}">Try it on Zavora's fixture</a>, an infected WordPress we host for demonstrations.{% endif %}
+    {%- if sample_site %} Or open a finished site: <a href="{{ sample_site.href }}">{{ sample_site.name }}</a>, a sample business.{% endif -%}
+  </p>
+  {% endif %}
+</section>
+
+<section class="paste-facts" aria-label="What happens when you press Check my site">
+  <div class="fact"><b>Every page opens in a sealed room</b>A fresh browser with no keys that can reach only your site. It's destroyed when the check ends, and its receipt is signed.</div>
+  <div class="fact"><b>A polite, named reader</b>It says it's <a href="/bot">Agentrix's reader</a>, follows your robots.txt and waits between requests.</div>
+  <div class="fact"><b>A report with evidence</b>Security, speed, broken links, and whether AI assistants can use your site. Every finding shows its evidence; one we can't show isn't listed.</div>
+</section>
+{% endblock %}

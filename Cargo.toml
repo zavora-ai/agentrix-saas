@@ -1,0 +1,173 @@
+[workspace]
+resolver = "3"
+# The first release crates (specs/first-release/design.md §3). Root files belong to the integration lead:
+# ask the coordinator for a root change instead of editing this file.
+members = [
+    "crates/agentrix-types",
+    "crates/agentrix-node",
+    "crates/agentrix-move",
+    "crates/agentrix-console",
+    "crates/agentrix-models",
+    "crates/agentrix-sandbox",
+    "crates/agentrix-egress",
+    "crates/agentrix-gauntlet",
+    # Platform program (specs/platform/00-plan.md). The coordinator adds each new crate here.
+    "crates/agentrix-host",
+    "crates/agentrix-marks",
+    "crates/agentrix-kernel",
+    "crates/agentrix-onboarding",
+    "crates/agentrix-ui",
+    "crates/agentrix-operator",
+    "crates/agentrix-billing",
+    "crates/agentrix-identity",
+    "crates/agentrix-effects",
+    "crates/agentrix-home",
+    "crates/agentrix-store",
+    "crates/agentrix-media",
+    # W5 · owner console (added on the W5 branch; the coordinator settles members at merge).
+    "crates/agentrix-shell",
+    "crates/agentrix-messages",
+    # W2 sample websites.
+    "crates/agentrix-records",
+    "crates/agentrix-themes",
+    "crates/agentrix-samples",
+    # W5 · card v2 (contract C4).
+    "crates/agentrix-decisions",
+    # W13 · mobile and channels.
+    "crates/agentrix-channels",
+    # W0 · the concept stage between Assess and the Move.
+    "crates/agentrix-concepts",
+    # Agentrix SaaS (specs/saas/README.md). Slice A: shared contracts and the books.
+    "crates/saas-core",
+    "crates/saas-books",
+    # v3 slice W: each money-handling agent's wallet record.
+    "crates/saas-wallet",
+    # v3 slice C: the cloud providers' agent identities.
+    "crates/saas-federation",
+    # Slice B: each company's AI staff.
+    "crates/saas-company",
+    # Slice C: settlement between two AI-run companies.
+    "crates/saas-settle",
+    # Agentrix v3 slices P and K · agent badges and the PayPal binding (specs/saas/v3.md).
+    "crates/saas-badge",
+    # Test customer agents for the sample sites, on sandbox PayPal (specs/saas/v3.md, the live run).
+    "crates/saas-test-agents",
+    # Agentrix SaaS · slice D (face).
+    "crates/saas-web",
+    # Slice B: the one process that runs the product (binary agentrix-saas).
+    "crates/saas-node",
+]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.95"
+license = "MIT"
+repository = "https://github.com/zavora-ai/agentrix-webagent-platform"
+authors = ["Zavora Technologies Ltd"]
+
+[workspace.dependencies]
+# Internal crates.
+agentrix-types = { path = "crates/agentrix-types" }
+agentrix-move = { path = "crates/agentrix-move" }
+agentrix-console = { path = "crates/agentrix-console" }
+agentrix-gauntlet = { path = "crates/agentrix-gauntlet", default-features = false, features = ["server"] }
+agentrix-sandbox = { path = "crates/agentrix-sandbox" }
+agentrix-egress = { path = "crates/agentrix-egress" }
+agentrix-identity = { path = "crates/agentrix-identity" }
+agentrix-effects = { path = "crates/agentrix-effects" }
+agentrix-host = { path = "crates/agentrix-host" }
+agentrix-billing = { path = "crates/agentrix-billing" }
+agentrix-kernel = { path = "crates/agentrix-kernel" }
+agentrix-decisions = { path = "crates/agentrix-decisions" }
+agentrix-onboarding = { path = "crates/agentrix-onboarding" }
+agentrix-ui = { path = "crates/agentrix-ui" }
+agentrix-operator = { path = "crates/agentrix-operator" }
+agentrix-home = { path = "crates/agentrix-home" }
+agentrix-media = { path = "crates/agentrix-media" }
+agentrix-store = { path = "crates/agentrix-store" }
+agentrix-shell = { path = "crates/agentrix-shell" }
+agentrix-messages = { path = "crates/agentrix-messages" }
+agentrix-samples = { path = "crates/agentrix-samples" }
+agentrix-channels = { path = "crates/agentrix-channels" }
+agentrix-concepts = { path = "crates/agentrix-concepts" }
+saas-core = { path = "crates/saas-core" }
+saas-books = { path = "crates/saas-books" }
+saas-wallet = { path = "crates/saas-wallet" }
+saas-federation = { path = "crates/saas-federation" }
+
+# adk-rust v3 is not on crates.io yet: one pinned `main` commit (ADR-001, design D3). Only the
+# integration lead moves the pin, after the framework's PRs merge. Enable features in your own
+# crate (`adk-site = { workspace = true, features = [...] }`); defaults are off here so each crate
+# compiles only what it uses.
+adk-core = { git = "https://github.com/zavora-ai/adk-rust", rev = "3e797c38204ef21f603c84b5ee4270798270f2d6", default-features = false }
+adk-model = { git = "https://github.com/zavora-ai/adk-rust", rev = "3e797c38204ef21f603c84b5ee4270798270f2d6", default-features = false }
+adk-site = { git = "https://github.com/zavora-ai/adk-rust", rev = "3e797c38204ef21f603c84b5ee4270798270f2d6", default-features = false }
+adk-website = { git = "https://github.com/zavora-ai/adk-rust", rev = "3e797c38204ef21f603c84b5ee4270798270f2d6", default-features = false }
+adk-awp = { git = "https://github.com/zavora-ai/adk-rust", rev = "3e797c38204ef21f603c84b5ee4270798270f2d6", default-features = false }
+adk-surface = { git = "https://github.com/zavora-ai/adk-rust", rev = "3e797c38204ef21f603c84b5ee4270798270f2d6", default-features = false }
+adk-harness = { git = "https://github.com/zavora-ai/adk-rust", rev = "3e797c38204ef21f603c84b5ee4270798270f2d6", default-features = false }
+adk-kernel = { git = "https://github.com/zavora-ai/adk-rust", rev = "3e797c38204ef21f603c84b5ee4270798270f2d6", default-features = false }
+adk-server = { git = "https://github.com/zavora-ai/adk-rust", rev = "3e797c38204ef21f603c84b5ee4270798270f2d6", default-features = false }
+adk-auth = { git = "https://github.com/zavora-ai/adk-rust", rev = "3e797c38204ef21f603c84b5ee4270798270f2d6", default-features = false }
+adk-sandbox = { git = "https://github.com/zavora-ai/adk-rust", rev = "3e797c38204ef21f603c84b5ee4270798270f2d6", default-features = false }
+adk-tool = { git = "https://github.com/zavora-ai/adk-rust", rev = "3e797c38204ef21f603c84b5ee4270798270f2d6", default-features = false }
+adk-browser = { git = "https://github.com/zavora-ai/adk-rust", rev = "3e797c38204ef21f603c84b5ee4270798270f2d6" }
+awp-types = { git = "https://github.com/zavora-ai/adk-rust", rev = "3e797c38204ef21f603c84b5ee4270798270f2d6" }
+
+# Shared third-party crates. Versions follow adk-rust's workspace where it has them, so one copy
+# of each is built. Need another? Ask the coordinator to add it here.
+anyhow = "1"
+argon2 = "0.5"
+async-trait = "0.1"
+axum = { version = "0.8", features = ["macros"] }
+base64 = "0.22"
+bytes = "1"
+chacha20poly1305 = "0.10"
+chrono = { version = "0.4.44", features = ["serde"] }
+clap = { version = "4", features = ["derive", "env"] }
+ed25519-dalek = { version = "2", features = ["rand_core", "serde"] }
+futures = "0.3"
+hex = "0.4"
+hmac = "0.12"
+http = "1"
+minijinja = { version = "2", features = ["loader"] }
+minijinja-embed = "2"
+qrcode = { version = "0.14", default-features = false, features = ["svg"] }
+rand = "0.8"
+reqwest = { version = "0.12", default-features = false, features = ["json", "stream", "rustls-tls-native-roots"] }
+serde = { version = "1", features = ["derive"] }
+serde_jcs = "0.1"
+serde_json = "1"
+sha1 = "0.10"
+sha2 = "0.10"
+sqlx = { version = "0.9", default-features = false, features = ["runtime-tokio", "sqlite", "migrate", "macros"] }
+subtle = "2.6"
+thiserror = "2"
+tokio = { version = "1.40", features = ["full"] }
+tokio-stream = { version = "0.1", features = ["sync"] }
+tower = { version = "0.5", features = ["util"] }
+tower-http = { version = "0.6", features = ["fs", "trace", "compression-gzip"] }
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter", "json"] }
+url = { version = "2.5", features = ["serde"] }
+uuid = { version = "1.23", features = ["v4", "v7", "serde"] }
+# Passkeys (design D9): the version adk-surface pins; state serialisation lets approvals bind
+# the challenge to the card fingerprint. Links OpenSSL (Homebrew openssl@3, libssl-dev on the VMs).
+webauthn-rs = { version = "=0.5.5", features = ["danger-allow-state-serialisation"] }
+
+# Test-only.
+tempfile = "3"
+
+[workspace.lints.rust]
+unsafe_code = "forbid"
+missing_docs = "warn"
+
+[workspace.lints.clippy]
+# Rust 1.95's clippy asks for nested `if let`s to become edition-2024 let-chains. The first release's
+# auth/ and claim/ have four; their owner rewrites them when it next touches those files.
+collapsible_if = "allow"
+
+[profile.release]
+lto = "thin"
+codegen-units = 1

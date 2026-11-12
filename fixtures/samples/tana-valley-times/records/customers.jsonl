@@ -1,0 +1,40 @@
+{"customer_id": "cus-halima", "name": "Halima A. (Sample reader)", "email": "halima@example.com", "place": "Mto Mkuu", "created_at": "d-400 19:02"}
+{"customer_id": "cus-baraka", "name": "Baraka M. (Sample reader)", "email": "baraka@example.com", "place": "Kanyonga", "created_at": "d-20 08:10"}
+{"customer_id": "cus-r01", "name": "Wairimu N. (Sample reader)", "email": "reader01@example.com", "place": "Kanyonga", "created_at": "d-47 09:00"}
+{"customer_id": "cus-r02", "name": "Otieno K. (Sample reader)", "email": "reader02@example.com", "place": "Kivuli", "created_at": "d-64 09:00"}
+{"customer_id": "cus-r03", "name": "Chebet R. (Sample reader)", "email": "reader03@example.com", "place": "Kora", "created_at": "d-81 09:00"}
+{"customer_id": "cus-r04", "name": "Kamau J. (Sample reader)", "email": "reader04@example.com", "place": "Mlimani", "created_at": "d-98 09:00"}
+{"customer_id": "cus-r05", "name": "Nyambura W. (Sample reader)", "email": "reader05@example.com", "place": "Mto Mkuu", "created_at": "d-115 09:00"}
+{"customer_id": "cus-r06", "name": "Odhiambo P. (Sample reader)", "email": "reader06@example.com", "place": "Kanyonga", "created_at": "d-132 09:00"}
+{"customer_id": "cus-r07", "name": "Wambua M. (Sample reader)", "email": "reader07@example.com", "place": "Kivuli", "created_at": "d-149 09:00"}
+{"customer_id": "cus-r08", "name": "Jeptoo L. (Sample reader)", "email": "reader08@example.com", "place": "Kora", "created_at": "d-166 09:00"}
+{"customer_id": "cus-r09", "name": "Mwende S. (Sample reader)", "email": "reader09@example.com", "place": "Mlimani", "created_at": "d-183 09:00"}
+{"customer_id": "cus-r10", "name": "Kiprono T. (Sample reader)", "email": "reader10@example.com", "place": "Mto Mkuu", "created_at": "d-200 09:00"}
+{"customer_id": "cus-r11", "name": "Nduta G. (Sample reader)", "email": "reader11@example.com", "place": "Kanyonga", "created_at": "d-217 09:00"}
+{"customer_id": "cus-r12", "name": "Omondi B. (Sample reader)", "email": "reader12@example.com", "place": "Kivuli", "created_at": "d-234 09:00"}
+{"customer_id": "cus-r13", "name": "Wanjala E. (Sample reader)", "email": "reader13@example.com", "place": "Kora", "created_at": "d-251 09:00"}
+{"customer_id": "cus-r14", "name": "Akinyi F. (Sample reader)", "email": "reader14@example.com", "place": "Mlimani", "created_at": "d-268 09:00"}
+{"customer_id": "cus-r15", "name": "Mutua D. (Sample reader)", "email": "reader15@example.com", "place": "Mto Mkuu", "created_at": "d-285 09:00"}
+{"customer_id": "cus-r16", "name": "Kerubo H. (Sample reader)", "email": "reader16@example.com", "place": "Kanyonga", "created_at": "d-302 09:00"}
+{"customer_id": "cus-r17", "name": "Gitau A. (Sample reader)", "email": "reader17@example.com", "place": "Kivuli", "created_at": "d-319 09:00"}
+{"customer_id": "cus-r18", "name": "Moraa C. (Sample reader)", "email": "reader18@example.com", "place": "Kora", "created_at": "d-336 09:00"}
+{"customer_id": "cus-r19", "name": "Kiplagat N. (Sample reader)", "email": "reader19@example.com", "place": "Mlimani", "created_at": "d-353 09:00"}
+{"customer_id": "cus-r20", "name": "Wangari V. (Sample reader)", "email": "reader20@example.com", "place": "Mto Mkuu", "created_at": "d-370 09:00"}
+{"customer_id": "cus-r21", "name": "Barasa I. (Sample reader)", "email": "reader21@example.com", "place": "Kanyonga", "created_at": "d-387 09:00"}
+{"customer_id": "cus-r22", "name": "Nekesa O. (Sample reader)", "email": "reader22@example.com", "place": "Kivuli", "created_at": "d-404 09:00"}
+{"customer_id": "cus-r23", "name": "Karanja Y. (Sample reader)", "email": "reader23@example.com", "place": "Kora", "created_at": "d-421 09:00"}
+{"customer_id": "cus-r24", "name": "Auma Z. (Sample reader)", "email": "reader24@example.com", "place": "Mlimani", "created_at": "d-438 09:00"}
+{"customer_id": "cus-r25", "name": "Kimani Q. (Sample reader)", "email": "reader25@example.com", "place": "Mto Mkuu", "created_at": "d-455 09:00"}
+{"customer_id": "cus-r26", "name": "Jelagat U. (Sample reader)", "email": "reader26@example.com", "place": "Kanyonga", "created_at": "d-472 09:00"}
+{"customer_id": "cus-r27", "name": "Ouma X. (Sample reader)", "email": "reader27@example.com", "place": "Kivuli", "created_at": "d-489 09:00"}
+{"customer_id": "cus-r28", "name": "Wanjiku T. (Sample reader)", "email": "reader28@example.com", "place": "Kora", "created_at": "d-506 09:00"}
+{"customer_id": "cus-r29", "name": "Rotich S. (Sample reader)", "email": "reader29@example.com", "place": "Mlimani", "created_at": "d-523 09:00"}
+{"customer_id": "cus-r30", "name": "Nafula R. (Sample reader)", "email": "reader30@example.com", "place": "Mto Mkuu", "created_at": "d-540 09:00"}
+{"customer_id": "cus-r31", "name": "Njoroge M. (Sample reader)", "email": "reader31@example.com", "place": "Kanyonga", "created_at": "d-557 09:00"}
+{"customer_id": "cus-r32", "name": "Muthoni E. (Sample reader)", "email": "reader32@example.com", "place": "Kivuli", "created_at": "d-574 09:00"}
+{"customer_id": "cus-r33", "name": "Kibet A. (Sample reader)", "email": "reader33@example.com", "place": "Kora", "created_at": "d-591 09:00"}
+{"customer_id": "cus-r34", "name": "Atieno L. (Sample reader)", "email": "reader34@example.com", "place": "Mlimani", "created_at": "d-608 09:00"}
+{"customer_id": "cus-r35", "name": "Mwangi C. (Sample reader)", "email": "reader35@example.com", "place": "Mto Mkuu", "created_at": "d-625 09:00"}
+{"customer_id": "cus-r36", "name": "Chepkoech D. (Sample reader)", "email": "reader36@example.com", "place": "Kanyonga", "created_at": "d-642 09:00"}
+{"customer_id": "cus-r37", "name": "Okoth F. (Sample reader)", "email": "reader37@example.com", "place": "Kivuli", "created_at": "d-659 09:00"}
+{"customer_id": "cus-r38", "name": "Wekesa G. (Sample reader)", "email": "reader38@example.com", "place": "Kora", "created_at": "d-676 09:00"}

@@ -1,0 +1,132 @@
+#cloud-config
+# Agentrix SaaS · saas-node first boot. Rendered by deploy/saas/provision.sh, which fills
+# @@SSH_PUBKEY@@ (the public half of ~/.ssh/agentrix_saas_ed25519). No secret is ever written
+# here: deploy/saas/deploy.sh writes /etc/agentrix-saas/*.env over SSH from the repo's .env.
+#
+# This one VM runs: agentrix-saas (both companies, 127.0.0.1:18190), Zavora ERA under Docker
+# compose project saas-era (Postgres, Redis, API on 127.0.0.1:18180, UI on 127.0.0.1:18181),
+# sandbox containers (Docker, gVisor's runsc registered as an extra runtime), and Caddy (TLS on
+# 80/443 for the four hosts). Builds also run here, so it has Rust, Node.js and swap.
+#
+# Firewalls: the Vultr group saas-fw (22 from the admin IP, 80 and 443), then ufw on the host.
+# Docker publishes only on 127.0.0.1, so its iptables rules (which bypass ufw) expose nothing.
+
+hostname: saas-node
+fqdn: saas-node
+preserve_hostname: false
+timezone: Etc/UTC
+
+package_update: true
+package_upgrade: true
+packages:
+  - ca-certificates
+  - curl
+  - gnupg
+  - git
+  - jq
+  - rsync
+  - ufw
+  - dnsutils
+  - uuid-runtime
+  - python3
+  - sqlite3
+  - build-essential
+  - pkg-config
+  - libssl-dev
+  - clang
+  - unattended-upgrades
+  - debian-keyring
+  - debian-archive-keyring
+  - apt-transport-https
+
+ssh_pwauth: false
+users:
+  - default
+  - name: deploy
+    gecos: Agentrix SaaS deploy
+    groups: [sudo]
+    shell: /bin/bash
+    sudo: "ALL=(ALL) NOPASSWD:ALL"
+    lock_passwd: true
+    ssh_authorized_keys:
+      - @@SSH_PUBKEY@@
+  - name: agentrix-saas
+    system: true
+    shell: /usr/sbin/nologin
+    homedir: /var/lib/agentrix-saas
+    no_create_home: true
+
+write_files:
+  # sshd keeps the first value it reads, and Vultr's image ships 50-cloud-init.conf (password
+  # login on), so this file must sort before it. Root login is off; deploys use `deploy`.
+  - path: /etc/ssh/sshd_config.d/00-agentrix-saas.conf
+    permissions: "0644"
+    content: |
+      PasswordAuthentication no
+      KbdInteractiveAuthentication no
+      PermitRootLogin no
+      AllowAgentForwarding no
+      X11Forwarding no
+  - path: /etc/sysctl.d/90-agentrix-saas.conf
+    permissions: "0644"
+    content: |
+      net.ipv4.conf.all.rp_filter = 1
+      net.ipv4.conf.default.rp_filter = 1
+      net.ipv4.conf.all.accept_redirects = 0
+      net.ipv6.conf.all.accept_redirects = 0
+      net.ipv4.conf.all.send_redirects = 0
+      kernel.kptr_restrict = 2
+      kernel.dmesg_restrict = 1
+      vm.swappiness = 10
+  - path: /etc/apt/apt.conf.d/20auto-upgrades
+    permissions: "0644"
+    content: |
+      APT::Periodic::Update-Package-Lists "1";
+      APT::Periodic::Unattended-Upgrade "1";
+  # A month unattended: logs must not fill the disk.
+  - path: /etc/docker/daemon.json
+    permissions: "0644"
+    content: |
+      {"log-driver": "json-file", "log-opts": {"max-size": "10m", "max-file": "3"}, "live-restore": true}
+  - path: /etc/systemd/journald.conf.d/90-agentrix-saas.conf
+    permissions: "0644"
+    content: |
+      [Journal]
+      SystemMaxUse=500M
+
+runcmd:
+  # Firewall first. Vultr's Ubuntu image enables ufw with only 22 open: open 80 and 443 too.
+  - [sh, -c, "ufw allow 22/tcp && ufw allow 80/tcp && ufw allow 443/tcp && ufw --force enable"]
+  - [sysctl, --system]
+  - [systemctl, try-reload-or-restart, ssh]
+  - [systemctl, restart, systemd-journald]
+  # Swap, for release builds (thin LTO, one codegen unit) next to Postgres.
+  - [sh, -c, "[ -e /swapfile ] || { fallocate -l 8G /swapfile && chmod 600 /swapfile && mkswap /swapfile && swapon /swapfile && echo '/swapfile none swap sw 0 0' >> /etc/fstab; }"]
+  - [install, -d, -m, "0755", /etc/apt/keyrings]
+  # Docker Engine and the compose plugin, from Docker's apt repository.
+  - [sh, -c, "curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc && chmod a+r /etc/apt/keyrings/docker.asc"]
+  - [sh, -c, "echo \"deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu $(. /etc/os-release && echo $VERSION_CODENAME) stable\" > /etc/apt/sources.list.d/docker.list"]
+  # gVisor (runsc) for sandbox containers: registered as a runtime, not the default.
+  - [sh, -c, "curl -fsSL https://gvisor.dev/archive.key | gpg --dearmor -o /etc/apt/keyrings/gvisor.gpg"]
+  - [sh, -c, "echo \"deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/gvisor.gpg] https://storage.googleapis.com/gvisor/releases release main\" > /etc/apt/sources.list.d/gvisor.list"]
+  # Caddy, from its official apt repository.
+  - [sh, -c, "curl -1sLf https://dl.cloudsmith.io/public/caddy/stable/gpg.key | gpg --dearmor -o /usr/share/keyrings/caddy-stable-archive-keyring.gpg"]
+  - [sh, -c, "curl -1sLf https://dl.cloudsmith.io/public/caddy/stable/debian.deb.txt -o /etc/apt/sources.list.d/caddy-stable.list"]
+  # Node.js 22 (the board's Vite needs 20.19+; Ubuntu 24.04 ships 18), from NodeSource.
+  - [sh, -c, "curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg"]
+  - [sh, -c, "echo 'deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_22.x nodistro main' > /etc/apt/sources.list.d/nodesource.list"]
+  - [sh, -c, "apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin runsc caddy nodejs"]
+  - [sh, -c, "runsc install && systemctl restart docker"]
+  - [systemctl, enable, --now, docker, caddy]
+  # Directories: sources and builds owned by deploy; data by the service user; settings root-only.
+  - [install, -d, -m, "0755", -o, deploy, -g, deploy, /opt/agentrix-saas, /opt/agentrix-saas/src, /opt/agentrix-saas/target, /opt/agentrix-saas/board, /opt/zavora-era, /opt/mcp-erp, /opt/mcp-erp/src]
+  - [install, -d, -m, "0750", -o, agentrix-saas, -g, agentrix-saas, /var/lib/agentrix-saas]
+  - [install, -d, -m, "0700", /etc/agentrix-saas]
+  # The node starts sandbox containers (no network, runsc) through Docker's socket.
+  - [usermod, -aG, docker, agentrix-saas]
+  # Rust for builds here, the workspace's pinned toolchain (rust-toolchain.toml) as the default.
+  - [sudo, -u, deploy, -H, sh, -c, "curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --profile minimal --default-toolchain 1.95.0"]
+  # Facts provision.sh reads back over SSH.
+  - [sh, -c, "printf '{\"host\":\"saas-node\",\"docker\":\"%s\",\"compose\":\"%s\",\"runsc\":\"%s\",\"caddy\":\"%s\",\"node\":\"%s\",\"cargo\":\"%s\",\"ufw\":\"%s\"}\\n' \"$(docker --version 2>/dev/null | cut -d, -f1)\" \"$(docker compose version --short 2>/dev/null)\" \"$(runsc --version 2>/dev/null | head -1)\" \"$(caddy version 2>/dev/null | cut -d' ' -f1)\" \"$(node --version 2>/dev/null)\" \"$(sudo -u deploy -H sh -c '. ~/.cargo/env && cargo --version' 2>/dev/null)\" \"$(ufw status | head -1)\" > /var/lib/agentrix-saas/host-facts.json"]
+
+final_message: "saas-node ready after $UPTIME s"

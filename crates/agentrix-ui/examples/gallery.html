@@ -1,0 +1,139 @@
+{% extends "ui/layouts/" ~ layout ~ ".html" %}
+{% import "ui/kit.html" as ui %}
+
+{% macro components(agents) %}
+{%- import "ui/kit.html" as ui %}
+<div class="grid">
+<section class="stack">
+  <h2>Buttons, chips, lines</h2>
+  <div class="row">{{ ui.button("Approve the order", kind="primary") }}{{ ui.button("Read the mission report") }}{{ ui.button("Ask about it", kind="ghost") }}{{ ui.button("Stop everything", kind="danger") }}{{ ui.button("Small", size="sm") }}{{ ui.button("Large", kind="primary", size="lg") }}{{ ui.button("Can't use", disabled=true) }}</div>
+  <div class="row">{{ ui.chip("Neutral") }}{{ ui.chip("Verified", "ok") }}{{ ui.chip("Waiting for you", "wait") }}{{ ui.chip("Urgent", "risk") }}{{ ui.chip("New", "info") }}{{ ui.chip("3", "coral") }}{{ ui.chip("Sealed", "sealed") }}{{ ui.chip("Outline", "outline") }}{{ ui.badge(2, "waiting") }}{{ ui.ai_chip() }}</div>
+  <div class="row">{{ ui.status("draft", "Draft") }}{{ ui.status("shared", "Shared") }}{{ ui.status("held", "Waiting for Wanjiru's OK") }}{{ ui.status("paid", "Paid") }}{{ ui.status("failed", "Payment failed") }}</div>
+  <div class="row">{{ ui.state_line("working", "Comparing 14 prices with the Cakes page") }}{{ ui.state_line("waiting", "Waiting for you") }}{{ ui.state_line("live", "Watching · checked 2 min ago") }}{{ ui.state_line("asleep", "Asleep until 02:00") }}</div>
+  {{ ui.line("ok", "Saved. Your site keeps serving release v14 until you approve v15.") }}
+  {{ ui.line("wait", "Waiting for Wanjiru's OK. Nothing charged.") }}
+  {{ ui.line("error", "We couldn't reach PayPal. Nothing was charged. Try again in a minute.") }}
+  {{ ui.line("notice", "Prices come from the price list of Sat 7 Nov.") }}
+  <p>{{ ui.source("Price list, 2 Nov") }} {{ ui.source("Delivery calendar", live=true) }}</p>
+  {{ ui.sealed_chip(["Sealed room", "No network but the proxy", "Deleted after the Move"]) }}
+</section>
+
+<section class="stack">
+  <h2>Cards and data</h2>
+  <div class="grid-2">
+  {% call ui.card(title="Orders today") %}
+    {{ ui.data_table([{"key": "who", "label": "Customer"}, {"key": "what", "label": "Order"}, {"key": "amt", "label": "Amount", "align": "r"}], [{"who": "Amani W. (sample)", "what": "Forest cake, 12", "amt": "KSh 4,500"}, {"who": "Njeri K. (sample)", "what": "Bake box", "amt": "KSh 1,200"}]) }}
+  {% endcall %}
+  {% call ui.card(title="No orders yet", tone="accent") %}
+    {{ ui.empty("No orders yet", "They appear here the moment someone pays.", action={"label": "Share your shop", "href": "#"}, level=3) }}
+  {% endcall %}
+  </div>
+  <div class="kpis">
+    {{ ui.kpi({"label": "Visitors", "value": "41", "window": "Overnight", "source": "edge counts", "href": "#"}) }}
+    {{ ui.kpi({"label": "Questions answered", "value": "9", "window": "Overnight", "source": "2 in Swahili"}) }}
+    {{ ui.kpi({"label": "AI spend", "value": "38", "unit": "KSh", "window": "This month", "source": "of KSh 1,500"}) }}
+  </div>
+  {{ ui.meter(38, 1500, label="KSh 38 of KSh 1,500 this month") }}
+  {{ ui.meter(23, 60, tone="ok", label="23 of 60 preorders") }}
+  {{ ui.kv([{"k": "Release", "v": "v14, signed Sat 7 Nov 06:58"}, {"k": "Pages", "v": "50 checked, 50 match"}]) }}
+  {{ ui.timeline([{"when": "22:04", "title": "Night Time began", "state": "done"}, {"when": "02:00", "title": "Caretaker checked backups", "body": "all 3 restore", "state": "ok"}, {"when": "04:10", "title": "Sales woke", "body": "a lead asked for 40 boxes", "state": "warn"}, {"when": "07:00", "title": "Morning brief", "state": "next"}]) }}
+</section>
+
+<section class="stack">
+  <h2>WebAgents</h2>
+  <div class="row">{% for a in kilele %}{{ ui.mark(a, size=40) }}{% endfor %}</div>
+  <div class="row">{% for a in kilele %}{{ ui.mark(a, size=40, audience="visitor") }}{% endfor %}{{ ui.team_mark({"name": "Kilele Bakery", "monogram": "K", "team": team, "busy": ["bread"]}, waiting=true) }}</div>
+  <div class="row">{% for a in agents %}{{ ui.mark(a) }}{% endfor %}</div>
+  <div class="row">{{ ui.mark(agents[0], audience="visitor", size=40) }}{{ ui.mark(agents[4], audience="visitor", state="resting", size=40) }}{{ ui.team_mark({"name": "Kilele Bakery", "monogram": "K"}) }}{{ ui.team_mark({"name": "Kilele Bakery", "monogram": "K"}, size=32, waiting=true) }}</div>
+  {{ ui.ladder("ask", ceiling="tell") }}
+  {{ ui.ladder("tell", name="level", lowered=true, why="Lowered by the platform after a disputed refund on Fri 6 Nov.") }}
+  {{ ui.ladder("suggest", layout="list") }}
+</section>
+
+<section class="stack">
+  <h2>Decisions</h2>
+  <div class="grid-2">
+  {{ ui.decision_card({"id": "o-118", "title": "Cake order: KSh 4,500, collect Sat 14 Nov 10:00", "from": agents[4], "body": "Amani W. (sample) asked for a forest-green ombré cake for 12.", "chip": {"text": "Waiting for you", "tone": "wait"}, "effects": ["Confirms the order to Amani on WhatsApp", "Takes KSh 4,500 through PayPal"], "risk": "Low risk: returning customer, usual amount", "expires": "Expires Sat 7 Nov, 19:00", "why": "Orders over KSh 3,000 need your OK (your rule, 2 Nov).", "decline_action": "#", "detail_href": "#"}) }}
+  {{ ui.decision_card({"id": "v15", "title": "Publish release v15: 2 cake prices changed", "from": agents[2], "effects": ["Cakes page: Forest cake KSh 4,200 to KSh 4,500", "Cakes page: Bake box KSh 1,100 to KSh 1,200"], "signers": [{"name": "Wanjiru", "signed": false}, {"name": "Otieno (agency)", "signed": true}]}, size="full") }}
+  {{ ui.decision_card({"id": "x1", "title": "Reply to a 2-star review", "from": agents[3], "state": "expired"}) }}
+  {{ ui.decision_card({"id": "x2", "title": "Refund KSh 1,200 to Njeri", "from": agents[4], "state": "done", "done_words": "Approved with your passkey on iPhone, 08:12"}) }}
+  </div>
+  {{ ui.approval_sheet({"id": "o-118", "summary": "Cake order o-118 · KSh 4,500 · Amani W. · collect Sat 14 Nov 10:00", "fingerprint": "4c19 7a02 … e7", "passkey_action": "#", "code_action": "#"}) }}
+</section>
+
+<section class="stack">
+  <h2>Forms</h2>
+  <form class="card stack">
+    {{ ui.field("email", "Email", type="email", hint="We send a one-time code here. No password needed.", autocomplete="email") }}
+    {{ ui.field("name", "Name on the order", error="Tell us the name to put on the order.") }}
+    {{ ui.code_field("code", "6-digit code", hint="From the email we sent to w•••@example.com") }}
+    {{ ui.select("slot", "Collection", [{"value": "a", "label": "Sat 14 Nov, 10:00"}, {"value": "b", "label": "Sat 14 Nov, 12:00"}]) }}
+    {{ ui.textarea("note", "Note for the bakery") }}
+    {{ ui.check("age", "I'm 18 or over") }}
+    {{ ui.switch("digest", "Weekly digest", on=true) }}
+    {{ ui.or_line() }}
+    {{ ui.button("Continue with email", kind="primary", size="wide", type="submit") }}
+  </form>
+  {{ ui.tabs([{"label": "Waiting", "href": "#", "current": true}, {"label": "Decided", "href": "#", "current": false}], "Decisions") }}
+  {{ ui.segmented([{"label": "Day", "href": "#", "current": true}, {"label": "Week", "href": "#", "current": false}, {"label": "Month", "href": "#", "current": false}], "Period") }}
+</section>
+
+<section class="stack">
+  <h2>States no concept draws</h2>
+  {{ ui.loading("Checking 50 pages against the old site (31 done)") }}
+  {{ ui.skeleton(3) }}
+  {{ ui.error_state("The Move stopped at the replay step", "The old site timed out. Start it again; it picks up where it stopped.", ref="r-7f3a21", action={"label": "Start again", "href": "#"}, level=3) }}
+  {{ ui.offline("06:58") }}
+  {{ ui.read_only("Your plan ended on Sat 7 Nov.") }}
+  {{ ui.provider("PayPal", "PayPal's own window opens here to take the payment. We never see your card.") }}
+  {{ ui.quiet("Nothing else needs you. New decisions appear here.") }}
+</section>
+</div>
+{% endmacro %}
+
+{% block title %}Kit gallery · Agentrix{% endblock %}
+{% block main_class %}page wide{% endblock %}
+{% block banner %}{{ ui.banner("offline", "You're offline. You're seeing what was saved at 06:58.") }}{% endblock %}
+
+{# platform page and site layouts #}
+{% block main %}
+<div class="page-head"><span class="eyebrow">agentrix-ui</span><h1>Kit gallery</h1><p class="lead">Every component, on {{ layout }} tokens{% if layout == "site" %} for {{ site.name }}{% endif %}. Sample data for review.</p></div>
+{{ components(agents) }}
+{% endblock %}
+
+{# the shell #}
+{% block os_class %}{% endblock %}
+{% block bar %}
+{{ ui.site_chip({"name": "Kilele Bakery", "sub": "kilele-bakery-sample.agentrix.website · v14 live", "monogram": "K", "tile": "#7a3f1d"}) }}
+<div class="worlds" role="group" aria-label="Worlds"><a href="#">Front of house <span class="ct">3 live</span></a><a href="#" aria-current="page">Back office</a></div>
+<div class="bar-right">{{ ui.time_pill("Day Time · until 22:00", "Night Time · until 06:00") }}{{ ui.pill("Budget", value="KSh 38") }}{{ ui.pill("Protections on", kind="trust", href="#", count=2) }}{{ ui.pill("Freeze", kind="freeze") }}</div>
+{% endblock %}
+{% block dock %}{% for a in agents %}{{ ui.app_icon({"label": a.name, "href": "#", "agent": a, "badge": 1 if a.state == "waiting" else 0, "current": loop.index == 3}) }}{% endfor %}{% endblock %}
+{% block field %}
+<div class="field-head"><div><h1>Good morning, Wanjiru</h1><p class="sub">Sat 7 Nov · Westlands · 2 decisions waiting</p></div>{{ ui.state_line("working", "3 WebAgents awake · 6 asleep") }}</div>
+<div class="cards">
+{% call ui.fcard(title="Chief WebAgent · Morning brief", sub="07:00 · from 31 recorded events", accent=true, span2=true) %}
+<p><b>Overnight: 41 visitors, 9 questions answered</b> (2 in Swahili). One cake order is waiting for you: KSh 4,500, collect Saturday.</p>
+<div class="verbs">{{ ui.button("Approve the order", kind="primary", size="sm", open="approve-o-118") }}{{ ui.button("Read the mission report", size="sm") }}</div>
+{% endcall %}
+{% call ui.fcard(title="Editor", sub="Comparing 14 prices with the Cakes page", who=agents[2]) %}
+{{ ui.steps([{"text": "Read the price list you sent on WhatsApp at 06:58", "state": "done"}, {"text": "Compare it with the Cakes page in release v14", "state": "now"}, {"text": "Draft release v15 for your passkey", "state": ""}]) }}
+{% endcall %}
+</div>
+<div class="wrap-gallery">{{ components(agents) }}</div>
+{% endblock %}
+{% block lane %}
+{% call ui.lane_section("Needs you", 2) %}
+{{ ui.decision_card({"id": "o-118", "title": "Approve cake order · KSh 4,500", "from": agents[4], "chip": {"text": "Low risk", "tone": "ok"}, "body": "Amani W. · 2-tier vanilla · collect Sat 14 Nov, 10:00 · PayPal request after you approve", "secondary": {"label": "Edit", "href": "#"}, "decline_action": "#"}) }}
+{{ ui.decision_card({"id": "v15", "title": "Publish release v15 · 2 price changes", "from": agents[2], "chip": {"text": "Medium", "tone": "wait"}, "body": "Black Forest KSh 3,500 to 3,800 · Vanilla sponge KSh 3,000 to 3,200 · from your WhatsApp list", "secondary": {"label": "See the diff", "href": "#"}, "why": "Publishing is a public effect, and Editor's freshness job is at Ask me first. Prices are only ever published from what you sent: the draft cites your WhatsApp message of 06:58."}) }}
+{% endcall %}
+{% call ui.lane_section("Proposals") %}
+{{ ui.decision_card({"id": "xmas", "title": "Message 31 customers who bought Christmas cakes last year", "from": agents[1], "from_words": "Sales suggests", "body": "All 31 agreed to updates. Draft first; nobody is contacted before you sign.", "primary": {"label": "Plan it", "href": "#"}, "secondary": {"label": "Not now", "href": "#"}, "why_label": "Why am I seeing this?", "why": "From the Christmas cakes mission. Sales' nurture job is at Ask me first. 31 consent receipts on file."}) }}
+{% endcall %}
+{% call ui.lane_section("Done for you") %}{{ ui.quiet("Caretaker renewed your certificate (within budget) · Concierge answered 9 questions, none corrected · Guardian blocked 212 probes.") }}{% endcall %}
+{% endblock %}
+{% block cmd %}{{ ui.command_bar("#", "Ask anything, or tell your WebAgents what to do") }}{% endblock %}
+
+{# the site #}
+{% block header %}<header class="topbar"><b class="logo">{{ site.name }}</b></header>{% endblock %}
+

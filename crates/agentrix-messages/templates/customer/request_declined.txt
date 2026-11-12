@@ -1,0 +1,19 @@
+{% block subject %}{{ site.owner }} can't take request {{ request.number }}{% endblock %}
+{% block preheader %}Nothing was charged.{% endblock %}
+{% block body %}
+# {{ site.owner }} can't take this one
+Request {{ request.number }}: {{ request.summary }}
+
+{% if request.reason %}
+{{ site.owner }} says:
+
+::quote {{ request.reason }}
+{% endif %}
+
+Nothing was charged. You can ask for something different at {{ site.host }}.
+
+::link Open {{ site.name }} | {{ site.url }}
+{% endblock %}
+{% block chat %}
+{{ site.name }}: {{ site.owner }} can't take request {{ request.number }}.{% if request.reason %} "{{ request.reason }}"{% endif %} Nothing was charged.
+{% endblock %}

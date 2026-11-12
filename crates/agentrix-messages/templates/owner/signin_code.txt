@@ -1,0 +1,12 @@
+{% block subject %}Your Agentrix sign-in code{% endblock %}
+{% block preheader %}It works for {{ minutes }} minutes, once.{% endblock %}
+{% block body %}
+# Your sign-in code
+Type this code where you asked for it to sign in to Agentrix:
+
+::code {{ code }}
+
+It works for {{ minutes }} minutes and only once. After you sign in, we tell you on every channel you've set up, so nobody can use a code quietly.
+
+Didn't ask for it? Ignore this email. Nobody can sign in without the code, and Agentrix never asks you to read it out or send it on.
+{% endblock %}

@@ -1,0 +1,20 @@
+{
+ "site": {
+  "name": "Kilele Bakery",
+  "host": "kilele-bakery-sample.agentrix.website",
+  "sample": true
+ },
+ "person": {
+  "name": "Wanjiru"
+ },
+ "console_url": "https://agentrix.website/console/kilele-bakery-sample",
+ "waiting": 1,
+ "card": {
+  "since": "18:00",
+  "title": "Publish price list v15: 1-tier cake KSh 3,800 to KSh 4,000, 2-tier KSh 4,500 to KSh 4,800",
+  "agent": "The Editor",
+  "risk": "medium",
+  "money": false,
+  "url": "https://agentrix.website/d/d-118"
+ }
+}

@@ -1,0 +1,292 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Place an Order</title>
+<meta name="description" content="Customer journey, step 3: Njeri orders from Kilele's catalogue with every number sourced, and requests a custom cake that is held for Wanjiru's OK with nothing charged.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Manrope:wght@600;700;800&family=Fraunces:opsz,wght@9..144,600;9..144,800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../styles.css">
+<link rel="stylesheet" href="../experience/experience.css">
+<link rel="stylesheet" href="journeys.css">
+<style>
+  .kilele [hidden] { display: none !important; }
+  .kilele a:focus-visible, .kilele button:focus-visible, .kilele input:focus-visible { outline: 2px solid var(--k-brown); outline-offset: 2px; box-shadow: none; }
+  .j-cap code { font: 600 12px/1.3 var(--font-mono); color: var(--j-ink); overflow-wrap: anywhere; }
+
+  .k-me { display: inline-grid; place-items: center; width: 24px; height: 24px; border-radius: 50%; background: var(--k-brown); color: #fff; font: 700 11px/1 var(--font-text); }
+  .k-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap; }
+  .k-head h3 { font-size: 20px; }
+  .k-small { font-size: 12.5px; line-height: 1.45; color: var(--k-brown-2); }
+
+  /* The basket */
+  .k-items { list-style: none; margin: 0; padding: 0; display: grid; }
+  .k-items > li { display: grid; gap: 6px; padding: 10px 0; border-top: 1px dashed var(--k-line); min-width: 0; }
+  .k-items > li:first-child { border-top: 0; padding-top: 0; }
+  .k-row { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; font: 600 14.5px/1.35 var(--font-text); color: var(--k-brown); }
+  .k-row > span { min-width: 0; }
+  .k-row small { display: block; margin-top: 2px; font: 400 12.5px/1.4 var(--font-text); color: var(--k-brown-2); }
+  .k-row b { white-space: nowrap; }
+  .k-srcs { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 12px; }
+  .k-slots { border: 0; margin: 0; padding: 0; min-width: 0; display: grid; gap: 8px; }
+  .k-slots legend { padding: 0; margin-bottom: 8px; font: 700 14px/1.3 var(--font-text); color: var(--k-brown); }
+  .k-slot-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 150px), 1fr)); gap: 8px; }
+  .k-slot { display: flex; align-items: center; gap: 8px; min-height: 44px; padding: 8px 10px; border: 1.5px solid var(--k-line); border-radius: 12px; background: #fff; font: 500 13.5px/1.3 var(--font-text); color: var(--k-brown); cursor: pointer; min-width: 0; }
+  .k-slot input { flex: none; width: 18px; height: 18px; margin: 0; accent-color: var(--k-terra); }
+  .k-slot:has(input:checked) { border-color: var(--k-brown); background: var(--k-cream); }
+  .k-slot.full { cursor: not-allowed; background: var(--k-cream-2); color: var(--k-brown-2); }
+  .k-slot.full b { color: var(--k-brown); }
+  .k-pin { display: flex; gap: 8px; align-items: flex-start; padding: 9px 11px; border-radius: 12px; background: var(--k-cream-2); font: 600 12.5px/1.45 var(--font-text); color: var(--k-brown); }
+  .k-pin svg { flex: none; width: 15px; height: 15px; margin-top: 1px; }
+  .k-pay { display: grid; gap: 8px; padding: 12px; border: 1.5px solid var(--k-line); border-radius: 14px; background: #fff; }
+  .k-pay p { font-size: 14px; line-height: 1.5; color: var(--k-brown-2); }
+  .k-pay p b { color: var(--k-brown); }
+
+  /* The desk */
+  .k-peek { margin: 12px; border: 1px solid var(--k-line); border-radius: 18px; background: var(--wa-bg); box-shadow: var(--wa-shadow); padding: 14px; display: grid; gap: 10px; }
+  .k-first { font-size: 12.5px; color: var(--k-brown-2); background: var(--k-cream); border-radius: 10px; padding: 8px 10px; }
+
+  /* The custom cake */
+  .k-sketch { position: relative; margin: 0; padding: 38px 10px 6px; border-radius: 14px; border: 1px solid var(--k-line); background: linear-gradient(180deg, #fffdf9, var(--k-cream-2)); }
+  .k-sketch figcaption { position: absolute; left: 10px; top: 10px; padding: 4px 9px; border-radius: 999px; background: #fff; border: 1px solid var(--k-line); font: 700 11.5px/1.2 var(--font-text); color: var(--k-brown-2); }
+  .k-sketch svg { display: block; width: 100%; max-width: 300px; height: auto; margin: 0 auto; }
+  .k-by { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; margin-top: 4px; font-size: 13px; color: var(--k-brown-2); }
+  .k-line > span { min-width: 0; }
+  .k-line .rule { margin-left: 6px; padding: 1px 5px; border-radius: 5px; background: var(--k-cream); font: 600 10.5px/1.4 var(--font-mono); color: var(--k-brown-2); white-space: nowrap; }
+  .k-price { display: grid; gap: 0; }
+  .k-price .k-src { margin-top: 8px; }
+  .k-facts { margin: 0; display: grid; }
+  .k-facts > div { display: grid; grid-template-columns: 74px minmax(0, 1fr); gap: 10px; padding: 8px 0; border-top: 1px dashed var(--k-line); }
+  .k-facts > div:first-child { border-top: 0; padding-top: 0; }
+  .k-facts dt { font: 700 11.5px/1.5 var(--font-text); letter-spacing: .04em; text-transform: uppercase; color: var(--k-brown-2); }
+  .k-facts dd { margin: 0; font-size: 14px; line-height: 1.45; color: var(--k-brown); overflow-wrap: anywhere; }
+  .k-status { display: grid; gap: 8px; padding: 12px; border-radius: 14px; border: 1px solid var(--k-line); background: #fff; }
+  .k-statusline { font: 600 14.5px/1.45 var(--font-text); color: var(--k-brown); }
+  .k-next { display: grid; gap: 6px; padding: 12px; border-radius: 14px; background: var(--k-cream-2); }
+  .k-next h4 { font-size: 15px; }
+  .k-next ol { margin: 0; padding-left: 20px; display: grid; gap: 4px; font-size: 13.5px; line-height: 1.45; color: var(--k-brown); }
+  .k-btn.done, .k-btn.done:hover { opacity: 1; background: var(--k-cream-2); color: var(--k-brown); cursor: default; }
+</style>
+</head>
+<body data-lane="customer" data-step="3">
+<header class="j-top">
+  <a class="logo" href="../index.html"><span class="mark" aria-hidden="true"></span>Agentrix</a>
+  <a class="j-maplink" href="index.html">Journey map</a>
+  <span class="j-lane">Customer · Njeri</span>
+  <span class="concept-label">Concept · illustrative data</span>
+</header>
+<nav class="j-steps" aria-label="Customer journey" data-steps></nav>
+<main class="wrap j-main">
+  <header class="j-head">
+    <p class="eyebrow">Step 3 of 7 · Customer</p>
+    <h1>Place an order</h1>
+    <p class="lead">Njeri orders bread and a bake box from the catalogue, then asks for Amina's cake. Every number on the page comes from Kilele's rules. The cake is held for Wanjiru's OK, and nothing is charged until she gives it.</p>
+  </header>
+  <div class="j-grid">
+    <section class="j-stage" aria-label="What Njeri sees">
+      <div class="j-tabs" role="tablist" aria-label="Two ways to order">
+        <button role="tab" type="button" id="tab-cat" aria-selected="true" aria-controls="p-cat">From the catalogue</button>
+        <button role="tab" type="button" id="tab-custom" aria-selected="false" aria-controls="p-custom">Something custom</button>
+      </div>
+
+      <!-- ===== K-1042: from the catalogue ===== -->
+      <div role="tabpanel" id="p-cat" aria-labelledby="tab-cat">
+        <div class="j-screens">
+          <div class="j-screen">
+            <p class="j-cap"><span class="n">1</span>The basket. Every number says where it comes from.</p>
+            <div class="j-device kilele">
+              <div class="j-url"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg><span>kilele-bakery.example/checkout</span></div>
+              <div class="k-bar">
+                <a class="k-logo" href="#" onclick="return false"><i aria-hidden="true"></i>Kilele</a>
+                <span class="k-acct"><span class="k-me" aria-hidden="true">N</span>Njeri</span>
+              </div>
+              <div class="k-screen">
+                <div class="k-head"><h3>Your basket</h3><span class="k-pill">Order K-1042</span></div>
+                <ul class="k-items" aria-label="Basket">
+                  <li>
+                    <div class="k-row"><span>Sourdough loaf × 2<small>KSh 450 each</small></span><b>KSh 900</b></div>
+                    <div class="k-srcs"><span class="k-pill ok">Available Sat 14 Nov</span><span class="k-src">Price list, 2 Nov</span><span class="k-src">Stock: Sat 14 Nov bake (live)</span></div>
+                  </li>
+                  <li>
+                    <div class="k-row"><span>Weekend bake box<small>A sourdough loaf, four cinnamon buns and a banana loaf</small></span><b>KSh 1,350</b></div>
+                    <div class="k-srcs"><span class="k-pill ok">Available Sat 14 Nov</span><span class="k-src">Price list, 2 Nov</span><span class="k-src">Stock: Sat 14 Nov bake (live)</span></div>
+                  </li>
+                  <li>
+                    <div class="k-row"><span>Delivery to Kilimani<small id="slotOut">Sat 14 Nov, 10:00–12:00 · Amina's home</small></span><b>KSh 300</b></div>
+                    <div class="k-srcs"><span class="k-src">Delivery: zones and fees</span></div>
+                  </li>
+                </ul>
+                <fieldset class="k-slots">
+                  <legend>Delivery slot</legend>
+                  <div class="k-slot-grid">
+                    <label class="k-slot"><input type="radio" name="slot" value="sat-am" data-label="Sat 14 Nov, 10:00–12:00" checked><span>Sat 14 Nov<br>10:00–12:00</span></label>
+                    <label class="k-slot"><input type="radio" name="slot" value="sat-pm" data-label="Sat 14 Nov, 14:00–16:00"><span>Sat 14 Nov<br>14:00–16:00</span></label>
+                    <label class="k-slot"><input type="radio" name="slot" value="sun-am" data-label="Sun 15 Nov, 10:00–12:00"><span>Sun 15 Nov<br>10:00–12:00</span></label>
+                    <label class="k-slot full"><input type="radio" name="slot" value="sat-early" disabled><span>Sat 14 Nov<br>08:00–10:00 · <b>Full</b></span></label>
+                  </div>
+                  <span class="k-src">Delivery calendar (live). Only real slots can be picked.</span>
+                </fieldset>
+                <div class="k-total"><span>Total</span><span>KSh 2,550</span></div>
+                <p class="k-pin"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 4h6l-1 5 3 3H7l3-3z"/><path d="M12 12v8"/></svg><span>Quote pinned to Kilele's release of 2 Nov (price list v14). Valid until Sat 14 Nov 08:00.</span></p>
+                <div class="k-pay">
+                  <p><b>Pay USD 19.77 at Kilele's rate</b> of 1 USD = KSh 129.00. PayPal has no Kenyan shilling, so it charges dollars. The rate is pinned on this order.</p>
+                  <span class="k-src">Price list, 2 Nov</span>
+                  <a class="k-btn wide" href="customer-pay.html">Continue to pay</a>
+                  <p class="k-small">You'll see the amount and the payee before PayPal opens.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="j-screen">
+            <p class="j-cap"><span class="n">2</span>She asks Orders for something the menu doesn't have. It says no, and shows what exists.</p>
+            <div class="j-device kilele">
+              <div class="j-url"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg><span>kilele-bakery.example/checkout</span></div>
+              <div class="k-peek" role="group" aria-label="Orders desk">
+                <div class="k-desk">
+                  <span class="j-mark" data-agent="orders" data-size="40" data-state="answering"></span>
+                  <div class="who"><b>Orders <span class="k-ai">AI</span></b><span>WebAgent · answers from this site</span></div>
+                </div>
+                <p class="k-first">Orders sees this basket's items, slot and area. It can't see your account or payment details.</p>
+                <div class="k-thread" role="log" aria-label="Conversation with Orders">
+                  <p class="k-msg me">Can you make the bake box gluten-free?</p>
+                  <div class="k-msg desk">No. Kilele's menu has no gluten-free bake box<span class="cite">1</span>, and I can't add an option it doesn't list. Your basket is unchanged.
+                    <div class="k-sources"><span>1 · Shop: weekend bake box</span></div>
+                  </div>
+                  <div class="k-msg desk">What Kilele does offer is a gluten-free sponge on 1- and 2-tier cakes, for KSh 600 more<span class="cite">2</span>. The kitchen also uses wheat flour, so Kilele can't promise anything is safe for coeliac guests<span class="cite">3</span>.
+                    <div class="k-sources"><span>2 · Cakes: options and prices</span><span>3 · Allergens: kitchen note</span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== K-1043: something custom ===== -->
+      <div role="tabpanel" id="p-custom" aria-labelledby="tab-custom" hidden>
+        <div class="j-screens">
+          <div class="j-screen">
+            <p class="j-cap"><span class="n">1</span>Amina's cake, from the Cakes studio (06 §5.1). A sketch, priced line by line.</p>
+            <div class="j-device kilele">
+              <div class="j-url"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg><span>kilele-bakery.example/cakes/studio</span></div>
+              <div class="k-bar">
+                <a class="k-logo" href="#" onclick="return false"><i aria-hidden="true"></i>Kilele</a>
+                <span class="k-acct"><span class="k-me" aria-hidden="true">N</span>Njeri</span>
+              </div>
+              <div class="k-screen">
+                <figure class="k-sketch">
+                  <figcaption>Sketch, not a photo</figcaption>
+                  <svg viewBox="0 96 340 192" role="img" aria-label="Sketch of a 2-tier cake: forest-green ombré buttercream, fresh berries on top and round the lower tier, and a plaque that reads Happy 7th, Amina!">
+                    <defs><linearGradient id="ombre1043" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff8ee"/><stop offset="1" stop-color="#7fa07a"/></linearGradient></defs>
+                    <ellipse cx="170" cy="268" rx="150" ry="16" fill="#e8d6bd"/>
+                    <ellipse cx="170" cy="264" rx="138" ry="12" fill="#fff" stroke="#e2cfb4"/>
+                    <rect x="55" y="188" width="230" height="74" rx="10" fill="url(#ombre1043)" stroke="rgba(59,36,22,.18)"/>
+                    <rect x="82" y="126" width="176" height="62" rx="10" fill="url(#ombre1043)" stroke="rgba(59,36,22,.18)"/>
+                    <g fill="#c2263a"><circle cx="73" cy="192" r="5"/><circle cx="121.5" cy="192" r="5"/><circle cx="170" cy="192" r="5"/><circle cx="218.5" cy="192" r="5"/><circle cx="267" cy="192" r="5"/></g>
+                    <circle cx="136" cy="126" r="8" fill="#3b2a6b"/><circle cx="158" cy="122" r="7" fill="#c2263a"/><circle cx="180" cy="125" r="7" fill="#3b2a6b"/><circle cx="200" cy="123" r="8" fill="#c2263a"/><circle cx="148" cy="118" r="7" fill="#3b2a6b"/><circle cx="190" cy="117" r="7" fill="#c2263a"/><circle cx="170" cy="115" r="8" fill="#3b2a6b"/>
+                    <g fill="#fff" opacity=".6"><circle cx="134" cy="123" r="2"/><circle cx="156" cy="119" r="2"/><circle cx="178" cy="122" r="2"/><circle cx="198" cy="120" r="2"/><circle cx="146" cy="115" r="2"/><circle cx="188" cy="114" r="2"/><circle cx="168" cy="112" r="2"/></g>
+                    <rect x="95" y="146" width="150" height="22" rx="11" fill="#fffaf0" stroke="#d9b98f"/>
+                    <text x="170" y="161" text-anchor="middle" font-family="Fraunces, Georgia, serif" font-size="11" font-weight="700" fill="#3b2416">Happy 7th, Amina!</text>
+                  </svg>
+                </figure>
+                <div>
+                  <h3>Amina's 2-tier forest cake</h3>
+                  <p class="k-by"><span class="j-mark" data-agent="cakes" data-size="20"></span>Designed with Cakes <span class="k-ai">AI</span> from Kilele's own options</p>
+                </div>
+                <div class="k-card k-price">
+                  <div class="k-line"><span>2 tiers, feeds 25–30<code class="rule">size.2</code></span><b>KSh 4,500</b></div>
+                  <div class="k-line"><span>Lemon sponge<code class="rule">sponge.lemon</code></span><b>included</b></div>
+                  <div class="k-line"><span>Forest-green buttercream<code class="rule">colour.forest</code></span><b>included</b></div>
+                  <div class="k-line"><span>Ombré finish<code class="rule">finish.ombre</code></span><b>+ KSh 250</b></div>
+                  <div class="k-line"><span>Fresh berries<code class="rule">deco.berries</code></span><b>+ KSh 500</b></div>
+                  <div class="k-line"><span>Message: "Happy 7th, Amina!"<code class="rule">message</code></span><b>free</b></div>
+                  <div class="k-total"><span>Total</span><span>KSh 5,250</span></div>
+                  <span class="k-src">Price list, 2 Nov. Each line is a rule; the desk picks options and never sets a price.</span>
+                </div>
+                <p class="k-pin"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 4h6l-1 5 3 3H7l3-3z"/><path d="M12 12v8"/></svg><span>Quote pinned to Kilele's release of 2 Nov (price list v14). Valid until Sat 14 Nov 08:00. It goes with K-1042's delivery, so there's no second fee.</span></p>
+              </div>
+            </div>
+          </div>
+
+          <div class="j-screen">
+            <p class="j-cap"><span class="n">2</span>"Request this cake" calls <code>request_custom_order</code>. The call is held for Wanjiru.</p>
+            <div class="j-device kilele">
+              <div class="j-url"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg><span>kilele-bakery.example/cakes/studio</span></div>
+              <div class="k-screen">
+                <h3>Your request</h3>
+                <dl class="k-facts">
+                  <div><dt>Cake</dt><dd>2 tiers · lemon sponge · forest-green ombré · fresh berries</dd></div>
+                  <div><dt>Message</dt><dd>"Happy 7th, Amina!"</dd></div>
+                  <div><dt>Note</dt><dd>No nuts</dd></div>
+                  <div><dt>Delivery</dt><dd>Sat 14 Nov, 10:00–12:00 · Amina's home, Kilimani · with K-1042</dd></div>
+                  <div><dt>Price</dt><dd>KSh 5,250, which is USD 40.70 at Kilele's rate of 1 USD = KSh 129.00</dd></div>
+                </dl>
+                <button class="k-btn wide" type="button" id="reqBtn">Request this cake</button>
+                <div class="k-status">
+                  <div class="k-desk">
+                    <span class="j-mark" data-agent="orders" data-size="40" data-state="idle" id="reqMark"></span>
+                    <div class="who"><b>Orders <span class="k-ai">AI</span></b><span>WebAgent · sends cake requests to Wanjiru</span></div>
+                  </div>
+                  <p class="k-statusline" id="reqLine" role="status">Nothing is sent until you tap "Request this cake".</p>
+                  <span class="k-pill wait" id="reqPill" hidden>K-1043 · held for Wanjiru</span>
+                </div>
+                <div class="k-next">
+                  <h4>What happens next</h4>
+                  <ol>
+                    <li>Wanjiru gets the order card on her phone.</li>
+                    <li>She approves with her passkey, or with a code from her authenticator app if she has no passkey.</li>
+                    <li>The payment request appears on your orders page at kilele-bakery.example: USD 40.70 to Kilele Bakery.</li>
+                    <li>Nothing is charged until you pay it there.</li>
+                  </ol>
+                  <p class="k-small">If Wanjiru suggests a change or declines, you'll see it on the same page.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <aside class="j-notes" aria-label="What happens underneath">
+      <div class="j-note"><h3>Numbers come from rules</h3><p>Prices come from the price list, availability from the bake plan, and slots and the fee from the delivery calendar. No model sets, rounds or converts a number (d-exp-rules-price). The dollar figure is the price list's posted rate, applied by a rule.</p></div>
+      <div class="j-note"><h3>A quote that holds</h3><p>Both quotes are pinned to the release they were built from, with a valid-until (06 §5.1). If a price changes tomorrow, these quotes don't move.</p></div>
+      <div class="j-note"><h3>An honest no</h3><p>The bake box has no gluten-free option, so Orders says so, cites the menu and offers what does exist. A desk never invents an option or guesses an allergen.</p></div>
+      <div class="j-note gate"><h3>Held, and nothing charged</h3><p><code>request_custom_order</code> is a held call. No order is confirmed, no payment request exists and nothing is charged until Wanjiru approves: with her passkey, or without one, an authenticator code bound to this order.</p></div>
+      <a class="j-meet" href="index.html#meet-order"><span>Meets the owner lane</span><b>The order card</b></a>
+      <div class="j-note"><h3>Desks see typed fields</h3><p>The design travels as a <code>brief</code> artifact with its digest. Wanjiru's card shows the design. Back-office desks see only its typed fields (tiers, sponge, finish, message, note, date, area), never Njeri's account, sign-in or payment details (06 §5.4, §4.10).</p></div>
+      <div class="j-note"><h3><span class="j-first">The fleet release</span> Paying is next</h3><p>The first release ends the custom order at Wanjiru's approval. Paying for either order is step 4, which is the fleet release (12 Nov).</p></div>
+    </aside>
+  </div>
+</main>
+<nav class="wrap j-pager" aria-label="Previous and next step" data-pager></nav>
+<script src="journeys.js"></script>
+<script>
+(() => {
+  const out = document.getElementById("slotOut");
+  document.querySelectorAll('input[name="slot"]').forEach(r => r.addEventListener("change", () => {
+    if (r.checked) out.textContent = r.dataset.label + " · Amina's home";
+  }));
+
+  const btn = document.getElementById("reqBtn"), mark = document.getElementById("reqMark"),
+        line = document.getElementById("reqLine"), pill = document.getElementById("reqPill");
+  btn.addEventListener("click", () => {
+    if (btn.getAttribute("aria-disabled") === "true") return;
+    btn.setAttribute("aria-disabled", "true");
+    btn.classList.add("done");
+    btn.textContent = "Sending…";
+    J.setState(mark, "working");
+    line.textContent = "Sending your request";
+    setTimeout(() => {
+      J.setState(mark, "waiting");
+      line.textContent = "Waiting for Wanjiru's OK. Nothing charged.";
+      pill.hidden = false;
+      btn.textContent = "Requested · K-1043";
+    }, 1400);
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,12 @@
+{% block subject %}Your Agentrix recovery code{% endblock %}
+{% block preheader %}After you use it, your account waits 24 hours before it opens.{% endblock %}
+{% block body %}
+# Getting back into your account
+You asked to get back into your Agentrix account by email, because your passkey and authenticator are both lost. Here is the code:
+
+::code {{ code }}
+
+It works for {{ minutes }} minutes. After you type it, your account waits 24 hours before it opens, and we tell every other channel you've set up (phone notifications, WhatsApp or Telegram), so you can stop it if this isn't you.
+
+Not you? Don't share the code. Nothing changes unless someone types it.
+{% endblock %}

@@ -1,0 +1,44 @@
+{% extends shell.layout %}
+{% import "shop/parts.html" as p %}
+{% from "macros.html" import mark %}
+{% block styles %}{{ super() }}{{ p.styles(shell) }}{% endblock %}
+{% block main %}
+<div class="shop">
+  <p class="k-crumb"><a href="/orders">Your orders</a> · <a href="/orders/{{ o.id }}">{{ o.id }}</a> · Change</p>
+  <div class="k-card">
+    <h1>Change the date</h1>
+    {% if notice %}<p class="k-note ok" role="status">{{ notice }}</p>{% endif %}
+    {% if error %}<p class="k-note risk" role="alert">{{ error }}</p>{% endif %}
+    {% if now %}<p>Now: <b>{{ now }}</b>.</p>{% endif %}
+    {% if held %}
+    <div class="k-held">
+      <div class="k-desk">{{ mark(desk, 28, shell.site) }}<div class="who"><b>{{ desk.name }} <span class="k-ai">AI</span></b><span>Waiting for {{ owner }}'s OK</span></div></div>
+      <p>{{ held }} Until then it stays as it is.</p>
+      <span class="k-pill wait">Waiting for {{ owner }}'s OK</span>
+      <form method="post" action="/orders/{{ o.id }}/change/withdraw"><button class="k-btn ghost wide" type="submit">Withdraw the request</button></form>
+    </div>
+    {% elif open %}
+    <p>Changes close <b>{{ cutoff }}</b> ({{ zone }}).</p>
+    <span class="k-src">Orders: changes and cut-offs</span>
+    {% if rule %}<p class="k-small">{{ rule }}</p>{% endif %}
+    {% if slots %}
+    <form class="k-form" method="post" action="/orders/{{ o.id }}/change">
+      <label class="k-field">New date and time
+        <select name="slot">{% for s in slots %}<option value="{{ s.id }}">{{ s.label }}</option>{% endfor %}</select>
+      </label>
+      <span class="k-src">Calendar (live). Only open times are listed.</span>
+      <button class="k-btn wide" type="submit">Ask to move it</button>
+    </form>
+    <p class="k-small">{{ owner }} confirms a new time herself. Nothing changes until she says yes.</p>
+    {% else %}
+    <p class="k-note warn">No other times are open in the next three weeks. Ask {{ owner }} about another day.</p>
+    {% endif %}
+    {% else %}
+    <p>{{ closed }}</p>
+    <a class="k-btn ghost wide" href="/help#contact" data-person>Talk to {{ owner }}</a>
+    <p class="k-small">{{ owner }}, a person, answers. A desk can't move an order after the cut-off.</p>
+    {% endif %}
+  </div>
+  <a class="k-link" href="/orders/{{ o.id }}">Back to {{ o.id }}</a>
+</div>
+{% endblock %}

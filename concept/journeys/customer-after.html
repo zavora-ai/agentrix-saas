@@ -1,0 +1,462 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>After the Order</title>
+<meta name="description" content="Customer journey, step 5: Njeri verifies her receipt, follows the cake, asks to move the date, and reports a crushed bake box. A small refund runs under Wanjiru's signed rule; a bigger one waits for her.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Manrope:wght@600;700;800&family=Fraunces:opsz,wght@9..144,600;9..144,800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../styles.css">
+<link rel="stylesheet" href="../experience/experience.css">
+<link rel="stylesheet" href="journeys.css">
+<style>
+  .j-stage [hidden] { display: none !important; }
+  .j-stage :focus-visible { outline: 2px solid var(--indigo-900); outline-offset: 2px; box-shadow: none; }
+  .kilele :focus-visible { outline-color: var(--k-brown); }
+  .j-note.never { margin: 0; display: block; }
+  .j-cap > span:not(.n) { min-width: 0; }
+  .panel { display: grid; gap: var(--s4); }
+  @media (max-width: 480px) { .j-tabs { flex-wrap: wrap; } }
+
+  .k-me { display: inline-grid; place-items: center; width: 24px; height: 24px; border-radius: 50%; background: var(--k-brown); color: #fff; font: 700 11px/1 var(--font-text); }
+  .k-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap; }
+  .k-head h3 { font-size: 20px; }
+  .k-small { font-size: 12.5px; line-height: 1.45; color: var(--k-brown-2); }
+  .k-btn[aria-disabled="true"]:hover { background: var(--k-terra); }
+  .k-btn.ghost[aria-disabled="true"]:hover { background: transparent; }
+
+  /* Receipt */
+  .k-meta { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 6px 12px; margin: 12px 0 0; font-size: 13.5px; line-height: 1.45; }
+  .k-meta dt { font-weight: 700; color: var(--k-brown-2); }
+  .k-meta dd { margin: 0; color: var(--k-brown); overflow-wrap: anywhere; }
+  .k-meta .mono { font-size: 12.5px; }
+  .k-okline, .k-waitline { display: flex; align-items: flex-start; gap: 8px; padding: 10px 12px; border-radius: 12px; font: 700 14px/1.4 var(--font-text); }
+  .k-okline { background: #e4f1e4; color: var(--k-ok); }
+  .k-okline svg { flex: none; width: 16px; height: 16px; margin-top: 2px; }
+  .k-verify { display: grid; gap: 6px; }
+  .term { margin: 0; padding: 14px; border-radius: 14px; background: var(--indigo-900); color: #ecebf6; font: 500 12.5px/1.65 var(--font-mono); white-space: pre-wrap; overflow-wrap: anywhere; }
+  .term .p { color: #b9b6e3; }
+  .term .ok { color: #8fe0b5; font-weight: 600; }
+
+  /* Status timeline */
+  .k-time { list-style: none; margin: 4px 0 0; padding: 0; display: grid; }
+  .k-time li { position: relative; display: grid; grid-template-columns: 22px minmax(0, 1fr) auto; gap: 10px; align-items: start; padding: 9px 0; }
+  .k-time li:not(:last-child)::before { content: ""; position: absolute; left: 10px; top: 31px; bottom: -9px; width: 2px; background: var(--k-line); }
+  .k-time .dot { position: relative; display: grid; place-items: center; width: 22px; height: 22px; border-radius: 7px; border: 2px solid var(--k-line); background: #fff; }
+  .k-time li[data-s="done"] .dot { background: var(--k-ok); border-color: var(--k-ok); }
+  .k-time li[data-s="done"] .dot::after { content: ""; width: 9px; height: 5px; border-left: 2px solid #fff; border-bottom: 2px solid #fff; transform: translateY(-1px) rotate(-45deg); }
+  .k-time li[data-s="now"] .dot { border-color: var(--k-terra); }
+  .k-time li[data-s="now"] .dot::after { content: ""; width: 8px; height: 8px; border-radius: 3px; background: var(--k-terra); }
+  .k-time b { display: block; font: 700 14px/1.35 var(--font-text); color: var(--k-brown); }
+  .k-time .when { display: block; font-size: 12.5px; line-height: 1.4; color: var(--k-brown-2); }
+  .k-time .tag { padding: 2px 8px; border-radius: 999px; font: 700 11px/1.4 var(--font-text); background: var(--k-cream-2); color: var(--k-brown-2); }
+  .k-time li[data-s="done"] .tag { background: #e4f1e4; color: var(--k-ok); }
+  .k-time li[data-s="now"] .tag { background: var(--k-brown); color: #fff; }
+  .k-where { display: grid; gap: 6px; padding: 12px; border-radius: 14px; background: var(--k-cream-2); }
+  .k-where h4 { font-size: 15px; }
+  .k-where ul { margin: 0; padding-left: 18px; display: grid; gap: 5px; font-size: 13.5px; line-height: 1.45; color: var(--k-brown); }
+
+  /* Change */
+  .k-form { display: grid; gap: 10px; }
+  .k-held { display: grid; gap: 8px; padding: 12px; border-radius: 14px; border: 1px solid var(--k-line); background: #fff; }
+  .k-held p { font-size: 14px; line-height: 1.5; color: var(--k-brown); }
+  .k-held .k-pill { justify-self: start; }
+
+  /* Something's wrong */
+  .k-photo { justify-self: end; width: min(230px, 85%); display: grid; place-items: center; gap: 6px; min-height: 104px; padding: 10px; border: 1.5px dashed var(--k-brown-2); border-radius: 12px; background: var(--k-cream-2); color: var(--k-brown-2); font: 600 12.5px/1.35 var(--font-text); text-align: center; }
+  .k-photo svg { width: 26px; height: 26px; }
+  .k-hand { padding: 6px 0; border-top: 1px dashed var(--k-line); border-bottom: 1px dashed var(--k-line); font: 600 12.5px/1.4 var(--font-text); color: var(--k-brown-2); text-align: center; }
+  .k-thread > .k-pill { justify-self: start; }
+  .gw { display: grid; gap: 8px; padding: 12px 14px; border-radius: 12px; border: 1px solid var(--line); background: var(--paper); font-size: 13px; line-height: 1.45; color: var(--ink-2); }
+  .gw .j-who { justify-self: start; }
+  .gw ul { margin: 0; padding-left: 18px; display: grid; gap: 4px; }
+  .gw b { color: var(--ink); }
+  .meetline { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 8px; font-size: 13px; line-height: 1.45; color: var(--ink-2); }
+</style>
+</head>
+<body data-lane="customer" data-step="5">
+<header class="j-top">
+  <a class="logo" href="../index.html"><span class="mark" aria-hidden="true"></span>Agentrix</a>
+  <a class="j-maplink" href="index.html">Journey map</a>
+  <span class="j-lane">Customer · Njeri</span>
+  <span class="concept-label">Concept · illustrative data</span>
+</header>
+<nav class="j-steps" aria-label="Customer journey" data-steps></nav>
+<main class="wrap j-main">
+  <header class="j-head">
+    <p class="eyebrow">Step 5 of 7 · Customer</p>
+    <h1>After the order</h1>
+    <p class="lead">Both orders are paid and Saturday is coming. Njeri can check her receipt, follow the cake, ask to move the date, or say something's wrong. A small refund runs at once under Wanjiru's signed rule. Anything bigger waits for her.</p>
+  </header>
+  <div class="j-grid">
+    <section class="j-stage" aria-label="What Njeri sees">
+      <div class="j-tabs" role="tablist" aria-label="After the order">
+        <button role="tab" type="button" id="tab-receipt" aria-selected="true" aria-controls="p-receipt">Receipt</button>
+        <button role="tab" type="button" id="tab-status" aria-selected="false" aria-controls="p-status">Status</button>
+        <button role="tab" type="button" id="tab-change" aria-selected="false" aria-controls="p-change">Change</button>
+        <button role="tab" type="button" id="tab-wrong" aria-selected="false" aria-controls="p-wrong">Something's wrong</button>
+      </div>
+
+      <!-- ===== Receipt: K-1042 ===== -->
+      <div role="tabpanel" id="p-receipt" aria-labelledby="tab-receipt" tabindex="0" class="panel">
+        <div class="j-screens">
+          <div class="j-screen">
+            <p class="j-cap"><span class="n">1</span>The receipt for K-1042, on her orders page.</p>
+            <div class="j-device kilele">
+              <div class="j-url"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg><span>kilele-bakery.example/orders/K-1042/receipt</span></div>
+              <div class="k-bar">
+                <a class="k-logo" href="#" onclick="return false"><i aria-hidden="true"></i>Kilele</a>
+                <span class="k-acct"><span class="k-me" aria-hidden="true">N</span>Njeri</span>
+              </div>
+              <div class="k-screen">
+                <div class="k-card">
+                  <div class="k-head"><h3>Receipt · K-1042</h3><span class="k-pill ok">Paid</span></div>
+                  <div style="margin-top:8px">
+                    <div class="k-line"><span>Sourdough loaf × 2, KSh 450 each</span><b>KSh 900</b></div>
+                    <div class="k-line"><span>Weekend bake box</span><b>KSh 1,350</b></div>
+                    <div class="k-line"><span>Delivery to Kilimani, Sat 14 Nov, 10:00–12:00</span><b>KSh 300</b></div>
+                    <div class="k-total"><span>Total</span><span>KSh 2,550</span></div>
+                  </div>
+                  <dl class="k-meta">
+                    <dt>Charged</dt><dd>USD 19.77, by PayPal</dd>
+                    <dt>Rate</dt><dd>1 USD = KSh 129.00. Kilele's posted rate, pinned on this order</dd>
+                    <dt>Paid to</dt><dd>Kilele Bakery · kilele-bakery.example</dd>
+                    <dt>Paid on</dt><dd>Sun 8 Nov 2026, 10:42 London time</dd>
+                    <dt>Receipt</dt><dd class="mono">r-7f3a…c1</dd>
+                  </dl>
+                </div>
+                <button class="k-btn ghost wide" type="button" id="verifyBtn">Verify this receipt</button>
+                <div class="k-verify" id="verifyOut" aria-live="polite"></div>
+                <p class="k-small">PayPal also emails its own receipt for USD 19.77. Both show the same amount and payee.</p>
+              </div>
+            </div>
+          </div>
+          <div class="j-screen">
+            <p class="j-cap"><span class="n">2</span>Anyone can check it, without trusting the page.</p>
+<pre class="term"><span class="p">$</span> agentrix audit verify --receipt r-7f3a…c1
+receipt    r-7f3a…c1 · order K-1042
+issuer     effects gateway, for kilele-bakery.example
+key        listed at /.well-known/agentrix/keys
+covers     3 lines · KSh 2,550
+charged    USD 19.77 at 129.00 · PayPal
+payee      Kilele Bakery
+paid       2026-11-08 10:42 UTC
+signature  <span class="ok">valid</span></pre>
+            <p class="small muted">Njeri never needs this. It's for anyone who wants proof without trusting the site's own page: an accountant, or someone settling a dispute. Tapping Verify does the same check.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== Status: K-1043 ===== -->
+      <div role="tabpanel" id="p-status" aria-labelledby="tab-status" tabindex="0" class="panel" hidden>
+        <div class="j-screens">
+          <div class="j-screen">
+            <p class="j-cap"><span class="n">1</span>The order page says where the cake is, in plain steps.</p>
+            <div class="j-device kilele">
+              <div class="j-url"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg><span>kilele-bakery.example/orders/K-1043</span></div>
+              <div class="k-screen">
+                <div class="k-card">
+                  <div class="k-head"><h3>Amina's forest cake</h3><span class="k-pill">K-1043</span></div>
+                  <p>2 tiers · KSh 5,250 · delivery Sat 14 Nov, 10:00–12:00, Kilimani</p>
+                  <ol class="k-time" id="timeline" aria-label="Order steps">
+                    <li data-s="done"><span class="dot" aria-hidden="true"></span><span><b>Requested</b><span class="when">Sat 7 Nov</span></span><span class="tag">Done</span></li>
+                    <li data-s="done"><span class="dot" aria-hidden="true"></span><span><b>Approved by Wanjiru</b><span class="when">Sun 8 Nov</span></span><span class="tag">Done</span></li>
+                    <li data-s="done"><span class="dot" aria-hidden="true"></span><span><b>Paid</b><span class="when">USD 40.70 by PayPal · Sun 8 Nov</span></span><span class="tag">Done</span></li>
+                    <li data-s="next"><span class="dot" aria-hidden="true"></span><span><b>Baking</b><span class="when">Fri 13 Nov, overnight</span></span><span class="tag">Next</span></li>
+                    <li data-s="next"><span class="dot" aria-hidden="true"></span><span><b>Out for delivery</b><span class="when">Sat 14 Nov, 10:05</span></span><span class="tag">Next</span></li>
+                    <li data-s="next"><span class="dot" aria-hidden="true"></span><span><b>Delivered</b><span class="when">Amina's home, Kilimani</span></span><span class="tag">Next</span></li>
+                  </ol>
+                </div>
+                <button class="k-btn wide" type="button" id="advance">Show the next update</button>
+              </div>
+            </div>
+          </div>
+          <div class="j-screen">
+            <p class="j-cap"><span class="n">2</span>The same update arrives in her thread with Orders.</p>
+            <div class="j-device kilele">
+              <div class="j-url"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg><span>kilele-bakery.example/orders/K-1043</span></div>
+              <div class="k-screen">
+                <div class="k-desk">
+                  <span class="j-mark" data-agent="orders" data-size="40" data-state="idle" id="ordersMark"></span>
+                  <div class="who"><b>Orders <span class="k-ai">AI</span></b><span id="ordersSub">WebAgent · follows your orders</span></div>
+                </div>
+                <div class="k-thread" id="statusThread" role="log" aria-live="polite">
+                  <div class="k-msg desk">K-1043 is paid. Wanjiru bakes it on Friday night for Saturday's delivery.</div>
+                </div>
+                <div class="k-where">
+                  <h4>Where updates arrive</h4>
+                  <ul>
+                    <li><b>This order page</b>, always.</li>
+                    <li><b>WhatsApp</b>, only if Njeri chose order updates there in step 2. Messages link only to kilele-bakery.example.</li>
+                    <li><b>This thread</b>, when she opens it.</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== Change: K-1043 date ===== -->
+      <div role="tabpanel" id="p-change" aria-labelledby="tab-change" tabindex="0" class="panel" hidden>
+        <div class="j-screens">
+          <div class="j-screen">
+            <p class="j-cap"><span class="n">1</span>Before the cut-off, she can ask to move the date.</p>
+            <div class="j-device kilele">
+              <div class="j-url"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg><span>kilele-bakery.example/orders/K-1043/change</span></div>
+              <div class="k-screen">
+                <div class="k-card">
+                  <h3>Change the date</h3>
+                  <p>Now: Sat 14 Nov, 10:00–12:00, Amina's home, Kilimani.</p>
+                  <p>Changes close <b>Thu 12 Nov, 18:00</b> Nairobi time.</p>
+                  <p class="k-src" style="margin-top:8px">Orders: changes and cut-offs</p>
+                </div>
+                <form class="k-form" id="changeForm">
+                  <label class="k-field">New date and time
+                    <select id="newDate">
+                      <option value="Sun 15 Nov, 10:00–12:00">Sun 15 Nov, 10:00–12:00</option>
+                      <option value="Sat 14 Nov, 14:00–16:00">Sat 14 Nov, 14:00–16:00</option>
+                    </select>
+                  </label>
+                  <span class="k-src">Delivery calendar (live). Only open slots are listed.</span>
+                  <button class="k-btn wide" type="submit" id="changeBtn">Ask to move it</button>
+                </form>
+                <div id="changeOut" aria-live="polite"></div>
+              </div>
+            </div>
+          </div>
+          <div class="j-screen">
+            <p class="j-cap"><span class="n">2</span>After the cut-off, the page says why the button has gone.</p>
+            <div class="j-device kilele">
+              <div class="j-url"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg><span>kilele-bakery.example/orders/K-1043/change</span></div>
+              <div class="k-screen">
+                <div class="k-card">
+                  <h3>Change the date</h3>
+                  <p>Changes closed Thu 12 Nov, 18:00. Amina's cake is being made.</p>
+                </div>
+                <button class="k-btn ghost wide" type="button" id="talkBtn" aria-expanded="false" aria-controls="talkOut">Talk to Wanjiru</button>
+                <p class="k-small" id="talkOut" hidden>This opens a thread where Wanjiru, a person, answers. A desk can't move an order after the cut-off.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== Something's wrong ===== -->
+      <div role="tabpanel" id="p-wrong" aria-labelledby="tab-wrong" tabindex="0" class="panel" hidden>
+        <div class="j-screen">
+          <p class="j-cap"><span class="n">1</span>Saturday afternoon. She reports a problem, with a photo.</p>
+          <div class="j-device kilele">
+            <div class="j-url"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg><span>kilele-bakery.example/orders/K-1042/help</span></div>
+            <div class="k-screen">
+              <div class="k-desk">
+                <span class="j-mark" data-agent="orders" data-size="40" data-state="idle"></span>
+                <div class="who"><b>Orders <span class="k-ai">AI</span></b><span>WebAgent · Something's wrong with K-1042</span></div>
+              </div>
+              <div class="k-thread">
+                <p class="k-msg me">The bake box arrived crushed.</p>
+                <div class="k-photo" role="img" aria-label="Photo placeholder: the bake box with its lid pushed in">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="5.5" width="17" height="13" rx="2"/><circle cx="9" cy="10.5" r="1.6"/><path d="M20.5 15.5l-4.5-4.5-7.5 7.5"/></svg>
+                  Photo: the bake box, lid pushed in (placeholder)
+                </div>
+                <div class="k-msg desk">Sorry about that, and thanks for the photo. I've sent it to the Cashier, which handles refunds under Wanjiru's rule.</div>
+                <p class="k-hand">The Cashier works behind the scenes. It sees the order and the request, not your account.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="j-screens">
+          <div class="j-screen">
+            <p class="j-cap"><span class="n">a</span><span>Under Wanjiru's rule, the refund runs alone. <span class="j-first">The fleet release</span></span></p>
+            <div class="j-device kilele">
+              <div class="j-url"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg><span>kilele-bakery.example/orders/K-1042/help</span></div>
+              <div class="k-screen">
+                <div class="k-desk">
+                  <span class="j-mark" data-agent="orders" data-size="40" data-state="idle" id="cashA"></span>
+                  <div class="who"><b>Orders <span class="k-ai">AI</span></b><span id="subA">WebAgent · orders, changes and refunds</span></div>
+                </div>
+                <div class="k-thread" id="threadA" role="log" aria-live="polite">
+                  <div class="k-msg desk">The bake box can be refunded: KSh 1,350, which is USD 10.47 at the rate pinned on K-1042. It goes back to your PayPal, the way you paid.</div>
+                </div>
+                <button class="k-btn wide" type="button" id="refundA">Refund the bake box</button>
+              </div>
+            </div>
+            <div class="gw">
+              <span class="j-who gateway">Checked against Wanjiru's rule</span>
+              <ul>
+                <li><b>Amount:</b> KSh 1,350, within KSh 2,000 per order</li>
+                <li><b>Recipient:</b> the original PayPal payment</li>
+                <li><b>Frequency:</b> the first of at most 5 this week</li>
+                <li><b>Expiry:</b> the rule runs to 31 Dec 2026</li>
+                <li>Her signature is valid, and the site's value-given cap has room</li>
+              </ul>
+            </div>
+            <p class="meetline"><span class="j-who owner">Wanjiru sees</span><span>A line in her brief: refunded KSh 1,350 under her rule.</span></p>
+          </div>
+
+          <div class="j-screen">
+            <p class="j-cap"><span class="n">b</span><span>Above the rule, it waits for Wanjiru. <span class="j-first">The fleet release</span></span></p>
+            <div class="j-device kilele">
+              <div class="j-url"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg><span>kilele-bakery.example/orders/K-1043/help</span></div>
+              <div class="k-screen">
+                <div class="k-desk">
+                  <span class="j-mark" data-agent="orders" data-size="40" data-state="idle" id="cashB"></span>
+                  <div class="who"><b>Orders <span class="k-ai">AI</span></b><span id="subB">WebAgent · orders, changes and refunds</span></div>
+                </div>
+                <div class="k-thread" id="threadB" role="log" aria-live="polite">
+                  <p class="k-hand">If the cake had been damaged too, and she asked for all of it back:</p>
+                </div>
+                <button class="k-btn wide" type="button" id="refundB">Ask for the whole cake back</button>
+              </div>
+            </div>
+            <div class="gw">
+              <span class="j-who gateway">Checked against Wanjiru's rule</span>
+              <ul>
+                <li><b>Amount:</b> KSh 5,250 (USD 40.70) is above KSh 2,000, so the rule doesn't cover it</li>
+                <li>Nothing runs. Wanjiru gets a card</li>
+              </ul>
+            </div>
+            <p class="meetline"><span class="j-who owner">Wanjiru sees</span><span>A card: "Refund the whole cake? K-1043 · KSh 5,250 (USD 40.70)".</span></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <aside class="j-notes" aria-label="What happens underneath">
+      <a class="j-meet" href="index.html#meet-refund"><span>Meets the owner lane</span><b>A refund: under the rule it shows in her brief; above it, a card</b></a>
+      <div class="j-note gate"><h3>Changes wait for Wanjiru</h3><p>A new date is held for her OK, unless she has signed a standing rule that covers it. Njeri sees "Waiting for Wanjiru's OK", and nothing changes until then.</p></div>
+      <div class="j-note gate"><h3>A rule with four limits</h3><p>The Cashier refunds alone only under Wanjiru's signed rule:</p>
+        <ul>
+          <li>up to KSh 2,000 per order;</li>
+          <li>only to the original payment method;</li>
+          <li>at most 5 a week;</li>
+          <li>until 31 Dec 2026.</li>
+        </ul>
+        <p>The Effects Gateway checks her signature and every limit before the refund runs. It refuses a rule that lacks any of the four (ADR-012).</p></div>
+      <div class="j-note"><h3>Back the way she paid</h3><p>Refunds go only to the original payment method, here her PayPal, at the rate pinned on the order. KSh 1,350 at 129.00 is USD 10.47.</p></div>
+      <div class="j-note"><h3>One cap on value given</h3><p>Refunds, discounts, store credit and free items share one cap for the site. When it's reached, even a small refund waits for Wanjiru, so giving can't move from one channel to another.</p></div>
+      <div class="j-note never"><h3>No promise it can't keep</h3><p>Above the rule, the desk says who decides and by when. It never says "you'll get your money back" before Wanjiru has approved it.</p></div>
+      <div class="j-note"><h3>Receipts anyone can check</h3><p>A payment receipt is signed by the Effects Gateway, which took the payment; every issuer's key is listed at <code>/.well-known/agentrix/keys</code>. Tap Verify, or run <code>agentrix audit verify --receipt</code>. (<code>awp verify</code> is a different check: whether a live page is an approved release.) PayPal's receipt is its own, sent separately.</p></div>
+      <div class="j-note"><h3><span class="j-first">The fleet release</span> Refunds</h3><p>PayPal refunds come with the Cashier in the fleet release (12 Nov). This weekend they are mockups only.</p></div>
+    </aside>
+  </div>
+</main>
+<nav class="wrap j-pager" aria-label="Previous and next step" data-pager></nav>
+<script src="journeys.js"></script>
+<script>
+(() => {
+  const $ = id => document.getElementById(id);
+  const off = b => b.getAttribute("aria-disabled") === "true";
+  const CHECK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>';
+
+  /* Receipt: verify */
+  const vBtn = $("verifyBtn"), vOut = $("verifyOut");
+  vBtn.addEventListener("click", () => {
+    if (off(vBtn)) return;
+    vBtn.setAttribute("aria-disabled", "true");
+    vBtn.textContent = "Checking the signature…";
+    setTimeout(() => {
+      vOut.innerHTML = `<div class="k-okline">${CHECK}<span>Signed by the Effects Gateway for kilele-bakery.example · valid</span></div>` +
+        `<p class="k-small">Signed by the gateway that took your payment, when you paid. The lines, total, rate and payee are exactly what was signed.</p>`;
+      vBtn.textContent = "Verified";
+    }, 700);
+  });
+
+  /* Status: timeline and the Orders thread */
+  const tl = [...document.querySelectorAll("#timeline li")], adv = $("advance"),
+        thread = $("statusThread"), oMark = $("ordersMark"), oSub = $("ordersSub");
+  const TAG = { done: "Done", now: "Now", next: "Next" };
+  const setS = (li, s) => { li.dataset.s = s; li.querySelector(".tag").textContent = TAG[s]; };
+  const steps = [
+    { run: () => setS(tl[3], "now"), label: "Checking the bake list", msg: "Amina's cake is in the oven tonight. Delivery is still Sat 14 Nov, 10:00–12:00." },
+    { run: () => { setS(tl[3], "done"); setS(tl[4], "now"); }, label: "Checking the delivery run", msg: "K-1043 left the bakery at 10:05. It should reach Kilimani by 12:00." },
+    { run: () => { setS(tl[4], "done"); setS(tl[5], "done"); }, label: "Checking the delivery run", msg: "Delivered to Amina's home at 11:20. If anything's wrong, use Something's wrong on this order." }
+  ];
+  let k = 0;
+  adv.addEventListener("click", () => {
+    if (off(adv) || k >= steps.length) return;
+    const s = steps[k++];
+    adv.setAttribute("aria-disabled", "true");
+    J.setState(oMark, "working");
+    oSub.textContent = s.label;
+    setTimeout(() => {
+      s.run();
+      J.setState(oMark, "answering");
+      oSub.textContent = "WebAgent · follows your orders";
+      thread.insertAdjacentHTML("beforeend", `<div class="k-msg desk">${s.msg}</div>`);
+      if (k < steps.length) adv.setAttribute("aria-disabled", "false");
+      else adv.textContent = "Delivered";
+      setTimeout(() => J.setState(oMark, "idle"), 1600);
+    }, 700);
+  });
+
+  /* Change: held for the owner */
+  const form = $("changeForm"), cBtn = $("changeBtn"), cOut = $("changeOut");
+  form.addEventListener("submit", e => {
+    e.preventDefault();
+    if (off(cBtn)) return;
+    const d = $("newDate").value;
+    cBtn.setAttribute("aria-disabled", "true");
+    cBtn.textContent = "Asked";
+    cOut.innerHTML = `<div class="k-held">
+      <div class="k-desk"><span class="j-mark" data-agent="orders" data-size="28" data-state="waiting"></span><div class="who"><b>Orders <span class="k-ai">AI</span></b><span>Waiting for Wanjiru's OK</span></div></div>
+      <p>Moving K-1043 to ${d} is held for Wanjiru's OK. Nothing changes until she says yes, so delivery stays Sat 14 Nov, 10:00–12:00 for now.</p>
+      <span class="k-pill wait">Waiting for Wanjiru's OK</span>
+      <button class="k-btn ghost" type="button" id="withdraw">Withdraw the request</button>
+    </div>`;
+    J.drawMarks(cOut);
+    $("withdraw").addEventListener("click", () => {
+      cOut.innerHTML = `<p class="k-small">Request withdrawn. Delivery stays Sat 14 Nov, 10:00–12:00.</p>`;
+      cBtn.setAttribute("aria-disabled", "false");
+      cBtn.textContent = "Ask to move it";
+      cBtn.focus();
+    });
+  });
+  const talk = $("talkBtn");
+  talk.addEventListener("click", () => {
+    const open = talk.getAttribute("aria-expanded") === "true";
+    talk.setAttribute("aria-expanded", open ? "false" : "true");
+    $("talkOut").hidden = open;
+  });
+
+  /* Something's wrong: (a) under the rule */
+  const rA = $("refundA");
+  rA.addEventListener("click", () => {
+    if (off(rA)) return;
+    rA.setAttribute("aria-disabled", "true");
+    rA.textContent = "Refunding…";
+    J.setState($("cashA"), "working");
+    $("subA").textContent = "Refunding to your PayPal";
+    setTimeout(() => {
+      J.setState($("cashA"), "answering");
+      $("subA").textContent = "WebAgent · orders, changes and refunds";
+      $("threadA").insertAdjacentHTML("beforeend",
+        `<div class="k-msg desk">Refunded USD 10.47 to your PayPal. Receipt R-1042-1.<div class="k-sources"><span>PayPal also emails you its own refund receipt.</span></div></div><span class="k-pill ok">Refunded · KSh 1,350</span>`);
+      rA.textContent = "Refunded";
+      setTimeout(() => J.setState($("cashA"), "idle"), 1600);
+    }, 1100);
+  });
+
+  /* Something's wrong: (b) above the rule */
+  const rB = $("refundB");
+  rB.addEventListener("click", () => {
+    if (off(rB)) return;
+    rB.setAttribute("aria-disabled", "true");
+    rB.textContent = "Asked";
+    $("threadB").insertAdjacentHTML("beforeend", `<p class="k-msg me">The cake's top tier slid too. Can I have the whole cake refunded?</p>`);
+    J.setState($("cashB"), "working");
+    $("subB").textContent = "Checking Wanjiru's refund rule";
+    setTimeout(() => {
+      J.setState($("cashB"), "waiting");
+      $("subB").textContent = "Waiting for Wanjiru's OK";
+      $("threadB").insertAdjacentHTML("beforeend",
+        `<div class="k-msg desk">That's above what can be refunded without Wanjiru. She will decide; you'll hear by Sun 15 Nov, 20:00. Nothing has been refunded yet.</div><span class="k-pill wait">Waiting for Wanjiru's OK</span>`);
+    }, 1100);
+  });
+})();
+</script>
+</body>
+</html>

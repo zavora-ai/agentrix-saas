@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{#- Page::Register · view::AuthView { next, passkeys } · R2.1–R2.3, ported from concept/journeys/owner-account.html.
+    auth.js drives control-plane's JSON endpoints (S1-07): /auth/passkey/register/*, /auth/password, /auth/totp. -#}
+{% block title %}Create your account{% endblock %}
+{% block main %}
+<section class="stack" data-auth="register" data-next="{{ next }}" id="auth">
+  <p class="eyebrow">Keep your site</p>
+  <h1>Create your account</h1>
+  <p class="lead">{% if passkeys %}A passkey is the safest way in: one touch, and nothing to remember or leak.{% else %}You'll use a password and an authenticator app.{% endif %} Your old site keeps running, untouched, until you choose to go live.</p>
+</section>
+
+<p class="error" id="auth-error" role="alert" hidden></p>
+
+<section class="card" id="step-start">
+  <label class="field">Your name<input id="display-name" type="text" autocomplete="name"></label>
+  <label class="field">Email, for receipts and your brief<input id="email" type="email" autocomplete="email" required></label>
+  {% if passkeys %}
+  <button class="btn btn-primary btn-wide" type="button" id="pk">Create with a passkey</button>
+  <p class="hint">Your phone or computer makes the passkey and keeps it. Face ID, Touch ID, Windows Hello or your screen lock unlocks it. We never see it.</p>
+  {% endif %}
+  <details {% if not passkeys %}open{% endif %} id="pw-wrap">
+    <summary style="cursor:pointer;font-weight:700;min-height:44px;display:flex;align-items:center">{% if passkeys %}No passkey on this device?{% else %}Use a password and an authenticator app{% endif %}</summary>
+    <form class="stack" id="pw" style="margin-top:var(--s3)">
+      <label class="field">Password<input id="password" type="password" autocomplete="new-password" minlength="12" required aria-describedby="pw-hint"></label>
+      <p class="hint" id="pw-hint">At least 12 characters. Next you'll set up an authenticator app: every sign-in without a passkey needs its code.</p>
+      <button class="btn btn-wide" type="submit">Continue</button>
+    </form>
+  </details>
+</section>
+
+<section class="card" id="step-totp-enrol" hidden>
+  <h2>Set up your authenticator app</h2>
+  <p class="small">Scan this with an authenticator app on your phone, or type the key. You'll need a code from it each time you sign in without a passkey, and to approve important things on a device without one.</p>
+  <div class="row" style="align-items:flex-start;gap:var(--s4)">
+    <div id="qr" style="width:168px;padding:8px;background:#fff;border-radius:12px" role="img" aria-label="QR code for your authenticator app"></div>
+    <p class="mono small" id="totp-key" style="flex:1;min-width:180px"></p>
+  </div>
+  <form class="stack" id="code-form">
+    <label class="field">The 6-digit code it shows<input id="code" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6}" maxlength="6" required></label>
+    <button class="btn btn-primary btn-wide" type="submit">Confirm</button>
+  </form>
+</section>
+
+<p class="small muted">Already have an account? <a href="/auth/signin?next={{ next }}">Sign in</a></p>
+{% endblock %}
+{% block scripts %}<script src="/static/auth.js?v={{ asset_v }}" defer></script>{% endblock %}

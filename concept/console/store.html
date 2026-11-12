@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Agentrix OS Store</title>
+<meta name="description" content="Concept: add a WebAgent like an app. Read what it can and can never do, choose how much it may do alone, give it a budget, and sign it with your passkey.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Manrope:wght@600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../styles.css">
+<link rel="stylesheet" href="console.css">
+<style>
+  .store-os { --lane-w: 430px; }
+  .store-os .lane-scroll { gap: 14px; }
+  .sheet-head { display: grid; grid-template-columns: 52px 1fr; gap: 12px; align-items: center; }
+  .sheet-head .avatar { width: 52px; height: 52px; border-radius: 15px; font-size: 17px; }
+  .sheet-head b { font: 800 var(--fs-20)/1.15 var(--font-display); color: var(--os-head); }
+  .sheet-head p { font-size: var(--fs-13); color: var(--os-ink-2); margin-top: 2px; }
+  .sec h5 { margin: 0 0 8px; font: 700 11px/1 var(--font-text); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+  .why-now { display: grid; grid-template-columns: 28px 1fr; gap: 10px; padding: 12px; border-radius: 14px; background: linear-gradient(135deg, var(--indigo-50), #fff); border: 1px solid var(--indigo-100); font-size: var(--fs-13); color: var(--ink-2); }
+  .why-now b { color: var(--indigo-900); }
+  .wakes { display: flex; flex-wrap: wrap; gap: 6px; }
+  .added { display: none; }
+  .store-os.is-added .added { display: block; }
+  .store-os.is-added .to-add { display: none; }
+  .dock .app-ico.new { display: none; }
+  .store-os.is-added .dock .app-ico.new { display: grid; animation: drop .6s var(--ease) both; }
+  @keyframes drop { from { opacity: 0; transform: translateY(-14px) scale(.8); } to { opacity: 1; transform: none; } }
+  .store-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 10px; }
+  .store-section + .store-section { margin-top: 18px; }
+  .store-section h3 { font-size: var(--fs-16); color: var(--os-head); margin-bottom: 8px; display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+  .store-section h3 small { font: 500 var(--fs-13)/1.3 var(--font-text); color: var(--muted); }
+  .filters { display: flex; gap: 6px; flex-wrap: wrap; }
+  .budget-line { display: flex; justify-content: space-between; font-size: var(--fs-13); color: var(--ink-2); }
+  .budget-line b { color: var(--indigo-900); }
+</style>
+</head>
+<body class="os-page">
+<header class="conceptbar">
+  <a class="logo" href="../index.html"><span class="mark" aria-hidden="true"></span>Agentrix</a>
+  <nav aria-label="Agentrix OS concepts">
+    <a href="index.html">Agentrix OS</a>
+    <a href="shell.html">Shell</a>
+    <a href="store.html" aria-current="page">Store</a>
+    <a href="mission.html">Missions</a>
+    <a href="live.html">Live</a>
+    <a href="phone.html">Phone</a>
+    <a href="trust.html">Trust centre</a>
+    <a href="gestures.html">Gestures</a>
+  </nav>
+  <span class="concept-label">Concept · illustrative data</span>
+</header>
+
+<main class="wrap">
+  <div class="page-head">
+    <span class="eyebrow">Agentrix OS · 2 of 6 · The Store</span>
+    <h1 style="margin-top:12px">Add a WebAgent. Choose what it may do, then approve.</h1>
+    <p class="lead">Every WebAgent and pack has a listing in plain words: what it can do, what it can never do, what wakes it, how much it may do alone and what it costs. Adding one is a change to your site's charter, so it is signed with your passkey. WebAgents can suggest a new WebAgent; only you can add one.</p>
+    <div class="tryline"><span>Try:</span><span class="chip chip-outline">read Sales' can / never</span><span class="chip chip-outline">lower a job</span><span class="chip chip-outline">set its budget</span><span class="chip chip-outline">Add with passkey</span></div>
+  </div>
+
+  <section class="os-frame" aria-label="Agentrix OS Store, Kilele Bakery">
+    <div class="browser-bar"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="url"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>os.agentrix.ai/kilele/store</span></div>
+    <div class="os store-os" data-world="back" data-time="day">
+      <div class="os-bar">
+        <button class="site-chip" type="button"><span class="logo-bake">K</span><span>Kilele Bakery<small>week 1 · Essential plan</small></span></button>
+        <div class="worlds" role="group" aria-label="Worlds"><button type="button" data-world="front" aria-pressed="false">Front of house</button><button type="button" data-world="back" aria-pressed="true">Back office</button></div>
+        <div class="bar-right"><span class="pill"><b>KSh 41</b> <span class="hide-sm">of 1,500</span></span><a class="pill trust" href="trust.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg><span class="hide-sm">Walls holding</span></a></div>
+      </div>
+      <nav class="dock" aria-label="WebAgents">
+        <span class="app-ico"><span class="os-mark" data-state="answering" style="--c:#b72d50"><span class="avatar av-concierge">Co</span></span>Concierge</span>
+        <span class="app-ico"><span class="os-mark" data-state="asleep"><span class="avatar av-editor">Ed</span></span>Editor</span>
+        <span class="app-ico"><span class="os-mark" data-state="listening" style="--c:#45597f"><span class="avatar av-guardian">Gu</span></span>Guardian</span>
+        <span class="app-ico"><span class="os-mark" data-state="asleep"><span class="avatar av-caretaker">Ct</span></span>Caretaker</span>
+        <span class="app-ico new"><span class="os-mark" data-state="working" style="--c:#0f6b62"><span class="avatar av-sales">Sa</span></span>Sales</span>
+        <span class="sep" aria-hidden="true"></span>
+        <span class="app-ico" aria-current="true"><span class="sys"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span>Store</span>
+      </nav>
+
+      <div class="field">
+        <section class="view" data-view="back">
+          <div class="field-head"><div><h2>Store</h2><div class="sub">WebAgents, packs and connections · signed by Zavora · all open source (MIT)</div></div><div class="filters"><span class="chip chip-info">All</span><span class="chip">WebAgents</span><span class="chip">Packs</span><span class="chip">Connections</span></div></div>
+
+          <div class="store-section">
+            <h3>WebAgents <small>new roles on your team</small></h3>
+            <div class="store-grid">
+              <button class="listing" type="button" aria-pressed="true"><span class="avatar av-sales">Sa</span><span><b>Sales</b><p>Qualifies leads, follows up, quotes, books tastings.</p><span class="meta"><span class="chip chip-coral">Suggested for you</span><span class="chip">4 jobs</span></span></span></button>
+              <button class="listing" type="button"><span class="avatar av-reputation">Re</span><span><b>Reputation</b><p>Replies to reviews and mentions in your voice. Never writes a review.</p><span class="meta"><span class="chip">1 job</span><span class="chip">public posts ask you</span></span></span></button>
+              <button class="listing" type="button"><span class="avatar av-cashier">Ca</span><span><b>Cashier</b><p>Orders and PayPal payments after your OK. Never sees a password or card.</p><span class="meta"><span class="chip">money</span><span class="chip">needs M-Pesa</span></span></span></button>
+            </div>
+          </div>
+
+          <div class="store-section">
+            <h3>Packs <small>teach a WebAgent a new job</small></h3>
+            <div class="store-grid">
+              <button class="listing" type="button"><span class="pack-ico">Xm</span><span><b>Christmas orders</b><p>Preorders with deposits and collection slots. For Sales and the Cakes desk.</p><span class="meta"><span class="chip">seasonal · ends 31 Dec</span></span></span></button>
+              <button class="listing" type="button"><span class="pack-ico">Sw</span><span><b>Swahili pages</b><p>Editor drafts Swahili versions of your pages; each one is published only with your OK.</p><span class="meta"><span class="chip">Editor</span></span></span></button>
+              <button class="listing" type="button"><span class="pack-ico">Ad</span><span><b>Advertising</b><p>Small ad campaigns under a hard cap. Sales runs them; Caretaker holds the budget.</p><span class="meta"><span class="chip chip-wait">off by default</span><span class="chip">money</span></span></span></button>
+            </div>
+          </div>
+
+          <div class="store-section">
+            <h3>Connections <small>your WebAgents use them; they never hold the keys</small></h3>
+            <div class="store-grid">
+              <button class="listing" type="button"><span class="pack-ico" style="background:#e8f7ee;color:#11734a;border-color:#11734a">M</span><span><b>M-Pesa</b><p>Payment requests go through the Effects Gateway, which holds the credential.</p></span></button>
+              <button class="listing" type="button"><span class="pack-ico" style="background:#e8f7ee;color:#128c7e;border-color:#128c7e">W</span><span><b>WhatsApp Business</b><p>Your brief, decisions and handovers where you already are.</p></span></button>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <aside class="lane" aria-label="Add Sales">
+        <div class="lane-scroll">
+          <div class="sheet-head"><span class="avatar av-sales">Sa</span><div><b>Sales</b><p>Qualifies leads, follows up, quotes and books. Version 1.4 · signed by Zavora · evaluation suite passing</p></div></div>
+          <div class="stepper to-add"><span class="done"><i>1</i>What</span><span class="on"><i>2</i>Permissions</span><span><i>3</i>Authority</span><span><i>4</i>Sign</span></div>
+
+          <div class="why-now to-add"><span class="orb sm" style="--s:28px" aria-hidden="true"></span><span><b>Why the Chief WebAgent suggests it:</b> 3 quote requests from the last 30 days got no reply. <a class="cite" href="#" onclick="return false">signals</a></span></div>
+
+          <div class="sec to-add"><h5>What it can do, and what it can never do</h5>
+            <div class="cannever">
+              <div class="yes"><h4>Can</h4><ul>
+                <li><span>Read leads the Concierge captured <span class="effect-tag">read</span></span></li>
+                <li><span>Draft follow-ups and quotes <span class="effect-tag">draft</span></span></li>
+                <li><span>Email a lead after your OK <span class="effect-tag">send_external</span></span></li>
+                <li><span>Book a tasting after your OK <span class="effect-tag">schedule</span></span></li>
+              </ul></div>
+              <div class="no"><h4>Never</h4><ul>
+                <li>Contact anyone without a consent record</li>
+                <li>Promise a price or date your site doesn't state</li>
+                <li>Take or refund money (that's the Cashier)</li>
+                <li>See a password or payment credential</li>
+              </ul></div>
+            </div>
+          </div>
+
+          <div class="sec to-add"><h5>What wakes it</h5>
+            <div class="wakes"><span class="chip"><code class="mono">lead_captured</code> from Front of house</span><span class="chip">Weekdays 10:00 follow-ups</span><span class="chip chip-wait">Never in quiet hours</span></div>
+          </div>
+
+          <div class="sec to-add"><h5>How much it may do alone, per job</h5>
+            <div class="job"><div class="spread"><b>Follow up leads</b><span class="small muted">nurture</span></div>
+              <div class="ladder" role="group" aria-label="Follow up leads"><button type="button">Watch</button><button type="button">Suggest</button><button type="button" aria-pressed="true">Ask me first</button><button type="button" disabled title="Earned later, with evidence">Do it, tell me</button><button type="button" disabled>Within budget</button></div>
+              <p class="small muted" data-ladder-note style="margin-top:14px">Starts at Ask me first. Going higher needs 20 unchanged approvals in 30 days, a passing evaluation and your approval: your passkey, or a code from your authenticator app.</p></div>
+            <div class="job"><div class="spread"><b>Hand warm leads to you</b><span class="small muted">handoff</span></div>
+              <div class="ladder" role="group" aria-label="Hand warm leads to you"><button type="button">Watch</button><button type="button">Suggest</button><button type="button">Ask me first</button><button type="button" aria-pressed="true">Do it, tell me</button><button type="button" disabled>Within budget</button></div>
+              <p class="small muted" data-ladder-note style="margin-top:14px">It only messages you, so it may act and report in your brief.</p></div>
+            <div class="job"><div class="spread"><b>Quotes and bookings</b><span class="small muted">sell</span></div>
+              <div class="ladder" role="group" aria-label="Quotes and bookings"><button type="button">Watch</button><button type="button">Suggest</button><button type="button" aria-pressed="true">Ask me first</button><button type="button" disabled>Do it, tell me</button><button type="button" disabled>Within budget</button></div>
+              <p class="small muted" data-ladder-note style="margin-top:14px">Every quote is a decision card with the exact amount.</p></div>
+          </div>
+
+          <div class="sec to-add"><h5>Budget</h5>
+            <div class="budget-line"><span>Share of your monthly AI budget</span><b data-budget-out>KSh 300</b></div>
+            <input class="range" type="range" min="100" max="1000" step="50" value="300" aria-label="Sales monthly budget" data-budget>
+            <p class="small muted">Above it, Sales sleeps until you raise it. Sleeping costs nothing.</p>
+          </div>
+
+          <div class="to-add"><button class="btn btn-primary btn-lg" style="width:100%" type="button" data-passkey data-then="added" data-sign="Charter v4: add Sales · 3 jobs at the levels shown · budget KSh 300 a month" data-fp="H(kilele, charter, amend v3→v4, {+sales, jobs[nurture:ask, handoff:tell, sell:ask], budget 300 KES/mo}) = 5be1…90">Add Sales with passkey</button>
+          <p class="small muted" style="margin-top:8px;text-align:center">You can pause or remove it any time. Removing it keeps its receipts.</p></div>
+
+          <div class="added">
+            <div class="why-now" style="background:linear-gradient(135deg,var(--ok-bg),#fff);border-color:#bfe6d2"><span class="avatar av-sales" style="width:28px;height:28px;border-radius:9px;font-size:10px">Sa</span><span><b>Sales is on your team.</b> Charter v4 signed on this MacBook · receipt r-5be1…90.</span></div>
+            <div class="fcard" style="margin-top:10px">
+              <div class="fcard-head"><span class="os-mark" data-state="working" style="--c:#0f6b62"><span class="avatar av-sales">Sa</span></span><div class="who"><b>Sales · first look</b><span class="state-line working"><span class="dot"></span>Reading leads from the last 30 days</span></div></div>
+              <p>3 quote requests have no reply: a wedding cake, 40 office breakfast boxes and a birthday order. I've drafted follow-ups. <b>Each one will come to you before it is sent.</b></p>
+              <div class="verbs"><a class="btn btn-primary btn-sm" href="shell.html">See the drafts</a></div>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <div class="cmd">
+        <div class="askline"><span class="orb sm" aria-hidden="true"></span><input type="text" aria-label="Ask your Chief WebAgent" placeholder="Ask the Store… e.g. what would help me sell more cakes?"><button class="icon-btn" type="button" aria-label="Send"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button></div>
+      </div>
+
+      <div class="overlay" id="passkey" role="dialog" aria-modal="true" aria-label="Confirm with your passkey">
+        <div class="passkey">
+          <div class="fp"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 11c0 3-1 6-3 8M8.5 7.5A5 5 0 0 1 17 11c0 1.5-.2 3-.6 4.4M6.3 10A6.5 6.5 0 0 1 9 5.6M12 14.5c-.2 1.8-.8 3.5-1.7 5M15.3 17.5c-.3 1-.7 2-1.2 2.9M4 13.5c.4-1 .6-2 .6-3"/></svg></div>
+          <h3>Confirm it's you</h3>
+          <p data-sign-what>This exact action</p>
+          <div class="sig"><b>Your passkey signs:</b> <span data-sign-fp></span></div>
+          <div class="row"><button class="btn" type="button" data-close>Cancel</button><button class="btn btn-primary" type="button" data-do-sign>Use passkey</button></div>
+          <button class="stepup-link" type="button" data-stepup>No passkey on this device? Use a code from your authenticator app</button>
+          <div class="stepup-box">
+            <label for="stepup-code">Code from your authenticator app</label>
+            <input id="stepup-code" class="stepup-code" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="6 digits">
+            <p>Single use, and bound to this exact effect. Your receipt will say a code approved it, not a passkey.</p>
+            <div class="row"><button class="btn" type="button" data-stepup-back>Back to passkey</button><button class="btn btn-primary" type="button" data-do-sign data-method="code">Approve with code</button></div>
+          </div>
+          <div class="ok">Signed · charter v4 is live</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="notes" aria-label="Design notes">
+    <article class="card"><h3>Permissions are effect classes</h3><p>A listing's "can" list is its tools grouped by effect: read, draft, send, publish, schedule, money. Anything that reaches outside your site starts at Ask me first. A tool whose declaration changes after you added it asks again before every call.</p></article>
+    <article class="card"><h3>Adding is a charter amendment</h3><p>The sheet compiles into one charter change: the new WebAgent, its jobs, their starting levels and its budget. Your passkey signs that change; without one, a single-use code from your authenticator app approves it. Adding a WebAgent never raises another WebAgent's authority, and missions can't either.</p></article>
+    <article class="card"><h3>Packs are signed and roll out in waves</h3><p>A pack teaches an existing WebAgent a job (a playbook, a capability, sometimes a desk). Packs are reviewed and signed by Zavora, roll out to a few sites first, and roll back automatically if evaluations regress.</p></article>
+  </section>
+</main>
+<footer class="concept-foot">
+  <div class="wrap row">
+    <span><a href="shell.html">← The shell</a> · Next: <a href="mission.html">A mission reports in →</a></span>
+    <span>Concept screens with illustrative data. Kilele Bakery is fictional.</span>
+  </div>
+</footer>
+<script src="console.js"></script>
+<script>
+  const os = document.querySelector('.store-os');
+  document.addEventListener('signed', e => { if (e.detail === 'added') os.classList.add('is-added'); });
+  const r = document.querySelector('[data-budget]'), out = document.querySelector('[data-budget-out]');
+  r.addEventListener('input', () => { out.textContent = 'KSh ' + (+r.value).toLocaleString('en-KE'); });
+  document.querySelectorAll('.listing').forEach(l => l.addEventListener('click', () => document.querySelectorAll('.listing').forEach(x => x.setAttribute('aria-pressed', String(x === l)))));
+</script>
+</body>
+</html>

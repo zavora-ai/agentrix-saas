@@ -1,0 +1,77 @@
+#!/usr/sbin/nft -f
+# Agentrix · sandbox VM host firewall (design §2, R12, R14.2).
+#
+# Vultr firewall groups filter only the public interface, so this file is what limits VPC
+# traffic. Tokens @@…@@ are filled by deploy/provision.sh.
+#
+# - Inbound: only control's VPC address, and only the runner port and SSH (deploys jump through
+#   control). Nothing from the fixture or anything else on the VPC.
+# - Rooms: every room bridge is named agx-r*. A room may reach exactly one thing, the egress
+#   proxies on its bridge gateway (@@EGRESS_PORTS@@). Forwarding from a room is dropped, so a
+#   room cannot reach the internet, the VPC, other rooms' bridges or the metadata service
+#   (169.254.169.254) except through agentrix-egress, which applies the job's allowlist. Each
+#   proxy also serves only its own room's fixed address (agentrix-egress --peer).
+# - The proxies themselves (uid 65533) cannot reach private or local addresses (output chain).
+# - These chains only drop. Docker keeps its own iptables-nft rules; in nftables a drop in any
+#   base chain is final, so Docker's accepts cannot re-open a room.
+
+# Replace only this table. Docker's iptables-nft tables are left alone, so reloading this
+# file never breaks container networking.
+table inet agentrix
+delete table inet agentrix
+
+table inet agentrix {
+	set control_vpc {
+		type ipv4_addr
+		elements = { @@CONTROL_VPC_IP@@ }
+	}
+
+	chain input {
+		type filter hook input priority filter - 10; policy drop;
+
+		ct state established,related accept
+		ct state invalid drop
+		iif "lo" accept
+
+		# Rooms: only the egress proxies on the bridge gateway.
+		iifname "agx-r*" ip daddr @@ROOMS_GATEWAY@@ tcp dport @@EGRESS_PORTS@@ accept
+		iifname "agx-r*" counter drop
+
+		# Control, over the VPC: the runner and SSH (ProxyJump for deploys).
+		ip saddr @control_vpc tcp dport { 22, @@RUNNER_PORT@@ } accept
+		ip saddr @control_vpc icmp type echo-request accept
+
+		# Path MTU and IPv6 neighbour discovery.
+		icmp type { destination-unreachable, time-exceeded } accept
+		icmpv6 type { destination-unreachable, packet-too-big, time-exceeded, parameter-problem, nd-router-advert, nd-neighbor-solicit, nd-neighbor-advert } accept
+
+		counter drop
+	}
+
+	chain forward {
+		type filter hook forward priority filter - 10; policy accept;
+
+		# No room traffic is ever routed, in or out. Rooms talk to the proxy (input chain) only.
+		iifname "agx-r*" counter drop
+		oifname "agx-r*" counter drop
+	}
+
+	chain output {
+		type filter hook output priority filter - 10; policy accept;
+		ct state established,related accept
+
+		# The egress proxies run as uid 65533 (agentrix-egress). They may reach public addresses
+		# and the local DNS stub, nothing else: no loopback services (the runner included), no
+		# private, link-local, metadata or CGNAT ranges. agentrix-egress refuses these itself;
+		# this covers a bug in it.
+		meta skuid 65533 oif "lo" ip daddr 127.0.0.53 meta l4proto { tcp, udp } th dport 53 accept
+		meta skuid 65533 oif "lo" counter drop
+		meta skuid 65533 ip daddr { 0.0.0.0/8, 10.0.0.0/8, 100.64.0.0/10, 127.0.0.0/8, 169.254.0.0/16, 172.16.0.0/12, 192.0.0.0/24, 192.168.0.0/16, 198.18.0.0/15, 224.0.0.0/4, 240.0.0.0/4 } counter drop
+		meta skuid 65533 ip6 daddr { ::/128, ::1/128, ::ffff:0:0/96, 64:ff9b::/96, 100::/64, fc00::/7, fe80::/10, ff00::/8 } counter drop
+
+		oif "lo" accept
+
+		# The host itself never talks to the fixture or other VPC hosts except control.
+		ip daddr @@VPC_SUBNET@@ ip daddr != @control_vpc ct state new counter drop
+	}
+}

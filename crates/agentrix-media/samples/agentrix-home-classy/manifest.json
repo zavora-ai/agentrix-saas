@@ -1,0 +1,354 @@
+{
+  "site": "agentrix-home",
+  "images": {
+    "classy:01": {
+      "brief": "Friday evening inside a small elegant perfume boutique with no sign or lettering anywhere in Westlands, Nairobi, with plum walls, cream shelves and glass shelves of plain perfume bottles with blank labels and ribboned gift boxes: Makena, a Kenyan woman in her mid forties with short silver-streaked locs, gold hoop earrings and a plum wrap dress wraps a gift box in cream paper at the counter while three fictional customers browse the shelves, busy and warm",
+      "bytes": 79248,
+      "cost_micro_usd": 23593,
+      "description": {
+        "alt": "A woman with silver-streaked locs in a purple dress wraps a cream gift box at a perfume counter with plum walls.",
+        "check": "A small white box on the upper-left shelf shows faint lines that could read as lettering; confirm it looks blank.",
+        "photographic": true,
+        "shows_person": true,
+        "shows_text": false
+      },
+      "digest": "sha256:cf927291472192f6becac1ee843891a2ef40e8244ec4ea79fec0a6b8fdd69ea1",
+      "file": "classy_01.webp",
+      "height": 1152,
+      "kind": "film",
+      "label": "Made with AI",
+      "media_type": "image/webp",
+      "model": "z-image-turbo",
+      "prompt": "Friday evening inside a small elegant perfume boutique with no sign or lettering anywhere in Westlands, Nairobi, with plum walls, cream shelves and glass shelves of plain perfume bottles with blank labels and ribboned gift boxes: Makena, a Kenyan woman in her mid forties with short silver-streaked locs, gold hoop earrings and a plum wrap dress wraps a gift box in cream paper at the counter while three fictional customers browse the shelves, busy and warm. Photoreal documentary film still, natural light, shallow depth of field, warm colour grade, Nairobi. The people are fictional and must not resemble any real or famous person. Colours and mood only: Rich evening colour grade, warm lamplight, plum and cream accents. No readable text, letters, numbers, signs, logos, labels or watermarks anywhere.",
+      "seed": 6101,
+      "slot": "classy:01",
+      "verdict": {
+        "categories": [],
+        "model": "nemotron-3.5-content-safety",
+        "safe": true,
+        "user_safety": "safe"
+      },
+      "width": 1024
+    },
+    "classy:02": {
+      "brief": "Friday night at home in a Nairobi apartment: Achieng, a Kenyan woman in her late twenties with long braids tied up and a mustard-yellow top sits cross-legged on her bed with an open plain grey laptop with a blank lid and a handwritten list beside her, frowning at the screen, lamp light",
+      "bytes": 53672,
+      "cost_micro_usd": 23593,
+      "description": {
+        "alt": "Woman with braided hair in a yellow top sits cross-legged on a bed using a laptop, notepad beside her, lamp glowing behind.",
+        "check": "A photographic",
+        "photographic": true,
+        "shows_person": true,
+        "shows_text": false
+      },
+      "digest": "sha256:79d757d5a40da45b2d8673ac1d2403d00727fafd7a1011be5923b32f5f570d50",
+      "file": "classy_02.webp",
+      "height": 1152,
+      "kind": "film",
+      "label": "Made with AI",
+      "media_type": "image/webp",
+      "model": "z-image-turbo",
+      "prompt": "Friday night at home in a Nairobi apartment: Achieng, a Kenyan woman in her late twenties with long braids tied up and a mustard-yellow top sits cross-legged on her bed with an open plain grey laptop with a blank lid and a handwritten list beside her, frowning at the screen, lamp light. Photoreal documentary film still, natural light, shallow depth of field, warm colour grade, Nairobi. The people are fictional and must not resemble any real or famous person. Colours and mood only: Rich evening colour grade, warm lamplight, plum and cream accents. No readable text, letters, numbers, signs, logos, labels or watermarks anywhere.",
+      "seed": 6102,
+      "slot": "classy:02",
+      "verdict": {
+        "categories": [],
+        "model": "nemotron-3.5-content-safety",
+        "safe": true,
+        "user_safety": "safe"
+      },
+      "width": 1024
+    },
+    "classy:03": {
+      "brief": "Friday night, close up: Achieng, a Kenyan woman in her late twenties with long braids tied up and a mustard-yellow top types a message on her phone with a tired, impatient expression, the laptop glowing behind her",
+      "bytes": 75560,
+      "cost_micro_usd": 23593,
+      "description": {
+        "alt": "Woman with braids in a mustard-yellow top types on her phone, a glowing laptop and blurred figures behind her",
+        "check": "",
+        "photographic": true,
+        "shows_person": true,
+        "shows_text": false
+      },
+      "digest": "sha256:dee69c68f930bddad3323ea6ee7f27fa5f950fda9be2029c13ffad331125851f",
+      "file": "classy_03.webp",
+      "height": 1152,
+      "kind": "film",
+      "label": "Made with AI",
+      "media_type": "image/webp",
+      "model": "z-image-turbo",
+      "prompt": "Friday night, close up: Achieng, a Kenyan woman in her late twenties with long braids tied up and a mustard-yellow top types a message on her phone with a tired, impatient expression, the laptop glowing behind her. Photoreal documentary film still, natural light, shallow depth of field, warm colour grade, Nairobi. The people are fictional and must not resemble any real or famous person. Colours and mood only: Rich evening colour grade, warm lamplight, plum and cream accents. No readable text, letters, numbers, signs, logos, labels or watermarks anywhere.",
+      "seed": 6003,
+      "slot": "classy:03",
+      "verdict": {
+        "categories": [],
+        "model": "nemotron-3.5-content-safety",
+        "safe": true,
+        "user_safety": "safe"
+      },
+      "width": 1024
+    },
+    "classy:04": {
+      "brief": "Late at night in a dim Nairobi living room: Brian, a Kenyan man in his early thirties with round glasses and a navy shirt sits on a sofa holding his phone up and speaking to it, the screen lighting his face, a quiet street light outside the window",
+      "bytes": 77716,
+      "cost_micro_usd": 23593,
+      "description": {
+        "alt": "A Black man in round glasses and a navy shirt sits on a beige sofa at night holding a phone, its screen lighting his face.",
+        "check": "",
+        "photographic": true,
+        "shows_person": true,
+        "shows_text": false
+      },
+      "digest": "sha256:8b799f51cf52947f963ebbcb352a1b5bad3d26e8e30bd181706a7d5f8670e1a4",
+      "file": "classy_04.webp",
+      "height": 1152,
+      "kind": "film",
+      "label": "Made with AI",
+      "media_type": "image/webp",
+      "model": "z-image-turbo",
+      "prompt": "Late at night in a dim Nairobi living room: Brian, a Kenyan man in his early thirties with round glasses and a navy shirt sits on a sofa holding his phone up and speaking to it, the screen lighting his face, a quiet street light outside the window. Photoreal documentary film still, natural light, shallow depth of field, warm colour grade, Nairobi. The people are fictional and must not resemble any real or famous person. Colours and mood only: Rich evening colour grade, warm lamplight, plum and cream accents. No readable text, letters, numbers, signs, logos, labels or watermarks anywhere.",
+      "seed": 6004,
+      "slot": "classy:04",
+      "verdict": {
+        "categories": [],
+        "model": "nemotron-3.5-content-safety",
+        "safe": true,
+        "user_safety": "safe"
+      },
+      "width": 1024
+    },
+    "classy:05": {
+      "brief": "Saturday eight in the morning at the glass door of Classy Perfumes, a small elegant perfume boutique in Westlands, Nairobi, with plum walls, cream shelves and glass shelves of plain unlabelled perfume bottles and ribboned gift boxes: Makena, a Kenyan woman in her mid forties with short silver-streaked locs, gold hoop earrings and a plum wrap dress reads her phone with a worried look, keys in her other hand, the shop still dark behind her",
+      "bytes": 65466,
+      "cost_micro_usd": 23593,
+      "description": {
+        "alt": "Woman in a plum wrap dress with short silver locs reads her phone at the glass door of a perfume shop with plum walls.",
+        "check": "The bottles on the shelves appear to carry labels, but the shop is described as stocking plain unlabelled bottles.",
+        "photographic": true,
+        "shows_person": true,
+        "shows_text": false
+      },
+      "digest": "sha256:05a0f8739298e51608cabe40b6f7014398a1477942827c34a54f2e37c8753130",
+      "file": "classy_05.webp",
+      "height": 1152,
+      "kind": "film",
+      "label": "Made with AI",
+      "media_type": "image/webp",
+      "model": "z-image-turbo",
+      "prompt": "Saturday eight in the morning at the glass door of Classy Perfumes, a small elegant perfume boutique in Westlands, Nairobi, with plum walls, cream shelves and glass shelves of plain unlabelled perfume bottles and ribboned gift boxes: Makena, a Kenyan woman in her mid forties with short silver-streaked locs, gold hoop earrings and a plum wrap dress reads her phone with a worried look, keys in her other hand, the shop still dark behind her. Photoreal documentary film still, natural light, shallow depth of field, warm colour grade, Nairobi. The people are fictional and must not resemble any real or famous person. Colours and mood only: Rich evening colour grade, warm lamplight, plum and cream accents. No readable text, letters, numbers, signs, logos, labels or watermarks anywhere.",
+      "seed": 6005,
+      "slot": "classy:05",
+      "verdict": {
+        "categories": [],
+        "model": "nemotron-3.5-content-safety",
+        "safe": true,
+        "user_safety": "safe"
+      },
+      "width": 1024
+    },
+    "classy:06": {
+      "brief": "Late at night inside a small elegant perfume boutique with no sign or lettering anywhere, plum walls, cream shelves and glass shelves of plain perfume bottles with blank labels, the shop closed and lit by one warm lamp: Makena, a Kenyan woman in her mid forties whose hair is short loose silver-streaked locs about two inches long standing out from her head, gold hoop earrings, a plum wrap dress, sits alone at the counter typing on a laptop with a plain matte black lid with nothing on it, looking hopeful",
+      "bytes": 57056,
+      "cost_micro_usd": 23593,
+      "description": {
+        "alt": "A woman in a plum wrap dress types on a laptop at a counter in a perfume shop with cream shelves and warm lamp light.",
+        "check": "The laptop lid looks metallic grey rather than the matte black lid described in the brief.",
+        "photographic": true,
+        "shows_person": true,
+        "shows_text": false
+      },
+      "digest": "sha256:a9e82dcf11b7804e67b0009317b6e3ccd4cafbe3de4944df6ae1e2a84f19369f",
+      "file": "classy_06.webp",
+      "height": 1152,
+      "kind": "film",
+      "label": "Made with AI",
+      "media_type": "image/webp",
+      "model": "z-image-turbo",
+      "prompt": "Late at night inside a small elegant perfume boutique with no sign or lettering anywhere, plum walls, cream shelves and glass shelves of plain perfume bottles with blank labels, the shop closed and lit by one warm lamp: Makena, a Kenyan woman in her mid forties whose hair is short loose silver-streaked locs about two inches long standing out from her head, gold hoop earrings, a plum wrap dress, sits alone at the counter typing on a laptop with a plain matte black lid with nothing on it, looking hopeful. Photoreal documentary film still, natural light, shallow depth of field, warm colour grade, Nairobi. The people are fictional and must not resemble any real or famous person. Colours and mood only: Rich evening colour grade, warm lamplight, plum and cream accents. No readable text, letters, numbers, signs, logos, labels or watermarks anywhere.",
+      "seed": 6406,
+      "slot": "classy:06",
+      "verdict": {
+        "categories": [],
+        "model": "nemotron-3.5-content-safety",
+        "safe": true,
+        "user_safety": "safe"
+      },
+      "width": 1024
+    },
+    "classy:07": {
+      "brief": "Friday evening inside a small elegant perfume boutique with no sign or lettering anywhere in Westlands, Nairobi, with plum walls, cream shelves and glass shelves of plain perfume bottles with blank labels and ribboned gift boxes, calm: Makena, a Kenyan woman in her mid forties with short silver-streaked locs, gold hoop earrings and a plum wrap dress smiles as she ties a plum ribbon on a gift box, neat rows of wrapped boxes on the counter",
+      "bytes": 77842,
+      "cost_micro_usd": 23593,
+      "description": {
+        "alt": "A woman with silver-streaked locs in a plum wrap dress ties a ribbon on a gift box at a counter in a perfume shop.",
+        "check": "",
+        "photographic": true,
+        "shows_person": true,
+        "shows_text": false
+      },
+      "digest": "sha256:190002ec35112f8ad00e722c2fc76de747c1d9d4b9c520cae2f7394c8e3ed7dd",
+      "file": "classy_07.webp",
+      "height": 1152,
+      "kind": "film",
+      "label": "Made with AI",
+      "media_type": "image/webp",
+      "model": "z-image-turbo",
+      "prompt": "Friday evening inside a small elegant perfume boutique with no sign or lettering anywhere in Westlands, Nairobi, with plum walls, cream shelves and glass shelves of plain perfume bottles with blank labels and ribboned gift boxes, calm: Makena, a Kenyan woman in her mid forties with short silver-streaked locs, gold hoop earrings and a plum wrap dress smiles as she ties a plum ribbon on a gift box, neat rows of wrapped boxes on the counter. Photoreal documentary film still, natural light, shallow depth of field, warm colour grade, Nairobi. The people are fictional and must not resemble any real or famous person. Colours and mood only: Rich evening colour grade, warm lamplight, plum and cream accents. No readable text, letters, numbers, signs, logos, labels or watermarks anywhere.",
+      "seed": 6107,
+      "slot": "classy:07",
+      "verdict": {
+        "categories": [],
+        "model": "nemotron-3.5-content-safety",
+        "safe": true,
+        "user_safety": "safe"
+      },
+      "width": 1024
+    },
+    "classy:08": {
+      "brief": "Friday night at home: Achieng, a Kenyan woman in her late twenties with long braids tied up and a mustard-yellow top smiles at a laptop on her bed, seen from behind her shoulder, the laptop screen a soft unreadable blur, relieved, ticking a handwritten list with a pen",
+      "bytes": 57072,
+      "cost_micro_usd": 23593,
+      "description": {
+        "alt": "A woman in a mustard-yellow top with braids tied up smiles at a laptop on a bed, pen in hand over a notebook.",
+        "check": "Confirm the notebook handwriting and laptop screen show no legible words or brand marks before publishing.",
+        "photographic": true,
+        "shows_person": true,
+        "shows_text": true
+      },
+      "digest": "sha256:e94401492d75f7aeb750ba9fd3c10f57f5dcf78d62aa20dd9795e0b57d118f5a",
+      "file": "classy_08.webp",
+      "height": 1152,
+      "kind": "film",
+      "label": "Made with AI",
+      "media_type": "image/webp",
+      "model": "z-image-turbo",
+      "prompt": "Friday night at home: Achieng, a Kenyan woman in her late twenties with long braids tied up and a mustard-yellow top smiles at a laptop on her bed, seen from behind her shoulder, the laptop screen a soft unreadable blur, relieved, ticking a handwritten list with a pen. Photoreal documentary film still, natural light, shallow depth of field, warm colour grade, Nairobi. The people are fictional and must not resemble any real or famous person. Colours and mood only: Rich evening colour grade, warm lamplight, plum and cream accents. No readable text, letters, numbers, signs, logos, labels or watermarks anywhere.",
+      "seed": 6308,
+      "slot": "classy:08",
+      "verdict": {
+        "categories": [],
+        "model": "nemotron-3.5-content-safety",
+        "safe": true,
+        "user_safety": "safe"
+      },
+      "width": 1024
+    },
+    "classy:09": {
+      "brief": "Late at night on the sofa: Brian, a Kenyan man in his early thirties with round glasses and a navy shirt smiles at his phone, relaxed, a cup of tea on the table, the room calm",
+      "bytes": 59914,
+      "cost_micro_usd": 23593,
+      "description": {
+        "alt": "A Kenyan man with round glasses and a navy shirt smiles at his phone on a beige sofa, a glass of tea on a table in front.",
+        "check": "",
+        "photographic": true,
+        "shows_person": true,
+        "shows_text": false
+      },
+      "digest": "sha256:951102a62f21759731f8f008162eb18445e12cfbf5d34ec24bd237bd233ea938",
+      "file": "classy_09.webp",
+      "height": 1152,
+      "kind": "film",
+      "label": "Made with AI",
+      "media_type": "image/webp",
+      "model": "z-image-turbo",
+      "prompt": "Late at night on the sofa: Brian, a Kenyan man in his early thirties with round glasses and a navy shirt smiles at his phone, relaxed, a cup of tea on the table, the room calm. Photoreal documentary film still, natural light, shallow depth of field, warm colour grade, Nairobi. The people are fictional and must not resemble any real or famous person. Colours and mood only: Rich evening colour grade, warm lamplight, plum and cream accents. No readable text, letters, numbers, signs, logos, labels or watermarks anywhere.",
+      "seed": 6009,
+      "slot": "classy:09",
+      "verdict": {
+        "categories": [],
+        "model": "nemotron-3.5-content-safety",
+        "safe": true,
+        "user_safety": "safe"
+      },
+      "width": 1024
+    },
+    "classy:10": {
+      "brief": "Saturday morning inside a small elegant perfume boutique with no sign or lettering anywhere in Westlands, Nairobi, with plum walls, cream shelves and glass shelves of plain perfume bottles with blank labels and ribboned gift boxes: Makena, a Kenyan woman in her mid forties with short silver-streaked locs, gold hoop earrings and a plum wrap dress taps her phone at the counter beside five identical wrapped gift boxes with plum ribbons, pleased",
+      "bytes": 59292,
+      "cost_micro_usd": 23593,
+      "description": {
+        "alt": "Woman in a plum dress looks at a phone at a perfume boutique counter with white gift boxes and plum walls behind her.",
+        "check": "Only four gift boxes appear on the counter, not the five described.",
+        "photographic": true,
+        "shows_person": true,
+        "shows_text": false
+      },
+      "digest": "sha256:a0107e5656bbae9b5527cf9dc8431cace77ff2d3d186604ea29fcd3dc1c0da6e",
+      "file": "classy_10.webp",
+      "height": 1152,
+      "kind": "film",
+      "label": "Made with AI",
+      "media_type": "image/webp",
+      "model": "z-image-turbo",
+      "prompt": "Saturday morning inside a small elegant perfume boutique with no sign or lettering anywhere in Westlands, Nairobi, with plum walls, cream shelves and glass shelves of plain perfume bottles with blank labels and ribboned gift boxes: Makena, a Kenyan woman in her mid forties with short silver-streaked locs, gold hoop earrings and a plum wrap dress taps her phone at the counter beside five identical wrapped gift boxes with plum ribbons, pleased. Photoreal documentary film still, natural light, shallow depth of field, warm colour grade, Nairobi. The people are fictional and must not resemble any real or famous person. Colours and mood only: Rich evening colour grade, warm lamplight, plum and cream accents. No readable text, letters, numbers, signs, logos, labels or watermarks anywhere.",
+      "seed": 6110,
+      "slot": "classy:10",
+      "verdict": {
+        "categories": [],
+        "model": "nemotron-3.5-content-safety",
+        "safe": true,
+        "user_safety": "safe"
+      },
+      "width": 1024
+    },
+    "classy:11": {
+      "brief": "A garden wedding in Nairobi on a sunny day: Achieng, a Kenyan woman in her late twenties with long braids tied up, in a white wedding dress laughs with four bridesmaids in matching plum dresses, each holding a small gift box with a plum ribbon",
+      "bytes": 63416,
+      "cost_micro_usd": 23593,
+      "description": {
+        "alt": "Bride in white lace gown laughs while four women in plum dresses hold small cream gift boxes with plum ribbons in a garden",
+        "check": "",
+        "photographic": true,
+        "shows_person": true,
+        "shows_text": false
+      },
+      "digest": "sha256:a378db6f111e7b78a116bd751ef5f1b469195ec6f90861ae4f792a044aeb0a76",
+      "file": "classy_11.webp",
+      "height": 1152,
+      "kind": "film",
+      "label": "Made with AI",
+      "media_type": "image/webp",
+      "model": "z-image-turbo",
+      "prompt": "A garden wedding in Nairobi on a sunny day: Achieng, a Kenyan woman in her late twenties with long braids tied up, in a white wedding dress laughs with four bridesmaids in matching plum dresses, each holding a small gift box with a plum ribbon. Photoreal documentary film still, natural light, shallow depth of field, warm colour grade, Nairobi. The people are fictional and must not resemble any real or famous person. Colours and mood only: Rich evening colour grade, warm lamplight, plum and cream accents. No readable text, letters, numbers, signs, logos, labels or watermarks anywhere.",
+      "seed": 6011,
+      "slot": "classy:11",
+      "verdict": {
+        "categories": [],
+        "model": "nemotron-3.5-content-safety",
+        "safe": true,
+        "user_safety": "safe"
+      },
+      "width": 1024
+    },
+    "classy:12": {
+      "brief": "Months later, a busy evening inside a small elegant perfume boutique with no sign or lettering anywhere in Westlands, Nairobi, with plum walls, cream shelves and glass shelves of plain perfume bottles with blank labels and ribboned gift boxes: Makena, a Kenyan woman in her mid forties with short silver-streaked locs, gold hoop earrings and a plum wrap dress serves smiling fictional customers at a counter that holds only gift boxes, no cards or signs, festive lights, every shelf full",
+      "bytes": 67658,
+      "cost_micro_usd": 23593,
+      "description": {
+        "alt": "Woman with silver-streaked locs in a purple dress serves customers at a counter of ribboned boxes and perfume shelves.",
+        "check": "Confirm the gift boxes and bottle labels carry no stray lettering, since the shop is meant to be sign-free and blank-label.",
+        "photographic": true,
+        "shows_person": true,
+        "shows_text": false
+      },
+      "digest": "sha256:e29ba43839bd61d7d36d9ec2a9ad07c906abb7067129dcce355574dff73ebbee",
+      "file": "classy_12.webp",
+      "height": 1152,
+      "kind": "film",
+      "label": "Made with AI",
+      "media_type": "image/webp",
+      "model": "z-image-turbo",
+      "prompt": "Months later, a busy evening inside a small elegant perfume boutique with no sign or lettering anywhere in Westlands, Nairobi, with plum walls, cream shelves and glass shelves of plain perfume bottles with blank labels and ribboned gift boxes: Makena, a Kenyan woman in her mid forties with short silver-streaked locs, gold hoop earrings and a plum wrap dress serves smiling fictional customers at a counter that holds only gift boxes, no cards or signs, festive lights, every shelf full. Photoreal documentary film still, natural light, shallow depth of field, warm colour grade, Nairobi. The people are fictional and must not resemble any real or famous person. Colours and mood only: Rich evening colour grade, warm lamplight, plum and cream accents. No readable text, letters, numbers, signs, logos, labels or watermarks anywhere.",
+      "seed": 6212,
+      "slot": "classy:12",
+      "verdict": {
+        "categories": [],
+        "model": "nemotron-3.5-content-safety",
+        "safe": true,
+        "user_safety": "safe"
+      },
+      "width": 1024
+    }
+  },
+  "blocked": []
+}

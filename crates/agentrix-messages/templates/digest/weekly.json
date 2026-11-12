@@ -1,0 +1,68 @@
+{
+ "site": {
+  "name": "Tana Valley Times",
+  "host": "tana-valley-times-sample.agentrix.website",
+  "sample": true,
+  "owner": "Nduku",
+  "accent": "#b3261e",
+  "url": "https://tana-valley-times-sample.agentrix.website"
+ },
+ "person": {
+  "name": null
+ },
+ "digest": {
+  "topics": "transport and council"
+ },
+ "issue": {
+  "date": "Fri 6 Nov",
+  "stories": [
+   {
+    "headline": "Council approves first phase of the northern rail extension",
+    "summary": "Councillors voted 31 to 12 for phase one of the commuter line. Construction tenders open in January.",
+    "url": "https://tana-valley-times-sample.agentrix.website/2026/11/council-approves-first-phase-of-the-northern-rail-extension",
+    "section": "Transport",
+    "byline": "Amani Otieno",
+    "published": "Thu 5 Nov",
+    "corrected": "Thu 5 Nov, 16:20"
+   },
+   {
+    "headline": "Ward offices to open on Saturdays from December",
+    "summary": "Residents who work on weekdays can get permits and letters on Saturday mornings.",
+    "url": "https://tana-valley-times-sample.agentrix.website/2026/11/ward-offices-to-open-on-saturdays",
+    "section": "Council",
+    "byline": "Amani Otieno",
+    "published": "Thu 5 Nov",
+    "corrected": null
+   },
+   {
+    "headline": "Residents split over the northern line's route",
+    "summary": "Riverside wants a station near the market. Kora wants one beside the clinic.",
+    "url": "https://tana-valley-times-sample.agentrix.website/2026/11/residents-split-over-the-northern-line-route",
+    "section": "Transport",
+    "byline": "Lea Mwangi",
+    "published": "Wed 4 Nov",
+    "corrected": null
+   },
+   {
+    "headline": "Council publishes the northern rail extension proposal",
+    "summary": "The proposal splits the line into two phases. Phase one has four stations.",
+    "url": "https://tana-valley-times-sample.agentrix.website/2026/11/council-publishes-the-northern-rail-extension-proposal",
+    "section": "Transport",
+    "byline": "Amani Otieno",
+    "published": "Mon 2 Nov",
+    "corrected": null
+   },
+   {
+    "headline": "Kora Junction bridge reopens to lorries",
+    "summary": "After eight months of repairs, the bridge takes lorries up to 20 tonnes again.",
+    "url": "https://tana-valley-times-sample.agentrix.website/2026/10/kora-junction-bridge-reopens-to-lorries",
+    "section": "Transport",
+    "byline": "Amani Otieno",
+    "published": "Sat 31 Oct",
+    "corrected": null
+   }
+  ],
+  "locked": null
+ },
+ "unsubscribe_url": "https://tana-valley-times-sample.agentrix.website/digest/stop?token=dg_4kq7m2"
+}

@@ -1,0 +1,72 @@
+{% extends "classy/layout.html" %}
+{% from "macros.html" import mark %}
+{% from "classy/parts.html" import pic %}
+{% block main %}
+{% set gifts = shell.desks | selectattr("id", "equalto", "gifts") | first %}
+<div class="split">
+  <section class="left" aria-label="Gifts desk">
+    <div class="left-head">{{ mark(gifts, 28, shell.site) }}<div class="who"><b>{{ gifts.name }}</b><span>Gift plans, by rules, from this shop's catalogue</span></div></div>
+    <div class="left-body">
+      <div class="wa-thread">
+        {% if rows %}
+        <div class="wa-v">{{ people }}{% if budget %} · about {{ budget }} in total{% endif %}</div>
+        <div class="wa-a"><div class="by">{{ mark(gifts, 20, shell.site) }} {{ gifts.name }}</div>
+          <div class="txt">
+            <span class="phrase">Here's a draft for {{ rows | length }} people. Each has a pick and one alternative from the catalogue.</span>
+            {% if budget %}<span class="phrase">It comes to <b>{{ total }}</b>{% if over %}, <b>{{ over }} over</b> your budget.{% elif on_budget %}, exactly your budget.{% else %}, {{ left }} under your budget.{% endif %}</span>{% else %}<span class="phrase">It comes to <b>{{ total }}</b>. Add a budget and I'll keep the plan inside it.</span>{% endif %}
+            {% for s in swapped %}<span class="phrase">{{ s.who }} now gets <b>{{ s.to }}</b>.</span>{% endfor %}
+            {% if swap %}<span class="phrase">Swapping {{ swap.who }} to <b>{{ swap.to }}</b> brings it to <b>{{ swap.total }}</b>.</span>{% elif over %}<span class="phrase">No single swap brings it under budget. Raise the budget, or remove someone.</span>{% endif %}
+          </div>
+          <div class="acts">{% if swap %}<a class="act primary" href="{{ swap.href }}">Apply the swap</a>{% endif %}<a class="act" href="#plan-form">Change the plan</a></div>
+          <div class="wa-meta"><span>Picked from this shop's catalogue by rules{% if prices %} · prices from {{ prices }}{% endif %}</span></div>
+        </div>
+        {% else %}
+        <div class="start"><span>Tell me who the gifts are for, with a word or two about each, and your total budget. I'll draft a plan from what the shop has in stock.</span><a class="act primary" href="{{ example_href }}">Try Achieng's bridesmaids' plan</a></div>
+        {% endif %}
+      </div>
+    </div>
+    <form class="left-foot plan-form" id="plan-form" action="/gifts/plan" method="get">
+      <label class="field">What is it for?<input name="title" value="{{ title_in }}" placeholder="Bridesmaids' gifts for Sat 12 Dec" maxlength="80"></label>
+      <label class="field">Who, one per line<textarea name="people" rows="5" placeholder="Wambui: fresh, sporty&#10;Nyokabi: loves vanilla">{{ people }}</textarea><span class="hint">Name, a colon, then a word or two about them.</span></label>
+      <label class="field">Total budget (KSh)<input name="budget" value="{{ budget_in }}" inputmode="numeric" placeholder="25000"></label>
+      <button class="btn wide" type="submit">Draft the plan</button>
+      <p class="wa-disclose">Picked by rules, not AI · only from this shop's catalogue{% if prices %} · prices from {{ prices }}{% endif %}</p>
+    </form>
+  </section>
+  <section class="right" aria-label="The plan">
+    {% if not rows %}
+    <div class="artifact empty"><div class="artifact-kind">Plan · not started</div><p>The plan appears here as you and the Gifts desk make it.</p></div>
+    {% else %}
+    <article class="artifact" aria-label="Gift plan">
+      <div class="artifact-head"><div><div class="artifact-kind">Plan · gifts</div><h2>{{ title }}</h2></div><span class="status">Draft</span></div>
+      <div class="artifact-body">
+        {% if budget %}
+        <div class="meterline"><div class="spread"><span>Budget {{ budget }}</span><b>{{ total }} · {% if over %}{{ over }} over{% elif on_budget %}on budget{% else %}{{ left }} left{% endif %}</b></div><div class="meter {% if over %}over{% else %}ok{% endif %}" role="meter" aria-valuemin="0" aria-valuemax="100" aria-valuenow="{{ pct }}" aria-label="Share of the budget used"><span style="width:{{ pct }}%"></span></div></div>
+        {% endif %}
+        <div class="people">
+          {% for r in rows %}
+          <div class="person" id="row-{{ loop.index }}">
+            {{ pic(r.chosen, "mini") }}
+            <div><div class="nm">{{ r.who }}{% if r.words %} <span class="said">· “{{ r.words }}”</span>{% endif %}</div>
+              <div class="pk"><a href="{{ r.chosen.href }}">{{ r.chosen.name }}</a></div>
+              <div class="why">{{ r.chosen.notes }} · {{ r.chosen.stock }}{% if r.swapped %} · swapped from {{ r.pick.name }}{% elif r.alt %} · or <a href="{{ r.alt.href }}">{{ r.alt.name }}</a> ({{ r.alt.price }}){% endif %}</div>
+            </div>
+            <div class="pr">{{ r.chosen.price }}</div>
+          </div>
+          {% endfor %}
+        </div>
+        {% if zone %}<div class="plainblk"><b>Delivery in {{ zone.label }}:</b> {{ zone.when }} {{ zone.fee }} a delivery. {{ wrapping }}</div>{% endif %}
+      </div>
+      <div class="artifact-foot"><span>Made with {{ shell.site.name }}' <b>Gifts desk</b>, by rules, not AI</span><span>Sample shop</span><span>{% if prices %}Prices from {{ prices }} · {% endif %}stock {{ asof }}</span><span>Not saved: this page's address holds the whole plan</span></div>
+    </article>
+    <div class="two">
+      <div class="panel"><h4>Versions</h4><div class="hist"><div><b>v1</b><span>Plan created with {{ rows | length }} picks</span><span>Gifts</span></div>{% for s in swapped %}<div><b>v{{ loop.index + 1 }}</b><span>{{ s.who }} swapped to {{ s.to }}</span><span>You</span></div>{% endfor %}</div></div>
+      <div class="panel"><h4>Next</h4>
+        <form method="post" action="/gifts/plan/request"><input type="hidden" name="skus" value="{{ skus }}"><button class="act primary" type="submit">Add all {{ rows | length }} to bag · {{ total }}</button></form>
+        <p class="small" style="margin-top:8px">Puts all {{ rows | length }} picks in your bag. Nothing is charged until you pay, and you can change any of them there.</p>
+      </div>
+    </div>
+    {% endif %}
+  </section>
+</div>
+{% endblock %}

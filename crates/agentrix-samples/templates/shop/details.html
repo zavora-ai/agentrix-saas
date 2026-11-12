@@ -1,0 +1,22 @@
+{% extends shell.layout %}
+{% import "shop/parts.html" as p %}
+{% block styles %}{{ super() }}{{ p.styles(shell) }}{% endblock %}
+{% block main %}
+<div class="shop">
+  <p class="k-crumb"><a href="/account">Your account</a> · Details</p>
+  <h1>Your details</h1>
+  {% if saved %}<p class="k-note ok" role="status">{{ saved }}</p>{% endif %}
+  {% if error %}<p class="k-note risk" role="alert">{{ error }}</p>{% endif %}
+  <form class="k-card k-form" method="post" action="/account/details">
+    <label class="k-field">Name on your orders
+      <input name="name" value="{{ name }}" maxlength="80" autocomplete="name" required>
+    </label>
+    <label class="k-field">Phone for order updates
+      <input name="phone" type="tel" value="{{ phone }}" maxlength="24" autocomplete="tel">
+      <small>With the country code if it isn't Kenyan.</small>
+    </label>
+    <button class="k-btn wide" type="submit">Save details</button>
+  </form>
+  <p class="k-small">Your email is {{ email }}. To change it, use <a href="/account/security">Sign-in and security</a>, which asks you to sign in again and tells your current email. The desks can't change account details.</p>
+</div>
+{% endblock %}

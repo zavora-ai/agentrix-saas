@@ -1,0 +1,190 @@
+{% extends "onboarding/base.html" %}
+{% import "onboarding/macros.html" as m %}
+{#- OnboardingPage::Account · view::AccountPage { mode: "new"|"signin"|"recover", next, host?,
+      new_href, signin_href, recover_href }
+    New: concept/journeys/owner-account.html (O2.1): a passkey first; without one, a code by
+    email, or a password and an authenticator app; then recovery codes, shown once.
+    Sign in (O2.3) and recovery are drawn in the same language. static/onboarding/account.js
+    drives the first release's /auth/passkey/*, /auth/password, /auth/totp and W6's /auth/email/*,
+    /auth/recovery-codes and /auth/recover/*. Email never approves anything (ADR-014).
+    A browser that's already signed in gets "You're signed in" instead of the create or sign-in
+    form, because the first release's passkey register adds a passkey to whoever is signed in. -#}
+{% block title %}{% if mode == "new" %}{% if host %}Keep {{ host }}{% else %}Create your account{% endif %}{% elif mode == "signin" %}Sign in{% else %}Get back into your account{% endif %}{% endblock %}
+{% block body_class %}page-setup page-account{% endblock %}
+{% block topright %}{% if mode == "signin" %}<a class="btn btn-ghost btn-sm" href="{{ new_href }}">Create an account</a>{% else %}<a class="btn btn-ghost btn-sm" href="{{ signin_href }}">Sign in</a>{% endif %}{% endblock %}
+{% block main %}
+<section class="panel setup" aria-labelledby="account-h">
+  <div class="o-body setup-body" id="account" data-mode="{{ mode }}" data-next="{{ next }}" data-host="{{ host or '' }}" data-recover="{{ recover_href }}">
+
+  {% if signed_in %}
+    <div>
+      <h1 class="h2" id="account-h">You're signed in</h1>
+      <p class="sub" id="who">This browser is signed in to an Agentrix account.</p>
+    </div>
+    <p class="addr-error" id="account-error" role="alert" hidden></p>
+    <div class="o-sec" id="signed-in">
+      <p class="small">{% if mode == "new" %}Creating an account never adds anything to the account you're signed in to. To make a new one, sign out first.{% else %}To sign in as someone else, sign out first.{% endif %}</p>
+      <div class="row">
+        <a class="btn btn-primary" id="continue-as" href="{{ next }}">Continue with this account</a>
+        <button class="btn" type="button" id="sign-out">{% if mode == "new" %}Sign out and create a new account{% else %}Sign out and sign in as someone else{% endif %}</button>
+      </div>
+      <p class="o-hint">There's no page yet for adding a passkey to an account that's already signed in.</p>
+    </div>
+  {% else %}
+
+  {% if mode == "new" %}
+    <div>
+      <h1 class="h2" id="account-h">{% if host %}Keep {{ host }}{% else %}Create your account{% endif %}</h1>
+      <p class="sub">{% if host %}Your account comes first, then you prove the domain is yours. {% endif %}Your old site keeps running, untouched, until you choose to go live.</p>
+    </div>
+    <p class="addr-error" id="account-error" role="alert" hidden></p>
+
+    <div id="step-start" class="o-sec">
+      <div class="j-tabs" role="tablist" aria-label="How to create your account">
+        <button role="tab" type="button" aria-selected="true" aria-controls="t-passkey" id="tab-passkey">With a passkey</button>
+        <button role="tab" type="button" aria-selected="false" aria-controls="t-other" id="tab-other">Without a passkey</button>
+      </div>
+
+      <div role="tabpanel" id="t-passkey" aria-labelledby="tab-passkey" class="o-sec">
+        <label class="o-field">Your name<input id="pk-name" type="text" autocomplete="name"></label>
+        <label class="o-field">Email, for your brief and receipts<input id="pk-email" type="email" autocomplete="email" required></label>
+        <button class="btn btn-primary o-big" type="button" id="pk-go">Create with a passkey</button>
+        <p class="o-hint">Your phone or laptop makes the passkey and keeps it. Face ID, Touch ID, Windows Hello or your screen lock opens it. Agentrix never sees it.</p>
+      </div>
+
+      <div role="tabpanel" id="t-other" aria-labelledby="tab-other" class="o-sec" hidden>
+        <label class="o-field">Your name<input id="em-name" type="text" autocomplete="name"></label>
+        <label class="o-field">Email<input id="em-email" type="email" autocomplete="email" required></label>
+        <button class="btn btn-primary" type="button" id="em-send">Email me a code</button>
+        <form class="o-sec" id="em-code-form" hidden>
+          <p class="o-ok" id="em-sent" role="status"></p>
+          <label class="o-field">The 6-digit code<input id="em-code" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6}" maxlength="6" required></label>
+          <button class="btn btn-primary self-start" type="submit">Create my account</button>
+        </form>
+        <p class="o-hint">An email code only signs you in. Before you approve anything, such as going live, you add a passkey or an authenticator app.</p>
+        <div class="o-or">or</div>
+        <details id="pw-wrap">
+          <summary class="disclose-summary">Use a password and an authenticator app</summary>
+          <form class="o-sec" id="pw-form">
+            <label class="o-field">Password<input id="pw-password" type="password" autocomplete="new-password" minlength="12" required aria-describedby="pw-hint"></label>
+            <p class="o-hint" id="pw-hint">At least 12 characters. Next you set up an authenticator app: every sign-in without a passkey needs its code.</p>
+            <button class="btn self-start" type="submit">Continue</button>
+          </form>
+        </details>
+      </div>
+    </div>
+
+    <div id="step-totp-enrol" class="o-sec" hidden>
+      <h3>Set up your authenticator app (required)</h3>
+      <div class="o-totp">
+        <div class="qr-box" id="qr" role="img" aria-label="QR code for your authenticator app"></div>
+        <form class="o-sec" id="totp-form">
+          <p class="small">Scan this with an authenticator app on your phone, or type the key:</p>
+          <p class="o-code" id="totp-key"></p>
+          <label class="o-field">The 6-digit code it shows<input id="totp-code" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6}" maxlength="6" required></label>
+          <button class="btn btn-primary self-start" type="submit">Confirm</button>
+        </form>
+      </div>
+      <p class="o-hint">You'll use a code each time you sign in without a passkey, and to approve anything important on a device without one. Agentrix never signs you in from a link in an email, and never sends codes by SMS.</p>
+    </div>
+  {% endif %}
+
+  {% if mode == "signin" %}
+    <div>
+      <h1 class="h2" id="account-h">Sign in</h1>
+      <p class="sub">Use your passkey. No passkey on this device? We can email you a code, or use your password and authenticator app.</p>
+    </div>
+    <p class="addr-error" id="account-error" role="alert" hidden></p>
+    <div id="step-start" class="o-sec">
+      <label class="o-field">Email<input id="si-email" type="email" autocomplete="username webauthn" required></label>
+      <button class="btn btn-primary o-big" type="button" id="pk-go">Sign in with a passkey</button>
+      <div class="o-or">or</div>
+      <button class="btn self-start" type="button" id="em-send">Email me a code</button>
+      <form class="o-sec" id="em-code-form" hidden>
+        <p class="o-ok" id="em-sent" role="status"></p>
+        <label class="o-field">The 6-digit code<input id="em-code" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6}" maxlength="6" required></label>
+        <button class="btn btn-primary self-start" type="submit">Sign in</button>
+      </form>
+      <details id="pw-wrap">
+        <summary class="disclose-summary">Use your password and authenticator app</summary>
+        <form class="o-sec" id="pw-form">
+          <label class="o-field">Password<input id="pw-password" type="password" autocomplete="current-password" required></label>
+          <button class="btn self-start" type="submit">Continue</button>
+        </form>
+      </details>
+    </div>
+    <form class="o-sec" id="step-totp" hidden>
+      <h3>Code from your authenticator app</h3>
+      <label class="o-field">6-digit code<input id="totp-code" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6}" maxlength="6" required></label>
+      <button class="btn btn-primary self-start" type="submit">Sign in</button>
+    </form>
+    <p class="small muted">Lost your passkey? <a href="{{ recover_href }}">Get back into your account</a>. New here? <a href="{{ new_href }}">Create an account</a>.</p>
+  {% endif %}
+
+  {% if mode == "recover" %}
+    <div id="step-stop" class="o-sec" hidden>
+      <div class="o-wait" role="status">Someone asked to get into this account by email. If that was you, there's nothing to do. If it wasn't, stop it now.</div>
+      <ul class="holds" id="holds"></ul>
+      <p class="small muted" id="stop-done" role="status" hidden></p>
+    </div>
+    <div>
+      <h1 class="h2" id="account-h">Get back into your account</h1>
+      <p class="sub">Use one of the recovery codes you saved when you made your account. No codes? We can email you, and your account opens after a 24-hour hold, so nobody can take it over quietly.</p>
+    </div>
+    <p class="addr-error" id="account-error" role="alert" hidden></p>
+    <div id="step-start" class="o-sec">
+      <div class="j-tabs" role="tablist" aria-label="How to get back in">
+        <button role="tab" type="button" aria-selected="true" aria-controls="t-code" id="tab-code">With a recovery code</button>
+        <button role="tab" type="button" aria-selected="false" aria-controls="t-email" id="tab-email">By email</button>
+      </div>
+      <form role="tabpanel" id="t-code" aria-labelledby="tab-code" class="o-sec">
+        <label class="o-field">Email<input id="rc-email" type="email" autocomplete="username" required></label>
+        <label class="o-field">One recovery code<input id="rc-code" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" required></label>
+        <button class="btn btn-primary self-start" type="submit">Get back in</button>
+        <p class="o-hint">The code works once, and we email you to say it was used.</p>
+      </form>
+      <div role="tabpanel" id="t-email" aria-labelledby="tab-email" class="o-sec" hidden>
+        <label class="o-field">Email<input id="re-email" type="email" autocomplete="username" required></label>
+        <button class="btn btn-primary self-start" type="button" id="em-send">Email me a code</button>
+        <form class="o-sec" id="em-code-form" hidden>
+          <p class="o-ok" id="em-sent" role="status"></p>
+          <label class="o-field">The 6-digit code<input id="em-code" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6}" maxlength="6" required></label>
+          <button class="btn btn-primary self-start" type="submit">Start the 24-hour hold</button>
+        </form>
+      </div>
+    </div>
+    <div id="step-held" class="o-sec" hidden>
+      <div class="o-wait" role="status" id="held-words"></div>
+      <p class="small">We've emailed the account's address about it. If it wasn't you, sign in with your passkey or authenticator app before then and stop it on this page.</p>
+    </div>
+    <p class="small muted">Remembered it? <a href="{{ signin_href }}">Sign in</a>.</p>
+  {% endif %}
+
+  {% if mode == "new" %}
+    <form id="codes-totp" class="o-sec" hidden>
+      <p class="o-ok" role="status">✓ Account created · password and authenticator app · signed in on this device</p>
+      <p class="small">One more code from your authenticator app makes your recovery codes.</p>
+      <label class="o-field">6-digit code<input id="codes-totp-code" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6}" maxlength="6" required></label>
+      <button class="btn btn-primary self-start" type="submit">Make my recovery codes</button>
+    </form>
+    <div id="step-codes" class="o-sec" hidden>
+      <div class="o-ok" id="made-words" role="status">✓ Account created</div>
+      <div class="o-card">
+        <div class="spread"><h3>Save your recovery codes</h3><span class="chip chip-wait">Shown once</span></div>
+        <p class="small">If you lose this device, or can't get to your email, each code gets you back in once. Keep them somewhere safe and away from this device: a password manager, or printed in a drawer.</p>
+        <ol class="codes" id="codes" aria-label="Recovery codes"></ol>
+        <div class="row">
+          <a class="btn btn-sm" id="codes-download" download="agentrix-recovery-codes.txt" href="#">Download</a>
+          <button class="btn btn-sm" type="button" id="codes-copy">Copy</button>
+        </div>
+        <label class="check"><input type="checkbox" id="codes-saved"> I've saved them somewhere safe</label>
+      </div>
+      <button class="btn btn-primary self-start" type="button" id="codes-done" disabled>Continue</button>
+    </div>
+  {% endif %}
+  {% endif %}
+
+  </div>
+</section>
+{% endblock %}
+{% block scripts %}<script src="/static/onboarding/account.js?v={{ onboarding_v }}" defer></script>{% endblock %}

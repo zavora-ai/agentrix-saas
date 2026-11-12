@@ -1,0 +1,13 @@
+{% block subject %}The old {{ fallback.domain }} retires on {{ fallback.retires_on }}{% endblock %}
+{% block preheader %}Until then, Undo still puts it back.{% endblock %}
+{% block body %}
+# The old site retires in {{ fallback.days_left }} days
+On {{ fallback.retires_on }} the old site stops being kept on standby. Until then, Undo still puts it back in one tap.
+
+After that date the old server isn't needed for {{ fallback.domain }} any more.
+
+::button Open the console | {{ console_url }}
+{% endblock %}
+{% block chat %}
+Agentrix: the old {{ fallback.domain }} stops being kept on standby on {{ fallback.retires_on }}. Until then, Undo in the console still puts it back.
+{% endblock %}

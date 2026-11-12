@@ -1,0 +1,623 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Agentrix OS Gestures</title>
+<meta name="description" content="Concept: hand gestures in the owner console, rebuilt to be reliable and safe. Recognised on the device, held to confirm, calibrated per owner, tested against recorded clips, and never able to approve.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Manrope:wght@600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../styles.css">
+<link rel="stylesheet" href="console.css">
+<style>
+  .g-os { --lane-w: 360px; height: 720px; }
+  .ldec.focused { outline: 3px solid var(--coral-strong); outline-offset: 2px; }
+  .ldec.snoozed { opacity: .55; }
+  /* The gesture bar: shows what will happen before it happens */
+  .gbar { position: sticky; bottom: 0; margin-top: 14px; display: grid; grid-template-columns: 52px minmax(0, 1fr) auto auto; gap: 12px; align-items: center; padding: 10px 12px; border-radius: 16px; background: var(--indigo-900); color: #fff; box-shadow: var(--shadow-3); }
+  .gbar .ring { position: relative; width: 52px; height: 52px; }
+  .gbar .ring svg { width: 52px; height: 52px; transform: rotate(-90deg); }
+  .gbar .ring circle { fill: none; stroke-width: 4; }
+  .gbar .ring .track { stroke: rgba(255,255,255,.15); }
+  .gbar .ring .fill { stroke: #ff8aa2; stroke-linecap: round; stroke-dasharray: 144.5; stroke-dashoffset: 144.5; }
+  .gbar .ring .glyph { position: absolute; inset: 0; display: grid; place-items: center; font-size: 22px; }
+  .gbar b { display: block; font: 700 var(--fs-14)/1.25 var(--font-display); }
+  .gbar small { display: block; font-size: var(--fs-12); color: rgba(255,255,255,.75); margin-top: 2px; }
+  .gbar[data-state="off"] { background: var(--surface-2); color: var(--ink-2); box-shadow: none; }
+  .gbar[data-state="off"] small { color: var(--muted); }
+  .gbar[data-state="committed"] .ring .fill { stroke: #7fe0b3; }
+  .gbar[data-state="cancelled"] .ring .fill { stroke: rgba(255,255,255,.35); }
+  .pill.camera { color: var(--ok); border-color: rgba(17,115,74,.35); }
+  .pill.camera .dot { width: 8px; height: 8px; border-radius: 50%; background: #1fa36b; box-shadow: 0 0 0 3px rgba(31,163,107,.18); }
+  .pill.camera[aria-pressed="false"] { color: var(--os-muted); border-color: var(--os-line); }
+  .pill.camera[aria-pressed="false"] .dot { background: var(--line-strong); box-shadow: none; }
+  .opened { padding: 14px; border-radius: 16px; background: var(--os-pane); border: 1px solid var(--os-line); }
+  .stopwin { position: absolute; inset: 0; z-index: 25; display: none; place-items: center; background: rgba(163,48,42,.86); color: #fff; text-align: center; padding: 16px; }
+  .stopwin.on { display: grid; }
+  .stopwin b { display: block; font: 800 var(--fs-32)/1.1 var(--font-display); color: #fff; }
+  .stopwin .count { font: 800 64px/1 var(--font-display); margin: 10px 0; }
+  .stopwin .btn { background: #fff; color: var(--risk); border-color: #fff; }
+  /* Simulator */
+  .sim { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 320px); gap: 16px; margin-top: 16px; align-items: start; }
+  .sim-pad { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+  .sim-pad button { display: grid; justify-items: center; gap: 4px; padding: 12px 6px; border-radius: 14px; border: 1px solid var(--line); background: var(--paper); color: var(--ink-2); font: 600 var(--fs-12)/1.2 var(--font-text); cursor: pointer; touch-action: none; user-select: none; -webkit-user-select: none; }
+  .sim-pad button span { font-size: 26px; line-height: 1; }
+  .sim-pad button:active, .sim-pad button.held { border-color: var(--coral-strong); background: var(--coral-50); }
+  .sim-pad button small { color: var(--muted); font-weight: 500; }
+  .log { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; font: 500 11.5px/1.4 var(--font-mono); color: var(--ink-2); max-height: 220px; overflow: auto; }
+  .log li b { color: var(--indigo-900); }
+  .vocab td:first-child { font-size: 22px; }
+  .targets td:last-child { white-space: nowrap; }
+  .steps4 { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin-top: 14px; }
+  .steps4 .card p { font-size: var(--fs-14); color: var(--ink-2); margin-top: 6px; }
+  .steps4 .n { font: 700 var(--fs-12)/1 var(--font-mono); color: var(--coral-strong); }
+  .lessons td, .lessons th { font-size: var(--fs-13); }
+  .tablewrap { overflow-x: auto; }
+  /* The camera tile: mirrored, with the 21 landmarks drawn over it */
+  .camtile { position: relative; width: 128px; aspect-ratio: 4 / 3; border-radius: 10px; overflow: hidden; background: #0b1020; box-shadow: 0 0 0 2px rgba(31,163,107,.6); }
+  .camtile video, .camtile canvas { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transform: scaleX(-1); }
+  .camtile .live { position: absolute; left: 5px; bottom: 5px; z-index: 1; padding: 2px 5px; border-radius: 6px; background: rgba(0,0,0,.5); color: #fff; font: 600 9.5px/1.2 var(--font-mono); }
+  .readout { margin: 12px 0 0; padding: 10px 12px; border-radius: 12px; background: var(--surface-2); border: 1px solid var(--line); font: 500 12px/1.5 var(--font-mono); color: var(--ink-2); overflow-wrap: anywhere; }
+  .readout b { color: var(--indigo-900); }
+  @media (max-width: 900px) { .sim, .steps4 { grid-template-columns: 1fr; } .g-os { height: auto; } }
+  @media (max-width: 520px) { .sim-pad { grid-template-columns: repeat(2, minmax(0, 1fr)); } .camtile { width: 84px; } .camtile .live { display: none; } .gbar { gap: 8px; } }
+</style>
+</head>
+<body class="os-page">
+<header class="conceptbar">
+  <a class="logo" href="../index.html"><span class="mark" aria-hidden="true"></span>Agentrix</a>
+  <nav aria-label="Agentrix OS concepts">
+    <a href="index.html">Agentrix OS</a>
+    <a href="shell.html">Shell</a>
+    <a href="store.html">Store</a>
+    <a href="mission.html">Missions</a>
+    <a href="live.html">Live</a>
+    <a href="phone.html">Phone</a>
+    <a href="trust.html">Trust centre</a>
+    <a href="gestures.html" aria-current="page">Gestures</a>
+  </nav>
+  <span class="concept-label">Concept · illustrative data</span>
+</header>
+
+<main class="wrap">
+  <div class="page-head">
+    <span class="eyebrow">Agentrix OS · 7 · Gestures</span>
+    <h1 style="margin-top:12px">Hand gestures: move between cards and stop everything without touching the screen</h1>
+    <p class="lead">Flour on your hands, a customer at the counter, and a go-live card waiting. Six hand gestures run the shell. They are recognised from your camera on this device, no frame leaves the browser, and each one is held until a ring fills, so a stray movement does nothing. A gesture can move, open, snooze, switch worlds, stop everything, or bring up the passkey sheet. It can never approve.</p>
+    <div class="tryline"><span>Try:</span><span class="chip chip-outline">turn on the camera, then hold a shape still</span><span class="chip chip-outline">no camera? press and hold a hand below</span><span class="chip chip-outline" style="white-space:normal;flex-wrap:wrap">or use the keys: <span class="kbd">←</span> <span class="kbd">→</span> <span class="kbd">Enter</span> <span class="kbd">A</span> <span class="kbd">S</span> <span class="kbd">W</span> <span class="kbd">⇧F</span> <span class="kbd">Esc</span></span></div>
+  </div>
+
+  <section class="os-frame" aria-label="Gestures in the Agentrix OS shell">
+    <div class="browser-bar"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="url"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>os.agentrix.ai/kilele</span></div>
+    <div class="os g-os" data-world="back" data-time="day" id="gos">
+      <div class="os-bar">
+        <button class="site-chip" type="button"><span class="logo-bake">K</span><span>Kilele Bakery<small>Go-live day · the Move finished</small></span></button>
+        <div class="worlds" role="group" aria-label="Worlds"><button type="button" data-world="front" aria-pressed="false">Front of house</button><button type="button" data-world="back" aria-pressed="true">Back office</button></div>
+        <div class="bar-right">
+          <button class="pill camera" type="button" aria-pressed="false" data-cam title="Camera for gestures: on this device only"><span class="dot" aria-hidden="true"></span><span data-cam-text>Gestures off</span></button>
+          <button class="pill freeze" type="button" data-freeze aria-pressed="false" data-on="Frozen" data-off="Freeze"><span data-freeze-text>Freeze</span></button>
+        </div>
+      </div>
+      <nav class="dock" aria-label="WebAgents">
+        <span class="app-ico"><span class="os-mark" data-state="waiting" style="--c:#2f55c4"><span class="avatar av-mover">Mv</span></span>Mover<span class="badge">1</span></span>
+        <span class="app-ico"><span class="os-mark" data-state="answering" style="--c:#b72d50"><span class="avatar av-concierge">Co</span></span>Concierge</span>
+        <span class="app-ico"><span class="os-mark" data-state="listening" style="--c:#45597f"><span class="avatar av-guardian">Gu</span></span>Guardian</span>
+      </nav>
+      <div class="field">
+        <section class="view" data-view="back">
+          <div class="field-head"><div><h2>Ready to go live</h2><div class="sub">The Move finished at 06:10 · 3 decisions for you</div></div></div>
+          <div class="opened" data-opened><b style="color:var(--os-head)">Nothing open.</b><p class="small muted" style="margin-top:4px">Swipe to focus a card, then point up (or press Enter) to open it.</p></div>
+          <div class="gbar" data-gbar data-state="off" aria-live="polite">
+            <div class="ring"><svg viewBox="0 0 52 52" aria-hidden="true"><circle class="track" cx="26" cy="26" r="23"/><circle class="fill" cx="26" cy="26" r="23" data-fill/></svg><span class="glyph" data-glyph>📷</span></div>
+            <div><b data-gtitle>Gestures are off</b><small data-gsub>Turn on the camera in the status bar. Recognition runs on this device; no frames leave it.</small></div>
+            <div class="camtile" data-camtile hidden><video data-camvideo autoplay muted playsinline aria-label="Your camera, mirrored"></video><canvas data-camcanvas width="160" height="120" aria-hidden="true"></canvas><span class="live">on this device</span></div>
+            <button class="btn btn-sm" type="button" data-cam style="background:rgba(255,255,255,.1)">Turn on</button>
+          </div>
+        </section>
+        <section class="view" data-view="front">
+          <div class="field-head"><div><h2>Front of house</h2><div class="sub">Switched by holding up two fingers (V), or by pressing W</div></div></div>
+          <p class="note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg><span>Two visitors on the site. Hold two fingers up again to go back.</span></p>
+        </section>
+      </div>
+      <aside class="lane" aria-label="Needs you">
+        <div class="lane-scroll" data-lane="day">
+          <h4>Needs you <span class="badge">3</span></h4>
+          <div class="ldec" data-decision data-card="golive" data-title="Go live: kilele-bakery.example" data-body="Release v12 · parity 97% · 2 items left behind · undo for 30 days">
+            <div class="from"><span class="avatar av-mover">Mv</span>Mover asks<span class="chip chip-wait">Medium</span></div>
+            <b class="t">Go live: kilele-bakery.example</b>
+            <p>Release v12 · parity 97% · 2 items left behind · the old site stays as a fallback for 30 days</p>
+            <div class="verbs"><button class="btn btn-primary btn-sm" type="button" data-passkey data-sign="Go live: kilele-bakery.example → release v12 · DNS switch · undo for 30 days" data-fp="H(kilele, mover, go_live, {release v12, dns: kilele-bakery.example}, exp 7 Nov 20:00) = 3fa1…c8">Approve</button></div>
+            <div class="done-line">Live · signed with your passkey · receipt r-3fa1…c8.</div>
+          </div>
+          <div class="ldec" data-decision data-card="quarantine" data-title="Leave 2 quarantined items behind" data-body="A hidden casino redirect script and an unused admin plugin">
+            <div class="from"><span class="avatar av-guardian">Gu</span>Guardian asks<span class="chip chip-ok">Low</span></div>
+            <b class="t">Leave 2 quarantined items behind</b>
+            <p>A hidden script that sends visitors to a casino site, and an admin plugin nobody uses</p>
+            <div class="verbs"><button class="btn btn-primary btn-sm" type="button" data-passkey data-sign="Quarantine: leave 2 items behind" data-fp="H(kilele, guardian, quarantine.keep, {items 2}) = 77b0…12">Approve</button></div>
+            <div class="done-line">Signed · receipt r-77b0…12.</div>
+          </div>
+          <div class="ldec" data-decision data-card="post" data-title="Publish: We moved! Same cakes, faster site" data-body="Editor draft · one new post">
+            <div class="from"><span class="avatar av-editor">Ed</span>Editor asks<span class="chip chip-wait">Medium</span></div>
+            <b class="t">Publish: "We moved! Same cakes, faster site"</b>
+            <p>One new post, drafted in your voice</p>
+            <div class="verbs"><button class="btn btn-primary btn-sm" type="button" data-passkey data-sign="Release v13: one new post" data-fp="H(kilele, editor, site_publish, {release v13}) = a90e…54">Approve</button></div>
+            <div class="done-line">Signed · release v13 live.</div>
+          </div>
+        </div>
+      </aside>
+      <div class="cmd"><div class="askline"><span class="orb sm" aria-hidden="true"></span><input type="text" aria-label="Ask your Chief WebAgent" placeholder="Ask your Chief WebAgent…"><button class="icon-btn" type="button" aria-label="Send"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button></div></div>
+
+      <div class="stopwin" data-stopwin role="alertdialog" aria-label="Stopping everything">
+        <div><b>Stopping every WebAgent</b><div class="count" data-count>5</div><p>The shell sends the stop when the countdown ends. Your site keeps serving its signed release. Press Esc, tap Cancel or say "cancel".</p><button class="btn btn-lg" type="button" data-stopcancel style="margin-top:14px">Cancel</button></div>
+      </div>
+
+      <div class="overlay" id="camsheet" role="dialog" aria-modal="true" aria-label="Turn on gestures">
+        <div class="window" style="width:min(460px,100%)">
+          <div class="window-bar"><h3>Turn on gestures on this device?</h3></div>
+          <div class="window-body">
+            <ul class="steps" style="margin-top:0">
+              <li class="done">The camera is read <b>only on this device</b>. No frame is uploaded or stored: a small hand-tracking model in this browser turns each frame into 21 points per hand, and the frame is dropped.</li>
+              <li class="done">Plain rules, not an AI model, decide which of six hand shapes it is. You hold each one until a ring fills.</li>
+              <li class="done">A gesture can never approve. Approving always needs your passkey, or a code from your authenticator app.</li>
+              <li class="done">The camera turns off after 2 minutes without a hand, when you leave the tab, after a Freeze, and during quiet hours. The green pill shows whenever it is on.</li>
+            </ul>
+            <div class="row" style="margin-top:14px"><button class="btn btn-primary" type="button" data-camyes>Turn on camera</button><button class="btn btn-ghost" type="button" data-close>Not now</button></div>
+            <p class="small muted" style="margin-top:8px">Your browser asks for camera permission next. In this concept the hand tracker (MediaPipe Tasks Vision 0.10.14) loads from jsDelivr and its model from Google's model store, both pinned. Those hosts see a download, never a frame. The product serves both itself.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="overlay" id="passkey" role="dialog" aria-modal="true" aria-label="Confirm with your passkey">
+        <div class="passkey">
+          <div class="fp"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 11c0 3-1 6-3 8M8.5 7.5A5 5 0 0 1 17 11c0 1.5-.2 3-.6 4.4M6.3 10A6.5 6.5 0 0 1 9 5.6M12 14.5c-.2 1.8-.8 3.5-1.7 5M15.3 17.5c-.3 1-.7 2-1.2 2.9M4 13.5c.4-1 .6-2 .6-3"/></svg></div>
+          <h3>Confirm it's you</h3>
+          <p data-sign-what>This exact action</p>
+          <div class="sig"><b>Your passkey signs:</b> <span data-sign-fp></span></div>
+          <p style="margin-top:8px">The gesture only opened this sheet. Tap <b>Use passkey</b> or press Enter; then Touch ID, Face ID or your PIN signs it. Without a passkey, you type a code from your authenticator app. A gesture can't do either step.</p>
+          <div class="row"><button class="btn" type="button" data-close>Cancel</button><button class="btn btn-primary" type="button" data-do-sign>Use passkey</button></div>
+          <button class="stepup-link" type="button" data-stepup>No passkey on this device? Use a code from your authenticator app</button>
+          <div class="stepup-box">
+            <label for="stepup-code">Code from your authenticator app</label>
+            <input id="stepup-code" class="stepup-code" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="6 digits">
+            <p>Single use, and bound to this exact effect. Your receipt will say a code approved it, not a passkey.</p>
+            <div class="row"><button class="btn" type="button" data-stepup-back>Back to passkey</button><button class="btn btn-primary" type="button" data-do-sign data-method="code">Approve with code</button></div>
+          </div>
+          <div class="ok">Signed · runs once · receipt written</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <p class="readout" data-readout aria-label="What the camera sees">Camera off. Turn it on in the status bar to see what it recognises: each finger, the thumb, the shape, whether the hand is still, and the frame rate.</p>
+
+  <section class="sim" aria-label="Simulate a hand">
+    <div class="card">
+      <div class="spread"><h3 style="margin:0">No camera? Simulate a hand</h3><button class="btn btn-ghost btn-sm" type="button" data-mute aria-pressed="false">Sound on</button></div>
+      <p class="small muted" style="margin:6px 0 12px">Press and hold, the way you would hold the shape in front of the camera. Let go early and nothing happens. A swipe acts at once because it only moves focus and can be undone.</p>
+      <div class="sim-pad">
+        <button type="button" data-g="swipe_left"><span>👈</span>Swipe ←<small>previous card</small></button>
+        <button type="button" data-g="swipe_right"><span>👉</span>Swipe →<small>next card</small></button>
+        <button type="button" data-g="point"><span>☝️</span>Point up<small>open · 0.8 s</small></button>
+        <button type="button" data-g="thumb"><span>👍</span>Thumb up<small>review and sign · 1.2 s</small></button>
+        <button type="button" data-g="fist"><span>✊</span>Fist<small>snooze · 1.2 s</small></button>
+        <button type="button" data-g="victory"><span>✌️</span>Two fingers<small>switch world · 0.8 s</small></button>
+        <button type="button" data-g="palm" style="grid-column:1 / -1"><span>✋</span>Open palm, held still<small>stop everything · 2 s, then 5 s to cancel</small></button>
+      </div>
+    </div>
+    <div class="card">
+      <h3 style="margin:0">What the site's audit trail records</h3>
+      <p class="small muted" style="margin:6px 0 10px"><code class="mono">surface.gesture</code> for thumb, fist and palm only, including cancelled countdowns. These go to the audit trail, never the ledger, so they can't reveal when you are at your desk. No images, no landmarks.</p>
+      <p class="small" data-local style="margin:0 0 8px;color:var(--ink-2)">Counted on this device only, for calibration: swipe 0 · point 0 · V 0</p>
+      <ul class="log" data-log><li>No gestures yet</li></ul>
+    </div>
+  </section>
+
+  <section class="section" aria-label="Vocabulary">
+    <span class="eyebrow">The vocabulary</span>
+    <h2 style="margin-top:8px">Six gestures, each with a key, a tap and a word.</h2>
+    <div class="tablewrap" style="margin-top:14px">
+      <table class="surface-table vocab">
+        <thead><tr><th></th><th>Gesture</th><th>Hold</th><th>Verb</th><th>Keyboard</th><th>Touch</th><th>Voice</th></tr></thead>
+        <tbody>
+          <tr><td>👈👉</td><td><b>Swipe</b></td><td>None (reversible)</td><td>Previous / next card</td><td>← / →</td><td>Arrows, scroll</td><td>"back", "next"</td></tr>
+          <tr><td>☝️</td><td><b>Point up</b></td><td>0.8 s</td><td>Open the focused card</td><td>Enter</td><td>Tap</td><td>"open it"</td></tr>
+          <tr><td>👍</td><td><b>Thumb up</b></td><td>1.2 s</td><td>Review and sign: <b>raises the passkey sheet</b>, never signs</td><td>A</td><td>Tap Approve</td><td>"approve that"</td></tr>
+          <tr><td>✊</td><td><b>Fist</b></td><td>1.2 s</td><td>Snooze until the next brief, ending at least 1 h before the card expires. Urgent cards and cards in their last hour can't be snoozed. On a Coming up item it only opens the snooze choices</td><td>S</td><td>Swipe the card</td><td>"snooze it"</td></tr>
+          <tr><td>✌️</td><td><b>Two fingers</b></td><td>0.8 s</td><td>Switch world</td><td>W</td><td>Tap the pager</td><td>"show Front of house"</td></tr>
+          <tr><td>✋</td><td><b>Open palm, still</b></td><td>2 s, then a 5 s countdown in the shell</td><td><b>Stop everything</b> (Freeze); only you unfreeze it, with your passkey or a code</td><td>⇧F</td><td>Freeze</td><td>"stop everything"</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="small muted" style="margin-top:10px">A gesture never approves, declines, edits, resumes or unfreezes. Only one hand counts: with two hands in view, nothing fires.</p>
+  </section>
+
+  <section class="section" style="padding-top:0" aria-label="Calibration">
+    <span class="eyebrow">Calibration · about 60 seconds, on this device only</span>
+    <h2 style="margin-top:8px">Calibrate gestures for your hands and your lighting</h2>
+    <div class="steps4">
+      <div class="card"><span class="n">01 · Light and framing</span><p>Checks that your hand is found in the gesture zone. Advice comes in words: "Too dark, face the window."</p></div>
+      <div class="card"><span class="n">02 · Which hand</span><p>Left or right, and whether the image is mirrored, so a swipe always goes the way you mean.</p></div>
+      <div class="card"><span class="n">03 · Each gesture, 3 times</span><p>Records your finger-curl and thumb angles and your swipe speed. Movement is measured by hand size, so your distance from the camera matters less.</p></div>
+      <div class="card"><span class="n">04 · Just talk, 10 seconds</span><p>Talk with your hands as you normally would. If any gesture would have fired, its threshold rises, and we tell you which one.</p></div>
+    </div>
+    <p class="small muted" style="margin-top:10px">Stored in this browser as numbers only, with no images. Recalibrate or reset from the camera pill. Not built in this concept yet: it uses the default thresholds in <code class="mono">gestures.js</code>.</p>
+  </section>
+
+  <section class="section" style="padding-top:0" aria-label="Tests and targets">
+    <span class="eyebrow">Tested against recorded clips</span>
+    <h2 style="margin-top:8px">Targets, measured before anything is claimed.</h2>
+    <p class="lead" style="margin-top:8px">The corpus is recorded hand-landmark tracks, never video. It covers at least 10 people, four lighting conditions, distances from 0.4 to 1.5 m, a laptop and a tablet, and an hour of everyday background: talking with hands, typing, a mug, a phone call, handling goods, someone walking behind. It runs in CI on every change.</p>
+    <div class="tablewrap" style="margin-top:14px">
+      <table class="surface-table targets">
+        <thead><tr><th>Measure</th><th>Target (not a result)</th></tr></thead>
+        <tbody>
+          <tr><td>The right verb commits within the hold time + 300 ms</td><td>≥ 95% calibrated · ≥ 90% uncalibrated</td></tr>
+          <tr><td>One gesture taken for another and committed</td><td>≤ 0.5%</td></tr>
+          <tr><td>False swipes on background clips</td><td>≤ 1 per hour</td></tr>
+          <tr><td>False commits that change state (snooze, open, stop, raise the sheet)</td><td><b>0 in the corpus</b> · ≤ 1 per 10 h in the pilot</td></tr>
+          <tr><td>Hand seen → ring visible · recognition rate</td><td>≤ 150 ms · ≥ 12 fps on a mid-range laptop</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:0" aria-label="Lessons">
+    <span class="eyebrow">From Agentrix OS</span>
+    <h2 style="margin-top:8px">What broke last time, and the fix.</h2>
+    <div class="tablewrap" style="margin-top:14px">
+      <table class="surface-table lessons">
+        <thead><tr><th>Then</th><th>Now</th></tr></thead>
+        <tbody>
+          <tr><td>A vision model also watched the frames, and reported gestures from an empty frame 4 times out of 4 when the user said "here's my gesture" (Agentrix OS commit 9e2239b)</td><td><b>No model decides.</b> A small hand tracker in the browser turns each frame into 21 points; plain rules in <code class="mono">gestures.js</code> decide; no frame ever leaves the browser</td></tr>
+          <tr><td>Gestures acted on first sight: a pinch after two frames, a palm after 0.8 s</td><td><b>Hold to confirm</b>, with a ring and sound; letting go cancels; each gesture must be released before it can fire again</td></tr>
+          <tr><td>Two detectors, so duplicates had to be removed</td><td><b>One detector</b>, one event</td></tr>
+          <tr><td>Camera failures only logged; the camera light could stay on</td><td>An <b>always-visible camera pill</b>, failures in words, auto-off</td></tr>
+          <tr><td>The model and library came from public CDNs at runtime</td><td><b>Self-hosted, pinned</b> and integrity-checked</td></tr>
+          <tr><td>Synthetic test frames only</td><td><b>Recorded clips</b> with targets, in CI</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="small muted" style="margin-top:10px">This concept page is not the product: it loads MediaPipe Tasks Vision 0.10.14 from jsDelivr and the hand model from Google's model store, pinned by version but not self-hosted. Its rules are tested on synthetic hands (<code class="mono">gestures.test.js</code>), not yet on recorded clips.</p>
+  </section>
+
+  <section class="notes" style="margin-top:0" aria-label="the first release">
+    <article class="card"><h3>The first release subset</h3><ul><li>Camera opt-in, pill and auto-off</li><li>Swipe through the decision cards</li><li>Thumb up on the go-live card raises the passkey sheet; Touch ID signs</li><li>Open palm stops everything after a 5-second countdown. The stop goes in through the web surface, so only the <code class="mono">surface.gesture</code> record ties it to a gesture. The demo doesn't claim a server-side gesture policy</li><li>A 20-second light-and-hand check</li></ul></article>
+    <article class="card"><h3>The safety line</h3><p>Gestures run shell verbs and two server commands, stop everything and pause one WebAgent. Approving needs a real tap on "Use passkey" and the passkey's user verification, or a code typed from your authenticator app, and no hand shape can produce any of them.</p></article>
+    <article class="card"><h3>Accessible by design</h3><p>Gestures are optional and never the only way to do anything. Every one has a key, a tap and a word. Hold times can be lengthened, and reduced motion shows a static progress bar.</p></article>
+  </section>
+</main>
+<footer class="concept-foot">
+  <div class="wrap row">
+    <span><a href="trust.html">← Trust centre</a> · Back to <a href="index.html">Agentrix OS →</a></span>
+    <span>Concept screens with illustrative data. The camera is real and its frames stay on this device; the hands in the panel are simulated. Kilele Bakery is fictional.</span>
+  </div>
+</footer>
+<script src="console.js"></script>
+<script src="gestures.js"></script>
+<script>
+(() => {
+  const AG = window.AgentrixGestures;
+  const os = document.getElementById('gos');
+  const gbar = os.querySelector('[data-gbar]'), fill = os.querySelector('[data-fill]');
+  const gtitle = os.querySelector('[data-gtitle]'), gsub = os.querySelector('[data-gsub]'), glyph = os.querySelector('[data-glyph]');
+  const log = document.querySelector('[data-log]'), readoutEl = document.querySelector('[data-readout]');
+  const C = 144.5;
+  const G = {
+    swipe_left: { glyph: '👈', name: 'Swipe ←', verb: 'Previous card', hold: 0 },
+    swipe_right: { glyph: '👉', name: 'Swipe →', verb: 'Next card', hold: 0 },
+    point: { glyph: '☝️', name: 'Point up', verb: 'Open the focused card', hold: 800 },
+    thumb: { glyph: '👍', name: 'Thumb up', verb: 'Review and sign: opens the passkey sheet', hold: 1200 },
+    fist: { glyph: '✊', name: 'Fist', verb: 'Snooze until the next brief', hold: 1200 },
+    victory: { glyph: '✌️', name: 'Two fingers', verb: 'Switch world', hold: 800 },
+    palm: { glyph: '✋', name: 'Open palm, still', verb: 'Stop everything', hold: 2000 },
+  };
+  // camMode: off | starting | on. Only 'on' means the camera is running.
+  let camMode = 'off', camOn = false, focus = -1, muted = false, ac = null, raf = 0, holding = null, holdSrc = 'sim', seenAt = 0, rearm = {};
+
+  // ---- sound (WebAudio, created on first interaction) ----
+  function tone(f, d, type = 'sine', vol = .05, glide) {
+    if (muted) return;
+    try {
+      ac = ac || new (window.AudioContext || window.webkitAudioContext)();
+      const o = ac.createOscillator(), g = ac.createGain();
+      o.type = type; o.frequency.value = f; if (glide) o.frequency.linearRampToValueAtTime(glide, ac.currentTime + d);
+      g.gain.value = vol; g.gain.exponentialRampToValueAtTime(.0001, ac.currentTime + d);
+      o.connect(g).connect(ac.destination); o.start(); o.stop(ac.currentTime + d);
+    } catch (_) {}
+  }
+  const sTick = () => tone(880, .06), sDing = () => { tone(988, .12); setTimeout(() => tone(1319, .18), 90); }, sThunk = () => tone(180, .14, 'triangle', .06);
+  document.querySelector('[data-mute]').addEventListener('click', e => { muted = !muted; e.currentTarget.textContent = muted ? 'Sound off' : 'Sound on'; e.currentTarget.setAttribute('aria-pressed', String(muted)); });
+
+  // ---- HUD ----
+  function hud(state, t, sub, g, pct) {
+    gbar.dataset.state = state; gtitle.textContent = t; gsub.textContent = sub; glyph.textContent = g;
+    fill.style.strokeDashoffset = String(C * (1 - (pct || 0)));
+    gbar.querySelector('[data-cam]')?.toggleAttribute('hidden', camMode !== 'off');
+  }
+  const idle = () => camOn ? hud('idle', 'Camera on · show a hand', 'Hold a shape still until the ring fills. Lower your hand to cancel.', '🖐️', 0) : hud('off', 'Gestures are off', 'Turn on the camera in the status bar. Recognition runs on this device; no frames leave it.', '📷', 0);
+  const localCount = { swipe: 0, point: 0, V: 0 };
+  function record(gesture, verb, outcome) {
+    const local = { swipe_left: 'swipe', swipe_right: 'swipe', point: 'point', victory: 'V' }[gesture];
+    if (local) { localCount[local]++; document.querySelector('[data-local]').textContent = `Counted on this device only, for calibration: swipe ${localCount.swipe} · point ${localCount.point} · V ${localCount.V}`; return; }
+    if (log.firstElementChild && log.firstElementChild.textContent.startsWith('—')) log.innerHTML = '';
+    const li = document.createElement('li');
+    const t = new Date().toTimeString().slice(0, 8);
+    li.innerHTML = `${t} <b>surface.gesture</b> {gesture: ${gesture}, verb: ${verb}, outcome: ${outcome}}`;
+    log.prepend(li);
+  }
+
+  // ---- verbs (the same ones keys, taps and voice use) ----
+  const cards = () => [...os.querySelectorAll('.ldec[data-card]')].filter(c => !c.classList.contains('done') && !c.classList.contains('snoozed'));
+  function setFocus(i) {
+    const cs = cards(); if (!cs.length) return;
+    focus = (i + cs.length) % cs.length;
+    os.querySelectorAll('.ldec').forEach(c => c.classList.remove('focused'));
+    cs[focus].classList.add('focused'); cs[focus].scrollIntoView({ block: 'nearest' });
+  }
+  const focused = () => cards()[focus] || null;
+  function verb(name, src) {
+    const c = focused();
+    switch (name) {
+      case 'swipe_right': setFocus(focus + 1); return 'focus.next';
+      case 'swipe_left': setFocus(focus < 0 ? 0 : focus - 1); return 'focus.prev';
+      case 'point': if (!c) { setFocus(0); return 'focus.first'; }
+        os.querySelector('[data-opened]').innerHTML = `<b style="color:var(--os-head)">${c.dataset.title}</b><p class="small" style="margin-top:4px;color:var(--os-ink-2)">${c.dataset.body}</p><p class="small muted" style="margin-top:6px">Opened by a gesture. To approve, hold a thumb up: it opens the passkey sheet.</p>`;
+        return 'open';
+      case 'thumb': if (!c) { setFocus(0); return 'focus.first'; } c.querySelector('[data-passkey]').click(); return 'sign.request';
+      case 'fist': if (!c) { setFocus(0); return 'focus.first'; } c.classList.add('snoozed', 'done'); c.querySelector('.done-line').textContent = 'Snoozed until the 07:00 brief (it comes back at least an hour before it expires).'; c.classList.remove('focused'); setFocus(focus); return 'snooze';
+      case 'victory': os.querySelector(`.worlds button[data-world="${os.dataset.world === 'front' ? 'back' : 'front'}"]`).click(); return 'world.toggle';
+      case 'palm': stopAll(src === 'key' ? 'key' : 'palm'); return 'stop_all';
+    }
+  }
+
+  // ---- stop everything after a 5 s countdown in the shell ----
+  let stopT = null;
+  const stopwin = os.querySelector('[data-stopwin]'), count = os.querySelector('[data-count]');
+  let stopSrc = 'palm';
+  function stopAll(src) {
+    if (stopT || os.classList.contains('frozen')) return;
+    stopSrc = src || 'palm';
+    let n = 5; count.textContent = n; stopwin.classList.add('on');
+    stopT = setInterval(() => { n--; count.textContent = n; if (n <= 0) { clearInterval(stopT); stopT = null; stopwin.classList.remove('on'); if (!os.classList.contains('frozen')) os.querySelector('.pill.freeze').click(); if (stopSrc === 'palm') record('palm', 'stop_all', 'committed (frozen)'); } }, 1000);
+  }
+  function cancelStop() { if (!stopT) return false; clearInterval(stopT); stopT = null; stopwin.classList.remove('on'); sThunk(); if (stopSrc === 'palm') record('palm', 'stop_all', 'cancelled in countdown'); return true; }
+  os.querySelector('[data-stopcancel]').addEventListener('click', cancelStop);
+
+  // ---- hold-to-confirm ----
+  // Time decides, not animation frames. With the camera, the ring fills only up to the last frame
+  // in which the shape was seen, so a hand that has gone can't commit during the grace period.
+  let holdStart = 0;
+  function commit(g) {
+    const d = G[g];
+    holding = null; cancelAnimationFrame(raf); rearm[g] = true;
+    if (holdSrc === 'camera' && tracker) tracker.committed(g);
+    const v = verb(g);
+    hud('committed', `${d.name} · done`, g === 'thumb' ? 'The passkey sheet is open. Only you can approve it: your passkey, or a code.' : g === 'palm' ? '5 seconds to cancel: Esc, tap Cancel or say "cancel".' : d.verb, d.glyph, 1);
+    sDing(); if (g !== 'palm') record(g, v, 'committed');
+    setTimeout(() => { if (!holding) idle(); }, 1400);
+  }
+  function begin(g, src) {
+    if (src === 'camera' && !camOn) return;
+    if (rearm[g]) { hud('idle', 'Release first', 'The same gesture must be released before it can fire again.', G[g].glyph, 0); return; }
+    const d = G[g];
+    sTick();
+    if (!d.hold) { const v = verb(g); hud('committed', `${d.name} · ${d.verb}`, 'Reversible: swipe back to undo.', d.glyph, 1); sDing(); record(g, v, 'committed'); setTimeout(() => { if (!holding) idle(); }, 900); return; }
+    cancelAnimationFrame(raf);
+    const t0 = performance.now(); holding = g; holdSrc = src; holdStart = seenAt = t0;
+    let last = 0;
+    const step = now => {
+      if (holding !== g) return;
+      const p = Math.max(0, Math.min(1, ((holdSrc === 'camera' ? seenAt : now) - t0) / d.hold));
+      if (p - last > .2) { tone(440 + p * 440, .05, 'sine', .03); last = p; }
+      hud('progress', `${d.name} · ${d.verb}`, holdSrc === 'camera' ? 'Keep holding still… lower your hand to cancel.' : 'Keep holding… let go to cancel.', d.glyph, p);
+      if (p >= 1) { commit(g); return; }
+      raf = requestAnimationFrame(step);
+    };
+    raf = requestAnimationFrame(step);
+  }
+  // src: 'sim' (let go), 'camera' (the shape went away), 'quiet' (gone so soon it was never meant)
+  function end(g, src) {
+    rearm[g] = false;
+    if (holding !== g) return;
+    if ((holdSrc === 'camera' ? seenAt : performance.now()) - holdStart >= G[g].hold) { commit(g); rearm[g] = false; return; }
+    holding = null; cancelAnimationFrame(raf);
+    if (src === 'quiet') { idle(); return; }
+    hud('cancelled', `${G[g].name} · cancelled`, src === 'camera' ? 'The shape went away before the ring filled, so nothing happened.' : 'You let go before the ring filled, so nothing happened.', G[g].glyph, 0);
+    sThunk(); record(g, '—', 'cancelled'); setTimeout(() => { if (!holding) idle(); }, 1100);
+  }
+  document.querySelectorAll('.sim-pad button').forEach(b => {
+    const g = b.dataset.g;
+    b.addEventListener('pointerdown', e => { e.preventDefault(); b.classList.add('held'); begin(g, 'sim'); });
+    ['pointerup', 'pointerleave', 'pointercancel'].forEach(ev => b.addEventListener(ev, () => { if (b.classList.contains('held')) { b.classList.remove('held'); end(g, 'sim'); } }));
+    b.addEventListener('keydown', e => { if ((e.key === ' ' || e.key === 'Enter') && !e.repeat) { e.preventDefault(); b.classList.add('held'); begin(g, 'sim'); } });
+    b.addEventListener('keyup', e => { if (e.key === ' ' || e.key === 'Enter') { b.classList.remove('held'); end(g, 'sim'); } });
+  });
+
+  // ---- the real camera ----
+  // MediaPipe's hand landmarker runs in this browser and turns each frame into 21 points per hand;
+  // the frame is then dropped. gestures.js (plain rules, no model) turns the points into gestures.
+  // This concept loads the library and model from pinned CDN URLs; the product self-hosts them.
+  const MP = 'https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14';
+  const MODEL = 'https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task';
+  const camtile = os.querySelector('[data-camtile]'), video = os.querySelector('[data-camvideo]'), canvas = os.querySelector('[data-camcanvas]'), g2 = canvas.getContext('2d');
+  let landmarker = null, loading = null, stream = null, gen = 0, tracker = null, aspect = 4 / 3;
+  let lastVideoTime = -1, lastHandAt = 0, frames = 0, fps = 0, fpsT = 0, lastReadout = 0;
+  const FAIL = {
+    NotAllowedError: { title: 'Camera blocked', sub: "Allow the camera for this site in your browser's settings, then turn gestures on again. The keys and the simulated hands still work." },
+    NotFoundError: { title: 'No camera found', sub: 'Connect a camera and try again. The keys and the simulated hands still work.' },
+    NotReadableError: { title: 'The camera is busy', sub: 'Another app is using it. Close that app, then turn gestures on again.' },
+    insecure: { title: 'Gestures need a secure page', sub: 'Open this page over https, or from localhost.' },
+    model: { title: "The hand tracker didn't load", sub: 'Check the connection and try again. No frame was sent anywhere, and the keys still work.' },
+    ended: { title: 'The camera stopped', sub: 'It was unplugged or taken by another app. Turn gestures on again when it is back.' },
+    other: { title: "The camera didn't start", sub: 'Try again, or use the keys and the simulated hands.' },
+  };
+  FAIL.SecurityError = FAIL.NotAllowedError; FAIL.OverconstrainedError = FAIL.NotFoundError; FAIL.AbortError = FAIL.NotReadableError;
+  const OFF = {
+    noHand: { title: 'Camera off', sub: 'No hand for 2 minutes, so it turned itself off.' },
+    hidden: { title: 'Camera off', sub: 'You left the tab, so it turned itself off.' },
+    frozen: { title: 'Camera off', sub: 'Everything is frozen, so the camera turned off. Only you can unfreeze, with your passkey or a code.' },
+  };
+
+  function loadLandmarker() {
+    if (landmarker) return Promise.resolve(landmarker);
+    if (!loading) {
+      loading = (async () => {
+        const { FilesetResolver, HandLandmarker } = await import(`${MP}/vision_bundle.mjs`);
+        const files = await FilesetResolver.forVisionTasks(`${MP}/wasm`);
+        const make = delegate => HandLandmarker.createFromOptions(files, {
+          baseOptions: { modelAssetPath: MODEL, delegate },
+          runningMode: 'VIDEO', numHands: 2,
+          minHandDetectionConfidence: 0.6, minHandPresenceConfidence: 0.6, minTrackingConfidence: 0.5,
+        });
+        try { return await make('GPU'); } catch (_) { return await make('CPU'); }
+      })().then(l => (landmarker = l), err => { loading = null; throw err; });
+    }
+    return loading;
+  }
+  window.AgentrixGesturesDebug = { loadLandmarker };
+
+  function readout(text) { readoutEl.textContent = text; }
+  function setMode(mode, reason) {
+    camMode = mode; camOn = mode === 'on';
+    os.querySelectorAll('.pill.camera').forEach(p => {
+      p.setAttribute('aria-pressed', String(camOn));
+      p.querySelector('[data-cam-text]').textContent = camOn ? 'Camera on · gestures' : mode === 'starting' ? 'Starting camera…' : 'Gestures off';
+    });
+    camtile.hidden = !camOn;
+    if (mode === 'starting') hud('idle', 'Starting the camera…', 'Allow the camera when your browser asks. The first time, the hand tracker takes a few seconds to load.', '📷', 0);
+    else if (mode === 'off' && reason) hud('off', reason.title, reason.sub, '📷', 0);
+    else idle();
+  }
+
+  async function startCamera() {
+    const my = ++gen;
+    if (!window.isSecureContext || !navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) { stopCamera(FAIL.insecure); return; }
+    setMode('starting'); sTick();
+    readout('Starting the camera and loading the hand tracker…');
+    const [cam, lm] = await Promise.allSettled([
+      navigator.mediaDevices.getUserMedia({ audio: false, video: { facingMode: 'user', width: { ideal: 640 }, height: { ideal: 480 } } }),
+      loadLandmarker(),
+    ]);
+    if (cam.status === 'fulfilled' && (my !== gen || lm.status === 'rejected')) cam.value.getTracks().forEach(t => t.stop());
+    if (my !== gen) return;
+    if (cam.status === 'rejected') { stopCamera(FAIL[cam.reason && cam.reason.name] || FAIL.other); return; }
+    if (lm.status === 'rejected') { console.warn('Hand tracker failed to load', lm.reason); stopCamera(FAIL.model); return; }
+    stream = cam.value;
+    const track = stream.getVideoTracks()[0];
+    if (track) track.addEventListener('ended', () => { if (my === gen) stopCamera(FAIL.ended); });
+    video.srcObject = stream;
+    setMode('on');
+    try { await video.play(); } catch (_) {}
+    if (my !== gen) return;
+    const vw = video.videoWidth || 640, vh = video.videoHeight || 480;
+    aspect = vw / vh; camtile.style.aspectRatio = `${vw} / ${vh}`;
+    canvas.width = 160; canvas.height = Math.round(160 * vh / vw);
+    tracker = AG.createTracker();
+    lastVideoTime = -1; frames = 0; fps = 0; fpsT = lastHandAt = performance.now();
+    readout('Camera on · looking for a hand');
+    loop(my);
+  }
+
+  function stopCamera(reason) {
+    gen++;
+    if (stream) stream.getTracks().forEach(t => t.stop());
+    stream = null; video.srcObject = null; tracker = null;
+    g2.clearRect(0, 0, canvas.width, canvas.height);
+    if (holding && holdSrc === 'camera') { holding = null; cancelAnimationFrame(raf); }
+    rearm = {};
+    setMode('off', reason);
+    readout(reason ? `${reason.title} · ${reason.sub}` : 'Camera off');
+  }
+
+  function loop(my) {
+    if (my !== gen || !stream) return;
+    const now = performance.now();
+    if (video.readyState >= 2 && video.currentTime !== lastVideoTime) {
+      lastVideoTime = video.currentTime;
+      let res;
+      try { res = landmarker.detectForVideo(video, now); } catch (err) { console.warn('Hand tracking failed', err); stopCamera(FAIL.model); return; }
+      onFrame(res, now);
+      if (my !== gen) return;
+    }
+    // Animation frames, not video-frame callbacks: those can stop when the tile scrolls out of view.
+    // A hidden tab turns the camera off anyway.
+    requestAnimationFrame(() => loop(my));
+  }
+
+  function onFrame(res, now) {
+    const lms = res.landmarks || [], n = lms.length;
+    let frame = { hands: n }, f = null, c = null;
+    if (n) lastHandAt = now;
+    if (n === 1) {
+      f = AG.features(lms[0], res.worldLandmarks && res.worldLandmarks[0], aspect);
+      c = AG.classify(f);
+      frame = { hands: 1, label: c.label, center: f.center, palm2d: f.palm2d, open: c.open };
+    }
+    const evs = tracker.update(frame, now, { overlay: !!document.querySelector('.overlay.on') });
+    const st = tracker.status();
+    if (holding && holdSrc === 'camera' && st.active === holding) seenAt = st.seen;
+    for (const ev of evs) {
+      if (ev.type === 'end') end(ev.g, ev.quick ? 'quiet' : 'camera');
+      else if (stopT) continue; // during the countdown only Esc, a tap or "cancel" act
+      else if (ev.type === 'swipe') { begin(ev.g, 'camera'); end(ev.g, 'camera'); }
+      else begin(ev.g, 'camera');
+    }
+    draw(lms, !!(c && c.label));
+    frames++;
+    if (now - fpsT >= 1000) { fps = Math.round(frames * 1000 / (now - fpsT)); frames = 0; fpsT = now; }
+    if (now - lastReadout >= 200) { lastReadout = now; readout(AG.describe(n, f, c, st) + (fps ? ` · ${fps} fps` : '')); hint(n, c); }
+    if (now - lastHandAt > 120000) stopCamera(OFF.noHand);
+  }
+
+  function hint(n, c) {
+    if (!camOn || gbar.dataset.state !== 'idle') return;
+    const sheet = !!document.querySelector('.overlay.on');
+    const [t, s] = !n ? ['Camera on · show a hand', 'Hold a shape still until the ring fills. Lower your hand to cancel.']
+      : n > 1 ? ['Two hands in view', 'Nothing fires with two hands. Lower one.']
+      : sheet && !(c && c.label === 'palm') ? ['A sheet is open', 'Gestures wait until it closes; confirm or cancel with a tap. An open palm still stops everything.']
+      : c && c.label ? [`${G[c.label].name}?`, 'Hold it still…']
+      : ['Hand found', 'Make one of the six shapes and hold it still, or swipe sideways with an open hand.'];
+    gtitle.textContent = t; gsub.textContent = s;
+  }
+
+  function draw(lms, recognised) {
+    const w = canvas.width, h = canvas.height;
+    g2.clearRect(0, 0, w, h);
+    g2.strokeStyle = g2.fillStyle = lms.length > 1 ? '#ffb020' : recognised ? '#ff8aa2' : 'rgba(255,255,255,.9)';
+    g2.lineWidth = 1.5;
+    for (const lm of lms) {
+      g2.beginPath();
+      for (const [a, b] of AG.CONNECTIONS) { g2.moveTo(lm[a].x * w, lm[a].y * h); g2.lineTo(lm[b].x * w, lm[b].y * h); }
+      g2.stroke();
+      for (const p of lm) { g2.beginPath(); g2.arc(p.x * w, p.y * h, 1.8, 0, Math.PI * 2); g2.fill(); }
+    }
+  }
+
+  // ---- camera opt-in, and the rules that turn it off ----
+  os.addEventListener('click', e => {
+    if (e.target.closest('[data-cam]')) { if (camMode === 'off') document.getElementById('camsheet').classList.add('on'); else stopCamera(); }
+    if (e.target.closest('[data-camyes]')) { document.getElementById('camsheet').classList.remove('on'); startCamera(); }
+  });
+  document.addEventListener('visibilitychange', () => { if (document.hidden && camMode !== 'off') stopCamera(OFF.hidden); });
+  window.addEventListener('pagehide', () => { if (camMode !== 'off') stopCamera(); });
+  // Runs after console.js has toggled Freeze: a freeze turns the camera off (after a palm's countdown).
+  document.addEventListener('click', e => { if (e.target.closest('[data-freeze]') && os.classList.contains('frozen') && camMode !== 'off') stopCamera(OFF.frozen); });
+
+  // ---- keyboard equivalents (work without the camera) ----
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && cancelStop()) return;
+    const tgt = e.target instanceof Element ? e.target : document.body;
+    if (tgt.closest('input, textarea, .sim-pad')) return;
+    if (document.querySelector('.overlay.on')) return;
+    const map = { ArrowRight: 'swipe_right', ArrowLeft: 'swipe_left', Enter: 'point', a: 'thumb', s: 'fist', w: 'victory' };
+    if (e.key === 'F' && e.shiftKey) { e.preventDefault(); stopAll('key'); return; }
+    const g = map[e.key]; if (!g) return;
+    e.preventDefault(); verb(g, 'key');
+  });
+
+  idle();
+})();
+</script>
+</body>
+</html>

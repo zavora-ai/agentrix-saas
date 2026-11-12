@@ -1,0 +1,49 @@
+{% extends "layout.html" %}
+{#- X5 Zavora CLI and capability packs (concept/control-plane/cli.html; 08 §6). Sessions and packs
+    come from the operator ledger; none has run yet, so the page says so and shows the rules. -#}
+{% block title %}Zavora CLI{% endblock %}
+{% block field %}
+<div class="field-head">
+  <div><div class="crumbs"><a href="/rollouts">Rollouts</a> /</div><h2>Zavora CLI and packs</h2><div class="sub">Coding agents work in a repository and open pull requests. Their work reaches sites only in a signed release a person approves.</div></div>
+  <div class="row"><span class="chip">{{ sessions|length }} session{{ "" if sessions|length == 1 else "s" }} recorded</span></div>
+</div>
+<div class="cp-grid">
+  <article class="card tight">
+    <div class="card-title"><h4>Sessions that touched this platform</h4><span class="small muted">from the operator ledger</span></div>
+    <ul class="rows">
+      {%- for e in sessions %}
+      <li><span class="avatar sm" style="background:var(--op)">{{ e.actor_name|initials }}</span><span>{{ e.summary }}</span><span class="ledger-id">{{ e.at|when }} · {{ e.entry_id }}</span></li>
+      {%- else %}
+      <li><span></span><span class="small muted">No Zavora CLI session has acted on this platform. Its work arrives as pull requests, and nothing it writes reaches a site without a signed release and a person's approval.</span><span></span></li>
+      {%- endfor %}
+    </ul>
+  </article>
+
+  <div class="cp-grid cols-2e">
+    <article class="card tight">
+      <div class="card-title"><h4>Capability packs</h4><span class="small muted">signed versions, by channel</span></div>
+      <div class="empty"><b>No pack has shipped yet.</b> Each version will show its capability diff, who signed it and the channel it's on. A patch with the same capabilities can ride a train; a pack that adds capabilities becomes a card for each owner.</div>
+      <div class="rings" style="margin-top:10px">
+        <div class="ring next"><b>Ring 0</b><span>Zavora</span></div>
+        <div class="ring next"><b>Ring 1</b><span>canaries</span></div>
+        <div class="ring next"><b>Ring 2</b><span>10%</span></div>
+        <div class="ring next"><b>Ring 3</b><span>50%</span></div>
+        <div class="ring next"><b>Ring 4</b><span>all</span></div>
+      </div>
+    </article>
+
+    <article class="card tight">
+      <div class="card-title"><h4>What a coding agent may do near production</h4><span class="small muted">the same for every coding agent</span></div>
+      <div class="authority">
+        <div class="can"><b>It can</b><ul><li>Read the repository, run tests and evals in local sealed rooms</li><li>Show a diff before every write and the command line before every command</li><li>Open a pull request and propose a pack version</li></ul></div>
+        <div class="never"><b>It never</b><ul><li>Holds production credentials, signing keys or approval rights</li><li>Publishes to the stable channel, promotes a ring, freezes a site or applies infrastructure</li><li>Approves a card: that needs a person's passkey or authenticator code</li></ul></div>
+      </div>
+    </article>
+
+    <article class="card tight span-all">
+      <div class="card-title"><h4>Then the owner decides</h4><span class="small muted">a pack that adds a capability</span></div>
+      <p class="small">When a pack version adds a tool or widens what a WebAgent can do, each site's Chief WebAgent offers it as a card with the capability diff: what's new, what stays the same, and the level it starts at. Only the owner installs it, with their passkey or a code. Nothing has been offered yet.</p>
+    </article>
+  </div>
+</div>
+{% endblock %}

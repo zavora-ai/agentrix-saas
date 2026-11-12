@@ -1,0 +1,152 @@
+{
+  "note": "The screen-share cut: a presenter walks the problem, the solution, the architecture, a live run, the hackathon themes and the terminal. Clips are under clips/demo/ (demo.py). Narration reuses the deck's and the README's wording, spoken by Vultr's qwen3-tts.",
+  "beats": [
+    {
+      "id": "d01",
+      "pic": "slide:1",
+      "min": 7,
+      "say": "This is Agentrix WebAgent Platform, by Zavora Technologies. Our entry for the Vultr Agent Rush, Challenge 1: Blast Radius Zero."
+    },
+    {
+      "id": "d02",
+      "pic": "clip:demo/problem.mp4",
+      "fallback": 2,
+      "start": 1.5,
+      "badge": [
+        "Live",
+        "github.com/zavora-ai/agentrix-webagent-platform"
+      ],
+      "say": "The problem: websites are passive, insecure and not built for AI agents. Only about 15% of the world's websites are active. Search sends them fewer clicks, and customers now send AI agents to shop. WordPress runs 39.4% of all websites, and had 11,334 new vulnerabilities in 2025. A small business can't keep up."
+    },
+    {
+      "id": "d03",
+      "pic": "slide:3",
+      "say": "Our solution: Agentrix WebAgent Platform turns a WordPress, Shopify or React website into an autonomous AI business, with WebAgents working 24/7 for the owner and the customer."
+    },
+    {
+      "id": "d04",
+      "pic": "clip:demo/kilele.mp4",
+      "fallback": 14,
+      "start": 1.0,
+      "fit": "clip",
+      "badge": [
+        "Live",
+        "agentrix.website, on Vultr"
+      ],
+      "say": "This is the home page for agentrix.website. Paste your website address for a free assessment, or watch the film to get an explanation of what Agentrix is. For a demo of an Agentrix website, here is Kilele Bakery, one of three businesses showcasing WebAgents. Each menu item is an AI WebAgent that does a specific task, and can share requests or orders with the site owner, Wanjiru, who approves anything that costs money. A customer asks: are you open on Sunday? The site answers from its own pages. Another asks for a 3 kilo cake for a 4 year old who loves Roblox. The cake creator turns the words into a cake from Kilele's own options, two tiers, chocolate, sky blue, priced at 4,850 shillings from the price list, and draws an image of it with AI. Wanjiru confirms every cake.",
+      "speed": 1.9,
+      "speed_label": "1.9x speed"
+    },
+    {
+      "id": "d05",
+      "pic": "clip:demo/architecture.mp4",
+      "fallback": 4,
+      "start": 1.0,
+      "badge": [
+        "Live",
+        "the repository's architecture"
+      ],
+      "say": "Here is the architecture, explained simply. A control server runs the websites and the agents, and plans and signs every job. A separate sandbox server does anything risky, inside sealed rooms with no secrets. One gateway talks to the AI models on Vultr, so no agent holds a key. Each agent wakes for a reason and proposes an action; a rule check allows it, holds it for the owner, or blocks it. Every action leaves a signed receipt.",
+      "speed": 1.35
+    },
+    {
+      "id": "d06a",
+      "pic": "clip:demo/zavora.mp4",
+      "fallback": 13,
+      "start": 1.0,
+      "end": 12,
+      "fit": "clip",
+      "badge": [
+        "Live",
+        "Assess of zavora.ai, on Vultr"
+      ],
+      "say": "Now let's run it live, on Zavora's own website. I paste the address. No account needed."
+    },
+    {
+      "id": "d06b",
+      "pic": "clip:demo/zavora.mp4",
+      "fallback": 13,
+      "start": 12,
+      "end": 40,
+      "speed": 3,
+      "fit": "clip",
+      "speed_label": "3x speed",
+      "badge": [
+        "Live",
+        "Assess of zavora.ai, on Vultr"
+      ],
+      "say": "A real browser opens each page inside a sealed room on a separate Vultr server, takes screenshots, and checks it for errors and security problems."
+    },
+    {
+      "id": "d06c",
+      "pic": "clip:demo/zavora.mp4",
+      "fallback": 13,
+      "start": 40,
+      "fit": "clip",
+      "badge": [
+        "Live",
+        "Assess of zavora.ai, on Vultr"
+      ],
+      "say": "In under a minute, the health report: hidden instructions aimed at AI assistants on three pages, and a hidden frame on the About page. The full report shows what the sealed browser saw, page by page, with the receipt for each room.",
+      "speed": 2,
+      "speed_label": "2x speed"
+    },
+    {
+      "id": "d06d",
+      "pic": "clip:demo/run.mp4",
+      "fallback": 13,
+      "start": 100,
+      "end": 112,
+      "badge": [
+        "Live",
+        "Assess of Zavora's infected test site, on Vultr"
+      ],
+      "say": "And on Zavora's infected test site: hidden spam links, a disguised script, and two pages that tried to send our sealed room somewhere it isn't allowed. Both were refused."
+    },
+    {
+      "id": "d07",
+      "pic": "clip:demo/themes.mp4",
+      "fallback": 11,
+      "start": 1.0,
+      "badge": [
+        "Deck",
+        "the Challenge 1 themes"
+      ],
+      "say": "In plain words: the old site is never trusted. Every task is signed before it starts and receipted when it ends, so anyone can check it. Risky work runs in a sealed room with no passwords, thrown away afterwards. And ten real attacks planted in a hacked test site are scored from those receipts.",
+      "speed": 1.9
+    },
+    {
+      "id": "d08",
+      "pic": "clip:demo/terminal.mp4",
+      "fallback": 5,
+      "start": 0.5,
+      "fit": "clip",
+      "badge": [
+        "Live",
+        "a terminal, against the live site"
+      ],
+      "say": "And in a terminal, this is what a customer's AI agent sees. The agent door lists what agents may do, and custom orders are held for the owner. The agent searches the catalogue over MCP, and asks a question with cited sources. Every action leaves a signed receipt, checkable against the site's published key."
+    },
+    {
+      "id": "d09",
+      "pic": "slide:15",
+      "say": "The business is a subscription. Moving your site is free; you pay monthly for the WebAgents that run it, from twenty-nine dollars, through PayPal. It's for website owners, for agencies that run many client sites, and for developers who build on the platform."
+    },
+    {
+      "id": "d10",
+      "pic": "slide:16",
+      "say": "What makes Agentrix different? Website builders make sites that wait. An Agentrix website is proactive, responsive and supportive at once, built on ADK-Rust: a kernel that keeps agents running, a harness that governs every action, real-time voice, memory, and a site engine that moves websites safely."
+    },
+    {
+      "id": "d11",
+      "pic": "slide:17",
+      "say": "Made in Kenya, by the makers of ADK-Rust. We believe AGI is intelligent orchestration."
+    },
+    {
+      "id": "d12",
+      "pic": "slide:19",
+      "min": 6,
+      "say": "Agentrix. Upgrade your website into WebAgents. Try it at agentrix dot website."
+    }
+  ]
+}

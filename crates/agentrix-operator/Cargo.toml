@@ -1,0 +1,52 @@
+[package]
+name = "agentrix-operator"
+description = "The control plane's operator and portfolio scopes: operator sign-in and roles, the fleet, sites, support grants, break-glass, platform holds and the operator ledger, served on the ops host."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+authors.workspace = true
+
+# W3 (control plane) owns this crate. agentrix-node wires it in with `agentrix_operator::router`
+# on the ops host (docs/08-control-plane.md §7.1; specs/platform/02-architecture.md §4).
+
+[features]
+# Read templates from disk on every render, for editing markup without rebuilding. Never in release.
+dev-reload = []
+
+[dependencies]
+agentrix-billing.workspace = true
+agentrix-host.workspace = true
+agentrix-shell.workspace = true
+agentrix-types.workspace = true
+agentrix-ui.workspace = true
+anyhow.workspace = true
+async-trait.workspace = true
+axum.workspace = true
+base64.workspace = true
+chrono.workspace = true
+hex.workspace = true
+minijinja.workspace = true
+minijinja-embed.workspace = true
+rand.workspace = true
+reqwest.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+sha2.workspace = true
+sqlx.workspace = true
+thiserror.workspace = true
+tokio.workspace = true
+tracing.workspace = true
+url.workspace = true
+uuid.workspace = true
+
+[build-dependencies]
+minijinja-embed.workspace = true
+
+[dev-dependencies]
+tower.workspace = true
+tempfile.workspace = true
+
+[lints]
+workspace = true

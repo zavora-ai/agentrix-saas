@@ -1,0 +1,92 @@
+{
+  "site": "agentrix-home",
+  "sample": false,
+  "tier": "fast",
+  "look": "Cool morning colour grade, soft daylight, newsprint greys with rust-red accents",
+  "images": [
+    {
+      "slot": "tana:01",
+      "kind": "film",
+      "seed": 7201,
+      "brief": "Thursday at dawn in the small newsroom of a local weekly newspaper in a Kenyan valley town, with three cluttered desks, bundles of newspapers wrapped in plain brown paper, and a corkboard on the wall pinned with blank index cards and red string: Nduku, a Kenyan woman in her early fifties with short grey natural hair, reading glasses on a cord and a rust-red cardigan and Daniel, a Kenyan man in his late twenties with a neat beard and a denim shirt work at their desks with coffee, the window still blue, bundles of newspapers wrapped in plain brown paper and tied with string, by the door",
+      "context": "Still 1 of 12 for a short film about a fictional local weekly newspaper in a Kenyan valley town on the Agentrix home page; fictional people, made with AI. No readable text, logos or brand marks anywhere."
+    },
+    {
+      "slot": "tana:02",
+      "kind": "film",
+      "seed": 7302,
+      "brief": "Thursday morning at a busy open-air market in a Kenyan valley town: Mzee Otieno, a Kenyan man in his sixties with a grey flat cap and a tweed jacket sits at his vegetable stall arranging tomatoes in the morning light",
+      "context": "Still 2 of 12 for a short film about a fictional local weekly newspaper in a Kenyan valley town on the Agentrix home page; fictional people, made with AI. No readable text, logos or brand marks anywhere."
+    },
+    {
+      "slot": "tana:03",
+      "kind": "film",
+      "seed": 7103,
+      "brief": "Thursday afternoon inside a crowded matatu minibus: Wanjiku, a Kenyan woman in her thirties with a short afro, a green blazer and a shoulder bag sits by the window of a plain matatu interior with no stickers, asking a question to her phone, the valley passing outside",
+      "context": "Still 3 of 12 for a short film about a fictional local weekly newspaper in a Kenyan valley town on the Agentrix home page; fictional people, made with AI. No readable text, logos or brand marks anywhere."
+    },
+    {
+      "slot": "tana:04",
+      "kind": "film",
+      "seed": 7004,
+      "brief": "Thursday evening in the small newsroom of the Tana Valley Times, a local weekly in a Kenyan valley town, with three cluttered desks, stacks of folded newspapers whose print is too small to read, and a hand-drawn map on the wall: Daniel, a Kenyan man in his late twenties with a neat beard and a denim shirt on a desk phone with a pained expression, Nduku, a Kenyan woman in her early fifties with short grey natural hair, reading glasses on a cord and a rust-red cardigan standing behind him reading a printout, the light going orange",
+      "context": "Still 4 of 12 for a short film about a fictional local weekly newspaper in a Kenyan valley town on the Agentrix home page; fictional people, made with AI. No readable text, logos or brand marks anywhere."
+    },
+    {
+      "slot": "tana:05",
+      "kind": "film",
+      "seed": 7005,
+      "brief": "Friday morning at the market: Mzee Otieno, a Kenyan man in his sixties with a grey flat cap and a tweed jacket shows his phone to a fictional customer who shakes his head, both looking doubtful",
+      "context": "Still 5 of 12 for a short film about a fictional local weekly newspaper in a Kenyan valley town on the Agentrix home page; fictional people, made with AI. No readable text, logos or brand marks anywhere."
+    },
+    {
+      "slot": "tana:06",
+      "kind": "film",
+      "seed": 7306,
+      "brief": "Friday late at night in the small newsroom of a local weekly newspaper in a Kenyan valley town, with three cluttered desks, bundles of newspapers wrapped in plain brown paper, and a corkboard on the wall pinned with blank index cards and red string: Nduku, a Kenyan woman in her early fifties with short grey natural hair, reading glasses on a cord and a rust-red cardigan sits alone at her desk under a single lamp with a laptop, seen from behind her shoulder, the laptop screen a soft unreadable blur, looking determined",
+      "context": "Still 6 of 12 for a short film about a fictional local weekly newspaper in a Kenyan valley town on the Agentrix home page; fictional people, made with AI. No readable text, logos or brand marks anywhere."
+    },
+    {
+      "slot": "tana:07",
+      "kind": "film",
+      "seed": 7307,
+      "brief": "Thursday evening in the small newsroom of a local weekly newspaper in a Kenyan valley town, with three cluttered desks, cardboard boxes, and a corkboard on the wall pinned with blank white index cards, calm: Nduku, a Kenyan woman in her early fifties with short grey natural hair, reading glasses on a cord and a rust-red cardigan types on her laptop seen from the side, its lid edge-on to the camera, nodding, Daniel, a Kenyan man in his late twenties with a neat beard and a denim shirt beside her with his notebook, relieved. No newspapers or printed pages anywhere in the room; laptops are seen from behind with blurred screens",
+      "context": "Still 7 of 12 for a short film about a fictional local weekly newspaper in a Kenyan valley town on the Agentrix home page; fictional people, made with AI. No readable text, logos or brand marks anywhere."
+    },
+    {
+      "slot": "tana:08",
+      "kind": "film",
+      "seed": 7008,
+      "brief": "Thursday evening inside a matatu: Wanjiku, a Kenyan woman in her thirties with a short afro, a green blazer and a shoulder bag reads her phone and nods, satisfied, warm evening light",
+      "context": "Still 8 of 12 for a short film about a fictional local weekly newspaper in a Kenyan valley town on the Agentrix home page; fictional people, made with AI. No readable text, logos or brand marks anywhere."
+    },
+    {
+      "slot": "tana:09",
+      "kind": "film",
+      "seed": 7009,
+      "brief": "Thursday evening at the market as stalls close: Mzee Otieno, a Kenyan man in his sixties with a grey flat cap and a tweed jacket reads his phone and smiles, packing his vegetables",
+      "context": "Still 9 of 12 for a short film about a fictional local weekly newspaper in a Kenyan valley town on the Agentrix home page; fictional people, made with AI. No readable text, logos or brand marks anywhere."
+    },
+    {
+      "slot": "tana:10",
+      "kind": "film",
+      "seed": 7010,
+      "brief": "Friday at seven in the morning inside a matatu: Wanjiku, a Kenyan woman in her thirties with a short afro, a green blazer and a shoulder bag reads her phone with interest, a coffee cup in her other hand, soft morning light",
+      "context": "Still 10 of 12 for a short film about a fictional local weekly newspaper in a Kenyan valley town on the Agentrix home page; fictional people, made with AI. No readable text, logos or brand marks anywhere."
+    },
+    {
+      "slot": "tana:11",
+      "kind": "film",
+      "seed": 7011,
+      "brief": "Friday at seven in the morning at a kitchen table in a valley home: Mzee Otieno, a Kenyan man in his sixties with a grey flat cap and a tweed jacket reads his phone over tea and toast, his reading glasses on, content",
+      "context": "Still 11 of 12 for a short film about a fictional local weekly newspaper in a Kenyan valley town on the Agentrix home page; fictional people, made with AI. No readable text, logos or brand marks anywhere."
+    },
+    {
+      "slot": "tana:12",
+      "kind": "film",
+      "seed": 7312,
+      "brief": "Months later in the small newsroom of a local weekly newspaper in a Kenyan valley town, with three cluttered desks, cardboard boxes, and a corkboard on the wall pinned with blank white index cards, now with five desks: Nduku, a Kenyan woman in her early fifties with short grey natural hair, reading glasses on a cord and a rust-red cardigan, Daniel, a Kenyan man in his late twenties with a neat beard and a denim shirt and two new fictional reporters, four people in all, laugh together around a desk, mugs and laptops seen from the side all around. No newspapers or printed pages anywhere in the room; laptops are seen from behind with blurred screens",
+      "context": "Still 12 of 12 for a short film about a fictional local weekly newspaper in a Kenyan valley town on the Agentrix home page; fictional people, made with AI. No readable text, logos or brand marks anywhere."
+    }
+  ]
+}

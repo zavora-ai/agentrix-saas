@@ -1,0 +1,39 @@
+[package]
+name = "agentrix-kernel"
+description = "The individual WebAgent: the roster as data, living marks, presence from real activity, dials the governed path enforces, and section desks (02 §3, 05)."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+authors.workspace = true
+
+[dependencies]
+agentrix-decisions.workspace = true
+agentrix-host.workspace = true
+agentrix-types.workspace = true
+awp-types.workspace = true
+agentrix-marks = { path = "../agentrix-marks", features = ["serve"] }
+agentrix-records = { path = "../agentrix-records" }
+agentrix-store.workspace = true
+anyhow.workspace = true
+async-trait.workspace = true
+chrono.workspace = true
+futures.workspace = true
+sqlx.workspace = true
+axum.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+thiserror.workspace = true
+tokio.workspace = true
+tokio-stream.workspace = true
+tracing.workspace = true
+uuid.workspace = true
+
+[dev-dependencies]
+# The real control.db schema (sites, usage, budgets) for the spend tool's test.
+agentrix-store = { workspace = true, features = ["testing"] }
+tower.workspace = true
+
+[lints]
+workspace = true

@@ -1,0 +1,23 @@
+{% extends "saas/apps/base.html" %}
+{% block title %}Wallet · {{ site.name }}{% endblock %}
+{% block field %}
+<div class="field-head"><div><h1>Wallet</h1><div class="sub">Every move the Cashier made with the business's PayPal, matched to PayPal's id and the books' journal. The money stays in PayPal; this is the wallet record.</div></div>
+{% if checkpoint %}{% if checkpoint.state == "matches" %}{{ ui.chip(checkpoint.words, "ok") }}{% else %}{{ ui.chip(checkpoint.words, "risk") }}{% endif %}{% else %}{{ ui.chip("Not reconciled against PayPal on this node", "wait") }}{% endif %}
+</div>
+{% if error %}{{ ui.banner("wait", error) }}{% endif %}
+{% if note %}{{ ui.banner("", note) }}{% endif %}
+<div class="kpis">
+  {{ ui.kpi({"label": "Entries", "value": entries ~ "", "window": wallet_id or ""}) }}
+  {{ ui.kpi({"label": "Three-way matched", "value": three_way ~ " of " ~ matches, "window": in_books ~ " in the books · PayPal read back for " ~ three_way}) }}
+  {{ ui.kpi({"label": "Last checkpoint", "value": (checkpoint.size ~ " entries") if checkpoint else "none", "window": (checkpoint.root[:19] ~ "…") if checkpoint else "signed audit log"}) }}
+</div>
+<agentrix-wallet src="{{ json_url }}">
+  {#- Without the grid (no script, or not built), the ledger as a plain table. -#}
+  {{ ui.data_table([{"key": "seq", "label": "#"}, {"key": "at", "label": "When"}, {"key": "kind", "label": "Kind"}, {"key": "amount", "label": "Amount", "align": "r"}, {"key": "paypal", "label": "PayPal id"}, {"key": "counterparty", "label": "With"}, {"key": "cause", "label": "For"}], rows, caption="Wallet ledger", empty="No entries yet.") }}
+</agentrix-wallet>
+<section class="section" aria-labelledby="checkpoints-h"><h2 id="checkpoints-h">Checkpoints</h2>
+<p class="small muted">Each one signs the ledger so far (its Merkle root) and records whether PayPal agreed when it was read.</p>
+{{ ui.data_table([{"key": "checked", "label": "Read PayPal"}, {"key": "size", "label": "Entries", "align": "r"}, {"key": "root", "label": "Root"}, {"key": "words", "label": "Result"}], history, caption="Wallet checkpoints", empty="No checkpoint yet: the wallet hasn't been reconciled against PayPal on this node.") }}
+</section>
+{% endblock %}
+{% block scripts %}<script type="module" src="{{ grid_url }}"></script>{% endblock %}

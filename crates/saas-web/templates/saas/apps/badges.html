@@ -1,0 +1,7 @@
+{% extends "saas/apps/base.html" %}
+{% block title %}Badges · {{ site.name }}{% endblock %}
+{% block field %}
+<div class="field-head"><div><h1>{{ site.name }}'s agents</h1><div class="sub">Each agent's identity is a W3C DID with the did:web method, rooted in the site's own domain. Anyone can check it.</div></div></div>
+{% include "saas/apps/verify_box.html" %}
+{% endblock %}
+{% block scripts %}<script type="module" src="/static/saas/verify.js?v={{ saas_v }}"></script>{% endblock %}

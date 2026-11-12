@@ -1,0 +1,220 @@
+{
+  "site": "tana-valley-times-sample",
+  "host": "tana-valley-times-sample.agentrix.website",
+  "name": "Tana Valley Times",
+  "archetype": "news",
+  "currency": "KES",
+  "utc_offset_min": 180,
+  "seed_version": "2026-11-08.7",
+  "facts": {
+    "order_prefix": "TV",
+    "domain": "tana-valley-times.example",
+    "since": "2006",
+    "tagline": "The valley's weekly paper, online every day",
+    "owner": {
+      "login": {
+        "email": "nduku@tana-valley-times.example",
+        "password": "tana-sample-editor"
+      },
+      "name": "Nduku Mwikali",
+      "first": "Nduku",
+      "initial": "N",
+      "role": "Editor",
+      "channel": "email",
+      "wait": "a day",
+      "email": "editor@tana-valley-times.example"
+    },
+    "release": "v3",
+    "mark": {
+      "family": "strata",
+      "squareness": 7.2,
+      "key": "tana",
+      "font": "Libre Caslon Text"
+    },
+    "front_color": "#14213d",
+    "front": {
+      "lead": "council-approves-first-phase-of-the-northern-rail-extension",
+      "topic": "rail"
+    },
+    "sections": [
+      {
+        "id": "transport",
+        "name": "Transport",
+        "about": "Roads, bridges, matatu routes and the northern rail extension. Report a road problem to the newsroom by email; the Times passes reports to the county roads office and follows up in print."
+      },
+      {
+        "id": "council",
+        "name": "Council",
+        "about": "What the county council voted on, spent and decided. Council sittings are open to the public at the county hall in Mto Mkuu, and the Times publishes how every ward's councillor voted."
+      },
+      {
+        "id": "farming",
+        "name": "Farming and weather",
+        "about": "Rain, harvests, crop prices and advice from extension officers. Rain figures come from the county's own gauges."
+      },
+      {
+        "id": "business",
+        "name": "Business",
+        "about": "Markets, shops, jobs and money in the valley. Traders can send their prices to the newsroom each week; the Times prints the figures it can check."
+      },
+      {
+        "id": "community",
+        "name": "Community",
+        "about": "Schools, clinics, sport and the people of the valley. Send news of your school, clinic, church or club to the newsroom by email; the Times prints what it can confirm."
+      }
+    ],
+    "topics": {
+      "rail": {
+        "title": "The northern rail extension",
+        "phrase": "the northern rail extension",
+        "about": "The commuter line from Mto Mkuu to Kivuli, from the first study to the tenders."
+      },
+      "budget": {
+        "title": "The county budget",
+        "phrase": "the county budget",
+        "about": "How the council raises and spends the county's money, year by year."
+      },
+      "market": {
+        "title": "Ndovu market's move",
+        "phrase": "Ndovu market's move",
+        "about": "The traders of Ndovu market and the plan to move them to a new site."
+      }
+    },
+    "house_rules": [
+      "Desks never write news. They answer from published reporting.",
+      "Every claim links to a dated, bylined story.",
+      "Subscriber stories: headline and link only, unless you subscribe.",
+      "Corrections reach answers and digests within minutes.",
+      "The editor approves each desk's scope and wording."
+    ],
+    "digest": {
+      "name": "Friday five",
+      "day": "Friday",
+      "time": "07:00",
+      "count": 5,
+      "contract": [
+        [
+          "You get",
+          "Every Friday at 07:00: five {topics} stories, two lines each, with links"
+        ],
+        [
+          "Made from",
+          "Only stories Tana Valley Times published that week. The two lines are each story's own summary, as the newsroom wrote it"
+        ],
+        [
+          "We keep",
+          "Your email and these topics. Not your reading history"
+        ],
+        [
+          "Stop",
+          "One tap in any email. Your topics are deleted with it"
+        ]
+      ]
+    },
+    "subscription": {
+      "plan": "Supporter",
+      "price_words": "KSh 300 a month (sample price)",
+      "price": 300,
+      "period": "month",
+      "days": 30,
+      "usd_rate": 129.0,
+      "note": "KSh 300 is a sample price until the editor sets the real one",
+      "includes": [
+        "Every subscriber story in full, including the archive"
+      ],
+      "renewal": "This sample takes one payment for one month. It doesn't renew by itself; pay again to keep reading."
+    },
+    "device_memory": {
+      "items": [
+        "last_visit",
+        "follows"
+      ],
+      "sample": {
+        "last_visit_days_ago": 5,
+        "follows": [
+          "Transport"
+        ]
+      }
+    },
+    "desks": [
+      {
+        "id": "newsroom",
+        "name": "Newsroom",
+        "href": "/",
+        "color": "#b3261e",
+        "glyph": "news",
+        "seed": 21,
+        "mandate": "I answer from Tana Valley Times' published stories and link every one, with its byline and date. I never write news.",
+        "starters": [
+          [
+            "Where does the rail extension stand?",
+            "standing",
+            true
+          ],
+          [
+            "Who has been reporting it?",
+            "who",
+            true
+          ],
+          [
+            "Is the extension a good idea?",
+            "opinion",
+            true
+          ]
+        ]
+      },
+      {
+        "id": "archive",
+        "name": "Archive",
+        "href": "/archive",
+        "color": "#2f5d8a",
+        "glyph": "calendar",
+        "seed": 9,
+        "mandate": "I find past issues by date and topic, back to the first story online.",
+        "starters": [
+          [
+            "When did the rail story start?",
+            "first",
+            true
+          ],
+          [
+            "What did the paper report last month?",
+            "month",
+            true
+          ],
+          [
+            "Show me the market stories",
+            "topic",
+            true
+          ]
+        ]
+      },
+      {
+        "id": "subscriptions",
+        "name": "Subscriptions",
+        "href": "/subscribe",
+        "color": "#14213d",
+        "glyph": "coin",
+        "seed": 15,
+        "mandate": "I handle subscriptions and the Friday five. I never take card details in a chat.",
+        "starters": [
+          [
+            "How much is a subscription?",
+            "price",
+            true
+          ],
+          [
+            "Is my subscription active?",
+            "status",
+            true
+          ],
+          [
+            "How do I stop the Friday five?",
+            "stop",
+            true
+          ]
+        ]
+      }
+    ]
+  }
+}

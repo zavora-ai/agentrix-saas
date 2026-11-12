@@ -1,0 +1,345 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Agentrix OS Shell</title>
+<meta name="description" content="Concept: the owner console as an operating system. The Chief WebAgent is the shell, WebAgents are apps, Front of house and Back office are two worlds, and Night Time runs while you sleep.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Manrope:wght@600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../styles.css">
+<link rel="stylesheet" href="console.css">
+</head>
+<body class="os-page">
+<header class="conceptbar">
+  <a class="logo" href="../index.html"><span class="mark" aria-hidden="true"></span>Agentrix</a>
+  <nav aria-label="Agentrix OS concepts">
+    <a href="index.html">Agentrix OS</a>
+    <a href="shell.html" aria-current="page">Shell</a>
+    <a href="store.html">Store</a>
+    <a href="mission.html">Missions</a>
+    <a href="live.html">Live</a>
+    <a href="phone.html">Phone</a>
+    <a href="trust.html">Trust centre</a>
+    <a href="gestures.html">Gestures</a>
+  </nav>
+  <span class="concept-label">Concept · illustrative data</span>
+</header>
+
+<main class="wrap">
+  <div class="page-head">
+    <span class="eyebrow">Agentrix OS · 1 of 6 · The shell</span>
+    <h1 style="margin-top:12px">Your WebAgents, what they are doing, and what needs you</h1>
+    <p class="lead">The Chief WebAgent is the shell: you ask, it plans, the WebAgents do the work, and it answers in one voice. WebAgents sit in the dock like apps. The two worlds are the two halves of the security design: <b>Front of house</b>, where visitors and other AI agents talk to your site live, and <b>Back office</b>, where your WebAgents work. During opening hours the shell is in <b>Day Time</b>; after closing it turns to <b>Night Time</b>.</p>
+    <div class="tryline"><span>Try:</span><span class="chip chip-outline">switch worlds</span><span class="chip chip-outline">the ☀ pill for Night Time</span><span class="chip chip-outline">type in the command bar</span><span class="chip chip-outline">approve the order</span><span class="chip chip-outline">Activity monitor</span><span class="chip chip-outline">Freeze</span></div>
+  </div>
+
+  <section class="os-frame" aria-label="Agentrix OS shell, Kilele Bakery">
+    <div class="browser-bar"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="url"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>os.agentrix.ai/kilele</span></div>
+
+    <div class="os" data-world="back" data-time="day">
+      <!-- STATUS BAR -->
+      <div class="os-bar">
+        <button class="site-chip" type="button" aria-label="Switch site"><span class="logo-bake">K</span><span>Kilele Bakery<small>kilele-bakery.example · v14 live</small></span><span class="caret" aria-hidden="true">▾</span></button>
+        <div class="worlds" role="group" aria-label="Worlds">
+          <button type="button" data-world="front" aria-pressed="false"><span class="live-dot" aria-hidden="true"></span>Front of house <span class="ct">3 live</span></button>
+          <button type="button" data-world="back" aria-pressed="true">Back office</button>
+        </div>
+        <div class="bar-right">
+          <button class="pill time" type="button" data-time-toggle title="Switch between Day Time and Night Time"><span class="sun" aria-hidden="true">☀</span><span class="moon" aria-hidden="true">☾</span><span class="hide-sm" data-time-label>Day Time · until 18:00</span></button>
+          <span class="pill hide-sm" title="AI budget this month"><span class="hide-md">Budget</span> <b>KSh 38</b><span class="meter-mini"><span style="width:6%"></span></span></span>
+          <a class="pill trust" href="trust.html" title="Trust centre"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg><span class="hide-sm">Protections on</span><span class="n" aria-label="decisions waiting">2</span></a>
+          <button class="pill freeze" type="button" data-freeze aria-pressed="false" data-on="Frozen" data-off="Freeze"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></svg><span data-freeze-text>Freeze</span></button>
+        </div>
+      </div>
+
+      <!-- DOCK -->
+      <nav class="dock" aria-label="WebAgents">
+        <button class="app-ico" type="button" data-go-world="front" title="Concierge: front desk, 3 desks"><span class="os-mark" data-state="answering" style="--c:#b72d50"><span class="avatar av-concierge">Co</span></span>Concierge</button>
+        <button class="app-ico" type="button" title="Sales: waiting for you"><span class="os-mark" data-state="waiting" style="--c:#0f6b62"><span class="avatar av-sales">Sa</span></span>Sales</button>
+        <button class="app-ico" type="button" aria-current="true" title="Editor: working"><span class="os-mark" data-state="working" style="--c:#7a4b00"><span class="avatar av-editor">Ed</span></span>Editor<span class="badge">1</span></button>
+        <button class="app-ico" type="button" title="Reputation: asleep"><span class="os-mark" data-state="asleep" style="--c:#6b2f86"><span class="avatar av-reputation">Re</span></span>Reputation</button>
+        <button class="app-ico" type="button" title="Cashier: waiting for you"><span class="os-mark" data-state="waiting" style="--c:#11734a"><span class="avatar av-cashier">Ca</span></span>Cashier<span class="badge">1</span></button>
+        <button class="app-ico" type="button" title="Guardian: watching"><span class="os-mark" data-state="listening" style="--c:#45597f"><span class="avatar av-guardian">Gu</span></span>Guardian</button>
+        <button class="app-ico" type="button" title="Caretaker: asleep until 02:00"><span class="os-mark" data-state="asleep" style="--c:#3d5a1f"><span class="avatar av-caretaker">Ct</span></span>Caretaker</button>
+        <span class="sep" aria-hidden="true"></span>
+        <a class="app-ico" href="store.html" title="Store: add WebAgents and packs"><span class="sys"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span>Store</a>
+        <button class="app-ico" type="button" data-open="activity" title="Activity monitor"><span class="sys"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></span>Activity</button>
+        <a class="app-ico" href="trust.html#memory" title="What your WebAgents know"><span class="sys"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V3H6.5A2.5 2.5 0 0 0 4 5.5z"/><path d="M8 7h8M8 11h6"/></svg></span>Memory</a>
+        <a class="app-ico" href="trust.html" title="Trust centre"><span class="sys"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></span>Trust</a>
+      </nav>
+
+      <!-- FIELD -->
+      <div class="field">
+        <p class="note" data-frozen-note hidden style="margin-bottom:12px;background:var(--risk-bg);border-color:#f3c3bf;color:var(--risk)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--risk)"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></svg><span><b>Frozen.</b> Every WebAgent stopped at its next safe point. Your site keeps serving signed release v14, and the Concierge answers from the pages only. Unfreeze needs your passkey.</span></p>
+
+        <!-- BACK OFFICE · DAY -->
+        <section class="view" data-view="back" aria-label="Back office">
+          <div class="field-head"><div><h2>Good morning, Wanjiru</h2><div class="sub">Saturday 7 November · Westlands · 2 decisions, 1 mission report</div></div><span class="state-line working"><span class="dot"></span>3 WebAgents awake · 6 asleep</span></div>
+          <div class="cards">
+            <article class="fcard accent span2">
+              <div class="fcard-head"><span class="orb sm" aria-hidden="true"></span><div class="who"><b>Chief WebAgent · Morning brief</b><span class="state-line">07:00 · from 31 recorded events</span></div><button class="btn btn-ghost btn-sm" type="button">Share</button></div>
+              <p><b>Overnight your site welcomed 41 visitors and answered 9 questions</b> (2 in Swahili, none corrected) <a class="cite" href="#" onclick="return false">ledger</a>. <b>One cake order</b> is waiting for you: KSh 4,500, collect Saturday <a class="cite" href="#" onclick="return false">order o-118</a>. Editor found <b>2 prices</b> on the Cakes page that differ from the list you sent on WhatsApp and drafted release v15 <a class="cite" href="#" onclick="return false">draft d-77</a>. The Christmas mission is at <b>23 of 60</b> preorders <a class="cite" href="#" onclick="return false">mission m-3</a>.</p>
+              <div class="verbs"><button class="btn btn-primary btn-sm" type="button" data-passkey data-sign="Cake order o-118 · KSh 4,500 · Amani W. · collect Sat 14 Nov 10:00" data-fp="H(kilele, cashier, order.confirm, {o-118, 4500 KES, 2026-11-14T10:00}, exp 7 Nov 19:00) = 4c19…e7">Approve the order</button><a class="btn btn-sm" href="mission.html">Read the mission report</a><button class="btn btn-ghost btn-sm" type="button" data-fill="Why did Sales wake at 04:10?">Ask about it</button></div>
+            </article>
+
+            <article class="fcard">
+              <div class="fcard-head"><span class="os-mark" data-state="working" style="--c:#7a4b00"><span class="avatar av-editor">Ed</span></span><div class="who"><b>Editor</b><span class="state-line working"><span class="dot"></span>Comparing 14 prices with the Cakes page</span></div></div>
+              <ul class="steps">
+                <li class="done">Read the price list you sent on WhatsApp at 06:58</li>
+                <li class="now">Compare it with the Cakes page in release v14</li>
+                <li>Draft release v15 for your passkey</li>
+              </ul>
+              <div class="verbs"><button class="btn btn-sm" type="button">Watch</button><button class="btn btn-ghost btn-sm" type="button">Pause Editor</button></div>
+            </article>
+
+            <article class="fcard">
+              <div class="fcard-head"><span class="avatar av-sales">Sa</span><div class="who"><b>Mission · Christmas cakes</b><span class="state-line">Sales leads · Editor · Cakes desk · Cashier</span></div></div>
+              <h3>60 preorders by 18 December</h3>
+              <div class="progress"><div class="spread"><span><b>23</b> of 60 · +9 this week</span><span>KSh 112 of 400</span></div><div class="meter ok"><span style="width:38%"></span></div></div>
+              <p>Week 2 report is in: the Christmas page works, the Instagram post did not. Sales asks to message last year's customers.</p>
+              <div class="verbs"><a class="btn btn-sm btn-primary" href="mission.html">Open report</a><button class="btn btn-ghost btn-sm" type="button">Pause mission</button></div>
+            </article>
+
+            <article class="fcard span2 wall-card">
+              <div class="spread"><div><h3 style="margin:0">What visitors' conversations triggered today</h3><p style="margin-top:2px">Only typed signals cross from Front of house: 280 characters at most, screened, never the visitor's raw words.</p></div><button class="btn btn-sm" type="button" data-go-world="front">Go to Front of house</button></div>
+              <div class="wall">
+                <div class="side"><h4>Front of house said</h4>
+                  <div class="signal cross"><code>lead_captured</code><span>Riverside Co. · 40 breakfast boxes</span></div>
+                  <div class="signal cross" style="animation-delay:.6s"><code>content_gap</code><span>"gluten-free cakes" · 4×</span></div>
+                  <div class="signal cross" style="animation-delay:1.2s"><code>visitor_intent</code><span>Christmas preorder · 6×</span></div>
+                  <div class="signal cross" style="animation-delay:1.8s"><code>support_escalation</code><span>Mary K. wants a person</span></div>
+                </div>
+                <span class="line" aria-hidden="true"></span>
+                <div class="side"><h4>Back office did</h4>
+                  <div class="signal"><span class="avatar av-sales" style="width:20px;height:20px;border-radius:6px;font-size:9px">Sa</span><span>Woke Sales: quote drafted, waiting for you</span></div>
+                  <div class="signal"><span class="avatar av-editor" style="width:20px;height:20px;border-radius:6px;font-size:9px">Ed</span><span>Agenda for Editor: an FAQ answer</span></div>
+                  <div class="signal"><span class="avatar av-sales" style="width:20px;height:20px;border-radius:6px;font-size:9px">Sa</span><span>Counted on the Christmas mission</span></div>
+                  <div class="signal"><span class="orb sm xs" style="--s:20px" aria-hidden="true"></span><span>Chief WebAgent sent it to your WhatsApp</span></div>
+                </div>
+              </div>
+            </article>
+
+            <article class="fcard">
+              <div class="fcard-head"><span class="avatar av-editor">Ed</span><div class="who"><b>Teach your site</b><span class="state-line">Questions your pages can't answer yet</span></div><span class="chip chip-coral">3</span></div>
+              <p>"Do you make gluten-free cakes?" <span class="muted">asked 4×</span></p>
+              <p>"Do you deliver to Karen?" <span class="muted">asked 2×</span></p>
+              <div class="verbs"><button class="btn btn-sm" type="button">Answer</button><button class="btn btn-ghost btn-sm" type="button" title="Or drag this card onto Editor in the dock">Give to Editor</button></div>
+            </article>
+
+            <article class="fcard">
+              <div class="fcard-head"><span class="os-mark" data-state="listening" style="--c:#45597f"><span class="avatar av-guardian">Gu</span></span><div class="who"><b>Guardian</b><span class="state-line live"><span class="dot"></span>Watching · checked 2 min ago</span></div></div>
+              <p>Your site matches signed release v14. 212 requests probing your old WordPress login were blocked overnight. Nothing for you to do.</p>
+            </article>
+          </div>
+        </section>
+
+        <!-- BACK OFFICE · NIGHT TIME -->
+        <section class="view" data-view="night" aria-label="Night Time">
+          <div class="field-head"><div><h2>Night Time</h2><div class="sub">Quiet hours 22:00–06:00 · only emergencies reach you · last night, as recorded</div></div><span class="state-line"><span class="dot" style="background:#a9a4ff"></span>KSh 9 of AI spend overnight</span></div>
+          <div class="cards">
+            <article class="fcard span2">
+              <ol class="tl">
+                <li><span class="t">22:14</span><span class="pin"></span><span><b>Cakes desk</b> answered 3 questions, one in Swahili, all from your pages.</span></li>
+                <li><span class="t">23:02</span><span class="pin"></span><span>A visitor asked about Christmas delivery to Karen. Your pages don't say, so the desk said so and filed a <code class="mono">content_gap</code>.</span></li>
+                <li class="ok"><span class="t">01:30</span><span class="pin"></span><span><b>Guardian</b> blocked 212 requests from 3 networks probing <code class="mono">/wp-login.php</code>. No model call was needed.</span></li>
+                <li class="ok"><span class="t">02:00</span><span class="pin"></span><span><b>Caretaker</b> verified last night's backup and the release signature.</span></li>
+                <li class="warn"><span class="t">04:10</span><span class="pin"></span><span><b>Sales</b> woke on a new lead (Riverside Co., 40 breakfast boxes) and drafted a quote. It is <b>waiting for you</b> and will not be sent before you decide.</span></li>
+                <li><span class="t">05:00</span><span class="pin"></span><span><b>Editor</b> checked prices against your list: 2 differ. Draft release v15 is ready.</span></li>
+                <li><span class="t">06:40</span><span class="pin"></span><span><b>Chief WebAgent</b> wrote your brief from 31 recorded events.</span></li>
+              </ol>
+            </article>
+            <article class="fcard">
+              <div class="fcard-head"><span class="orb sm" aria-hidden="true"></span><div class="who"><b>What reached you overnight</b><span class="state-line">P1 alarms only</span></div></div>
+              <h3>Nothing. No emergencies.</h3>
+              <p>Site down, a payment anomaly or an incident would ring you inside quiet hours until you answered. Everything else waits for 07:00.</p>
+            </article>
+            <article class="fcard">
+              <div class="fcard-head"><span class="avatar av-caretaker">Ct</span><div class="who"><b>Who works at night</b><span class="state-line">by your rules</span></div></div>
+              <p><b>Guardian</b> every 5 minutes · <b>Cakes desk</b> when someone asks · <b>Caretaker</b> at 02:00 · <b>Sales</b> drafts, never sends · <b>Chief WebAgent</b> at 06:40.</p>
+              <div class="verbs"><a class="btn btn-sm" href="trust.html">Change quiet hours</a></div>
+            </article>
+          </div>
+        </section>
+
+        <!-- FRONT OF HOUSE -->
+        <section class="view" data-view="front" aria-label="Front of house">
+          <div class="field-head"><div><h2>Front of house</h2><div class="sub">Live now · 3 people on your site · 1 AI agent at the door</div></div><a class="btn btn-sm" href="live.html">Open Live</a></div>
+          <div class="floor">
+            <div class="room"><h5>Home <span class="chip">2</span></h5><small>/</small><div class="people"><span class="vdot">V1</span><span class="vdot">V2</span></div></div>
+            <div class="room" style="border-color:var(--coral)"><h5>Cakes <span class="chip chip-coral">talking</span></h5><small>/cakes · desk "Cakes"</small><div class="people"><span class="vdot talking">MK</span></div><div class="desk"><span class="os-mark" data-state="answering" style="--c:#b72d50"><span class="avatar av-concierge">Co</span></span>Answering Mary K.</div></div>
+            <div class="room"><h5>Orders <span class="chip">0</span></h5><small>/order · desk "Orders"</small><div class="desk"><span class="os-mark" data-state="asleep"><span class="avatar av-concierge">Co</span></span>Idle</div></div>
+            <div class="room"><h5>Agent door <span class="chip chip-info">1</span></h5><small>AWP · MCP · A2A</small><div class="people"><span class="vdot agent">AI</span></div><div class="desk">Verified shopping assistant read today's stock</div></div>
+          </div>
+          <div class="cards" style="margin-top:12px">
+            <article class="fcard span2">
+              <div class="fcard-head"><span class="vdot talking" style="width:32px;height:32px">MK</span><div class="who"><b>Mary K. · in Cakes</b><span class="state-line answering"><span class="dot"></span>Cakes is answering · 4 min · asked for a person</span></div><span class="chip chip-coral">wants you</span></div>
+              <p>"A gluten-free wedding cake for 120 guests, early January. Is that something you do?"</p>
+              <p class="muted small" style="margin-top:4px">Cakes answered what the pages say (tiers, lead times) and said honestly that the site doesn't mention gluten-free.</p>
+              <div class="verbs"><a class="btn btn-primary btn-sm" href="live.html">Take over</a><a class="btn btn-sm" href="live.html">Sit in</a><button class="btn btn-ghost btn-sm" type="button">Answer later</button></div>
+            </article>
+            <article class="fcard">
+              <div class="fcard-head"><span class="avatar av-concierge">Co</span><div class="who"><b>Concierge · 3 desks</b><span class="state-line">Your rules, not a dial</span></div></div>
+              <p><b>Cakes</b> 6 answers today · <b>Orders</b> 1 held order · <b>Visit us</b> 2 answers. Orders above KSh 3,000 wait for you.</p>
+              <div class="verbs"><button class="btn btn-sm" type="button">Desk settings</button><button class="btn btn-ghost btn-sm" type="button">Preview as a visitor</button></div>
+            </article>
+          </div>
+          <p class="note" style="margin-top:12px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg><span>You can read and join these conversations. Your back-office WebAgents can't: they only ever receive the typed signals shown in Back office.</span></p>
+        </section>
+      </div>
+
+      <!-- LANE -->
+      <aside class="lane" aria-label="What needs you">
+        <div class="lane-scroll" data-lane="day">
+          <h4>Needs you <span class="badge">2</span></h4>
+          <div class="ldec" data-decision>
+            <div class="from"><span class="avatar av-cashier">Ca</span>Cashier asks<span class="chip chip-ok">Low risk</span></div>
+            <b class="t">Approve cake order · KSh 4,500</b>
+            <p>Amani W. · 2-tier vanilla · collect Sat 14 Nov, 10:00 · PayPal request after you approve</p>
+            <div class="verbs"><button class="btn btn-primary btn-sm" type="button" data-passkey data-sign="Cake order o-118 · KSh 4,500 · Amani W. · collect Sat 14 Nov 10:00" data-fp="H(kilele, cashier, order.confirm, {o-118, 4500 KES, 2026-11-14T10:00}, exp 7 Nov 19:00) = 4c19…e7">Approve</button><button class="btn btn-sm" type="button">Edit</button><button class="btn btn-ghost btn-sm" type="button" data-dismiss="Declined · Amani is told honestly · receipt r-51d0…">Decline</button></div>
+            <div class="done-line">Approved · signed on this MacBook · receipt r-4c19…e7 · Amani has been told.</div>
+          </div>
+          <div class="ldec" data-decision>
+            <div class="from"><span class="avatar av-editor">Ed</span>Editor asks<span class="chip chip-wait">Medium</span></div>
+            <b class="t">Publish release v15 · 2 price changes</b>
+            <p>Black Forest KSh 3,500 → 3,800 · Vanilla sponge KSh 3,000 → 3,200 · from your WhatsApp list</p>
+            <div class="verbs"><button class="btn btn-primary btn-sm" type="button" data-passkey data-sign="Release v15: 2 price changes on /cakes" data-fp="H(kilele, editor, site_publish, {release v15, diff 2 rows}, exp 8 Nov 07:00) = 9a03…1c">Approve</button><button class="btn btn-sm" type="button">See the diff</button><button class="btn btn-ghost btn-sm" type="button" data-why>Why?</button></div>
+            <div class="whybox">Publishing is a public effect, and Editor's <b>freshness</b> job is at <b>Ask me first</b>. Prices are only ever published from what you sent: the draft cites your WhatsApp message of 06:58.</div>
+            <div class="done-line">Approved · release v15 signed · live in 2 s · undo for 30 days.</div>
+          </div>
+          <h4>Proposals</h4>
+          <div class="ldec" data-decision>
+            <div class="from"><span class="avatar av-sales">Sa</span>Sales suggests</div>
+            <b class="t">Message 31 customers who bought Christmas cakes last year</b>
+            <p>All 31 agreed to updates. Draft first; nobody is contacted before you sign.</p>
+            <div class="verbs"><a class="btn btn-sm btn-primary" href="mission.html">Plan it</a><button class="btn btn-sm btn-ghost" type="button" data-dismiss="Snoozed until Monday">Not now</button><button class="btn btn-sm btn-ghost" type="button" data-why>Why am I seeing this?</button></div>
+            <div class="whybox">From the <b>Christmas cakes</b> mission. Sales' <b>nurture</b> job is at Ask me first. 31 consent receipts on file. Estimated cost: about KSh 6.</div>
+            <div class="done-line">Snoozed until Monday.</div>
+          </div>
+          <h4>Done for you</h4>
+          <div class="quiet">Caretaker renewed your certificate (within budget) · Concierge answered 9 questions, none corrected · Guardian blocked 212 probes.</div>
+        </div>
+        <div class="lane-scroll" data-lane="night" hidden>
+          <h4>Quiet hours</h4>
+          <div class="quiet"><b>Until 06:00, only emergencies reach you:</b> site down, a payment anomaly or an incident. 2 decisions will wait for your brief at 07:00.</div>
+          <h4>Still yours, any time</h4>
+          <div class="ldec">
+            <div class="from"><span class="orb sm xs" style="--s:24px" aria-hidden="true"></span>Chief WebAgent</div>
+            <b class="t">Stop everything</b>
+            <p>Say "stop everything", reply STOP on WhatsApp, press Freeze, or hold an open palm still. A spoken stop acts at once; a palm gets a 5-second countdown in the shell.</p>
+          </div>
+        </div>
+      </aside>
+
+      <!-- COMMAND BAR -->
+      <div class="cmd">
+        <div class="plan" aria-live="polite">
+          <div class="plan-head"><span class="orb sm xs" style="--s:18px" data-state="thinking" aria-hidden="true"></span>Plan · nothing happens until you say go<button class="btn btn-ghost btn-sm" style="margin-left:auto;min-height:26px" type="button" data-plan-close aria-label="Close plan">✕</button></div>
+          <ol>
+            <li><b>Editor</b> drafts a Christmas menu page from your price list <span class="chip">freshness · Ask me first</span></li>
+            <li><b>Sales</b> drafts a message to 31 customers from last December who agreed to updates <span class="chip">nurture · Ask me first</span></li>
+            <li><b>Cakes desk</b> learns the new page once it is published <span class="chip chip-ok">automatic</span></li>
+          </ol>
+          <div class="foot"><span class="chip chip-wait">2 decisions will come to you</span><span class="chip">≈ KSh 9 of your AI budget</span><span class="chip">Nobody is contacted before you sign</span><span style="flex:1"></span><button class="btn btn-primary btn-sm" type="button" data-plan-close>Go</button><button class="btn btn-sm" type="button">Change</button></div>
+        </div>
+        <div class="askline">
+          <span class="orb sm" aria-hidden="true"></span>
+          <input type="text" aria-label="Ask your Chief WebAgent" placeholder="Ask, or give your WebAgents a job…">
+          <button class="icon-btn ghost" type="button" aria-label="Talk to your Chief WebAgent" onclick="location.href='live.html#voice'"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10a7 7 0 0 0 14 0M12 19v3"/></svg></button>
+          <button class="icon-btn" type="button" aria-label="Send"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+        </div>
+        <div class="activity-strip"><span>Try:</span><button type="button" data-fill="Put the Christmas menu up and tell last year's Christmas customers">"Put the Christmas menu up and tell last year's customers"</button><span>·</span><button type="button" data-open="activity">Activity monitor ›</button></div>
+      </div>
+
+      <!-- ACTIVITY MONITOR -->
+      <div class="overlay" id="activity" role="dialog" aria-modal="true" aria-label="Activity monitor">
+        <div class="window">
+          <div class="window-bar"><div><h3>Activity monitor</h3><p class="small muted">Every WebAgent process: why it woke, what it costs, and how to stop it.</p></div><button class="btn btn-sm" type="button" data-close>Close</button></div>
+          <div class="window-body">
+            <table class="procs">
+              <thead><tr><th>Process</th><th>State</th><th class="hide-sm">Woke because</th><th class="hide-sm">Next</th><th>Today</th><th></th></tr></thead>
+              <tbody>
+                <tr><td><span class="who"><span class="avatar av-concierge">Co</span><b>Cakes desk</b></span></td><td><span class="state-line answering"><span class="dot"></span>Answering</span></td><td class="hide-sm">A visitor asked on the site</td><td class="hide-sm">—</td><td class="mono">KSh 4.10</td><td><button class="btn btn-ghost btn-sm" type="button">Pause</button></td></tr>
+                <tr><td><span class="who"><span class="avatar av-editor">Ed</span><b>Editor · freshness</b></span></td><td><span class="state-line working"><span class="dot"></span>Working</span></td><td class="hide-sm">Your WhatsApp message, 06:58</td><td class="hide-sm">—</td><td class="mono">KSh 1.20</td><td><button class="btn btn-ghost btn-sm" type="button">Pause</button></td></tr>
+                <tr><td><span class="who"><span class="avatar av-sales">Sa</span><b>Sales · sell</b></span></td><td><span class="state-line waiting"><span class="dot"></span>Waiting for you</span></td><td class="hide-sm"><code class="mono">lead_captured</code> 04:10</td><td class="hide-sm">On your decision</td><td class="mono">KSh 0.80</td><td><button class="btn btn-ghost btn-sm" type="button">Pause</button></td></tr>
+                <tr><td><span class="who"><span class="avatar av-cashier">Ca</span><b>Cashier · payments</b></span></td><td><span class="state-line waiting"><span class="dot"></span>Waiting for you</span></td><td class="hide-sm">Order o-118</td><td class="hide-sm">On your decision</td><td class="mono">KSh 0.20</td><td><button class="btn btn-ghost btn-sm" type="button">Pause</button></td></tr>
+                <tr><td><span class="who"><span class="avatar av-guardian">Gu</span><b>Guardian · protect</b></span></td><td><span class="state-line asleep"><span class="dot"></span>Asleep</span></td><td class="hide-sm">Every 5 minutes</td><td class="hide-sm">07:15</td><td class="mono">KSh 0.00</td><td><button class="btn btn-ghost btn-sm" type="button">Pause</button></td></tr>
+                <tr><td><span class="who"><span class="avatar av-caretaker">Ct</span><b>Caretaker · hosting</b></span></td><td><span class="state-line asleep"><span class="dot"></span>Asleep</span></td><td class="hide-sm">Daily watch</td><td class="hide-sm">02:00</td><td class="mono">KSh 0.30</td><td><button class="btn btn-ghost btn-sm" type="button">Pause</button></td></tr>
+                <tr><td><span class="who"><span class="avatar av-reputation">Re</span><b>Reputation · social</b></span></td><td><span class="state-line asleep"><span class="dot"></span>Asleep</span></td><td class="hide-sm">A new review</td><td class="hide-sm">When one arrives</td><td class="mono">KSh 0.00</td><td><button class="btn btn-ghost btn-sm" type="button">Pause</button></td></tr>
+                <tr><td><span class="who"><span class="avatar av-chief">CW</span><b>Chief WebAgent · brief</b></span></td><td><span class="state-line asleep"><span class="dot"></span>Asleep</span></td><td class="hide-sm">06:40 every day</td><td class="hide-sm">Sun 06:40</td><td class="mono">KSh 2.10</td><td><button class="btn btn-ghost btn-sm" type="button">Pause</button></td></tr>
+              </tbody>
+            </table>
+            <p class="small muted" style="margin-top:12px">Asleep means no lease and no model call. Pause stops a process at its next checkpoint, and only you can resume it. Labels come from the tool that is actually running, never from a guess.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- PASSKEY -->
+      <div class="overlay" id="passkey" role="dialog" aria-modal="true" aria-label="Confirm with your passkey">
+        <div class="passkey">
+          <div class="fp"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 11c0 3-1 6-3 8M8.5 7.5A5 5 0 0 1 17 11c0 1.5-.2 3-.6 4.4M6.3 10A6.5 6.5 0 0 1 9 5.6M12 14.5c-.2 1.8-.8 3.5-1.7 5M15.3 17.5c-.3 1-.7 2-1.2 2.9M4 13.5c.4-1 .6-2 .6-3"/></svg></div>
+          <h3>Confirm it's you</h3>
+          <p data-sign-what>This exact action</p>
+          <div class="sig"><b>Your passkey signs:</b> <span data-sign-fp></span></div>
+          <div class="row"><button class="btn" type="button" data-close>Cancel</button><button class="btn btn-primary" type="button" data-do-sign>Use passkey</button></div>
+          <button class="stepup-link" type="button" data-stepup>No passkey on this device? Use a code from your authenticator app</button>
+          <div class="stepup-box">
+            <label for="stepup-code">Code from your authenticator app</label>
+            <input id="stepup-code" class="stepup-code" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="6 digits">
+            <p>Single use, and bound to this exact effect. Your receipt will say a code approved it, not a passkey.</p>
+            <div class="row"><button class="btn" type="button" data-stepup-back>Back to passkey</button><button class="btn btn-primary" type="button" data-do-sign data-method="code">Approve with code</button></div>
+          </div>
+          <div class="ok">Signed · the effect runs once · receipt written</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="notes" aria-label="Design notes">
+    <article class="card"><h3>Two worlds are two partitions</h3><p>Agentrix OS split Work and Home so neither saw the other's data. Here the split is the security design itself: Front of house reads untrusted text and holds no privileged tool; Back office acts and never reads raw text. The shell shows the wall and every typed signal that crosses it.</p></article>
+    <article class="card"><h3>Day Time and Night Time</h3><p>The shell follows the business's opening hours. During quiet hours it turns to the dark Agentrix OS field, the lane goes silent except for emergencies, and the field becomes a timeline of what the WebAgents did. In the morning it becomes the brief.</p></article>
+    <article class="card"><h3>The Chief WebAgent is the shell, not an app</h3><p>It owns no tools that reach the outside world. It plans, delegates to WebAgents, asks one question when it must, and shows the plan, the decisions it will create and the cost before anything starts. It has no human name and no face.</p></article>
+  </section>
+
+  <section class="section" style="padding-top:0" aria-label="What carried over">
+    <span class="eyebrow">From Agentrix OS</span>
+    <h2 style="margin-top:8px">What carried over, what changed</h2>
+    <div class="carry">
+      <div class="row-c"><b>Mother agent</b><span class="arrow">→</span><span><b>Chief WebAgent</b>: the shell, one voice, no world tools</span></div>
+      <div class="row-c"><b>Work and Home worlds</b><span class="arrow">→</span><span><b>Front of house / Back office</b>: the two partitions</span></div>
+      <div class="row-c"><b>Dock with status rings</b><span class="arrow">→</span><span>WebAgents as apps, with the visitor site's presence marks</span></div>
+      <div class="row-c"><b>ProActive lane</b><span class="arrow">→</span><span><b>The lane</b>: needs you, proposals, done for you</span></div>
+      <div class="row-c"><b>Command bar</b><span class="arrow">→</span><span>Ask bar that shows the plan before it runs</span></div>
+      <div class="row-c"><b>Activity strip</b><span class="arrow">→</span><span><b>Activity monitor</b> over the kernel's process table</span></div>
+      <div class="row-c"><b>Observe / Suggest / Automate</b><span class="arrow">→</span><span>The five-stop ladder per job, signed by you</span></div>
+      <div class="row-c"><b>Approvals inbox</b><span class="arrow">→</span><span>Decisions approved over the exact effect: your passkey signs it, or a single-use code from your authenticator app</span></div>
+      <div class="row-c"><b>Missions</b><span class="arrow">→</span><span>Missions with a goal, budget and reports</span></div>
+      <div class="row-c"><b>Memory with provenance</b><span class="arrow">→</span><span>Known and Assumed facts about the business</span></div>
+      <div class="row-c"><b>Camera gestures</b><span class="arrow">→</span><span><b>Rebuilt</b>: on the device only, held to confirm, can't approve (<a href="gestures.html">gestures</a>)</span></div>
+      <div class="row-c drop"><b>A named persona (Suzy)</b><span class="arrow">✕</span><span>Dropped: WebAgents are roles, never people</span></div>
+      <div class="row-c drop"><b>Spatial field as the only way in</b><span class="arrow">✕</span><span>Changed: the field is the desk view; the phone is a calm stack</span></div>
+      <div class="row-c drop"><b>Drag to fuse cards</b><span class="arrow">~</span><span>Kept only as "delegate": drop a card on a WebAgent</span></div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:0" aria-label="Many sites">
+    <span class="eyebrow">Many sites, one OS</span>
+    <h2 style="margin-top:8px">Several sites, or a whole portfolio: one shell</h2>
+    <p class="lead" style="margin-top:8px">An owner with several sites switches with the site chip, or opens "All sites". An agency gets the same shell in its Portfolio scope. Either way, each decision is still made on its own site's card, under that site's charter, and an agency acts only where the owner granted it a role.</p>
+    <div class="fleet" style="margin-top:16px">
+      <div class="site-card"><div class="head"><span class="lg" style="background:linear-gradient(135deg,#38356d,#de4060)">Z</span><div><b>zavora.ai</b><small>Owner: Zavora · site one</small></div></div><ul><li>0 decisions · walls holding</li><li>Editor: answer-engine mission, 4 of 6 pages done</li><li>KSh 210 of 2,000 budget</li></ul></div>
+      <div class="site-card"><div class="head"><span class="lg" style="background:linear-gradient(135deg,#6b2f86,#c06a9b)">C</span><div><b>Classy Perfumes</b><small>Owner: Zavora · commerce</small></div></div><ul><li><b>1 decision</b>: refund KSh 2,300 · needs the owner's approval</li><li>Cashier: reconciliation ran 02:00</li><li>KSh 640 of 3,000 budget</li></ul></div>
+      <div class="site-card"><div class="head"><span class="lg" style="background:linear-gradient(135deg,#0f6b62,#22a394)">M</span><div><b>Studio Mwangaza</b><small>Agency · Portfolio scope</small></div></div><ul><li>Sees Kilele Bakery because Wanjiru granted it the Editor role</li><li>May draft, lower, pause and freeze; never raise or export</li><li>"Send to client" routes a card to Wanjiru's passkey · <a href="../control-plane/portfolio.html">Portfolio concept</a></li></ul></div>
+    </div>
+  </section>
+</main>
+<footer class="concept-foot">
+  <div class="wrap row">
+    <span><a href="index.html">← Agentrix OS</a> · Next: <a href="store.html">Add a WebAgent →</a></span>
+    <span>Concept screens with illustrative data. Kilele Bakery is fictional.</span>
+  </div>
+</footer>
+<script src="console.js"></script>
+</body>
+</html>

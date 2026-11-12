@@ -1,0 +1,124 @@
+#cloud-config
+# Agentrix · control VM (design §1 D1, D8; §2). Rendered by deploy/provision.sh, which
+# fills the @@…@@ tokens. No secret is ever written here: the Vultr Inference key reaches the
+# Model Gateway's environment file at deploy time (task S1-12), never through cloud-init.
+#
+# What this host runs: Caddy (TLS on 80/443), agentrix-node and agentrix-models on loopback,
+# SQLite and the CAS on local disk. Builds also run here (D8), so it has a Rust toolchain and swap.
+
+hostname: agx-control
+fqdn: agx-control
+preserve_hostname: false
+timezone: Africa/Nairobi
+
+package_update: true
+package_upgrade: true
+packages:
+  - nftables
+  - ca-certificates
+  - curl
+  - gnupg
+  - debian-keyring
+  - debian-archive-keyring
+  - apt-transport-https
+  - git
+  - jq
+  - build-essential
+  - pkg-config
+  - libssl-dev
+  - clang
+  - sqlite3
+  - unattended-upgrades
+
+ssh_pwauth: false
+users:
+  - default
+  - name: deploy
+    gecos: Agentrix deploy
+    groups: [sudo]
+    shell: /bin/bash
+    sudo: "ALL=(ALL) NOPASSWD:ALL"
+    lock_passwd: true
+  - name: agentrix
+    system: true
+    shell: /usr/sbin/nologin
+    homedir: /var/lib/agentrix
+    no_create_home: false
+
+write_files:
+  - path: /etc/nftables.conf
+    encoding: b64
+    permissions: "0644"
+    content: @@NFT_B64@@
+  - path: /etc/agentrix/Caddyfile
+    encoding: b64
+    permissions: "0644"
+    content: @@CADDY_B64@@
+  - path: /etc/agentrix/host.env
+    permissions: "0644"
+    content: |
+      # Non-secret facts about this host, written by cloud-init. Secrets live in
+      # /etc/agentrix/secrets/ (0700, root), filled by the deploy script.
+      AGENTRIX_ROLE=control
+      AGENTRIX_PLATFORM_HOST=@@PLATFORM_FQDN@@
+      AGENTRIX_NODE_LISTEN=127.0.0.1:@@NODE_PORT@@
+      AGENTRIX_MODELS_LISTEN=127.0.0.1:@@MODELS_PORT@@
+      AGENTRIX_RUNNER_PORT=@@RUNNER_PORT@@
+      AGENTRIX_DATA_DIR=/var/lib/agentrix
+  # sshd keeps the first value it reads, and Vultr's image ships 50-cloud-init.conf (password
+  # login on), so this file must sort before it. Root login is off; deploys use `deploy`.
+  - path: /etc/ssh/sshd_config.d/00-agentrix.conf
+    permissions: "0644"
+    content: |
+      PasswordAuthentication no
+      KbdInteractiveAuthentication no
+      PermitRootLogin no
+      AllowAgentForwarding no
+      X11Forwarding no
+  - path: /etc/sysctl.d/90-agentrix.conf
+    permissions: "0644"
+    content: |
+      net.ipv4.conf.all.rp_filter = 1
+      net.ipv4.conf.default.rp_filter = 1
+      net.ipv4.conf.all.accept_redirects = 0
+      net.ipv6.conf.all.accept_redirects = 0
+      net.ipv4.conf.all.send_redirects = 0
+      kernel.kptr_restrict = 2
+      kernel.dmesg_restrict = 1
+      vm.swappiness = 10
+  - path: /etc/apt/apt.conf.d/20auto-upgrades
+    permissions: "0644"
+    content: |
+      APT::Periodic::Update-Package-Lists "1";
+      APT::Periodic::Unattended-Upgrade "1";
+
+runcmd:
+  # Firewall first, before anything listens.
+  - [systemctl, enable, --now, nftables]
+  - [nft, -f, /etc/nftables.conf]
+  - [sysctl, --system]
+  # Vultr's image enables ufw with only 22 open; a packet must pass both ufw and our table.
+  - [sh, -c, "command -v ufw >/dev/null || exit 0; ufw allow 80/tcp && ufw allow 443/tcp"]
+  - [systemctl, try-reload-or-restart, ssh]
+  # Swap for release builds with LTO (D8).
+  - [sh, -c, "fallocate -l 8G /swapfile && chmod 600 /swapfile && mkswap /swapfile && swapon /swapfile && echo '/swapfile none swap sw 0 0' >> /etc/fstab"]
+  # Caddy from its official apt repository.
+  - [sh, -c, "curl -1sLf https://dl.cloudsmith.io/public/caddy/stable/gpg.key | gpg --dearmor -o /usr/share/keyrings/caddy-stable-archive-keyring.gpg"]
+  - [sh, -c, "curl -1sLf https://dl.cloudsmith.io/public/caddy/stable/debian.deb.txt -o /etc/apt/sources.list.d/caddy-stable.list"]
+  - [sh, -c, "apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y caddy build-essential pkg-config libssl-dev clang"]
+  - [install, -m, "0644", /etc/agentrix/Caddyfile, /etc/caddy/Caddyfile]
+  - [systemctl, enable, caddy]
+  - [systemctl, restart, caddy]
+  # Directories: binaries and releases owned by root; data owned by the service user.
+  - [install, -d, -m, "0755", /opt/agentrix, /opt/agentrix/bin, /opt/agentrix/src]
+  - [install, -d, -m, "0750", -o, agentrix, -g, agentrix, /var/lib/agentrix, /var/lib/agentrix/cas]
+  - [install, -d, -m, "0700", /etc/agentrix/secrets]
+  - [chown, -R, "deploy:deploy", /opt/agentrix/src]
+  # The deploy user gets the same key Vultr installed for root.
+  - [sh, -c, "install -d -m 0700 -o deploy -g deploy /home/deploy/.ssh && install -m 0600 -o deploy -g deploy /root/.ssh/authorized_keys /home/deploy/.ssh/authorized_keys"]
+  # Rust for builds on this host (D8); the toolchain itself comes from rust-toolchain.toml.
+  - [sudo, -u, deploy, -H, sh, -c, "curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --profile minimal --default-toolchain none"]
+  # Facts the provisioning script reads back over SSH.
+  - [sh, -c, "printf '{\"role\":\"control\",\"kvm\":%s,\"nft\":\"%s\",\"caddy\":\"%s\"}\\n' \"$( [ -e /dev/kvm ] && echo true || echo false )\" \"$(nft --version | head -1)\" \"$(caddy version | cut -d' ' -f1)\" > /var/lib/agentrix/host-facts.json"]
+
+final_message: "agx-control ready after $UPTIME s"

@@ -1,0 +1,23 @@
+{% extends "ui/layouts/page.html" %}
+{% import "saas/macros.html" as s %}
+{% block title %}Plans · Agentrix{% endblock %}
+{% block styles %}<link rel="stylesheet" href="/static/saas/saas.css?v={{ saas_v }}">{% endblock %}
+{% block nav %}{{ s.money_nav("plans") }}{% endblock %}
+{% block main_class %}wrap{% endblock %}
+{% block main %}
+{{ s.sandbox_banner() }}
+<div class="page-head"><h1>Plans</h1><p class="lead">Every plan comes with WebAgents that answer your customers and ask you before anything that matters. Pay monthly with PayPal, or {{ discount }}% less for 12 months up front.</p></div>
+<div class="plan-grid">{% for p in plans %}{{ s.plan_card(p) }}{% endfor %}</div>
+<section class="section" id="terms" aria-labelledby="terms-h">
+  <h2 id="terms-h">Billing</h2>
+  <dl class="kv">
+    <dt>How you pay</dt><dd>PayPal Subscriptions. Your agents may also pay our invoices over our agent door, inside a mandate you sign.</dd>
+    <dt>Can I cancel?</dt><dd>Yes, any time. Support stops the subscription so you are not charged again.</dd>
+    <dt>Can I pay in instalments?</dt><dd>Receivables can agree up to 3 instalments over 90 days, inside the limits our founder signed.</dd>
+    <dt>Where it is booked</dt><dd>Every payment posts to Zavora ERA (hosted) from its PayPal id.</dd>
+  </dl>
+</section>
+{% endblock %}
+{% block foot %}
+<footer class="foot"><div class="row"><span>Agentrix by Zavora · sandbox demo for the PayPal AI Hackathon · open source (MIT)</span></div></footer>
+{% endblock %}

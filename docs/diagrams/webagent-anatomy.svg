@@ -1,0 +1,186 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 812" width="1280" height="812" role="img" aria-labelledby="t d">
+<title id="t">Anatomy of a WebAgent</title><desc id="d">How one WebAgent wakes, reasons, proposes a tool call, passes the governed path, acts through a gateway, remembers and sleeps again.</desc>
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#38356d"/></marker><marker id="ac" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#de4060"/></marker><marker id="aa" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#c2620a"/></marker></defs>
+<rect width="1280" height="812" fill="#ffffff"/>
+<g font-family="Inter, 'DM Sans', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" fill="#1d1b33">
+<text x="24" y="38" font-size="21" font-weight="800" fill="#38356d" text-anchor="start">Anatomy of a WebAgent · one governed loop</text>
+<text x="24" y="60" font-size="12" font-weight="400" fill="#5d5a78" text-anchor="start">A WebAgent is a durable kernel process running a HarnessAgent. It holds capabilities, never credentials, and sleeps for free between wakes.</text>
+<rect x="24" y="84" width="200" height="508" rx="16" fill="#f6f5fb" stroke="#d8d5ea" stroke-width="1.2"/>
+<text x="40" y="106" font-size="11" font-weight="700" fill="#5d5a78" text-anchor="start" letter-spacing="1.2">WAKE SOURCES</text>
+<rect x="38" y="112" width="172" height="52" rx="12" fill="#ffffff" stroke="#d8d5ea" stroke-width="1.6"/>
+<text x="52" y="136" font-size="12.5" font-weight="700" fill="#1d1b33" text-anchor="start">Owner message</text>
+<text x="52" y="156" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">paired phone · WhatsApp</text>
+<line x1="210" y1="138" x2="236" y2="138" stroke="#38356d" stroke-width="1.4"/>
+<rect x="38" y="170" width="172" height="52" rx="12" fill="#ffffff" stroke="#d8d5ea" stroke-width="1.6"/>
+<text x="52" y="194" font-size="12.5" font-weight="700" fill="#1d1b33" text-anchor="start">Visitor or AI agent</text>
+<text x="52" y="214" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">public desks only</text>
+<line x1="210" y1="196" x2="236" y2="196" stroke="#38356d" stroke-width="1.4"/>
+<rect x="38" y="228" width="172" height="52" rx="12" fill="#ffffff" stroke="#d8d5ea" stroke-width="1.6"/>
+<text x="52" y="252" font-size="12.5" font-weight="700" fill="#1d1b33" text-anchor="start">Typed signal</text>
+<text x="52" y="272" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">from the public desks</text>
+<line x1="210" y1="254" x2="236" y2="254" stroke="#38356d" stroke-width="1.4"/>
+<rect x="38" y="286" width="172" height="52" rx="12" fill="#ffffff" stroke="#d8d5ea" stroke-width="1.6"/>
+<text x="52" y="310" font-size="12.5" font-weight="700" fill="#1d1b33" text-anchor="start">Schedule</text>
+<text x="52" y="330" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">brief · probes · reviews</text>
+<line x1="210" y1="312" x2="236" y2="312" stroke="#38356d" stroke-width="1.4"/>
+<rect x="38" y="344" width="172" height="52" rx="12" fill="#ffffff" stroke="#d8d5ea" stroke-width="1.6"/>
+<text x="52" y="368" font-size="12.5" font-weight="700" fill="#1d1b33" text-anchor="start">Webhook or queue</text>
+<text x="52" y="388" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">orders · payments · email</text>
+<line x1="210" y1="370" x2="236" y2="370" stroke="#38356d" stroke-width="1.4"/>
+<rect x="38" y="402" width="172" height="52" rx="12" fill="#ffffff" stroke="#d8d5ea" stroke-width="1.6"/>
+<text x="52" y="426" font-size="12.5" font-weight="700" fill="#1d1b33" text-anchor="start">Approval decided</text>
+<text x="52" y="446" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">the owner signed a card</text>
+<line x1="210" y1="428" x2="236" y2="428" stroke="#38356d" stroke-width="1.4"/>
+<rect x="38" y="460" width="172" height="52" rx="12" fill="#ffffff" stroke="#d8d5ea" stroke-width="1.6"/>
+<text x="52" y="484" font-size="12.5" font-weight="700" fill="#1d1b33" text-anchor="start">Run finished</text>
+<text x="52" y="504" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">another job completed</text>
+<line x1="210" y1="486" x2="236" y2="486" stroke="#38356d" stroke-width="1.4"/>
+<rect x="38" y="518" width="172" height="52" rx="12" fill="#ffffff" stroke="#d8d5ea" stroke-width="1.6"/>
+<text x="52" y="542" font-size="12.5" font-weight="700" fill="#1d1b33" text-anchor="start">Budget replenished</text>
+<text x="52" y="562" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">a new day&#x27;s allowance</text>
+<line x1="210" y1="544" x2="236" y2="544" stroke="#38356d" stroke-width="1.4"/>
+<line x1="236" y1="138" x2="236" y2="544" stroke="#38356d" stroke-width="1.4"/>
+<rect x="248" y="84" width="220" height="508" rx="16" fill="#f6f5fb" stroke="#d8d5ea" stroke-width="1.2"/>
+<text x="264" y="106" font-size="11" font-weight="700" fill="#5d5a78" text-anchor="start" letter-spacing="1.2">TENANTKERNEL · ADK-KERNEL</text>
+<rect x="262" y="112" width="192" height="74" rx="12" fill="#ffffff" stroke="#38356d" stroke-width="1.6"/>
+<text x="276" y="136" font-size="13.5" font-weight="700" fill="#38356d" text-anchor="start">Wake router</text>
+<text x="276" y="156" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">WakeSet · Trigger</text>
+<text x="276" y="173" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">one run per event key</text>
+<rect x="262" y="204" width="192" height="92" rx="12" fill="#ffffff" stroke="#38356d" stroke-width="1.6"/>
+<text x="276" y="228" font-size="13.5" font-weight="700" fill="#38356d" text-anchor="start">Admission</text>
+<text x="276" y="248" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">Quotas · QuietHours</text>
+<text x="276" y="265" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">daily budget · freeze</text>
+<text x="276" y="282" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">human turns go first</text>
+<rect x="262" y="314" width="192" height="92" rx="12" fill="#ffffff" stroke="#38356d" stroke-width="1.6"/>
+<text x="276" y="338" font-size="13.5" font-weight="700" fill="#38356d" text-anchor="start">Durable run</text>
+<text x="276" y="358" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">process = run + lease</text>
+<text x="276" y="375" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">checkpoint per step</text>
+<text x="276" y="392" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">action ledger</text>
+<rect x="262" y="424" width="192" height="74" rx="12" fill="#f6f5fb" stroke="#d8d5ea" stroke-width="1.6" stroke-dasharray="4 4"/>
+<text x="276" y="448" font-size="13.5" font-weight="700" fill="#1d1b33" text-anchor="start">Asleep</text>
+<text x="276" y="468" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">Waiting · no lease</text>
+<text x="276" y="485" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">no model call · no cost</text>
+<text x="262" y="524" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">freeze parks every process</text>
+<text x="262" y="541" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">at its next safe point</text>
+<path d="M236,149 H260" fill="none" stroke="#38356d" stroke-width="1.6" marker-end="url(#a)"/>
+<path d="M358,186 V202" fill="none" stroke="#38356d" stroke-width="1.6" marker-end="url(#a)"/>
+<path d="M358,296 V312" fill="none" stroke="#38356d" stroke-width="1.6" marker-end="url(#a)"/>
+<rect x="492" y="84" width="320" height="508" rx="16" fill="#f6f5fb" stroke="#d8d5ea" stroke-width="1.2"/>
+<text x="508" y="106" font-size="11" font-weight="700" fill="#5d5a78" text-anchor="start" letter-spacing="1.2">THE LOOP · HARNESSAGENT</text>
+<rect x="516" y="112" width="280" height="74" rx="12" fill="#ffffff" stroke="#38356d" stroke-width="1.6"/>
+<text x="530" y="136" font-size="13.5" font-weight="700" fill="#38356d" text-anchor="start">1 · Assemble context</text>
+<text x="530" y="156" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">role prompt · playbook skill · charter terms</text>
+<text x="530" y="173" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">harness manifest · memory facts · task</text>
+<rect x="516" y="202" width="280" height="58" rx="12" fill="#ffffff" stroke="#38356d" stroke-width="1.6"/>
+<text x="530" y="226" font-size="13.5" font-weight="700" fill="#38356d" text-anchor="start">2 · Reason</text>
+<text x="530" y="246" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">Model Gateway · named purpose · metered</text>
+<rect x="516" y="274" width="280" height="58" rx="12" fill="#ffffff" stroke="#38356d" stroke-width="1.6"/>
+<text x="530" y="298" font-size="13.5" font-weight="700" fill="#38356d" text-anchor="start">3 · Propose a tool call</text>
+<text x="530" y="318" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">typed arguments · declared ToolEffect</text>
+<rect x="516" y="346" width="280" height="58" rx="12" fill="#ffffff" stroke="#38356d" stroke-width="1.6"/>
+<text x="530" y="370" font-size="13.5" font-weight="700" fill="#38356d" text-anchor="start">4 · Governed path decides</text>
+<text x="530" y="390" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">allow · hold for the owner · deny</text>
+<rect x="516" y="418" width="280" height="58" rx="12" fill="#ffffff" stroke="#38356d" stroke-width="1.6"/>
+<text x="530" y="442" font-size="13.5" font-weight="700" fill="#38356d" text-anchor="start">5 · Observe and checkpoint</text>
+<text x="530" y="462" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">result to the model · loop or finish</text>
+<rect x="516" y="490" width="280" height="74" rx="12" fill="#ffffff" stroke="#38356d" stroke-width="1.6"/>
+<text x="530" y="514" font-size="13.5" font-weight="700" fill="#38356d" text-anchor="start">Finish</text>
+<text x="530" y="534" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">a draft · a decision card · a signal</text>
+<text x="530" y="551" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">a reply · a receipt · then sleep</text>
+<path d="M656,186 V200" fill="none" stroke="#38356d" stroke-width="1.6" marker-end="url(#a)"/>
+<path d="M656,260 V274" fill="none" stroke="#38356d" stroke-width="1.6" marker-end="url(#a)"/>
+<path d="M656,332 V346" fill="none" stroke="#38356d" stroke-width="1.6" marker-end="url(#a)"/>
+<path d="M656,404 V418" fill="none" stroke="#38356d" stroke-width="1.6" marker-end="url(#a)"/>
+<path d="M656,476 V490" fill="none" stroke="#38356d" stroke-width="1.6" marker-end="url(#a)"/>
+<path d="M516,447 H502 V231 H514" fill="none" stroke="#38356d" stroke-width="1.6" marker-end="url(#a)"/>
+<rect x="483.2" y="328" width="37.6" height="18" rx="9" fill="#ffffff" stroke="#d8d5ea" stroke-width="0.8"/>
+<text x="502" y="341" font-size="10.5" font-weight="600" fill="#38356d" text-anchor="middle">loop</text>
+<path d="M454,360 H480 V149 H514" fill="none" stroke="#38356d" stroke-width="1.6" marker-end="url(#a)"/>
+<rect x="458.0" y="184" width="44.0" height="18" rx="9" fill="#ffffff" stroke="#d8d5ea" stroke-width="0.8"/>
+<text x="480" y="197" font-size="10.5" font-weight="600" fill="#38356d" text-anchor="middle">claim</text>
+<path d="M516,527 H480 V461 H456" fill="none" stroke="#38356d" stroke-width="1.6" marker-end="url(#a)"/>
+<rect x="458.0" y="482" width="44.0" height="18" rx="9" fill="#ffffff" stroke="#d8d5ea" stroke-width="0.8"/>
+<text x="480" y="495" font-size="10.5" font-weight="600" fill="#38356d" text-anchor="middle">sleep</text>
+<rect x="836" y="84" width="420" height="188" rx="16" fill="#f6f5fb" stroke="#d8d5ea" stroke-width="1.2"/>
+<text x="852" y="106" font-size="11" font-weight="700" fill="#5d5a78" text-anchor="start" letter-spacing="1.2">WHERE ACTIONS GO</text>
+<rect x="852" y="112" width="192" height="62" rx="12" fill="#fff1f3" stroke="#de4060" stroke-width="1.6"/>
+<text x="866" y="136" font-size="13.5" font-weight="700" fill="#de4060" text-anchor="start">Model Gateway</text>
+<text x="866" y="156" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">only inference keys</text>
+<rect x="1054" y="112" width="186" height="62" rx="12" fill="#fff1f3" stroke="#de4060" stroke-width="1.6"/>
+<text x="1068" y="136" font-size="13.5" font-weight="700" fill="#de4060" text-anchor="start">Effects Gateway</text>
+<text x="1068" y="156" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">fingerprint = idempotency</text>
+<rect x="852" y="186" width="192" height="72" rx="12" fill="#fff7ed" stroke="#c2620a" stroke-width="1.6" stroke-dasharray="6 4"/>
+<text x="866" y="210" font-size="13.5" font-weight="700" fill="#c2620a" text-anchor="start">Sandbox plane</text>
+<text x="866" y="230" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">fetch · render · replay</text>
+<text x="866" y="247" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">build · no secrets</text>
+<rect x="1054" y="186" width="186" height="72" rx="12" fill="#ffffff" stroke="#38356d" stroke-width="1.6"/>
+<text x="1068" y="210" font-size="13.5" font-weight="700" fill="#38356d" text-anchor="start">Release builder</text>
+<text x="1068" y="230" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">candidate release</text>
+<text x="1068" y="247" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">the LaunchGate signs</text>
+<path d="M796,231 H822 V143 H850" fill="none" stroke="#de4060" stroke-width="1.6" marker-end="url(#ac)"/>
+<rect x="793.6" y="174" width="56.800000000000004" height="18" rx="9" fill="#ffffff" stroke="#d8d5ea" stroke-width="0.8"/>
+<text x="822" y="187" font-size="10.5" font-weight="600" fill="#de4060" text-anchor="middle">purpose</text>
+<rect x="836" y="290" width="420" height="302" rx="16" fill="#f6f5fb" stroke="#d8d5ea" stroke-width="1.2"/>
+<text x="852" y="312" font-size="11" font-weight="700" fill="#5d5a78" text-anchor="start" letter-spacing="1.2">GOVERNED PATH · STRICTEST WINS</text>
+<rect x="852" y="318" width="204" height="34" rx="9" fill="#ffffff" stroke="#38356d" stroke-width="1.6"/>
+<text x="866" y="342" font-size="11.5" font-weight="700" fill="#38356d" text-anchor="start">HarnessPolicy · mode table</text>
+<rect x="852" y="360" width="204" height="34" rx="9" fill="#ffffff" stroke="#38356d" stroke-width="1.6"/>
+<text x="866" y="384" font-size="11.5" font-weight="700" fill="#38356d" text-anchor="start">LadderPolicy · job level</text>
+<rect x="852" y="402" width="204" height="34" rx="9" fill="#ffffff" stroke="#38356d" stroke-width="1.6"/>
+<text x="866" y="426" font-size="11.5" font-weight="700" fill="#38356d" text-anchor="start">JobPauses · guardrails</text>
+<rect x="852" y="444" width="204" height="34" rx="9" fill="#ffffff" stroke="#38356d" stroke-width="1.6"/>
+<text x="866" y="468" font-size="11.5" font-weight="700" fill="#38356d" text-anchor="start">PartitionPolicy · crossings</text>
+<rect x="852" y="486" width="204" height="34" rx="9" fill="#ffffff" stroke="#38356d" stroke-width="1.6"/>
+<text x="866" y="510" font-size="11.5" font-weight="700" fill="#38356d" text-anchor="start">DriverPolicy · pinned tools</text>
+<rect x="852" y="528" width="204" height="34" rx="9" fill="#ffffff" stroke="#38356d" stroke-width="1.6"/>
+<text x="866" y="552" font-size="11.5" font-weight="700" fill="#38356d" text-anchor="start">Platform · capability token</text>
+<rect x="1070" y="318" width="170" height="74" rx="12" fill="#ffffff" stroke="#38356d" stroke-width="1.6"/>
+<text x="1084" y="342" font-size="13.5" font-weight="700" fill="#38356d" text-anchor="start">Allow</text>
+<text x="1084" y="362" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">action ledger first</text>
+<text x="1084" y="379" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">then it runs once</text>
+<rect x="1070" y="402" width="170" height="74" rx="12" fill="#fff1f3" stroke="#de4060" stroke-width="1.6"/>
+<text x="1084" y="426" font-size="13.5" font-weight="700" fill="#de4060" text-anchor="start">Hold</text>
+<text x="1084" y="446" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">decision card</text>
+<text x="1084" y="463" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">owner signs with passkey</text>
+<rect x="1070" y="486" width="170" height="74" rx="12" fill="#ffffff" stroke="#d8d5ea" stroke-width="1.6"/>
+<text x="1084" y="510" font-size="13.5" font-weight="700" fill="#1d1b33" text-anchor="start">Deny</text>
+<text x="1084" y="530" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">the reason goes back</text>
+<text x="1084" y="547" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">to the model</text>
+<path d="M796,375 H850" fill="none" stroke="#38356d" stroke-width="1.6" marker-end="url(#a)"/>
+<path d="M1056,355 H1068" fill="none" stroke="#38356d" stroke-width="1.6" marker-end="url(#a)"/>
+<path d="M1056,439 H1068" fill="none" stroke="#de4060" stroke-width="1.6" marker-end="url(#ac)"/>
+<path d="M1056,523 H1068" fill="none" stroke="#38356d" stroke-width="1.6" marker-end="url(#a)"/>
+<path d="M1155,318 V260" fill="none" stroke="#38356d" stroke-width="1.6" marker-end="url(#a)"/>
+<rect x="1163.2" y="277" width="37.6" height="18" rx="9" fill="#ffffff" stroke="#d8d5ea" stroke-width="0.8"/>
+<text x="1182" y="290" font-size="10.5" font-weight="600" fill="#38356d" text-anchor="middle">runs</text>
+<rect x="24" y="616" width="1232" height="152" rx="16" fill="#f6f5fb" stroke="#d8d5ea" stroke-width="1.2"/>
+<text x="40" y="638" font-size="11" font-weight="700" fill="#5d5a78" text-anchor="start" letter-spacing="1.2">MEMORY · SCOPED TO THE WEBAGENT&#x27;S PARTITION AND SITE</text>
+<rect x="42" y="646" width="192" height="96" rx="12" fill="#ffffff" stroke="#38356d" stroke-width="1.6"/>
+<text x="56" y="670" font-size="13.5" font-weight="700" fill="#38356d" text-anchor="start">Session</text>
+<text x="56" y="690" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">adk-session transcript</text>
+<text x="56" y="707" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">checkpoints · resumable</text>
+<rect x="243" y="646" width="192" height="96" rx="12" fill="#ffffff" stroke="#38356d" stroke-width="1.6"/>
+<text x="257" y="670" font-size="13.5" font-weight="700" fill="#38356d" text-anchor="start">Long-term facts</text>
+<text x="257" y="690" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">Assumed until the owner</text>
+<text x="257" y="707" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">confirms them as Known</text>
+<rect x="444" y="646" width="192" height="96" rx="12" fill="#ffffff" stroke="#38356d" stroke-width="1.6"/>
+<text x="458" y="670" font-size="13.5" font-weight="700" fill="#38356d" text-anchor="start">Site corpus</text>
+<text x="458" y="690" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">the signed release&#x27;s twins</text>
+<text x="458" y="707" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">all the public desks read</text>
+<rect x="645" y="646" width="192" height="96" rx="12" fill="#ffffff" stroke="#38356d" stroke-width="1.6"/>
+<text x="659" y="670" font-size="13.5" font-weight="700" fill="#38356d" text-anchor="start">Playbooks</text>
+<text x="659" y="690" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">a versioned skill per job</text>
+<text x="659" y="707" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">the owner approves changes</text>
+<rect x="846" y="646" width="192" height="96" rx="12" fill="#ffffff" stroke="#38356d" stroke-width="1.6"/>
+<text x="860" y="670" font-size="13.5" font-weight="700" fill="#38356d" text-anchor="start">/proc ledger</text>
+<text x="860" y="690" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">content-free activity rows</text>
+<text x="860" y="707" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">hashed subjects only</text>
+<rect x="1047" y="646" width="192" height="96" rx="12" fill="#ffffff" stroke="#38356d" stroke-width="1.6"/>
+<text x="1061" y="670" font-size="13.5" font-weight="700" fill="#38356d" text-anchor="start">Receipts</text>
+<text x="1061" y="690" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">hash-chained · signed</text>
+<text x="1061" y="707" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">plain words in Trust</text>
+<path d="M656,564 V644" fill="none" stroke="#38356d" stroke-width="1.6" marker-end="url(#a)"/>
+<rect x="647.6" y="592" width="120.80000000000001" height="18" rx="9" fill="#ffffff" stroke="#d8d5ea" stroke-width="0.8"/>
+<text x="708" y="605" font-size="10.5" font-weight="600" fill="#38356d" text-anchor="middle">recall · remember</text>
+<text x="24" y="796" font-size="12" font-weight="400" fill="#5d5a78" text-anchor="start">A call outside the WebAgent&#x27;s jobs is refused, a sleeping WebAgent holds no lease, and every effect runs once, through a gateway, with a receipt.</text>
+</g></svg>

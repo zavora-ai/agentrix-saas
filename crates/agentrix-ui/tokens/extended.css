@@ -1,0 +1,160 @@
+/* agentrix-ui · extended tokens: what tokens.css adds to brand.css. The latin-ext faces,
+   the OS shell's surfaces (--os-*), scope markers and terminal colours, with their dark values,
+   then the host layer (--wa-*) and the samples' display faces. Served only inside tokens.css. */
+
+@font-face { font-family: "Manrope"; font-style: normal; font-display: swap; font-weight: 200 800; src: url(fonts/manrope-latin-ext-wght-normal.woff2) format("woff2-variations"); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+@font-face { font-family: "DM Sans"; font-style: normal; font-display: swap; font-weight: 100 1000; src: url(fonts/dm-sans-latin-ext-wght-normal.woff2) format("woff2-variations"); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+@font-face { font-family: "JetBrains Mono"; font-style: normal; font-display: swap; font-weight: 100 800; src: url(fonts/jetbrains-mono-latin-ext-wght-normal.woff2) format("woff2-variations"); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+
+/* The OS shell, scope markers and terminal blocks, light then dark. */
+:root {
+  --op: #1f1d3d; --op-2: #2c2a57;
+  --pf: #0f6b62; --pf-bg: #e6f4f1;
+  --os-bg: #f3f3f8;
+  --os-field: #f6f6fa;
+  --os-pane: #ffffff;
+  --os-pane-2: #fafafd;
+  --os-pane-solid: #ffffff;
+  --os-line: var(--line);
+  --os-ink: var(--ink);
+  --os-ink-2: var(--ink-2);
+  --os-muted: var(--muted);
+  --os-head: var(--indigo-900);
+  --os-glow: rgba(56, 53, 109, .08);
+  --os-wall: repeating-linear-gradient(180deg, rgba(56, 53, 109, .22) 0 6px, transparent 6px 12px);
+  --term-bg: #15142b; --term-ink: #e6e4f5; --term-muted: #9a97c0;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --pf: #5cc3b5; --pf-bg: #10302c;
+    --os-bg: #121127;
+    --os-field: radial-gradient(1200px 600px at 70% -10%, rgba(92, 88, 166, .35), transparent 60%), radial-gradient(900px 500px at 0% 110%, rgba(183, 45, 80, .18), transparent 60%), #151432;
+    --os-pane: rgba(255, 255, 255, .06); --os-pane-2: rgba(255, 255, 255, .04); --os-pane-solid: #1d1c3b;
+    --os-line: rgba(255, 255, 255, .12);
+    --os-ink: #e9e8f6; --os-ink-2: #c5c3e0; --os-muted: #9a98bd; --os-head: #ffffff;
+    --os-glow: rgba(140, 135, 230, .18);
+    --os-wall: repeating-linear-gradient(180deg, rgba(255, 255, 255, .22) 0 6px, transparent 6px 12px);
+  }
+}
+:root[data-theme="dark"], [data-time="night"] {
+  --pf: #5cc3b5; --pf-bg: #10302c;
+  --os-bg: #121127;
+  --os-field: radial-gradient(1200px 600px at 70% -10%, rgba(92, 88, 166, .35), transparent 60%), radial-gradient(900px 500px at 0% 110%, rgba(183, 45, 80, .18), transparent 60%), #151432;
+  --os-pane: rgba(255, 255, 255, .06); --os-pane-2: rgba(255, 255, 255, .04); --os-pane-solid: #1d1c3b;
+  --os-line: rgba(255, 255, 255, .12);
+  --os-ink: #e9e8f6; --os-ink-2: #c5c3e0; --os-muted: #9a98bd; --os-head: #ffffff;
+  --os-glow: rgba(140, 135, 230, .18);
+  --os-wall: repeating-linear-gradient(180deg, rgba(255, 255, 255, .22) 0 6px, transparent 6px 12px);
+}
+
+/* The sample sites' display faces. Browsers fetch a face only when a page uses it. */
+@font-face { font-family: "Fraunces"; font-style: normal; font-display: swap; font-weight: 100 900; src: url(fonts/fraunces-latin-opsz-normal.woff2) format("woff2-variations"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: "Cormorant Garamond"; font-style: normal; font-display: swap; font-weight: 300 700; src: url(fonts/cormorant-garamond-latin-wght-normal.woff2) format("woff2-variations"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: "Newsreader"; font-style: normal; font-display: swap; font-weight: 200 800; src: url(fonts/newsreader-latin-wght-normal.woff2) format("woff2-variations"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: "Libre Caslon Text"; font-style: normal; font-display: swap; font-weight: 400; src: url(fonts/libre-caslon-text-latin-400-normal.woff2) format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: "Libre Caslon Text"; font-style: normal; font-display: swap; font-weight: 700; src: url(fonts/libre-caslon-text-latin-700-normal.woff2) format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+
+:root {
+  /* The host layer's defaults: Agentrix's own colours, until a site sets its own. */
+  --wa-bg: #ffffff;
+  --wa-soft: #f6f6fa;
+  --wa-ink: #23223a;
+  --wa-ink-2: #4a4960;
+  --wa-line: #e3e2ec;
+  --wa-accent: #38356d;
+  --wa-accent-2: #b72d50;
+  --wa-on-accent: #ffffff;
+  --wa-font: var(--font-text);
+  --wa-display: var(--font-display);
+  --wa-radius: 18px;
+  --wa-shadow: 0 24px 60px -28px rgba(20, 18, 40, .45), 0 6px 18px -10px rgba(20, 18, 40, .22);
+  --wa-wait: #b26b00;
+  --wa-ok: #1f8a57;
+  --wa-ground: #ffffff;
+}
+
+/* ---------- Layer 2: host token sets for the samples (01a §5.2) ---------- */
+/* Set data-host on the site layout's <html>. Real sites get theirs from the release's theme.css,
+   extracted at the Move; these four are the concepts' brands. All light only (see top). */
+[data-host] {
+  color-scheme: light;
+  --wa-font: var(--font-text);
+  --wa-radius: 18px;
+  --wa-wait: #b26b00;
+  --wa-ok: #1f8a57;
+}
+/* Kilele Bakery: concept/journeys/journeys.css .kilele */
+[data-host="kilele"] {
+  --wa-bg: #fffdf9; --wa-soft: #fbf4ea; --wa-ink: #3b2416; --wa-ink-2: #6b4b36; --wa-line: #ecdcc6;
+  --wa-accent: #b4541f; --wa-accent-2: #8f3f13; --wa-on-accent: #ffffff;
+  --wa-display: "Fraunces", Georgia, serif; --wa-ground: #fffdf9; --wa-ok: #2f6b3a;
+  --wa-shadow: 0 24px 60px -28px rgba(59, 36, 22, .4), 0 6px 18px -10px rgba(59, 36, 22, .2);
+  /* Site-only names the Kilele pages use (journeys.css) */
+  --k-cream: #fbf4ea; --k-cream-2: #f5e9d8; --k-brown: #3b2416; --k-brown-2: #6b4b36;
+  --k-terra: #b4541f; --k-terra-2: #8f3f13; --k-line: #ecdcc6; --k-ok: #2f6b3a;
+  --k-serif: "Fraunces", Georgia, serif;
+}
+/* Classy Perfumes: concept/experience/search.html .shop */
+[data-host="classy"] {
+  --wa-bg: #ffffff; --wa-soft: #f7f3ee; --wa-ink: #1c1719; --wa-ink-2: #5b5056; --wa-line: #e7ddd2;
+  --wa-accent: #4a2340; --wa-accent-2: #a8842f; --wa-on-accent: #ffffff;
+  --wa-display: "Cormorant Garamond", Georgia, serif; --wa-ground: #ffffff;
+  --cp-ink: #1c1719; --cp-ink-2: #5b5056; --cp-bg: #f7f3ee; --cp-line: #e7ddd2; --cp-gold: #a8842f; --cp-plum: #4a2340; --cp-dark: #1a1418;
+  --serif: "Cormorant Garamond", Georgia, serif;
+}
+/* Tana Valley Times: concept/identity/marks.html (tana) */
+[data-host="tana"] {
+  --wa-bg: #ffffff; --wa-soft: #f4f5f7; --wa-ink: #14213d; --wa-ink-2: #56607a; --wa-line: #dfe3ea;
+  --wa-accent: #b3261e; --wa-accent-2: #2f5d8a; --wa-on-accent: #ffffff;
+  --wa-display: "Libre Caslon Text", Georgia, "Times New Roman", serif; --wa-ground: #ffffff;
+  --serif: "Libre Caslon Text", Georgia, "Times New Roman", serif;
+}
+/* The news pages' drawn brand (The Kestrel Post, concept/experience/news.html .np), kept for
+   the news layout patterns; Tana's own colours above win on the Tana host. */
+[data-host="kestrel"] {
+  --wa-bg: #ffffff; --wa-soft: #f4f2ec; --wa-ink: #141414; --wa-ink-2: #4b4b4b; --wa-line: #d9d6cf;
+  --wa-accent: #0f4c5c; --wa-accent-2: #9a3b17; --wa-on-accent: #ffffff;
+  --wa-display: "Newsreader", Georgia, serif; --wa-ground: #fbfaf7;
+  --ink-n: #141414; --ink-n2: #4b4b4b; --rule: #d9d6cf; --paper-n: #fbfaf7; --rust: #9a3b17; --teal: #0f4c5c;
+  --serif: "Newsreader", Georgia, serif;
+}
+/* zavora.ai (stretch): Agentrix's own tokens */
+[data-host="zavora"] {
+  --wa-bg: #ffffff; --wa-soft: #f6f6fb; --wa-ink: #1f1d3d; --wa-ink-2: #4a4960; --wa-line: #e3e2ec;
+  --wa-accent: #38356d; --wa-accent-2: #de4060; --wa-on-accent: #ffffff;
+  --wa-display: var(--font-display); --wa-ground: #ffffff;
+}
+
+/* On a site host, the kit's components wear the site's brand: the Agentrix roles map onto the
+   host layer. Platform-owned pieces inside a site (the Sample band, provider placeholders) put
+   .ax-platform back on Agentrix tokens. */
+[data-host] {
+  --bg: var(--wa-soft);
+  --paper: var(--wa-bg);
+  --surface: var(--wa-soft);
+  --surface-2: color-mix(in srgb, var(--wa-soft) 70%, var(--wa-line));
+  --ink: var(--wa-ink);
+  --ink-2: var(--wa-ink-2);
+  --muted: var(--wa-ink-2);
+  --line: var(--wa-line);
+  --line-strong: color-mix(in srgb, var(--wa-line) 60%, var(--wa-ink-2));
+  --head: var(--wa-ink);
+  --link: var(--wa-accent);
+  --link-hover: var(--wa-accent-2);
+  --primary: var(--wa-accent);
+  --primary-hover: color-mix(in srgb, var(--wa-accent) 85%, #000);
+  --on-primary: var(--wa-on-accent);
+  --primary-glow: none;
+  --font-display: var(--wa-display);
+  --r-lg: var(--wa-radius);
+  --pm-wait: var(--wa-wait);
+  --pm-ok: var(--wa-ok);
+}
+.ax-platform {
+  --bg: #f6f6fa; --paper: #ffffff; --surface: #f6f6fa; --surface-2: #efeff5;
+  --ink: #23223a; --ink-2: #4a4960; --muted: #5f5e73; --line: #e3e2ec; --line-strong: #cfcedd;
+  --head: #1f1d3d; --link: #38356d; --link-hover: #b72d50;
+  --primary: #38356d; --primary-hover: #2c2a57; --on-primary: #ffffff;
+  --font-display: "Manrope", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --r-lg: 18px;
+}

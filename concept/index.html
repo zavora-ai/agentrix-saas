@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Agentrix Concepts</title>
+<meta name="description" content="UI concepts for the Agentrix WebAgent Platform: move your website, meet your WebAgents.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Manrope:wght@600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<style>
+  .hero { display: grid; grid-template-columns: 1.05fr .95fr; gap: clamp(24px, 4vw, 56px); align-items: center; padding: clamp(36px, 6vw, 80px) 0 clamp(28px, 4vw, 48px); }
+  .hero .lead { margin-top: var(--s4); }
+  .hero .row { margin-top: var(--s5); }
+  .hero h1 span { color: var(--coral-strong); }
+  .collage { position: relative; min-height: 570px; }
+  .collage > * { position: absolute; }
+  .c-brief { top: 0; right: 0; width: min(390px, 94%); }
+  .c-sealed { top: 306px; right: 2%; }
+  .c-decision { bottom: 0; left: 0; width: min(368px, 92%); }
+  .brief-text { font-size: var(--fs-14); color: var(--ink-2); }
+  .brief-text b { color: var(--indigo-900); }
+  .brief-actions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: var(--s4); }
+  .glow { position: absolute; inset: 10% 5% 0 15%; background: radial-gradient(closest-side, rgba(222,64,96,.16), transparent), radial-gradient(closest-side at 30% 70%, rgba(56,53,109,.18), transparent); filter: blur(10px); z-index: -1; }
+
+  .surfaces { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--s4); margin-top: var(--s5); }
+  .surface-card { display: flex; flex-direction: column; text-decoration: none; color: inherit; background: var(--paper); border: 1px solid var(--line); border-radius: var(--r-lg); overflow: hidden; box-shadow: var(--shadow-1); transition: transform .2s var(--ease), box-shadow .2s var(--ease), border-color .2s; }
+  .surface-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-2); border-color: var(--line-strong); color: inherit; }
+  .surface-art { height: 132px; background: var(--indigo-50); border-bottom: 1px solid var(--line); position: relative; overflow: hidden; }
+  .surface-body { padding: var(--s4) var(--s4) var(--s5); display: flex; flex-direction: column; gap: 8px; flex: 1; }
+  .surface-body .num { font: 800 var(--fs-12)/1 var(--font-display); color: var(--coral-strong); letter-spacing: .08em; }
+  .surface-body .rung { font: 600 var(--fs-13)/1.3 var(--font-text); color: var(--indigo); }
+  .surface-body p { color: var(--ink-2); font-size: var(--fs-14); }
+  .surface-body .go { margin-top: auto; padding-top: 8px; font: 700 var(--fs-14)/1 var(--font-text); color: var(--indigo); display: inline-flex; align-items: center; gap: 6px; }
+
+  /* Tiny illustrative art for each surface */
+  .art-assess .field { position: absolute; left: 16px; right: 16px; top: 26px; height: 38px; border-radius: 10px; background: #fff; border: 1px solid var(--line-strong); display: flex; align-items: center; padding: 0 12px; font: 600 12px/1 var(--font-text); color: var(--ink-2); }
+  .art-assess .field::after { content: ""; width: 2px; height: 16px; background: var(--coral); margin-left: 2px; animation: pulse 1s infinite; }
+  .art-assess .pages { position: absolute; left: 16px; right: 16px; top: 76px; display: flex; gap: 6px; }
+  .art-assess .pages i { flex: 1; height: 38px; border-radius: 8px; background: #fff; border: 1px solid var(--line); position: relative; }
+  .art-assess .pages i::after { content: ""; position: absolute; left: 6px; right: 14px; top: 8px; height: 4px; border-radius: 2px; background: var(--indigo-100); box-shadow: 0 9px 0 var(--indigo-100), 0 18px 0 var(--surface-2); }
+  .art-move .rail { position: absolute; left: 16px; right: 16px; top: 50%; height: 4px; transform: translateY(-50%); background: var(--indigo-100); border-radius: 2px; }
+  .art-move .rail b { display: block; height: 100%; width: 72%; background: var(--indigo); border-radius: inherit; }
+  .art-move .stops { position: absolute; left: 12px; right: 12px; top: 50%; transform: translateY(-50%); display: flex; justify-content: space-between; }
+  .art-move .stops i { width: 14px; height: 14px; border-radius: 50%; background: var(--indigo); border: 3px solid var(--indigo-50); }
+  .art-move .stops i.next { background: #fff; border-color: var(--indigo); }
+  .art-move .q { position: absolute; left: 16px; bottom: 14px; }
+  .art-console .ph { position: absolute; left: 50%; top: 14px; transform: translateX(-50%); width: 92px; height: 150px; border-radius: 18px; background: #1d1b38; padding: 6px; }
+  .art-console .ph div { height: 100%; border-radius: 13px; background: #fff; padding: 10px 8px; }
+  .art-console .ph span { display: block; height: 6px; border-radius: 3px; background: var(--indigo-100); margin-bottom: 6px; }
+  .art-console .ph span.c { background: var(--coral-50); height: 26px; border: 1px solid #f5c6d1; }
+  .art-site { background: #fbf4ea; }
+  .art-site .bar { position: absolute; left: 18px; right: 18px; top: 58px; height: 34px; border-radius: 999px; background: #fff; border: 1.5px solid #3b2416; display: flex; align-items: center; padding: 0 12px; font: 600 11px/1 var(--font-text); color: #6b4b36; }
+  .art-site .h { position: absolute; left: 18px; top: 22px; font: 800 16px/1 var(--font-display); color: #3b2416; }
+
+  .promises { display: grid; grid-template-columns: repeat(7, 1fr); gap: var(--s3); margin-top: var(--s5); counter-reset: p; }
+  .promise { background: var(--paper); border: 1px solid var(--line); border-radius: var(--r); padding: var(--s4); font-size: var(--fs-14); color: var(--ink-2); }
+  .promise b { display: block; color: var(--indigo-900); font: 700 var(--fs-14)/1.3 var(--font-display); margin-bottom: 4px; }
+  .promise::before { counter-increment: p; content: counter(p); display: inline-grid; place-items: center; width: 22px; height: 22px; border-radius: 7px; background: var(--indigo-100); color: var(--indigo); font: 800 12px/1 var(--font-display); margin-bottom: 10px; }
+
+  .roster { display: flex; flex-wrap: wrap; gap: var(--s3); margin-top: var(--s5); }
+  .member { display: flex; align-items: center; gap: 10px; background: var(--paper); border: 1px solid var(--line); border-radius: 14px; padding: 8px 14px 8px 8px; }
+  .member b { display: block; font: 700 var(--fs-14)/1.2 var(--font-display); color: var(--indigo-900); }
+  .member span { font-size: var(--fs-12); color: var(--muted); }
+
+  @media (max-width: 1080px) { .surfaces { grid-template-columns: repeat(2, 1fr); } .promises { grid-template-columns: repeat(4, 1fr); } }
+  @media (max-width: 860px) { .hero { grid-template-columns: 1fr; } .collage { min-height: 470px; } }
+  @media (max-width: 560px) {
+    .surfaces { grid-template-columns: 1fr; }
+    .promises { grid-template-columns: 1fr 1fr; }
+    .collage { min-height: 0; display: grid; gap: var(--s3); }
+    .collage > * { position: static; width: 100% !important; }
+    .glow { display: none; }
+  }
+</style>
+</head>
+<body>
+<header class="conceptbar">
+  <a class="logo" href="index.html"><span class="mark" aria-hidden="true"></span>Agentrix</a>
+  <nav aria-label="Concept screens">
+    <a href="index.html" aria-current="page">Overview</a>
+    <a href="assess.html">Assess</a>
+    <a href="move.html">The Move</a>
+    <a href="console.html">Owner console</a>
+    <a href="site.html">The website</a>
+  </nav>
+  <span class="concept-label">Concept · illustrative data</span>
+</header>
+
+<main class="wrap">
+  <section class="hero">
+    <div>
+      <span class="eyebrow">Agentrix WebAgent Platform · by Zavora</span>
+      <h1 style="margin-top:14px">Move your website.<br><span>Meet your WebAgents.</span></h1>
+      <p class="lead">Agentrix moves a small business off WordPress onto a site that answers customers, takes orders and keeps itself up to date, and asks its owner before anything that matters, and asks the owner before anything that matters.</p>
+      <div class="row">
+        <a class="btn btn-primary btn-lg" href="assess.html">Start with Assess
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+        <a class="btn btn-lg" href="console.html">See the owner console</a>
+      </div>
+      <p class="small muted" style="margin-top:14px">Every screen follows one fictional business: <b>Kilele Bakery, Nairobi</b>, owned by Wanjiru.</p>
+    </div>
+
+    <div class="collage" aria-label="Product moments">
+      <div class="glow" aria-hidden="true"></div>
+      <article class="card raised c-brief rise">
+        <div class="spread" style="margin-bottom:10px">
+          <span class="chip chip-coral">Morning Brief · 07:00</span>
+          <span class="small muted">WhatsApp</span>
+        </div>
+        <h3>Good morning, Wanjiru.</h3>
+        <p class="brief-text" style="margin-top:6px">Overnight: <b>41 visitors</b>, <b>9 questions</b> answered (2 in Swahili). <b>1 cake order</b> is waiting for your OK (KSh 4,500, collect Saturday). The Guardian blocked 212 bot requests.</p>
+        <div class="brief-actions">
+          <span class="btn btn-primary btn-sm">Approve order</span>
+          <span class="btn btn-sm">See the post</span>
+          <span class="btn btn-ghost btn-sm">Ask me anything</span>
+        </div>
+      </article>
+      <div class="sealed c-sealed rise" style="animation-delay:.15s">
+        <span class="seal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></span>
+        Sealed room <span class="sep">·</span> network: your site only <span class="sep">·</span> keys: none <span class="sep">·</span> <span class="done">destroyed ✓</span>
+      </div>
+      <article class="card raised c-decision rise" style="animation-delay:.3s">
+        <div class="spread" style="margin-bottom:8px">
+          <div class="row" style="gap:10px"><span class="avatar av-cashier" style="width:32px;height:32px;border-radius:10px;font-size:12px">Ca</span><b class="small">Cashier asks</b></div>
+          <span class="chip chip-ok">Low risk · 0.08</span>
+        </div>
+        <h3>Approve cake order · KSh 4,500</h3>
+        <p class="small muted" style="margin-top:4px">2-tier vanilla, for Amani, collect Sat 10:00. Sends a WhatsApp confirmation and a PayPal request.</p>
+        <div class="row" style="margin-top:12px"><span class="btn btn-primary btn-sm">Approve with passkey</span><span class="btn btn-sm">Edit</span><span class="btn btn-ghost btn-sm">Decline</span></div>
+      </article>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:8px">
+    <span class="eyebrow">Four surfaces, one ladder of "wow"</span>
+    <h2 style="margin-top:10px">See your own site checked in three minutes. Then get a short report every morning.</h2>
+    <div class="surfaces">
+      <a class="surface-card" href="assess.html">
+        <div class="surface-art art-assess" aria-hidden="true"><div class="field">kilele-bakery.example</div><div class="pages"><i></i><i></i><i></i><i></i></div></div>
+        <div class="surface-body">
+          <span class="num">01 · ASSESS</span>
+          <h3>"That's my business."</h3>
+          <span class="rung">0–3 minutes · no account</span>
+          <p>Paste an address. Watch the site get read in sealed rooms, get an honest health report, then talk to your new website before signing up.</p>
+          <span class="go">Open concept →</span>
+        </div>
+      </a>
+      <a class="surface-card" href="move.html">
+        <div class="surface-art art-move" aria-hidden="true"><div class="rail"><b></b></div><div class="stops"><i></i><i></i><i></i><i></i><i></i><i class="next"></i></div><span class="chip chip-risk q">4 items left behind</span></div>
+        <div class="surface-body">
+          <span class="num">02 · THE MOVE</span>
+          <h3>"Nothing broke."</h3>
+          <span class="rung">Day 1 · migration as a show</span>
+          <p>Read, claim, replay, clean, rebuild, prove, go live. Infections stay in quarantine. The old site stays as a fallback with one-tap undo.</p>
+          <span class="go">Open concept →</span>
+        </div>
+      </a>
+      <a class="surface-card" href="console.html">
+        <div class="surface-art art-console" aria-hidden="true"><div class="ph"><div><span></span><span style="width:60%"></span><span class="c"></span><span></span><span style="width:70%"></span></div></div></div>
+        <div class="surface-body">
+          <span class="num">03 · OWNER CONSOLE</span>
+          <h3>"My website worked while I slept."</h3>
+          <span class="rung">Every morning · two minutes</span>
+          <p>Today, Decisions, WebAgents and Trust. Approvals are signed with your passkey. Autonomy is a dial you turn up with evidence.</p>
+          <span class="go">Open concept →</span>
+        </div>
+      </a>
+      <a class="surface-card" href="site.html">
+        <div class="surface-art art-site" aria-hidden="true"><span class="h">Kilele Bakery</span><div class="bar">Ask this site · delivery, cakes, hours…</div></div>
+        <div class="surface-body">
+          <span class="num">04 · THE WEBSITE</span>
+          <h3>"Ask this site."</h3>
+          <span class="rung">For customers, and their AI agents</span>
+          <p>Instant signed pages, answers that cite the page they came from, real orders held for the owner, and a verified door for AI agents.</p>
+          <span class="go">Open concept →</span>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:0">
+    <span class="eyebrow">Trust promises</span>
+    <h2 style="margin-top:10px">Our promises to you, and how the platform enforces each one</h2>
+    <div class="promises">
+      <div class="promise"><b>Nothing changes until you say go</b>Old site untouched until go-live; undo is one tap for 30 days.</div>
+      <div class="promise"><b>Your WebAgents ask first</b>Before anything that matters, and you decide what matters.</div>
+      <div class="promise"><b>Your keys stay yours</b>No WebAgent sees a password, card or wallet credential.</div>
+      <div class="promise"><b>Every action has a receipt</b>In plain words, verifiable by anyone.</div>
+      <div class="promise"><b>Your site and data are yours</b>Export everything. The platform is open source.</div>
+      <div class="promise"><b>Visitors always know</b>The site says when they're talking to AI.</div>
+      <div class="promise"><b>Honest numbers</b>We never invent activity or results.</div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:0">
+    <span class="eyebrow">The WebAgents</span>
+    <h2 style="margin-top:10px">What each WebAgent does, and what it may never do</h2>
+    <div class="roster">
+      <div class="member"><span class="avatar av-chief">CW</span><div><b>Chief WebAgent</b><span>Briefs you, routes decisions</span></div></div>
+      <div class="member"><span class="avatar av-concierge">Co</span><div><b>Concierge</b><span>Front desk, 24/7, any language</span></div></div>
+      <div class="member"><span class="avatar av-sales">Sa</span><div><b>Sales</b><span>Leads, quotes, bookings</span></div></div>
+      <div class="member"><span class="avatar av-editor">Ed</span><div><b>Editor</b><span>True and fresh pages</span></div></div>
+      <div class="member"><span class="avatar av-reputation">Re</span><div><b>Reputation</b><span>Reviews in your voice</span></div></div>
+      <div class="member"><span class="avatar av-cashier">Ca</span><div><b>Cashier</b><span>Orders and payments</span></div></div>
+      <div class="member"><span class="avatar av-guardian">Gu</span><div><b>Guardian</b><span>Security and rollback</span></div></div>
+      <div class="member"><span class="avatar av-caretaker">Ct</span><div><b>Caretaker</b><span>Domains, backups, costs</span></div></div>
+      <div class="member"><span class="avatar av-mover">Mv</span><div><b>Mover</b><span>The migration, then hands over</span></div></div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:0">
+    <span class="eyebrow">Go deeper</span>
+    <h2 style="margin-top:10px">Each surface, designed in full.</h2>
+    <div class="promises">
+      <a class="promise" href="experience/index.html" style="color:inherit;text-decoration:none"><b>The website, agent first →</b>Navigation as WebAgents, personalised creation, agentic search, artifacts and presentations for visitors. Design: docs/06.</a>
+      <a class="promise" href="console/index.html" style="color:inherit;text-decoration:none"><b>The owner console, Agentrix OS →</b>WebAgents as apps, missions, live agents, gestures, and Day Time and Night Time. Supersedes console.html. Design: docs/07.</a>
+      <a class="promise" href="control-plane/index.html" style="color:inherit;text-decoration:none"><b>The control plane →</b>How Zavora, agencies and resellers run customers, the Vultr fleet, billing, rollouts and incidents. Design: docs/08.</a>
+      <a class="promise" href="identity/marks.html" style="color:inherit;text-decoration:none"><b>How a WebAgent looks →</b>A living mark: one signature family per site, moving only while the WebAgent works. Decision: ADR-031.</a>
+    </div>
+  </section>
+</main>
+
+<footer class="concept-foot">
+  <div class="wrap row">
+    <span>Agentrix WebAgent Platform · a Zavora product · built on ADK-Rust · designed to run on Vultr</span>
+    <span>Concept screens with illustrative data. Kilele Bakery is fictional.</span>
+  </div>
+</footer>
+</body>
+</html>

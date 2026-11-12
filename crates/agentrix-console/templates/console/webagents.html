@@ -1,0 +1,27 @@
+{% extends "console/base.html" %}
+{% import "macros.html" as m %}
+{#- Page::WebAgents · view::WebAgentsView (+ ConsoleChrome) {
+      agents: [ { mark: AgentMark, name, role_words, jobs: [ JobLevels { webagent, job, level_words, above_ask_first,
+                  positions: [ { name, current, locked, reason? } ] } ] } ] }
+    R10.2 (read-only this weekend). Positions above a job's ceiling are shown locked, with the reason (ADR-012, dce2496). -#}
+{% block title %}WebAgents{% endblock %}
+{% block content %}
+<section class="stack">
+  <p class="eyebrow">WebAgents</p>
+  <h1>Your team, and how much each may do alone</h1>
+  <p class="small muted">You can't change levels on this page. Anything that can't be undone, such as messages, money and deletions, always asks you first.</p>
+</section>
+{% for a in agents %}
+<section class="card" aria-labelledby="a-{{ loop.index }}">
+  <div class="from">{{ m.mark(a.mark, "lg") }}<div><b id="a-{{ loop.index }}" style="display:block">{{ a.name }}</b><span class="small muted" style="font-weight:500">{{ a.role_words }}</span></div></div>
+  {% for j in a.jobs %}
+  <div class="stack" style="gap:6px">
+    <div class="spread"><b class="small">{{ j.job }}</b><span class="chip {{ 'info' if j.above_ask_first else '' }}">{{ j.level_words }}</span></div>
+    <ul class="levels" aria-label="{{ a.name }}, {{ j.job }}: levels">
+      {% for p in j.positions %}<li {% if p.current %}aria-current="true"{% endif %} class="{{ 'locked' if p.locked else '' }}">{{ p.name }}{% if p.locked %}<span class="why">{{ p.reason }}</span>{% endif %}</li>{% endfor %}
+    </ul>
+  </div>
+  {% endfor %}
+</section>
+{% endfor %}
+{% endblock %}

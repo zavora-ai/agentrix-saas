@@ -1,0 +1,325 @@
+{
+  "site": "agentrix-home",
+  "images": {
+    "salon:01": {
+      "brief": "Monday nine in the morning in Nyota Salon, a bright modern hair salon in Kilimani, Nairobi, with teal walls, round mirrors, green plants and four styling chairs: Auma, a Kenyan woman in her late thirties with short tapered natural hair dyed copper, wearing a teal salon tunic unlocks the door while Kendi, a Kenyan woman in her early twenties with long box braids, wearing a black salon tunic sets out combs and towels, the chairs empty",
+      "bytes": 65944,
+      "cost_micro_usd": 23593,
+      "description": {
+        "alt": "Two women in a teal salon; one in a teal tunic grips the door handle, one in black holds a phone, styling chairs empty.",
+        "check": "The woman on the right holds a phone rather than setting out combs and towels as described, so the still may not match the script beat.",
+        "photographic": true,
+        "shows_person": true,
+        "shows_text": false
+      },
+      "digest": "sha256:e0e1a80dea3ceb707751bff76a2b1507c6aacc04e10b84b053ab67a5b26e629e",
+      "file": "salon_01.webp",
+      "height": 1152,
+      "kind": "film",
+      "label": "Made with AI",
+      "media_type": "image/webp",
+      "model": "z-image-turbo",
+      "prompt": "Monday nine in the morning in Nyota Salon, a bright modern hair salon in Kilimani, Nairobi, with teal walls, round mirrors, green plants and four styling chairs: Auma, a Kenyan woman in her late thirties with short tapered natural hair dyed copper, wearing a teal salon tunic unlocks the door while Kendi, a Kenyan woman in her early twenties with long box braids, wearing a black salon tunic sets out combs and towels, the chairs empty. Photoreal documentary film still, natural light, shallow depth of field, warm colour grade, Nairobi. The people are fictional and must not resemble any real or famous person. Colours and mood only: Clean bright colour grade, teal and copper accents, soft daylight. No readable text, letters, numbers, signs, logos, labels or watermarks anywhere.",
+      "seed": 8001,
+      "slot": "salon:01",
+      "verdict": {
+        "categories": [],
+        "model": "nemotron-3.5-content-safety",
+        "safe": true,
+        "user_safety": "safe"
+      },
+      "width": 1024
+    },
+    "salon:02": {
+      "brief": "Monday morning in Nyota Salon, a bright modern hair salon in Kilimani, Nairobi, with teal walls, round mirrors, green plants and four styling chairs: Grace, a Kenyan woman in her forties in a cream office blouse with a short relaxed bob sits in a styling chair holding up her phone to Auma, a Kenyan woman in her late thirties with short tapered natural hair dyed copper, wearing a teal salon tunic, both puzzled and a little alarmed",
+      "bytes": 63044,
+      "cost_micro_usd": 23593,
+      "description": {
+        "alt": "Two women in a teal-walled salon: one seated in cream holding a phone, one standing in a teal tunic, both looking puzzled.",
+        "check": "",
+        "photographic": true,
+        "shows_person": true,
+        "shows_text": false
+      },
+      "digest": "sha256:3e32d01f38c88abfdc8343d21734962d2bf2960d00706c3b82812e6c56615a53",
+      "file": "salon_02.webp",
+      "height": 1152,
+      "kind": "film",
+      "label": "Made with AI",
+      "media_type": "image/webp",
+      "model": "z-image-turbo",
+      "prompt": "Monday morning in Nyota Salon, a bright modern hair salon in Kilimani, Nairobi, with teal walls, round mirrors, green plants and four styling chairs: Grace, a Kenyan woman in her forties in a cream office blouse with a short relaxed bob sits in a styling chair holding up her phone to Auma, a Kenyan woman in her late thirties with short tapered natural hair dyed copper, wearing a teal salon tunic, both puzzled and a little alarmed. Photoreal documentary film still, natural light, shallow depth of field, warm colour grade, Nairobi. The people are fictional and must not resemble any real or famous person. Colours and mood only: Clean bright colour grade, teal and copper accents, soft daylight. No readable text, letters, numbers, signs, logos, labels or watermarks anywhere.",
+      "seed": 8002,
+      "slot": "salon:02",
+      "verdict": {
+        "categories": [],
+        "model": "nemotron-3.5-content-safety",
+        "safe": true,
+        "user_safety": "safe"
+      },
+      "width": 1024
+    },
+    "salon:03": {
+      "brief": "Monday midday in the small back office of Nyota Salon, a bright modern hair salon in Kilimani, Nairobi, with teal walls, round mirrors, green plants and four styling chairs: Auma, a Kenyan woman in her late thirties with short tapered natural hair dyed copper, wearing a teal salon tunic sits at a laptop with her hand over her mouth, shocked",
+      "bytes": 60956,
+      "cost_micro_usd": 23593,
+      "description": {
+        "alt": "Woman with short copper hair in a teal tunic sits at a laptop in a teal-walled salon, hand over her mouth in shock.",
+        "check": "Scene reads as the main salon floor with mirrors and styling chairs, not the small back office described.",
+        "photographic": true,
+        "shows_person": true,
+        "shows_text": false
+      },
+      "digest": "sha256:cd91b6940e17b549a59c5e44b7e22578686f9f99e167ad28f36b92afb11ab4d0",
+      "file": "salon_03.webp",
+      "height": 1152,
+      "kind": "film",
+      "label": "Made with AI",
+      "media_type": "image/webp",
+      "model": "z-image-turbo",
+      "prompt": "Monday midday in the small back office of Nyota Salon, a bright modern hair salon in Kilimani, Nairobi, with teal walls, round mirrors, green plants and four styling chairs: Auma, a Kenyan woman in her late thirties with short tapered natural hair dyed copper, wearing a teal salon tunic sits at a laptop with her hand over her mouth, shocked. Photoreal documentary film still, natural light, shallow depth of field, warm colour grade, Nairobi. The people are fictional and must not resemble any real or famous person. Colours and mood only: Clean bright colour grade, teal and copper accents, soft daylight. No readable text, letters, numbers, signs, logos, labels or watermarks anywhere.",
+      "seed": 8003,
+      "slot": "salon:03",
+      "verdict": {
+        "categories": [],
+        "model": "nemotron-3.5-content-safety",
+        "safe": true,
+        "user_safety": "safe"
+      },
+      "width": 1024
+    },
+    "salon:04": {
+      "brief": "A week later at a small desk in Nyota Salon, a bright modern hair salon in Kilimani, Nairobi, with teal walls, round mirrors, green plants and four styling chairs: a fictional freelance web developer, a young Kenyan man in a grey hoodie types on Auma's laptop with confidence while Auma, a Kenyan woman in her late thirties with short tapered natural hair dyed copper, wearing a teal salon tunic watches, arms folded, hopeful",
+      "bytes": 71816,
+      "cost_micro_usd": 23593,
+      "description": {
+        "alt": "Man in grey hoodie types on a laptop at a desk while a copper-haired woman in a teal tunic watches behind him in a salon.",
+        "check": "",
+        "photographic": true,
+        "shows_person": true,
+        "shows_text": false
+      },
+      "digest": "sha256:31830397c4d80ba9e187bd4e2f4e07ad9e0be0b758b981883e956fa339fac319",
+      "file": "salon_04.webp",
+      "height": 1152,
+      "kind": "film",
+      "label": "Made with AI",
+      "media_type": "image/webp",
+      "model": "z-image-turbo",
+      "prompt": "A week later at a small desk in Nyota Salon, a bright modern hair salon in Kilimani, Nairobi, with teal walls, round mirrors, green plants and four styling chairs: a fictional freelance web developer, a young Kenyan man in a grey hoodie types on Auma's laptop with confidence while Auma, a Kenyan woman in her late thirties with short tapered natural hair dyed copper, wearing a teal salon tunic watches, arms folded, hopeful. Photoreal documentary film still, natural light, shallow depth of field, warm colour grade, Nairobi. The people are fictional and must not resemble any real or famous person. Colours and mood only: Clean bright colour grade, teal and copper accents, soft daylight. No readable text, letters, numbers, signs, logos, labels or watermarks anywhere.",
+      "seed": 8004,
+      "slot": "salon:04",
+      "verdict": {
+        "categories": [],
+        "model": "nemotron-3.5-content-safety",
+        "safe": true,
+        "user_safety": "safe"
+      },
+      "width": 1024
+    },
+    "salon:05": {
+      "brief": "Two weeks later at dusk outside a bright modern hair salon with no sign or lettering anywhere in Kilimani, Nairobi, with teal walls, round mirrors, green plants and four styling chairs: Auma, a Kenyan woman in her late thirties with short tapered natural hair dyed copper, wearing a teal salon tunic pulls down a plain unpainted metal shutter early, the chairs inside empty, a quiet street",
+      "bytes": 102550,
+      "cost_micro_usd": 23593,
+      "description": {
+        "alt": "A woman with copper hair in a teal tunic pulls down a shutter at a teal-walled salon with round mirrors and empty chairs.",
+        "check": "A woman with copper hair in a teal tunic pulls down a shutter at a teal-walled salon with round mirrors and empty chairs.",
+        "photographic": true,
+        "shows_person": true,
+        "shows_text": false
+      },
+      "digest": "sha256:62fca2e16213c153883acc76b9418d1f721178dae650619679ac29ac05a5fae8",
+      "file": "salon_05.webp",
+      "height": 1152,
+      "kind": "film",
+      "label": "Made with AI",
+      "media_type": "image/webp",
+      "model": "z-image-turbo",
+      "prompt": "Two weeks later at dusk outside a bright modern hair salon with no sign or lettering anywhere in Kilimani, Nairobi, with teal walls, round mirrors, green plants and four styling chairs: Auma, a Kenyan woman in her late thirties with short tapered natural hair dyed copper, wearing a teal salon tunic pulls down a plain unpainted metal shutter early, the chairs inside empty, a quiet street. Photoreal documentary film still, natural light, shallow depth of field, warm colour grade, Nairobi. The people are fictional and must not resemble any real or famous person. Colours and mood only: Clean bright colour grade, teal and copper accents, soft daylight. No readable text, letters, numbers, signs, logos, labels or watermarks anywhere.",
+      "seed": 8105,
+      "slot": "salon:05",
+      "verdict": {
+        "categories": [],
+        "model": "nemotron-3.5-content-safety",
+        "safe": true,
+        "user_safety": "safe"
+      },
+      "width": 1024
+    },
+    "salon:06": {
+      "brief": "Late at night at a kitchen table in a Nairobi flat: Auma, a Kenyan woman in her late thirties with short tapered natural hair dyed copper, wearing a teal salon tunic sits with an open plain grey laptop with a blank lid and a cup of tea, looking determined",
+      "bytes": 46654,
+      "cost_micro_usd": 23593,
+      "description": {
+        "alt": "Woman with short copper hair in a teal top sits at a kitchen table facing a grey laptop, with a cup of tea beside it",
+        "check": "The teal top reads as a plain crew-neck t-shirt rather than a salon tunic, so it may not match other frames",
+        "photographic": true,
+        "shows_person": true,
+        "shows_text": false
+      },
+      "digest": "sha256:35acfb86b1788355c067a7ba5b4826209401b83cb0d3f5da0886768622039988",
+      "file": "salon_06.webp",
+      "height": 1152,
+      "kind": "film",
+      "label": "Made with AI",
+      "media_type": "image/webp",
+      "model": "z-image-turbo",
+      "prompt": "Late at night at a kitchen table in a Nairobi flat: Auma, a Kenyan woman in her late thirties with short tapered natural hair dyed copper, wearing a teal salon tunic sits with an open plain grey laptop with a blank lid and a cup of tea, looking determined. Photoreal documentary film still, natural light, shallow depth of field, warm colour grade, Nairobi. The people are fictional and must not resemble any real or famous person. Colours and mood only: Clean bright colour grade, teal and copper accents, soft daylight. No readable text, letters, numbers, signs, logos, labels or watermarks anywhere.",
+      "seed": 8106,
+      "slot": "salon:06",
+      "verdict": {
+        "categories": [],
+        "model": "nemotron-3.5-content-safety",
+        "safe": true,
+        "user_safety": "safe"
+      },
+      "width": 1024
+    },
+    "salon:07": {
+      "brief": "The next Monday morning in Nyota Salon, a bright modern hair salon in Kilimani, Nairobi, with teal walls, round mirrors, green plants and four styling chairs, busy: all four chairs are full of fictional clients, Kendi, a Kenyan woman in her early twenties with long box braids, wearing a black salon tunic braiding hair, Auma, a Kenyan woman in her late thirties with short tapered natural hair dyed copper, wearing a teal salon tunic cutting, everyone chatting",
+      "bytes": 67880,
+      "cost_micro_usd": 23593,
+      "description": {
+        "alt": "Client with box braids in a black cape sits in a salon chair before a teal wall, round mirrors and plants; other clients seated behind.",
+        "check": "Only three clients are seated in the image, not four as described.",
+        "photographic": true,
+        "shows_person": true,
+        "shows_text": false
+      },
+      "digest": "sha256:bfa6a7853857700efb3c5559b1d399d9444d988ee7b848ffd7e7f970fbd1fa9e",
+      "file": "salon_07.webp",
+      "height": 1152,
+      "kind": "film",
+      "label": "Made with AI",
+      "media_type": "image/webp",
+      "model": "z-image-turbo",
+      "prompt": "The next Monday morning in Nyota Salon, a bright modern hair salon in Kilimani, Nairobi, with teal walls, round mirrors, green plants and four styling chairs, busy: all four chairs are full of fictional clients, Kendi, a Kenyan woman in her early twenties with long box braids, wearing a black salon tunic braiding hair, Auma, a Kenyan woman in her late thirties with short tapered natural hair dyed copper, wearing a teal salon tunic cutting, everyone chatting. Photoreal documentary film still, natural light, shallow depth of field, warm colour grade, Nairobi. The people are fictional and must not resemble any real or famous person. Colours and mood only: Clean bright colour grade, teal and copper accents, soft daylight. No readable text, letters, numbers, signs, logos, labels or watermarks anywhere.",
+      "seed": 8007,
+      "slot": "salon:07",
+      "verdict": {
+        "categories": [],
+        "model": "nemotron-3.5-content-safety",
+        "safe": true,
+        "user_safety": "safe"
+      },
+      "width": 1024
+    },
+    "salon:08": {
+      "brief": "Monday morning in Nyota Salon, a bright modern hair salon in Kilimani, Nairobi, with teal walls, round mirrors, green plants and four styling chairs: Auma, a Kenyan woman in her late thirties with short tapered natural hair dyed copper, wearing a teal salon tunic glances at her phone between clients and smiles as she types a quick reply, scissors in her other hand",
+      "bytes": 62958,
+      "cost_micro_usd": 23593,
+      "description": {
+        "alt": "Woman with short copper hair in a teal tunic smiles at her phone in a styling chair, teal-walled salon with round mirrors.",
+        "check": "Confirm the scissors in her hand read clearly, as they are hard to make out.",
+        "photographic": true,
+        "shows_person": true,
+        "shows_text": false
+      },
+      "digest": "sha256:f9cd11c51d10c269f263dbd094cff2b3fe1664d7b7baee5e0bb77b5bdfe48f5d",
+      "file": "salon_08.webp",
+      "height": 1152,
+      "kind": "film",
+      "label": "Made with AI",
+      "media_type": "image/webp",
+      "model": "z-image-turbo",
+      "prompt": "Monday morning in Nyota Salon, a bright modern hair salon in Kilimani, Nairobi, with teal walls, round mirrors, green plants and four styling chairs: Auma, a Kenyan woman in her late thirties with short tapered natural hair dyed copper, wearing a teal salon tunic glances at her phone between clients and smiles as she types a quick reply, scissors in her other hand. Photoreal documentary film still, natural light, shallow depth of field, warm colour grade, Nairobi. The people are fictional and must not resemble any real or famous person. Colours and mood only: Clean bright colour grade, teal and copper accents, soft daylight. No readable text, letters, numbers, signs, logos, labels or watermarks anywhere.",
+      "seed": 8008,
+      "slot": "salon:08",
+      "verdict": {
+        "categories": [],
+        "model": "nemotron-3.5-content-safety",
+        "safe": true,
+        "user_safety": "safe"
+      },
+      "width": 1024
+    },
+    "salon:09": {
+      "brief": "Two o'clock in the morning: a deserted residential street in Kilimani, Nairobi with not a single person in sight, the dark closed front of a small hair salon with its plain unpainted metal shutter pulled all the way down and no sign above the door, a black night sky, one street light glowing orange over the empty wet pavement, a still and silent scene",
+      "bytes": 118382,
+      "cost_micro_usd": 23593,
+      "description": {
+        "alt": "A closed shopfront with a blue metal roller shutter on a wet, empty street at night beneath a single orange street light",
+        "check": "Two figures sit in the background near the gate, which the brief said would have no people in sight.",
+        "photographic": true,
+        "shows_person": true,
+        "shows_text": false
+      },
+      "digest": "sha256:7ede32b4c0ec2df8fb063da8cc7ff86486f4469decbf8b2470aef672eed2a4ca",
+      "file": "salon_09.webp",
+      "height": 1152,
+      "kind": "film",
+      "label": "Made with AI",
+      "media_type": "image/webp",
+      "model": "z-image-turbo",
+      "prompt": "Two o'clock in the morning: a deserted residential street in Kilimani, Nairobi with not a single person in sight, the dark closed front of a small hair salon with its plain unpainted metal shutter pulled all the way down and no sign above the door, a black night sky, one street light glowing orange over the empty wet pavement, a still and silent scene. Photoreal documentary film still, natural light, shallow depth of field, warm colour grade, Nairobi. The people are fictional and must not resemble any real or famous person. Colours and mood only: Clean bright colour grade, teal and copper accents, soft daylight. No readable text, letters, numbers, signs, logos, labels or watermarks anywhere.",
+      "seed": 8409,
+      "slot": "salon:09",
+      "verdict": {
+        "categories": [],
+        "model": "nemotron-3.5-content-safety",
+        "safe": true,
+        "user_safety": "safe"
+      },
+      "width": 1024
+    },
+    "salon:10": {
+      "brief": "Saturday in Nyota Salon, a bright modern hair salon in Kilimani, Nairobi, with teal walls, round mirrors, green plants and four styling chairs: Grace, a Kenyan woman in her forties in a cream office blouse, her hair now in fresh long knotless braids takes a happy selfie with Auma, a Kenyan woman in her late thirties with short tapered natural hair dyed copper, wearing a teal salon tunic and Kendi, a Kenyan woman in her early twenties with long box braids, wearing a black salon tunic",
+      "bytes": 76354,
+      "cost_micro_usd": 23593,
+      "description": {
+        "alt": "Three women in a teal-walled salon taking a selfie, one in a cream blouse with knotless braids holding a phone, two in salon tunics behind.",
+        "check": "",
+        "photographic": true,
+        "shows_person": true,
+        "shows_text": false
+      },
+      "digest": "sha256:01172b930bb40c1063dd8215ad99e928ba66ab90a6b99112dc2eb8592d5be1c3",
+      "file": "salon_10.webp",
+      "height": 1152,
+      "kind": "film",
+      "label": "Made with AI",
+      "media_type": "image/webp",
+      "model": "z-image-turbo",
+      "prompt": "Saturday in Nyota Salon, a bright modern hair salon in Kilimani, Nairobi, with teal walls, round mirrors, green plants and four styling chairs: Grace, a Kenyan woman in her forties in a cream office blouse, her hair now in fresh long knotless braids takes a happy selfie with Auma, a Kenyan woman in her late thirties with short tapered natural hair dyed copper, wearing a teal salon tunic and Kendi, a Kenyan woman in her early twenties with long box braids, wearing a black salon tunic. Photoreal documentary film still, natural light, shallow depth of field, warm colour grade, Nairobi. The people are fictional and must not resemble any real or famous person. Colours and mood only: Clean bright colour grade, teal and copper accents, soft daylight. No readable text, letters, numbers, signs, logos, labels or watermarks anywhere.",
+      "seed": 8010,
+      "slot": "salon:10",
+      "verdict": {
+        "categories": [],
+        "model": "nemotron-3.5-content-safety",
+        "safe": true,
+        "user_safety": "safe"
+      },
+      "width": 1024
+    },
+    "salon:11": {
+      "brief": "Months later in a larger, bright modern hair salon with no sign or lettering anywhere, teal walls, round mirrors and green plants: Auma, a Kenyan woman in her late thirties with short tapered natural hair dyed copper, wearing a teal salon tunic, standing beside a styling chair and pointing as she explains, teaches two young trainee stylists in plain black tunics who section the long hair of a seated client in a plain black cape, the room busy and bright",
+      "bytes": 72452,
+      "cost_micro_usd": 23593,
+      "description": {
+        "alt": "A copper-haired woman in a teal tunic guides two trainees as they section a seated client's hair in a bright teal salon.",
+        "check": "The tunics carry small white logos/text, but the scene was specified as having no lettering or brand marks.",
+        "photographic": true,
+        "shows_person": true,
+        "shows_text": true
+      },
+      "digest": "sha256:95890268f19097645f9ab5f869eafa2f3227f7003fde56355437b76c09c68d0e",
+      "file": "salon_11.webp",
+      "height": 1152,
+      "kind": "film",
+      "label": "Made with AI",
+      "media_type": "image/webp",
+      "model": "z-image-turbo",
+      "prompt": "Months later in a larger, bright modern hair salon with no sign or lettering anywhere, teal walls, round mirrors and green plants: Auma, a Kenyan woman in her late thirties with short tapered natural hair dyed copper, wearing a teal salon tunic, standing beside a styling chair and pointing as she explains, teaches two young trainee stylists in plain black tunics who section the long hair of a seated client in a plain black cape, the room busy and bright. Photoreal documentary film still, natural light, shallow depth of field, warm colour grade, Nairobi. The people are fictional and must not resemble any real or famous person. Colours and mood only: Clean bright colour grade, teal and copper accents, soft daylight. No readable text, letters, numbers, signs, logos, labels or watermarks anywhere.",
+      "seed": 8311,
+      "slot": "salon:11",
+      "verdict": {
+        "categories": [],
+        "model": "nemotron-3.5-content-safety",
+        "safe": true,
+        "user_safety": "safe"
+      },
+      "width": 1024
+    }
+  },
+  "blocked": []
+}

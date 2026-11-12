@@ -1,0 +1,13 @@
+{
+  "kind": "aws_agent_core",
+  "label": "Amazon Bedrock AgentCore Identity (fixture Cognito issuer)",
+  "source": "Shaped from an Amazon Cognito access token, the issuer an AgentCore agent is commonly configured with (sub, client_id, token_use, scope). Not a recorded live token; ids are made up.",
+  "issuer": "https://cognito-idp.us-east-1.amazonaws.com/us-east-1_AgEnTcOrE",
+  "audience": "agentrix-door",
+  "claims": {
+    "sub": "4b2a9c1e-0000-4000-8000-0000000000c1",
+    "client_id": "7agentcorefixtureclient0001",
+    "token_use": "access",
+    "scope": "agentrix/orders.place"
+  }
+}

@@ -1,0 +1,18 @@
+{% block subject %}{% if role.granted %}{{ role.who }} can now help run {{ site.name }}{% else %}{{ role.who }} no longer has access to {{ site.name }}{% endif %}{% endblock %}
+{% block preheader %}{{ role.by }}, {{ role.at }}.{% endblock %}
+{% block body %}
+{% if role.granted %}
+# {{ role.who }} joined as {{ role.name }}
+{{ role.by }} gave {{ role.who }} the {{ role.name }} role on {{ site.name }} at {{ role.at }}.
+
+::fact Can | {{ role.can }}
+::fact Can't | {{ role.cannot }}
+{% else %}
+# {{ role.who }}'s access ended
+{{ role.by }} removed {{ role.who }}'s {{ role.name }} role on {{ site.name }} at {{ role.at }}. Their sessions on the site have ended.
+{% endif %}
+
+If you didn't expect this, check People in the console.
+
+::button Open People | {{ role.url }}
+{% endblock %}

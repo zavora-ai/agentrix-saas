@@ -1,0 +1,85 @@
+{
+  "site": "agentrix-home",
+  "sample": false,
+  "tier": "fast",
+  "look": "Clean bright colour grade, teal and copper accents, soft daylight",
+  "images": [
+    {
+      "slot": "salon:01",
+      "kind": "film",
+      "seed": 8001,
+      "brief": "Monday nine in the morning in Nyota Salon, a bright modern hair salon in Kilimani, Nairobi, with teal walls, round mirrors, green plants and four styling chairs: Auma, a Kenyan woman in her late thirties with short tapered natural hair dyed copper, wearing a teal salon tunic unlocks the door while Kendi, a Kenyan woman in her early twenties with long box braids, wearing a black salon tunic sets out combs and towels, the chairs empty",
+      "context": "Still 1 of 11 for a short film about a fictional hair salon in Kilimani, Nairobi on the Agentrix home page; fictional people, made with AI. No readable text, logos or brand marks anywhere."
+    },
+    {
+      "slot": "salon:02",
+      "kind": "film",
+      "seed": 8002,
+      "brief": "Monday morning in Nyota Salon, a bright modern hair salon in Kilimani, Nairobi, with teal walls, round mirrors, green plants and four styling chairs: Grace, a Kenyan woman in her forties in a cream office blouse with a short relaxed bob sits in a styling chair holding up her phone to Auma, a Kenyan woman in her late thirties with short tapered natural hair dyed copper, wearing a teal salon tunic, both puzzled and a little alarmed",
+      "context": "Still 2 of 11 for a short film about a fictional hair salon in Kilimani, Nairobi on the Agentrix home page; fictional people, made with AI. No readable text, logos or brand marks anywhere."
+    },
+    {
+      "slot": "salon:03",
+      "kind": "film",
+      "seed": 8003,
+      "brief": "Monday midday in the small back office of Nyota Salon, a bright modern hair salon in Kilimani, Nairobi, with teal walls, round mirrors, green plants and four styling chairs: Auma, a Kenyan woman in her late thirties with short tapered natural hair dyed copper, wearing a teal salon tunic sits at a laptop with her hand over her mouth, shocked",
+      "context": "Still 3 of 11 for a short film about a fictional hair salon in Kilimani, Nairobi on the Agentrix home page; fictional people, made with AI. No readable text, logos or brand marks anywhere."
+    },
+    {
+      "slot": "salon:04",
+      "kind": "film",
+      "seed": 8004,
+      "brief": "A week later at a small desk in Nyota Salon, a bright modern hair salon in Kilimani, Nairobi, with teal walls, round mirrors, green plants and four styling chairs: a fictional freelance web developer, a young Kenyan man in a grey hoodie types on Auma's laptop with confidence while Auma, a Kenyan woman in her late thirties with short tapered natural hair dyed copper, wearing a teal salon tunic watches, arms folded, hopeful",
+      "context": "Still 4 of 11 for a short film about a fictional hair salon in Kilimani, Nairobi on the Agentrix home page; fictional people, made with AI. No readable text, logos or brand marks anywhere."
+    },
+    {
+      "slot": "salon:05",
+      "kind": "film",
+      "seed": 8105,
+      "brief": "Two weeks later at dusk outside a bright modern hair salon with no sign or lettering anywhere in Kilimani, Nairobi, with teal walls, round mirrors, green plants and four styling chairs: Auma, a Kenyan woman in her late thirties with short tapered natural hair dyed copper, wearing a teal salon tunic pulls down a plain unpainted metal shutter early, the chairs inside empty, a quiet street",
+      "context": "Still 5 of 11 for a short film about a fictional hair salon in Kilimani, Nairobi on the Agentrix home page; fictional people, made with AI. No readable text, logos or brand marks anywhere."
+    },
+    {
+      "slot": "salon:06",
+      "kind": "film",
+      "seed": 8106,
+      "brief": "Late at night at a kitchen table in a Nairobi flat: Auma, a Kenyan woman in her late thirties with short tapered natural hair dyed copper, wearing a teal salon tunic sits with an open plain grey laptop with a blank lid and a cup of tea, looking determined",
+      "context": "Still 6 of 11 for a short film about a fictional hair salon in Kilimani, Nairobi on the Agentrix home page; fictional people, made with AI. No readable text, logos or brand marks anywhere."
+    },
+    {
+      "slot": "salon:07",
+      "kind": "film",
+      "seed": 8007,
+      "brief": "The next Monday morning in Nyota Salon, a bright modern hair salon in Kilimani, Nairobi, with teal walls, round mirrors, green plants and four styling chairs, busy: all four chairs are full of fictional clients, Kendi, a Kenyan woman in her early twenties with long box braids, wearing a black salon tunic braiding hair, Auma, a Kenyan woman in her late thirties with short tapered natural hair dyed copper, wearing a teal salon tunic cutting, everyone chatting",
+      "context": "Still 7 of 11 for a short film about a fictional hair salon in Kilimani, Nairobi on the Agentrix home page; fictional people, made with AI. No readable text, logos or brand marks anywhere."
+    },
+    {
+      "slot": "salon:08",
+      "kind": "film",
+      "seed": 8008,
+      "brief": "Monday morning in Nyota Salon, a bright modern hair salon in Kilimani, Nairobi, with teal walls, round mirrors, green plants and four styling chairs: Auma, a Kenyan woman in her late thirties with short tapered natural hair dyed copper, wearing a teal salon tunic glances at her phone between clients and smiles as she types a quick reply, scissors in her other hand",
+      "context": "Still 8 of 11 for a short film about a fictional hair salon in Kilimani, Nairobi on the Agentrix home page; fictional people, made with AI. No readable text, logos or brand marks anywhere."
+    },
+    {
+      "slot": "salon:09",
+      "kind": "film",
+      "seed": 8409,
+      "brief": "Two o'clock in the morning: a deserted residential street in Kilimani, Nairobi with not a single person in sight, the dark closed front of a small hair salon with its plain unpainted metal shutter pulled all the way down and no sign above the door, a black night sky, one street light glowing orange over the empty wet pavement, a still and silent scene",
+      "context": "Still 9 of 11 for a short film about a fictional hair salon in Kilimani, Nairobi on the Agentrix home page; fictional people, made with AI. No readable text, logos or brand marks anywhere."
+    },
+    {
+      "slot": "salon:10",
+      "kind": "film",
+      "seed": 8010,
+      "brief": "Saturday in Nyota Salon, a bright modern hair salon in Kilimani, Nairobi, with teal walls, round mirrors, green plants and four styling chairs: Grace, a Kenyan woman in her forties in a cream office blouse, her hair now in fresh long knotless braids takes a happy selfie with Auma, a Kenyan woman in her late thirties with short tapered natural hair dyed copper, wearing a teal salon tunic and Kendi, a Kenyan woman in her early twenties with long box braids, wearing a black salon tunic",
+      "context": "Still 10 of 11 for a short film about a fictional hair salon in Kilimani, Nairobi on the Agentrix home page; fictional people, made with AI. No readable text, logos or brand marks anywhere."
+    },
+    {
+      "slot": "salon:11",
+      "kind": "film",
+      "seed": 8311,
+      "brief": "Months later in a larger, bright modern hair salon with no sign or lettering anywhere, teal walls, round mirrors and green plants: Auma, a Kenyan woman in her late thirties with short tapered natural hair dyed copper, wearing a teal salon tunic, standing beside a styling chair and pointing as she explains, teaches two young trainee stylists in plain black tunics who section the long hair of a seated client in a plain black cape, the room busy and bright",
+      "context": "Still 11 of 11 for a short film about a fictional hair salon in Kilimani, Nairobi on the Agentrix home page; fictional people, made with AI. No readable text, logos or brand marks anywhere."
+    }
+  ]
+}

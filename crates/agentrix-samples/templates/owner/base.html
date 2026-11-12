@@ -1,0 +1,81 @@
+{% import "owner/macros.html" as m -%}
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{ c.title }}{% if c.site %} · {{ c.site.name }}{% endif %} · Sample owner view</title>
+<meta name="description" content="The owner's side of a sample site on Agentrix, on the sample's own records: orders, custom orders, catalogue and stock for the shops; stories, subscribers and the Friday five for the paper.">
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="/static/ui/tokens.css">
+<link rel="stylesheet" href="/samples/_s/agentrix.css?v={{ c.v }}">
+<link rel="stylesheet" href="/samples/_s/owner.css?v={{ c.v }}">
+<script src="/samples/_s/owner.js?v={{ c.v }}" defer></script>
+</head>
+<body class="ow" data-app="{{ c.app.id }}">
+<a class="skip" href="#field">Skip to the app</a>
+<div class="ow-band" role="note">
+  <b>Sample</b>
+  {% if c.site %}<span>You're signed in with this sample's owner details, which anyone can use. On a real site only the owner and their team sign in, with a passkey, and approvals need it too.</span>{% else %}<span>Each sample's owner view asks for its owner's sign-in. The details are filled in, so anyone can see the owner's side. On a real site only the owner and their team sign in, with a passkey, and approvals need it too.</span>{% endif %}
+  <span class="ow-band-2">Changes here change the sample site for everyone looking at it.</span>
+</div>
+<div class="os ow-os{% if not c.site %} no-dock{% endif %}{% if not c.needs %} no-lane{% endif %}" data-app="{{ c.app.id }}">
+  <header class="os-bar">
+    <details class="switch">
+      {% if c.site %}
+      <summary class="site-chip" aria-label="Switch sample: {{ c.site.name }}"><span class="logo-site" style="--logo: {{ c.site.color }}">{{ c.site.initial }}</span><span>{{ c.site.name }}<small>Sample {{ c.site.kind }}{% if c.site.release %} · {{ c.site.release }} live{% endif %}</small></span><span class="caret" aria-hidden="true">▾</span></summary>
+      {% else %}
+      <summary class="site-chip" aria-label="Pick a sample"><span class="logo-site ax" aria-hidden="true"></span><span>Agentrix<small>Sample owner views</small></span><span class="caret" aria-hidden="true">▾</span></summary>
+      {% endif %}
+      <div class="switch-menu" role="menu">
+        <a href="/samples/" role="menuitem">{{ m.icon("grid") }}All samples</a>
+        {% for s in c.sites %}
+        {% if s.loaded %}<a href="{{ s.href }}" role="menuitem"{% if s.current %} aria-current="page"{% endif %}><span class="dot"></span>{{ s.name }}<small>{{ s.kind }}</small></a>
+        {% else %}<span class="off" role="menuitem" aria-disabled="true"><span class="dot"></span>{{ s.name }}<small>not loaded</small></span>{% endif %}
+        {% endfor %}
+      </div>
+    </details>
+    <div class="bar-app"><span class="sys">{{ m.icon(c.app.icon) }}</span><b>{{ c.app.name }}</b></div>
+    <div class="bar-right">
+      {% if c.site %}
+      {% if c.site.archetype != "news" %}<a class="pill trust" href="{{ c.base }}custom" title="Custom orders waiting for you">{{ m.icon("key") }}<span class="hide-sm">Waiting for you</span><span class="n">{{ c.figures.held }}</span></a>{% endif %}
+      <a class="pill" href="{{ c.site.url }}" title="Open the sample site">{{ m.icon("open") }}<span class="hide-sm">Open the site</span></a>
+      <form class="ow-signout" method="post" action="{{ c.base }}sign-out"><button class="pill" type="submit" title="Sign out of this sample's owner view">Sign out</button></form>
+      {% endif %}
+    </div>
+  </header>
+
+  {% if c.site %}
+  <nav class="dock" aria-label="{{ c.site.name }} apps">
+    {% for a in c.apps %}
+    <a class="app-ico" href="{{ a.href }}"{% if a.current %} aria-current="true"{% endif %}><span class="sys">{{ m.icon(a.icon) }}</span>{{ a.name }}{% if a.badge %}<span class="badge" aria-label="{{ a.badge }} waiting">{{ a.badge }}</span>{% endif %}</a>
+    {% endfor %}
+    <span class="sep" aria-hidden="true"></span>
+    <a class="app-ico" href="/samples/"><span class="sys">{{ m.icon("grid") }}</span>Samples</a>
+  </nav>
+  {% endif %}
+
+  <main class="field" id="field">
+    {% if c.flash %}<p class="flash {{ c.flash.kind }}" role="status">{{ c.flash.text }}</p>{% endif %}
+    {% block field %}{% endblock %}
+  </main>
+
+  {% if c.needs %}
+  <aside class="lane" aria-label="Needs you">
+    <div class="lane-scroll">
+      <h4>Needs you <span class="badge">{{ c.needs|length }}</span></h4>
+      {% for n in c.needs %}
+      <div class="ldec">
+        <div class="from">{{ m.chip(n.kind, n.tone) }}</div>
+        <b class="t">{{ n.title }}</b>
+        <p>{{ n.line }}</p>
+        <div class="verbs"><a class="btn btn-sm{% if loop.first %} btn-primary{% endif %}" href="{{ n.href }}">{{ n.verb }}</a></div>
+      </div>
+      {% endfor %}
+      <p class="quiet small">Counted from the records at {{ c.clock }}. Nothing here is estimated.</p>
+    </div>
+  </aside>
+  {% endif %}
+</div>
+</body>
+</html>

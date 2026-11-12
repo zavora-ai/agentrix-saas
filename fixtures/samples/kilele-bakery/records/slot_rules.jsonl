@@ -1,0 +1,8 @@
+{"kind": "delivery", "weekdays": ["sat"], "start": "10:00", "end": "12:00", "capacity": 6, "weeks": 7}
+{"kind": "delivery", "weekdays": ["sat"], "start": "12:00", "end": "14:00", "capacity": 6, "weeks": 7}
+{"kind": "delivery", "weekdays": ["sun"], "start": "10:00", "end": "12:00", "capacity": 4, "weeks": 7}
+{"kind": "collection", "weekdays": ["mon", "tue", "wed", "thu", "fri", "sat"], "start": "08:00", "end": "10:00", "capacity": 12, "weeks": 7}
+{"kind": "collection", "weekdays": ["mon", "tue", "wed", "thu", "fri", "sat"], "start": "10:00", "end": "12:00", "capacity": 12, "weeks": 7}
+{"kind": "collection", "weekdays": ["mon", "tue", "wed", "thu", "fri", "sat"], "start": "14:00", "end": "16:00", "capacity": 12, "weeks": 7}
+{"kind": "collection", "weekdays": ["sun"], "start": "08:00", "end": "10:00", "capacity": 8, "weeks": 7}
+{"kind": "collection", "weekdays": ["sun"], "start": "10:00", "end": "12:00", "capacity": 8, "weeks": 7}

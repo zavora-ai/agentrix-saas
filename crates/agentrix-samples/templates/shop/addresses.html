@@ -1,0 +1,45 @@
+{% extends shell.layout %}
+{% import "shop/parts.html" as p %}
+{% block styles %}{{ super() }}{{ p.styles(shell) }}{% endblock %}
+{% block main %}
+<div class="shop">
+  <p class="k-crumb"><a href="/account">Your account</a> · Addresses</p>
+  <h1>Addresses</h1>
+  {% if saved %}<p class="k-note ok" role="status">{{ saved }}</p>{% endif %}
+  {% if error %}<p class="k-note risk" role="alert">{{ error }}</p>{% endif %}
+  <div class="k-card">
+    <h2>Saved</h2>
+    {% if list %}
+    <ul class="k-list">
+      {% for a in list %}
+      <li><span><b>{{ a.recipient }}</b>{% if a.phone %} · {{ a.phone }}{% endif %}<br>{{ a.place }} · {{ a.zone }}{% if a.notes %}<br>{{ a.notes }}{% endif %}</span>
+        <form method="post" action="/account/addresses"><input type="hidden" name="action" value="remove"><input type="hidden" name="id" value="{{ a.id }}"><button class="k-btn ghost sm" type="submit">Remove</button></form></li>
+      {% endfor %}
+    </ul>
+    {% else %}
+    <p>No saved addresses yet. Save one below and checkout fills it in.</p>
+    {% endif %}
+  </div>
+  <form class="k-card k-form" method="post" action="/account/addresses">
+    <h2>Add an address</h2>
+    <input type="hidden" name="action" value="add">
+    <label class="k-field">Who receives it
+      <input name="recipient" value="{{ f.recipient }}" maxlength="80" placeholder="Amina" required>
+    </label>
+    <label class="k-field">Their phone (optional)
+      <input name="phone" type="tel" value="{{ f.phone }}" maxlength="24">
+    </label>
+    <label class="k-field">Area
+      <select name="area" required>{% for a in areas %}<option value="{{ a.area }}"{% if a.checked %} selected{% endif %}>{{ a.label }}</option>{% endfor %}</select>
+      <small>{{ short }} delivers to {{ covered }}.</small>
+    </label>
+    <label class="k-field">House, street or building
+      <input name="details" value="{{ f.details }}" maxlength="160">
+    </label>
+    <label class="k-field">Notes for the rider (optional)
+      <input name="notes" value="{{ f.notes }}" maxlength="240" placeholder="Blue gate, ask for Amina">
+    </label>
+    <button class="k-btn wide" type="submit">Save address</button>
+  </form>
+</div>
+{% endblock %}

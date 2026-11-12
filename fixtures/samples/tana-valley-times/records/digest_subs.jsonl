@@ -1,0 +1,27 @@
+{"sub_id": "dg-halima", "email": "halima@example.com", "topics": ["Transport", "Council"], "state": "confirmed", "created_at": "d-300 08:00", "confirmed_at": "d-300 08:04"}
+{"sub_id": "dg-r01", "email": "reader11@example.com", "topics": ["Council", "Transport"], "state": "confirmed", "created_at": "d-19 07:30", "confirmed_at": "d-19 07:41"}
+{"sub_id": "dg-r02", "email": "reader12@example.com", "topics": ["Farming and weather"], "state": "confirmed", "created_at": "d-28 07:30", "confirmed_at": "d-28 07:41"}
+{"sub_id": "dg-r03", "email": "reader13@example.com", "topics": ["Business"], "state": "confirmed", "created_at": "d-37 07:30", "confirmed_at": "d-37 07:41"}
+{"sub_id": "dg-r04", "email": "reader14@example.com", "topics": ["Community"], "state": "confirmed", "created_at": "d-46 07:30", "confirmed_at": "d-46 07:41"}
+{"sub_id": "dg-r05", "email": "reader15@example.com", "topics": ["Transport", "Business"], "state": "confirmed", "created_at": "d-55 07:30", "confirmed_at": "d-55 07:41"}
+{"sub_id": "dg-r06", "email": "reader16@example.com", "topics": ["Farming and weather", "Business"], "state": "confirmed", "created_at": "d-64 07:30", "confirmed_at": "d-64 07:41"}
+{"sub_id": "dg-r07", "email": "reader17@example.com", "topics": [], "state": "confirmed", "created_at": "d-73 07:30", "confirmed_at": "d-73 07:41"}
+{"sub_id": "dg-r08", "email": "reader18@example.com", "topics": ["Transport"], "state": "confirmed", "created_at": "d-82 07:30", "confirmed_at": "d-82 07:41"}
+{"sub_id": "dg-r09", "email": "reader19@example.com", "topics": ["Council", "Transport"], "state": "confirmed", "created_at": "d-91 07:30", "confirmed_at": "d-91 07:41"}
+{"sub_id": "dg-r10", "email": "reader20@example.com", "topics": ["Farming and weather"], "state": "confirmed", "created_at": "d-100 07:30", "confirmed_at": "d-100 07:41"}
+{"sub_id": "dg-r11", "email": "reader21@example.com", "topics": ["Business"], "state": "confirmed", "created_at": "d-109 07:30", "confirmed_at": "d-109 07:41"}
+{"sub_id": "dg-r12", "email": "reader22@example.com", "topics": ["Community"], "state": "confirmed", "created_at": "d-118 07:30", "confirmed_at": "d-118 07:41"}
+{"sub_id": "dg-r13", "email": "reader23@example.com", "topics": ["Transport", "Business"], "state": "confirmed", "created_at": "d-127 07:30", "confirmed_at": "d-127 07:41"}
+{"sub_id": "dg-r14", "email": "reader24@example.com", "topics": ["Farming and weather", "Business"], "state": "confirmed", "created_at": "d-136 07:30", "confirmed_at": "d-136 07:41"}
+{"sub_id": "dg-r15", "email": "reader25@example.com", "topics": [], "state": "confirmed", "created_at": "d-145 07:30", "confirmed_at": "d-145 07:41"}
+{"sub_id": "dg-r16", "email": "reader26@example.com", "topics": ["Transport"], "state": "confirmed", "created_at": "d-154 07:30", "confirmed_at": "d-154 07:41"}
+{"sub_id": "dg-r17", "email": "reader27@example.com", "topics": ["Council", "Transport"], "state": "confirmed", "created_at": "d-163 07:30", "confirmed_at": "d-163 07:41"}
+{"sub_id": "dg-r18", "email": "reader28@example.com", "topics": ["Farming and weather"], "state": "confirmed", "created_at": "d-172 07:30", "confirmed_at": "d-172 07:41"}
+{"sub_id": "dg-r19", "email": "reader29@example.com", "topics": ["Business"], "state": "confirmed", "created_at": "d-181 07:30", "confirmed_at": "d-181 07:41"}
+{"sub_id": "dg-r20", "email": "reader30@example.com", "topics": ["Community"], "state": "confirmed", "created_at": "d-190 07:30", "confirmed_at": "d-190 07:41"}
+{"sub_id": "dg-r21", "email": "reader31@example.com", "topics": ["Transport", "Business"], "state": "confirmed", "created_at": "d-199 07:30", "confirmed_at": "d-199 07:41"}
+{"sub_id": "dg-r22", "email": "reader32@example.com", "topics": ["Farming and weather", "Business"], "state": "confirmed", "created_at": "d-208 07:30", "confirmed_at": "d-208 07:41"}
+{"sub_id": "dg-r23", "email": "reader33@example.com", "topics": [], "state": "confirmed", "created_at": "d-217 07:30", "confirmed_at": "d-217 07:41"}
+{"sub_id": "dg-r24", "email": "reader34@example.com", "topics": ["Transport"], "state": "confirmed", "created_at": "d-226 07:30", "confirmed_at": "d-226 07:41"}
+{"sub_id": "dg-p01", "email": "reader38@example.com", "topics": ["Community"], "state": "pending", "created_at": "d-1 20:15"}
+{"sub_id": "dg-p02", "email": "reader39@example.com", "topics": ["Farming and weather"], "state": "pending", "created_at": "m-140"}

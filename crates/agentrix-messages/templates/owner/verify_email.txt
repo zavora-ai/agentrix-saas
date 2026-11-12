@@ -1,0 +1,16 @@
+{% block subject %}Confirm your email for Agentrix{% endblock %}
+{% block preheader %}One code. It works for {{ minutes }} minutes.{% endblock %}
+{% block body %}
+# Welcome to Agentrix
+{% if person.name %}
+{{ person.name }}, type this code where you made your account, to confirm this email is yours:
+{% else %}
+Type this code where you made your account, to confirm this email is yours:
+{% endif %}
+
+::code {{ code }}
+
+It works for {{ minutes }} minutes. Morning briefs, receipts and security alerts will come here.
+
+Didn't sign up? Ignore this email. The account can't use this address without the code.
+{% endblock %}

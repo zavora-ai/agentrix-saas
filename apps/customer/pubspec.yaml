@@ -1,0 +1,22 @@
+name: agentrix_customer
+description: A sample site's own app for its customers (W13), one codebase with Kilele, Classy and Tana flavours.
+publish_to: 'none'
+version: 0.1.0+1
+resolution: workspace
+environment:
+  sdk: ^3.11.0
+dependencies:
+  flutter:
+    sdk: flutter
+  agentrix_kit:
+    path: ../packages/agentrix_kit
+  agentrix_api:
+    path: ../packages/agentrix_api
+  flutter_secure_storage: ^9.2.2
+  url_launcher: ^6.3.0
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+flutter:
+  uses-material-design: true

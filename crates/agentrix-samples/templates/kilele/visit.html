@@ -1,0 +1,31 @@
+{% extends "kilele/layout.html" %}
+{% block main %}
+<section class="b-pagehead" id="top">
+  <h1>Visit</h1>
+  <p>Hours, how to find {{ shell.site.name }}, parking and where Kilele delivers.</p>
+</section>
+
+<section class="b-section" id="visit">
+  <h2 class="sr-only">Hours, find us and delivery</h2>
+  <div class="visit">
+    <div id="visit-hours"><b>Hours</b>
+      <table class="hours"><tbody>{% for d, t in hours.rows %}<tr{% if d == today %} class="today"{% endif %}><td>{{ d }}</td><td>{{ t }}</td></tr>{% endfor %}</tbody></table>
+      <span class="b-pill{% if hours.open %} ok{% endif %}">{{ hours.now }}</span>
+      <span class="small">{{ collection }}</span>
+    </div>
+    <div id="visit-where"><b>Find us</b>{{ address }}<br>{{ parking }}
+      <span class="small">This is a sample business, so there is no shop at this address.</span>
+    </div>
+    <div id="visit-delivery"><b>Delivery</b>{% for z in zones %}{{ z.areas | join(" & ") }} · {{ z.fee_minor | ksh }}{% if not loop.last %}<br>{% endif %}{% endfor %}<br>{{ delivery_days }}
+      <span class="small">{% for z in zones %}{{ z.note }} {% endfor %}<a href="/delivery">Delivery times and how full they are</a></span>
+    </div>
+  </div>
+</section>
+
+<section class="b-section" id="visit-orders">
+  <h2>Collecting an order</h2>
+  <p class="sub">{{ confirmations }}</p>
+  <p class="sub">{{ changes }}</p>
+  <form class="track-form" action="/orders" method="get"><label class="sr-only" for="ordno">Order number</label><input id="ordno" name="number" placeholder="Order number, e.g. KB-1042" autocomplete="off"><button class="b-btn" type="submit">Track</button></form>
+</section>
+{% endblock %}

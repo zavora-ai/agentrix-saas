@@ -1,0 +1,217 @@
+{
+  "site": "classy-perfumes-sample",
+  "sample": true,
+  "look": "Warm amber, deep brown and soft gold, dark velvet studio backdrop, quiet and expensive, like the shop's concept renders",
+  "images": [
+    {
+      "slot": "hero",
+      "kind": "hero",
+      "seed": 2101,
+      "brief": "Three glass perfume bottles with blank labels of different heights on a dark stone shelf, warm side light, soft shadows, a sprig of dried flowers beside them",
+      "context": "Home page hero for Classy Perfumes, a sample perfume shop in Westlands, Nairobi"
+    },
+    {
+      "slot": "section:gifts",
+      "kind": "section",
+      "seed": 2102,
+      "brief": "A small perfume bottle and a lit candle in a kraft gift box with tissue paper and a plain card tied with ribbon, on a dark wooden table",
+      "context": "Gifts section of Classy Perfumes, a sample perfume shop: free gift wrap with a handwritten card"
+    },
+    {
+      "slot": "product:vanilla-gift-set",
+      "kind": "product",
+      "seed": 2111,
+      "brief": "A gift set: a small 30 ml glass perfume bottle with a cream blank label beside a vanilla-coloured candle in a glass jar, with a few vanilla pods",
+      "context": "Product picture for Vanilla Gift Set (candle and 30 ml), KSh 4,500"
+    },
+    {
+      "slot": "product:citrus-dawn",
+      "kind": "product",
+      "seed": 2112,
+      "brief": "A clear 50 ml glass perfume bottle with pale golden liquid and a blank label, a few slices of fresh orange and lemon beside it, bright morning light",
+      "context": "Product picture for Citrus Dawn, 50 ml, KSh 4,900, a fresh citrus scent"
+    },
+    {
+      "slot": "product:amber-noir",
+      "kind": "product",
+      "seed": 2113,
+      "brief": "A 50 ml amber glass perfume bottle with dark liquid, a black cap and a blank cream label, on a dark brown velvet surface",
+      "context": "Product picture for Amber Noir, 50 ml, KSh 6,400, an amber scent"
+    },
+    {
+      "slot": "product:rain-oud",
+      "kind": "product",
+      "seed": 2114,
+      "brief": "A smoky grey 30 ml glass perfume bottle with a blank label on wet dark stone, a few drops of rain on the glass, a piece of agarwood beside it",
+      "context": "Product picture for Rain Oud, 30 ml, KSh 5,800, a woody limited run"
+    },
+    {
+      "slot": "post:amber-in-cold-air",
+      "kind": "post",
+      "seed": 2121,
+      "brief": "An amber perfume bottle on a window sill on a cold misty morning, condensation on the window, a wool scarf folded beside it",
+      "context": "Journal post picture: How amber wears in cold air"
+    },
+    {
+      "slot": "post:long-rains",
+      "kind": "post",
+      "seed": 2122,
+      "brief": "Raindrops on a window with green leaves outside, a small perfume bottle and an open notebook on the sill, soft grey daylight",
+      "context": "Journal post picture: Scents for the long rains"
+    },
+    {
+      "slot": "product:kahawa-crema",
+      "kind": "product",
+      "seed": 2131,
+      "brief": "A 50 ml glass perfume bottle with honey-coloured liquid, a gold cap and a blank cream label, a few roasted coffee beans and a vanilla pod beside it on dark linen",
+      "context": "Product picture for Kahawa Crema: Roasted coffee softened with cream and vanilla bean."
+    },
+    {
+      "slot": "product:honey-baobab",
+      "kind": "product",
+      "seed": 2132,
+      "brief": "A 50 ml glass perfume bottle with honey-coloured liquid, a gold cap and a blank cream label, a piece of honeycomb and a cracked baobab pod beside it",
+      "context": "Product picture for Honey Baobab: Wild honey and tart baobab fruit with a little vanilla."
+    },
+    {
+      "slot": "product:cocoa-velvet",
+      "kind": "product",
+      "seed": 2133,
+      "brief": "A 50 ml glass perfume bottle with honey-coloured liquid, a gold cap and a blank cream label, a broken cacao pod and a sandalwood chip beside it on dark velvet",
+      "context": "Product picture for Cocoa Velvet: Dark cocoa and rich vanilla over sandalwood."
+    },
+    {
+      "slot": "product:marula-milk-set",
+      "kind": "product",
+      "seed": 2134,
+      "brief": "An open kraft gift box holding a 30 ml glass perfume spray with a blank label and a matching white lotion tube, tissue paper and a plain card",
+      "context": "Product picture for Marula Milk Gift Set: A 30 ml spray of marula and coconut milk with a matching body lotion, gift-wrapped with a card."
+    },
+    {
+      "slot": "product:lime-market",
+      "kind": "product",
+      "seed": 2135,
+      "brief": "A clear 50 ml glass perfume bottle with pale golden liquid, a white cap and a blank label, halved limes and a knob of fresh ginger beside it",
+      "context": "Product picture for Lime Market: Lime zest and fresh ginger with a dry vetiver base."
+    },
+    {
+      "slot": "product:tangerine-kiosk",
+      "kind": "product",
+      "seed": 2136,
+      "brief": "A clear 50 ml glass perfume bottle with pale golden liquid, a white cap and a blank label, a peeled tangerine and a sprig of green basil beside it",
+      "context": "Product picture for Tangerine Kiosk: Tangerine and green basil over white tea."
+    },
+    {
+      "slot": "product:neroli-terrace",
+      "kind": "product",
+      "seed": 2137,
+      "brief": "A clear 50 ml glass perfume bottle with pale golden liquid, a white cap and a blank label, a sprig of orange blossom on a sunny stone terrace ledge beside it",
+      "context": "Product picture for Neroli Terrace: Orange blossom and petitgrain with a salty edge."
+    },
+    {
+      "slot": "product:grapefruit-run",
+      "kind": "product",
+      "seed": 2138,
+      "brief": "A clear 50 ml glass perfume bottle with pale golden liquid, a white cap and a blank label, a halved pink grapefruit and a few mint leaves beside it",
+      "context": "Product picture for Grapefruit Run: Pink grapefruit and mint over light cedar. Good after the gym."
+    },
+    {
+      "slot": "product:citrus-travel-duo",
+      "kind": "product",
+      "seed": 2139,
+      "brief": "Two small 15 ml glass travel sprays with blank labels in an open kraft gift box with tissue paper and a plain card",
+      "context": "Product picture for Citrus Travel Duo: Citrus Dawn and Lime Market in two 15 ml travel sprays, gift-wrapped with a card."
+    },
+    {
+      "slot": "product:amber-lantern",
+      "kind": "product",
+      "seed": 2140,
+      "brief": "A 50 ml amber glass perfume bottle with dark liquid, a black cap and a blank cream label, a few green cardamom pods beside it in warm lamp light",
+      "context": "Product picture for Amber Lantern: A softer amber with cardamom and a little vanilla."
+    },
+    {
+      "slot": "product:spice-route",
+      "kind": "product",
+      "seed": 2141,
+      "brief": "A 50 ml amber glass perfume bottle with dark liquid, a black cap and a blank cream label, cinnamon sticks and whole cloves beside it on a dark wooden tray",
+      "context": "Product picture for Spice Route: Amber and labdanum with clove and cinnamon."
+    },
+    {
+      "slot": "product:myrrh-night",
+      "kind": "product",
+      "seed": 2142,
+      "brief": "A 50 ml amber glass perfume bottle with dark liquid, a black cap and a blank cream label, a few pieces of myrrh resin beside it at night, low warm light",
+      "context": "Product picture for Myrrh Night: Myrrh and benzoin warmed with vanilla."
+    },
+    {
+      "slot": "product:amber-evening-set",
+      "kind": "product",
+      "seed": 2143,
+      "brief": "An amber glass perfume bottle with a blank label and an amber candle in a glass jar, in an open kraft gift box with a plain card",
+      "context": "Product picture for Amber Evening Set: Amber Noir 50 ml with an amber candle, gift-wrapped with a card."
+    },
+    {
+      "slot": "product:highland-cedar",
+      "kind": "product",
+      "seed": 2144,
+      "brief": "A smoky grey 50 ml glass perfume bottle with a wooden cap and a blank label, a cedar sprig and juniper berries beside it on a slate surface",
+      "context": "Product picture for Highland Cedar: Cedar and juniper with black pepper."
+    },
+    {
+      "slot": "product:karura-moss",
+      "kind": "product",
+      "seed": 2145,
+      "brief": "A smoky grey 50 ml glass perfume bottle with a wooden cap and a blank label, a patch of green moss and wet leaves beside it",
+      "context": "Product picture for Karura Moss: Oakmoss and wet leaves over vetiver."
+    },
+    {
+      "slot": "product:vetiver-ember",
+      "kind": "product",
+      "seed": 2146,
+      "brief": "A smoky grey 50 ml glass perfume bottle with a wooden cap and a blank label, a bundle of dried vetiver roots and a piece of charred birch beside it",
+      "context": "Product picture for Vetiver Ember: Vetiver and smoked birch with soft leather."
+    },
+    {
+      "slot": "product:sandal-shore",
+      "kind": "product",
+      "seed": 2147,
+      "brief": "A smoky grey 50 ml glass perfume bottle with a wooden cap and a blank label, a piece of pale driftwood and coarse sea salt beside it on sand-coloured stone",
+      "context": "Product picture for Sandal Shore: Creamy sandalwood with sea salt and driftwood."
+    },
+    {
+      "slot": "product:jacaranda-walk",
+      "kind": "product",
+      "seed": 2148,
+      "brief": "A pale blush-pink 50 ml glass perfume bottle with a soft gold cap and a blank label, a few fallen purple jacaranda flowers beside it",
+      "context": "Product picture for Jacaranda Walk: Violet and iris, soft and powdery."
+    },
+    {
+      "slot": "product:frangipani-coast",
+      "kind": "product",
+      "seed": 2149,
+      "brief": "A pale blush-pink 50 ml glass perfume bottle with a soft gold cap and a blank label, a white frangipani flower and a halved coconut beside it",
+      "context": "Product picture for Frangipani Coast: Frangipani and coconut over white musk."
+    },
+    {
+      "slot": "product:highland-rose",
+      "kind": "product",
+      "seed": 2150,
+      "brief": "A pale blush-pink 50 ml glass perfume bottle with a soft gold cap and a blank label, a single deep pink rose and a few pink peppercorns beside it",
+      "context": "Product picture for Highland Rose: Rose with pink pepper and patchouli."
+    },
+    {
+      "slot": "product:tuberose-night",
+      "kind": "product",
+      "seed": 2151,
+      "brief": "A pale blush-pink 50 ml glass perfume bottle with a soft gold cap and a blank label, a stem of white tuberose and jasmine flowers beside it in low evening light",
+      "context": "Product picture for Tuberose Night: Tuberose and jasmine with vanilla. Heady."
+    },
+    {
+      "slot": "product:floral-discovery-set",
+      "kind": "product",
+      "seed": 2152,
+      "brief": "Three small 10 ml glass perfume sprays in pale pink, white and violet with blank labels, in an open kraft gift box with a plain card",
+      "context": "Product picture for Floral Discovery Set: Jacaranda Walk, Frangipani Coast and Highland Rose in three 10 ml sprays, gift-wrapped with a card."
+    }
+  ]
+}

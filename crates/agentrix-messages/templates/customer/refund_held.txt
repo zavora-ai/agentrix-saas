@@ -1,0 +1,17 @@
+{% block subject %}{{ site.owner }} will decide on your refund for {{ order.number }}{% endblock %}
+{% block preheader %}You'll hear by {{ refund.decide_by }}. Nothing has been refunded yet.{% endblock %}
+{% block body %}
+# {{ site.owner }} will decide
+You asked for {{ refund.amount|money(refund.currency) }} back for {{ refund.what }}. That's more than the Cashier can refund without {{ site.owner }}, so the request is with {{ site.owner }} now.
+
+::fact Asked for | {{ refund.amount|money(refund.currency) }}
+::fact Answer by | {{ refund.decide_by }}
+::fact Refunded so far | Nothing
+
+You'll get an email with the answer. If {{ site.owner }} hasn't answered by then, you'll get one saying so, and what happens next.
+
+::button See your order | {{ order.url }}
+{% endblock %}
+{% block chat %}
+{{ site.name }}: your refund request for {{ order.number }} ({{ refund.amount|money(refund.currency) }}) is with {{ site.owner }}. You'll hear by {{ refund.decide_by }}. Nothing has been refunded yet.
+{% endblock %}

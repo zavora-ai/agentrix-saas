@@ -1,0 +1,461 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cake Studio</title>
+<meta name="description" content="Concept: a visitor designs a celebration cake with the bakery's Cakes WebAgent. Models compose, rules price, the owner confirms.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Manrope:wght@600;700;800&family=Fraunces:opsz,wght@9..144,600;9..144,800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../styles.css">
+<link rel="stylesheet" href="experience.css">
+<style>
+  .bake {
+    --cream: #fbf4ea; --cream-2: #f5e9d8; --brown: #3b2416; --brown-2: #6b4b36; --terra: #b4541f; --terra-2: #8f3f13; --line-b: #ecdcc6;
+    --serif: "Fraunces", Georgia, serif;
+    --wa-bg: #fffdf9; --wa-soft: #fbf4ea; --wa-ink: #3b2416; --wa-ink-2: #6b4b36; --wa-line: #ecdcc6;
+    --wa-accent: #8e3b46; --wa-accent-2: #b4541f; --wa-on-accent: #fff; --wa-display: "Fraunces", Georgia, serif;
+    background: var(--cream); color: var(--brown); font-family: var(--font-text);
+  }
+  .b-head { display: flex; align-items: center; gap: 14px; padding: 12px clamp(14px, 3vw, 28px); border-bottom: 1px solid var(--line-b); flex-wrap: wrap; }
+  .b-logo { display: flex; align-items: center; gap: 10px; font: 800 20px/1 var(--serif); color: var(--brown); text-decoration: none; }
+  .b-logo svg { width: 26px; height: 26px; color: var(--terra); }
+  .crumb { font: 600 13px/1 var(--font-text); color: var(--brown-2); }
+  .crumb b { color: var(--brown); }
+  .b-head .right { margin-left: auto; display: flex; gap: 8px; align-items: center; }
+  .studio { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); gap: 0; min-height: 720px; }
+  .talk { display: flex; flex-direction: column; border-right: 1px solid var(--line-b); background: #fffdf9; min-width: 0; align-self: start; position: sticky; top: 58px; height: min(820px, calc(100vh - 70px)); }
+  .talk-head { display: flex; align-items: center; gap: 10px; padding: 14px 16px; border-bottom: 1px solid var(--line-b); }
+  .talk-head .who { flex: 1; min-width: 0; }
+  .talk-head b { display: block; font: 800 16px/1.2 var(--serif); }
+  .talk-head span { font-size: 12px; color: var(--brown-2); }
+  .talk-body { flex: 1; min-height: 0; overflow: auto; padding: 0 16px 8px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; padding: 10px 16px 0; }
+  .chip-opt { border: 1.5px solid var(--line-b); background: #fff; color: var(--brown); border-radius: 999px; padding: 8px 12px; font: 600 13px/1 var(--font-text); cursor: pointer; display: inline-flex; gap: 6px; align-items: center; }
+  .chip-opt:hover, .chip-opt:focus-visible { border-color: var(--wa-accent); }
+  .chip-opt small { font-weight: 700; color: var(--brown-2); }
+  .chip-opt .sw { width: 12px; height: 12px; border-radius: 50%; border: 1px solid rgba(0,0,0,.12); }
+  .chip-opt[disabled] { opacity: .45; cursor: not-allowed; text-decoration: line-through; }
+  .talk-foot { border-top: 1px solid var(--line-b); padding-bottom: 12px; }
+  .talk-foot .wa-disclose { padding: 8px 16px 0; }
+  .play { display: flex; align-items: center; gap: 8px; margin: 12px 16px 0; padding: 10px 12px; border-radius: 12px; background: var(--cream-2); font-size: 13px; color: var(--brown-2); flex-wrap: wrap; }
+  .play button { margin-left: auto; }
+
+  .cake-side { padding: clamp(14px, 2.5vw, 24px); display: grid; gap: 14px; align-content: start; min-width: 0; }
+  .cake-card { background: #fff; border: 1px solid var(--line-b); border-radius: 22px; overflow: hidden; }
+  .cake-stage { position: relative; background: radial-gradient(100% 80% at 50% 0%, #fff7ec, #f6e7d2); padding: 16px 12px 6px; }
+  .cake-stage svg { width: 100%; max-width: 380px; height: auto; margin: 0 auto; }
+  .cake-stage svg * { transition: fill .35s var(--ease), opacity .35s var(--ease), transform .35s var(--ease); }
+  .sketch-tag { position: absolute; left: 12px; top: 12px; display: inline-flex; gap: 6px; align-items: center; padding: 5px 9px; border-radius: 999px; background: rgba(255,255,255,.92); border: 1px solid var(--line-b); font: 700 11px/1 var(--font-text); color: var(--brown-2); }
+  .cake-name { padding: 14px 16px 4px; display: flex; justify-content: space-between; gap: 10px; align-items: baseline; flex-wrap: wrap; }
+  .cake-name h2 { font: 800 22px/1.15 var(--serif); color: var(--brown); }
+  .cake-name .total { font: 800 22px/1 var(--serif); color: var(--brown); }
+  .spec { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0; padding: 6px 16px 14px; }
+  .spec div { padding: 8px 0; border-bottom: 1px dashed var(--line-b); font-size: 13.5px; color: var(--brown); min-width: 0; }
+  .spec div:nth-child(odd) { padding-right: 10px; }
+  .spec i { display: block; font-style: normal; font: 700 10.5px/1.3 var(--font-text); letter-spacing: .06em; text-transform: uppercase; color: var(--brown-2); }
+  .spec div.unset { color: #b9a58d; }
+  .price-card { background: #fff; border: 1px solid var(--line-b); border-radius: 18px; padding: 14px 16px; }
+  .price-card h3 { font: 800 16px/1.2 var(--serif); color: var(--brown); display: flex; justify-content: space-between; gap: 8px; align-items: baseline; }
+  .lines { list-style: none; padding: 0; margin: 10px 0 0; display: grid; gap: 6px; font-size: 13.5px; }
+  .lines li { display: flex; justify-content: space-between; gap: 10px; color: var(--brown-2); }
+  .lines li.tot { border-top: 1px solid var(--line-b); padding-top: 8px; margin-top: 2px; font: 800 15px/1.2 var(--font-text); color: var(--brown); }
+  .lines li .rule { font: 500 11px/1.2 var(--font-mono); color: #a08b72; margin-left: 6px; }
+  .rules-note { margin-top: 10px; font-size: 12px; color: var(--brown-2); display: flex; gap: 8px; align-items: flex-start; }
+  .rules-note .wa-ai { flex: none; }
+  .flags { display: grid; gap: 8px; }
+  .flag { display: flex; gap: 10px; align-items: flex-start; padding: 10px 12px; border-radius: 14px; font-size: 13px; line-height: 1.45; background: #fff4dd; color: #6b4300; border: 1px solid #f2dcae; animation: rise .3s var(--ease) both; }
+  .flag.ok { background: #e9f3e7; color: #24561f; border-color: #cfe3c9; }
+  .flag b { color: inherit; }
+  .cake-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+  .b-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 46px; padding: 0 18px; border-radius: 999px; border: 0; background: var(--terra); color: #fff; font: 700 14px/1 var(--font-text); cursor: pointer; text-decoration: none; }
+  .b-btn:hover { background: var(--terra-2); color: #fff; }
+  .b-btn.ghost { background: transparent; color: var(--brown); border: 1.5px solid var(--brown); }
+  .b-btn[disabled] { opacity: .5; cursor: not-allowed; }
+  .b-btn svg { width: 17px; height: 17px; }
+
+  /* Owner's decision card (what Wanjiru sees) */
+  .owner-card { border-radius: 18px; border: 1px solid var(--line); background: #fff; padding: 14px; display: grid; gap: 10px; }
+  .owner-card .top { display: flex; align-items: center; gap: 10px; }
+  .owner-card .mini-cake { width: 64px; height: 56px; border-radius: 12px; background: #f6e7d2; display: grid; place-items: center; overflow: hidden; flex: none; }
+  .owner-card .mini-cake svg { width: 60px; height: auto; }
+  .owner-card .row2 { display: flex; gap: 6px; flex-wrap: wrap; }
+  .owner-card.live { box-shadow: 0 0 0 3px var(--coral-50), var(--shadow-2); border-color: #f5c6d1; }
+
+  @media (max-width: 900px) {
+    .studio { grid-template-columns: 1fr; }
+    .talk { border-right: 0; border-bottom: 1px solid var(--line-b); position: static; height: auto; }
+    .talk-body { max-height: 420px; flex: none; }
+  }
+  @media (max-width: 480px) {
+    .crumb { display: none; }
+    .b-head .right .wa-ai { display: none; }
+    .cake-actions .b-btn { flex: 1 1 100%; }
+    .spec { grid-template-columns: 1fr; }
+    .spec div:nth-child(odd) { padding-right: 0; }
+  }
+</style>
+</head>
+<body>
+<header class="conceptbar">
+  <a class="logo" href="index.html"><span class="mark" aria-hidden="true"></span>Agentrix</a>
+  <nav aria-label="Experience concepts">
+    <a href="index.html">Experience</a>
+    <a href="nav-agents.html">Menu as WebAgents</a>
+    <a href="creator.html" aria-current="page">Make it with me</a>
+    <a href="search.html">Agentic search</a>
+    <a href="artifact.html">Artifacts</a>
+    <a href="presentation.html">Presentations</a>
+    <a href="news.html">News publisher</a>
+    <a href="../index.html">All concepts</a>
+  </nav>
+  <span class="concept-label">Concept · illustrative data</span>
+</header>
+
+<main class="wrap">
+  <div class="xp-head">
+    <span class="eyebrow">Experience 02 · Make it with me</span>
+    <h1>Design the cake together.</h1>
+    <p class="lead">The Cakes WebAgent turns "she loves strawberries and the forest" into a cake Kilele actually makes. It asks one thing at a time and says plainly what isn't offered. The sketch is composed from the bakery's own options and the price comes from its price list, so the model never sets a number. Wanjiru confirms every order.</p>
+    <p class="xp-tryline">Try: <b>Play Amina's 7th</b>, or pick options yourself, or type something like "make it pink with flowers for 30 people".</p>
+  </div>
+
+  <div class="browser">
+    <div class="browser-bar"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="url"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>kilele-bakery.example/cakes/studio</span></div>
+    <div class="bake frame-body">
+      <div class="b-head">
+        <a class="b-logo" href="nav-agents.html"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 28V8"/><path d="M16 12c-3-1-5-3-5-6 3 0 5 2 5 6zM16 12c3-1 5-3 5-6-3 0-5 2-5 6zM16 18c-3-1-5-3-5-6 3 0 5 2 5 6zM16 18c3-1 5-3 5-6-3 0-5 2-5 6zM16 24c-3-1-5-3-5-6 3 0 5 2 5 6zM16 24c3-1 5-3 5-6-3 0-5 2-5 6z"/></svg>Kilele Bakery</a>
+        <span class="crumb">Cakes › <b>Cake studio</b></span>
+        <div class="right"><span class="wa-ai">AI WebAgent · Wanjiru confirms</span></div>
+      </div>
+
+      <div class="studio">
+        <section class="talk" aria-label="Conversation with Cakes">
+          <div class="talk-head"><span class="wa-mark" id="mark" data-state="listening" style="--c:#8e3b46"></span><div class="who"><b>Cakes</b><span>WebAgent · designs from Kilele's real options</span></div><span class="wa-ai">AI</span></div>
+          <div class="play" id="playBox"><span>New here? Watch a 40-second example.</span><button class="b-btn" type="button" id="playBtn" style="min-height:36px;padding:0 14px;font-size:13px">Play Amina's 7th</button></div>
+          <div class="talk-body" id="talkBody"><div class="wa-thread" id="thread"></div></div>
+          <div class="talk-foot">
+            <div class="chips" id="chips" aria-label="Options"></div>
+            <form class="wa-input" id="form"><label class="sr-only" for="q">Describe your cake</label><input id="q" autocomplete="off" placeholder="Describe it in your own words…"><button class="wa-send" type="submit" aria-label="Send"></button></form>
+            <p class="wa-disclose">You're talking to AI. It offers only what Kilele makes, and never guesses prices, dates or allergens.</p>
+          </div>
+        </section>
+
+        <section class="cake-side" aria-label="Your cake">
+          <div class="cake-card">
+            <div class="cake-stage">
+              <span class="sketch-tag">Sketch, not a photo · Wanjiru bakes the real one</span>
+              <svg id="cake" viewBox="0 0 340 300" role="img" aria-label="Sketch of your cake"></svg>
+            </div>
+            <div class="cake-name"><h2 id="cakeTitle">Your cake</h2><span class="total" id="cakeTotal">KSh —</span></div>
+            <div class="spec" id="spec"></div>
+          </div>
+          <div class="flags" id="flags" aria-live="polite"></div>
+          <div class="price-card">
+            <h3>Price <span class="small" style="font:600 12px var(--font-text);color:var(--brown-2)">price list v14 · valid until Sat 14 Nov</span></h3>
+            <ul class="lines" id="lines"></ul>
+            <p class="rules-note"><span class="wa-ai">rules</span><span>Every line is a rule from Kilele's price list. The WebAgent picks options; it never sets or rounds a price.</span></p>
+          </div>
+          <div class="cake-actions">
+            <button class="b-btn" type="button" id="requestBtn" disabled>Request this cake</button>
+            <button class="b-btn ghost" type="button" id="shareBtn" disabled><span id="shareIco"></span>Save &amp; share the design</button>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <section class="notes" aria-label="Design notes">
+    <div class="card">
+      <h3>Models compose, rules price</h3>
+      <p>The model's only job is mapping words to the options the owner approved ("forest" → green ombré; "strawberries" → fresh berries) and saying honestly what isn't offered. The configurable-product schema holds the options, constraints, lead times and price deltas. Totals come from rules in under 100 ms, as a quote pinned to the release.</p>
+      <ol class="budget">
+        <li><span class="t">option</span><span>Sketch and total recompute from rules</span><span class="m">no model</span></li>
+        <li><span class="t">words</span><span>Free text mapped to approved options</span><span class="m model">model</span></li>
+        <li><span class="t">date</span><span>Availability from the bakery calendar</span><span class="m">no model</span></li>
+      </ol>
+    </div>
+    <div class="card">
+      <h3>What Wanjiru sees</h3>
+      <div class="owner-card" id="ownerCard">
+        <div class="top"><span class="mini-cake" id="miniCake"></span><div><b style="font:800 15px/1.2 var(--font-display);color:var(--indigo-900)">Cake request · <span id="oTotal">KSh —</span></b><div class="small muted" id="oLine">Waiting for a design</div></div></div>
+        <div class="row2"><span class="chip chip-info">Cakes WebAgent recommends: approve</span><span class="chip chip-ok">Low risk</span><span class="chip">Fits Saturday's capacity</span></div>
+        <div class="row" style="gap:8px"><button class="btn btn-primary btn-sm" type="button">Approve with passkey</button><button class="btn btn-sm" type="button">Edit</button><button class="btn btn-ghost btn-sm" type="button">Decline</button></div>
+      </div>
+      <p class="small muted" style="margin-top:8px">Arrives on WhatsApp as "A decision is waiting". Approving opens her passkey on her phone, or asks for an authenticator code if she has no passkey. The design link is attached.</p>
+    </div>
+    <div class="card">
+      <h3>The studio never</h3>
+      <ul class="never">
+        <li>Shows a generated photo as if it were the product</li>
+        <li>Offers an option, size or date the bakery hasn't approved</li>
+        <li>Guesses allergens or "safe for coeliacs"</li>
+        <li>Takes payment before Wanjiru confirms</li>
+        <li>Pushes upsells. Extras appear only when the visitor asks for them</li>
+      </ul>
+    </div>
+  </section>
+</main>
+
+<div class="sheet-back" id="shareSheet" role="dialog" aria-modal="true" aria-labelledby="shareTitle">
+  <div class="sheet">
+    <div class="sheet-head"><b id="shareTitle" style="font:800 18px/1.2 var(--font-display);color:var(--indigo-900)">Share your cake design</b><button class="icon-btn" type="button" data-close aria-label="Close"></button></div>
+    <div class="sheet-body">
+      <div class="linkbox"><span>kilele-bakery.example/a/cake-7hq2</span><button class="btn btn-sm" type="button" id="copyLink">Copy link</button></div>
+      <div class="opt-row"><div><b>Anyone with the link can view</b><span>Not searchable. You can switch the link off at any time.</span></div><button class="switch" role="switch" aria-checked="true" aria-label="Link sharing"></button></div>
+      <div class="opt-row"><div><b>They can comment and suggest changes</b><span>"Can we do lemon instead?" goes to the same Cakes WebAgent.</span></div><button class="switch" role="switch" aria-checked="true" aria-label="Allow comments"></button></div>
+      <div class="opt-row"><div><b>They can request it for you</b><span>Off by default. A request is still confirmed by Wanjiru.</span></div><button class="switch" role="switch" aria-checked="false" aria-label="Allow others to request"></button></div>
+      <div class="opt-row"><div><b>Let Kilele see this design</b><span>Needed to request it. Wanjiru sees the design, not this conversation.</span></div><button class="switch" role="switch" aria-checked="true" aria-label="Owner can see"></button></div>
+      <p class="small muted">Prices are pinned to price list v14 and hold until Sat 14 Nov. The link expires in 30 days unless you save it.</p>
+    </div>
+    <div class="sheet-foot"><a class="btn" href="artifact.html">See a shared plan with a group →</a><button class="btn btn-primary" type="button" data-close>Done</button></div>
+  </div>
+</div>
+
+<footer class="concept-foot"><div class="wrap row"><span><a href="nav-agents.html">← Menu as WebAgents</a> · <a href="search.html">Next: agentic search →</a></span><span>Concept screens with illustrative data. Kilele Bakery is fictional.</span></div></footer>
+
+<script src="experience.js"></script>
+<script>
+(() => {
+  const { I, esc, answer, visitor, presence, toast, wait } = XP;
+  const DESK = { name: "Cakes", color: "#8e3b46", icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h16M5 20v-6h14v6M7 14v-3h10v3"/><path d="M12 11V7"/><path d="M12 4.5c.8.8.8 1.7 0 2.5-.8-.8-.8-1.7 0-2.5z"/></svg>' };
+  const mark = document.getElementById("mark"); mark.innerHTML = DESK.icon;
+  document.querySelector(".wa-send").innerHTML = I.send;
+  document.getElementById("shareIco").innerHTML = I.share;
+  document.querySelectorAll("[data-close]").forEach(b => { if (b.classList.contains("icon-btn")) b.innerHTML = I.close; });
+
+  /* ---- The configurable product (owner-approved, from the signed release) ---- */
+  const P = {
+    occasion: { label: "Occasion", opts: { birthday: "Birthday", wedding: "Wedding", graduation: "Graduation", celebration: "Just because" } },
+    tiers: { label: "Size", opts: { 1: "1 tier · 12–15", 2: "2 tiers · 25–30", 3: "3 tiers · 40–45" }, price: { 1: 3800, 2: 4500, 3: 6900 } },
+    sponge: { label: "Sponge", opts: { vanilla: "Vanilla", chocolate: "Chocolate", redvelvet: "Red velvet", lemon: "Lemon" }, price: { chocolate: 200, redvelvet: 300 }, color: { vanilla: "#f3dcae", chocolate: "#6b3b22", redvelvet: "#9b2b33", lemon: "#f2e08a" } },
+    gf: { label: "Gluten-free", price: 600 },
+    colour: { label: "Buttercream", opts: { cream: "Cream", blush: "Blush pink", forest: "Forest green", cocoa: "Chocolate", sky: "Sky blue" }, color: { cream: "#fbf1de", blush: "#f2c3c8", forest: "#7fa07a", cocoa: "#7a4a2f", sky: "#b9d7ea" } },
+    finish: { label: "Finish", opts: { smooth: "Smooth", ombre: "Ombré", naked: "Naked", drip: "Chocolate drip" }, price: { drip: 400, ombre: 250 } },
+    deco: { label: "Decoration", opts: { berries: "Fresh berries", flowers: "Edible flowers", sprinkles: "Sprinkles", none: "None" }, price: { berries: 500, flowers: 700, sprinkles: 150 } },
+    message: { label: "Message" },
+    date: { label: "Date", opts: { sat: "Sat 14 Nov, 10:00", sun: "Sun 15 Nov, 10:00", tue: "Tue 17 Nov, 10:00" } },
+    handover: { label: "Pickup", opts: { pickup: "Pickup, Westlands", delivery: "Delivery, Kilimani" }, price: { delivery: 300 } },
+  };
+  const S = { occasion: null, tiers: null, sponge: null, gf: false, colour: null, finish: null, deco: null, message: "", date: null, handover: null };
+
+  /* ---- The sketch: composed from approved parts, no model ---- */
+  const svgEl = document.getElementById("cake");
+  function cakeSVG(s, small) {
+    const tiers = +(s.tiers || 1), col = P.colour.color[s.colour || "cream"], sp = P.sponge.color[s.sponge || "vanilla"];
+    const W = [230, 176, 124], H = [74, 62, 52]; let y = 262, out = "";
+    out += `<ellipse cx="170" cy="268" rx="150" ry="16" fill="#e8d6bd"/><ellipse cx="170" cy="264" rx="138" ry="12" fill="#fff" stroke="#e2cfb4"/>`;
+    const tops = [];
+    for (let i = 0; i < tiers; i++) {
+      const w = W[i], h = H[i], x = 170 - w / 2; y -= h;
+      let fill = col;
+      if (s.finish === "ombre") fill = `url(#ombre)`;
+      out += `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="10" fill="${fill}" stroke="rgba(59,36,22,.18)"/>`;
+      if (s.finish === "naked") {
+        for (let k = 1; k < 3; k++) out += `<rect x="${x + 4}" y="${y + k * h / 3 - 4}" width="${w - 8}" height="7" rx="3" fill="${sp}" opacity=".85"/>`;
+        out += `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="10" fill="#fff" opacity=".35"/>`;
+      }
+      tops.push({ x, y, w });
+    }
+    const top = tops[tops.length - 1];
+    if (s.finish === "drip") {
+      let d = `M${top.x + 4} ${top.y + 4}`; const n = 9;
+      for (let k = 0; k <= n; k++) { const px = top.x + 4 + k * (top.w - 8) / n; d += ` L${px} ${top.y + 6 + (k % 2 ? 22 : 12)} L${px + (top.w - 8) / n / 2} ${top.y + 8}`; }
+      out += `<path d="${d} L${top.x + top.w - 4} ${top.y + 4} Z" fill="#4a2615"/>`;
+      out += `<rect x="${top.x}" y="${top.y - 2}" width="${top.w}" height="10" rx="5" fill="#4a2615"/>`;
+    }
+    if (s.deco === "berries") {
+      const pts = [[-34, -6], [-12, -10], [10, -7], [30, -9], [-22, -14], [20, -15], [0, -17]];
+      pts.forEach(([dx, dy], k) => { out += `<circle cx="${170 + dx}" cy="${top.y + dy + 6}" r="${k % 3 ? 7 : 8}" fill="${k % 2 ? "#c2263a" : "#3b2a6b"}"/><circle cx="${170 + dx - 2}" cy="${top.y + dy + 3}" r="2" fill="#fff" opacity=".6"/>`; });
+      tops.slice(0, -1).forEach(t => { for (let k = 0; k < 5; k++) out += `<circle cx="${t.x + 18 + k * (t.w - 36) / 4}" cy="${t.y + 4}" r="5" fill="#c2263a"/>`; });
+    }
+    if (s.deco === "flowers") {
+      const fl = (cx, cy, c) => [0, 72, 144, 216, 288].map(a => `<circle cx="${cx + 6 * Math.cos(a * Math.PI / 180)}" cy="${cy + 6 * Math.sin(a * Math.PI / 180)}" r="5" fill="${c}"/>`).join("") + `<circle cx="${cx}" cy="${cy}" r="3.5" fill="#f2c14e"/>`;
+      out += fl(140, top.y - 2, "#f7f2f5") + fl(170, top.y - 8, "#e98aa0") + fl(198, top.y - 1, "#f7f2f5");
+      tops.slice(0, -1).forEach(t => { out += fl(t.x + 22, t.y + 8, "#e98aa0") + fl(t.x + t.w - 22, t.y + 8, "#f7f2f5"); });
+    }
+    if (s.deco === "sprinkles") {
+      const cs = ["#e05a6e", "#f2c14e", "#4aa3d8", "#6dbb6a", "#fff"];
+      tops.forEach(t => { for (let k = 0; k < 16; k++) { const px = t.x + 10 + ((k * 37) % (t.w - 20)), py = t.y + 10 + ((k * 23) % 40); out += `<rect x="${px}" y="${py}" width="7" height="2.6" rx="1.3" fill="${cs[k % 5]}" transform="rotate(${(k * 47) % 180} ${px} ${py})"/>`; } });
+    }
+    if (s.message && !small) {
+      const pw = Math.min(top.w - 14, 150), px = 170 - pw / 2, py = top.y + (tiers === 1 ? 26 : 20);
+      out += `<rect x="${px}" y="${py}" width="${pw}" height="22" rx="11" fill="#fffaf0" stroke="#d9b98f"/><text x="170" y="${py + 15}" text-anchor="middle" font-family="Fraunces, Georgia, serif" font-size="11" font-weight="700" fill="#3b2416">${esc(s.message.length > 22 ? s.message.slice(0, 21) + "…" : s.message)}</text>`;
+    }
+    if (s.gf && !small) out += `<g><rect x="16" y="226" width="58" height="22" rx="11" fill="#fff" stroke="#cfe3c9"/><text x="45" y="241" text-anchor="middle" font-family="DM Sans, sans-serif" font-size="10.5" font-weight="700" fill="#24561f">GF sponge</text></g>`;
+    const c2 = col;
+    return `<defs><linearGradient id="ombre" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff8ee"/><stop offset="1" stop-color="${c2}"/></linearGradient></defs>${out}`;
+  }
+
+  /* ---- Rules: price, constraints, availability (deterministic) ---- */
+  function price(s) {
+    const L = [];
+    if (s.tiers) L.push([P.tiers.opts[s.tiers].split(" ·")[0], P.tiers.price[s.tiers], `size.${s.tiers}`]);
+    if (s.sponge && P.sponge.price[s.sponge]) L.push([P.sponge.opts[s.sponge] + " sponge", P.sponge.price[s.sponge], `sponge.${s.sponge}`]);
+    if (s.gf) L.push(["Gluten-free sponge", P.gf.price, "sponge.gf"]);
+    if (s.finish && P.finish.price[s.finish]) L.push([P.finish.opts[s.finish], P.finish.price[s.finish], `finish.${s.finish}`]);
+    if (s.deco && P.deco.price[s.deco]) L.push([P.deco.opts[s.deco], P.deco.price[s.deco], `deco.${s.deco}`]);
+    if (s.message) L.push(["Message", 0, "message"]);
+    if (s.handover && P.handover.price[s.handover]) L.push(["Delivery, Kilimani", P.handover.price[s.handover], "delivery.zone1"]);
+    return { L, total: L.reduce((a, l) => a + l[1], 0) };
+  }
+  function flags(s) {
+    const F = [];
+    if (s.gf && +s.tiers === 3) F.push(["warn", "<b>Gluten-free sponge is for 1- and 2-tier cakes only.</b> Choose 2 tiers or a regular sponge."]);
+    if (+s.tiers === 3 && s.date === "sat") F.push(["warn", "<b>Saturday is full for 3-tier cakes.</b> The earliest is Sun 15 Nov (3 days' notice)."]);
+    if (s.gf) F.push(["warn", "The kitchen also uses wheat flour, so Kilele can't promise it's safe for coeliac guests."]);
+    if (s.deco === "berries") F.push(["ok", "Berries are added on the day."]);
+    return F;
+  }
+  const ksh = n => "KSh " + n.toLocaleString("en-KE");
+
+  function render() {
+    svgEl.innerHTML = cakeSVG(S);
+    const { L, total } = price(S);
+    document.getElementById("lines").innerHTML = L.length ? L.map(([n, v, r]) => `<li><span>${esc(n)}<span class="rule">${r}</span></span><span>${v ? "+" + ksh(v).replace("KSh ", "") : "free"}</span></li>`).join("") + `<li class="tot"><span>Total</span><span>${ksh(total)}</span></li>` : `<li><span>Pick a size to see the price.</span></li>`;
+    document.getElementById("cakeTotal").textContent = S.tiers ? ksh(total) : "KSh —";
+    const occ = S.occasion ? P.occasion.opts[S.occasion] : "Your";
+    document.getElementById("cakeTitle").textContent = S.message ? `${occ} cake · “${S.message}”` : `${occ === "Your" ? "Your" : occ} cake`;
+    const spec = [["tiers", P.tiers], ["sponge", P.sponge], ["colour", P.colour], ["finish", P.finish], ["deco", P.deco], ["date", P.date], ["handover", P.handover]];
+    document.getElementById("spec").innerHTML = spec.map(([k, p]) => `<div class="${S[k] ? "" : "unset"}"><i>${p.label}</i>${S[k] ? esc(p.opts[S[k]]) + (k === "sponge" && S.gf ? " · gluten-free" : "") : "Not chosen yet"}</div>`).join("");
+    const F = flags(S);
+    document.getElementById("flags").innerHTML = F.map(([t, h]) => `<div class="flag ${t === "ok" ? "ok" : ""}">${h}</div>`).join("");
+    const blocked = F.some(([t, h]) => t === "warn" && /only|full/.test(h));
+    const ready = S.tiers && S.sponge && S.colour && S.finish && S.deco && S.date && S.handover && !blocked;
+    document.getElementById("requestBtn").disabled = !ready;
+    document.getElementById("shareBtn").disabled = !S.tiers;
+    document.getElementById("miniCake").innerHTML = `<svg viewBox="0 0 340 300">${cakeSVG(S, true)}</svg>`;
+    document.getElementById("oTotal").textContent = S.tiers ? ksh(total) : "KSh —";
+    document.getElementById("oLine").textContent = S.tiers ? `${P.tiers.opts[S.tiers].split(" ·")[0]}, ${S.sponge ? P.sponge.opts[S.sponge].toLowerCase() : "sponge tbc"}${S.date ? " · " + P.date.opts[S.date] : ""}` : "Waiting for a design";
+  }
+
+  /* ---- The conversation: one question at a time ---- */
+  const thread = document.getElementById("thread"), body = document.getElementById("talkBody"), chips = document.getElementById("chips");
+  const STEPS = [
+    { key: "occasion", ask: "What's the occasion, and who's it for? Tell me in your own words, or pick one." },
+    { key: "tiers", ask: "How many people will it feed?" },
+    { key: "sponge", ask: "Which sponge? Gluten-free is available for 1 or 2 tiers." , extra: true },
+    { key: "colour", ask: "What colour buttercream?" },
+    { key: "finish", ask: "And the finish?" },
+    { key: "deco", ask: "Any decoration on top?" },
+    { key: "message", ask: "What should the cake say? Up to 22 characters." },
+    { key: "date", ask: "When do you need it? These are the dates Wanjiru has room for." },
+    { key: "handover", ask: "Pickup or delivery?" },
+  ];
+  let stepIdx = 0, busy = false;
+  const nextUnset = () => STEPS.findIndex(st => st.key === "message" ? !S.message && !S._msgAsked : !S[st.key]);
+  async function say(phrases, extra = {}) {
+    await answer({ thread, desk: DESK, mark, phrases, scroller: body, meta: extra.meta === false ? false : (extra.meta || "From Kilele's cake options · price list v14"), steps: extra.steps || [], actions: extra.actions });
+  }
+  function showChips(st) {
+    chips.innerHTML = "";
+    if (!st) return;
+    const p = P[st.key];
+    if (st.key === "message") {
+      const sug = S.occasion === "birthday" ? ["Happy 7th, Amina!", "Happy birthday!"] : ["Congratulations!", "With love"];
+      [...sug, "No message"].forEach(t => chips.appendChild(chip(t, () => pick("message", t === "No message" ? "" : t, t))));
+      return;
+    }
+    Object.entries(p.opts).forEach(([k, label]) => {
+      const pr = p.price && p.price[k] ? ` <small>+${p.price[k]}</small>` : (st.key === "tiers" ? ` <small>${ksh(p.price[k])}</small>` : "");
+      const sw = p.color ? `<span class="sw" style="background:${p.color[k]}"></span>` : "";
+      const c = chip(sw + esc(label) + pr, () => pick(st.key, k, label), true);
+      if (st.key === "date" && k === "sat" && +S.tiers === 3) { c.disabled = true; c.title = "Full for 3-tier cakes"; }
+      chips.appendChild(c);
+    });
+    if (st.key === "sponge") chips.appendChild(chip(`Gluten-free ${S.gf ? "✓" : ""} <small>+600</small>`, () => { S.gf = !S.gf; render(); showChips(st); }, true));
+  }
+  function chip(html, on, raw) { const b = document.createElement("button"); b.type = "button"; b.className = "chip-opt"; b.innerHTML = raw ? html : esc(html); b.addEventListener("click", on); return b; }
+  async function ask() {
+    const i = nextUnset();
+    if (i === -1) { chips.innerHTML = ""; return review(); }
+    stepIdx = i; const st = STEPS[i];
+    if (st.key === "message") S._msgAsked = true;
+    await say([st.ask], { meta: false });
+    showChips(st);
+  }
+  async function pick(key, val, label) {
+    if (busy) return; busy = true;
+    visitor(thread, label);
+    if (key === "message") S.message = val; else S[key] = val;
+    render(); chips.innerHTML = "";
+    if (key === "tiers" && +val === 3 && S.gf) await say(["Heads up: gluten-free sponge is only for 1 or 2 tiers, so I've switched it off."], { meta: false }), S.gf = false, render();
+    busy = false; await ask();
+  }
+  async function review() {
+    const { total } = price(S);
+    await say([`Here's your cake: <b>${esc(P.tiers.opts[S.tiers].split(" ·")[0])}</b>, ${esc(P.sponge.opts[S.sponge].toLowerCase())} sponge${S.gf ? " (gluten-free)" : ""}, ${esc(P.colour.opts[S.colour].toLowerCase())} ${esc(P.finish.opts[S.finish].toLowerCase())} buttercream, ${esc(P.deco.opts[S.deco].toLowerCase())}.`, `<b>${ksh(total)}</b> from the price list, held until Sat 14 Nov.`, `You can save the design to share it first, or request it now. Nothing is charged until Wanjiru confirms.`],
+      { meta: "Quote pinned to price list v14 · valid until Sat 14 Nov 23:59" });
+  }
+
+  /* Free text → approved options (the model's job, scripted here) */
+  function mapWords(t) {
+    t = t.toLowerCase(); const got = [], no = [];
+    if (/birthday|turns|bday/.test(t)) { S.occasion = "birthday"; got.push("a birthday"); }
+    else if (/wedding/.test(t)) { S.occasion = "wedding"; got.push("a wedding"); }
+    else if (/graduat/.test(t)) { S.occasion = "graduation"; got.push("a graduation"); }
+    const n = (t.match(/(\d+)\s*(people|guests|kids|persons)/) || [])[1];
+    if (n) { S.tiers = +n <= 15 ? 1 : +n <= 30 ? 2 : 3; got.push(`${P.tiers.opts[S.tiers].split(" ·")[0]} for about ${n}`); }
+    if (/strawberr|berr|raspberr/.test(t)) { S.deco = "berries"; got.push("fresh berries"); }
+    if (/flower|floral|rose/.test(t)) { S.deco = "flowers"; got.push("edible flowers"); }
+    if (/sprinkle|rainbow/.test(t)) { S.deco = "sprinkles"; got.push("sprinkles"); }
+    if (/forest|green|jungle/.test(t)) { S.colour = "forest"; S.finish = S.finish || "ombre"; got.push("forest-green ombré buttercream"); }
+    if (/pink|blush/.test(t)) { S.colour = "blush"; got.push("blush-pink buttercream"); }
+    if (/blue|sky/.test(t)) { S.colour = "sky"; got.push("sky-blue buttercream"); }
+    if (/chocolate|choc/.test(t)) { if (!S.sponge) { S.sponge = "chocolate"; got.push("chocolate sponge"); } }
+    if (/lemon/.test(t)) { S.sponge = "lemon"; got.push("lemon sponge"); }
+    if (/gluten/.test(t)) { S.gf = true; got.push("gluten-free sponge"); }
+    if (/drip/.test(t)) { S.finish = "drip"; got.push("a chocolate drip"); }
+    const nm = t.match(/(?:daughter|son|for)\s+([a-z]+)\s+(?:turns|is turning)\s+(\d+)/);
+    if (nm) { S._name = nm[1][0].toUpperCase() + nm[1].slice(1); S._age = nm[2]; }
+    if (/toadstool|mushroom|unicorn|figure|sculpt|fondant|3d|character|photo print/.test(t)) no.push("sculpted figures or printed photos");
+    if (/tomorrow|today/.test(t)) no.push("anything sooner than two days' notice");
+    return { got, no };
+  }
+  async function free(text) {
+    if (busy) return; busy = true;
+    visitor(thread, text); chips.innerHTML = "";
+    const { got, no } = mapWords(text); render();
+    const ph = [];
+    if (got.length) ph.push(`From Kilele's options: ${got.map(g => `<b>${esc(g)}</b>`).join(", ")}.`);
+    if (no.length) ph.push(`Kilele doesn't make ${esc(no.join(" or "))}, so I won't promise them.${/forest/.test(text.toLowerCase()) ? " Green ombré with fresh berries reads as \"forest\" nicely." : ""}`);
+    if (!got.length && !no.length) ph.push("I couldn't match that to Kilele's options. Could you pick from these, or say it another way?");
+    if (S._name && !S.message) { S.message = `Happy ${S._age}th, ${S._name}!`; ph.push(`I've put <b>“${esc(S.message)}”</b> on the cake. Change it any time.`); render(); }
+    await answer({ thread, desk: DESK, mark, steps: ["Matching your words to Kilele's options"], phrases: ph, scroller: body, meta: "Mapped to approved options only" });
+    busy = false; await ask();
+  }
+  document.getElementById("form").addEventListener("submit", e => { e.preventDefault(); const i = document.getElementById("q"); const t = i.value.trim(); if (!t) return; i.value = ""; free(t); });
+
+  /* Play the example */
+  async function typeInto(input, text) { input.focus(); presence(mark, "listening"); for (const ch of text) { input.value += ch; await wait(18); } }
+  document.getElementById("playBtn").addEventListener("click", async () => {
+    document.getElementById("playBox").remove();
+    const inp = document.getElementById("q");
+    await typeInto(inp, "My daughter Amina turns 7. She loves strawberries and the forest. Maybe a toadstool on top?");
+    inp.value = ""; await free("My daughter Amina turns 7. She loves strawberries and the forest. Maybe a toadstool on top?");
+    const clickChip = async re => { await wait(700); const c = [...chips.querySelectorAll(".chip-opt")].find(b => re.test(b.textContent)); if (c) c.click(); await wait(200); while (busy) await wait(100); };
+    await clickChip(/2 tiers/); await clickChip(/Vanilla/); await clickChip(/Sat 14/); await clickChip(/Pickup/);
+  });
+
+  /* Share and request */
+  const sheet = document.getElementById("shareSheet");
+  document.getElementById("shareBtn").addEventListener("click", () => { sheet.classList.add("open"); sheet.querySelector("#copyLink").focus(); });
+  sheet.addEventListener("click", e => { if (e.target === sheet || e.target.closest("[data-close]")) sheet.classList.remove("open"); });
+  document.addEventListener("keydown", e => { if (e.key === "Escape") sheet.classList.remove("open"); });
+  sheet.querySelectorAll(".switch").forEach(s => s.addEventListener("click", () => s.setAttribute("aria-checked", String(s.getAttribute("aria-checked") !== "true"))));
+  document.getElementById("copyLink").addEventListener("click", () => toast("Link copied. It opens a read-only design anyone can ask the Cakes WebAgent about."));
+  document.getElementById("requestBtn").addEventListener("click", async e => {
+    e.currentTarget.disabled = true;
+    visitor(thread, "Request this cake");
+    await answer({ thread, desk: DESK, mark, steps: ["Sending the request to Wanjiru"], phrases: [`Done. Request <b>KB-1047</b> is <b>waiting for Wanjiru's OK</b>.`, `She usually confirms on WhatsApp within 2 hours (7:00–20:00). Then you pay with PayPal, and the order is confirmed. Nothing has been charged.`], scroller: body, meta: "Held for the owner · receipt r-7c1e…09ab" });
+    presence(mark, "waiting");
+    const oc = document.getElementById("ownerCard"); oc.classList.add("live");
+    oc.scrollIntoView({ behavior: XP.reduced ? "auto" : "smooth", block: "center" });
+  });
+
+  render(); ask();
+})();
+</script>
+</body>
+</html>

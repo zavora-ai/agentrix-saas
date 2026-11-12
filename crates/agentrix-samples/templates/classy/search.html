@@ -1,0 +1,6 @@
+{% extends "classy/layout.html" %}
+{% from "classy/parts.html" import pic, answer as answer_card %}
+{% block q %}{{ q }}{% endblock %}
+{% block main %}
+{% include "classy/search_body.html" %}
+{% endblock %}

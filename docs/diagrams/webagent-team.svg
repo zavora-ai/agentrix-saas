@@ -1,0 +1,159 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 936" width="1280" height="936" role="img" aria-labelledby="t d">
+<title id="t">A site&#x27;s WebAgents</title><desc id="d">Two partitions joined only by typed signals; a Chief WebAgent leads the back office; owners decide on any surface; only signed packs and aggregates cross between sites.</desc>
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#38356d"/></marker><marker id="ac" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#de4060"/></marker><marker id="aa" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#c2620a"/></marker></defs>
+<rect width="1280" height="936" fill="#ffffff"/>
+<g font-family="Inter, 'DM Sans', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" fill="#1d1b33">
+<text x="24" y="38" font-size="21" font-weight="800" fill="#38356d" text-anchor="start">A site&#x27;s WebAgents · two partitions, one Chief WebAgent</text>
+<text x="24" y="60" font-size="12" font-weight="400" fill="#5d5a78" text-anchor="start">Kilele Bakery&#x27;s TenantKernel. Untrusted text stays in the public partition; the back office sees typed signals only. The owner decides on any surface.</text>
+<rect x="24" y="108" width="180" height="66" rx="12" fill="#ffffff" stroke="#d8d5ea" stroke-width="1.6"/>
+<text x="38" y="132" font-size="13.5" font-weight="700" fill="#1d1b33" text-anchor="start">Visitors</text>
+<text x="38" y="152" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">Ask this site · forms</text>
+<rect x="24" y="192" width="180" height="66" rx="12" fill="#ffffff" stroke="#d8d5ea" stroke-width="1.6"/>
+<text x="38" y="216" font-size="13.5" font-weight="700" fill="#1d1b33" text-anchor="start">AI agents</text>
+<text x="38" y="236" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">AWP · MCP · A2A</text>
+<rect x="24" y="276" width="180" height="66" rx="12" fill="#ffffff" stroke="#d8d5ea" stroke-width="1.6"/>
+<text x="38" y="300" font-size="13.5" font-weight="700" fill="#1d1b33" text-anchor="start">Email and social</text>
+<text x="38" y="320" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">messages · reviews</text>
+<rect x="228" y="84" width="300" height="436" rx="16" fill="#f6f5fb" stroke="#d8d5ea" stroke-width="1.2"/>
+<text x="244" y="106" font-size="11" font-weight="700" fill="#5d5a78" text-anchor="start" letter-spacing="1.2">PUBLIC PARTITION · UNTRUSTED INPUT</text>
+<rect x="244" y="114" width="268" height="196" rx="12" fill="#ffffff" stroke="#38356d" stroke-width="1.6"/>
+<text x="258" y="138" font-size="13.5" font-weight="700" fill="#38356d" text-anchor="start">Concierge · its desks</text>
+<rect x="258" y="150" width="74.8" height="22" rx="11" fill="#f1f0fa" stroke="#38356d" stroke-width="1"/>
+<text x="295.4" y="165" font-size="11" font-weight="600" fill="#38356d" text-anchor="middle">Ask desk</text>
+<rect x="340.8" y="150" width="89.0" height="22" rx="11" fill="#f1f0fa" stroke="#38356d" stroke-width="1"/>
+<text x="385.3" y="165" font-size="11" font-weight="600" fill="#38356d" text-anchor="middle">Agent door</text>
+<rect x="437.8" y="150" width="53.5" height="22" rx="11" fill="#f1f0fa" stroke="#38356d" stroke-width="1"/>
+<text x="464.55" y="165" font-size="11" font-weight="600" fill="#38356d" text-anchor="middle">Inbox</text>
+<text x="258" y="196" font-size="11.5" font-weight="400" fill="#38356d" text-anchor="start">+ one section desk per menu item</text>
+<text x="258" y="214" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">search_site over the signed release</text>
+<text x="258" y="232" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">declared capabilities only</text>
+<text x="258" y="250" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">reply_in_thread, to the sender only</text>
+<text x="258" y="268" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">emit_signal: typed and bounded</text>
+<text x="258" y="286" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">no publish · no spend · no web fetch</text>
+<rect x="244" y="326" width="268" height="92" rx="12" fill="#ffffff" stroke="#38356d" stroke-width="1.6"/>
+<text x="258" y="350" font-size="13.5" font-weight="700" fill="#38356d" text-anchor="start">Agent edge · AwpEdge</text>
+<text x="258" y="370" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">trust tiers · schemas · idempotency</text>
+<text x="258" y="387" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">consent receipts · held calls</text>
+<text x="258" y="404" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">AI disclosure on every reply</text>
+<rect x="244" y="432" width="268" height="74" rx="12" fill="#f6f5fb" stroke="#d8d5ea" stroke-width="1.6" stroke-dasharray="4 4"/>
+<text x="258" y="456" font-size="12.5" font-weight="700" fill="#1d1b33" text-anchor="start">Mode: the manifest&#x27;s policy</text>
+<text x="258" y="476" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">no standing rules</text>
+<text x="258" y="493" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">no owner memory (A-I2)</text>
+<path d="M204,141 H242" fill="none" stroke="#38356d" stroke-width="1.6" marker-end="url(#a)"/>
+<path d="M204,225 H242" fill="none" stroke="#38356d" stroke-width="1.6" marker-end="url(#a)"/>
+<path d="M204,300 H242" fill="none" stroke="#38356d" stroke-width="1.6" marker-end="url(#a)"/>
+<text x="548" y="104" font-size="11" font-weight="700" fill="#5d5a78" text-anchor="start" letter-spacing="1.2">TYPED SIGNALS</text>
+<rect x="548" y="116" width="110.3" height="22" rx="11" fill="#f1f0fa" stroke="#38356d" stroke-width="1"/>
+<text x="603.15" y="131" font-size="11" font-weight="600" fill="#38356d" text-anchor="middle">lead_captured</text>
+<rect x="548" y="146" width="96.1" height="22" rx="11" fill="#f1f0fa" stroke="#38356d" stroke-width="1"/>
+<text x="596.05" y="161" font-size="11" font-weight="600" fill="#38356d" text-anchor="middle">content_gap</text>
+<rect x="548" y="176" width="96.1" height="22" rx="11" fill="#f1f0fa" stroke="#38356d" stroke-width="1"/>
+<text x="596.05" y="191" font-size="11" font-weight="600" fill="#38356d" text-anchor="middle">review_seen</text>
+<rect x="548" y="206" width="145.8" height="22" rx="11" fill="#f1f0fa" stroke="#38356d" stroke-width="1"/>
+<text x="620.9" y="221" font-size="11" font-weight="600" fill="#38356d" text-anchor="middle">support_escalation</text>
+<rect x="548" y="236" width="117.39999999999999" height="22" rx="11" fill="#f1f0fa" stroke="#38356d" stroke-width="1"/>
+<text x="606.7" y="251" font-size="11" font-weight="600" fill="#38356d" text-anchor="middle">visitor_intent</text>
+<rect x="548" y="266" width="138.7" height="22" rx="11" fill="#f1f0fa" stroke="#38356d" stroke-width="1"/>
+<text x="617.35" y="281" font-size="11" font-weight="600" fill="#38356d" text-anchor="middle">agent_interaction</text>
+<rect x="548" y="296" width="117.39999999999999" height="22" rx="11" fill="#f1f0fa" stroke="#38356d" stroke-width="1"/>
+<text x="606.7" y="311" font-size="11" font-weight="600" fill="#38356d" text-anchor="middle">abuse_observed</text>
+<rect x="548" y="326" width="124.5" height="22" rx="11" fill="#f1f0fa" stroke="#38356d" stroke-width="1"/>
+<text x="610.25" y="341" font-size="11" font-weight="600" fill="#38356d" text-anchor="middle">inbound_message</text>
+<text x="548" y="376" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">bounded · screened</text>
+<text x="548" y="393" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">no raw text (A-I3)</text>
+<path d="M528,230 H546" fill="none" stroke="#38356d" stroke-width="1.6" marker-end="url(#a)"/>
+<path d="M700,151 H734" fill="none" stroke="#38356d" stroke-width="1.6" marker-end="url(#a)"/>
+<rect x="720" y="84" width="536" height="436" rx="16" fill="#f6f5fb" stroke="#d8d5ea" stroke-width="1.2"/>
+<text x="736" y="106" font-size="11" font-weight="700" fill="#5d5a78" text-anchor="start" letter-spacing="1.2">BACK OFFICE · CHARTER AUTHORITY PER JOB</text>
+<rect x="736" y="114" width="200" height="74" rx="12" fill="#ffffff" stroke="#38356d" stroke-width="1.6"/>
+<text x="750" y="138" font-size="13.5" font-weight="700" fill="#38356d" text-anchor="start">Agenda · SignalSink</text>
+<text x="750" y="158" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">counted, rate-limited</text>
+<text x="750" y="175" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">wakes the owning WebAgent</text>
+<rect x="956" y="114" width="284" height="74" rx="12" fill="#ffffff" stroke="#38356d" stroke-width="1.6"/>
+<text x="970" y="138" font-size="13.5" font-weight="700" fill="#38356d" text-anchor="start">Chief WebAgent</text>
+<text x="970" y="158" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">leads the team · morning brief</text>
+<text x="970" y="175" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">weekly review · answers the owner</text>
+<path d="M936,151 H954" fill="none" stroke="#38356d" stroke-width="1.6" marker-end="url(#a)"/>
+<rect x="736" y="240" width="160" height="78" rx="12" fill="#ffffff" stroke="#38356d" stroke-width="1.6"/>
+<text x="750" y="264" font-size="13.5" font-weight="700" fill="#38356d" text-anchor="start">Sales</text>
+<text x="750" y="284" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">nurture · handoff · quotes</text>
+<text x="750" y="301" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">bookings with consent</text>
+<rect x="906" y="240" width="160" height="78" rx="12" fill="#ffffff" stroke="#38356d" stroke-width="1.6"/>
+<text x="920" y="264" font-size="13.5" font-weight="700" fill="#38356d" text-anchor="start">Editor</text>
+<text x="920" y="284" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">freshness · SEO · AEO</text>
+<text x="920" y="301" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">languages · experiments</text>
+<rect x="1076" y="240" width="160" height="78" rx="12" fill="#ffffff" stroke="#38356d" stroke-width="1.6"/>
+<text x="1090" y="264" font-size="13.5" font-weight="700" fill="#38356d" text-anchor="start">Reputation</text>
+<text x="1090" y="284" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">replies to reviews</text>
+<text x="1090" y="301" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">and mentions, your voice</text>
+<rect x="736" y="332" width="160" height="78" rx="12" fill="#ffffff" stroke="#38356d" stroke-width="1.6"/>
+<text x="750" y="356" font-size="13.5" font-weight="700" fill="#38356d" text-anchor="start">Cashier</text>
+<text x="750" y="376" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">orders · payments</text>
+<text x="750" y="393" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">refunds over threshold</text>
+<rect x="906" y="332" width="160" height="78" rx="12" fill="#ffffff" stroke="#38356d" stroke-width="1.6"/>
+<text x="920" y="356" font-size="13.5" font-weight="700" fill="#38356d" text-anchor="start">Guardian</text>
+<text x="920" y="376" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">probes · drift · alarms</text>
+<text x="920" y="393" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">rollback, reversible only</text>
+<rect x="1076" y="332" width="160" height="78" rx="12" fill="#ffffff" stroke="#38356d" stroke-width="1.6"/>
+<text x="1090" y="356" font-size="13.5" font-weight="700" fill="#38356d" text-anchor="start">Caretaker</text>
+<text x="1090" y="376" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">domains · certificates</text>
+<text x="1090" y="393" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">backups · running costs</text>
+<path d="M1098,188 V214 M816,214 H1156" fill="none" stroke="#38356d" stroke-width="1.4"/>
+<path d="M816,214 V238" fill="none" stroke="#38356d" stroke-width="1.6" marker-end="url(#a)"/>
+<path d="M986,214 V238" fill="none" stroke="#38356d" stroke-width="1.6" marker-end="url(#a)"/>
+<path d="M1156,214 V238" fill="none" stroke="#38356d" stroke-width="1.6" marker-end="url(#a)"/>
+<text x="1112" y="208" font-size="10.5" font-weight="600" fill="#38356d" text-anchor="start">delegate · depth 1</text>
+<rect x="736" y="432" width="500" height="74" rx="12" fill="#f6f5fb" stroke="#d8d5ea" stroke-width="1.6" stroke-dasharray="4 4"/>
+<text x="750" y="456" font-size="12.5" font-weight="700" fill="#1d1b33" text-anchor="start">Mover · during the Move only</text>
+<text x="750" y="476" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">claim → replay → clean → rebuild → prove → go live</text>
+<text x="750" y="493" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">then hands each job to its WebAgent and retires</text>
+<rect x="24" y="544" width="1232" height="120" rx="16" fill="#f6f5fb" stroke="#d8d5ea" stroke-width="1.2"/>
+<text x="40" y="566" font-size="11" font-weight="700" fill="#5d5a78" text-anchor="start" letter-spacing="1.2">OWNER SURFACES · ADK-SURFACE · SURFACES HOLD NO STATE</text>
+<rect x="42" y="572" width="290" height="78" rx="12" fill="#ffffff" stroke="#38356d" stroke-width="1.6"/>
+<text x="56" y="596" font-size="13.5" font-weight="700" fill="#38356d" text-anchor="start">Console PWA</text>
+<text x="56" y="616" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">Today · Decisions · WebAgents</text>
+<text x="56" y="633" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">passkey for consequential cards</text>
+<rect x="344" y="572" width="290" height="78" rx="12" fill="#ffffff" stroke="#38356d" stroke-width="1.6"/>
+<text x="358" y="596" font-size="13.5" font-weight="700" fill="#38356d" text-anchor="start">WhatsApp</text>
+<text x="358" y="616" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">brief · Allow once at low risk</text>
+<text x="358" y="633" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">never money, never high risk</text>
+<rect x="646" y="572" width="290" height="78" rx="12" fill="#ffffff" stroke="#38356d" stroke-width="1.6"/>
+<text x="660" y="596" font-size="13.5" font-weight="700" fill="#38356d" text-anchor="start">Email</text>
+<text x="660" y="616" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">morning brief · weekly review</text>
+<text x="660" y="633" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">a link, never an approval</text>
+<rect x="948" y="572" width="290" height="78" rx="12" fill="#ffffff" stroke="#38356d" stroke-width="1.6"/>
+<text x="962" y="596" font-size="13.5" font-weight="700" fill="#38356d" text-anchor="start">Voice</text>
+<text x="962" y="616" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">ask · deny · stop all</text>
+<text x="962" y="633" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">never approves money</text>
+<path d="M988,520 V570" fill="none" stroke="#38356d" stroke-width="1.6" marker-end="url(#a)"/>
+<rect x="982.4" y="520" width="159.20000000000002" height="18" rx="9" fill="#ffffff" stroke="#d8d5ea" stroke-width="0.8"/>
+<text x="1062" y="533" font-size="10.5" font-weight="600" fill="#38356d" text-anchor="middle">cards · briefs · alarms</text>
+<rect x="24" y="688" width="1232" height="108" rx="16" fill="#f6f5fb" stroke="#d8d5ea" stroke-width="1.2"/>
+<text x="40" y="710" font-size="11" font-weight="700" fill="#5d5a78" text-anchor="start" letter-spacing="1.2">WHAT THE BACK OFFICE ACTS THROUGH</text>
+<rect x="42" y="716" width="290" height="62" rx="12" fill="#fff1f3" stroke="#de4060" stroke-width="1.6"/>
+<text x="56" y="740" font-size="13.5" font-weight="700" fill="#de4060" text-anchor="start">Model Gateway</text>
+<text x="56" y="760" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">purpose routing · budgets</text>
+<rect x="344" y="716" width="290" height="62" rx="12" fill="#fff1f3" stroke="#de4060" stroke-width="1.6"/>
+<text x="358" y="740" font-size="13.5" font-weight="700" fill="#de4060" text-anchor="start">Effects Gateway</text>
+<text x="358" y="760" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">signed approval · exactly once</text>
+<rect x="646" y="716" width="290" height="62" rx="12" fill="#ffffff" stroke="#38356d" stroke-width="1.6"/>
+<text x="660" y="740" font-size="13.5" font-weight="700" fill="#38356d" text-anchor="start">LaunchGate</text>
+<text x="660" y="760" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">parity · scans · Ed25519 sign</text>
+<rect x="948" y="716" width="290" height="62" rx="12" fill="#fff7ed" stroke="#c2620a" stroke-width="1.6" stroke-dasharray="6 4"/>
+<text x="962" y="740" font-size="13.5" font-weight="700" fill="#c2620a" text-anchor="start">Sandbox plane</text>
+<text x="962" y="760" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">sealed rooms · no secrets</text>
+<rect x="24" y="818" width="1232" height="104" rx="16" fill="#f6f5fb" stroke="#d8d5ea" stroke-width="1.2"/>
+<text x="40" y="840" font-size="11" font-weight="700" fill="#5d5a78" text-anchor="start" letter-spacing="1.2">FLEET · AGENCY OR ZAVORA CLOUD</text>
+<rect x="42" y="846" width="158" height="58" rx="12" fill="#f6f5fb" stroke="#d8d5ea" stroke-width="1.6" stroke-dasharray="4 4"/>
+<text x="56" y="870" font-size="12.5" font-weight="700" fill="#1d1b33" text-anchor="start">Another site</text>
+<text x="56" y="890" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">its own TenantKernel</text>
+<rect x="212" y="846" width="158" height="58" rx="12" fill="#f6f5fb" stroke="#d8d5ea" stroke-width="1.6" stroke-dasharray="4 4"/>
+<text x="226" y="870" font-size="12.5" font-weight="700" fill="#1d1b33" text-anchor="start">Another site</text>
+<text x="226" y="890" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">its own TenantKernel</text>
+<rect x="382" y="846" width="158" height="58" rx="12" fill="#f6f5fb" stroke="#d8d5ea" stroke-width="1.6" stroke-dasharray="4 4"/>
+<text x="396" y="870" font-size="12.5" font-weight="700" fill="#1d1b33" text-anchor="start">Another site</text>
+<text x="396" y="890" font-size="11.5" font-weight="400" fill="#5d5a78" text-anchor="start">its own TenantKernel</text>
+<line x1="552" y1="846" x2="552" y2="904" stroke="#de4060" stroke-width="1.6" stroke-dasharray="6 5"/>
+<text x="572" y="866" font-size="11.5" font-weight="600" fill="#de4060" text-anchor="start">Between sites only signed packs, playbook revisions, detector updates</text>
+<text x="572" y="884" font-size="11.5" font-weight="600" fill="#de4060" text-anchor="start">and k-anonymous aggregates move. No conversation, lead, fact or prompt does (A-I22).</text>
+</g></svg>

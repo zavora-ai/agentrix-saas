@@ -1,0 +1,38 @@
+# agentrix-test-agents on saas-node (spec v3, shape one): three labelled test customer agents
+# (Amani, Baraka, Chiku) that visit the sample sites under the platform host, sign their requests
+# (Web Bot Auth) and pay in PayPal's sandbox. It serves test-agent-<slug>.<platform host> (each
+# agent's key directory and did.json) and test-agents.<platform host> (control) on 127.0.0.1:18195.
+# Installed by deploy/saas/deploy.sh.
+#
+# Settings: /etc/agentrix-saas/agentrix-test-agents.env (root, 0600), written every deploy: the
+# TEST_AGENTS_* settings, the Vultr Inference key it calls directly (its own daily budget per
+# agent), and the sandbox PayPal app. test-agents-control.env holds the control token the VM made.
+#
+# Off switch: TEST_AGENTS_OFF_FILE (/var/lib/agentrix-saas/test-agents/off) present means paused:
+# `deploy/saas/deploy.sh --test-agents off|on|status`, or POST /control/stop and /control/start on
+# the control host with the bearer token. It also stops by itself after TEST_AGENTS_HOURS.
+[Unit]
+Description=Agentrix test customer agents (sandbox)
+After=network-online.target agentrix-node.service
+Wants=network-online.target
+
+[Service]
+User=agentrix-saas
+Group=agentrix-saas
+EnvironmentFile=/etc/agentrix-saas/agentrix-test-agents.env
+EnvironmentFile=-/etc/agentrix-saas/test-agents-control.env
+Environment=HOME=/var/lib/agentrix-saas/test-agents
+Environment=NO_COLOR=1
+ExecStart=/usr/local/bin/agentrix-test-agents
+WorkingDirectory=/var/lib/agentrix-saas/test-agents
+UMask=0007
+Restart=on-failure
+RestartSec=5
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=yes
+ReadWritePaths=/var/lib/agentrix-saas/test-agents
+
+[Install]
+WantedBy=multi-user.target

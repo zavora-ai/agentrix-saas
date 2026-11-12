@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Web home: while you were away</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap">
+<style>body{margin:0}</style>
+</helmet>
+<div style="min-height: 980px; box-sizing: border-box; font-family: Inter, system-ui, sans-serif; color: {{t.text}}; background: {{t.glow}}, {{t.bg}}; display: flex; flex-direction: column">
+
+  <header style="padding: 14px 28px; border-bottom: 1px solid {{t.border}}; display: flex; flex-wrap: wrap; align-items: center; gap: 12px 24px">
+    <span style="display: flex; align-items: center; gap: 10px"><span style="width: 10px; height: 10px; border-radius: 5px; background: {{t.brand}}"></span><span style="font-weight: 800; font-size: 17px; letter-spacing: -0.02em">ADK-Rust</span></span>
+    <nav aria-label="Sections" style="display: flex; gap: 4px; padding: 4px; border-radius: 12px; background: {{t.raised}}">
+      <a href="WebHome.dc.html" style="padding: 7px 14px; border-radius: 9px; color: {{t.text2}}; text-decoration: none; font-size: 14px">Threads</a>
+      <a href="#" aria-current="page" style="padding: 7px 14px; border-radius: 9px; background: {{t.surface}}; box-shadow: {{t.shadow}}; color: {{t.text}}; text-decoration: none; font-size: 14px; font-weight: 600">Today</a>
+      <a href="WebTrust.dc.html" style="padding: 7px 14px; border-radius: 9px; color: {{t.text2}}; text-decoration: none; font-size: 14px">Memory &amp; rules</a>
+    </nav>
+    <span style="flex-grow: 1"></span>
+    <span style="display: flex; flex-wrap: wrap; gap: 14px; font-size: 13px; color: {{t.text2}}"><span>Work · asks first</span><span>$1.84 of $5.00 today</span><span>Quiet from 22:00</span></span>
+    <button type="button" style="font: inherit; font-size: 14px; font-weight: 600; padding: 9px 16px; border-radius: 10px; border: none; background: {{t.ink}}; color: {{t.onInk}}; cursor: pointer; min-height: 40px">Stop all</button>
+  </header>
+
+  <div style="width: 100%; max-width: 1200px; margin: 0 auto; box-sizing: border-box; padding: 48px 32px; display: flex; flex-wrap: wrap; gap: 48px; align-items: flex-start">
+
+    <main style="flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column; gap: 30px">
+      <div style="display: flex; flex-direction: column; gap: 14px">
+        <span style="align-self: flex-start; display: flex; align-items: center; gap: 8px; padding: 6px 13px; border: 1px solid {{t.accentLine}}; border-radius: 999px; background: {{t.surface}}; font-size: 14px; font-weight: 500; color: {{t.accent}}"><span style="width: 7px; height: 7px; border-radius: 4px; background: {{t.brand}}"></span>Since 22:04</span>
+        <h1 style="margin: 0; font-size: 52px; line-height: 1.04; font-weight: 800; letter-spacing: -0.035em">While you were <span style="color: {{t.brand}}">away</span></h1>
+        <p style="margin: 0; font-size: 17px; color: {{t.text2}}">Everything your agents did since you left. Open any line for the details.</p>
+      </div>
+
+      <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px">
+        <div style="background: {{t.surface}}; border: 1px solid {{t.border}}; border-radius: 16px; padding: 16px 18px; display: flex; flex-direction: column; gap: 4px; box-shadow: {{t.shadow}}"><span style="font-size: 14px; color: {{t.muted}}">Spent</span><span style="font-size: 30px; font-weight: 800; letter-spacing: -0.02em">$0.62</span></div>
+        <div style="background: {{t.surface}}; border: 1px solid {{t.border}}; border-radius: 16px; padding: 16px 18px; display: flex; flex-direction: column; gap: 4px; box-shadow: {{t.shadow}}"><span style="font-size: 14px; color: {{t.muted}}">Quiet time</span><span style="font-size: 30px; font-weight: 800; letter-spacing: -0.02em">Respected</span></div>
+        <div style="background: {{t.surface}}; border: 1px solid {{t.border}}; border-radius: 16px; padding: 16px 18px; display: flex; flex-direction: column; gap: 4px; box-shadow: {{t.shadow}}"><span style="font-size: 14px; color: {{t.muted}}">Waiting for you</span><span style="font-size: 30px; font-weight: 800; letter-spacing: -0.02em; color: {{t.accent}}">3</span></div>
+      </div>
+
+      <ol style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column">
+        <li style="display: flex; gap: 18px; padding: 18px 0; border-top: 1px solid {{t.border}}">
+          <span style="flex: 0 0 52px; padding-top: 3px; font-family: 'JetBrains Mono', monospace; font-size: 13px; color: {{t.muted}}">02:00</span>
+          <span style="flex: 1 1 auto; display: flex; flex-direction: column; gap: 8px">
+            <span style="align-self: flex-start; padding: 3px 10px; border-radius: 999px; background: {{t.redSoft}}; color: {{t.red}}; font-size: 12px; font-weight: 600">Failed</span>
+            <span style="font-size: 16px; line-height: 1.5">The backup to [DRIVE] failed because the disk is full. Household will retry when you say so.</span>
+            <span style="display: flex; gap: 18px; font-size: 14px; font-weight: 600"><a href="#" style="color: {{t.accent}}">Retry</a><a href="#" style="color: {{t.text2}}">Details</a></span>
+          </span>
+        </li>
+        <li style="display: flex; gap: 18px; padding: 18px 0; border-top: 1px solid {{t.border}}">
+          <span style="flex: 0 0 52px; padding-top: 3px; font-family: 'JetBrains Mono', monospace; font-size: 13px; color: {{t.muted}}">22:40</span>
+          <span style="flex: 1 1 auto; display: flex; flex-direction: column; gap: 8px">
+            <span style="align-self: flex-start; padding: 3px 10px; border-radius: 999px; background: {{t.blueSoft}}; color: {{t.blue}}; font-size: 12px; font-weight: 600">Done</span>
+            <span style="font-size: 16px; line-height: 1.5">Research finished "Compare health insurers", with three sources.</span>
+            <span style="display: flex; gap: 18px; font-size: 14px; font-weight: 600"><a href="#" style="color: {{t.accent}}">Open report</a></span>
+          </span>
+        </li>
+        <li style="display: flex; gap: 18px; padding: 18px 0; border-top: 1px solid {{t.border}}">
+          <span style="flex: 0 0 52px; padding-top: 3px; font-family: 'JetBrains Mono', monospace; font-size: 13px; color: {{t.muted}}">23:05</span>
+          <span style="flex: 1 1 auto; display: flex; flex-direction: column; gap: 8px">
+            <span style="align-self: flex-start; padding: 3px 10px; border-radius: 999px; background: {{t.raised}}; border: 1px solid {{t.border}}; color: {{t.text2}}; font-size: 12px; font-weight: 600">Suggestion</span>
+            <span style="font-size: 16px; line-height: 1.5">Finance suggests paying the [SUPPLIER] invoice due Monday. Nothing happens until you say so.</span>
+            <span style="display: flex; gap: 18px; font-size: 14px; font-weight: 600"><a href="#" style="color: {{t.accent}}">Do it</a><a href="#" style="color: {{t.text2}}">Not now</a></span>
+          </span>
+        </li>
+        <li style="display: flex; gap: 18px; padding: 18px 0; border-top: 1px solid {{t.border}}">
+          <span style="flex: 0 0 52px; padding-top: 3px; font-family: 'JetBrains Mono', monospace; font-size: 13px; color: {{t.muted}}">23:30</span>
+          <span style="flex: 1 1 auto; display: flex; flex-direction: column; gap: 8px">
+            <span style="align-self: flex-start; padding: 3px 10px; border-radius: 999px; background: {{t.greenSoft}}; color: {{t.green}}; font-size: 12px; font-weight: 600">You decided</span>
+            <span style="font-size: 16px; line-height: 1.5">From your phone, you allowed Code to run the tests once. They ran once and passed.</span>
+            <span style="display: flex; gap: 18px; font-size: 14px; font-weight: 600"><a href="#" style="color: {{t.text2}}">Details</a></span>
+          </span>
+        </li>
+        <li style="display: flex; gap: 18px; padding: 18px 0; border-top: 1px solid {{t.border}}; border-bottom: 1px solid {{t.border}}">
+          <span style="flex: 0 0 52px; padding-top: 3px; font-family: 'JetBrains Mono', monospace; font-size: 13px; color: {{t.muted}}">06:00</span>
+          <span style="flex: 1 1 auto; display: flex; flex-direction: column; gap: 8px">
+            <span style="align-self: flex-start; padding: 3px 10px; border-radius: 999px; background: {{t.accentSoft}}; color: {{t.accent}}; font-size: 12px; font-weight: 600">Question</span>
+            <span style="font-size: 16px; line-height: 1.5">You seem to start work at 08:30 on Fridays now. Is that right?</span>
+            <span style="display: flex; gap: 18px; font-size: 14px; font-weight: 600"><a href="#" style="color: {{t.accent}}">Yes, remember it</a><a href="#" style="color: {{t.text2}}">No</a></span>
+          </span>
+        </li>
+      </ol>
+    </main>
+
+    <aside style="flex: 1 1 300px; min-width: 0; display: flex; flex-direction: column; gap: 16px">
+      <div style="background: {{t.surface}}; border: 1px solid {{t.border}}; border-radius: 20px; padding: 22px; display: flex; flex-direction: column; gap: 14px; box-shadow: {{t.shadow}}">
+        <h2 style="margin: 0; font-size: 17px; font-weight: 700">Routines today</h2>
+        <span style="display: flex; gap: 14px; font-size: 15px; color: {{t.muted}}"><span style="flex: 0 0 48px; font-family: 'JetBrains Mono', monospace; font-size: 13px">07:00</span><span>Morning briefing · sent</span></span>
+        <span style="display: flex; gap: 14px; font-size: 15px"><span style="flex: 0 0 48px; font-family: 'JetBrains Mono', monospace; font-size: 13px; color: {{t.muted}}">09:00</span><span>Code · CI check</span></span>
+        <span style="display: flex; gap: 14px; font-size: 15px"><span style="flex: 0 0 48px; font-family: 'JetBrains Mono', monospace; font-size: 13px; color: {{t.muted}}">12:00</span><span>Research · News digest</span></span>
+        <span style="display: flex; gap: 14px; font-size: 15px"><span style="flex: 0 0 48px; font-family: 'JetBrains Mono', monospace; font-size: 13px; color: {{t.muted}}">17:30</span><span>Finance · Reconcile</span></span>
+        <span style="display: flex; gap: 14px; font-size: 15px; color: {{t.muted}}"><span style="flex: 0 0 48px; font-family: 'JetBrains Mono', monospace; font-size: 13px">22:00</span><span>Quiet time starts</span></span>
+        <button type="button" style="font: inherit; font-size: 14px; align-self: flex-start; margin-top: 4px; padding: 9px 14px; border-radius: 10px; border: 1px solid {{t.line}}; background: transparent; color: {{t.text}}; cursor: pointer; min-height: 40px">Add a routine</button>
+      </div>
+    </aside>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"dark":{"editor":"boolean","default":false},"$preview":{"width":1440,"height":980}}'>
+class Component extends DCLogic {
+  renderVals() {
+    var L = {bg: '#FFFFFF', surface: '#FFFFFF', raised: '#F6F7F9', border: '#E6E8EC', line: '#D3D7DE', text: '#0F172A', text2: '#475569', muted: '#64748B', brand: '#F74C00', accent: '#C03A00', accentSoft: '#FFF4EE', accentLine: '#FFD6C2', ink: '#0A1628', onInk: '#FFFFFF', green: '#12774B', greenSoft: '#E8F6EF', blue: '#2563EB', blueSoft: '#EAF1FE', red: '#B42318', redSoft: '#FEF0EF', shadow: '0 1px 2px rgba(15,23,42,0.04), 0 12px 32px rgba(15,23,42,0.06)', glow: 'radial-gradient(760px 460px at 0% 0%, #FFE9DE 0%, rgba(255,233,222,0) 70%)'};
+    var D = {bg: '#0A1628', surface: '#15233B', raised: '#1C2B45', border: '#2A3D5C', line: '#3A5075', text: '#F1F5F9', text2: '#D5DEE8', muted: '#A7B4C6', brand: '#F74C00', accent: '#FF9C78', accentSoft: 'rgba(247,76,0,0.14)', accentLine: 'rgba(255,156,120,0.38)', ink: '#F1F5F9', onInk: '#0A1628', green: '#61E7A5', greenSoft: 'rgba(97,231,165,0.12)', blue: '#79B2FF', blueSoft: 'rgba(121,178,255,0.12)', red: '#FF8A80', redSoft: 'rgba(255,138,128,0.12)', shadow: 'none', glow: 'radial-gradient(760px 460px at 0% 0%, rgba(247,76,0,0.16) 0%, rgba(247,76,0,0) 70%)'};
+    return { t: this.props.dark ? D : L };
+  }
+}
+</script>
+</body>
+</html>

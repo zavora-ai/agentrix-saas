@@ -1,0 +1,12 @@
+# Every 15 minutes (RPO 15 min, docs/09 §3.3), and once soon after boot.
+[Unit]
+Description=Agentrix backup every 15 minutes
+
+[Timer]
+OnBootSec=5min
+OnCalendar=*:0/15
+RandomizedDelaySec=60
+Persistent=true
+
+[Install]
+WantedBy=timers.target

@@ -1,0 +1,114 @@
+{% extends "ui/layouts/shell.html" %}
+{% import "ui/kit.html" as ui %}
+{#- The owner console for one company (money host: Agentrix, James; Kilele host: Kilele Bakery,
+    Wanjiru). View: pages::console_view. -#}
+{% block title %}{{ site.name }} · {{ site.sub }}{% endblock %}
+{% block shell_styles %}<link rel="stylesheet" href="/static/saas/saas.css?v={{ saas_v }}">{% endblock %}
+{% block os_class %}{% if frozen %}frozen{% endif %}{% endblock %}
+{% block bar %}
+  {{ ui.site_chip(site) }}
+  <span class="grow"></span>
+  {% if audit.verified %}<span class="pill trust" title="{{ audit.checkpoint }}"><span class="hide-sm">Audit log</span> <b>verified</b></span>{% else %}<span class="pill hold"><span class="hide-sm">Audit log</span> <b>not verified</b></span>{% endif %}
+  {% if frozen %}{{ ui.pill("Agents", kind="freeze", value="frozen") }}{% else %}{{ ui.pill("Agents", value="running") }}{% endif %}
+  {% if open %}{{ ui.pill("Waiting for you", kind="hold", count=open) }}{% endif %}
+{% endblock %}
+{% block dock %}
+  {% for a in agents %}{{ ui.app_icon({"label": a.name, "href": "#agent-" ~ a.id, "agent": a}) }}{% endfor %}
+  {% if is_agentrix %}{{ ui.app_icon({"label": "Board", "href": "/board/", "icon": "▦"}) }}{% endif %}
+  {{ ui.app_icon({"label": "Passkey", "href": "/console/" ~ company ~ "/passkey", "icon": "◉"}) }}
+  {{ ui.app_icon({"label": "Badges", "href": "/console/" ~ company ~ "/badges", "icon": "◈"}) }}
+  {{ ui.app_icon({"label": "Wallet", "href": "/console/" ~ company ~ "/wallet", "icon": "▤"}) }}
+{% endblock %}
+{% block banner %}
+  {% if frozen %}{{ ui.banner("frozen", "Every agent that moves money is frozen. Nothing is paid, settled or agreed until you unfreeze.") }}{% endif %}
+  {% if source == "demo" %}{{ ui.banner("", "Demo books: the story's numbers, as of " ~ as_of ~ ". Real ERA and PayPal sandbox data replace them when the books service is connected.") }}
+  {% elif source == "fakebooks" %}{{ ui.banner("", "In-memory books (saas-core FakeBooks), seeded with the story as of " ~ as_of ~ ". Zavora ERA replaces them when the books service is connected.") }}{% endif %}
+{% endblock %}
+{% block field %}
+<div class="field-head"><div><h1>{{ site.name }}</h1><div class="sub">{{ owner }}'s console · as of {{ as_of }}</div></div>
+  {% if may_act %}
+  <form method="post" action="{{ base }}/console/freeze">
+    <input type="hidden" name="frozen" value="{{ '0' if frozen else '1' }}">
+    <button class="btn {{ 'btn-primary' if frozen else 'btn-coral' }}" type="submit" data-freeze>{{ "Unfreeze my agents" if frozen else "Freeze my agents" }}</button>
+  </form>
+  {% endif %}
+</div>
+
+<div class="kpis">{% for k in kpis %}{{ ui.kpi(k) }}{% endfor %}</div>
+
+{% if passkey.rp_id %}
+<div class="passkey-line{% if passkey.ready %} ready{% endif %}">
+  {% if passkey.ready %}{{ ui.chip("Passkey set up", "ok") }} <span class="small">Approvals here need {{ owner }}'s passkey for <span class="mono">{{ passkey.rp_id }}</span>, signed over each decision's fingerprint.</span>
+  {% else %}{{ ui.chip("No passkey yet", "wait") }} <span class="small">Set up {{ owner }}'s passkey for <span class="mono">{{ passkey.rp_id }}</span>; from then on every approval here needs it.</span>
+  {% if passkey.can_set_up %}<button class="btn btn-sm" type="button" data-passkey-setup>Set up my passkey</button>{% endif %}{% endif %}
+  <span class="small muted" data-passkey-status role="status"></span>
+</div>
+{% endif %}
+
+<div class="cards saas-cards">
+  {% for m in mandates %}
+  <article class="fcard{% if loop.first %} accent{% endif %} mandate" id="mandate-{{ m.id }}">
+    <div class="fcard-head">{{ ui.mark(m.agent, size=28, show_name=false) }}<div class="who"><b>{{ owner }}'s mandate for {{ m.agent.name }}</b><span class="state-line {{ 'frozen' if m.frozen else 'ok' }}"><span class="dot"></span>{{ "Frozen" if m.frozen else "Active" }} · {{ m.signed }}</span></div>{{ ui.chip("AP2-style intent", "outline") }}</div>
+    <p>{{ m.scope }}.</p>
+    <dl class="kv">
+      <dt>A payment</dt><dd>up to {{ m.per_payment }}</dd>
+      <dt>A day</dt><dd>up to {{ m.daily }}</dd>
+      <dt>Payees</dt><dd>{{ m.payees }}</dd>
+    </dl>
+    <div class="progress"><div class="spread small"><span>Used today</span><span><b>{{ m.used }}</b> of {{ m.daily }}</span></div>{{ ui.meter(m.used_minor, m.daily_minor, tone="ok", label=m.used ~ " of " ~ m.daily ~ " used today") }}</div>
+    <p class="small muted">{{ m.expires }}</p>
+  </article>
+  {% endfor %}
+
+  {% for p in plans %}
+  <article class="fcard span2">
+    <div class="fcard-head"><div class="who"><b>Instalment plan · {{ p.title }}</b><span class="state-line ok"><span class="dot"></span>{{ p.summary }}</span></div></div>
+    {{ ui.meter(p.paid_minor, p.principal_minor, tone="ok", label=p.summary) }}
+    {{ ui.timeline(p.items, label="Instalments") }}
+  </article>
+  {% endfor %}
+
+  <article class="fcard span2 wide">
+    <div class="fcard-head"><div class="who"><b>Owed to {{ site.name }}</b><span class="state-line">Open invoices in ERA</span></div></div>
+    {{ ui.data_table([{"key": "number", "label": "Invoice"}, {"key": "customer", "label": "Customer"}, {"key": "due", "label": "Due"}, {"key": "age", "label": "Age"}, {"key": "status", "label": "Status"}, {"key": "open", "label": "Open", "align": "r"}], receivables, empty="Nothing owed.") }}
+  </article>
+
+  <article class="fcard span2 wide">
+    <div class="fcard-head"><div class="who"><b>Bills to pay</b><span class="state-line">PayPal, inside {{ owner }}'s mandate unless marked</span></div></div>
+    {{ ui.data_table([{"key": "number", "label": "Bill"}, {"key": "vendor", "label": "To"}, {"key": "due", "label": "Due"}, {"key": "mandate", "label": "Mandate"}, {"key": "status", "label": "Status"}, {"key": "open", "label": "Amount", "align": "r"}], payables, empty="No bills.") }}
+  </article>
+
+  {% if settlements %}
+  <article class="fcard span2 wide">
+    <div class="fcard-head"><div class="who"><b>Settled agent to agent</b><span class="state-line">Both ledgers post from one PayPal id</span></div></div>
+    {{ ui.timeline(settlements, label="Settlements") }}
+  </article>
+  {% endif %}
+
+  <article class="fcard span2 wide" id="staff">
+    <div class="fcard-head"><div class="who"><b>{{ site.name }}'s staff</b><span class="state-line">Each agent signs its own requests and holds no secrets; PayPal access is issued per call</span></div></div>
+    <p class="small muted">Revoke switches one agent off now: its tokens stop working at its next call, and no PayPal key is rotated. Switching it back on takes your passkey.</p>
+    <ul class="list staff-list">{% for a in agents %}<li id="agent-{{ a.id }}" class="staff-row">{{ ui.mark(a, size=28) }}<p class="small muted">{{ a.job }}</p>
+      <div class="revoke-switch">
+        {%- if a.revoked %}{{ ui.chip("Revoked", "risk") }}{% if may_act %} <button class="btn btn-sm btn-primary" type="button" data-restore="{{ base }}/console/agents/{{ a.role }}/restore">Switch on with passkey</button>{% endif %}
+        {%- elif may_act %}<form method="post" action="{{ base }}/console/agents/{{ a.role }}/revoke"><button class="btn btn-sm btn-coral" type="submit" data-revoke>Revoke</button></form>{% endif %}
+        <span class="small" data-restore-status role="status"></span>
+      </div></li>{% endfor %}</ul>
+  </article>
+</div>
+{% endblock %}
+{% block lane %}
+  {% call ui.lane_section("Needs you", open) %}
+    {% for d in open_decisions %}{{ ui.decision_card(d) }}{% else %}{{ ui.quiet("Nothing waits for you.") }}{% endfor %}
+  {% endcall %}
+  {% if done_decisions %}
+  {% call ui.lane_section("Decided") %}
+    {% for d in done_decisions %}{{ ui.decision_card(d) }}{% endfor %}
+  {% endcall %}
+  {% endif %}
+{% endblock %}
+{% block cmd %}{% if is_agentrix %}{{ ui.command_bar("/board/", "Ask the Treasurer on the board", label="Ask the Treasurer") }}{% endif %}{% endblock %}
+{% block overlays %}
+  {% for d in open_decisions %}{{ ui.approval_sheet(d.sheet) }}{% endfor %}
+{% endblock %}
+{% block scripts %}<script type="module" src="/static/saas/console.js?v={{ saas_v }}"></script>{% endblock %}

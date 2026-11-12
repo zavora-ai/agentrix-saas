@@ -1,0 +1,18 @@
+<section class="acct" id="acct" data-acct="create" data-next="{{ next }}">
+  <div>
+    <h1 class="acct-h">Create your account</h1>
+    <p class="acct-why">So you can follow your order and get a receipt.</p>
+  </div>
+  <form class="acct-form" method="post" action="/account/code/send" novalidate>
+    <input type="hidden" name="purpose" value="create">
+    <input type="hidden" name="next" value="{{ next }}">
+    <label class="field">Your name<input id="acct-name" name="name" type="text" autocomplete="name" required maxlength="80" value="{{ name }}"></label>
+    <label class="field">Email, for receipts<input id="acct-email" name="email" type="email" autocomplete="email" inputmode="email" required value="{{ email }}"></label>
+    <label class="field">Phone, for order updates (optional)<input id="acct-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" value="{{ phone }}"></label>
+    <button class="btn wide" type="button" id="acct-passkey" hidden>Create a passkey</button>
+    <p class="small" id="acct-passkey-why" hidden>Your phone or laptop makes the passkey. {{ site }} gets a public key, never your face, fingerprint or screen-lock PIN.</p>
+    <button class="btn ghost wide" type="submit" id="acct-code">Email me a code instead</button>
+  </form>
+  <p class="note warn" id="acct-error" role="alert"{% if not error %} hidden{% endif %}>{{ error }}</p>
+  <p class="small">Already have an account? <a class="link" href="/account/sign-in?next={{ next_q }}">Sign in</a> · <a class="link" href="/account/keeps">What {{ site }} keeps</a></p>
+</section>

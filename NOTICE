@@ -1,0 +1,54 @@
+Agentrix WebAgent Platform
+Copyright (c) 2026 Zavora Technologies Ltd
+
+This repository is licensed under the MIT License (see LICENSE), except for the third-party
+files listed below, which keep their own licences.
+
+Third-party files in this repository
+------------------------------------
+
+Fonts (SIL Open Font License, Version 1.1)
+  crates/agentrix-ui/static/fonts/*.woff2
+  apps/packages/agentrix_kit/fonts/*.ttf
+  Manrope, DM Sans, JetBrains Mono, Fraunces, Cormorant Garamond, Newsreader and Libre Caslon
+  Text, each copyright its project authors. The woff2 files are the latin and latin-ext
+  subsets published by Fontsource, unmodified. The licence text and each font's copyright line
+  are in the OFL.txt beside them:
+    crates/agentrix-ui/static/fonts/OFL.txt
+    apps/packages/agentrix_kit/fonts/OFL.txt
+
+Zavora work reused from earlier projects
+----------------------------------------
+
+Zavora Technologies Ltd holds the copyright in the following earlier work. It was published
+under the Apache License 2.0 and is relicensed here under MIT by its copyright holder.
+
+  concept/experience/img/{amber,citrus,rain,vanilla}.jpg
+    Generated product renders from Zavora's Agentrix Website proof of concept, resized and
+    recompressed. Details in concept/experience/img/SOURCE.md.
+
+  fixtures/wordpress-infected/
+    Zavora's deliberately infected WordPress fixture. It starts from the infected WordPress
+    scenario in adk-rust's examples/website (Apache-2.0, Zavora) and adds its own attacks.
+
+  crates/agentrix-effects/src/paypal.rs and crates/agentrix-effects/src/payouts.rs
+    The PayPal REST client (OAuth token cache, PayPal-Request-Id idempotency, readable errors)
+    and PayPal Payouts (send a payout, read a batch back) are adapted from steward-paypal in
+    Zavora's Steward project (Apache-2.0, Zavora).
+
+Ideas from Zavora's Agentrix OS and Agentrix Website proofs of concept (the decision inbox, one
+coordinator, authority per agent, a staff of agents, charter jobs with an autonomy ladder, the
+agent door) were carried over as designs. No other file in this repository is marked as copied
+from either project.
+
+Dependencies (not included in this repository)
+----------------------------------------------
+
+adk-rust v3 (https://github.com/zavora-ai/adk-rust), Zavora's Rust agent framework, is fetched
+by Cargo at a pinned commit and is licensed under the Apache License 2.0. Other Rust crates and
+Dart packages are fetched by Cargo and pub under their own licences, listed in Cargo.lock and
+apps/pubspec.lock.
+
+The fixture runs the official wordpress and mariadb container images, and the sealed-room
+images are built from public base images named in each Dockerfile under
+crates/agentrix-sandbox/images/. None of those images is included here.

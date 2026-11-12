@@ -1,0 +1,4 @@
+::note You get this because you subscribed at {{ site.host }} and confirmed by email.
+{% if unsubscribe_url is defined %}
+::link Stop the digest | {{ unsubscribe_url }}
+{% endif %}

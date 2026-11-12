@@ -1,0 +1,88 @@
+{#- The search page's body (C-02, C-03): rendered inside search.html at once, by rules, and alone
+    by /search/agent when the desks' model has read the question and written the answer. -#}
+{% from "classy/parts.html" import pic, answer as answer_card %}
+{% macro seg(parts) %}{% for x in parts %}{% if x.m %}<mark>{{ x.t }}</mark>{% else %}{{ x.t }}{% endif %}{% endfor %}{% endmacro %}
+<div class="s-body{% if plain %} plain-on{% endif %}" id="sbody"{% if agent_href %} data-agent="{{ agent_href }}"{% endif %}>
+  <div>
+    {% if not q %}
+    <div class="qline"><h1 class="qh">Search or ask</h1></div>
+    <div class="panel">
+      <p>Type a scent, a family, a budget or a question about delivery. Product matches and answers come from this shop's catalogue and pages.</p>
+      <div class="tries" role="group" aria-label="Example searches"><span>Try:</span>{% for t in tries %}<a href="{{ t.href }}">{{ t.text }}</a>{% endfor %}</div>
+    </div>
+    {% else %}
+    <div class="qline"><h1 class="qh" id="qtitle">“{{ q }}”</h1>
+      <div class="mode" role="group" aria-label="Result style"><a href="{{ answer_href }}"{% if not plain %} aria-current="true"{% endif %}>Answer</a><a href="{{ plain_href }}"{% if plain %} aria-current="true"{% endif %}>Plain results</a></div></div>
+
+    {% if plain %}
+    <div class="pages plain" id="plain" style="margin-top:0">
+      <h4>{{ plain_count }} result{% if plain_count != 1 %}s{% endif %} · plain search, no AI</h4>
+      {% for h in plain_hits %}<a class="page-hit" href="{{ h.s.href }}">{{ pic(h.s, "thumb") }}<b>{{ seg(h.name) }}</b><div class="path">{{ h.s.price }} · {{ h.s.size }} · {{ h.s.stock }}</div><p>{{ seg(h.notes) }}</p></a>{% endfor %}
+      {% for h in plain_pages %}<a class="page-hit" href="{{ h.href }}"><b>{{ h.label }}</b><div class="path">{{ shell.site.host }}{{ h.href }}</div><p>{{ seg(h.text) }}</p></a>{% endfor %}
+      {% if plain_count == 0 %}<p class="page-hit">Nothing on this site matches those words. Try a family such as amber or citrus, or <a href="/fragrances">browse every scent</a>.</p>{% endif %}
+    </div>
+    {% else %}
+    <div class="agentic">
+      {% if answer %}<div class="answer" id="answer">{{ answer_card(answer, shell.site) }}</div>{% endif %}
+      {% if shortlist %}
+      <div class="shortlist" id="shortlist">
+        {% for p in shortlist %}
+        <article class="p-card" id="prod-{{ p.scent.slug }}">
+          <a class="rank" href="{{ p.scent.href }}" tabindex="-1" aria-hidden="true">{{ pic(p.scent) }}{% if p.rank %}<b>{{ p.rank }}</b>{% endif %}</a>
+          <div class="pb">
+            <h3><a href="{{ p.scent.href }}">{{ p.scent.name }}</a></h3>
+            <div class="pr">{{ p.scent.price }} · {{ p.scent.size }}</div>
+            <div class="fits">{% for f in p.fits %}<span class="fit{% if not f.ok %} no{% endif %}">{% if f.ok %}✓ {% endif %}{{ f.text }}</span>{% endfor %}</div>
+            <p class="why">{{ p.why }}</p>
+            {% if p.scent.out %}<span class="act" aria-disabled="true">Sold out</span>{% else %}
+            <form method="post" action="/bag/add"><input type="hidden" name="sku" value="{{ p.scent.sku }}"><input type="hidden" name="qty" value="1"><input type="hidden" name="back" value="{{ answer_href }}"><button class="act{% if p.rank %} primary{% endif %}" type="submit">Add to bag</button></form>{% endif %}
+          </div>
+        </article>
+        {% endfor %}
+      </div>
+      {% if compare_href and not compare %}<p class="more-link"><a class="act" href="{{ compare_href }}#compare">Compare them side by side</a></p>{% endif %}
+      {% endif %}
+      {% if compare %}
+      <div class="compare" id="compare"><table>
+        <thead><tr><th scope="col"><span class="sr-only">Detail</span></th>{% for s in compare %}<th scope="col"><a href="{{ s.href }}">{{ s.name }}</a></th>{% endfor %}</tr></thead>
+        <tbody>
+          <tr><td>Price</td>{% for s in compare %}<td>{{ s.price }}{% if budget and s.price_minor > budget %} <span class="fit no">over budget</span>{% endif %}</td>{% endfor %}</tr>
+          <tr><td>Size</td>{% for s in compare %}<td>{{ s.size }}</td>{% endfor %}</tr>
+          <tr><td>Family</td>{% for s in compare %}<td>{{ s.family }}</td>{% endfor %}</tr>
+          <tr><td>Notes</td>{% for s in compare %}<td>{{ s.notes }}</td>{% endfor %}</tr>
+          <tr><td>Strength</td>{% for s in compare %}<td>{{ s.strength_words }}</td>{% endfor %}</tr>
+          <tr><td>Vanilla</td>{% for s in compare %}<td>{{ s.vanilla_words }}</td>{% endfor %}</tr>
+          <tr><td>Gift-ready</td>{% for s in compare %}<td>{% if s.gift_ready %}Wrapped, with a card{% else %}Free wrap at checkout{% endif %}</td>{% endfor %}</tr>
+          <tr><td>In stock</td>{% for s in compare %}<td>{{ s.stock }}</td>{% endfor %}</tr>
+        </tbody></table>
+        <div class="foot"><span>Built from the catalogue{% if prices %} and {{ prices }}{% endif %}. {{ compare_gap }}</span><a class="act" href="{{ answer_href }}&amp;compare={% for s in compare %}{{ s.sku }}{% if not loop.last %},{% endif %}{% endfor %}">Link to this comparison</a></div>
+      </div>
+      {% endif %}
+      {% if not answer and not shortlist %}<div class="panel"><p>Nothing in the catalogue matches “{{ q }}”. Try a family such as amber or citrus, a budget, or <a href="/fragrances">browse every scent</a>.</p></div>{% endif %}
+    </div>
+    {% if hits %}
+    <div class="pages agentic" id="pages"><h4>From the site</h4>
+      {% for h in hits %}<a class="page-hit" href="{{ h.href }}"><b>{{ h.label }}</b><div class="path">{{ shell.site.host }}{{ h.href }}</div><p>{{ seg(h.text) }}</p></a>{% endfor %}
+    </div>
+    {% endif %}
+    {% endif %}
+    {% endif %}
+  </div>
+  <aside class="side">
+    <div class="panel"><h4>How I read your question</h4>
+      {% if chips %}<div class="intent">{% for c in chips %}{% if c.na %}<span class="chip-na" title="The site doesn't publish this, so search can't filter by it"><i>{{ c.label }}</i>{{ c.value }} · not published</span>{% else %}<a href="{{ c.remove }}" title="Search again without this"><i>{{ c.label }}</i>{{ c.value }}<span aria-hidden="true"> ×</span><span class="sr-only"> (remove)</span></a>{% endif %}{% endfor %}</div>
+      <p class="small" style="margin-top:8px">{% if read_by_ai %}Read by AI from your words, then checked against the catalogue. {% endif %}Tap a part to drop it, and the list re-sorts from the catalogue without AI.</p>
+      {% else %}<p class="small">{% if q %}No budget, family, size or product in your words, so the results match the words as typed.{% else %}Type a request, such as a budget or a scent family, and its parts show here.{% endif %}</p>{% endif %}
+    </div>
+    {% if refine %}
+    <div class="panel"><h4>Refine</h4><div class="refine">{% for r in refine %}{% if r.na %}<span class="na" aria-disabled="true" title="The site doesn't publish this, so search can't filter by it">{{ r.label }}</span>{% else %}<a href="{{ r.href }}">{{ r.label }}</a>{% endif %}{% endfor %}</div>
+      {% if refine | selectattr("na") | list %}<p class="small" style="margin-top:8px">Dashed ones: the site doesn't publish this, so search can't filter by it.</p>{% endif %}</div>
+    {% endif %}
+    <div class="panel"><h4>What I used</h4><div class="used">
+      {% if prices %}<div><span>Price list</span><b>{{ prices | replace("the price list of ", "") }}</b></div>{% endif %}
+      <div><span>Stock</span><b>{{ asof }}</b></div>
+      <div><span>Pages</span><b>{{ used_pages }}</b></div>
+      <div><span>AI calls</span><b>{{ model_calls }}</b></div>
+    </div></div>
+  </aside>
+</div>

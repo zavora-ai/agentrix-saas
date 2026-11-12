@@ -1,0 +1,35 @@
+{#- Macros shared by the home page and the desks' pages. -#}
+{% macro tick() %}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg>{% endmacro %}
+
+{% macro lock() %}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>{% endmacro %}
+
+{#- The address box: posts to W4's Assess as a plain form; check.js turns screen 1 into the check in place. -#}
+{% macro paste(id, action, hint=true, check=false) %}
+<form class="paste"{% if check %} data-check{% endif %} method="post" action="{{ action }}">
+  <label class="paste-label" for="{{ id }}">Your website address</label>
+  <div class="addr">
+    <div class="addr-input"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg><input id="{{ id }}" name="url" type="text" inputmode="url" autocomplete="url" autocapitalize="off" spellcheck="false" placeholder="zavora.ai" required{% if hint %} aria-describedby="{{ id }}-hint"{% endif %}></div>
+    <button class="btn btn-primary btn-lg" type="submit">Check my site</button>
+  </div>
+  {% if hint %}<p class="paste-hint" id="{{ id }}-hint">Check a site you own or run for free. No account required. We only read public pages.</p>{% endif %}
+</form>
+{% endmacro %}
+
+{% macro person(contact) %}{% if contact %}<p class="person">Rather talk to a person? {% if contact.open_now or not contact.reply_from %}<a href="{{ contact.href }}">WhatsApp us</a>, {{ contact.hours }}.{% else %}<a href="{{ contact.href }}">WhatsApp us</a>. {{ contact.reply_from }}{% endif %}</p>{% endif %}{% endmacro %}
+
+{#- A desk's ask box at the top of its page: starters work as links without JavaScript; desks.js answers in place. -#}
+{% macro ask_box(d, desks_ai) %}
+<section class="ask-box wrap" aria-labelledby="ask-{{ d.id }}-title">
+  <h2 id="ask-{{ d.id }}-title" class="ask-title">Ask {{ d.name }}{% if desks_ai %} <span class="ai-chip">AI</span>{% endif %}</h2>
+  <p class="ask-job">{{ d.job }}</p>
+  <div class="peek-starters">{% for s in d.starters %}<a class="starter" rel="nofollow" href="/_home/ask?desk={{ d.id }}&amp;q={{ s|urlencode }}" data-q="{{ s }}">{{ s }}</a>{% endfor %}</div>
+  <div class="answers" role="log" aria-live="polite" aria-label="{{ d.name }}'s answers"></div>
+  <form class="ask" method="get" action="/_home/ask" data-ask="{{ d.id }}">
+    <input type="hidden" name="desk" value="{{ d.id }}">
+    <label class="sr-only" for="ask-q-{{ d.id }}">Ask {{ d.name }}</label>
+    <input id="ask-q-{{ d.id }}" name="q" type="text" maxlength="400" autocomplete="off" placeholder="Ask {{ d.name }}…" required>
+    <button class="btn btn-primary" type="submit">Ask</button>
+  </form>
+  <p class="peek-foot">{% if desks_ai %}You're talking to AI. It answers only from this site and never guesses.{% else %}Answers come from this site's pages.{% endif %}</p>
+</section>
+{% endmacro %}

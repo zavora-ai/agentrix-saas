@@ -1,0 +1,57 @@
+name: agentrix_kit
+description: Agentrix's design tokens, fonts and components for Flutter, generated from W7's tokens.
+publish_to: none
+version: 0.1.0
+resolution: workspace
+environment:
+  sdk: ^3.11.0
+dependencies:
+  flutter:
+    sdk: flutter
+flutter:
+  fonts:
+    - family: Manrope
+      fonts:
+        - asset: fonts/Manrope-400.ttf
+          weight: 400
+        - asset: fonts/Manrope-600.ttf
+          weight: 600
+        - asset: fonts/Manrope-700.ttf
+          weight: 700
+        - asset: fonts/Manrope-800.ttf
+          weight: 800
+    - family: DMSans
+      fonts:
+        - asset: fonts/DMSans-400.ttf
+          weight: 400
+        - asset: fonts/DMSans-500.ttf
+          weight: 500
+        - asset: fonts/DMSans-600.ttf
+          weight: 600
+        - asset: fonts/DMSans-700.ttf
+          weight: 700
+        - asset: fonts/DMSans-Italic-400.ttf
+          weight: 400
+          style: italic
+    - family: JetBrainsMono
+      fonts:
+        - asset: fonts/JetBrainsMono-500.ttf
+          weight: 500
+    - family: Fraunces
+      fonts:
+        - asset: fonts/Fraunces-600.ttf
+          weight: 600
+    - family: CormorantGaramond
+      fonts:
+        - asset: fonts/CormorantGaramond-600.ttf
+          weight: 600
+    - family: Newsreader
+      fonts:
+        - asset: fonts/Newsreader-500.ttf
+          weight: 500
+    - family: LibreCaslonText
+      fonts:
+        - asset: fonts/LibreCaslonText-400.ttf
+          weight: 400
+        - asset: fonts/LibreCaslonText-700.ttf
+          weight: 700

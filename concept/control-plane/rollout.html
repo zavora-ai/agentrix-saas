@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Release train rollout · Agentrix</title>
+<meta name="description" content="Concept: a platform release train moving through rings and waves, with canary versus control analysis, gates, an automatic pause, and a two-person promotion, each person approving with a passkey or an authenticator code.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Manrope:wght@600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../styles.css">
+<link rel="stylesheet" href="../console/console.css">
+<link rel="stylesheet" href="cp.css">
+<style>
+  .artefacts { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; font-size: var(--fs-13); }
+  .artefacts li { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 2px 10px; padding-bottom: 8px; border-bottom: 1px solid var(--line); color: var(--ink-2); }
+  .artefacts li:last-child { border-bottom: 0; padding-bottom: 0; }
+  .artefacts b { color: var(--indigo-900); }
+  .artefacts code { font: 500 11.5px/1.4 var(--font-mono); color: var(--muted); grid-column: 1 / -1; overflow-wrap: anywhere; }
+  .gates { list-style: none; margin: 0; padding: 0; display: grid; gap: 7px; font-size: var(--fs-13); color: var(--ink-2); }
+  .gates li { display: grid; grid-template-columns: 18px minmax(0, 1fr) auto; gap: 8px; align-items: start; }
+  .gates li::before { content: "✓"; display: grid; place-items: center; width: 18px; height: 18px; border-radius: 6px; background: var(--ok-bg); color: var(--ok); font: 800 11px/1 var(--font-text); }
+  .gates li.paused::before { content: "Ⅱ"; background: var(--wait-bg); color: var(--wait); }
+  .gates .r { font: 600 var(--fs-12)/1.4 var(--font-mono); color: var(--muted); white-space: nowrap; }
+  .waves { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; margin-top: 10px; }
+  .wave { font-size: 11.5px; padding: 8px; border-radius: 10px; background: var(--ok-bg); color: #0d5b3b; min-width: 0; }
+  .wave b { display: block; font: 700 var(--fs-12)/1.2 var(--font-text); }
+  .notice { border: 1px dashed var(--line-strong); background: var(--paper); border-radius: 14px; padding: 12px; }
+  .notice .t { font: 700 var(--fs-14)/1.3 var(--font-display); color: var(--indigo-900); }
+  .notice p { font-size: var(--fs-13); color: var(--ink-2); margin-top: 4px; }
+</style>
+</head>
+<body>
+<header class="conceptbar">
+  <a class="logo" href="../index.html"><span class="mark" aria-hidden="true"></span>Agentrix</a>
+  <nav aria-label="Control plane concepts">
+    <a href="index.html">Control plane</a>
+    <a href="fleet.html">Fleet</a>
+    <a href="portfolio.html">Agency portfolio</a>
+    <a href="rollout.html" aria-current="page">Rollout</a>
+    <a href="incident.html">Incident</a>
+    <a href="billing.html">Billing</a>
+    <a href="cli.html">Zavora CLI</a>
+  </nav>
+  <span class="concept-label">Concept · illustrative data</span>
+</header>
+
+<main class="wrap">
+  <div class="cp-head">
+    <span class="eyebrow">Control plane 03 · A release train with canary health</span>
+    <h1 style="margin-top:12px">Every change rides a train.</h1>
+    <p class="lead">A platform release, an adk-rust pin bump and a pack security patch travel together. They start with Zavora's own sites, then canaries, then waves. Gates compare canary sites with matched control sites. Halting and rolling back are automatic; going further takes two people.</p>
+  </div>
+
+  <section class="os-frame cp-frame" aria-label="Operator console: release train 2026.11.3">
+    <div class="browser-bar"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="url"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg><span>console.agentrix.ai/<b>operator</b>/rollouts/2026.11.3</span></span></div>
+    <div class="os cp-os" data-shift="day" data-cp-scope="op" data-app="rollouts">
+      <div class="os-bar" data-cp-bar></div>
+      <nav class="dock" data-cp-dock></nav>
+      <div class="field cp-field">
+        <div class="field-head">
+          <div><h2>Train 2026.11.3</h2><div class="sub">Platform release · started Thu 5 Nov 10:00 · driven by the Release WebAgent</div></div>
+          <div class="row"><span class="chip chip-ok">Ring 2 complete</span><span class="chip chip-ok">13 of 13 metrics in bounds</span></div>
+        </div>
+
+        <div class="cp-grid">
+          <article class="card tight">
+            <div class="card-title"><h4>Rings</h4><span class="small muted">a ring advances in waves, by cell</span></div>
+            <div class="rings">
+              <div class="ring done"><b>Ring 0</b><span>Zavora runs on Zavora · zavora.ai, classyperfumes.shop + 4 synthetic sites · 24 h</span></div>
+              <div class="ring done"><b>Ring 1</b><span>Canary cohort · 31 opted-in sites · 24 h</span></div>
+              <div class="ring live"><b>Ring 2</b><span>10% · 61 sites · baked 12 h</span></div>
+              <div class="ring next"><b>Ring 3</b><span>50% · about 306 sites</span></div>
+              <div class="ring next"><b>Ring 4</b><span>All · plus the stable channel for self-hosters</span></div>
+            </div>
+            <div class="waves">
+              <div class="wave"><b>Wave 1 · ams-1</b>6 sites ✓</div>
+              <div class="wave"><b>Wave 2 · ams-1</b>27 sites ✓</div>
+              <div class="wave"><b>Wave 3 · ams-1</b>28 sites ✓</div>
+            </div>
+          </article>
+
+          <div class="cp-grid cols-2">
+            <article class="card tight">
+              <div class="card-title"><h4>Canary vs control · ring 2</h4><span class="small muted">same cells, same window</span></div>
+              <div class="cmp">
+                <div class="cmp-row"><span class="name">Policy denials per 1,000 tool calls<small>the metric that halted 2026.11.2 (it read 19.6)</small></span><span class="verdict chip chip-ok">in bounds</span>
+                  <div class="cmp-bars"><div class="bar canary"><span>canary</span><span class="track"><i style="width:20%"></i></span><span class="v">4.0</span></div><div class="bar"><span>control</span><span class="track"><i style="width:21%"></i></span><span class="v">4.1</span></div></div></div>
+                <div class="cmp-row"><span class="name">Ask first token p95</span><span class="verdict chip chip-ok">in bounds</span>
+                  <div class="cmp-bars"><div class="bar canary"><span>canary</span><span class="track"><i style="width:59%"></i></span><span class="v">1.18 s</span></div><div class="bar"><span>control</span><span class="track"><i style="width:61%"></i></span><span class="v">1.21 s</span></div></div></div>
+                <div class="cmp-row"><span class="name">Kernel wake → claim p95</span><span class="verdict chip chip-ok">better</span>
+                  <div class="cmp-bars"><div class="bar canary"><span>canary</span><span class="track"><i style="width:41%"></i></span><span class="v">0.41 s</span></div><div class="bar"><span>control</span><span class="track"><i style="width:46%"></i></span><span class="v">0.46 s</span></div></div></div>
+                <div class="cmp-row"><span class="name">Guardrail breaches per 1,000 actions</span><span class="verdict chip chip-ok">in bounds</span>
+                  <div class="cmp-bars"><div class="bar canary"><span>canary</span><span class="track"><i style="width:35%"></i></span><span class="v">0.7</span></div><div class="bar"><span>control</span><span class="track"><i style="width:40%"></i></span><span class="v">0.8</span></div></div></div>
+                <div class="cmp-row"><span class="name">Corrections per 100 WebAgent actions</span><span class="verdict chip chip-ok">in bounds</span>
+                  <div class="cmp-bars"><div class="bar canary"><span>canary</span><span class="track"><i style="width:44%"></i></span><span class="v">2.2</span></div><div class="bar"><span>control</span><span class="track"><i style="width:46%"></i></span><span class="v">2.3</span></div></div></div>
+                <div class="cmp-row"><span class="name">Model spend per site per day</span><span class="verdict chip chip-ok">in bounds</span>
+                  <div class="cmp-bars"><div class="bar canary"><span>canary</span><span class="track"><i style="width:42%"></i></span><span class="v">$0.21</span></div><div class="bar"><span>control</span><span class="track"><i style="width:42%"></i></span><span class="v">$0.21</span></div></div></div>
+                <div class="cmp-row"><span class="name">Edge 5xx rate</span><span class="verdict chip chip-ok">in bounds</span>
+                  <div class="cmp-bars"><div class="bar canary"><span>canary</span><span class="track"><i style="width:11%"></i></span><span class="v">0.011%</span></div><div class="bar"><span>control</span><span class="track"><i style="width:12%"></i></span><span class="v">0.012%</span></div></div></div>
+              </div>
+              <p class="small muted" style="margin-top:10px">7 of 13 shown. Sequential test with guardrails and an error budget (adk-eval's ExperimentAnalyzer). Ids, counts and durations only: no site content.</p>
+            </article>
+
+            <div class="cp-grid">
+
+              <article class="card tight">
+                <div class="card-title"><h4>Gates</h4><span class="small muted">all must pass</span></div>
+                <ul class="gates">
+                  <li><span>Scenarios S1–S19, scripted</span><span class="r">19/19</span></li>
+                  <li><span>Live scenarios on Vultr models at the new pin</span><span class="r">19/19</span></li>
+                  <li><span>Containment gauntlet</span><span class="r">10/10</span></li>
+                  <li><span>Cross-tenant suite, with operator and partner tokens</span><span class="r">67/67</span></li>
+                  <li><span>Approval and release integrity</span><span class="r">pass</span></li>
+                  <li><span>WebAgent evaluation suites vs baselines</span><span class="r">0 regressions</span></li>
+                  <li><span>cargo-deny, cargo-audit, SBOM, cosign</span><span class="r">clean</span></li>
+                  <li class="paused"><span>No SEV1/SEV2 in the wave's cells: INC-0142 paused the bake 03:12–04:05; traced to import traffic, not this release</span><span class="r">resumed</span></li>
+                </ul>
+              </article>
+            </div>
+          </div>
+
+          <div class="cp-grid cols-2e">
+            <article class="card tight">
+              <div class="card-title"><h4>What rides this train</h4><span class="small muted">signed artefacts only</span></div>
+              <ul class="artefacts">
+                <li><span><b>Platform release 0.4.3</b>: edge, control, kernel, gateways, fleet</span><span class="chip">no consent needed</span><code>images sha256:4be1…9d0 · cosign: release key</code></li>
+                <li><span><b>adk-rust pin</b> ffbfb05 → 3e91c2a</span><span class="chip">live scenarios gate</span><code>Cargo.lock sha256:a9c0…12e · SBOM attached</code></li>
+                <li><span><b>Schema migration 0031</b>, expand only</span><span class="chip">rollback-safe</span><code>contract step ships in 2026.11.5</code></li>
+                <li><span><b>Pack patch booking 1.3.1</b>: security fix, same capabilities</span><span class="chip chip-info">auto by policy</span><code>pack key: pt:zavora · capability diff: none</code></li>
+                <li><span><b>Detector update injection-v12</b></span><span class="chip">no consent needed</span><code>signed by security · evaluated on S7</code></li>
+              </ul>
+            </article>
+
+            <div class="cp-grid">
+              <article class="card tight">
+                <div class="card-title"><h4>Train timeline</h4></div>
+                <ul class="timeline">
+                  <li><span class="t">Thu 10:00</span><span class="ev ok"><b>Ring 0</b> started on Zavora's own sites</span></li>
+                  <li><span class="t">Fri 10:05</span><span class="ev ok">The Release WebAgent advanced to <b>ring 1</b>; Otieno approved</span></li>
+                  <li><span class="t">Fri 18:00</span><span class="ev ok"><b>Ring 2</b> waves 1–3 complete; bake started</span></li>
+                  <li><span class="t">Sat 03:12</span><span class="ev wait"><b>Paused automatically</b>: SEV2 opened in ams-1</span></li>
+                  <li><span class="t">Sat 04:05</span><span class="ev ok">Resumed after the SRE showed canary and control equally affected; Achieng approved</span></li>
+                  <li><span class="t">Sat 09:12</span><span class="ev">The Release WebAgent asks to promote</span></li>
+                </ul>
+              </article>
+              <div class="notice" aria-label="What owners will see in their Trust centre">
+                <span class="small muted">What owners in ring 3 will see in their Trust centre</span>
+                <div class="t" style="margin-top:6px">Platform update 2026.11.3</div>
+                <p>Zavora updated the software your WebAgents run on. Your pages, your WebAgents' permissions and your budget did not change. If our checks see errors rise, the update is undone automatically and we tell you here.</p>
+              </div>
+              <article class="card tight">
+                <div class="spread"><h4>2026.11.2 · halted itself</h4><span class="chip chip-risk">rolled back</span></div>
+                <p class="small" style="color:var(--ink-2);margin-top:6px">At ring 1, policy denials on the Editor's <code class="mono-chip">content_edit</code> rose from 4.1 to 19.6 per 1,000 calls. The Release WebAgent halted the train and rolled the cohort back by pin in 6 minutes. Cause: a changed tool declaration digest made the tool stale, so it asked before every call. Fixed in 2026.11.3.</p>
+              </article>
+            </div>
+          </div>
+        </div>
+      </div>
+      <aside class="lane" aria-label="What needs you"><div class="lane-scroll">
+        <h4>Needs you <span class="badge">1</span></h4>
+        <article class="card decision" data-done="Promoted · 2 of 2 signed (Otieno K., Achieng O.) · ring 3 begins at 10:00 in 4 waves · receipt op-9f3b…77.">
+                <div class="head"><span class="from"><span class="avatar op sm av-release">Re</span>Release asks</span><span class="chip chip-ok">Low risk · 0.12</span></div>
+                <h3>Promote to ring 3 (50%)</h3>
+                <p class="facts">Ring 2 finished its bake at 06:53, after an automatic pause during INC-0142.</p>
+                <div class="effect"><h4>If you approve, exactly this happens</h4>
+                  <ul><li>About 306 more sites move to 2026.11.3 in 4 waves of about 76 in ams-1, 2 h apart; the fra-1 standby follows the last wave</li><li>Owners in the waves see one line in their Trust centre; nothing about their sites changes</li><li>Hard stops roll a wave back by pin automatically; a regression halts the train</li></ul>
+                </div>
+                <div class="signers"><span class="signer signed"><i>O</i>Otieno K. · op.release ✓</span><span class="signer"><i>A</i>Achieng O. · op.sre</span></div>
+                <div class="actions"><button class="btn btn-primary" type="button" data-approve>Sign as second approver</button><button class="btn btn-ghost" type="button" data-decline>Hold the train</button></div>
+                <div class="sheet" role="status"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 11c0 3-1 6-3 8M8.5 7.5A5 5 0 0 1 17 11c0 1.5-.2 3-.6 4.4M6.3 10A6.5 6.5 0 0 1 9 5.6M12 14.5c-.2 1.8-.8 3.5-1.7 5M15.3 17.5c-.3 1-.7 2-1.2 2.9M4 13.5c.4-1 .6-2 .6-3"/></svg><b>Confirm with your passkey</b><div class="small" style="opacity:.8">Signing train 2026.11.3 · ring 3 · expires 10:30</div></div>
+                <div class="done-line" role="status"></div>
+              </article>
+        <h4>Done for you</h4>
+        <div class="quiet">Release paused this train at 03:12 when INC-0142 opened, and resumed the bake at 04:05 after Achieng's OK · halted 2026.11.2 at ring 1 and rolled its cohort back by pin in 6 minutes.</div>
+      </div></aside>
+      <div class="cmd" data-cp-cmd></div>
+    </div>
+  </section>
+
+  <section class="explain" aria-label="How this works">
+    <article class="card"><h3>Ring 0 is Zavora's own</h3><p>zavora.ai and classyperfumes.shop take every change first, alongside synthetic sites that run the live scenario set. Zavora feels a bad release before any customer does.</p><p class="small muted">08-control-plane §3.5</p></article>
+    <article class="card"><h3>Stopping is cheap; going on is signed</h3><p>The Release WebAgent may halt and roll back on its own. Ring 1 needs one approver; rings 2 to 4 need two different people, as the operator charter's approval chain requires.</p><p class="small muted">08-control-plane §5.3</p></article>
+    <article class="card"><h3>Behaviour changes need the owner</h3><p>Platform internals and security patches roll under the operator's charter. A pack upgrade that adds capabilities, a playbook revision or a theme change becomes the owner's decision.</p><p class="small muted">08-control-plane §3.5</p></article>
+  </section>
+</main>
+
+<footer class="concept-foot"><div class="wrap row"><span>Agentrix WebAgent Platform by Zavora · MIT · Concept · illustrative data. Versions, digests and people are fictional.</span><span>Design: docs/08-control-plane.md</span></div></footer>
+<script src="cp.js"></script>
+</body>
+</html>

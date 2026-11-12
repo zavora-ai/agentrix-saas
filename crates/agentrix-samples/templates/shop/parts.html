@@ -1,0 +1,24 @@
+{#- Pieces the shop pages share (bag, checkout, pay, orders, account). -#}
+{% macro styles(shell) -%}<link rel="stylesheet" href="/_s/shop.css?v={{ shell.v }}">{%- endmacro %}
+
+{% macro pin() -%}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 4h6l-1 5 3 3H7l3-3z"/><path d="M12 12v8"/></svg>{%- endmacro %}
+
+{% macro check() -%}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>{%- endmacro %}
+
+{% macro srcs(l) -%}
+<div class="k-srcs"><span class="k-pill {% if l.available %}ok{% else %}risk{% endif %}">{{ l.avail }}</span>{% for s in l.sources %}<span class="k-src">{{ s }}</span>{% endfor %}</div>
+{%- endmacro %}
+
+{% macro timeline(steps, id) -%}
+<ol class="k-time" aria-label="Steps for {{ id }}">
+  {% for s in steps %}<li data-s="{{ s.s }}"><span class="dot" aria-hidden="true"></span><span><b>{{ s.label }}</b><span class="when">{{ s.when }}</span></span><span class="tag">{{ s.tag }}</span></li>{% endfor %}
+</ol>
+{%- endmacro %}
+
+{% macro request(r, o, short) -%}
+<dl class="k-facts">
+  <div><dt>Amount</dt><dd><b class="k-amt">{{ r.usd }}</b>{{ r.local }} at {{ short }}'s rate, {{ r.rate }}</dd></div>
+  <div><dt>Payee</dt><dd>{{ r.payee }}</dd></div>
+  <div><dt>Order</dt><dd>{{ r.summary }}</dd></div>
+</dl>
+{%- endmacro %}

@@ -1,0 +1,33 @@
+{% block subject %}{% if change.approved %}Your change to {{ order.number }} is done{% else %}{{ site.owner }} couldn't make your change to {{ order.number }}{% endif %}{% endblock %}
+{% block preheader %}You asked: {{ change.asked }}{% endblock %}
+{% block body %}
+{% if change.approved %}
+# Your change is done
+You asked: {{ change.asked }}
+
+{{ site.owner }} said yes, so order {{ order.number }} now reads: {{ change.result }}.
+{% if change.price_difference %}
+
+::fact Price difference | {{ change.price_difference }}
+{% endif %}
+{% else %}
+# {{ site.owner }} couldn't make this change
+You asked: {{ change.asked }}
+
+{% if change.reason %}
+::quote {{ change.reason }}
+
+{% endif %}
+Order {{ order.number }} stays as it was.
+{% endif %}
+
+::button See your order | {{ order.url }}
+{% endblock %}
+{% block chat %}
+{% if change.approved %}
+{{ site.name }}: your change to {{ order.number }} is done. It now reads: {{ change.result }}.
+{% else %}
+{{ site.name }}: {{ site.owner }} couldn't change {{ order.number }}.{% if change.reason %} "{{ change.reason }}"{% endif %} The order stays as it was.
+{% endif %}
+::button See your order | {{ order.url }}
+{% endblock %}

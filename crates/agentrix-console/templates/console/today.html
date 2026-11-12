@@ -1,0 +1,63 @@
+{% extends "console/base.html" %}
+{% import "macros.html" as m %}
+{#- Page::Today · view::TodayView (+ ConsoleChrome) {
+      greeting, brief: { written_words, events_count, lines: [ { text, href? } ], spend_words? }?,
+      first_brief_words, needs_you: [ CardLink { title, href, asked_by } ], recent: [ ReceiptRow ],
+      passed: [ PassedQuestion { question, when_words, contact? } ], passed_total,
+      meter: { spent, cap_words, cap_pct?, cap_note, calls_words, by_purpose: [ {label, amount} ], by_provider: [ {label, amount} ], refused_words? }? }
+    R10.1. The brief is composed only from receipts (design §4.4; S2-04). -#}
+{% block title %}Today{% endblock %}
+{% block content %}
+<section class="stack">
+  <p class="eyebrow">Today</p>
+  <h1>{{ greeting }}</h1>
+</section>
+
+{% if needs_you %}
+<section class="card" aria-labelledby="needs-h">
+  <div class="spread"><h2 id="needs-h">Needs you</h2><span class="chip wait">{{ needs_you|length }}</span></div>
+  <ul class="list">
+    {% for c in needs_you %}<li class="spread"><span>{{ m.mark(c.asked_by, "sm") }}</span><a href="{{ c.href }}" style="flex:1;font-weight:700">{{ c.title }}</a></li>{% endfor %}
+  </ul>
+</section>
+{% endif %}
+
+<section class="card" aria-labelledby="brief-h">
+  <div class="from">{{ m.mark(chief) }}<span id="brief-h">Chief WebAgent · your brief</span>{% if brief %}<span class="chip">{{ brief.written_words }}</span>{% endif %}</div>
+  {% if brief %}
+    <ul class="list">
+      {% for l in brief.lines %}<li class="small">{% if l.href %}<a href="{{ l.href }}">{{ l.text }}</a>{% else %}{{ l.text }}{% endif %}</li>{% endfor %}
+    </ul>
+    <p class="hint">{% if brief.events_count %}Written from {{ brief.events_count }} recorded event{{ "" if brief.events_count == 1 else "s" }}. Nothing in it is guessed.{% endif %}{% if brief.spend_words %} {{ brief.spend_words }}{% endif %}</p>
+  {% else %}
+    <p class="small">{{ first_brief_words }}</p>
+  {% endif %}
+</section>
+
+{% if passed %}
+<section class="card" aria-labelledby="passed-h">
+  <div class="spread"><h2 id="passed-h">Questions visitors passed to you</h2><span class="chip">{{ passed_total }}</span></div>
+  <p class="hint">Your site didn't say, so the Concierge offered to pass these on. Only you see them.</p>
+  <ul class="list">
+    {% for q in passed %}<li class="stack small"><span>{{ q.question }}</span><span class="hint">{{ q.when_words }} · {% if q.contact %}Reply to {{ q.contact }}{% else %}No way to reply was left{% endif %}</span></li>{% endfor %}
+  </ul>
+</section>
+{% endif %}
+
+{% if meter %}
+<section class="card" aria-labelledby="meter-h">
+  <div class="spread"><h2 id="meter-h">AI spend this month</h2><b>{{ meter.cap_words }}</b></div>
+  {% if meter.cap_pct is not none %}<div class="meter" role="img" aria-label="{{ meter.cap_pct }}% of this month's AI budget used"><i style="width:{{ meter.cap_pct }}%"></i></div>{% endif %}
+  <p class="hint">{{ meter.cap_note }} {{ meter.calls_words }}{% if meter.refused_words %} · {{ meter.refused_words }}{% endif %}.</p>
+  {% if meter.by_purpose %}<dl class="kv small">{% for l in meter.by_purpose %}<dt>{{ l.label }}</dt><dd>{{ l.amount }}</dd>{% endfor %}</dl>{% endif %}
+  {% if meter.by_provider %}<p class="small muted">This month by provider: {% for l in meter.by_provider %}{{ l.label }} {{ l.amount }}{% if not loop.last %} · {% endif %}{% endfor %}</p>{% endif %}
+</section>
+{% endif %}
+
+{% if recent %}
+<section class="card" aria-labelledby="recent-h">
+  <div class="spread"><h2 id="recent-h">Recently</h2><a class="small" href="/os/trust#receipts">All receipts</a></div>
+  <ul class="list">{% for r in recent %}{{ m.receipt_row(r) }}{% endfor %}</ul>
+</section>
+{% endif %}
+{% endblock %}

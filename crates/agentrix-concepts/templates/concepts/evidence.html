@@ -1,0 +1,8 @@
+{#- The Challenge 1 rows: rows: [{key, title, ask, state: "met"|"live"|"wait", text, pages: [{n, digest, short, receipt_href?}]}] -#}
+{% for r in rows %}
+<div class="c-req is-{{ r.state }}" data-key="{{ r.key }}">
+  <span class="c-tick" role="img" aria-label="{% if r.state == "met" %}Met{% elif r.state == "live" %}In progress{% else %}Not yet{% endif %}"></span>
+  <div><b>{{ r.title }}</b><span class="c-ask">{{ r.ask }}</span></div>
+  <div class="c-ev">{{ r.text }}{% if r.pages %}<span class="c-pages">{% for p in r.pages %} <span class="c-chip c-mono" title="{{ p.digest }}">{{ p.n }}: sha256 {{ p.short }}</span>{% if p.receipt_href %} <a href="{{ p.receipt_href }}" target="_blank" rel="noopener">receipt</a>{% endif %}{% endfor %}</span>{% endif %}</div>
+</div>
+{% endfor %}

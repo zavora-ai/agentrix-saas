@@ -1,0 +1,14 @@
+{% extends shell.layout %}
+{% import "shop/parts.html" as p %}
+{% block styles %}{{ super() }}{{ p.styles(shell) }}{% endblock %}
+{% block main %}
+<div class="shop">
+  <p class="k-crumb"><a href="/bag">Bag</a> · Checkout</p>
+  <h1>Confirm your email to order</h1>
+  <div class="k-card">
+    <p>{{ short }} sends your receipt and order updates to <b>{{ email }}</b>, so it has to be confirmed as yours before you order. It takes one code, sent to that address.</p>
+    <div class="k-acts"><a class="k-btn" href="/account/security">Confirm my email</a><a class="k-btn ghost" href="/bag">Back to your bag</a></div>
+    <p class="k-small">Your bag stays as it is. Come back to checkout once it's confirmed.</p>
+  </div>
+</div>
+{% endblock %}

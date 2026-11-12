@@ -1,0 +1,8 @@
+# Disk-lean development builds for the first release (spec session, Sat 7 Nov 2026).
+# James's Mac is short of disk, so development builds keep no debug info and no
+# incremental cache. Release builds are unchanged ([profile.release] in Cargo.toml).
+[profile.dev]
+debug = 0
+
+[build]
+incremental = false

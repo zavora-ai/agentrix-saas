@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>What a site can do after the Move</title>
+<meta name="description" content="Concept overview: the visitor-facing website after the Agentrix WebAgent Platform migrates it. Big ideas, site archetypes and transformation tiers, and the design language.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Manrope:wght@600;700;800&family=Fraunces:opsz,wght@9..144,600;9..144,800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../styles.css">
+<link rel="stylesheet" href="experience.css">
+<style>
+  .hero { display: grid; grid-template-columns: 1.05fr .95fr; gap: clamp(24px, 4vw, 56px); align-items: center; padding: clamp(32px, 5vw, 64px) 0 clamp(20px, 3vw, 36px); }
+  .hero h1 { font-size: clamp(34px, 5.2vw, 60px); }
+  .hero h1 span { color: var(--coral-strong); }
+  .hero .lead { margin-top: 14px; }
+  .hero .row { margin-top: 20px; }
+  /* Hero illustration: a menu that is a team */
+  .demo { position: relative; background: #fbf4ea; border: 1px solid #ecdcc6; border-radius: 22px; padding: 16px; box-shadow: var(--shadow-3); --wa-bg: #fffdf9; --wa-soft: #fbf4ea; --wa-ink: #3b2416; --wa-ink-2: #6b4b36; --wa-line: #ecdcc6; --wa-accent: #8e3b46; --wa-display: "Fraunces", Georgia, serif; }
+  .demo-nav { display: flex; align-items: center; gap: 4px; padding: 6px; background: #fff; border: 1px solid #ecdcc6; border-radius: 14px; flex-wrap: wrap; }
+  .demo-nav b { font: 800 16px/1 "Fraunces", Georgia, serif; color: #3b2416; margin-right: auto; padding-left: 6px; }
+  .demo-nav span { display: inline-flex; align-items: center; gap: 6px; padding: 8px 10px; border-radius: 999px; font: 600 13px/1 var(--font-text); color: #6b4b36; }
+  .demo-nav span.on { background: #f5e9d8; color: #3b2416; }
+  .demo-nav .wa-mark { width: 16px; height: 16px; border-radius: 5px; }
+  .demo-nav .wa-mark svg { width: 9px; height: 9px; }
+  .demo .peek { position: relative; top: auto; left: auto; transform: none; opacity: 1; visibility: visible; width: auto; max-width: 360px; margin: 14px 0 0 auto; }
+  .demo .peek::before { left: auto; right: 120px; }
+  .demo .answer-mini { margin: 12px 14px 0; display: grid; gap: 6px; }
+  .bigideas { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s4); margin-top: var(--s5); }
+  .idea { display: flex; flex-direction: column; gap: 8px; text-decoration: none; color: inherit; background: var(--paper); border: 1px solid var(--line); border-radius: var(--r-lg); padding: var(--s5); box-shadow: var(--shadow-1); transition: transform .2s var(--ease), box-shadow .2s var(--ease); }
+  .idea:hover { transform: translateY(-3px); box-shadow: var(--shadow-2); color: inherit; }
+  .idea .num { font: 800 var(--fs-12)/1 var(--font-display); color: var(--coral-strong); letter-spacing: .08em; }
+  .idea h3 { font-size: var(--fs-20); }
+  .idea p { font-size: var(--fs-14); color: var(--ink-2); }
+  .idea .go { margin-top: auto; padding-top: 6px; font: 700 var(--fs-14)/1 var(--font-text); color: var(--indigo); }
+  .idea .wow { font: 600 var(--fs-13)/1.4 var(--font-text); color: var(--indigo-900); background: var(--indigo-50); border-radius: 10px; padding: 8px 10px; }
+  /* Archetypes × tiers */
+  .arch-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: var(--s4); }
+  .arch-chips button { border: 1px solid var(--line-strong); background: #fff; border-radius: 999px; padding: 8px 12px; font: 600 13px/1 var(--font-text); color: var(--indigo-900); cursor: pointer; }
+  .arch-chips button[aria-pressed="true"] { background: var(--indigo-900); color: #fff; border-color: var(--indigo-900); }
+  .arch { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: var(--s4); margin-top: var(--s4); }
+  .tiers { display: grid; gap: 8px; }
+  .tier { display: grid; grid-template-columns: 54px minmax(0, 1fr) auto; gap: 12px; align-items: center; padding: 12px 14px; border-radius: 14px; border: 1px solid var(--line); background: #fff; transition: border-color .2s, background .2s, opacity .2s; }
+  .tier .t { font: 800 var(--fs-13)/1 var(--font-mono); color: var(--indigo); background: var(--indigo-50); border-radius: 8px; padding: 8px 0; text-align: center; }
+  .tier b { display: block; font: 700 var(--fs-16)/1.25 var(--font-display); color: var(--indigo-900); }
+  .tier span.d { display: block; font-size: var(--fs-13); color: var(--ink-2); margin-top: 2px; }
+  .tier .tag { font: 700 11px/1 var(--font-text); padding: 6px 8px; border-radius: 8px; white-space: nowrap; }
+  .tier.start { border-color: var(--indigo); background: var(--indigo-50); }
+  .tier.start .tag { background: var(--indigo); color: #fff; }
+  .tier.in .tag { background: var(--ok-bg); color: var(--ok); }
+  .tier.ceil .tag { background: var(--wait-bg); color: var(--wait); }
+  .tier.out { opacity: .45; }
+  .tier.out .tag { background: var(--surface-2); color: var(--muted); }
+  .arch-detail h3 { font-size: var(--fs-20); }
+  .arch-detail .kv { display: grid; grid-template-columns: 110px 1fr; gap: 8px; padding: 9px 0; border-top: 1px dashed var(--line); font-size: var(--fs-14); color: var(--ink-2); }
+  .arch-detail .kv b { color: var(--indigo-900); font-size: var(--fs-13); }
+  .arch-detail .kv:first-of-type { border-top: 0; }
+  .arch-detail a { font-weight: 700; }
+  /* Design language */
+  .lang { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s4); margin-top: var(--s5); }
+  .lang .card p { font-size: var(--fs-14); color: var(--ink-2); margin-top: 6px; }
+  .states { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 12px; }
+  .states div { display: grid; justify-items: center; gap: 8px; padding: 12px 4px 8px; border-radius: 12px; background: var(--surface); font: 600 11.5px/1.25 var(--font-text); color: var(--ink-2); text-align: center; }
+  .vs { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 12px; font-size: var(--fs-13); }
+  .vs div { border-radius: 12px; padding: 10px; }
+  .vs .bad { background: var(--risk-bg); color: var(--risk); }
+  .vs .good { background: var(--ok-bg); color: var(--ok); }
+  .vs b { display: block; margin-bottom: 4px; }
+  .principles { counter-reset: p; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px 24px; margin-top: var(--s5); }
+  .principles div { display: grid; grid-template-columns: 30px 1fr; gap: 10px; font-size: var(--fs-14); color: var(--ink-2); }
+  .principles div::before { counter-increment: p; content: counter(p); display: grid; place-items: center; width: 26px; height: 26px; border-radius: 8px; background: var(--indigo-100); color: var(--indigo); font: 800 12px/1 var(--font-display); }
+  .principles b { color: var(--indigo-900); }
+  @media (max-width: 960px) {
+    .hero, .arch { grid-template-columns: 1fr; }
+    .bigideas, .lang { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 620px) {
+    .bigideas, .lang, .principles { grid-template-columns: 1fr; }
+    .tier { grid-template-columns: 44px minmax(0, 1fr); }
+    .tier .tag { grid-column: 2; justify-self: start; }
+    .demo .peek { margin-left: 0; }
+    .demo-nav span:not(.on) { display: none; }
+  }
+</style>
+</head>
+<body>
+<header class="conceptbar">
+  <a class="logo" href="index.html"><span class="mark" aria-hidden="true"></span>Agentrix</a>
+  <nav aria-label="Experience concepts">
+    <a href="index.html" aria-current="page">Experience</a>
+    <a href="nav-agents.html">Menu as WebAgents</a>
+    <a href="creator.html">Make it with me</a>
+    <a href="search.html">Agentic search</a>
+    <a href="artifact.html">Artifacts</a>
+    <a href="presentation.html">Presentations</a>
+    <a href="news.html">News publisher</a>
+    <a href="../index.html">All concepts</a>
+  </nav>
+  <span class="concept-label">Concept · illustrative data</span>
+</header>
+
+<main class="wrap">
+  <section class="hero">
+    <div>
+      <span class="eyebrow">Agentrix WebAgent Platform · the website experience</span>
+      <h1 style="margin-top:12px">What a site can do <span>after the Move</span></h1>
+      <p class="lead">After the Move, a site still loads instantly as static, signed pages, and still looks like itself. Now its menu is a team of WebAgents you can talk to. Its search answers with sources. It makes things with you, presents itself, and turns plans into requests the owner confirms. Every agent says it's AI, every claim links to the page it came from, and a person is one tap away.</p>
+      <div class="row"><a class="btn btn-primary btn-lg" href="nav-agents.html">Start with the menu →</a><a class="btn btn-lg" href="#tiers">Archetypes and tiers</a></div>
+    </div>
+    <div class="demo" aria-hidden="true">
+      <div class="demo-nav"><b>Kilele Bakery</b><span><i class="wa-mark" style="--c:#b4541f"></i>Bakes</span><span class="on"><i class="wa-mark" style="--c:#8e3b46" data-state="listening"></i>Cakes</span><span><i class="wa-mark" style="--c:#56632a"></i>Orders</span></div>
+      <div class="peek">
+        <div class="peek-head"><span class="wa-mark lg" data-state="listening" style="--c:#8e3b46" id="heroMark"></span><div class="who"><b>Cakes</b><span>WebAgent · answers from this site</span></div><span class="wa-ai">AI</span></div>
+        <p class="peek-mandate">I design celebration cakes with you from what Kilele actually bakes, and hold the order for Wanjiru.</p>
+        <div class="peek-facts"><span class="fact"><span class="dot"></span>Next free date <i>Sat 14 Nov</i></span><span class="fact"><span class="dot"></span>From <i>KSh 3,800</i></span></div>
+        <div class="peek-starters"><span class="starter">Design a birthday cake with me</span><span class="starter">How much for 30 people?</span></div>
+        <div class="wa-input"><span style="flex:1;color:var(--wa-ink-2);font-size:14px;padding:9px 0">Ask Cakes…</span><span class="wa-send" id="heroSend"></span></div>
+        <div class="peek-foot"><span>Hover: no model call · 0 ms</span><span>Click: the static page</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:12px">
+    <span class="eyebrow">The big ideas</span>
+    <h2 style="margin-top:10px">Six ideas. Each links to a working concept.</h2>
+    <div class="bigideas">
+      <a class="idea" href="nav-agents.html"><span class="num">01</span><h3>The menu is the team</h3><p>Every menu item is a WebAgent. Hover or focus to meet it, see live facts, and start talking in place. The link still goes to the page.</p><span class="wow">Wow: the owner hovers their own menu and their own business answers.</span><span class="go">Kilele Bakery →</span></a>
+      <a class="idea" href="creator.html"><span class="num">02</span><h3>Make it with me</h3><p>Design a cake, a gift set or a quote with a WebAgent. It uses only real options, prices come from rules, and the owner confirms.</p><span class="wow">Wow: "she loves strawberries and the forest" becomes a cake Kilele actually makes.</span><span class="go">Cake studio →</span></a>
+      <a class="idea" href="search.html"><span class="num">03</span><h3>Search that answers</h3><p>It shows how it read your question, answers with sources, says what doesn't fit, and leads to the next step. Plain results are always available.</p><span class="wow">Wow: "over budget by KSh 1,400", said plainly.</span><span class="go">Classy Perfumes →</span></a>
+      <a class="idea" href="artifact.html"><span class="num">04</span><h3>Website artifacts</h3><p>Plans, briefs, quotes and comparisons made together and shared with permissions. Five friends choose, and the result becomes one order.</p><span class="wow">Wow: a shared link that sells in a group chat.</span><span class="go">The gift plan →</span></a>
+      <a class="idea" href="presentation.html"><span class="num">05</span><h3>The site presents itself</h3><p>A tailored tour that drives the real page, pauses for questions, and works from a script the owner approved.</p><span class="wow">Wow: the owner's own site gives them a tour of their business.</span><span class="go">zavora.ai →</span></a>
+      <a class="idea" href="news.html"><span class="num">06</span><h3>Since your last visit</h3><p>Catch-up briefings, story timelines with corrections, and digests in plain words. Memory stays on the device or is opt-in and visible.</p><span class="wow">Wow: the archive answers, with bylines.</span><span class="go">The Kestrel Post →</span></a>
+    </div>
+  </section>
+
+  <section class="section" id="tiers">
+    <span class="eyebrow">Every kind of site</span>
+    <h2 style="margin-top:10px">Archetypes and transformation tiers.</h2>
+    <p class="lead" style="margin-top:10px">Every migration starts faithful: the same site, faster and safer. The owner then moves up a tier at a time, and each tier is a release they approve and can roll back. Pick a kind of site.</p>
+    <div class="arch-chips" role="group" aria-label="Site archetypes" id="archChips"></div>
+    <div class="arch">
+      <div class="tiers" id="tierList"></div>
+      <div class="card arch-detail" id="archDetail" aria-live="polite"></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <span class="eyebrow">Design language</span>
+    <h2 style="margin-top:10px">How a WebAgent shows it is working</h2>
+    <div class="lang">
+      <div class="card"><h3>A mark, in the site's colours</h3><p>A WebAgent is a small mark in the host brand with its menu name. It never has a face, a human name, typing dots or a pop-up greeting. Its state is always true.</p><div class="states" id="states"></div></div>
+      <div class="card"><h3>The page is the avatar</h3><p>When a WebAgent cites a price, the price row on the real page lights up. Tours scroll and highlight the actual sections. Motion belongs to the content, not to a character.</p>
+        <div class="vs"><div class="bad"><b>Widget</b>A bubble in the corner that opens itself and forgets you on the next page.</div><div class="good"><b>WebAgent</b>A menu you can talk to, one thread across pages, answers that point at the page.</div></div></div>
+      <div class="card"><h3>Static stays instant</h3><p>Pages are static, signed releases. The agent layer loads after the page is usable. Hover is free, with no model call. Everything works without JavaScript or without a model, and says so honestly when resting.</p>
+        <ol class="budget"><li><span class="t">0 ms</span><span>Peek from the release</span><span class="m">no model</span></li><li><span class="t">&lt;300 ms</span><span>Honest progress</span><span class="m">no model</span></li><li><span class="t">&lt;1.5 s</span><span>First words via Vultr Inference (1.0 s if cached)</span><span class="m model">model</span></li></ol></div>
+    </div>
+    <div class="principles">
+      <div><span><b>Answer first, chat second.</b> The page and search answer; conversation is there when wanted.</span></div>
+      <div><span><b>The business defines the role.</b> Answer, guide, make, present. No companionship, no edgy modes.</span></div>
+      <div><span><b>Plainly AI, never a person.</b> AI is disclosed at first contact, the WebAgent has a role name, and a real person is one tap away with an honest wait time.</span></div>
+      <div><span><b>Every claim points to the page.</b> Citations land on the cited element. "The site doesn't say" is a feature.</span></div>
+      <div><span><b>Models compose, rules decide.</b> Prices, dates, stock and refunds come from rules and the release, never from a model.</span></div>
+      <div><span><b>Memory is a ledger the visitor holds.</b> Session by default. Device or account memory is opt-in, visible and deletable.</span></div>
+      <div><span><b>Confirm before you remember.</b> A passing interest is never silently turned into a preference.</span></div>
+      <div><span><b>Proactive only on task.</b> One relevant, dismissible offer. No streaks, nudges or re-engagement pushes.</span></div>
+      <div><span><b>Honest, not flattering.</b> "Over budget", "not offered" and "I can't confirm" are said plainly.</span></div>
+      <div><span><b>Owner's authority, visible.</b> Visitors see what waits for the owner and why.</span></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="card"><div class="spread"><h3>What we will not do</h3><span class="small muted">Full list and reasons in docs/06-website-experience.md §10</span></div>
+      <ul class="never" style="grid-template-columns:repeat(2,minmax(0,1fr));display:grid;gap:8px 24px" id="willnot">
+        <li>Pop-up chat, greetings on arrival, or agents that open themselves</li>
+        <li>Human names, faces or fake typing for AI</li>
+        <li>Companion, romantic or engagement-maximising features</li>
+        <li>Prices, dates, stock or refunds stated by a model</li>
+        <li>Generated images presented as the product</li>
+        <li>Cross-site profiles, fingerprinting or training on visitor data</li>
+        <li>AI-written news, or paraphrased subscriber content</li>
+        <li>False urgency, fake scarcity or dark patterns</li>
+        <li>A site that stops working when the model does</li>
+        <li>Agents that decide eligibility, diagnose, or promise refunds</li>
+      </ul></div>
+  </section>
+</main>
+
+<footer class="concept-foot"><div class="wrap row"><span><a href="../index.html">← All Agentrix concepts</a> · <a href="nav-agents.html">Start: the menu talks back →</a></span><span>Concept screens with illustrative data. Kilele Bakery, The Kestrel Post and all people shown are fictional.</span></div></footer>
+
+<script src="experience.js"></script>
+<script>
+(() => {
+  const CAKE = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h16M5 20v-6h14v6M7 14v-3h10v3"/><path d="M12 11V7"/><path d="M12 4.5c.8.8.8 1.7 0 2.5-.8-.8-.8-1.7 0-2.5z"/></svg>';
+  document.getElementById("heroMark").innerHTML = CAKE; document.getElementById("heroSend").innerHTML = XP.I.send;
+  document.querySelector("#heroSend").style.cssText += "display:grid;place-items:center";
+  if (window.matchMedia("(max-width: 620px)").matches) document.getElementById("willnot").style.gridTemplateColumns = "1fr";
+  const st = [["idle", "Idle"], ["listening", "Listening"], ["working", "Working: checking stock"], ["answering", "Answering"], ["waiting", "Waiting on the owner"], ["resting", "Resting"]];
+  document.getElementById("states").innerHTML = st.map(([s, l]) => `<div><span class="wa-mark lg" data-state="${s}" style="--c:#38356d">${CAKE}</span>${l}</div>`).join("");
+
+  const TIERS = [
+    ["T0", "Keep", "The same site, faster and safer: ≥95% parity, static signed pages, an Ask bar with cited answers, the agent door for AI assistants."],
+    ["T1", "Answer", "Desks in the menu (hover to meet), agentic search, \"I don't know\" that teaches the site, handover to a person."],
+    ["T2", "Act", "Bookings, orders, quotes, holds, order tracking, digests. Each one runs within the owner's authority or waits for them."],
+    ["T3", "Create", "Product creators, artifacts to share, presentations and tours, comparisons."],
+    ["T4", "Native", "Rebuilt around what visitors ask: navigation from real questions, opt-in memory, one thread across web, phone and WhatsApp, approved translations."],
+  ];
+  const A = {
+    news: { n: "News publisher", start: 1, ceil: 3, fid: "Pixel-faithful. The design system is the brand; volume is huge, so pages are generated statically at scale.",
+      today: "Thousands of stories a week, an archive nobody can search, paywall friction, readers who leave for summaries elsewhere.",
+      moves: "Catch me up since your last visit; story so far with corrections; desks per section; the Friday five digest; explainers as presentations.",
+      never: "Write news; paraphrase subscriber text for non-subscribers; drop bylines or dates; personalise what counts as news.", href: "news.html", cta: "See The Kestrel Post" },
+    company: { n: "Company site", start: 1, ceil: 4, fid: "Brand-faithful, often reimagined around the visitor's question.",
+      today: "A brochure. Visitors want \"can you do this for me?\" and get a contact form.",
+      moves: "A tailored tour from an approved script; a project-brief artifact; capability Q&A; booking a call; quote ranges from rules.",
+      never: "Invent clients, case studies or capabilities; give final quotes without the owner.", href: "presentation.html", cta: "See zavora.ai" },
+    blog: { n: "Personal blog", start: 0, ceil: 2, fid: "Pixel-faithful. The voice and look are the person.",
+      today: "Years of posts, a search box nobody uses, a newsletter plugin.",
+      moves: "Ask the archive (\"what has she written about…\"); reading paths; a consented digest; comments routed to the author.",
+      never: "Speak as the author in the first person; answers are \"from her posts\". Never invent opinions.", href: "search.html", cta: "Search pattern" },
+    woo: { n: "WooCommerce shop", start: 1, ceil: 4, fid: "Brand-faithful; product pages rebuilt fast and static, stock and price as live capabilities.",
+      today: "Plugin sprawl, slow pages, abandoned carts, the same questions on WhatsApp all day.",
+      moves: "A gift finder that answers; honest comparisons; shared gift plans; order tracking; PayPal through the Cashier, approved above the owner's threshold.",
+      never: "Discounts beyond the owner's rules; fake scarcity or countdowns; ranking by margin while claiming fit.", href: "artifact.html", cta: "See Classy Perfumes" },
+    shopify: { n: "Shopify store", start: 1, ceil: 3, fid: "Brand-faithful. Two paths to validate: a full move, or front-of-house first (Agentrix serves pages and desks; checkout stays put until the owner moves it).",
+      today: "Hosted and stable, but apps stack up, and the storefront can't hold a conversation.",
+      moves: "Desks per collection; agentic search; bundles and gift plans; the agent door for AI shopping assistants.",
+      never: "Touch checkout or payments without the owner's approval; claim stock the store doesn't report.", href: "search.html", cta: "Search pattern" },
+    saas: { n: "SaaS marketing site", start: 1, ceil: 4, fid: "Reimagined: the product presents itself.",
+      today: "Feature grids, demo-request forms and a docs site in a different universe.",
+      moves: "Tailored demos and tours; pricing calculators from rules; an onboarding-plan artifact; docs Q&A with citations; honest comparisons.",
+      never: "Sell roadmap features as shipped; make unverified claims about competitors.", href: "presentation.html", cta: "Presentation pattern" },
+    local: { n: "Local services", start: 1, ceil: 3, fid: "Brand-faithful, mobile-first. Hours, directions and booking are instant.",
+      today: "Questions arrive at night on WhatsApp; the site says 2023 prices.",
+      moves: "Menu desks; bookings and holds; quotes from rules; product creators (cakes, arrangements); WhatsApp handover with context.",
+      never: "Clinics: no diagnosis or triage beyond \"call the emergency number\". Nobody promises a date the calendar doesn't hold.", href: "nav-agents.html", cta: "See Kilele Bakery" },
+    portfolio: { n: "Portfolio", start: 0, ceil: 3, fid: "Pixel-faithful. The work is the design.",
+      today: "Beautiful, silent pages; enquiries by email with no context.",
+      moves: "The work presents itself, curated to the visitor's need; an enquiry-brief artifact; availability.",
+      never: "Generate sample work; show work the owner hasn't published.", href: "presentation.html", cta: "Presentation pattern" },
+    public: { n: "Public body", start: 0, ceil: 2, fid: "Accessibility-first (WCAG 2.2 AA); plain language; every official language as an approved release.",
+      today: "Hundreds of pages, forms in PDFs, and people who need one answer in their language.",
+      moves: "A service finder; non-binding eligibility walkthroughs that end at the official form; plain-language mode; multilingual answers.",
+      never: "Decide eligibility; keep memory beyond the session by default; persuade; load third-party scripts.", href: "search.html", cta: "Search pattern" },
+  };
+  const chips = document.getElementById("archChips"), list = document.getElementById("tierList"), det = document.getElementById("archDetail");
+  chips.innerHTML = Object.entries(A).map(([k, a], i) => `<button type="button" data-a="${k}" aria-pressed="${i === 0}">${a.n}</button>`).join("");
+  function show(k) {
+    const a = A[k];
+    chips.querySelectorAll("button").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.a === k)));
+    list.innerHTML = TIERS.map(([t, n, d], i) => {
+      const cls = i === a.start ? "start" : i < a.start ? "in" : i <= a.ceil ? (i === a.ceil ? "ceil" : "in") : "out";
+      const tag = i === a.start ? "Go-live" : i < a.start ? "Included" : i === a.ceil ? "Ceiling" : i < a.ceil ? "Next" : "Not for this site";
+      return `<div class="tier ${cls}"><span class="t">${t}</span><span><b>${n}</b><span class="d">${d}</span></span><span class="tag">${tag}</span></div>`;
+    }).join("");
+    det.innerHTML = `<h3>${a.n}</h3><div style="margin-top:10px"><div class="kv"><b>Today</b><span>${a.today}</span></div><div class="kv"><b>Fidelity</b><span>${a.fid}</span></div><div class="kv"><b>Signature moves</b><span>${a.moves}</span></div><div class="kv"><b>Never</b><span>${a.never}</span></div></div><a href="${a.href}" class="btn btn-primary btn-sm" style="margin-top:12px">${a.cta} →</a>`;
+  }
+  chips.querySelectorAll("button").forEach(b => b.addEventListener("click", () => show(b.dataset.a)));
+  show("news");
+})();
+</script>
+</body>
+</html>

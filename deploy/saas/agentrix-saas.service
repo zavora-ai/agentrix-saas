@@ -1,0 +1,42 @@
+# agentrix-saas on saas-node: both companies (Agentrix and Kilele Bakery) in one process, serving
+# money., kilele.money. and pay.agentrix.website behind Caddy, with the model gateway inside the
+# process (on a loopback port of its own, metering into data/models/control.db). Installed by
+# deploy/saas/deploy.sh.
+#
+# Settings: /etc/agentrix-saas/agentrix-saas.env (root, 0600), written on every deploy from the
+# repo's .env (the keys this node uses) and deploy/saas/agentrix-saas.env. owner.env holds the
+# owner-console token the VM generated on its first deploy; a SAAS_OWNER_TOKEN in .env wins,
+# because the later file overrides the earlier one.
+#
+# Data, keys and SQLite stores live in /var/lib/agentrix-saas; snapshot the VM to keep them.
+# ERA runs under Docker (compose project saas-era) on 127.0.0.1:18180. The service user is in
+# the docker group so it can start sandbox containers (no network, runsc).
+[Unit]
+Description=Agentrix SaaS node (both companies, three hosts)
+After=network-online.target docker.service
+Wants=network-online.target
+# Shape one runs the money layer inside agentrix-node, on the same data: never both.
+Conflicts=agentrix-node.service
+
+[Service]
+User=agentrix-saas
+Group=agentrix-saas
+EnvironmentFile=-/etc/agentrix-saas/owner.env
+EnvironmentFile=/etc/agentrix-saas/agentrix-saas.env
+Environment=HOME=/var/lib/agentrix-saas
+# Plain log lines in the journal (deploy.sh --smoke-model reads the gateway's address there).
+Environment=NO_COLOR=1
+ExecStart=/usr/local/bin/agentrix-saas --books ${SAAS_BOOKS}
+WorkingDirectory=/var/lib/agentrix-saas
+UMask=0077
+Restart=on-failure
+RestartSec=3
+LimitNOFILE=65536
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=yes
+ReadWritePaths=/var/lib/agentrix-saas
+
+[Install]
+WantedBy=multi-user.target

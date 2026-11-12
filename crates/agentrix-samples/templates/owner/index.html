@@ -1,0 +1,36 @@
+{% extends "owner/base.html" %}
+{% block field %}{% import "owner/macros.html" as m %}
+<div class="field-head">
+  <div><h1>Sample owner views</h1><div class="sub">Three sample sites run on Agentrix: a bakery, a perfume shop and a local paper. Open one to run it as its owner would.</div></div>
+</div>
+<div class="fleet">
+  {% for s in cards %}
+  {% if s.loaded %}
+  <article class="site-card">
+    <div class="head"><span class="lg" style="--logo: {{ s.site.color }}">{{ s.site.initial }}</span><div><b>{{ s.site.name }}</b><small>Sample {{ s.site.kind }} · owner {{ s.site.owner }} · as of {{ s.asof }}</small></div></div>
+    <dl class="figs">
+      {% if s.site.archetype == "news" %}
+      <div><dt>Stories, last 7 days</dt><dd>{{ s.figures.stories_week }}</dd></div>
+      <div><dt>Subscribers</dt><dd>{{ s.figures.subscribers }}</dd></div>
+      <div><dt>Not published</dt><dd>{{ s.figures.drafts }}</dd></div>
+      <div><dt>Questions open</dt><dd>{{ s.figures.questions_open }}</dd></div>
+      {% else %}
+      <div><dt>Orders to fulfil</dt><dd>{{ s.figures.to_fulfil }}</dd></div>
+      <div{% if s.figures.held %} class="hot"{% endif %}><dt>Custom orders held</dt><dd>{{ s.figures.held }}</dd></div>
+      <div><dt>Questions open</dt><dd>{{ s.figures.questions_open }}</dd></div>
+      <div{% if s.figures.stock_alerts %} class="warn"{% endif %}><dt>Stock alerts</dt><dd>{{ s.figures.stock_alerts }}</dd></div>
+      {% endif %}
+    </dl>
+    <div class="verbs"><a class="btn btn-primary btn-sm" href="{{ s.href }}">Open the owner view</a><a class="btn btn-sm" href="{{ s.site.url }}">Open the site</a></div>
+    <p class="apps">{% for a in s.apps %}<a href="{{ a.href }}">{{ a.name }}</a>{% endfor %}</p>
+  </article>
+  {% else %}
+  <article class="site-card off">
+    <div class="head"><span class="lg">{{ s.name[:1] }}</span><div><b>{{ s.name }}</b><small>Sample · not loaded</small></div></div>
+    <p class="quiet">Its sample records aren't in this build yet, so there's nothing to run. It appears here with its own figures once its bundle loads.</p>
+  </article>
+  {% endif %}
+  {% endfor %}
+</div>
+<p class="note">{{ m.icon("key") }}<span>Every figure on these pages is counted from the sample's records when the page loads. Approve, advance, count or reprice something and the sample site changes with it.</span></p>
+{% endblock %}

@@ -1,0 +1,35 @@
+{#- agentrix-ui · pages on a site host: the sample sites, customer accounts, checkout, the agent
+door's human pages. The site's brand comes from its host token set (tokens.css) or its release's
+theme.css; the kit's components follow it.
+
+Required variable:
+  site   {key, name, sample}
+         key: "kilele", "classy", "tana", "kestrel" or "zavora" for the samples' token sets;
+              "site" for any other site, whose theme block links its release's theme.css
+         sample: true on every -sample host. The Sample band then shows on every page.
+Optional:
+  site.made_with  false hides "Made with Agentrix" (paid white-label tiers); the AI line stays
+
+Blocks: title (the site's name by default), theme (link the release's theme.css), site_styles,
+header, main, footer, plus everything in ui/base.html. Sites are light only for now. -#}
+{% extends "ui/base.html" %}
+{% block color_scheme %}light{% endblock %}
+{% block html_attrs %} data-host="{{ site.key }}"{% endblock %}
+{% block title %}{{ site.name }}{% endblock %}
+{% block styles %}<link rel="stylesheet" href="{{ ui_base }}/site.css?v={{ ui_v }}">{% block theme %}{% endblock %}{% block site_styles %}{% endblock %}{% endblock %}
+{% block body_class %}site{% endblock %}
+{% block body %}
+{%- import "ui/kit.html" as kit %}
+{% if site.sample %}{{ kit.sample_band(site) }}{% endif %}
+{% block header %}{% endblock %}
+<main id="main" class="site-main">
+{% block main %}{% endblock %}
+</main>
+{% block footer %}{% endblock %}
+<p class="site-ai-line">
+  <span>{{ words.visitor.footer_ai }}</span>
+  {%- if site.made_with is not defined or site.made_with %}
+  <a href="https://agentrix.website/">{{ words.visitor.made_with }} · {{ words.visitor.made_with_link }}</a>
+  {%- endif %}
+</p>
+{% endblock %}

@@ -1,0 +1,4 @@
+# Renders: too big for git; node serves out/web from AGENTRIX_HOME_FILM_DIR (src/film.rs).
+# stills/ is the local copy of W11's stills until W11's branch reaches platform.
+out/
+stills/

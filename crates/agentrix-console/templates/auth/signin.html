@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{#- Page::SignIn · view::AuthView { next, passkeys } · R2.1–R2.3, ported from concept/journeys/owner-account.html.
+    auth.js drives control-plane's JSON endpoints (S1-07): /auth/passkey/login/*, /auth/password, /auth/totp. -#}
+{% block title %}Sign in{% endblock %}
+{% block main %}
+<section class="stack" data-auth="signin" data-next="{{ next }}" id="auth">
+  <p class="eyebrow">Your Agentrix account</p>
+  <h1>Sign in</h1>
+  <p class="lead">{% if passkeys %}Use your passkey. No passkey on this device? Use your password and your authenticator app.{% else %}Use your password and your authenticator app.{% endif %}</p>
+</section>
+
+<p class="error" id="auth-error" role="alert" hidden></p>
+
+<section class="card" id="step-start">
+  <label class="field">Email<input id="email" type="email" autocomplete="username webauthn" required></label>
+  {% if passkeys %}
+  <button class="btn btn-primary btn-wide" type="button" id="pk">Sign in with a passkey</button>
+  <p class="hint">Face ID, Touch ID, Windows Hello or your screen lock unlocks it. We never see it.</p>
+  {% endif %}
+  <details {% if not passkeys %}open{% endif %} id="pw-wrap">
+    <summary style="cursor:pointer;font-weight:700;min-height:44px;display:flex;align-items:center">{% if passkeys %}No passkey on this device?{% else %}Sign in with your password{% endif %}</summary>
+    <form class="stack" id="pw" style="margin-top:var(--s3)">
+      <label class="field">Password<input id="password" type="password" autocomplete="current-password" required></label>
+      <button class="btn btn-wide" type="submit">Continue</button>
+    </form>
+  </details>
+</section>
+
+<section class="card" id="step-totp" hidden>
+  <h2>Code from your authenticator app</h2>
+  <form class="stack" id="code-form">
+    <label class="field">6-digit code<input id="code" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6}" maxlength="6" required></label>
+    <button class="btn btn-primary btn-wide" type="submit">Sign in</button>
+  </form>
+  <p class="hint">We never sign you in from an email link or a text message: only your passkey or your authenticator app.</p>
+</section>
+
+<p class="small muted">New here? <a href="/auth/register?next={{ next }}">Create an account</a></p>
+{% endblock %}
+{% block scripts %}<script src="/static/auth.js?v={{ asset_v }}" defer></script>{% endblock %}

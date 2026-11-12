@@ -1,0 +1,280 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pay with PayPal</title>
+<meta name="description" content="Customer journey, step 4 (the fleet release): Njeri sees the amount, the payee and Kilele's rate, then pays in US dollars on PayPal's own page. The cake's payment request appears only after Wanjiru approves.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Manrope:wght@600;700;800&family=Fraunces:opsz,wght@9..144,600;9..144,800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../styles.css">
+<link rel="stylesheet" href="../experience/experience.css">
+<link rel="stylesheet" href="journeys.css">
+<style>
+  .kilele [hidden] { display: none !important; }
+  .kilele a:focus-visible, .kilele button:focus-visible { outline: 2px solid var(--k-brown); outline-offset: 2px; box-shadow: none; }
+  .j-note.never { margin: 0; display: block; }
+  .j-cap > span:not(.n):not(.j-first) { min-width: 0; }
+  .j-cap .j-first { margin-left: auto; flex: none; }
+  #pp-1042, #pp-1043, #rails { scroll-margin-top: 80px; }
+
+  .k-me { display: inline-grid; place-items: center; width: 24px; height: 24px; border-radius: 50%; background: var(--k-brown); color: #fff; font: 700 11px/1 var(--font-text); }
+  .k-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap; }
+  .k-head h3 { font-size: 20px; }
+  .k-small, .k-card .k-small { font-size: 12.5px; line-height: 1.45; color: var(--k-brown-2); }
+  .k-facts { margin: 0; display: grid; }
+  .k-facts > div { display: grid; grid-template-columns: 74px minmax(0, 1fr); gap: 10px; padding: 8px 0; border-top: 1px dashed var(--k-line); }
+  .k-facts > div:first-child { border-top: 0; padding-top: 0; }
+  .k-facts dt { font: 700 11.5px/1.5 var(--font-text); letter-spacing: .04em; text-transform: uppercase; color: var(--k-brown-2); }
+  .k-facts dd { margin: 0; font-size: 14px; line-height: 1.45; color: var(--k-brown); overflow-wrap: anywhere; }
+  .k-amt { display: block; font: 800 24px/1.15 var(--k-serif); color: var(--k-brown); }
+  .k-ways { display: grid; gap: 8px; }
+  .k-alt { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .k-paid { display: flex; align-items: center; gap: 8px; padding: 10px 12px; border-radius: 12px; background: #e4f1e4; color: var(--k-ok); font: 700 15px/1.3 var(--font-text); }
+  .k-paid svg { width: 18px; height: 18px; flex: none; }
+  .k-receipt { display: grid; }
+  .k-receipt .k-rhead { display: flex; justify-content: space-between; gap: 8px; padding-bottom: 6px; font-size: 14px; color: var(--k-brown-2); }
+  .k-receipt .k-rhead b { color: var(--k-brown); }
+  .k-line > span { min-width: 0; }
+  .k-link { font: 700 13.5px/1.4 var(--font-text); color: var(--k-terra-2); text-decoration: underline; text-underline-offset: 3px; }
+  .k-link:hover { color: var(--k-brown); }
+  .k-order { display: grid; gap: 10px; }
+  .k-order p { margin: 0; }
+  .k-order .k-pill { justify-self: start; }
+  .k-oname { font: 700 15px/1.3 var(--font-text); color: var(--k-brown); }
+  .k-deskline { display: flex; align-items: flex-start; gap: 8px; font-size: 13.5px; line-height: 1.45; color: var(--k-brown); }
+  .k-deskline > span:last-child { min-width: 0; }
+
+  /* Concept blocks below the screens */
+  .x-box { background: var(--j-paper); border: 1px solid var(--j-line); border-radius: var(--r); padding: var(--s4); display: grid; gap: 12px; min-width: 0; }
+  .x-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap; }
+  .x-head h2 { font-size: var(--fs-20); }
+  .x-box > p { font-size: var(--fs-14); color: var(--j-ink-2); }
+  .x-rails { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); gap: 12px; }
+  .x-rail { display: grid; gap: 6px; align-content: start; padding: 12px 14px; border: 1px solid var(--j-line); border-radius: 12px; background: var(--surface); min-width: 0; }
+  .x-rail h3 { font-size: var(--fs-16); }
+  .x-rail h3 small { font: 600 12px/1 var(--font-text); color: var(--j-muted); margin-left: 4px; }
+  .x-rail p { font-size: var(--fs-14); color: var(--j-ink-2); }
+  .x-rail p.x-never { padding-left: 10px; border-left: 3px solid var(--risk); color: var(--j-ink); font-weight: 600; }
+  .x-seen { line-height: 1.9; }
+  .x-seen .j-who { margin-right: 4px; }
+  .j-flow > li > div { min-width: 0; }
+  .j-flow .j-who { margin-right: 4px; }
+  .fp { font: 600 12.5px/1.5 var(--font-mono); color: var(--j-ink); overflow-wrap: anywhere; }
+</style>
+</head>
+<body data-lane="customer" data-step="4">
+<header class="j-top">
+  <a class="logo" href="../index.html"><span class="mark" aria-hidden="true"></span>Agentrix</a>
+  <a class="j-maplink" href="index.html">Journey map</a>
+  <span class="j-lane">Customer · Njeri</span>
+  <span class="concept-label">Concept · illustrative data</span>
+</header>
+<nav class="j-steps" aria-label="Customer journey" data-steps></nav>
+<main class="wrap j-main">
+  <header class="j-head">
+    <p class="eyebrow">Step 4 of 7 · Customer <span class="j-first">The fleet release</span></p>
+    <h1>Pay with PayPal</h1>
+    <p class="lead">Kilele's page shows the amount, the payee and the rate first. Then PayPal opens its own window, where Njeri signs in and approves. Kilele and its desks never see her PayPal details.</p>
+  </header>
+  <div class="j-grid">
+    <section class="j-stage" aria-label="What Njeri sees">
+      <div class="j-tabs" role="tablist" aria-label="Which order">
+        <button role="tab" type="button" id="tab-1042" aria-selected="true" aria-controls="p-1042">K-1042 · catalogue</button>
+        <button role="tab" type="button" id="tab-1043" aria-selected="false" aria-controls="p-1043">K-1043 · custom cake</button>
+      </div>
+
+      <!-- ===== K-1042: paid at checkout ===== -->
+      <div role="tabpanel" id="p-1042" aria-labelledby="tab-1042">
+        <div class="j-screens">
+          <div class="j-screen">
+            <p class="j-cap"><span class="n">1</span><span>Kilele's pay step. The amount, the payee and the rate come first.</span><span class="j-first">The fleet release</span></p>
+            <div class="j-device kilele">
+              <div class="j-url"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg><span>kilele-bakery.example/orders/K-1042/pay</span></div>
+              <div class="k-bar">
+                <a class="k-logo" href="#" onclick="return false"><i aria-hidden="true"></i>Kilele</a>
+                <span class="k-acct"><span class="k-me" aria-hidden="true">N</span>Njeri</span>
+              </div>
+              <div class="k-screen">
+                <div class="k-head"><h3>Pay for K-1042</h3><span class="k-pill">Not paid yet</span></div>
+                <dl class="k-facts">
+                  <div><dt>Amount</dt><dd><b class="k-amt">USD 19.77</b>KSh 2,550 at Kilele's rate, 1 USD = KSh 129.00</dd></div>
+                  <div><dt>Payee</dt><dd>Kilele Bakery</dd></div>
+                  <div><dt>Order</dt><dd>K-1042 · 2 sourdough loaves, weekend bake box, delivery Sat 14 Nov, 10:00–12:00</dd></div>
+                </dl>
+                <span class="k-src">Price list, 2 Nov. The rate is pinned on this order.</span>
+                <div class="k-ways" role="group" aria-label="Ways to pay">
+                  <a class="k-btn wide" href="#pp-1042">Pay with PayPal</a>
+                  <div class="k-alt"><a class="k-btn ghost" href="#rails">M-Pesa</a><a class="k-btn ghost" href="#rails">Card</a></div>
+                </div>
+                <p class="k-small">PayPal charges US dollars because it has no Kenyan shilling. It opens in its own window, and Kilele never sees your PayPal sign-in.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="j-screen" id="pp-1042">
+            <p class="j-cap"><span class="n">2</span><span>PayPal's own window. Kilele isn't in it.</span><span class="j-first">The fleet release</span></p>
+            <div class="j-provider" role="group" aria-label="PayPal's window, shown as a placeholder">
+              <div class="bar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg><span>paypal.com</span></div>
+              <div class="body">
+                <div class="stand-in">PayPal's own page (not drawn here): Njeri signs in to PayPal and approves USD 19.77 to Kilele Bakery.</div>
+                <p>It shows the PayPal order the gateway created: USD 19.77, payee Kilele Bakery, order K-1042.</p>
+                <p class="x-seen"><span class="j-who customer">Njeri</span><span class="j-who provider">PayPal</span> see her sign-in.</p>
+                <p class="x-seen"><span class="j-who desk">Kilele and its WebAgents</span> never see her PayPal credentials. They learn only that she approved.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="j-screen">
+            <p class="j-cap"><span class="n">3</span><span>Back on Kilele: paid, confirmed, with a receipt.</span><span class="j-first">The fleet release</span></p>
+            <div class="j-device kilele">
+              <div class="j-url"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg><span>kilele-bakery.example/orders/K-1042</span></div>
+              <div class="k-bar">
+                <a class="k-logo" href="#" onclick="return false"><i aria-hidden="true"></i>Kilele</a>
+                <span class="k-acct"><span class="k-me" aria-hidden="true">N</span>Njeri</span>
+              </div>
+              <div class="k-screen">
+                <div class="k-head"><h3>K-1042</h3><span class="k-pill ok">Confirmed</span></div>
+                <p class="k-paid"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Paid · USD 19.77 · PayPal</p>
+                <div class="k-card k-receipt" role="group" aria-label="Receipt preview">
+                  <div class="k-rhead"><b>Receipt · K-1042</b><span>Sat 7 Nov</span></div>
+                  <div class="k-line"><span>Sourdough loaf × 2</span><b>KSh 900</b></div>
+                  <div class="k-line"><span>Weekend bake box</span><b>KSh 1,350</b></div>
+                  <div class="k-line"><span>Delivery, Kilimani · Sat 14 Nov, 10:00–12:00</span><b>KSh 300</b></div>
+                  <div class="k-total"><span>Total</span><span>KSh 2,550</span></div>
+                  <div class="k-line"><span>Paid with PayPal at 1 USD = KSh 129.00, pinned</span><b>USD 19.77</b></div>
+                  <p class="k-small">Signed by kilele-bakery.example, so she can check it.</p>
+                </div>
+                <a class="k-link" href="customer-after.html">The full receipt, how to check it, and the timeline (step 5)</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== K-1043: only after Wanjiru approves ===== -->
+      <div role="tabpanel" id="p-1043" aria-labelledby="tab-1043" hidden>
+        <div class="j-screens">
+          <div class="j-screen">
+            <p class="j-cap"><span class="n">1</span><span>Before Wanjiru's OK there is nothing to pay. The first release ends here.</span></p>
+            <div class="j-device kilele">
+              <div class="j-url"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg><span>kilele-bakery.example/orders</span></div>
+              <div class="k-bar">
+                <a class="k-logo" href="#" onclick="return false"><i aria-hidden="true"></i>Kilele</a>
+                <span class="k-acct"><span class="k-me" aria-hidden="true">N</span>Njeri</span>
+              </div>
+              <div class="k-screen">
+                <h3>Your orders</h3>
+                <div class="k-card k-order">
+                  <b class="k-oname">K-1043 · Amina's 2-tier forest cake</b>
+                  <div class="k-deskline"><span class="j-mark" data-agent="orders" data-size="28" data-state="waiting"></span><span><b>Orders</b> <span class="k-ai">AI</span><br>Waiting for Wanjiru's OK. Nothing charged.</span></div>
+                  <p>No payment request yet. It appears here after Wanjiru approves.</p>
+                </div>
+                <div class="k-card k-order">
+                  <div class="k-head"><b class="k-oname">K-1042 · bread and bake box</b><span class="k-pill ok">Paid · Confirmed</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="j-screen">
+            <p class="j-cap"><span class="n">2</span><span>Wanjiru approves. Only then does a payment request appear, on Njeri's orders page.</span><span class="j-first">The fleet release</span></p>
+            <div class="j-device kilele">
+              <div class="j-url"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg><span>kilele-bakery.example/orders</span></div>
+              <div class="k-bar">
+                <a class="k-logo" href="#" onclick="return false"><i aria-hidden="true"></i>Kilele</a>
+                <span class="k-acct"><span class="k-me" aria-hidden="true">N</span>Njeri</span>
+              </div>
+              <div class="k-screen">
+                <h3>Your orders</h3>
+                <div class="k-card k-order">
+                  <b class="k-oname">K-1043 · Amina's 2-tier forest cake</b>
+                  <span class="k-pill ok">Approved by Wanjiru · Sat 7 Nov 19:02</span>
+                  <div class="k-deskline"><span class="j-mark" data-agent="cashier" data-size="20"></span><span><b>Cashier</b> <span class="k-ai">AI</span> made this payment request from the approved order. It can't change the amount.</span></div>
+                  <dl class="k-facts">
+                    <div><dt>Amount</dt><dd><b class="k-amt">USD 40.70</b>KSh 5,250 at Kilele's rate, 1 USD = KSh 129.00</dd></div>
+                    <div><dt>Payee</dt><dd>Kilele Bakery</dd></div>
+                    <div><dt>Order</dt><dd>K-1043 · delivery Sat 14 Nov, 10:00–12:00, with K-1042</dd></div>
+                  </dl>
+                  <div class="k-ways" role="group" aria-label="Ways to pay">
+                    <a class="k-btn wide" href="#pp-1043">Pay with PayPal</a>
+                    <div class="k-alt"><a class="k-btn ghost" href="#rails">M-Pesa</a><a class="k-btn ghost" href="#rails">Card</a></div>
+                  </div>
+                  <p class="k-small">Payment requests appear only here, on your orders page. If a message asks you to pay anywhere else, it isn't from Kilele.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="j-screen" id="pp-1043">
+            <p class="j-cap"><span class="n">3</span><span>The same PayPal flow, for USD 40.70.</span><span class="j-first">The fleet release</span></p>
+            <div class="j-provider" role="group" aria-label="PayPal's window, shown as a placeholder">
+              <div class="bar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg><span>paypal.com</span></div>
+              <div class="body">
+                <div class="stand-in">PayPal's own page (not drawn here): Njeri signs in to PayPal and approves USD 40.70 to Kilele Bakery.</div>
+                <p class="x-seen"><span class="j-who desk">Kilele and its WebAgents</span> never see her PayPal credentials.</p>
+              </div>
+            </div>
+            <p class="j-cap">Then, back on Kilele</p>
+            <div class="j-device kilele">
+              <div class="j-url"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg><span>kilele-bakery.example/orders/K-1043</span></div>
+              <div class="k-screen">
+                <div class="k-head"><h3>K-1043</h3><span class="k-pill ok">Confirmed</span></div>
+                <p class="k-paid"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Paid · USD 40.70 · PayPal</p>
+                <p class="k-small">Receipt ready. Delivery Sat 14 Nov, 10:00–12:00, with K-1042.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== The other rails ===== -->
+      <section class="x-box" id="rails" aria-labelledby="rails-h">
+        <div class="x-head"><h2 id="rails-h">The other rails</h2><span class="j-first">The fleet release</span></div>
+        <div class="x-rails">
+          <div class="x-rail">
+            <h3>M-Pesa <small>STK Push</small></h3>
+            <p>For a Kenyan M-Pesa number. M-Pesa sends a payment prompt to the buyer's phone, for example KSh 2,550 to Kilele Bakery. She enters her PIN on her own phone.</p>
+            <p>It charges shillings, so no exchange rate is needed.</p>
+            <p class="x-never">The site never sees the PIN.</p>
+          </div>
+          <div class="x-rail">
+            <h3>Card <small>provider-hosted fields</small></h3>
+            <p>The card fields on Kilele's pay page are hosted by the card payment provider. What she types goes straight to the provider.</p>
+            <p class="x-never">The card number never reaches Kilele, its servers or its desks.</p>
+          </div>
+        </div>
+        <p>M-Pesa needs a Kenyan phone number. Njeri, in London, pays with PayPal.</p>
+      </section>
+
+      <!-- ===== Underneath ===== -->
+      <section class="x-box" aria-labelledby="under-h">
+        <h2 id="under-h">Underneath</h2>
+        <ol class="j-flow">
+          <li><div><span class="j-who customer">Njeri</span> Picks "Pay with PayPal" on kilele-bakery.example, after seeing the amount, the payee and the rate.</div></li>
+          <li><div><span class="j-who gateway">Effects Gateway</span> Holds Kilele's PayPal keys. It creates a PayPal order (Orders v2) for the exact amount, payable to Kilele Bakery, under the order's fingerprint <code class="fp">H(site, webagent, tool, canonical_args, amount, expiry)</code>. For K-1043 this happens only after Wanjiru approves, and only for the amount she approved.</div></li>
+          <li><div><span class="j-who provider">PayPal</span> Njeri signs in and approves on PayPal's own page.</div></li>
+          <li><div><span class="j-who gateway">Effects Gateway</span> Captures once. The fingerprint is the idempotency key, so a double click or a retry can't charge her twice.</div></li>
+          <li><div><span class="j-who gateway">Effects Gateway</span> Writes a receipt: the order, the amount, the pinned rate, the payment method and PayPal's reference.</div></li>
+          <li><div><span class="j-who desk">Desks</span> See "Paid" and the amount. They never see a credential.</div></li>
+        </ol>
+      </section>
+    </section>
+
+    <aside class="j-notes" aria-label="What happens underneath">
+      <div class="j-note"><h3><span class="j-first">The fleet release</span> Mockups this weekend</h3><p>The first release ends the custom order at the owner's approval; paying is the fleet release (12 Nov).</p></div>
+      <a class="j-meet" href="index.html#meet-payment"><span>Meets the owner lane</span><b>The payment lands on Wanjiru's order</b></a>
+      <a class="j-meet" href="index.html#meet-payout"><span>Meets the owner lane</span><b>The payout settles in Kilele's PayPal balance</b></a>
+      <div class="j-note"><h3>Dollars on PayPal, and why</h3><p>PayPal's list of supported currencies has no Kenyan shilling, so PayPal charges US dollars. The rate is the one Kilele posts in its price list, 1 USD = KSh 129.00, pinned on each order. A refund uses the same rate.</p></div>
+      <div class="j-note"><h3>Seen before PayPal opens</h3><p>The amount, the payee and the rate are on Kilele's own page first. Payment requests appear only on her orders page at kilele-bakery.example, so a link in a message can't change where she pays.</p></div>
+      <div class="j-note"><h3>A trusted surface</h3><p>The purchase completes on PayPal's own page, or on her own phone for M-Pesa (06 §12.4). Desks quote and request. They never take a payment.</p></div>
+      <div class="j-note never"><h3>Never on Kilele</h3><p>Her PayPal sign-in, an M-Pesa PIN and a card number stay with the provider. The Effects Gateway holds Kilele's PayPal keys, and no desk can read them.</p></div>
+      <div class="j-note"><h3>Fees are Kilele's</h3><p>PayPal's fee is the merchant's cost. It is illustrative, isn't added to Njeri's total and isn't shown to her. Whether Kilele's PayPal account can take these payments and withdraw to a Kenyan bank is checked with PayPal before the pilot.</p></div>
+    </aside>
+  </div>
+</main>
+<nav class="wrap j-pager" aria-label="Previous and next step" data-pager></nav>
+<script src="journeys.js"></script>
+</body>
+</html>

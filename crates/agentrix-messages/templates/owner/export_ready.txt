@@ -1,0 +1,14 @@
+{% block subject %}Your export of {{ site.name }} is ready{% endblock %}
+{% block preheader %}The link works for 7 days, until {{ export.expires }}.{% endblock %}
+{% block body %}
+# Your export is ready
+Everything {{ site.name }} holds, in open formats: {{ export.contents }}.
+
+::fact Size | {{ export.size }}
+::fact Fingerprint | {{ export.digest }}
+::fact Link works until | {{ export.expires }}
+
+::button Open billing | {{ export.url }}
+
+You'll be asked to sign in first. The fingerprint lets you check the file you downloaded is the one we made.
+{% endblock %}

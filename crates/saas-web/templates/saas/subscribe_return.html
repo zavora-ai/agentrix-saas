@@ -1,0 +1,28 @@
+{% extends "ui/layouts/page.html" %}
+{% import "ui/kit.html" as ui %}
+{% import "saas/macros.html" as s %}
+{% block title %}Your plan · Agentrix{% endblock %}
+{% block styles %}<link rel="stylesheet" href="/static/saas/saas.css?v={{ saas_v }}">{% endblock %}
+{% block nav %}{{ s.money_nav("plans") }}{% endblock %}
+{% block main %}
+{% if cancelled is defined and cancelled %}
+<div class="page-head"><h1>Not subscribed</h1><p class="lead">{{ message }}</p></div>
+{% if plan is defined and plan %}{{ ui.button("Try again", href="/subscribe?plan=" ~ plan.id, kind="primary") }}{% else %}{{ ui.button("See the plans", href="/plans") }}{% endif %}
+{% else %}
+{{ s.sandbox_banner() }}
+<div class="page-head"><p class="eyebrow">Step 3 of 3 · back from PayPal</p><h1>{% if done %}Your plan is active{% else %}Finishing your plan{% endif %}</h1></div>
+<div class="card sub-status{% if done %} done{% endif %}" data-subscription="{{ id }}" data-done="{{ 'true' if done else 'false' }}">
+  <ol class="steps sub-steps">
+    <li class="done">Approved on PayPal</li>
+    <li class="{{ 'done' if status and status.state == 'active' else 'now' }}" data-step="active">PayPal says the plan is active</li>
+    <li class="{{ 'done' if done else '' }}" data-step="booked">First payment booked from PayPal's signed notice</li>
+  </ol>
+  <p class="lead" data-words role="status">{{ message }}</p>
+  {% if status and status.receipt %}<p class="small muted mono" data-receipt>PayPal {{ status.receipt.paypal_id }}{% if status.receipt.invoice_number %} · {{ status.receipt.invoice_number }}{% endif %}</p>{% else %}<p class="small muted mono" data-receipt></p>{% endif %}
+</div>
+{% endif %}
+{% endblock %}
+{% block foot %}
+<footer class="foot"><div class="row"><span>Agentrix by Zavora · sandbox demo for the PayPal AI Hackathon · open source (MIT)</span></div></footer>
+{% endblock %}
+{% block scripts %}<script type="module" src="/static/saas/subscribe.js?v={{ saas_v }}"></script>{% endblock %}

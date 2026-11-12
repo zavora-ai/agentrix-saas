@@ -1,0 +1,39 @@
+{% extends shell.layout %}
+{% import "shop/parts.html" as p %}
+{% block styles %}{{ super() }}{{ p.styles(shell) }}{% endblock %}
+{% block main %}
+<div class="shop">
+  <div class="k-head"><h1>Your account</h1><span class="k-pill">{{ shell.site.name }} only</span></div>
+  {% if not verified %}<p class="k-note warn">Your email isn't confirmed yet. <a href="/account/security">Confirm it</a> before you order, so receipts and updates reach you.</p>{% endif %}
+  <div class="k-card">
+    <div class="k-head"><h2>Your details</h2><a class="k-link" href="/account/details">Change</a></div>
+    <ul class="k-list">
+      <li><b>Name</b><span>{{ name }}</span></li>
+      <li><b>Email</b><span>{{ email }}</span></li>
+      <li><b>Phone</b><span>{% if phone %}{{ phone }}{% else %}Not given{% endif %}</span></li>
+    </ul>
+  </div>
+  {% if sells %}
+  <div class="k-card">
+    <div class="k-head"><h2>Your orders</h2><a class="k-link" href="/orders">All orders</a></div>
+    {% if cards %}
+    <ul class="k-list">{% for c in cards %}<li><a href="/orders/{{ c.head.id }}">{{ c.head.id }} · {{ c.head.title }}</a><span class="k-pill {{ c.head.tone }}">{{ c.head.pill }}</span></li>{% endfor %}</ul>
+    {% else %}
+    <p>No orders yet. They appear here once you place one.</p>
+    {% endif %}
+  </div>
+  <div class="k-card">
+    <div class="k-head"><h2>Addresses</h2><a class="k-link" href="/account/addresses">Manage</a></div>
+    <p>{% if saved == 0 %}No saved addresses. Save one to fill in checkout faster.{% elif saved == 1 %}1 saved address. Checkout offers it first.{% else %}{{ saved }} saved addresses. Checkout offers the first one.{% endif %}</p>
+  </div>
+  {% endif %}
+  <div class="k-card">
+    <h2>Sign-in and privacy</h2>
+    <ul class="k-list">
+      <li><a href="/account/security">Sign-in and security</a><span>Passkeys, devices and recent sign-ins</span></li>
+      <li><a href="/account/choices">Your choices</a><span>Messages, and what {{ short }} keeps</span></li>
+    </ul>
+    <form method="post" action="/account/sign-out"><button class="k-btn ghost" type="submit">Sign out</button></form>
+  </div>
+</div>
+{% endblock %}

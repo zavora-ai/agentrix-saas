@@ -1,0 +1,41 @@
+[package]
+name = "saas-test-agents"
+description = "Three clearly labelled test customer agents for the sample sites, on sandbox PayPal: each with its own Web Bot Auth key directory and did:web, browsing anonymously, asking for quotes and checkouts as proven agents, paying with a saved sandbox buyer, and now and then an impostor the door must refuse."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+authors.workspace = true
+
+# Owner: slice C (settle). Runs as its own unit on the VM, beside the node.
+
+[[bin]]
+name = "agentrix-test-agents"
+path = "src/bin/agentrix-test-agents.rs"
+
+[dependencies]
+adk-auth = { workspace = true, features = ["web-bot-auth"] }
+agentrix-effects.workspace = true
+anyhow.workspace = true
+axum.workspace = true
+chrono.workspace = true
+hex.workspace = true
+rand.workspace = true
+reqwest.workspace = true
+saas-badge = { path = "../saas-badge" }
+saas-settle = { path = "../saas-settle" }
+serde.workspace = true
+serde_json.workspace = true
+tokio.workspace = true
+tower.workspace = true
+tracing.workspace = true
+tracing-subscriber.workspace = true
+url.workspace = true
+uuid.workspace = true
+
+[dev-dependencies]
+wiremock = "0.6"
+
+[lints]
+workspace = true

@@ -1,0 +1,49 @@
+[package]
+name = "agentrix-move"
+description = "The Move as a persisted state machine: inventory, sanitise, detect, quarantine, map, rebuild, parity and the candidate release."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+authors.workspace = true
+
+[dependencies]
+agentrix-types.workspace = true
+# W8's visit counter: releases carry its script tag (visits::script_tag), so the edge counts visits
+# without cookies (specs/platform/handover-wiring.md 3.1).
+agentrix-store.workspace = true
+# migrate: the WXR source, the sanitiser, the detectors and parity helpers (design §3).
+adk-site = { workspace = true, features = ["migrate"] }
+adk-core.workspace = true
+awp-types.workspace = true
+anyhow.workspace = true
+async-trait.workspace = true
+base64.workspace = true
+bytes.workspace = true
+chrono.workspace = true
+futures.workspace = true
+hex.workspace = true
+minijinja.workspace = true
+reqwest.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+sha2.workspace = true
+sqlx.workspace = true
+thiserror.workspace = true
+tokio.workspace = true
+tracing.workspace = true
+url.workspace = true
+uuid.workspace = true
+# Already in the lockfile through adk-site; reads the owner's wp-content.tar.gz for the R4.4
+# fallback. Asked the coordinator to move it into [workspace.dependencies].
+flate2 = "1"
+# Already in the lockfile through adk-site; renders clean Markdown when the builder fails.
+pulldown-cmark = { version = "0.13", default-features = false, features = ["html"] }
+
+[dev-dependencies]
+tempfile.workspace = true
+tokio.workspace = true
+
+[lints]
+workspace = true

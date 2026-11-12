@@ -1,0 +1,174 @@
+{% extends "os/base.html" %}
+{#- ShellPage::Decision · view::DecisionView (+ Chrome) {
+      card: Card { id, kind, title, asked_by, risk, risk_words, why_words, effects: [String], facts: [{label, value}],
+                   levels: [JobLevels], fingerprint, fingerprint_short, fields: [{label, value}],
+                   state: waiting|approved|declined|expired, decided: { outcome_words, method_words, at_words, receipt }?,
+                   passkey_options?, has_passkey, approve_url, decline_url },
+      row: LaneCard,
+      extras: { agent_words, fields: [{ name, label, kind, value, multiline, hint }], sheet_url, changes: [{ label, before, after }],
+                decline_reason?, reason_is_rule, rules: [RuleView], agent_href,
+                allow_person?, allow_kind?, allow_refusal?, grant: GrantView?, by_grant }? }
+    01b C7, C8. The approval posts to the card's own approve URL (the frozen contract, design §4.1).
+    concept/console.html's Edit and Decline and teach: an edited approval signs the edited version, from
+    extras.sheet_url; a decline can carry a reason that becomes a rule for the WebAgent. -#}
+{% block title %}{{ card.title }} · {{ site.name }}{% endblock %}
+{% block field %}
+<section class="view on decision-page" aria-labelledby="card-h">
+  <p class="small"><a href="{{ base }}/decisions">← Decisions</a></p>
+  <article class="fcard decision-card" data-decision data-card="{{ card.id }}">
+    <div class="from">{{ m.mark(card.asked_by) }}<span>{{ row.from_words }}</span><span class="chip chip-{{ row.risk_class }}">{{ card.risk_words }}</span></div>
+    <h2 id="card-h">{{ card.title }}</h2>
+    <p class="small muted">{{ row.created_words }} · {{ row.expires_words }}</p>
+
+    <div class="effect-box">
+      <h4>If you approve, exactly this happens</h4>
+      <ul>{% for e in card.effects %}<li>{{ e }}</li>{% endfor %}
+      {%- if card.kind == "go-live" %}
+        <li>{{ site.host }}'s address record doesn't change. We don't edit your DNS, so your own address keeps showing your old site until you point it here. After you change it, your DNS provider's settings decide how soon visitors see the new site.</li>
+        {%- set agents = card.levels|map(attribute="webagent")|unique|list %}
+        {%- if agents %}
+        <li>Your WebAgents start work: {% for a in agents %}{% if not loop.first %}{{ " and " if loop.last else ", " }}{% endif %}the {{ a }}{% endfor %}. Below is what each may do without asking.</li>
+        {%- endif %}
+        <li>Going live charges nothing. Your plan's first charge is the day you approve it on PayPal's page, just before go-live. Its price is under Your plan and payment, on the Move page.</li>
+      {%- endif %}</ul>
+    </div>
+    <p class="why-line"><b>Why {{ card.risk_words|lower }}:</b> {{ card.why_words }}</p>
+    {% if extras and extras.rules %}
+    <div class="rules-box">
+      <h4>Your rules for {{ extras.agent_words }}</h4>
+      <ul>{% for r in extras.rules %}<li>{{ r.words }}</li>{% endfor %}</ul>
+      <p class="small muted">When {{ extras.agent_words }} asks you, it follows these. <a href="{{ extras.agent_href }}#rules">Change them</a></p>
+    </div>
+    {% endif %}
+    {% if card.facts %}<dl class="kv">{% for f in card.facts %}<dt>{{ f.label }}</dt><dd>{{ f.value }}</dd>{% endfor %}</dl>{% endif %}
+
+    {% if card.levels %}
+    <div class="levels-box">
+      <h4>What your WebAgents may do without asking</h4>
+      <p class="small">Approving this card also sets these starting levels. Anything that can't be undone still asks you first.</p>
+      {% for j in card.levels %}
+      <div class="job">
+        <div class="spread"><b>{{ j.webagent }} · {{ j.job }}</b><span class="chip {{ 'chip-info' if j.above_ask_first else '' }}">{{ j.level_words }}</span></div>
+        <div class="ladder" role="group" aria-label="{{ j.webagent }}, {{ j.job }}">{% for p in j.positions %}<button type="button" disabled aria-pressed="{{ 'true' if p.current else 'false' }}"{% if p.locked %} title="{{ p.reason }}"{% endif %}>{{ p.name }}</button>{% endfor %}</div>
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    <details class="fp-box">
+      <summary>What your approval signs</summary>
+      <p class="mono fp-line">{{ card.fingerprint }}</p>
+      {% if card.fields %}<dl class="kv">{% for f in card.fields %}<dt>{{ f.label }}</dt><dd class="mono">{{ f.value }}</dd>{% endfor %}</dl>{% endif %}
+      <p class="small muted">This line is worked out from exactly what will run. The card you read and the approval you give both come from it, so what you approve is what runs, and only once.</p>
+    </details>
+
+    {% if card.state == "waiting" %}
+    <div class="verbs decide">
+      <a class="btn btn-primary" href="#approve" data-sheet="{{ row.sheet_url }}">Approve</a>
+      {% if extras and extras.fields %}<a class="btn" href="#edit-box" data-toggle="edit-box" aria-controls="edit-box" aria-expanded="false">Edit</a>{% endif %}
+      {% if extras and (extras.allow_person or extras.allow_kind) %}<a class="btn" href="#allow-box" data-toggle="allow-box" aria-controls="allow-box" aria-expanded="false">Allow, and tell me</a>{% endif %}
+      {% if extras %}<a class="btn btn-ghost" href="#teach-box" data-toggle="teach-box" aria-controls="teach-box" aria-expanded="false">Decline</a>
+      {% else %}<form method="post" action="{{ card.decline_url }}" data-decline><button class="btn btn-ghost" type="submit">Decline</button></form>{% endif %}
+    </div>
+    {% if extras and extras.fields %}
+    <form class="answer-box" id="edit-box" method="post" action="{{ card.approve_url }}" data-edit-form data-edit-sheet="{{ extras.sheet_url }}">
+      <h4>Edit before you approve</h4>
+      <p class="small">Change what {{ extras.agent_words }} proposed, then approve your version with the same passkey or code. Your receipt keeps the before and after. Everything else on the card stays as it is.</p>
+      {% for f in extras.fields %}
+      <div class="field">
+        <label for="{{ f.name }}-{{ card.id }}">{{ f.label }}</label>
+        {% if f.multiline %}<textarea id="{{ f.name }}-{{ card.id }}" name="{{ f.name }}" rows="4" maxlength="2000">{{ f.value }}</textarea>
+        {% elif f.kind == "amount" %}<input id="{{ f.name }}-{{ card.id }}" name="{{ f.name }}" value="{{ f.value }}" inputmode="decimal" autocomplete="off">
+        {% elif f.kind == "date" %}<input id="{{ f.name }}-{{ card.id }}" name="{{ f.name }}" value="{{ f.value }}" type="date">
+        {% elif f.kind == "time" %}<input id="{{ f.name }}-{{ card.id }}" name="{{ f.name }}" value="{{ f.value }}" type="time">
+        {% else %}<input id="{{ f.name }}-{{ card.id }}" name="{{ f.name }}" value="{{ f.value }}" maxlength="2000" autocomplete="off">{% endif %}
+        {% if f.hint %}<p class="small muted">{{ f.hint }}</p>{% endif %}
+      </div>
+      {% endfor %}
+      <div class="verbs"><button class="btn btn-primary" type="button" data-edit-approve>Approve your version</button><a class="btn btn-ghost" href="#" data-toggle="edit-box">Cancel</a></div>
+      <details class="fallback">
+        <summary>Approve your version with your authenticator app instead</summary>
+        <div class="code-form">
+          <input type="hidden" name="method" value="totp">
+          <input type="hidden" name="fingerprint" value="{{ card.fingerprint }}">
+          <label for="edit-code-{{ card.id }}">Code from your authenticator app</label>
+          <input id="edit-code-{{ card.id }}" name="code" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6}" maxlength="6">
+          <p class="small muted">It works once, and only for your version of this card.</p>
+          <button class="btn btn-primary" type="submit">Approve your version with code</button>
+        </div>
+      </details>
+    </form>
+    {% endif %}
+    {% if extras and extras.allow_refusal %}<p class="small muted allow-no">{{ extras.allow_refusal }}</p>{% endif %}
+    {% if extras and (extras.allow_person or extras.allow_kind) %}
+    <form class="answer-box" id="allow-box" method="post" action="{{ card.approve_url }}" data-grant-form data-grant-sheet="{{ extras.sheet_url }}">
+      <h4>Approve, and allow this again</h4>
+      <p class="small">From now on {{ extras.agent_words }} goes ahead with cards like this one without asking, inside the limit below, and tells you each time on your Back office page. You can stop it any time in the Trust centre or on {{ extras.agent_words }}'s page.</p>
+      {% if extras.allow_person %}<label class="check"><input type="radio" name="grant" value="person" checked> {{ extras.allow_person }}</label>{% endif %}
+      {% if extras.allow_kind %}<label class="check"><input type="radio" name="grant" value="kind"{% if not extras.allow_person %} checked{% endif %}> {{ extras.allow_kind }}</label>{% endif %}
+      <p class="small muted">Your passkey or code signs this card and the grant together. A card over the limit, for someone else, or with a higher risk still asks you.</p>
+      <div class="verbs"><button class="btn btn-primary" type="button" data-grant-approve>Approve and allow</button><a class="btn btn-ghost" href="#" data-toggle="allow-box">Cancel</a></div>
+      <details class="fallback">
+        <summary>Approve and allow with your authenticator app instead</summary>
+        <div class="code-form">
+          <input type="hidden" name="method" value="totp">
+          <input type="hidden" name="fingerprint" value="{{ card.fingerprint }}">
+          <label for="grant-code-{{ card.id }}">Code from your authenticator app</label>
+          <input id="grant-code-{{ card.id }}" name="code" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6}" maxlength="6">
+          <button class="btn btn-primary" type="submit">Approve and allow with code</button>
+        </div>
+      </details>
+    </form>
+    {% endif %}
+    {% if extras %}
+    <form class="answer-box teach-box" id="teach-box" method="post" action="{{ card.decline_url }}" data-decline>
+      <h4>Tell {{ extras.agent_words }} why</h4>
+      <label for="why-{{ card.id }}">Why not? You can leave this empty.</label>
+      <input id="why-{{ card.id }}" name="reason" maxlength="280" autocomplete="off" placeholder="For example: never take orders for the same day">
+      <label class="check"><input type="checkbox" name="rule" value="on"> Make this a rule for {{ extras.agent_words }}</label>
+      <p class="small muted">A rule stays on {{ extras.agent_words }}'s page until you remove it. Declining changes nothing else.</p>
+      <div class="verbs"><button class="btn btn-primary" type="submit">Decline</button><a class="btn btn-ghost" href="#" data-toggle="teach-box">Cancel</a></div>
+    </form>
+    {% endif %}
+    {% if card.kind == "go-live" %}<p class="small muted">Not ready? Leave the card. It keeps waiting for you here, and leaving it never declines it.</p>{% endif %}
+    <details class="fallback" id="approve">
+      <summary>Approve with your authenticator app instead</summary>
+      <form method="post" action="{{ card.approve_url }}" class="code-form">
+        <input type="hidden" name="method" value="totp">
+        <input type="hidden" name="fingerprint" value="{{ card.fingerprint }}">
+        <label for="code-{{ card.id }}">Code from your authenticator app</label>
+        <input id="code-{{ card.id }}" name="code" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6}" maxlength="6" required>
+        <p class="small muted">It works once, and only for this card. Your receipt will say a code approved it, not a passkey.</p>
+        <button class="btn btn-primary" type="submit">Approve with code</button>
+      </form>
+    </details>
+    <div class="done-line" role="status"></div>
+    {% elif card.decided %}
+    <div class="decided-box {{ card.state }}">
+      <b>{{ card.decided.outcome_words }}</b>
+      <dl class="kv">{% if card.state in ["declined", "expired"] %}<dt>What happened</dt><dd>{{ card.decided.method_words }}</dd>{% else %}<dt>How</dt><dd>{{ card.decided.method_words }}</dd><dt>When</dt><dd>{{ card.decided.at_words }}</dd>{% endif %}<dt>Receipt</dt><dd><a class="mono" href="/receipts/{{ card.decided.receipt }}">{{ card.decided.receipt[:19] }}…</a></dd></dl>
+      {% if extras and extras.changes %}
+      <div class="edited-box">
+        <b>Edited by you before approving</b>
+        <dl class="kv">{% for c in extras.changes %}<dt>{{ c.label }}</dt><dd><span class="before">Was: {{ c.before }}</span><br><span class="after">Now: {{ c.after }}</span></dd>{% endfor %}</dl>
+        <p class="small">Your approval signed your version, and that is what ran.</p>
+        {% if extras.signed %}<p class="mono signed-line">{{ extras.signed }}</p>{% endif %}
+      </div>
+      {% endif %}
+      {% if extras and extras.grant %}
+      <div class="edited-box">
+        <b>{% if extras.by_grant %}Approved under your standing grant{% else %}You also said{% endif %}</b>
+        <p class="small">{{ extras.grant.sentence }}. {{ extras.grant.state_words }}.</p>
+        {% if not extras.grant.ended %}<form method="post" action="{{ extras.grant.revoke_url }}" class="verbs"><button class="btn btn-sm" type="submit">Stop this grant</button></form>{% endif %}
+      </div>
+      {% endif %}
+      {% if extras and extras.decline_reason %}
+      <p class="small">Your reason: "{{ extras.decline_reason }}".{% if extras.reason_is_rule %} It is a rule for {{ extras.agent_words }} now. <a href="{{ extras.agent_href }}#rules">See its rules</a>{% endif %}</p>
+      {% endif %}
+    </div>
+    {% else %}
+    <div class="decided-box {{ card.state }}"><b>{{ row.outcome_words }}</b></div>
+    {% endif %}
+  </article>
+</section>
+{% endblock %}

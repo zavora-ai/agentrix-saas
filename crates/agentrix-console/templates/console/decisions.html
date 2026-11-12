@@ -1,0 +1,32 @@
+{% extends "console/base.html" %}
+{% import "macros.html" as m %}
+{#- Page::Decisions · view::DecisionsView (+ ConsoleChrome) {
+      waiting: [ CardSummary { id, title, asked_by: AgentMark, risk: "low"|"medium"|"high", risk_words, created_words, summary } ],
+      decided: [ CardSummary + { outcome_words } ] }
+    R10.1. -#}
+{% block title %}Decisions{% endblock %}
+{% block content %}
+<section class="stack">
+  <p class="eyebrow">Decisions</p>
+  <h1>{% if waiting %}{{ waiting|length }} waiting for you{% else %}Nothing needs you{% endif %}</h1>
+</section>
+
+{% for c in waiting %}
+<article class="card">
+  <div class="from">{{ m.mark(c.asked_by) }}{{ c.asked_by.name }} asks<span class="chip {{ 'risk' if c.risk == 'high' else ('wait' if c.risk == 'medium' else 'ok') }}">{{ c.risk_words }}</span></div>
+  <h2><a href="/d/{{ c.id }}">{{ c.title }}</a></h2>
+  <p class="small">{{ c.summary }}</p>
+  <p class="hint">{{ c.created_words }}</p>
+  <a class="btn btn-primary" href="/d/{{ c.id }}">Open</a>
+</article>
+{% endfor %}
+
+{% if decided %}
+<section class="card" aria-labelledby="decided-h">
+  <h2 id="decided-h">Decided</h2>
+  <ul class="list">
+    {% for c in decided %}<li><a href="/d/{{ c.id }}"><b>{{ c.title }}</b></a><p class="small muted">{{ c.outcome_words }} · {{ c.created_words }}</p></li>{% endfor %}
+  </ul>
+</section>
+{% endif %}
+{% endblock %}

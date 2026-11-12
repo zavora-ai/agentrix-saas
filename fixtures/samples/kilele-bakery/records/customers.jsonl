@@ -1,0 +1,41 @@
+{"customer_id": "cus-njeri", "name": "Njeri", "email": "njeri@example.com", "phone": "+44 7700 900418", "place": "London", "created_at": "d-40 19:02"}
+{"customer_id": "cus-amani", "name": "Amani W.", "email": "amani.w@example.com", "phone": "+44 7700 900431", "place": "Nairobi", "created_at": "d-21 08:10"}
+{"customer_id": "cus-mary", "name": "Mary K.", "email": "mary.k@example.com", "phone": "+44 7700 900452", "place": "Nairobi", "created_at": "d-3 18:40"}
+{"customer_id": "cus-peter", "name": "Peter O.", "email": "peter.o@example.com", "phone": "+44 7700 900467", "place": "Nairobi", "created_at": "d-30 12:00"}
+{"customer_id": "cus-riverside", "name": "Riverside Co.", "email": "orders@riverside.example", "kind": "business", "place": "Nairobi", "created_at": "d-2 10:15"}
+{"customer_id": "cus-leah", "name": "Leah M.", "email": "leah.m@example.com", "phone": "+44 7700 900503", "place": "Westlands", "created_at": "d-15 09:30"}
+{"customer_id": "cus-brian", "name": "Brian N.", "email": "brian.n@example.com", "phone": "+44 7700 900516", "place": "Kilimani", "created_at": "d-9 13:05"}
+{"customer_id": "cus-faith", "name": "Faith W.", "email": "faith.w@example.com", "phone": "+44 7700 900527", "place": "Westlands", "created_at": "d-6 18:20"}
+{"customer_id": "cus-kevin", "name": "Kevin O.", "email": "kevin.o@example.com", "phone": "+44 7700 900538", "place": "Kilimani", "created_at": "d-5 07:45"}
+{"customer_id": "cus-esther", "name": "Esther A.", "email": "esther.a@example.com", "phone": "+44 7700 900549", "place": "Westlands", "created_at": "d-2 11:10"}
+{"customer_id": "cus-s01", "name": "Wairimu N. (Sample customer)", "email": "sample01@example.com", "place": "Nairobi", "created_at": "d-59 09:00"}
+{"customer_id": "cus-s02", "name": "Otieno K. (Sample customer)", "email": "sample02@example.com", "place": "Nairobi", "created_at": "d-58 09:00"}
+{"customer_id": "cus-s03", "name": "Chebet R. (Sample customer)", "email": "sample03@example.com", "place": "Nairobi", "created_at": "d-57 09:00"}
+{"customer_id": "cus-s04", "name": "Kamau J. (Sample customer)", "email": "sample04@example.com", "place": "Nairobi", "created_at": "d-56 09:00"}
+{"customer_id": "cus-s05", "name": "Nyambura W. (Sample customer)", "email": "sample05@example.com", "place": "Nairobi", "created_at": "d-55 09:00"}
+{"customer_id": "cus-s06", "name": "Odhiambo P. (Sample customer)", "email": "sample06@example.com", "place": "Nairobi", "created_at": "d-54 09:00"}
+{"customer_id": "cus-s07", "name": "Wambua M. (Sample customer)", "email": "sample07@example.com", "place": "Nairobi", "created_at": "d-53 09:00"}
+{"customer_id": "cus-s08", "name": "Jeptoo L. (Sample customer)", "email": "sample08@example.com", "place": "Nairobi", "created_at": "d-52 09:00"}
+{"customer_id": "cus-s09", "name": "Mwende S. (Sample customer)", "email": "sample09@example.com", "place": "Nairobi", "created_at": "d-51 09:00"}
+{"customer_id": "cus-s10", "name": "Kiprono T. (Sample customer)", "email": "sample10@example.com", "place": "Nairobi", "created_at": "d-50 09:00"}
+{"customer_id": "cus-s11", "name": "Nduta G. (Sample customer)", "email": "sample11@example.com", "place": "Nairobi", "created_at": "d-49 09:00"}
+{"customer_id": "cus-s12", "name": "Omondi B. (Sample customer)", "email": "sample12@example.com", "place": "Nairobi", "created_at": "d-48 09:00"}
+{"customer_id": "cus-s13", "name": "Wanjala E. (Sample customer)", "email": "sample13@example.com", "place": "Nairobi", "created_at": "d-47 09:00"}
+{"customer_id": "cus-s14", "name": "Akinyi F. (Sample customer)", "email": "sample14@example.com", "place": "Nairobi", "created_at": "d-46 09:00"}
+{"customer_id": "cus-s15", "name": "Mutua D. (Sample customer)", "email": "sample15@example.com", "place": "Nairobi", "created_at": "d-45 09:00"}
+{"customer_id": "cus-s16", "name": "Kerubo H. (Sample customer)", "email": "sample16@example.com", "place": "Nairobi", "created_at": "d-44 09:00"}
+{"customer_id": "cus-s17", "name": "Gitau A. (Sample customer)", "email": "sample17@example.com", "place": "Nairobi", "created_at": "d-43 09:00"}
+{"customer_id": "cus-s18", "name": "Moraa C. (Sample customer)", "email": "sample18@example.com", "place": "Nairobi", "created_at": "d-42 09:00"}
+{"customer_id": "cus-s19", "name": "Kiplagat N. (Sample customer)", "email": "sample19@example.com", "place": "Nairobi", "created_at": "d-41 09:00"}
+{"customer_id": "cus-s20", "name": "Wangari V. (Sample customer)", "email": "sample20@example.com", "place": "Nairobi", "created_at": "d-40 09:00"}
+{"customer_id": "cus-s21", "name": "Barasa I. (Sample customer)", "email": "sample21@example.com", "place": "Nairobi", "created_at": "d-39 09:00"}
+{"customer_id": "cus-s22", "name": "Nekesa O. (Sample customer)", "email": "sample22@example.com", "place": "Nairobi", "created_at": "d-38 09:00"}
+{"customer_id": "cus-s23", "name": "Karanja Y. (Sample customer)", "email": "sample23@example.com", "place": "Nairobi", "created_at": "d-37 09:00"}
+{"customer_id": "cus-s24", "name": "Auma Z. (Sample customer)", "email": "sample24@example.com", "place": "Nairobi", "created_at": "d-36 09:00"}
+{"customer_id": "cus-s25", "name": "Kimani Q. (Sample customer)", "email": "sample25@example.com", "place": "Nairobi", "created_at": "d-35 09:00"}
+{"customer_id": "cus-s26", "name": "Jelagat U. (Sample customer)", "email": "sample26@example.com", "place": "Nairobi", "created_at": "d-34 09:00"}
+{"customer_id": "cus-s27", "name": "Ouma X. (Sample customer)", "email": "sample27@example.com", "place": "Nairobi", "created_at": "d-33 09:00"}
+{"customer_id": "cus-s28", "name": "Wanjiku T. (Sample customer)", "email": "sample28@example.com", "place": "Nairobi", "created_at": "d-32 09:00"}
+{"customer_id": "cus-s29", "name": "Rotich S. (Sample customer)", "email": "sample29@example.com", "place": "Nairobi", "created_at": "d-31 09:00"}
+{"customer_id": "cus-s30", "name": "Nafula R. (Sample customer)", "email": "sample30@example.com", "place": "Nairobi", "created_at": "d-30 09:00"}
+{"customer_id": "cus-s31", "name": "Njoroge M. (Sample customer)", "email": "sample31@example.com", "place": "Nairobi", "created_at": "d-29 09:00"}

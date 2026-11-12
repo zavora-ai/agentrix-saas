@@ -1,0 +1,90 @@
+{% extends shell.layout %}
+{% import "shop/parts.html" as p %}
+{% from "macros.html" import mark %}
+{% block styles %}{{ super() }}{{ p.styles(shell) }}{% endblock %}
+{% block main %}
+<form class="shop wide" method="post" action="/checkout">
+  <input type="hidden" name="key" value="{{ key }}">
+  <input type="hidden" name="how" value="{{ how }}">
+  <p class="k-crumb"><a href="/bag">Bag</a> · Checkout</p>
+  <div class="k-head"><h1>Checkout</h1><span class="k-pill">Ordering as {{ name }}</span></div>
+  {% if error %}<p class="k-note risk" role="alert">{{ error }}</p>{% endif %}
+  <div class="s-cols">
+    <div>
+      <div class="k-card">
+        <ul class="k-items" aria-label="Bag">
+          {% for l in lines %}
+          <li>
+            <div class="k-row"><span>{{ l.name }} × {{ l.qty }}<small>{{ l.unit }}</small></span><b>{{ l.amount }}</b></div>
+            {{ p.srcs(l) }}
+          </li>
+          {% endfor %}
+          {% if delivery %}
+          <li>
+            <div class="k-row"><span>{{ delivery.name }}<small>{{ delivery.detail }}</small></span><b>{{ delivery.amount }}</b></div>
+            <div class="k-srcs"><span class="k-src">Delivery: zones and fees</span></div>
+          </li>
+          {% endif %}
+        </ul>
+        <a class="k-link" href="/bag">Change quantities</a>
+      </div>
+      {% for pr in problems %}<p class="k-note risk" role="alert">{{ pr }}</p>{% endfor %}
+      <div class="k-card k-form">
+        {% if hows | length > 1 %}
+        <div class="k-seg" role="group" aria-label="Delivery or collection">{% for h in hows %}<button class="k-btn sm{% if h != how %} ghost{% endif %}" type="submit" name="switch" value="{{ h }}" formnovalidate{% if h == how %} aria-pressed="true"{% else %} aria-pressed="false"{% endif %}>{{ h | capitalize }}</button>{% endfor %}</div>
+        {% endif %}
+        {% if how == "delivery" %}
+        <label class="k-field">Where to deliver
+          <select name="zone">{% for z in zones %}<option value="{{ z.zone }}"{% if z.checked %} selected{% endif %}>{{ z.label }} ({{ z.areas }}) · {{ z.fee }}</option>{% endfor %}</select>
+          <span class="k-src">Delivery: zones and fees</span>
+        </label>
+        {% else %}
+        <p class="k-small">Collect from {{ address }}.</p>
+        {% endif %}
+        {% if has_slots %}
+        <fieldset class="k-slots">
+          <legend>{{ how | capitalize }} time</legend>
+          {% if slots %}
+          <div class="k-slot-grid">
+            {% for s in slots %}<label class="k-slot{% if s.full %} full{% endif %}"><input type="radio" name="slot" value="{{ s.id }}"{% if s.checked %} checked{% endif %}{% if s.full %} disabled{% endif %}><span>{{ s.day }}<br>{{ s.hours }}{% if s.full %} · <b>Full</b>{% endif %}</span></label>{% endfor %}
+          </div>
+          {% else %}
+          <p class="k-note warn">No {{ how }} times are open in the next two weeks. Ask {{ shell.site.owner }} about another day.</p>
+          {% endif %}
+          <span class="k-src">{{ how | capitalize }} calendar (live). Only open times are listed.</span>
+        </fieldset>
+        {% endif %}
+        {% if how == "delivery" %}
+        <label class="k-field">Who receives it, and where
+          <input name="recipient" value="{{ recipient }}" placeholder="Amina, at home in Kilimani" maxlength="120" autocomplete="off">
+          <small>Saved addresses are on <a class="k-link" href="/account/addresses">Addresses</a>.</small>
+        </label>
+        {% endif %}
+        <label class="k-field">Phone for updates
+          <input name="phone" type="tel" value="{{ phone }}" autocomplete="tel" maxlength="24">
+        </label>
+        <label class="k-field">Note for {{ shell.site.owner }} (optional)
+          <textarea name="note" maxlength="400">{{ note }}</textarea>
+        </label>
+        <button class="k-btn ghost sm" type="submit" name="preview" value="1">Update the total</button>
+      </div>
+    </div>
+    <div>
+      <div class="k-card">
+        <div class="k-total"><span>Total</span><span>{{ total }}</span></div>
+        {% if pinned %}<p class="k-pin">{{ p.pin() }}<span>{{ pinned }}</span></p>{% endif %}
+        <div class="k-pay">
+          <p><b>Pay {{ usd }} at {{ short }}'s rate</b> ({{ rate }}). PayPal has no Kenyan shilling, so it charges dollars. The rate is pinned on this order.</p>
+          {% if price_list %}<span class="k-src">{{ price_list }}</span>{% endif %}
+          <button class="k-btn wide" type="submit"{% if problems %} disabled{% endif %}>Continue to pay</button>
+          <p class="k-small">You'll see the amount and the payee before PayPal opens. Nothing is charged until you pay.</p>
+        </div>
+      </div>
+      <div class="k-card">
+        <div class="k-desk">{{ mark(desk, 28, shell.site) }}<div class="who"><b>{{ desk.name }} <span class="k-ai">AI</span></b><span>WebAgent · answers from this site</span></div></div>
+        <p class="k-first">{{ desk.name }} sees this bag's items, slot and area. It can't see your account or payment details.</p>
+      </div>
+    </div>
+  </div>
+</form>
+{% endblock %}

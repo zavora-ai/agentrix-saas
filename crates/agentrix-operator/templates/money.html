@@ -1,0 +1,108 @@
+{% extends "layout.html" %}
+{#- X4 Money · a month (concept/control-plane/billing.html), from agentrix-billing's records and the
+    gateway's usage. PayPal is the only rail (James, 8 Nov). -#}
+{% block title %}Money{% endblock %}
+{% block field %}
+{%- set m = money -%}
+{%- set dollars = 10000 -%}
+<div class="field-head">
+  <div><h2>Money · {{ m.month }}</h2><div class="sub">USD · prices from the plan catalogue v{{ catalogue.version }}, drafts until James sets them</div></div>
+  <div class="row">
+    {%- if run.issued %}<span class="chip chip-ok">{{ m.period }} invoices issued</span>{% elif run.drafts %}<span class="chip chip-info">Invoice run drafted · {{ run.drafts|length }}</span>{% else %}<span class="chip">Nothing to invoice yet</span>{% endif %}
+    {%- if m.reminders %}<span class="chip chip-wait">{{ m.reminders|length }} in reminders</span>{% endif %}
+  </div>
+</div>
+
+<div class="cp-grid">
+  <div class="kpis five">
+    <div class="kpi"><div class="label">MRR · active plans</div><div class="value">{{ (m.mrr_cents * dollars)|usd }}</div><div class="foot">{% set subs = (m.by_state.active or 0) + (m.by_state.past_due or 0) %}{{ subs }} subscription{{ "" if subs == 1 else "s" }} paying</div></div>
+    <div class="kpi"><div class="label">Collected · {{ m.month[:3] }} to date</div><div class="value">{{ (m.collected_cents * dollars)|usd }}</div><div class="foot">{% if m.payments %}{{ m.first_attempt|pct(m.payments) }}% paid on the first attempt{% else %}no payments yet{% endif %}</div></div>
+    <div class="kpi"><div class="label">Outstanding</div><div class="value">{{ (m.outstanding_cents * dollars)|usd }}</div><div class="foot">{{ m.outstanding_invoices }} invoice{{ "" if m.outstanding_invoices == 1 else "s" }} · {{ m.reminders|length }} in reminders</div></div>
+    <div class="kpi"><div class="label">Inference cost · {{ m.month[:3] }}</div><div class="value">{{ m.inference_micro_usd|usd }}</div><div class="foot">gateway estimates, every site</div></div>
+    <div class="kpi"><div class="label">Gross margin · est.</div>{% if m.mrr_cents %}{% set cost_cents = m.inference_micro_usd // 10000 %}<div class="value">{{ ((m.mrr_cents - cost_cents) * 100) // m.mrr_cents }}<small>%</small></div><div class="foot">MRR less model spend, before hosting</div>{% else %}<div class="value none">No revenue yet</div><div class="foot">needs a paying subscription</div>{% endif %}</div>
+  </div>
+
+  <article class="card tight">
+    <div class="card-title"><h4>Metering reconciliation · Vultr usage vs gateway ledger</h4><span class="small muted">over 2% is held</span></div>
+    {%- if usage %}
+    <div class="tbl-wrap"><table class="tbl" style="min-width:760px">
+      <thead><tr><th>Site</th><th>Plan</th><th class="num">Gateway ledger</th><th class="num">Sent to Vultr</th><th class="num">Included</th><th class="num">Vultr's bill</th><th>State</th></tr></thead>
+      <tbody>
+        {%- for u in usage %}
+        <tr><td><a href="/sites/{{ u.site_id }}">{{ u.domain }}</a></td><td>{{ u.plan or "No plan yet" }}</td><td class="num">{{ u.spent_micro_usd|usd }}</td><td class="num">{{ vultr.by_site[u.site_id]|usd }}</td><td class="num">{% if u.plan %}{{ u.included_micro_usd|usd }}{% else %}—{% endif %}</td><td class="num">not imported</td><td>{% if u.plan and u.spent_micro_usd > u.included_micro_usd %}<span class="chip chip-wait">over the included budget</span>{% else %}<span class="chip">not reconciled</span>{% endif %}</td></tr>
+        {%- endfor %}
+      </tbody>
+    </table></div>
+    {%- else %}
+    <div class="empty">No claimed sites yet, so there's nothing to meter.</div>
+    {%- endif %}
+    <p class="gapnote">The gateway says it sent {{ vultr.calls|plural("call", "calls") }} to Vultr Inference this month, {{ vultr.micro_usd|usd }} at catalogue prices. This build doesn't read Vultr's own usage export, so there's nothing to compare that with: nothing is reconciled and no usage is billed. Once it does, owners pay for AI above their included budget only if they raise their cap on a decision card.</p>
+  </article>
+
+  <div class="cp-grid cols-2e">
+    <article class="card tight">
+      <div class="card-title"><h4>Payment rails</h4><span class="small muted">through the Effects Gateway only</span></div>
+      {%- set subs_all = (m.by_state.active or 0) + (m.by_state.past_due or 0) + (m.by_state.pending_approval or 0) %}
+      <div class="rail"><span class="ic" style="background:#1d3b8f">P</span><span><b>PayPal Subscriptions · sandbox</b><span class="meta">{{ subs_all }} subscription{{ "" if subs_all == 1 else "s" }}{% if m.by_state.pending_approval %} · {{ m.by_state.pending_approval }} waiting for the owner on PayPal{% endif %} · payment details stay with PayPal</span></span><span class="n">{% if m.payments %}{{ m.first_attempt|pct(m.payments) }}%<small>first attempt</small>{% else %}—<small>no payments yet</small>{% endif %}</span></div>
+    </article>
+
+    <article class="card tight">
+      <div class="card-title"><h4>Reminders</h4><span class="small muted">day 0 · 3 · 7, then a person decides</span></div>
+      <ul class="rows">
+        {%- for r in m.reminders %}
+        <li><span class="dot {{ 'risk' if r.needs_person else 'wait' }}"></span><span><b>{{ r.domain }}</b>: {{ r.step }}{% if r.needs_person %}, read-only suspension needs op.finance{% else %} reminder, within policy{% endif %}</span><span class="meta">{{ r.days }} d late</span></li>
+        {%- else %}
+        <li><span class="dot"></span><span>No payment is late.</span><span class="meta">nothing to chase</span></li>
+        {%- endfor %}
+      </ul>
+    </article>
+
+    <article class="card tight">
+      <div class="card-title"><h4>MRR by plan</h4><span class="small muted">active and past-due subscriptions</span></div>
+      {%- for p in m.mrr_by_plan %}
+      <div class="hbar"><span>{{ p.plan }}</span><span class="track"><i style="width:{{ p.cents|pct(m.mrr_cents) }}%"></i></span><span class="v">{{ (p.cents * dollars)|usd }}</span></div>
+      {%- else %}
+      <div class="empty">No paying subscriptions yet. They start when an owner picks a plan and approves it on PayPal; the first charge is on go-live day.</div>
+      {%- endfor %}
+    </article>
+
+    <article class="card tight">
+      <div class="card-title"><h4>Plans</h4><span class="small muted">the catalogue, v{{ catalogue.version }}</span></div>
+      <div class="tbl-wrap"><table class="tbl" style="min-width:0">
+        <thead><tr><th>Plan</th><th class="num">Price</th><th class="num">AI included</th><th>WebAgents</th></tr></thead>
+        <tbody>{% for p in catalogue.plans %}<tr><td><b>{{ p.name }}</b>{% if p.minimum_sites %}<div class="small muted">per site, {{ p.minimum_sites }}-site minimum</div>{% endif %}</td><td class="num">{{ (p.price_cents * dollars)|usd }}/mo</td><td class="num">{{ p.included_ai_micro_usd|usd }}</td><td class="small">{{ p.webagents|length }}: {{ p.webagents|join(", ") }}</td></tr>{% endfor %}</tbody>
+      </table></div>
+      <p class="gapnote">{{ catalogue.source }}</p>
+    </article>
+  </div>
+
+  <article class="card tight">
+    <div class="card-title"><h4>Invoice runs</h4><span class="small muted">issued only after op.finance approves the exact run</span></div>
+    <ul class="rows">
+      {%- for period, n, total, by, method, at in runs %}
+      <li><span class="dot"></span><span><b>{{ period }}</b>: {{ n }} invoice{{ "" if n == 1 else "s" }}, {{ (total * dollars)|usd }}</span><span class="meta">{{ at|when }} · {{ "passkey" if method == "passkey" else "code" }}</span></li>
+      {%- else %}
+      <li><span></span><span class="small muted">No invoice run has been issued.</span><span></span></li>
+      {%- endfor %}
+    </ul>
+  </article>
+</div>
+{% endblock %}
+{% block lane %}
+{% include "lane.html" %}
+{%- if run.drafts and not run.issued %}
+<article class="card decision" data-action-host>
+  <div class="head"><span class="from"><span class="avatar op sm av-billing">Bi</span>Billing asks</span><span class="chip">op.finance</span></div>
+  <h3>Issue {{ run.drafts|length }} {{ money.month }} invoice{{ "" if run.drafts|length == 1 else "s" }}</h3>
+  <p class="facts">{{ (run.total_cents * 10000)|usd }} in all · drafted from subscriptions that went live · digest <span class="mono">{{ run.digest|digest }}</span></p>
+  {%- if can_finance %}
+  <div class="actions"><button class="btn btn-primary" type="button" data-action-json='{"action":"invoice-run","period":"{{ run.period }}","digest":"{{ run.digest }}"}'>Read what happens, then approve</button></div>
+  <div class="action-sheet"></div>
+  {%- else %}
+  <p class="gapnote">Only someone with op.finance can approve this run.</p>
+  {%- endif %}
+</article>
+{%- endif %}
+<h4>Done for you</h4>
+<div class="quiet">{% if money.payments %}PayPal collected {{ money.payments }} payment{{ "" if money.payments == 1 else "s" }} this month, each from a verified event with a receipt.{% else %}No payments this month yet. Each PayPal payment lands here from a verified event with its receipt.{% endif %}</div>
+{% endblock %}

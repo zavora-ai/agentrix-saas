@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{#- The crawler identity page (03 §4) · served at /bot, which the crawler's User-Agent names, and /.well-known/agentrix-crawler -#}
+{% block title %}AgentrixBot, the Agentrix crawler{% endblock %}
+{% block description %}Who AgentrixBot is, what it reads, how it behaves and how to stop it reading your site.{% endblock %}
+{% block path %}/bot{% endblock %}
+{% block main %}
+<article class="doc wrap">
+  <p class="eyebrow">Our crawler</p>
+  <h1>AgentrixBot</h1>
+  <p class="lead">If you found this page in your server logs: AgentrixBot read your site because someone asked Agentrix for a free health report of it. Here is what it does and how to stop it.</p>
+
+  <h2>How to recognise it</h2>
+  <p>Every request carries this User-Agent:</p>
+  <pre class="code"><code>Mozilla/5.0 (compatible; AgentrixBot/1.0; +https://agentrix.website/bot)</code></pre>
+  <p>It runs from Vultr's network, from a sandbox machine whose only way out is a proxy that allows the one site being read.</p>
+
+  <h2>What it reads</h2>
+  <ul class="ticks">
+    <li>Public pages only, the ones anyone can open without signing in.</li>
+    <li>More than that (a WordPress export, for example) only after the site's owner proves they control the domain, and only what the owner hands over.</li>
+    <li>A capped number of pages for each health report.</li>
+  </ul>
+
+  <h2>How it behaves</h2>
+  <ul class="ticks">
+    <li>It follows <code>robots.txt</code>, including <code>crawl-delay</code> and <code>noindex</code>.</li>
+    <li>One request at a time per site, at least half a second apart.</li>
+    <li>It backs off when your server answers 429 or 503.</li>
+    <li>It never sends forms, signs in or changes anything.</li>
+    <li>Each request is recorded in the job's signed receipt.</li>
+  </ul>
+
+  <h2>How to stop it</h2>
+  <p>Add this to your site's <code>robots.txt</code>, and AgentrixBot won't read any page:</p>
+  <pre class="code"><code>User-agent: AgentrixBot
+Disallow: /</code></pre>
+  <p>To report a problem with it, write to Zavora Technologies through <a href="https://zavora.ai">zavora.ai</a> and include the time and the address it requested.</p>
+</article>
+{% endblock %}

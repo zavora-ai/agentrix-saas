@@ -1,0 +1,50 @@
+# Agentrix SaaS (spec v2) · saas-node's four hosts. deploy/saas/deploy.sh installs this one while
+# SAAS_SHAPE=v2 (agentrix-saas.env), until spec v3's join decides one binary or two processes;
+# then it renders deploy/saas/Caddyfile instead. Only once every named host answers with this
+# VM's address at ns1.vultr.com. Caddy gets one certificate per host.
+#
+# Caddy passes the client's Host through unchanged, which agent-to-agent requests need: their
+# Web Bot Auth signatures cover @authority.
+
+{
+	admin localhost:2019
+	servers {
+		protocols h1 h2
+	}
+}
+
+(common) {
+	encode zstd gzip
+	header {
+		Strict-Transport-Security "max-age=31536000"
+		X-Content-Type-Options "nosniff"
+		Referrer-Policy "strict-origin-when-cross-origin"
+		-Server
+	}
+}
+
+# Agentrix (front, console, board), Kilele Bakery, and the agent door: one process, by Host.
+money.agentrix.website, kilele.money.agentrix.website, pay.agentrix.website {
+	import common
+	reverse_proxy 127.0.0.1:18190 {
+		# The board's agent streams AG-UI events over SSE.
+		flush_interval -1
+	}
+}
+
+# Zavora ERA (hosted): its UI container serves the app and forwards /api to ERA's API.
+books.agentrix.website {
+	import common
+	# Closed on this demo instance. ERA lets anyone sign up, and any logged-in user (the read-only
+	# judge logins too) make a tenant, switch, register, archive or leave one, or reach platform
+	# routes; leaving would lock every judge out of a company. The seed and the node reach ERA's
+	# API on loopback, not through here. GET /api/v1/auth/tenants stays open: the UI lists with it.
+	@closed path /api/v1/auth/signup /api/v1/auth/signup/* /api/v1/auth/register /api/v1/auth/register/* /api/v1/auth/switch-tenant /api/v1/auth/tenants/*/archive /api/v1/auth/tenants/*/unarchive /api/v1/auth/tenants/*/leave /api/v1/platform /api/v1/platform/*
+	respond @closed "Closed on this demo instance." 403
+	@new_tenant {
+		method POST
+		path /api/v1/auth/tenants /api/v1/auth/tenants/
+	}
+	respond @new_tenant "Closed on this demo instance." 403
+	reverse_proxy 127.0.0.1:18181
+}

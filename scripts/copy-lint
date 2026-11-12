@@ -1,0 +1,619 @@
+#!/usr/bin/env python3
+"""copy-lint: checks the words people read against specs/platform/voice.md.
+
+    scripts/copy-lint                 every template, words file, seed and island in the repo
+    scripts/copy-lint PATH...         only these files or folders
+    scripts/copy-lint --concepts      also concept/*.html (presentation copy, for W7's passes)
+    scripts/copy-lint --rules         list the rules
+
+It reads only what a person sees: text between tags, alt/title/placeholder/aria-label values and
+meta descriptions in templates; every string in a words or seed JSON file; lines of Markdown and
+text templates; prose string literals in JS islands and the Flutter apps (Dart). Template code ({{ }}, {% %}), scripts,
+styles, <code>, <pre> and comments are skipped.
+
+Deliberate exceptions go in scripts/copy-lint.allow, one per line, each with a reason:
+
+    path glob | rule | text the finding contains (or *) | why it is allowed
+
+Exit status: 0 clean, 1 findings, 2 a broken allow file or bad arguments.
+The lint catches the obvious tells. It doesn't make copy good: read every screen aloud
+against voice.md's test before marking it done.
+"""
+
+from __future__ import annotations
+
+import fnmatch
+import json
+import os
+import re
+import sys
+from dataclasses import dataclass, field
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parent.parent
+ALLOW_FILE = Path(__file__).resolve().parent / "copy-lint.allow"
+
+# ---------------------------------------------------------------------------------------------
+# Rules (voice.md "Never on screen", the website and console copy rules in 01a §6.4, 01b §6.4)
+# ---------------------------------------------------------------------------------------------
+
+BANNED_WORDS = [
+    "seamless", "seamlessly", "effortless", "effortlessly", "elevate", "elevates", "elevated",
+    "empower", "empowers", "empowering", "unlock", "unlocks", "unleash", "unleashes",
+    "supercharge", "supercharged", "revolutionize", "revolutionise", "revolutionary",
+    "game-changer", "game-changing", "cutting-edge", "state-of-the-art", "next-generation",
+    "next-gen", "world-class", "best-in-class", "robust", "leverage", "leverages", "leveraging",
+    "utilize", "utilise", "utilizes", "utilises", "delve", "delves", "journey", "journeys",
+    "landscape", "tapestry", "vibrant", "testament", "pivotal", "crucial", "foster", "fosters",
+    "harness", "harnesses", "streamline", "streamlines", "streamlined", "synergy", "synergies",
+    "holistic", "curated", "magic", "magical", "delightful", "delight", "stunning",
+    "breathtaking", "nestled",
+]
+BANNED_PHRASES = [
+    "in today's world", "in today’s world", "look no further", "rest assured",
+    "we've got you covered", "we’ve got you covered", "at your fingertips",
+    "take it to the next level", "something went wrong", "pending approval",
+    "your journey", "we're processing your request", "no data available",
+]
+OPENERS = [
+    r"great question", r"absolutely!", r"certainly!", r"i hope this helps", r"let me know if",
+    r"happy to help", r"oops", r"uh-oh", r"no worries", r"sure thing", r"lovely\.",
+]
+# Visitors never see these words for our desks (06 §4.8). "assistant" is fine for a customer's
+# own AI; allow it where that is what it means.
+VISITOR_TERMS = ["chatbot", "chat bot", "bot", "bots", "assistant", "staff", "pop-up", "popup",
+                 "ai concierge", "chatting"]
+BUTTON_VERBS = ["submit", "proceed", "continue your journey", "click here", "learn more"]
+SHOUTY_FRAGMENTS = re.compile(r"(?:\b[^.!?\n]{1,24}[.!]\s+){2,}[^.!?\n]{1,24}[.!]")
+
+RULES = {
+    "banned-word": "A word that marks text as machine-written or as filler (voice.md, Never on screen).",
+    "banned-phrase": "A stock phrase voice.md bans, or a vague status that says less than the facts.",
+    "opener": "A chatbot opener or closer. Start with the answer; end when it's said.",
+    "em-dash": "An em dash in prose. Use a full stop, comma, colon or brackets.",
+    "en-dash": "An en dash outside a numeric range. Use 'to', a comma or a full stop.",
+    "exclamation": "An exclamation mark. Allowed only in a customer's own words or a real celebration the owner chose (allow it, with the reason).",
+    "emoji": "An emoji in product UI. Only where a person typed it.",
+    "title-case": "Title Case in a heading, button, label or page title. Use sentence case.",
+    "not-x-but-y": "'It's not just X, it's Y' or 'not only … but also' used for drama.",
+    "fragments": "A run of short dramatic fragments ('No forms. No waiting. Just answers.').",
+    "self-answering": "A question that answers itself ('Ready to grow?').",
+    "visitor-term": "A word visitors must never see for a WebAgent (06 §4.8): bot, chatbot, assistant, staff, pop-up, AI concierge, chatting.",
+    "button-verb": "A button that isn't a verb the person would say ('Submit', 'Proceed').",
+    "currency": "Money in visitor prose is 'KSh 2,400': KSh, a space, thousands separators; never 'KES 2400'.",
+}
+
+# Files a visitor reads (the visitor-term and currency rules apply only here).
+VISITOR_GLOBS = [
+    "crates/*/templates/site/**", "crates/*/templates/sites/**", "crates/agentrix-themes/**",
+    "crates/agentrix-edge/**", "crates/agentrix-records/templates/**", "fixtures/samples/**",
+    "crates/*/templates/ui/layouts/site.html", "crates/*/templates/customer/**",
+    "crates/*/templates/account/**", "crates/*/static/site/**",
+]
+
+DEFAULT_GLOBS = [
+    "crates/*/templates/**/*.html", "crates/*/templates/**/*.txt", "crates/*/templates/**/*.md",
+    "crates/*/templates/**/*.json", "crates/*/templates/**/*.jinja",
+    "crates/*/words/**/*.json", "crates/*/messages/**/*", "crates/*/copy/**/*",
+    "crates/*/static/**/*.js", "apps/**/lib/**/*.dart",
+    "fixtures/samples/**/*.json", "fixtures/samples/**/*.jsonl", "fixtures/samples/**/*.md", "fixtures/samples/**/*.txt",
+    "fixtures/samples/**/*.html", "fixtures/samples/**/*.toml", "fixtures/samples/**/*.yaml",
+    "fixtures/samples/**/*.yml",
+]
+CONCEPT_GLOBS = ["concept/**/*.html"]
+SKIP_DIRS = {"target", "node_modules", ".git", "recordings", "ios", "android", "macos", "linux", "windows", "build", ".dart_tool"}
+
+# ---------------------------------------------------------------------------------------------
+
+
+@dataclass
+class Segment:
+    """A piece of text a person reads, with where it came from."""
+    text: str
+    offset: int          # offset of text[0] in the original file
+    context: str = ""    # the element it sits in (h1, button, title, …) when known
+
+
+@dataclass
+class Finding:
+    path: str
+    line: int
+    col: int
+    rule: str
+    excerpt: str
+    note: str = ""
+
+    def show(self) -> str:
+        note = f" ({self.note})" if self.note else ""
+        return f"{self.path}:{self.line}:{self.col}: {self.rule}: {self.excerpt!r}{note}"
+
+
+@dataclass
+class Allow:
+    glob: str
+    rule: str
+    text: str
+    reason: str
+    lineno: int
+    used: int = field(default=0)
+
+    def covers(self, f: Finding, line_text: str) -> bool:
+        if not fnmatch.fnmatch(f.path, self.glob):
+            return False
+        if self.rule not in ("*", f.rule):
+            return False
+        t = self.text.lower()
+        return self.text == "*" or t in f.excerpt.lower() or t in line_text.lower()
+
+
+# ---------- extracting what people read ----------
+
+TAG_RE = re.compile(r"<(/?)([a-zA-Z][a-zA-Z0-9-]*)((?:\s+[^\s=>/]+(?:\s*=\s*(?:\"[^\"]*\"|'[^']*'|[^\s>]+))?)*)\s*/?>", re.S)
+ATTR_RE = re.compile(r"([^\s=>/]+)(?:\s*=\s*(\"[^\"]*\"|'[^']*'|[^\s>]+))?", re.S)
+READ_ATTRS = {"alt", "title", "placeholder", "aria-label", "data-day", "data-night", "data-on", "data-off"}
+SKIP_BLOCKS = re.compile(
+    r"\{#.*?#\}|<!--.*?-->|<![a-zA-Z][^>]*>|<script\b.*?</script>|<style\b.*?</style>|<pre\b.*?</pre>|<code\b.*?</code>|<kbd\b.*?</kbd>|<svg\b.*?</svg>",
+    re.S | re.I,
+)
+JINJA_RE = re.compile(r"\{\{.*?\}\}|\{%.*?%\}", re.S)
+# Text inside a template expression that a person reads: string literals passed to macros
+# ({{ ui.button("Approve") }}). Only literals with a letter and either a space or a capital.
+JINJA_STR_RE = re.compile(r"(?<![\w\]])(\"(?:[^\"\\\n]|\\.)*\"|'(?:[^'\\\n]|\\.)*')")
+BREAK = "\x00"
+CTRL = "\x01"
+
+
+def blank(s: str) -> str:
+    return re.sub(r"[^\n]", BREAK, s)
+
+
+def jinja_strings(expr: str, base: int) -> list[Segment]:
+    out = []
+    for m in JINJA_STR_RE.finditer(expr):
+        lit = m.group(1)[1:-1]
+        if not re.search(r"[A-Za-z]", lit) or not looks_like_prose(lit):
+            continue
+        out.append(Segment(lit, base + m.start(1) + 1, "expr"))
+    return out
+
+
+def looks_like_prose(s: str) -> bool:
+    s = s.strip()
+    if not s or len(s) < 2:
+        return False
+    if re.fullmatch(r"[a-z0-9_.:/#?=&%{}\[\]-]+", s):        # ids, keys, paths, classes, urls
+        return False
+    if re.match(r"^(https?:|/|#|\.|\{|[a-z-]+=)", s):
+        return False
+    if s.startswith(("--", "var(", "data-", "ui/", "aria-")):
+        return False
+    return bool(re.search(r"[A-Za-z]{2}", s))
+
+
+def html_segments(src: str) -> list[Segment]:
+    """Text nodes and read attributes of an HTML or Jinja template, positions preserved."""
+    work = list(src)
+
+    def wipe(a: int, b: int) -> None:
+        for i in range(a, b):
+            if work[i] != "\n":
+                work[i] = BREAK
+
+    for m in SKIP_BLOCKS.finditer(src):
+        wipe(m.start(), m.end())
+    extra: list[Segment] = []
+    # Template code: wipe it, but keep string literals that are words (macro arguments).
+    for m in JINJA_RE.finditer(src):
+        if all(c in (BREAK, "\n") for c in work[m.start():m.end()]):
+            continue
+        body = m.group(0)
+        if not body.startswith("{#"):
+            extra.extend(jinja_strings(body, m.start()))
+        # An expression inside a sentence doesn't end the sentence. Control tags ({% if %},
+        # {% else %}) are marked so a dash alone in one branch reads as a placeholder.
+        fill = CTRL if body.startswith("{%") else " "
+        for i in range(m.start(), m.end()):
+            if work[i] != "\n":
+                work[i] = fill
+    # Tags: wipe, keep read attributes as their own segments, and remember element names.
+    contexts: dict[int, str] = {}
+    current = ""
+    for m in TAG_RE.finditer(src):
+        if all(c in (BREAK, "\n") for c in work[m.start():m.end()]):
+            continue
+        closing, name, attrs = m.group(1), m.group(2).lower(), m.group(3) or ""
+        attr_base = m.start(3) if m.group(3) else m.end()
+        input_type = ""
+        for a in ATTR_RE.finditer(attrs):
+            key = a.group(1).lower()
+            val = a.group(2)
+            if key == "type" and val:
+                input_type = val.strip("\"'").lower()
+        for a in ATTR_RE.finditer(attrs):
+            key = a.group(1).lower()
+            val = a.group(2)
+            if not val or val[0] not in "\"'":
+                continue
+            inner = val[1:-1]
+            start = attr_base + a.start(2) + 1
+            if key in READ_ATTRS or (key == "content" and name == "meta") or (
+                    key == "value" and name == "input" and input_type in ("submit", "button")):
+                if looks_like_prose(JINJA_RE.sub(" ", inner)):
+                    ctx = "button" if key == "value" else key
+                    extra.append(Segment(JINJA_RE.sub(lambda x: " " * len(x.group(0)), inner), start, ctx))
+        wipe(m.start(), m.end())
+        if not closing:
+            current = name
+            contexts[m.end()] = name
+        else:
+            contexts[m.end()] = ""
+    text = "".join(work)
+    segs: list[Segment] = []
+    ctx_points = sorted(contexts)
+    for m in re.finditer(r"[^\x00]+", text):
+        raw = m.group(0)
+        if not raw.strip():
+            continue
+        # The element is the last tag that ended at or before this text.
+        ctx = ""
+        for p in ctx_points:
+            if p <= m.start():
+                ctx = contexts[p]
+            else:
+                break
+        segs.append(Segment(raw, m.start(), ctx))
+    return segs + extra
+
+
+def json_segments(src: str) -> list[Segment]:
+    try:
+        data = json.loads(src)
+    except json.JSONDecodeError:
+        return [Segment(src, 0)]
+    out: list[Segment] = []
+    search_from = 0
+
+    def walk(node, key: str = "") -> None:
+        nonlocal search_from
+        if isinstance(node, dict):
+            for k, v in node.items():
+                if isinstance(k, str) and k.startswith("_"):
+                    continue  # notes for whoever edits the file, never shown
+                walk(v, k)
+        elif isinstance(node, list):
+            for v in node:
+                walk(v, key)
+        elif isinstance(node, str) and looks_like_prose(node):
+            needle = json.dumps(node, ensure_ascii=False)[1:-1]
+            at = src.find(needle, search_from)
+            if at < 0:
+                at = src.find(needle)
+            else:
+                search_from = at
+            ctx = "title" if key in ("title", "heading", "h1", "h2", "label", "button", "cta") else ""
+            out.append(Segment(node, max(at, 0), ctx))
+
+    walk(data)
+    return out
+
+
+def text_segments(src: str) -> list[Segment]:
+    """Markdown, plain text and simple config: one segment per paragraph line, code skipped."""
+    out: list[Segment] = []
+    in_code = False
+    pos = 0
+    for line in src.splitlines(keepends=True):
+        stripped = line.strip()
+        if stripped.startswith("```"):
+            in_code = not in_code
+        elif not in_code and stripped and not stripped.startswith(("#!", "//")):
+            body = line
+            ctx = ""
+            hm = re.match(r"\s*(#{1,4})\s+", line)
+            if hm:
+                ctx, body = "h" + str(len(hm.group(1))), line[hm.end():]
+                out.append(Segment(body.rstrip("\n"), pos + hm.end(), ctx))
+            else:
+                # key = "value" or key: value lines (TOML, YAML): read the value only.
+                km = re.match(r"\s*[A-Za-z0-9_.-]+\s*[:=]\s*(\"?)(.*?)\1\s*$", line)
+                if km and km.group(2) and not line.lstrip().startswith(("-", "*")):
+                    out.append(Segment(km.group(2), pos + km.start(2), ""))
+                else:
+                    out.append(Segment(line.rstrip("\n"), pos, ""))
+        pos += len(line)
+    return out
+
+
+JS_STR_RE = re.compile(r"(\"(?:[^\"\\\n]|\\.)*\"|'(?:[^'\\\n]|\\.)*'|`(?:[^`\\]|\\.)*`)")
+
+
+def js_segments(src: str) -> list[Segment]:
+    """Prose string literals in a JS island: two or more words, starting with a capital."""
+    no_comments = re.sub(r"/\*.*?\*/", lambda m: blank(m.group(0)), src, flags=re.S)
+    no_comments = re.sub(r"(?m)(^|[^:\"'\\])//[^\n]*", lambda m: m.group(1) + BREAK * (len(m.group(0)) - len(m.group(1))), no_comments)
+    out = []
+    for m in JS_STR_RE.finditer(no_comments):
+        lit = m.group(1)[1:-1]
+        if "${" in lit:
+            lit = re.sub(r"\$\{[^}]*\}", "x", lit)
+        if re.match(r"^[A-Z][a-z']*\s+\S", lit) and " " in lit and "<" not in lit and "=" not in lit:
+            out.append(Segment(lit, m.start(1) + 1, "js"))
+    return out
+
+
+def jsonl_segments(src: str) -> list[Segment]:
+    """One JSON document per line (seed records): every string, at its line."""
+    out: list[Segment] = []
+    pos = 0
+    for line in src.splitlines(keepends=True):
+        if line.strip():
+            for seg in json_segments(line):
+                out.append(Segment(seg.text, pos + seg.offset, seg.context))
+        pos += len(line)
+    return out
+
+
+def segments_for(path: Path, src: str) -> list[Segment]:
+    ext = path.suffix.lower()
+    if ext in (".html", ".jinja", ".htm"):
+        return html_segments(src)
+    if ext == ".json":
+        return json_segments(src)
+    if ext == ".jsonl":
+        return jsonl_segments(src)
+    if ext in (".js", ".dart"):
+        return js_segments(src)
+    return text_segments(src)
+
+
+# ---------- the rules ----------
+
+WORD_RE = re.compile(r"\b(" + "|".join(re.escape(w) for w in sorted(BANNED_WORDS, key=len, reverse=True)) + r")\b", re.I)
+PHRASE_RE = re.compile("|".join(re.escape(p) for p in BANNED_PHRASES), re.I)
+OPENER_RE = re.compile(r"(?<![\w'])(" + "|".join(OPENERS) + r")", re.I)
+VISITOR_RE = re.compile(r"\b(" + "|".join(re.escape(w) for w in VISITOR_TERMS) + r")\b", re.I)
+EMOJI_RE = re.compile("[\U0001F000-\U0001FAFF\U0001F900-\U0001F9FF\u2B50\u2705\u274C\u2728\uFE0F]")
+DAY = r"(?:Mon|Tue|Tues|Wed|Thu|Thur|Thurs|Fri|Sat|Sun)(?:day)?"
+MONTH = r"(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Sept|Oct|Nov|Dec)[a-z]*"
+# Ranges keep their en dash: numbers and times (9–5, 7:00–20:00), days (Mon–Sat), months.
+EN_DASH_OK = re.compile(
+    r"(\d[\d:.,]*(?:\s?[ap]\.?m\.?)?\s?–\s?\d)|(\b[A-Z]{1,3}\d+\s?–\s?[A-Z]{0,3}\d+\b)|(\b" + DAY + r"\s?–\s?" + DAY + r"\b)|(\b" + MONTH + r"\s?–\s?" + MONTH + r"\b)|(\d\s+" + MONTH + r"\s?–\s?\d)"
+)
+NOT_X_RE = re.compile(r"\b(it'?s|it’s|this is|that'?s) not (just|only|merely)\b|\bnot only\b[^.]*\bbut also\b|\bnot just a\b", re.I)
+SELF_Q_RE = re.compile(r"(?:^|[.!]\s+)(ready to|tired of|why wait|what are you waiting for|looking for (?:a|the) (?:better|smarter|easier))\b[^?]*\?", re.I)
+CURRENCY_RE = re.compile(r"\bKES\s?\d|\bKsh\b|\bKSH\b|\bKSh\d|\bKSh\s\d{4,}\b")
+TITLE_CONTEXTS = {"h1", "h2", "h3", "h4", "h5", "title", "button", "summary", "legend", "th", "label"}
+SMALL = {"a", "an", "and", "as", "at", "but", "by", "for", "in", "of", "on", "or", "the", "to", "up", "via", "vs", "with", "from", "into", "per"}
+
+
+# Names that keep their capitals in sentence case: features, products, places, the samples.
+PROPER_NAMES = [
+    "Agentrix OS", "Agentrix", "WebAgents", "WebAgent", "Chief WebAgent", "Day Time", "Night Time",
+    "Front of house", "Back office", "Trust centre", "Kilele Bakery", "Classy Perfumes",
+    "Tana Valley Times", "The Kestrel Post", "Zavora Cloud", "Zavora", "PayPal", "WhatsApp",
+    "M-Pesa", "Face ID", "Touch ID", "Windows Hello", "WordPress", "Vultr", "Nairobi",
+    "Westlands", "Google", "Apple", "Microsoft", "Vultr Serverless Inference",
+    "Vultr Object Storage", "Vultr Kubernetes Engine", "Vultr Cloud Compute",
+    "Vultr Managed Databases", "Vultr Cloud GPU", "Agent Rush", "WebAgent Living Marks",
+    "January", "February", "March", "April", "June", "July", "August", "September", "October",
+    "November", "December", "Jan", "Feb", "Mar", "Apr", "Jun", "Jul", "Aug", "Sep", "Sept",
+    "Oct", "Nov", "Dec", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday",
+    "Sunday", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun", "James", "Wanjiru",
+]
+PROPER_RE = re.compile("|".join(re.escape(n) for n in sorted(PROPER_NAMES, key=len, reverse=True)))
+
+
+def title_case(text: str) -> bool:
+    text = PROPER_RE.sub("x", text)
+    words = re.findall(r"[A-Za-z][A-Za-z'’-]*", text)
+    if len(words) < 3:
+        return False
+    rest = [w for w in words[1:] if w.lower() not in SMALL]
+    if len(rest) < 2:
+        return False
+    caps = [w for w in rest if w[0].isupper() and not w.isupper()]  # acronyms (OK, AI) don't count
+    lower = [w for w in rest if w[0].islower() and len(w) > 3]
+    return len(caps) >= 2 and not lower
+
+
+def check(text: str, ctx: str, visitor: bool) -> list[tuple[int, str, str, str]]:
+    """Findings in one piece of text: (offset, rule, excerpt, note)."""
+    found = []
+    marked, text = text, text.replace(CTRL, " ")
+    for m in WORD_RE.finditer(text):
+        found.append((m.start(), "banned-word", m.group(0), ""))
+    for m in PHRASE_RE.finditer(text):
+        found.append((m.start(), "banned-phrase", m.group(0), ""))
+    for m in OPENER_RE.finditer(text):
+        found.append((m.start(), "opener", m.group(0), ""))
+    # A dash alone in a table cell, or alone in a template branch ({% else %}—), means "none":
+    # a placeholder, not prose.
+    placeholder = not re.search(r"[A-Za-z]", text)
+    for m in re.finditer("—", text):
+        before = marked[:m.start()].rstrip(" ")
+        after = marked[m.end():].lstrip(" ")
+        alone = before.endswith(CTRL) or after.startswith(CTRL) or (not before and not after)
+        if not (placeholder or alone):
+            found.append((m.start(), "em-dash", around(text, m.start()), ""))
+    for m in re.finditer("–", text):
+        ok = any(r.start() <= m.start() < r.end() for r in EN_DASH_OK.finditer(text))
+        if not ok:
+            found.append((m.start(), "en-dash", around(text, m.start()), ""))
+    for m in re.finditer(r"!(?![=\[])", text):
+        found.append((m.start(), "exclamation", around(text, m.start()), ""))
+    for m in EMOJI_RE.finditer(text):
+        found.append((m.start(), "emoji", around(text, m.start()), ""))
+    for m in NOT_X_RE.finditer(text):
+        found.append((m.start(), "not-x-but-y", around(text, m.start(), 30), ""))
+    for m in SHOUTY_FRAGMENTS.finditer(text):
+        pieces = [p for p in re.split(r"[.!]\s+", m.group(0).strip()) if p]
+        if len(pieces) >= 3 and all(len(p.split()) <= 3 for p in pieces) and not re.search(r"\d", m.group(0)):
+            found.append((m.start(), "fragments", m.group(0).strip()[:60], ""))
+    for m in SELF_Q_RE.finditer(text):
+        found.append((m.start(), "self-answering", m.group(0).strip()[:60], ""))
+    clean = re.sub(r"\s+", " ", text).strip()
+    if ctx in TITLE_CONTEXTS and title_case(clean):
+        found.append((len(text) - len(text.lstrip()), "title-case", clean[:60], ctx))
+    if ctx in ("button", "expr") and clean.lower() in BUTTON_VERBS:
+        found.append((len(text) - len(text.lstrip()), "button-verb", clean, ""))
+    if visitor:
+        for m in VISITOR_RE.finditer(text):
+            found.append((m.start(), "visitor-term", m.group(0), ""))
+        for m in CURRENCY_RE.finditer(text):
+            found.append((m.start(), "currency", around(text, m.start(), 12), ""))
+    return found
+
+
+def around(text: str, i: int, width: int = 18) -> str:
+    a, b = max(0, i - width), min(len(text), i + width)
+    return re.sub(r"\s+", " ", text[a:b]).strip()
+
+
+# ---------- files, allow list, report ----------
+
+def is_visitor(rel: str) -> bool:
+    return any(fnmatch.fnmatch(rel, g) for g in VISITOR_GLOBS)
+
+
+def lint_file(path: Path, rel: str) -> list[Finding]:
+    try:
+        src = path.read_text(encoding="utf-8")
+    except (UnicodeDecodeError, OSError):
+        return []
+    visitor = is_visitor(rel)
+    out = []
+    starts = [0] + [i + 1 for i, c in enumerate(src) if c == "\n"]
+
+    def where(offset: int) -> tuple[int, int]:
+        lo, hi = 0, len(starts) - 1
+        while lo < hi:
+            mid = (lo + hi + 1) // 2
+            if starts[mid] <= offset:
+                lo = mid
+            else:
+                hi = mid - 1
+        return lo + 1, offset - starts[lo] + 1
+
+    seen = set()
+    for seg in segments_for(path, src):
+        for off, rule, excerpt, note in check(seg.text, seg.context, visitor):
+            line, col = where(seg.offset + off)
+            key = (line, col, rule)
+            if key in seen:
+                continue
+            seen.add(key)
+            out.append(Finding(rel, line, col, rule, excerpt, note))
+    return out
+
+
+def load_allow(path: Path) -> list[Allow]:
+    entries = []
+    if not path.exists():
+        return entries
+    for n, line in enumerate(path.read_text(encoding="utf-8").splitlines(), 1):
+        s = line.strip()
+        if not s or s.startswith("#"):
+            continue
+        parts = [p.strip() for p in s.split("|")]
+        if len(parts) != 4 or not all(parts):
+            raise SystemExit(f"{path.name}:{n}: want 'path glob | rule | text | reason', got {s!r}")
+        glob, rule, text, reason = parts
+        if rule != "*" and rule not in RULES:
+            raise SystemExit(f"{path.name}:{n}: unknown rule {rule!r} (scripts/copy-lint --rules)")
+        if len(reason.split()) < 3:
+            raise SystemExit(f"{path.name}:{n}: give a reason a person can check, not {reason!r}")
+        entries.append(Allow(glob, rule, text.strip('"'), reason, n))
+    return entries
+
+
+# File types the lint can read for words. Source code (.rs), stylesheets and binaries are skipped,
+# so a crate folder can be passed whole.
+READABLE = {".html", ".htm", ".jinja", ".txt", ".md", ".json", ".jsonl", ".js", ".dart", ".toml", ".yaml", ".yml"}
+# Build and tool files nobody reads on a screen, even though their suffix is readable.
+NOT_WORDS = {"Cargo.toml", "Cargo.lock", "rust-toolchain.toml", "package.json", "package-lock.json",
+             "tsconfig.json", "clippy.toml", "rustfmt.toml", "deny.toml"}
+
+
+def holds_words(q: Path) -> bool:
+    return q.suffix.lower() in READABLE and q.name not in NOT_WORDS and ".cargo" not in q.parts
+
+
+def collect(args: list[str], concepts: bool) -> list[Path]:
+    if args:
+        files = []
+        for a in args:
+            p = (Path.cwd() / a).resolve()
+            if p.is_dir():
+                files += [q for q in p.rglob("*") if q.is_file() and holds_words(q)
+                          and not (set(q.parts) & SKIP_DIRS)]
+            elif p.is_file():
+                if holds_words(p):
+                    files.append(p)
+                else:
+                    print(f"copy-lint: skipping {a}: not a file type it reads for words", file=sys.stderr)
+            else:
+                raise SystemExit(f"copy-lint: no such file or folder: {a}")
+        return sorted(set(files))
+    globs = DEFAULT_GLOBS + (CONCEPT_GLOBS if concepts else [])
+    files = set()
+    for g in globs:
+        for p in ROOT.glob(g):
+            if p.is_file() and not (set(p.relative_to(ROOT).parts) & SKIP_DIRS):
+                files.add(p)
+    return sorted(files)
+
+
+def main(argv: list[str]) -> int:
+    if "--help" in argv or "-h" in argv:
+        print(__doc__)
+        return 0
+    if "--rules" in argv:
+        for k, v in RULES.items():
+            print(f"{k:15} {v}")
+        return 0
+    concepts = "--concepts" in argv
+    show_allowed = "--show-allowed" in argv
+    args = [a for a in argv if not a.startswith("--")]
+    try:
+        allow = load_allow(ALLOW_FILE)
+        files = collect(args, concepts)
+    except SystemExit as e:
+        print(e, file=sys.stderr)
+        return 2
+    findings, allowed = [], []
+    for path in files:
+        try:
+            rel = str(path.relative_to(ROOT))
+        except ValueError:
+            rel = str(path)
+        lines = None
+        for f in lint_file(path, rel):
+            if lines is None:
+                lines = path.read_text(encoding="utf-8").splitlines()
+            line_text = lines[f.line - 1] if f.line - 1 < len(lines) else ""
+            entry = next((a for a in allow if a.covers(f, line_text)), None)
+            if entry:
+                entry.used += 1
+                allowed.append((f, entry))
+            else:
+                findings.append(f)
+    for f in findings:
+        print(f.show())
+    if show_allowed:
+        for f, a in allowed:
+            print(f"allowed  {f.show()}  [{a.reason}]")
+    if not args:
+        for a in allow:
+            # Concept entries only apply with --concepts.
+            if a.used == 0 and (concepts or not a.glob.startswith("concept/")):
+                print(f"copy-lint: unused allow entry, line {a.lineno}: {a.glob} | {a.rule} | {a.text}", file=sys.stderr)
+    summary = f"copy-lint: {len(files)} files, {len(findings)} findings, {len(allowed)} allowed"
+    print(summary, file=sys.stderr)
+    if findings:
+        print("Fix the words (specs/platform/voice.md), or add a line with a reason to scripts/copy-lint.allow.", file=sys.stderr)
+        return 1
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main(sys.argv[1:]))

@@ -1,0 +1,41 @@
+{% extends "layout.html" %}
+{#- X6 Customers: every site, content-free (08 §4.1, §2.1). Rows are `reads::SiteRow` plus kind
+    and stage. -#}
+{% block title %}Customers{% endblock %}
+{% block field %}
+<div class="field-head">
+  <div><h2>Customers</h2><div class="sub">Every site on the platform: owner, stage, release, Move, gauntlet and AI spend. Never its content.</div></div>
+  <nav class="segmented" aria-label="Which sites">
+    <a class="btn btn-sm{% if show != 'customers' %} btn-ghost{% endif %}" href="/customers"{% if show == "customers" %} aria-current="page"{% endif %}>Claimed or live · {{ counts.customers }}</a>
+    <a class="btn btn-sm{% if show != 'leads' %} btn-ghost{% endif %}" href="/customers?show=leads"{% if show == "leads" %} aria-current="page"{% endif %}>Assessed only · {{ counts.leads }}</a>
+    <a class="btn btn-sm{% if show != 'all' %} btn-ghost{% endif %}" href="/customers?show=all"{% if show == "all" %} aria-current="page"{% endif %}>All · {{ counts.all }}</a>
+  </nav>
+</div>
+<article class="card tight">
+  {%- if sites %}
+  <div class="tbl-wrap"><table class="tbl">
+    <thead><tr><th>Site</th><th>Owner</th><th>Stage</th><th>Release</th><th>Move</th><th class="num">Gauntlet</th><th class="num">Waiting</th><th class="num">AI spend · month</th><th>Plan</th></tr></thead>
+    <tbody>
+      {%- for s in sites %}
+      <tr>
+        <td><a href="/sites/{{ s.site_id }}">{{ s.name or s.domain }}</a>{% if s.kind == "sample" %} <span class="chip chip-sample">Sample</span>{% elif s.kind == "fixture" %} <span class="chip chip-fixture">Fixture</span>{% endif %}<div class="small muted">{{ s.domain }}</div></td>
+        <td>{% if s.owner_name %}{{ s.owner_name }}<div class="small muted">{{ s.owner_email }}</div>{% else %}<span class="muted">Not claimed</span>{% endif %}</td>
+        <td><span class="chip{% if s.stage == 'Live' %} chip-ok{% elif s.stage == 'Moving' %} chip-info{% endif %}">{{ s.stage }}</span></td>
+        <td>{% if s.live_seq is not none %}v{{ s.live_seq }}<div class="small muted">{{ s.live_signed_at|day if s.live_signed_at else "unsigned" }}</div>{% else %}<span class="muted">—</span>{% endif %}</td>
+        <td>{% if s.move_state %}{{ s.move_state }}<div class="small muted">{{ s.move_updated_at|ago }}</div>{% else %}<span class="muted">—</span>{% endif %}</td>
+        <td class="num">{% if s.gauntlet_score is not none %}{{ s.gauntlet_score }}/{{ s.gauntlet_out_of }}{% else %}—{% endif %}</td>
+        <td class="num">{{ s.decisions_waiting or "—" }}</td>
+        <td class="num">{{ s.spend_month|usd }}{% if s.budget_month is not none %}<div class="small muted">of {{ s.budget_month|usd }}</div>{% endif %}</td>
+        <td>{% if s.plan %}{{ s.plan }}{% else %}<span class="muted">No plan yet</span>{% endif %}</td>
+      </tr>
+      {%- endfor %}
+    </tbody>
+  </table></div>
+  {%- elif show == "leads" %}
+  <div class="empty"><b>No assessed-only sites.</b> A site lands here when someone runs Assess on it and doesn't claim it.</div>
+  {%- else %}
+  <div class="empty"><b>No sites yet.</b> A site appears the moment someone runs Assess on agentrix.website; it moves to "Claimed or live" when its owner proves the domain.</div>
+  {%- endif %}
+  <p class="gapnote">Plans come from the site's PayPal subscription; a site without one shows "No plan yet". Each stage comes from what the records show.</p>
+</article>
+{% endblock %}

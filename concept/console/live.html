@@ -1,0 +1,307 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Agentrix OS Live</title>
+<meta name="description" content="Concept: live agents. Sit in on a visitor's conversation, take it over as yourself and hand it back; or walk your own site with the Chief WebAgent by voice while it points at what it means.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Manrope:wght@600;700;800&family=JetBrains+Mono:wght@400;600&family=Fraunces:opsz,wght@9..144,600;9..144,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../styles.css">
+<link rel="stylesheet" href="console.css">
+<style>
+  .live-os { --lane-w: 360px; }
+  .convo-head { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; padding-bottom: 12px; border-bottom: 1px solid var(--os-line); margin-bottom: 12px; }
+  .convo-head .who { flex: 1; min-width: 0; }
+  .convo-head b { display: block; font: 700 var(--fs-16)/1.2 var(--font-display); color: var(--os-head); }
+  .composer { margin-top: 14px; padding: 10px; border-radius: 16px; border: 1.5px dashed var(--line-strong); background: var(--os-pane); }
+  .composer .sitting { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; font-size: var(--fs-13); color: var(--os-ink-2); }
+  .composer .typing-as { display: none; }
+  .taken .composer { border-style: solid; border-color: var(--indigo); }
+  .taken .composer .sitting { display: none; }
+  .taken .composer .typing-as { display: grid; gap: 8px; }
+  .typing-as .row-in { display: flex; gap: 8px; }
+  .typing-as input { flex: 1; min-width: 0; border: 1px solid var(--line); border-radius: 12px; padding: 10px 12px; font: 500 var(--fs-14)/1.2 var(--font-text); color: var(--ink); }
+  .whisper { padding: 10px 12px; border-radius: 12px; background: var(--os-pane-2); border: 1px solid var(--os-line); font-size: var(--fs-13); color: var(--os-ink-2); }
+  .whisper b { color: var(--os-head); }
+  .whisper button { margin-top: 8px; }
+  .handed { display: none; }
+  .is-handed .handed { display: block; }
+  /* The visitor-facing site, in the host's own brand */
+  .site-mini { position: relative; border-radius: 14px; overflow: hidden; border: 1px solid var(--os-line); background: #fffaf3; color: #3b2416; font-family: "DM Sans", sans-serif; }
+  .site-mini header { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 12px 16px; background: #fff; border-bottom: 1px solid #f0e2cf; }
+  .site-mini .brand { font: 700 18px/1 "Fraunces", Georgia, serif; color: #7a3f1d; }
+  .site-mini nav { display: flex; gap: 14px; font: 600 13px/1 "DM Sans"; color: #6b4a33; }
+  .site-mini nav b { color: #7a3f1d; border-bottom: 2px solid #c06a2b; padding-bottom: 3px; }
+  .site-mini .hero { padding: 18px 16px 6px; }
+  .site-mini h3 { font: 700 22px/1.15 "Fraunces", Georgia, serif; color: #3b2416; }
+  .site-mini .hero p { font-size: 13px; color: #6b4a33; margin-top: 4px; }
+  .prices { margin: 10px 16px 16px; border-radius: 12px; background: #fff; border: 1px solid #f0e2cf; }
+  .prices div { display: flex; justify-content: space-between; gap: 10px; padding: 10px 12px; border-bottom: 1px dashed #f0e2cf; font-size: 14px; }
+  .prices div:last-child { border-bottom: 0; }
+  .prices .old { text-decoration: line-through; color: #b08a70; margin-right: 6px; }
+  .prices .new { color: #11734a; font-weight: 700; }
+  .prices .add { background: #effaf4; color: #11734a; font-weight: 600; }
+  .site-mini .foot { padding: 0 16px 14px; font-size: 12px; color: #8a6a52; }
+  .voice-panel { display: grid; gap: 12px; }
+  .voice-ctl { display: flex; align-items: center; gap: 12px; padding: 12px; border-radius: 16px; background: var(--os-pane-2); border: 1px solid var(--os-line); }
+  .voice-ctl .state { font: 700 var(--fs-13)/1.2 var(--font-text); color: var(--os-head); }
+  .voice-ctl .state small { display: block; font-weight: 500; color: var(--os-muted); margin-top: 2px; }
+  .cap { opacity: 0; transform: translateY(4px); transition: opacity .3s, transform .3s; }
+  .cap.on { opacity: 1; transform: none; }
+  .draft { display: none; }
+  .draft.on { display: block; animation: rise .35s var(--ease) both; }
+  .vrow { display: flex; gap: 8px; flex-wrap: wrap; }
+  .walk-os { height: 640px; }
+  @media (max-width: 900px) { .walk-os { height: auto; grid-template-areas: "bar" "field" "lane" "cmd" "dock"; } }
+</style>
+</head>
+<body class="os-page">
+<header class="conceptbar">
+  <a class="logo" href="../index.html"><span class="mark" aria-hidden="true"></span>Agentrix</a>
+  <nav aria-label="Agentrix OS concepts">
+    <a href="index.html">Agentrix OS</a>
+    <a href="shell.html">Shell</a>
+    <a href="store.html">Store</a>
+    <a href="mission.html">Missions</a>
+    <a href="live.html" aria-current="page">Live</a>
+    <a href="phone.html">Phone</a>
+    <a href="trust.html">Trust centre</a>
+    <a href="gestures.html">Gestures</a>
+  </nav>
+  <span class="concept-label">Concept · illustrative data</span>
+</header>
+
+<main class="wrap">
+  <div class="page-head">
+    <span class="eyebrow">Agentrix OS · 4 of 6 · Live</span>
+    <h1 style="margin-top:12px">Sit in, take over, and hand back</h1>
+    <p class="lead">Your site's front desk works live. You can watch any conversation without the visitor seeing you, step in as yourself when it needs a person, and hand it back to the WebAgent with one tap. While you type, the desk whispers facts from your own pages. Your back office never sees the conversation.</p>
+    <div class="tryline"><span>Try:</span><span class="chip chip-outline">Take over</span><span class="chip chip-outline">send a reply</span><span class="chip chip-outline">Hand back to Cakes</span><span class="chip chip-outline">then walk the site by voice, below</span></div>
+  </div>
+
+  <section class="os-frame" aria-label="Live conversation takeover">
+    <div class="browser-bar"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="url"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>os.agentrix.ai/kilele/live/t-2291</span></div>
+    <div class="os live-os" data-world="front" data-time="day" id="takeover">
+      <div class="os-bar">
+        <button class="site-chip" type="button"><span class="logo-bake">K</span><span>Kilele Bakery<small>kilele-bakery.example · v14 live</small></span></button>
+        <div class="worlds" role="group" aria-label="Worlds"><button type="button" data-world="front" aria-pressed="true"><span class="live-dot" aria-hidden="true"></span>Front of house <span class="ct">3 live</span></button><button type="button" data-world="back" aria-pressed="false" onclick="location.href='shell.html'">Back office</button></div>
+        <div class="bar-right"><span class="pill"><span class="live-dot" aria-hidden="true"></span><b>Live</b><span class="hide-sm">· 1 conversation</span></span></div>
+      </div>
+      <nav class="dock" aria-label="Front of house">
+        <span class="app-ico" aria-current="true"><span class="os-mark" data-state="answering" style="--c:#b72d50" data-desk-mark><span class="avatar av-concierge">Ck</span></span>Cakes</span>
+        <span class="app-ico"><span class="os-mark" data-state="asleep"><span class="avatar av-concierge">Or</span></span>Orders</span>
+        <span class="app-ico"><span class="os-mark" data-state="asleep"><span class="avatar av-concierge">Vu</span></span>Visit us</span>
+        <span class="sep" aria-hidden="true"></span>
+        <span class="app-ico"><span class="sys" style="background:var(--info-bg);color:var(--info)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M9 9h6v6H9z"/></svg></span>Agent door</span>
+      </nav>
+
+      <div class="field">
+        <section class="view" data-view="front">
+          <div class="convo-head">
+            <span class="vdot talking" style="width:36px;height:36px">MK</span>
+            <div class="who"><b>Mary K. · on /cakes</b><span class="state-line answering" data-presence><span class="dot"></span>Cakes is answering · 4 min</span></div>
+            <span class="chip chip-coral" data-mode-chip>You're sitting in · Mary can't see you</span>
+          </div>
+          <div class="thread" aria-live="polite" data-thread>
+            <div class="msg visitor"><span class="by">Mary K.</span>Hi! Do you do wedding cakes? About 120 guests, early January.</div>
+            <div class="msg desk"><span class="by">Cakes <span class="tag-ai">AI</span></span>Yes. Three-tier wedding cakes serve 100 to 150 guests and need 3 weeks' notice, so early January works if you order by mid-December. <a class="cite" href="#" onclick="return false">/cakes#wedding</a></div>
+            <div class="msg visitor"><span class="by">Mary K.</span>It has to be gluten-free. My sister is coeliac. Is that something you do?</div>
+            <div class="msg desk"><span class="by">Cakes <span class="tag-ai">AI</span></span>The bakery's pages don't say whether they make gluten-free tiers. I can ask the bakery now. Shall I?</div>
+            <div class="msg visitor"><span class="by">Mary K.</span>Yes please.</div>
+            <div class="msg sys">Cakes asked the bakery · usually answers within 2 h, 07:00–20:00</div>
+          </div>
+          <div class="composer">
+            <div class="sitting"><span>You're sitting in. Mary sees only Cakes, and she is still on the page.</span><button class="btn btn-primary btn-sm" type="button" data-take>Take over</button></div>
+            <div class="typing-as">
+              <div class="row-in"><input type="text" aria-label="Reply as Wanjiru" value="Hi Mary, Wanjiru here. Yes, we can bake a gluten-free tier in a separate tin, on request. Want me to send a quote?" data-reply><button class="btn btn-primary" type="button" data-send>Send</button></div>
+              <div class="spread small" style="color:var(--os-muted)"><span>Replying as <b style="color:var(--os-head)">Wanjiru · a person</b>. Cakes is quiet in this conversation only. If you leave, Cakes takes it back after 10 minutes.</span><button class="btn btn-sm" type="button" data-handback>Hand back to Cakes</button></div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <aside class="lane" aria-label="Cakes whispers">
+        <div class="lane-scroll">
+          <h4>Cakes whispers</h4>
+          <div class="whisper"><b>From your pages</b><br>Wedding cakes: 3 tiers, 100–150 guests, 3 weeks' notice. <a class="cite" href="#" onclick="return false">/cakes#wedding</a></div>
+          <div class="whisper"><b>Your rule</b><br>Quotes over KSh 10,000 need a 30% deposit. <a class="cite" href="#" onclick="return false">rules</a></div>
+          <div class="whisper"><b>Not on your site</b><br>Gluten-free. Whatever you tell Mary can become an answer for everyone. <span class="chip chip-coral" style="margin-top:6px">asked 4× this month</span></div>
+          <div class="handed">
+            <div class="ldec" data-decision>
+              <div class="from"><span class="avatar av-editor">Ed</span>Teach your site<span class="chip">your words</span></div>
+              <b class="t">Add "Gluten-free tiers on request" to /cakes?</b>
+              <p>From what you just told Mary. Saved as a fact you told me (Known). Editor drafts it; you sign the release.</p>
+              <div class="verbs"><a class="btn btn-primary btn-sm" href="#voice">Draft it</a><button class="btn btn-ghost btn-sm" type="button" data-dismiss="Not added · stays a private answer">Just this once</button></div>
+              <div class="done-line">Kept as a one-off answer.</div>
+            </div>
+          </div>
+          <p class="small muted" style="margin-top:4px">Whispers come from the Cakes desk, which already reads this conversation. Your back office never sees it: it would only get a signal like <code class="mono">content_gap</code>.</p>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <section class="section" id="voice" aria-label="Walk the site by voice">
+    <span class="eyebrow">Live · voice and co-browse</span>
+    <h2 style="margin-top:8px">Walk your site with the Chief WebAgent.</h2>
+    <p class="lead" style="margin-top:8px">Open your own site and talk. The Chief WebAgent points at what it means, using the same pointer visitors see. You say what to change, Editor drafts it, and you sign the release. Voice can ask, deny and stop everything; it can't sign.</p>
+    <div class="os-frame" style="margin-top:16px">
+      <div class="browser-bar"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="url"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>os.agentrix.ai/kilele/walk · kilele-bakery.example/cakes</span></div>
+      <div class="os live-os walk-os" data-world="back" data-time="day">
+        <div class="os-bar">
+          <button class="site-chip" type="button"><span class="logo-bake">K</span><span>Kilele Bakery<small>Walking release v14</small></span></button>
+          <div class="worlds" role="group" aria-label="Mode"><button type="button" data-world="back" aria-pressed="true">Walk the site</button></div>
+          <div class="bar-right"><button class="pill freeze" type="button" data-freeze aria-pressed="false" data-on="Stopped" data-off="Stop everything"><span data-freeze-text>Stop everything</span></button></div>
+        </div>
+        <nav class="dock" aria-label="WebAgents">
+          <span class="app-ico" aria-current="true"><span class="orb sm" data-state="speaking" data-orb2 style="--s:40px"></span>Chief WebAgent</span>
+          <span class="app-ico"><span class="os-mark" data-state="asleep" data-editor-mark style="--c:#7a4b00"><span class="avatar av-editor">Ed</span></span>Editor</span>
+        </nav>
+        <div class="field">
+          <section class="view on" data-view="back" style="position:relative">
+            <div class="site-mini" data-site>
+              <header><span class="brand" data-pt="brand">Kilele Bakery</span><nav><span>Home</span><b>Cakes</b><span>Orders</span><span>Visit us</span></nav></header>
+              <div class="hero"><h3>Cakes for every celebration</h3><p>Baked in Westlands every morning. Order 2 days ahead; wedding cakes 3 weeks ahead.</p></div>
+              <div class="prices" data-pt="prices">
+                <div><span>Black Forest (2 kg)</span><span><span class="old" hidden data-old>KSh 3,500</span><span data-p1>KSh 3,500</span></span></div>
+                <div><span>Vanilla sponge (2 kg)</span><span><span class="old" hidden data-old>KSh 3,000</span><span data-p2>KSh 3,000</span></span></div>
+                <div><span>Carrot cake (1.5 kg)</span><span>KSh 2,800</span></div>
+                <div class="add" hidden data-add><span>Gluten-free tiers on request</span><span>new</span></div>
+              </div>
+              <p class="foot">Prices as published in release v14. <span class="tag-ai">Ask this site</span></p>
+            </div>
+            <div class="pointer-ring" data-ring hidden></div>
+          </section>
+        </div>
+        <aside class="lane" aria-label="Voice">
+          <div class="lane-scroll voice-panel">
+            <div class="voice-ctl"><span class="orb" data-orb data-state="listening"></span><div class="state" data-vstate>Ready<small>Hold to talk, or press Play to hear the walk-through</small></div></div>
+            <div class="vrow"><button class="btn btn-primary btn-sm" type="button" data-play>Play the walk-through</button><button class="btn btn-sm" type="button" data-reset>Reset</button></div>
+            <div class="captions" aria-live="polite" data-caps>
+              <p class="cap"><b>Chief WebAgent</b> This is your Cakes page as visitors see it now, release v14.</p>
+              <p class="cap"><b>Chief WebAgent</b> These two prices differ from the list you sent this morning.</p>
+              <p class="cap owner"><b>You</b> Make Black Forest 3,800 and vanilla 3,200. And say we do gluten-free tiers on request.</p>
+              <p class="cap"><b>Chief WebAgent</b> Editor is drafting both. The prices come from your list. The gluten-free line is your own words, so I'll remember it as something you told me.</p>
+              <p class="cap owner"><b>You</b> Publish it.</p>
+              <p class="cap"><b>Chief WebAgent</b> Publishing needs your approval on a screen, so I've put it there. Voice can't approve.</p>
+            </div>
+            <div class="draft fcard" data-draft>
+              <div class="fcard-head"><span class="avatar av-editor">Ed</span><div class="who"><b>Draft release v15</b><span class="state-line">2 prices · 1 new line · /cakes</span></div></div>
+              <div class="verbs"><button class="btn btn-primary btn-sm" type="button" data-passkey data-sign="Release v15: /cakes · 2 prices from your list · 1 line in your words" data-fp="H(kilele, editor, site_publish, {release v15, diff 3 rows}, exp 7 Nov 20:00) = b81f…3a">Sign and publish</button><button class="btn btn-ghost btn-sm" type="button">See the diff</button></div>
+              <div class="done-line" style="display:none"></div>
+            </div>
+            <p class="small muted">The Chief WebAgent reads your signed release, never visitors' conversations. A spoken "stop everything" freezes every WebAgent at once.</p>
+          </div>
+        </aside>
+        <div class="overlay" id="passkey" role="dialog" aria-modal="true" aria-label="Confirm with your passkey">
+          <div class="passkey">
+            <div class="fp"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 11c0 3-1 6-3 8M8.5 7.5A5 5 0 0 1 17 11c0 1.5-.2 3-.6 4.4M6.3 10A6.5 6.5 0 0 1 9 5.6M12 14.5c-.2 1.8-.8 3.5-1.7 5M15.3 17.5c-.3 1-.7 2-1.2 2.9M4 13.5c.4-1 .6-2 .6-3"/></svg></div>
+            <h3>Confirm it's you</h3>
+            <p data-sign-what>This exact action</p>
+            <div class="sig"><b>Your passkey signs:</b> <span data-sign-fp></span></div>
+            <div class="row"><button class="btn" type="button" data-close>Cancel</button><button class="btn btn-primary" type="button" data-do-sign>Use passkey</button></div>
+          <button class="stepup-link" type="button" data-stepup>No passkey on this device? Use a code from your authenticator app</button>
+          <div class="stepup-box">
+            <label for="stepup-code">Code from your authenticator app</label>
+            <input id="stepup-code" class="stepup-code" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="6 digits">
+            <p>Single use, and bound to this exact effect. Your receipt will say a code approved it, not a passkey.</p>
+            <div class="row"><button class="btn" type="button" data-stepup-back>Back to passkey</button><button class="btn btn-primary" type="button" data-do-sign data-method="code">Approve with code</button></div>
+          </div>
+            <div class="ok">Signed · release v15 is live · undo for 30 days</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="notes" style="margin-top:0" aria-label="Design notes">
+    <article class="card"><h3>The wall still holds</h3><p>The owner is a person on a paired device, so you may read and join Front of house conversations. Suggestions during a takeover come from the desk that already reads the thread. The back office only receives the typed signal it would have received anyway.</p></article>
+    <article class="card"><h3>Honest labels</h3><p>Visitors always see who is speaking: "Cakes · AI" or "Wanjiru · a person". Joining and handing back are shown in the thread. Presence words come from the tool that is actually running.</p></article>
+    <article class="card"><h3>Voice is for talking, not signing</h3><p>By voice you can ask, deny, pause and stop everything, which acts at once. Money, publishing and anything high-risk always open the approval sheet on a screen, for your passkey or a code.</p></article>
+  </section>
+</main>
+<footer class="concept-foot">
+  <div class="wrap row">
+    <span><a href="mission.html">← A mission reports in</a> · Next: <a href="phone.html">The phone →</a></span>
+    <span>Concept screens with illustrative data. Kilele Bakery and Mary K. are fictional.</span>
+  </div>
+</footer>
+<script src="console.js"></script>
+<script>
+(() => {
+  // Takeover
+  const t = document.getElementById('takeover');
+  const thread = t.querySelector('[data-thread]');
+  const add = (cls, html) => { const d = document.createElement('div'); d.className = 'msg ' + cls; d.innerHTML = html; thread.appendChild(d); d.scrollIntoView({ block: 'nearest' }); };
+  const mark = t.querySelector('[data-desk-mark]'), pres = t.querySelector('[data-presence]'), chip = t.querySelector('[data-mode-chip]');
+  t.querySelector('[data-take]').addEventListener('click', () => {
+    t.classList.add('taken'); mark.dataset.state = 'idle';
+    pres.className = 'state-line'; pres.innerHTML = '<span class="dot"></span>Cakes is quiet while you\'re in';
+    chip.textContent = 'You have the conversation'; chip.className = 'chip chip-info';
+    add('sys', 'Wanjiru from Kilele joined · a person');
+  });
+  t.querySelector('[data-send]').addEventListener('click', () => {
+    const v = t.querySelector('[data-reply]'); if (!v.value.trim()) return;
+    add('owner', '<span class="by"><span class="person-chip">W</span>Wanjiru <span class="tag-person">a person</span></span>' + v.value.replace(/</g, '&lt;'));
+    v.value = '';
+    setTimeout(() => add('visitor', '<span class="by">Mary K.</span>Amazing, yes please! For 120 guests on 9 January.'), 900);
+  });
+  t.querySelector('[data-handback]').addEventListener('click', () => {
+    t.classList.remove('taken'); t.classList.add('is-handed'); mark.dataset.state = 'answering';
+    pres.className = 'state-line answering'; pres.innerHTML = '<span class="dot"></span>Cakes is answering again';
+    chip.textContent = 'Handed back · you can sit in'; chip.className = 'chip chip-ok';
+    add('sys', 'Cakes is back · AI');
+    setTimeout(() => add('desk', '<span class="by">Cakes <span class="tag-ai">AI</span></span>Thanks, Mary. From what Wanjiru said, I\'ve started a quote for a 3-tier cake with a gluten-free tier for 120 guests on 9 January. The bakery confirms the price before anything is final.'), 900);
+  });
+
+  // Walk the site
+  const site = document.querySelector('[data-site]'), ring = document.querySelector('[data-ring]');
+  const caps = [...document.querySelectorAll('[data-caps] .cap')], orb = document.querySelector('[data-orb]'), vstate = document.querySelector('[data-vstate]');
+  const draft = document.querySelector('[data-draft]'), edMark = document.querySelector('[data-editor-mark]');
+  const point = (sel, label) => {
+    const el = site.querySelector(sel); if (!el) { ring.hidden = true; return; }
+    const host = site.parentElement.getBoundingClientRect(), r = el.getBoundingClientRect();
+    Object.assign(ring.style, { left: (r.left - host.left - 4) + 'px', top: (r.top - host.top - 4) + 'px', width: (r.width + 8) + 'px', height: (r.height + 8) + 'px' });
+    ring.dataset.label = label; ring.hidden = false;
+    ring.style.animation = 'none'; void ring.offsetWidth; ring.style.animation = '';
+    clearTimeout(ring._t); ring._t = setTimeout(() => { ring.hidden = true; }, 5200);
+  };
+  const say = (who, s, sub) => { orb.dataset.state = who; vstate.innerHTML = s + '<small>' + sub + '</small>'; };
+  let timers = [];
+  const reset = () => {
+    timers.forEach(clearTimeout); timers = [];
+    caps.forEach(c => c.classList.remove('on')); ring.hidden = true; draft.classList.remove('on', 'done');
+    site.querySelectorAll('[data-old],[data-add]').forEach(e => e.hidden = true);
+    site.querySelector('[data-p1]').textContent = 'KSh 3,500'; site.querySelector('[data-p2]').textContent = 'KSh 3,000';
+    site.querySelectorAll('[data-p1],[data-p2]').forEach(e => e.classList.remove('new'));
+    edMark.dataset.state = 'asleep'; say('listening', 'Ready', 'Hold to talk, or press Play to hear the walk-through');
+  };
+  const steps = [
+    () => { caps[0].classList.add('on'); say('speaking', 'Speaking', 'Chief WebAgent · you can interrupt'); point('.hero h3', 'Looking here'); },
+    () => { caps[1].classList.add('on'); point('[data-pt=prices] div:nth-child(-n+2)', '2 prices differ'); point('[data-pt=prices]', '2 prices differ from your list'); },
+    () => { caps[2].classList.add('on'); say('listening', 'Listening', 'You'); },
+    () => { caps[3].classList.add('on'); say('thinking', 'Working', 'Editor · drafting release v15'); edMark.dataset.state = 'working';
+            site.querySelectorAll('[data-old],[data-add]').forEach(e => e.hidden = false);
+            const p1 = site.querySelector('[data-p1]'), p2 = site.querySelector('[data-p2]'); p1.textContent = 'KSh 3,800'; p2.textContent = 'KSh 3,200'; p1.classList.add('new'); p2.classList.add('new');
+            point('[data-pt=prices]', 'Draft · not live yet'); draft.classList.add('on'); },
+    () => { caps[4].classList.add('on'); say('listening', 'Listening', 'You'); edMark.dataset.state = 'waiting'; },
+    () => { caps[5].classList.add('on'); say('speaking', 'Waiting for your approval', 'Voice can ask, deny and stop; it can\'t sign'); point('[data-pt=prices]', 'Sign on screen to publish'); }
+  ];
+  document.querySelector('[data-play]').addEventListener('click', () => { reset(); steps.forEach((s, i) => timers.push(setTimeout(s, 300 + i * 2200))); });
+  document.querySelector('[data-reset]').addEventListener('click', reset);
+  window.addEventListener('resize', () => { if (!ring.hidden) point('[data-pt=prices]', ring.dataset.label); });
+  // When signed, show the result on the draft card
+  document.addEventListener('click', e => {
+    if (e.target.closest('[data-do-sign]')) setTimeout(() => {
+      draft.querySelector('.verbs').style.display = 'none';
+      const d = draft.querySelector('.done-line'); d.style.display = 'block'; d.textContent = 'Signed · release v15 is live · undo for 30 days · the Cakes desk now answers "gluten-free on request".';
+      edMark.dataset.state = 'asleep'; ring.hidden = true; say('listening', 'Done', 'Release v15 is live');
+      site.querySelectorAll('[data-old]').forEach(e => e.hidden = true);
+    }, 1950);
+  });
+})();
+</script>
+</body>
+</html>

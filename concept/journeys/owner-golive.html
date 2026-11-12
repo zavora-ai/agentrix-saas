@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Go live</title>
+<meta name="description" content="Owner journey, step 6: one card to go live. Wanjiru approves it with her passkey, or with an authenticator code on a device without one, and undo stays one tap for 30 days.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Manrope:wght@600;700;800&family=Fraunces:opsz,wght@9..144,600;9..144,800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../styles.css">
+<link rel="stylesheet" href="../console/console.css">
+<link rel="stylesheet" href="journeys.css">
+<link rel="stylesheet" href="owner.css">
+</head>
+<body data-lane="owner" data-step="6">
+<header class="j-top">
+  <a class="logo" href="../index.html"><span class="mark" aria-hidden="true"></span>Agentrix</a>
+  <a class="j-maplink" href="index.html">Journey map</a>
+  <span class="j-lane">Owner · Wanjiru</span>
+  <span class="concept-label">Concept · illustrative data</span>
+</header>
+<nav class="j-steps" aria-label="Owner journey" data-steps></nav>
+<main class="wrap j-main">
+  <header class="j-head">
+    <p class="eyebrow">Step 6 of 9 · Owner</p>
+    <h1>Go live, with undo</h1>
+    <p class="lead">One card shows exactly what will happen. Wanjiru approves it with her passkey, or with a code from her authenticator app on a device without one. The site is live in seconds, and her old site stays as a fallback: undo is one tap for 30 days.</p>
+  </header>
+  <div class="j-grid">
+    <section class="j-stage" aria-label="What Wanjiru sees">
+      <div class="o-card" data-decision>
+        <div class="from"><span class="j-mark" data-agent="mover" data-size="28" data-state="waiting"></span>Mover asks<span class="chip chip-wait">Medium</span></div>
+        <h3>Go live: kilele-bakery.example</h3>
+        <div class="o-effect">
+          <h4>If you approve, exactly this happens</h4>
+          <ul>
+            <li>Signed release v1 starts serving kilele-bakery.example: 14 pages, 97% match, 31 old addresses redirected</li>
+            <li>The 4 items found in your old site stay behind</li>
+            <li>Your domain's address record points to Agentrix's edge. Your old site stays exactly as it is, as a fallback, for 30 days</li>
+            <li>Your WebAgents start work: Cakes and Orders on the site, the Guardian, the Editor and the Caretaker behind it</li>
+            <li>Your Commerce plan starts today: the first $149 is charged to your PayPal subscription <span class="j-first">The fleet release</span></li>
+          </ul>
+        </div>
+        <div class="o-acts">
+          <button class="btn btn-primary" type="button" data-passkey data-sign="Go live: kilele-bakery.example → release v1 · DNS switch · fallback for 30 days" data-fp="H(kilele, mover, go_live, {release v1, dns: kilele-bakery.example}, exp 7 Nov 20:00) = 5be0…c8" data-then="#live">Approve</button>
+          <a class="btn" href="../move.html">See what was left behind</a>
+          <button class="btn btn-ghost" type="button">Not yet</button>
+        </div>
+        <div class="o-state done" style="gap:10px;flex-wrap:wrap;align-items:center">
+          <span class="o-ok" style="flex:1">✓ Live · release v1 · receipt r-5be0…c8 · the receipt names the method</span>
+          <button class="btn btn-sm" type="button" data-undo="#undone">Undo go-live</button>
+        </div>
+        <div class="o-state undone" style="gap:10px;flex-wrap:wrap">
+          <span class="o-wait" style="flex:1">Undo started: kilele-bakery.example points back to your old site. Most visitors see it within minutes. Release v1 is kept, so going live again is one card.</span>
+        </div>
+      </div>
+
+      <div id="live" data-reveal class="o-sec">
+        <div class="o-chief">
+          <span class="j-mark" data-chief data-size="40" data-busy="cakes,guardian"></span>
+          <p><b>Chief WebAgent:</b> You're live. Cakes has already answered its first visitor, and the Guardian is watching the old WordPress login address that bots keep trying. I'll send your first brief at 07:00 tomorrow, on WhatsApp and here.</p>
+        </div>
+        <a class="btn btn-primary" href="owner-day1.html" style="justify-self:start">Next: the first night and the first brief</a>
+      </div>
+
+      <div class="overlay" id="passkey" role="dialog" aria-modal="true" aria-label="Confirm with your passkey">
+        <div class="passkey">
+          <div class="fp"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 11c0 3-1 6-3 8M8.5 7.5A5 5 0 0 1 17 11c0 1.5-.2 3-.6 4.4M6.3 10A6.5 6.5 0 0 1 9 5.6M12 14.5c-.2 1.8-.8 3.5-1.7 5M15.3 17.5c-.3 1-.7 2-1.2 2.9M4 13.5c.4-1 .6-2 .6-3"/></svg></div>
+          <h3>Confirm it's you</h3>
+          <p data-sign-what>This exact action</p>
+          <div class="sig"><b>Your passkey signs:</b> <span data-sign-fp></span></div>
+          <div class="row"><button class="btn" type="button" data-close>Cancel</button><button class="btn btn-primary" type="button" data-do-sign>Use passkey</button></div>
+          <button class="stepup-link" type="button" data-stepup>No passkey on this device? Use a code from your authenticator app</button>
+          <div class="stepup-box">
+            <label for="stepup-code">Code from your authenticator app</label>
+            <input id="stepup-code" class="stepup-code" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="6 digits">
+            <p>Single use, and bound to this exact effect. Your receipt will say a code approved it, not a passkey.</p>
+            <div class="row"><button class="btn" type="button" data-stepup-back>Back to passkey</button><button class="btn btn-primary" type="button" data-do-sign data-method="code">Approve with code</button></div>
+          </div>
+          <div class="ok">Signed · the effect runs once · receipt written</div>
+        </div>
+      </div>
+    </section>
+
+    <aside class="j-notes" aria-label="What happens underneath">
+      <div class="j-note gate"><h3>What you see is what you approve</h3><p>The card and the approval sheet are drawn from the same canonical arguments that are hashed into the fingerprint. A passkey signs that fingerprint; a code is bound to it. The Effects Gateway checks it and runs the go-live exactly once (07 §5.2).</p></div>
+      <div class="j-note"><h3>Undo is one tap for 30 days</h3><p>Undo points the domain back at the old site, which was never changed. Release v1 is kept, so going live again is one card. After 30 days the fallback is retired, and the Chief WebAgent says so a week ahead.</p></div>
+      <div class="j-note"><h3><span class="j-first">The fleet release</span> The plan starts today</h3><p>The first charge is on go-live day (08 §4.1). In the first release demo the go-live card has no payment line.</p></div>
+      <div class="j-note never"><h3>Never</h3><ul><li>Go live below 95% parity</li><li>Bring back an item left behind without the owner's approval</li><li>Approve by gesture or by voice: either can open the sheet, never confirm it</li></ul></div>
+    </aside>
+  </div>
+</main>
+<nav class="wrap j-pager" aria-label="Previous and next step" data-pager></nav>
+<script src="journeys.js"></script>
+<script src="../console/console.js"></script>
+<script src="owner.js"></script>
+</body>
+</html>

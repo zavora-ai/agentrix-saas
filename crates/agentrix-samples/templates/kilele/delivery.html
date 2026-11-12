@@ -1,0 +1,48 @@
+{% extends "kilele/layout.html" %}
+{% block main %}
+<section class="b-pagehead" id="top">
+  <nav class="crumb" aria-label="Breadcrumb"><a href="/visit">Visit</a><span aria-hidden="true">›</span><span>Delivery</span></nav>
+  <h1>Delivery</h1>
+  <p>Where {{ shell.site.name }} delivers, what it costs and which slots are still open.</p>
+</section>
+
+<section class="b-section" id="zones">
+  <h2>Areas and fees</h2>
+  <div class="zones">
+    {% for z in zones %}
+    <div class="b-card zone" id="zone-{{ z.zone }}"><div><b>{{ z.label }}</b><br>{{ z.areas | join(", ") }}</div><span class="fee">{{ z.fee_minor | ksh }}</span></div>
+    {% else %}
+    <p class="b-card">{{ shell.site.name }} isn't delivering right now. Orders can still be collected. {{ collection }}</p>
+    {% endfor %}
+  </div>
+  {% if zones %}<p class="more-link">Delivery covers only these areas. Somewhere else? <a href="/help#contact" data-person>Ask {{ shell.site.owner }}</a>.</p>{% endif %}
+</section>
+
+<section class="b-section" id="slots">
+  <h2>Delivery slots, next two weeks</h2>
+  <p class="sub">Each slot takes a set number of deliveries. Counts are live, {{ asof }}; you pick a slot at checkout.</p>
+  {% if days %}
+  <div class="slot-days">
+    {% for d in days %}
+    <div class="slot-day">
+      <h3>{{ d.day }}</h3>
+      {% for s in d.slots %}
+      <div class="slot-row{% if s.full %} full{% endif %}">
+        <span class="t">{{ s.time }}</span><span class="w">{{ s.words }}</span>
+        <span class="meter" role="img" aria-label="{{ s.taken }} of {{ s.capacity }} taken"><i style="width:{{ s.pct }}%"></i></span>
+      </div>
+      {% endfor %}
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <p class="b-card">No delivery slots are open in the next two weeks. Collection still runs. {{ collection }}</p>
+  {% endif %}
+</section>
+
+<section class="b-section" id="fee-rule">
+  <h2>One fee per slot</h2>
+  {% for z in zones %}<p class="b-card"><b>{{ z.note }}</b> The fee for {{ z.label }} is {{ z.fee_minor | ksh }} a delivery.</p>{% endfor %}
+  <p class="b-card" id="delivery-changes">{{ changes }} <a class="link" href="/help#changes">How changes work</a></p>
+</section>
+{% endblock %}

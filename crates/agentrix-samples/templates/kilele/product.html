@@ -1,0 +1,29 @@
+{% extends "kilele/layout.html" %}
+{% block main %}
+<script type="application/ld+json">{{ ld | tojson }}</script>
+<section class="p-wrap" id="item-{{ item.slug }}">
+  {% if ("product:" ~ item.sku) in shell.pictures %}{% set pic = shell.pictures["product:" ~ item.sku] %}<figure class="p-art pic"><img src="{{ pic.url }}" alt="{{ pic.alt }}">{% if pic.label %}<span class="rtag">{{ pic.label }}</span>{% endif %}</figure>{% else %}<div class="p-art tone-{{ item.tone }}" role="img" aria-label="Drawn placeholder for {{ item.name }}"></div>{% endif %}
+  <div class="p-info">
+    <nav class="crumb" aria-label="Breadcrumb"><a href="/bread">Bread</a><span aria-hidden="true">›</span><span>{{ item.name }}</span></nav>
+    <h1>{{ item.name }}</h1>
+    <div class="price">{{ item.price }}</div>
+    <p class="lead" id="contents">{{ item.description }}</p>
+    <span class="stock{% if item.out %} out{% endif %}">{{ item.stock }}</span>
+    <dl>
+      {% if item.days %}<dt>Baked</dt><dd id="days">{{ item.days }}{% if item.today %}, including today{% else %}. Next bake {{ item.next }}{% endif %}</dd>{% endif %}
+      <dt>Today</dt><dd>{% if item.days and not item.today %}Not baked today. Order now for {{ item.next }}.{% else %}{{ item.stock }} · {{ asof }}{% endif %}</dd>
+      <dt>Ingredients</dt><dd id="ingredients">{{ item.ingredients }}{% if item.contains %} <a class="link" href="/allergens">Allergen table</a>{% endif %}</dd>
+      <dt>Delivery</dt><dd>{% for z in zones %}{{ z.areas | join(" & ") }} · {{ z.fee_minor | ksh }}{% if not loop.last %}; {% endif %}{% endfor %}. {{ delivery_days }}.</dd>
+    </dl>
+    <div class="add">
+      {% if item.out %}
+      <p class="small">Sold out for now. Ask Bread in the menu when the next batch is due, or add something else from <a class="link" href="/bread">today's bread</a>.</p>
+      {% else %}
+      <form method="post" action="/bag/add"><input type="hidden" name="sku" value="{{ item.sku }}"><input type="hidden" name="qty" value="1"><input type="hidden" name="back" value="/shop/{{ item.slug }}"><button class="b-btn">Add to bag</button></form>
+      {% endif %}
+      <a class="b-btn ghost" href="/bread">Today's bread</a>
+    </div>
+    <p class="small" style="margin-top:12px">Stock is shown {{ asof }}. Your order checks it again when you pay.</p>
+  </div>
+</section>
+{% endblock %}

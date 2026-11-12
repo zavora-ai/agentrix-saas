@@ -1,0 +1,16 @@
+{% block subject %}Your sign-in code for {{ site.name }}{% endblock %}
+{% block preheader %}It works for {{ minutes }} minutes, once.{% endblock %}
+{% block body %}
+# Your sign-in code
+{% if person.name %}
+{{ person.name }}, here is the code you asked for at {{ site.host }}:
+{% else %}
+Here is the code you asked for at {{ site.host }}:
+{% endif %}
+
+::code {{ code }}
+
+Type it on the sign-in page. It works for {{ minutes }} minutes and only once.
+
+Didn't ask for it? Ignore this email. Nobody can sign in without the code, and {{ site.name }} will never ask you to read it out or send it on.
+{% endblock %}

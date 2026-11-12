@@ -1,0 +1,377 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Her agent orders · Agentrix</title>
+<meta name="description" content="Customer journey, step 6: Njeri's own AI assistant orders from Kilele through the agent door. It signs its requests, gets a quote and a checkout link, never a payment credential, and Njeri still pays on PayPal's own page.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Manrope:wght@600;700;800&family=Fraunces:opsz,wght@9..144,600;9..144,800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../styles.css">
+<link rel="stylesheet" href="../experience/experience.css">
+<link rel="stylesheet" href="journeys.css">
+<style>
+  .j-stage [hidden] { display: none !important; }
+  .j-stage :focus-visible { outline: 2px solid var(--indigo-900); outline-offset: 2px; box-shadow: none; }
+  .kilele :focus-visible { outline-color: var(--k-brown); }
+  .j-note.never { margin: 0; display: block; }
+  .j-cap > span:not(.n) { min-width: 0; }
+  .st-h { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-top: 10px; font-size: var(--fs-20); }
+  .st-h:first-child { margin-top: 0; }
+  .st-lead { max-width: 62ch; margin-top: -6px; }
+  .mono-in { font: 600 .86em/1.3 var(--font-mono); overflow-wrap: anywhere; }
+
+  .k-me { display: inline-grid; place-items: center; width: 24px; height: 24px; border-radius: 50%; background: var(--k-brown); color: #fff; font: 700 11px/1 var(--font-text); }
+  .k-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap; }
+  .k-head h3 { font-size: 20px; }
+  .k-small { font-size: 12.5px; line-height: 1.45; color: var(--k-brown-2); }
+  .k-meta { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 6px 12px; margin: 12px 0 0; font-size: 13.5px; line-height: 1.45; }
+  .k-meta dt { font-weight: 700; color: var(--k-brown-2); }
+  .k-meta dd { margin: 0; color: var(--k-brown); overflow-wrap: anywhere; }
+
+  /* Njeri's assistant: a neutral placeholder, not any real product */
+  .asst .bar { font-family: var(--font-text); }
+  .a-msg { margin: 0; padding: 10px 12px; border-radius: 14px; font-size: 14px; line-height: 1.5; max-width: 92%; color: var(--ink); }
+  .a-msg.me { justify-self: end; background: var(--surface-2); border-bottom-right-radius: 4px; }
+  .a-msg.bot { justify-self: start; background: #fff; border: 1px solid var(--line); border-bottom-left-radius: 4px; }
+  .calls { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; min-width: 0; }
+  .calls > li { display: grid; grid-template-columns: 40px minmax(0, 1fr); gap: 3px 8px; padding: 9px 10px; border-radius: 10px; border: 1px solid var(--line); background: var(--surface); min-width: 0; }
+  .calls .k { font: 700 10px/1.75 var(--font-text); letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+  .calls code { min-width: 0; font: 500 12px/1.55 var(--font-mono); color: var(--ink-2); overflow-wrap: anywhere; }
+  .calls .req { font-weight: 600; color: var(--indigo-900); }
+  .j-provider .body > .btn { justify-self: start; }
+
+  /* The door */
+  .door { min-width: 0; overflow: hidden; border: 1px solid var(--line-strong); border-radius: 14px; background: var(--paper); box-shadow: var(--shadow-2); }
+  .door > .bar { display: flex; align-items: center; gap: 8px; padding: 8px 12px; background: var(--sealed-bg); border-bottom: 1px solid var(--line); font: 600 12.5px/1.3 var(--font-mono); color: var(--sealed); overflow-wrap: anywhere; min-width: 0; }
+  .door > .bar svg { width: 13px; height: 13px; flex: none; }
+  .door > .body { padding: 14px; display: grid; gap: 10px; font-size: 14px; color: var(--ink-2); }
+  .door h4 { font-size: 13.5px; color: var(--indigo-900); }
+  .door-desk { display: flex; align-items: center; gap: 4px 8px; flex-wrap: wrap; padding: 8px 10px; border-radius: 12px; border: 1px solid var(--k-line); font-size: 13.5px; }
+  .door-desk b { color: var(--k-brown); }
+  .door-desk .sub { font-size: 12.5px; color: var(--k-brown-2); }
+  .dl { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 5px 12px; margin: 0; font-size: 13px; line-height: 1.45; }
+  .dl dt { font-weight: 700; color: var(--muted); }
+  .dl dd { margin: 0; color: var(--ink); overflow-wrap: anywhere; }
+  .tier { display: inline-block; padding: 1px 8px; border-radius: 6px; background: var(--info-bg); color: var(--info); font: 700 12px/1.6 var(--font-mono); }
+  .lastcall { padding: 8px 10px; border-radius: 10px; background: var(--surface); font: 500 12px/1.5 var(--font-mono); color: var(--ink-2); overflow-wrap: anywhere; }
+  .fine { font-size: 13px; line-height: 1.5; color: var(--ink-2); }
+  .fine code { font: 600 12px/1.3 var(--font-mono); }
+  .rules { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 180px), 1fr)); gap: 10px; }
+  .may, .nope { list-style: none; margin: 6px 0 0; padding: 0; display: grid; gap: 4px; font-size: 13px; line-height: 1.45; }
+  .may li, .nope li { display: grid; grid-template-columns: 16px minmax(0, 1fr); gap: 6px; }
+  .may li::before, .nope li::before { font-weight: 800; }
+  .may li::before { content: "✓"; color: var(--ok); }
+  .nope li::before { content: "✕"; color: var(--risk); }
+  .term { margin: 0; padding: 12px; border-radius: 12px; background: var(--surface); border: 1px solid var(--line); color: var(--ink-2); font: 500 12px/1.6 var(--font-mono); white-space: pre-wrap; overflow-wrap: anywhere; }
+
+  /* Review and pay */
+  .lock { display: grid; gap: 10px; padding: 16px 12px; border-radius: 18px; background: linear-gradient(160deg, #2a2848, #121127); }
+  .notif { display: grid; gap: 6px; padding: 12px 14px; border-radius: 16px; background: #fff; }
+  .notif .from { display: flex; justify-content: space-between; gap: 8px; font: 700 12px/1.3 var(--font-text); color: var(--muted); }
+  .notif p { font-size: 14px; line-height: 1.45; color: var(--ink); }
+  .notif .btn { justify-self: start; }
+  .lock-note { font-size: 12px; color: #d9d8ee; text-align: center; }
+  .j-provider.lit { box-shadow: 0 0 0 3px var(--info), var(--shadow-2); }
+  .paid { display: flex; gap: 8px; align-items: flex-start; padding: 10px 12px; border-radius: 10px; background: var(--ok-bg); color: var(--ok); font: 700 13.5px/1.4 var(--font-text); }
+  .paid svg { width: 16px; height: 16px; flex: none; margin-top: 2px; }
+  .callout { padding: 12px 14px; border-radius: var(--r); background: var(--j-customer-bg); color: var(--j-customer); font-size: 14px; line-height: 1.5; }
+  .callout b { color: #0a4a44; }
+
+  /* The custom path and the race */
+  .race { display: grid; gap: 10px; padding: 14px; border-radius: 14px; border: 1px dashed var(--line-strong); background: var(--paper); font-size: 14px; line-height: 1.5; color: var(--ink-2); }
+  .race .j-who { justify-self: start; }
+  .race b { color: var(--ink); }
+  .meetline { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 8px; font-size: 13px; line-height: 1.45; color: var(--ink-2); }
+
+  /* The mandate chain */
+  .chain { list-style: none; margin: 0; padding: 0; display: grid; gap: 26px; }
+  .chain > li { position: relative; display: grid; gap: 8px; padding: 14px; border-radius: 14px; border: 1px solid var(--line); background: var(--paper); box-shadow: var(--shadow-1); min-width: 0; }
+  .chain > li:not(:last-child)::after { content: ""; position: absolute; left: 50%; bottom: -19px; margin-left: -7px; width: 0; height: 0; border-left: 7px solid transparent; border-right: 7px solid transparent; border-top: 10px solid var(--line-strong); }
+  .ch-top { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .ch-top h3 { font-size: var(--fs-16); }
+  .ch-n { display: inline-grid; place-items: center; width: 24px; height: 24px; border-radius: 8px; background: var(--surface-2); font: 700 11px/1 var(--font-mono); color: var(--ink-2); }
+  .chain p { font-size: 14px; line-height: 1.5; color: var(--ink-2); }
+  .chain .sig { justify-self: start; max-width: 100%; padding: 4px 8px; border-radius: 8px; background: var(--surface); border: 1px solid var(--line); font: 600 12px/1.5 var(--font-mono); color: var(--indigo-900); overflow-wrap: anywhere; }
+  .chain p code { font: 600 12px/1.3 var(--font-mono); }
+</style>
+</head>
+<body data-lane="customer" data-step="6">
+<header class="j-top">
+  <a class="logo" href="../index.html"><span class="mark" aria-hidden="true"></span>Agentrix</a>
+  <a class="j-maplink" href="index.html">Journey map</a>
+  <span class="j-lane">Customer · Njeri</span>
+  <span class="concept-label">Concept · illustrative data</span>
+</header>
+<nav class="j-steps" aria-label="Customer journey" data-steps></nav>
+<main class="wrap j-main">
+  <header class="j-head">
+    <p class="eyebrow">Step 6 of 7 · Customer</p>
+    <h1>Her AI agent orders</h1>
+    <p class="lead">Rewind to the catalogue order. This time Njeri doesn't open the site. She asks her own AI assistant, which finds Kilele's agent door, gets a quote priced by Kilele's rules and hands her a link. She still pays on PayPal's own page.</p>
+  </header>
+  <div class="j-grid">
+    <section class="j-stage" aria-label="What Njeri and her assistant see">
+      <h2 class="st-h">Asking through the door</h2>
+      <div class="j-screens">
+        <div class="j-screen">
+          <p class="j-cap"><span class="n">1</span>Njeri asks her own assistant. It finds Kilele's door and calls its tools.</p>
+          <div class="j-provider asst">
+            <div class="bar">Njeri's assistant · any AI assistant, drawn as a placeholder</div>
+            <div class="body">
+              <p class="a-msg me">Order the weekend bake box and two sourdough loaves from Kilele for Saturday.</p>
+              <p class="a-msg bot">Kilele Bakery lists an agent door. I'll ask it.</p>
+              <ol class="calls" id="calls" aria-label="Calls to Kilele's agent door">
+                <li data-door="AI Catalog · public, no tier needed">
+                  <span class="k">read</span><code class="req">GET /.well-known/ai-catalog.json</code>
+                  <span class="k">reply</span><code>MCP tools at /mcp · signed A2A card · UCP profile · agent terms</code>
+                </li>
+                <li data-door="catalog.search · allowed for known · from the price list and stock">
+                  <span class="k">call</span><code class="req">catalog.search {"q": "weekend bake box, sourdough loaf", "date": "2026-11-14"}</code>
+                  <span class="k">reply</span><code>weekend bake box · KSh 1,350 · available Sat 14 Nov<br>sourdough loaf · KSh 450 · available Sat 14 Nov</code>
+                </li>
+                <li data-door="delivery.slots · allowed for known · from the delivery calendar">
+                  <span class="k">call</span><code class="req">delivery.slots {"area": "Kilimani", "date": "2026-11-14"}</code>
+                  <span class="k">reply</span><code>10:00–12:00 · 14:00–16:00 · fee KSh 300</code>
+                </li>
+                <li data-door="quote.create · allowed for known · priced from the rules, pinned to price list v14">
+                  <span class="k">call</span><code class="req">quote.create {"items": [{"sku": "sourdough-loaf", "qty": 2}, {"sku": "weekend-bake-box", "qty": 1}], "delivery": {"area": "Kilimani", "slot": "2026-11-14 10:00–12:00"}}</code>
+                  <span class="k">reply</span><code>q-5c21 · sourdough loaf × 2 KSh 900 · weekend bake box KSh 1,350 · delivery KSh 300<br>total KSh 2,550 = USD 19.77 at 129.00 · price list v14 · valid until Sat 14 Nov 08:00</code>
+                </li>
+                <li data-door="checkout.create · allowed for known · a link for a person to pay, no payment credential">
+                  <span class="k">call</span><code class="req">checkout.create {"quote": "q-5c21"}</code>
+                  <span class="k">reply</span><code>https://kilele-bakery.example/orders/K-1042 · signed by Kilele · for a person to review and pay · no payment credential</code>
+                </li>
+              </ol>
+              <button class="btn btn-sm" type="button" id="nextCall">Next call</button>
+              <div aria-live="polite"><p class="a-msg bot" id="asstDone">Kilele quotes KSh 2,550, which is USD 19.77 at its rate, delivered Sat 14 Nov, 10:00–12:00. I can't pay for you. I've sent you a link to review and pay on Kilele's own site.</p></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="j-screen">
+          <p class="j-cap"><span class="n">2</span>What Kilele's door sees, and what it lets a known agent do.</p>
+          <div class="door">
+            <div class="bar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg><span>kilele-bakery.example/mcp · the agent door</span></div>
+            <div class="body">
+              <div class="kilele door-desk"><span class="j-mark" data-agent="orders" data-size="28" data-state="idle" id="doorMark"></span><b>Orders</b><span class="k-ai">AI</span><span class="sub">answers at the door, under the same rules as on the site</span></div>
+              <h4>The request</h4>
+              <dl class="dl">
+                <dt>Signed</dt><dd>Yes, with Web Bot Auth</dd>
+                <dt>Signer</dt><dd>assistant.example, which runs the assistant</dd>
+                <dt>Key</dt><dd>Found in assistant.example's published key directory</dd>
+                <dt>Signature</dt><dd>Valid, made 2 seconds ago</dd>
+                <dt>Route</dt><dd>direct: sent by the agent itself, not relayed</dd>
+                <dt>Tier</dt><dd><span class="tier">known</span></dd>
+              </dl>
+              <p class="lastcall" id="doorLast" role="status">Last call: none yet</p>
+              <p class="fine"><code>known</code> says who runs the agent. It doesn't say who Njeri is, so it opens nothing in her account.</p>
+              <div class="rules">
+                <div><h4>A known agent may</h4>
+                  <ul class="may">
+                    <li>search the catalogue</li>
+                    <li>check delivery slots</li>
+                    <li>get a quote priced from the rules</li>
+                    <li>make a checkout link for a person to pay</li>
+                    <li>request a custom order, held for Wanjiru</li>
+                  </ul></div>
+                <div><h4>It never</h4>
+                  <ul class="nope">
+                    <li>pays, or holds a payment credential</li>
+                    <li>releases a hold or approves anything</li>
+                    <li>sees or changes Njeri's account</li>
+                    <li>sets a price or a discount</li>
+                  </ul></div>
+              </div>
+              <h4>Kilele's agent terms</h4>
+              <p class="fine">Published at the door and listed in the AI Catalog. They're generated from the same signed manifest as the tools, so they can't promise what the door doesn't enforce.</p>
+<pre class="term">tiers    anonymous · known · verified · partner
+known    may search, check slots, quote,
+         make a checkout link, request
+waits    custom orders wait for the owner
+payment  only on the person's own payment page
+replies  each one marked as AI-operated</pre>
+              <p class="fine">Illustrative. The terms template needs legal review before any site publishes it.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <h2 class="st-h">Njeri reviews and pays</h2>
+      <div class="j-screens">
+        <div class="j-screen">
+          <p class="j-cap"><span class="n">3</span>Her phone tells her. The link goes only to kilele-bakery.example.</p>
+          <div class="lock">
+            <div class="notif">
+              <div class="from"><span>Njeri's assistant</span><span>now</span></div>
+              <p><b>Your assistant prepared an order at Kilele Bakery: USD 19.77.</b> Review and pay</p>
+              <a class="btn btn-sm" href="#orderPage">Review and pay</a>
+            </div>
+            <p class="lock-note">A phone notification, drawn as a placeholder</p>
+          </div>
+        </div>
+
+        <div class="j-screen" id="orderPage" tabindex="-1">
+          <p class="j-cap"><span class="n">4</span>Kilele's own order page shows exactly what the assistant prepared.</p>
+          <div class="j-device kilele">
+            <div class="j-url"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg><span>kilele-bakery.example/orders/K-1042</span></div>
+            <div class="k-bar">
+              <a class="k-logo" href="#" onclick="return false"><i aria-hidden="true"></i>Kilele</a>
+              <span class="k-acct"><span class="k-me" aria-hidden="true">N</span>Njeri</span>
+            </div>
+            <div class="k-screen">
+              <div class="k-card">
+                <div class="k-head"><h3>Order K-1042</h3><span class="k-pill">Prepared by your assistant</span></div>
+                <div style="margin-top:8px">
+                  <div class="k-line"><span>Sourdough loaf × 2, KSh 450 each</span><b>KSh 900</b></div>
+                  <div class="k-line"><span>Weekend bake box</span><b>KSh 1,350</b></div>
+                  <div class="k-line"><span>Delivery to Kilimani</span><b>KSh 300</b></div>
+                  <div class="k-total"><span>Total</span><span>KSh 2,550</span></div>
+                </div>
+                <dl class="k-meta">
+                  <dt>You pay</dt><dd>USD 19.77</dd>
+                  <dt>Rate</dt><dd>1 USD = KSh 129.00, Kilele's posted rate, pinned on this order</dd>
+                  <dt>Payee</dt><dd>Kilele Bakery</dd>
+                  <dt>Delivery</dt><dd>Sat 14 Nov, 10:00–12:00, Amina's home, Kilimani</dd>
+                  <dt>Valid until</dt><dd>Sat 14 Nov, 08:00</dd>
+                </dl>
+              </div>
+              <p class="k-small">Prepared through the agent door by assistant.example, a known agent. Nothing is charged until you pay.</p>
+              <button class="k-btn wide" type="button" id="payBtn">Pay USD 19.77 with PayPal</button>
+              <p class="k-small" id="payNote" aria-live="polite"></p>
+            </div>
+          </div>
+        </div>
+
+        <div class="j-screen">
+          <p class="j-cap"><span class="n">5</span><span>She pays on PayPal's own page. <span class="j-first">The fleet release</span></span></p>
+          <div class="j-provider" id="provider">
+            <div class="bar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>paypal.com · PayPal's own page</div>
+            <div class="body">
+              <div class="stand-in">PayPal's own page goes here, drawn as a placeholder. Njeri signs in to PayPal and approves <b>USD 19.77 to Kilele Bakery</b>. Her assistant isn't part of this step, and Kilele never sees her PayPal password or card.</div>
+              <button class="btn btn-primary" type="button" id="approveBtn">Approve on PayPal</button>
+              <div id="paidOut" aria-live="polite"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p class="callout"><b>The human still pays on PayPal's surface.</b> Her assistant found the shop, asked the right questions and built the basket. Njeri saw the amount and the payee on Kilele's page, then approved the payment herself.</p>
+
+      <h2 class="st-h">The custom cake waits for Wanjiru</h2>
+      <div class="j-screens">
+        <div class="j-screen">
+          <p class="j-cap"><span class="n">6</span>The cake request goes through the same door, and is held.</p>
+          <div class="j-provider asst">
+            <div class="bar">Njeri's assistant · placeholder</div>
+            <div class="body">
+              <p class="a-msg me">Also ask them for Amina's forest cake, two tiers, no nuts, same delivery.</p>
+              <ol class="calls" aria-label="The custom request">
+                <li>
+                  <span class="k">call</span><code class="req">request_custom_order {"cake": "2 tiers, lemon sponge, forest-green ombré, fresh berries", "message": "Happy 7th, Amina!", "note": "no nuts", "delivery": "with K-1042"}</code>
+                  <span class="k">reply</span><code>held for the owner · KSh 5,250 = USD 40.70 from price list v14 · nothing charged<br>A2A task t-77e0 · state: working · "Waiting for the owner"</code>
+                </li>
+              </ol>
+              <p class="a-msg bot">Kilele holds custom cakes for Wanjiru's OK. Nothing is charged. I'll check back and tell you when she answers.</p>
+              <div class="kilele door-desk"><span class="j-mark" data-agent="orders" data-size="28" data-state="waiting"></span><b>Orders</b><span class="k-ai">AI</span><span class="sub">Waiting for Wanjiru's OK</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="j-screen">
+          <p class="j-cap"><span class="n">7</span>In the hackathon demo, this is where it ends.</p>
+          <div class="race">
+            <span class="j-who owner">The first release ends here, at her approval</span>
+            <p><b>The agent race.</b> In Sunday's demo, a customer's AI agent orders this custom cake through Kilele's door, beside the old site, where it has to work through screenshots and form fields. Wanjiru's approval card lands on her phone. There is no payment step.</p>
+            <p class="meetline"><span class="j-who owner">Wanjiru sees</span><span>The order card for K-1043, with the request and its price.</span></p>
+          </div>
+        </div>
+      </div>
+
+      <h2 class="st-h">If her assistant carries a mandate <span class="j-who desk">Pilot · AP2</span></h2>
+      <p class="small muted st-lead">Some assistants can carry an AP2 mandate: Njeri's signed say-so for one purchase. Then four signed records hang together, and none of them can be reused on its own.</p>
+      <ol class="chain">
+        <li>
+          <div class="ch-top"><span class="ch-n">1</span><h3>Njeri's mandate</h3><span class="j-who customer">Njeri signs, on her own device</span></div>
+          <p>She tells her assistant what it may buy, and signs it. The mandate names one checkout by its hash: a short fingerprint of exactly what Kilele offered.</p>
+          <code class="sig">mandate → hash(checkout)</code>
+        </li>
+        <li>
+          <div class="ch-top"><span class="ch-n">2</span><h3>Kilele's signed checkout</h3><span class="j-who desk">Kilele signs</span></div>
+          <p>The checkout lists the lines, USD 19.77, the payee and an expiry. Its hash becomes the subject of the order's canonical arguments: the exact inputs the order will run with.</p>
+          <code class="sig">canonical_args.subject = hash(checkout)</code>
+        </li>
+        <li>
+          <div class="ch-top"><span class="ch-n">3</span><h3>Wanjiru's approval</h3><span class="j-who owner">Wanjiru approves, passkey or code</span></div>
+          <p>She signs one fingerprint over the site, the WebAgent, the tool, those arguments, the amount and an expiry. So it covers this checkout, on this site, until it expires, and nothing else. The same fingerprint is the idempotency key, so the order runs once.</p>
+          <code class="sig">H(site, webagent, tool, canonical_args, amount, expiry)</code>
+        </li>
+        <li>
+          <div class="ch-top"><span class="ch-n">4</span><h3>The receipt</h3><span class="j-who gateway">The Effects Gateway records it</span></div>
+          <p>The receipt records the whole chain and how Wanjiru approved. Anyone can check it with <code>awp verify</code>.</p>
+        </li>
+      </ol>
+      <p class="small muted">Why a chain and not one hash: the mandate carries Njeri's authority and the approval carries Wanjiru's, and both are needed. Binding the site and the expiry stops an approval being reused on another site, or after it runs out. AP2 v0.2 support is upstream work U24, planned for the pilot.</p>
+    </section>
+
+    <aside class="j-notes" aria-label="What happens underneath">
+      <a class="j-meet" href="index.html#meet-order"><span>Meets the owner lane</span><b>The order card: her assistant's cake request lands with Wanjiru</b></a>
+      <div class="j-note"><h3>Found through the AI Catalog</h3><p>The assistant reads <code>/.well-known/ai-catalog.json</code>. One file lists the MCP tools at <code>/mcp</code>, the signed A2A card, the UCP profile and the agent terms. No one has measured how often assistants find these files unaided, so the pages stay plain and readable too (06 §12).</p></div>
+      <div class="j-note gate"><h3>Known, not verified</h3><p>A valid Web Bot Auth signature earns <code>known</code>. It proves who runs the agent, not who the user is. <code>verified</code> and <code>partner</code> come only from lists Wanjiru keeps. Agents that don't sign arrive anonymous, and the terms say what they can't do.</p></div>
+      <div class="j-note never"><h3>Never a payment credential</h3><p>The door returns a checkout link on kilele-bakery.example. No tool takes or returns a card, a PayPal login or anything else that can pay. Purchase stays on trusted surfaces: Kilele's page, PayPal's page and Njeri's phone.</p></div>
+      <div class="j-note"><h3>Numbers from rules</h3><p>The quote comes from the price list, stock and the delivery calendar, pinned to price list v14 with a "valid until". No model sets a number, at the door or on the site.</p></div>
+      <div class="j-note gate"><h3>A hold the agent can't lift</h3><p><code>request_custom_order</code> is a held call. On A2A it's a task still <code>working</code>, with a status saying it waits for the owner; on MCP it's a Task. Agents poll until push arrives (U4). Only Wanjiru's approval, checked on the server, releases it.</p></div>
+      <div class="j-note"><h3>The agent race, the first release</h3><p>Sunday's demo runs the custom-cake path live and ends at Wanjiru's approval card, with no payment. Zavora's computer-use tool plays the customer's agent from James's Mac. It isn't part of the platform, and the video says so.</p></div>
+      <div class="j-note"><h3><span class="j-first">The fleet release</span> Honest about PayPal</h3><p>Paying is the fleet release. PayPal documents UCP and ACP paths for Google's and OpenAI's assistants (06 [106]). For any other assistant, the human finishes on PayPal's own page, as shown here.</p></div>
+    </aside>
+  </div>
+</main>
+<nav class="wrap j-pager" aria-label="Previous and next step" data-pager></nav>
+<script src="journeys.js"></script>
+<script>
+(() => {
+  const $ = id => document.getElementById(id);
+  const off = b => b.getAttribute("aria-disabled") === "true";
+  const CHECK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>';
+
+  /* The calls, one at a time. Without script, all of them show. */
+  const calls = [...document.querySelectorAll("#calls > li")], next = $("nextCall"),
+        last = $("doorLast"), done = $("asstDone"), mark = $("doorMark");
+  let shown = 1;
+  calls.forEach((li, i) => { li.hidden = i >= shown; });
+  done.hidden = true;
+  last.textContent = "Last call: " + calls[0].dataset.door;
+  next.addEventListener("click", () => {
+    if (off(next) || shown >= calls.length) return;
+    const li = calls[shown++];
+    next.setAttribute("aria-disabled", "true");
+    J.setState(mark, "working");
+    last.textContent = "Checking: " + li.dataset.door.split(" · ")[0];
+    setTimeout(() => {
+      li.hidden = false;
+      J.setState(mark, "idle");
+      last.textContent = "Last call: " + li.dataset.door;
+      if (shown < calls.length) next.setAttribute("aria-disabled", "false");
+      else { next.textContent = "All calls made"; done.hidden = false; }
+    }, 650);
+  });
+
+  /* Review and pay */
+  const pay = $("payBtn"), prov = $("provider"), appr = $("approveBtn");
+  pay.addEventListener("click", () => {
+    prov.classList.add("lit");
+    $("payNote").textContent = "PayPal's own page is open, showing USD 19.77 to Kilele Bakery.";
+    const still = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    prov.scrollIntoView({ block: "nearest", behavior: still ? "auto" : "smooth" });
+    appr.focus({ preventScroll: true });
+  });
+  appr.addEventListener("click", () => {
+    if (off(appr)) return;
+    appr.setAttribute("aria-disabled", "true");
+    appr.textContent = "Approved";
+    $("paidOut").innerHTML = `<p class="paid">${CHECK}<span>Paid · USD 19.77 to Kilele Bakery · receipt r-7f3a…c1</span></p>` +
+      `<p class="small muted">Back on Kilele's page, K-1042 shows Paid. Her assistant never touched the payment.</p>`;
+  });
+})();
+</script>
+</body>
+</html>

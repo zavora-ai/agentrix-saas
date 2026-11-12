@@ -1,0 +1,38 @@
+<section id="site-door" data-transition="fade" style="background:#efeff5;color:#23223a;font-family:'DM Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:28px">
+<p style="font-size:24px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#b72d50">The converted site</p>
+<h2 style="font-family:'Manrope', Arial, sans-serif;font-size:72px;font-weight:800;line-height:1.1;letter-spacing:-1px;color:#1f1d3d">It answers people and their AI agents.</h2>
+<div style="display:flex;gap:32px">
+<div style="flex:1;display:flex;flex-direction:column;gap:16px;background:#ffffff;padding:36px 40px;border-radius:26px;border:1px solid #e3e2ec">
+<h3 style="font-family:'Manrope', Arial, sans-serif;font-size:32px;font-weight:700;color:#1f1d3d">Ask this site</h3>
+<p style="align-self:end;font-size:24px;color:#ffffff;background:#38356d;padding:12px 20px;border-radius:18px">[A visitor’s question]</p>
+<p style="align-self:start;font-size:24px;color:#23223a;background:#f6f6fa;padding:12px 20px;border-radius:18px;border:1px solid #e3e2ec">[The answer from the live site, citing its page]</p>
+<div style="display:flex;flex-direction:column;gap:6px">
+<p style="font-size:24px;line-height:1.4;color:#4a4960">Grounded in the site’s own pages, with citations</p>
+<p style="font-size:24px;line-height:1.4;color:#4a4960">Says “I don’t know” and passes your question to the owner</p>
+<p style="font-size:24px;line-height:1.4;color:#4a4960">Can’t be talked into a discount; the owner sees the attempt</p>
+</div>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:16px;background:#ffffff;padding:36px 40px;border-radius:26px;border:1px solid #e3e2ec">
+<h3 style="font-family:'Manrope', Arial, sans-serif;font-size:32px;font-weight:700;color:#1f1d3d">The agent door</h3>
+<div style="display:flex;flex-direction:column;gap:4px;background:#1f1d3d;padding:20px 24px;border-radius:14px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#d9d7f0">GET /.well-known/awp</p>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#d9d7f0">POST /mcp request_custom_order</p>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#ff8fa6">→ held, awaiting the owner</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:6px">
+<p style="font-size:24px;line-height:1.4;color:#4a4960">Capabilities declared for agents (AWP, MCP)</p>
+<p style="font-size:24px;line-height:1.4;color:#4a4960">An order raises the owner’s approval card</p>
+<p style="font-size:24px;line-height:1.4;color:#4a4960">The agent polls its status; no payment this weekend</p>
+</div>
+</div>
+</div>
+<div style="display:flex;align-items:center;gap:24px;background:#1f1d3d;padding:24px 36px;border-radius:18px">
+<p style="font-size:24px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#ff8fa6;white-space:nowrap">The agent race</p>
+<p style="flex:1;font-size:24px;line-height:1.4;color:#f3f2fb">One custom order. Old site, by screenshots: [outcome, __ s]. New site, through the door: [outcome, __ s].</p>
+</div>
+<div style="position:absolute;left:128px;bottom:64px;width:1664px;display:flex;justify-content:space-between">
+<p style="font-size:24px;color:#656479">Agentrix · Upgrade your website into WebAgents</p>
+<p style="font-size:24px;color:#656479">6</p>
+</div>
+<aside>The converted site is static and signed, and it offers Ask this site: answers grounded in its own pages, with citations, an honest “I don’t know”, and no authority to promise discounts. It also has a door for AI agents: AWP and MCP discovery, and a custom-order request that is held for the owner’s approval. The agent race shows a customer’s agent placing the same order on the old site by screenshots and on the new site through the door. When Ask can’t answer, the visitor can pass the question to the owner: it is stored as data, never sent to a model, and listed on Today. The customer’s agents come from the race harness in scripts/agent-race, run from James’s Mac: Claude Sonnet 5.5 on both sides, external clients of the sites, not part of the platform, and the model is named on screen. A first harness run on the old site took 22 steps and 62 seconds, cost $0.18, and gave up honestly when the order form didn’t confirm. The real race runs after go-live. If the order flow isn’t ready, the race becomes a cited question. Fill both outcomes and times from the recording.</aside>
+</section>

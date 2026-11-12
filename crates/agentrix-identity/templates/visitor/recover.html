@@ -1,0 +1,19 @@
+<section class="acct" id="acct" data-acct="recover" data-next="{{ next }}">
+  <div>
+    <h1 class="acct-h">Get back into your account</h1>
+    <p class="acct-why">Lost the phone with your passkey? Use one of the recovery codes you saved, or get a code by email. Then add a passkey on this device.</p>
+  </div>
+  <form class="acct-form" id="acct-recover-form" novalidate>
+    <label class="field">Email<input id="acct-email" name="email" type="email" autocomplete="username" inputmode="email" required></label>
+    <label class="field">Recovery code<input class="code" id="acct-recovery" name="code" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" maxlength="12" placeholder="4kx7-q2mp"></label>
+    <button class="btn wide" type="submit" id="acct-use-recovery">Sign in with a recovery code</button>
+  </form>
+  <form class="acct-form" method="post" action="/account/code/send">
+    <input type="hidden" name="purpose" value="recover">
+    <input type="hidden" name="email" id="acct-email-copy" value="">
+    <input type="hidden" name="next" value="/account/security?recovered=1">
+    <button class="btn ghost wide" type="submit" id="acct-code">Email me a code instead</button>
+  </form>
+  <p class="note warn" id="acct-error" role="alert" hidden></p>
+  <p class="small">No codes and no email? Nobody can recover an account through a chat or a phone call, not even {{ site }}, so nobody can take yours that way. Make a new account; your past orders stay in {{ site }}'s records.</p>
+</section>

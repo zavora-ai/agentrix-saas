@@ -1,0 +1,39 @@
+{% extends "os/base.html" %}
+{#- ShellPage::Orders · view::OrdersView (+ Chrome) {
+      tabs: [FilterTab { label, href, count, current }],
+      rows: [OrderRow { href, number, name, what, wanted, placed, source, label, tone, money }],
+      total, empty, empty_title, empty_body }
+    Gap 10 of 04-ui-parity, after the sample back office's owner/orders.html: every order of the site, newest
+    first, by state. Today a moved site's orders come from customers' AI agents through its agent door (crate::commerce). -#}
+{% block title %}Orders · {{ site.name }}{% endblock %}
+{% block field %}
+<section class="view on" aria-labelledby="orders-h">
+  <div class="field-head"><div><h2 id="orders-h">Orders</h2><div class="sub">{% if total %}{{ total }} order{{ "" if total == 1 else "s" }} · newest first{% else %}Nothing ordered yet{% endif %}</div></div><a class="btn btn-sm" href="{{ base }}/customers">Customers</a></div>
+  {% if total %}
+  <nav class="tabs" aria-label="Orders by state">{% for t in tabs %}<a href="{{ t.href }}"{% if t.current %} aria-current="page"{% endif %}>{{ t.label }} <span class="ct">{{ t.count }}</span></a>{% endfor %}</nav>
+  {% if rows %}
+  <div class="table-wrap after-cards"><table class="data">
+    <thead><tr><th scope="col">Order</th><th scope="col" class="hide-sm">Wanted</th><th scope="col" class="hide-sm">Payment</th><th scope="col">State</th></tr></thead>
+    <tbody>
+    {% for r in rows %}
+    <tr>
+      <td><a href="{{ r.href }}"><b>{{ r.name or "Unnamed customer" }}</b></a>{% if r.number %} <span class="small muted mono">{{ r.number }}</span>{% endif %}<br><span class="small">{{ r.what }}</span><br><span class="small muted">{{ r.placed }} · {{ r.source }}</span></td>
+      <td class="hide-sm">{{ r.wanted }}</td>
+      <td class="hide-sm">{{ r.money }}</td>
+      <td>{{ ui.chip(r.label, r.tone) }}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+  </table></div>
+  {% else %}
+  <p class="quiet after-cards">{{ empty }}</p>
+  {% endif %}
+  {% else %}
+  <article class="fcard">
+    {{ ui.empty(empty_title, empty_body, level=3) }}
+    <p class="small">Each one waits here and in Decisions for your answer. The agent door takes no payment, so nothing is charged.</p>
+    <div class="verbs"><a class="btn btn-sm" href="{{ base }}/decisions">Open Decisions</a>{% if site.live_url %}<a class="btn btn-sm btn-ghost" href="{{ site.live_url }}" rel="noopener" target="_blank">Open your site</a>{% endif %}</div>
+  </article>
+  {% endif %}
+</section>
+{% endblock %}

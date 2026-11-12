@@ -1,0 +1,25 @@
+{% extends "classy/layout.html" %}
+{% from "classy/parts.html" import card %}
+{% block main %}
+<article class="cp-section first cp-post">
+  <nav class="crumbs" aria-label="Breadcrumb"><a href="/journal">Journal</a> · {{ p.date }}</nav>
+  <h1 class="cp-h1">{{ p.title }}</h1>
+  <p class="cp-standfirst">{{ p.standfirst }}</p>
+  {% if ("post:" ~ p.slug) in shell.pictures %}{% set pic = shell.pictures["post:" ~ p.slug] %}
+  <figure class="cp-banner pic"><img src="{{ pic.url }}" alt="{{ pic.alt }}"{% if pic.width %} width="{{ pic.width }}" height="{{ pic.height }}"{% endif %}>{% if pic.label %}<span class="rtag">{{ pic.label }}</span>{% endif %}</figure>
+  {% endif %}
+  <div class="cp-prose">{% for para in p.body %}<p id="p{{ loop.index }}">{{ para }}</p>{% endfor %}</div>
+</article>
+{% if mentioned %}
+<section class="cp-section" id="scents">
+  <h2>Scents in this post</h2>
+  <div class="shortlist">{% for s in mentioned %}{{ card(s) }}{% endfor %}</div>
+</section>
+{% endif %}
+{% if others %}
+<section class="cp-section">
+  <h2>Also in the journal</h2>
+  <div class="pages">{% for o in others %}<a class="page-hit" href="/journal/{{ o.slug }}"><b>{{ o.title }}</b><div class="path">{{ o.date }}</div><p>{{ o.standfirst }}</p></a>{% endfor %}</div>
+</section>
+{% endif %}
+{% endblock %}

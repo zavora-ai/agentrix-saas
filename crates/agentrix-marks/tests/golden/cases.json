@@ -1,0 +1,3160 @@
+[
+ {
+  "name": "kilele-cakes-20",
+  "kind": "mark",
+  "spec": {
+   "markSpec": 1,
+   "site": "kilele",
+   "webagent": "cakes",
+   "silhouette": {
+    "shape": "squircle",
+    "squareness": 4.6
+   },
+   "color": {
+    "fill": "#8e3b46",
+    "glyph": "#ffffff"
+   },
+   "glyph": {
+    "kind": "role",
+    "id": "cake"
+   },
+   "signature": {
+    "family": "grain",
+    "seed": 7
+   }
+  },
+  "size": 20,
+  "state": "idle",
+  "font": "'Young Serif', Georgia, 'Times New Roman', serif",
+  "uid": "1"
+ },
+ {
+  "name": "kilele-cakes-28",
+  "kind": "mark",
+  "spec": {
+   "markSpec": 1,
+   "site": "kilele",
+   "webagent": "cakes",
+   "silhouette": {
+    "shape": "squircle",
+    "squareness": 4.6
+   },
+   "color": {
+    "fill": "#8e3b46",
+    "glyph": "#ffffff"
+   },
+   "glyph": {
+    "kind": "role",
+    "id": "cake"
+   },
+   "signature": {
+    "family": "grain",
+    "seed": 7
+   }
+  },
+  "size": 28,
+  "state": "paused",
+  "font": "'Young Serif', Georgia, 'Times New Roman', serif",
+  "uid": "2"
+ },
+ {
+  "name": "kilele-cakes-40",
+  "kind": "mark",
+  "spec": {
+   "markSpec": 1,
+   "site": "kilele",
+   "webagent": "cakes",
+   "silhouette": {
+    "shape": "squircle",
+    "squareness": 4.6
+   },
+   "color": {
+    "fill": "#8e3b46",
+    "glyph": "#ffffff"
+   },
+   "glyph": {
+    "kind": "role",
+    "id": "cake"
+   },
+   "signature": {
+    "family": "grain",
+    "seed": 7
+   }
+  },
+  "size": 40,
+  "state": "idle",
+  "font": "'Young Serif', Georgia, 'Times New Roman', serif",
+  "uid": "3"
+ },
+ {
+  "name": "kilele-cakes-64",
+  "kind": "mark",
+  "spec": {
+   "markSpec": 1,
+   "site": "kilele",
+   "webagent": "cakes",
+   "silhouette": {
+    "shape": "squircle",
+    "squareness": 4.6
+   },
+   "color": {
+    "fill": "#8e3b46",
+    "glyph": "#ffffff"
+   },
+   "glyph": {
+    "kind": "role",
+    "id": "cake"
+   },
+   "signature": {
+    "family": "grain",
+    "seed": 7
+   }
+  },
+  "size": 64,
+  "state": "speaking",
+  "font": "'Young Serif', Georgia, 'Times New Roman', serif",
+  "uid": "4"
+ },
+ {
+  "name": "kilele-cakes-140",
+  "kind": "mark",
+  "spec": {
+   "markSpec": 1,
+   "site": "kilele",
+   "webagent": "cakes",
+   "silhouette": {
+    "shape": "squircle",
+    "squareness": 4.6
+   },
+   "color": {
+    "fill": "#8e3b46",
+    "glyph": "#ffffff"
+   },
+   "glyph": {
+    "kind": "role",
+    "id": "cake"
+   },
+   "signature": {
+    "family": "grain",
+    "seed": 7
+   }
+  },
+  "size": 140,
+  "state": "idle",
+  "font": "'Young Serif', Georgia, 'Times New Roman', serif",
+  "uid": "5"
+ },
+ {
+  "name": "kilele-bread-20",
+  "kind": "mark",
+  "spec": {
+   "markSpec": 1,
+   "site": "kilele",
+   "webagent": "bread",
+   "silhouette": {
+    "shape": "squircle",
+    "squareness": 4.6
+   },
+   "color": {
+    "fill": "#9c5725",
+    "glyph": "#ffffff"
+   },
+   "glyph": {
+    "kind": "role",
+    "id": "loaf"
+   },
+   "signature": {
+    "family": "grain",
+    "seed": 3
+   }
+  },
+  "size": 20,
+  "state": "listening",
+  "font": "'Young Serif', Georgia, 'Times New Roman', serif",
+  "uid": "6"
+ },
+ {
+  "name": "kilele-bread-28",
+  "kind": "mark",
+  "spec": {
+   "markSpec": 1,
+   "site": "kilele",
+   "webagent": "bread",
+   "silhouette": {
+    "shape": "squircle",
+    "squareness": 4.6
+   },
+   "color": {
+    "fill": "#9c5725",
+    "glyph": "#ffffff"
+   },
+   "glyph": {
+    "kind": "role",
+    "id": "loaf"
+   },
+   "signature": {
+    "family": "grain",
+    "seed": 3
+   }
+  },
+  "size": 28,
+  "state": "frozen",
+  "font": "'Young Serif', Georgia, 'Times New Roman', serif",
+  "uid": "7"
+ },
+ {
+  "name": "kilele-bread-40",
+  "kind": "mark",
+  "spec": {
+   "markSpec": 1,
+   "site": "kilele",
+   "webagent": "bread",
+   "silhouette": {
+    "shape": "squircle",
+    "squareness": 4.6
+   },
+   "color": {
+    "fill": "#9c5725",
+    "glyph": "#ffffff"
+   },
+   "glyph": {
+    "kind": "role",
+    "id": "loaf"
+   },
+   "signature": {
+    "family": "grain",
+    "seed": 3
+   }
+  },
+  "size": 40,
+  "state": "listening",
+  "font": "'Young Serif', Georgia, 'Times New Roman', serif",
+  "uid": "8"
+ },
+ {
+  "name": "kilele-bread-64",
+  "kind": "mark",
+  "spec": {
+   "markSpec": 1,
+   "site": "kilele",
+   "webagent": "bread",
+   "silhouette": {
+    "shape": "squircle",
+    "squareness": 4.6
+   },
+   "color": {
+    "fill": "#9c5725",
+    "glyph": "#ffffff"
+   },
+   "glyph": {
+    "kind": "role",
+    "id": "loaf"
+   },
+   "signature": {
+    "family": "grain",
+    "seed": 3
+   }
+  },
+  "size": 64,
+  "state": "waiting",
+  "font": "'Young Serif', Georgia, 'Times New Roman', serif",
+  "uid": "9"
+ },
+ {
+  "name": "kilele-bread-140",
+  "kind": "mark",
+  "spec": {
+   "markSpec": 1,
+   "site": "kilele",
+   "webagent": "bread",
+   "silhouette": {
+    "shape": "squircle",
+    "squareness": 4.6
+   },
+   "color": {
+    "fill": "#9c5725",
+    "glyph": "#ffffff"
+   },
+   "glyph": {
+    "kind": "role",
+    "id": "loaf"
+   },
+   "signature": {
+    "family": "grain",
+    "seed": 3
+   }
+  },
+  "size": 140,
+  "state": "listening",
+  "font": "'Young Serif', Georgia, 'Times New Roman', serif",
+  "uid": "10"
+ },
+ {
+  "name": "kilele-orders-20",
+  "kind": "mark",
+  "spec": {
+   "markSpec": 1,
+   "site": "kilele",
+   "webagent": "orders",
+   "silhouette": {
+    "shape": "squircle",
+    "squareness": 4.6
+   },
+   "color": {
+    "fill": "#3b2416",
+    "glyph": "#ffffff"
+   },
+   "glyph": {
+    "kind": "role",
+    "id": "bag"
+   },
+   "signature": {
+    "family": "grain",
+    "seed": 11
+   }
+  },
+  "size": 20,
+  "state": "working",
+  "font": "'Young Serif', Georgia, 'Times New Roman', serif",
+  "uid": "11"
+ },
+ {
+  "name": "kilele-orders-28",
+  "kind": "mark",
+  "spec": {
+   "markSpec": 1,
+   "site": "kilele",
+   "webagent": "orders",
+   "silhouette": {
+    "shape": "squircle",
+    "squareness": 4.6
+   },
+   "color": {
+    "fill": "#3b2416",
+    "glyph": "#ffffff"
+   },
+   "glyph": {
+    "kind": "role",
+    "id": "bag"
+   },
+   "signature": {
+    "family": "grain",
+    "seed": 11
+   }
+  },
+  "size": 28,
+  "state": "idle",
+  "font": "'Young Serif', Georgia, 'Times New Roman', serif",
+  "uid": "12"
+ },
+ {
+  "name": "kilele-orders-40",
+  "kind": "mark",
+  "spec": {
+   "markSpec": 1,
+   "site": "kilele",
+   "webagent": "orders",
+   "silhouette": {
+    "shape": "squircle",
+    "squareness": 4.6
+   },
+   "color": {
+    "fill": "#3b2416",
+    "glyph": "#ffffff"
+   },
+   "glyph": {
+    "kind": "role",
+    "id": "bag"
+   },
+   "signature": {
+    "family": "grain",
+    "seed": 11
+   }
+  },
+  "size": 40,
+  "state": "working",
+  "font": "'Young Serif', Georgia, 'Times New Roman', serif",
+  "uid": "13"
+ },
+ {
+  "name": "kilele-orders-64",
+  "kind": "mark",
+  "spec": {
+   "markSpec": 1,
+   "site": "kilele",
+   "webagent": "orders",
+   "silhouette": {
+    "shape": "squircle",
+    "squareness": 4.6
+   },
+   "color": {
+    "fill": "#3b2416",
+    "glyph": "#ffffff"
+   },
+   "glyph": {
+    "kind": "role",
+    "id": "bag"
+   },
+   "signature": {
+    "family": "grain",
+    "seed": 11
+   }
+  },
+  "size": 64,
+  "state": "resting",
+  "font": "'Young Serif', Georgia, 'Times New Roman', serif",
+  "uid": "14"
+ },
+ {
+  "name": "kilele-orders-140",
+  "kind": "mark",
+  "spec": {
+   "markSpec": 1,
+   "site": "kilele",
+   "webagent": "orders",
+   "silhouette": {
+    "shape": "squircle",
+    "squareness": 4.6
+   },
+   "color": {
+    "fill": "#3b2416",
+    "glyph": "#ffffff"
+   },
+   "glyph": {
+    "kind": "role",
+    "id": "bag"
+   },
+   "signature": {
+    "family": "grain",
+    "seed": 11
+   }
+  },
+  "size": 140,
+  "state": "working",
+  "font": "'Young Serif', Georgia, 'Times New Roman', serif",
+  "uid": "15"
+ },
+ {
+  "name": "kilele-editor-20",
+  "kind": "mark",
+  "spec": {
+   "markSpec": 1,
+   "site": "kilele",
+   "webagent": "editor",
+   "silhouette": {
+    "shape": "squircle",
+    "squareness": 4.6
+   },
+   "color": {
+    "fill": "#577035",
+    "glyph": "#ffffff"
+   },
+   "glyph": {
+    "kind": "role",
+    "id": "pen"
+   },
+   "signature": {
+    "family": "grain",
+    "seed": 5
+   }
+  },
+  "size": 20,
+  "state": "answering",
+  "font": "'Young Serif', Georgia, 'Times New Roman', serif",
+  "uid": "16"
+ },
+ {
+  "name": "kilele-editor-28",
+  "kind": "mark",
+  "spec": {
+   "markSpec": 1,
+   "site": "kilele",
+   "webagent": "editor",
+   "silhouette": {
+    "shape": "squircle",
+    "squareness": 4.6
+   },
+   "color": {
+    "fill": "#577035",
+    "glyph": "#ffffff"
+   },
+   "glyph": {
+    "kind": "role",
+    "id": "pen"
+   },
+   "signature": {
+    "family": "grain",
+    "seed": 5
+   }
+  },
+  "size": 28,
+  "state": "listening",
+  "font": "'Young Serif', Georgia, 'Times New Roman', serif",
+  "uid": "17"
+ },
+ {
+  "name": "kilele-editor-40",
+  "kind": "mark",
+  "spec": {
+   "markSpec": 1,
+   "site": "kilele",
+   "webagent": "editor",
+   "silhouette": {
+    "shape": "squircle",
+    "squareness": 4.6
+   },
+   "color": {
+    "fill": "#577035",
+    "glyph": "#ffffff"
+   },
+   "glyph": {
+    "kind": "role",
+    "id": "pen"
+   },
+   "signature": {
+    "family": "grain",
+    "seed": 5
+   }
+  },
+  "size": 40,
+  "state": "answering",
+  "font": "'Young Serif', Georgia, 'Times New Roman', serif",
+  "uid": "18"
+ },
+ {
+  "name": "kilele-editor-64",
+  "kind": "mark",
+  "spec": {
+   "markSpec": 1,
+   "site": "kilele",
+   "webagent": "editor",
+   "silhouette": {
+    "shape": "squircle",
+    "squareness": 4.6
+   },
+   "color": {
+    "fill": "#577035",
+    "glyph": "#ffffff"
+   },
+   "glyph": {
+    "kind": "role",
+    "id": "pen"
+   },
+   "signature": {
+    "family": "grain",
+    "seed": 5
+   }
+  },
+  "size": 64,
+  "state": "asleep",
+  "font": "'Young Serif', Georgia, 'Times New Roman', serif",
+  "uid": "19"
+ },
+ {
+  "name": "kilele-editor-140",
+  "kind": "mark",
+  "spec": {
+   "markSpec": 1,
+   "site": "kilele",
+   "webagent": "editor",
+   "silhouette": {
+    "shape": "squircle",
+    "squareness": 4.6
+   },
+   "color": {
+    "fill": "#577035",
+    "glyph": "#ffffff"
+   },
+   "glyph": {
+    "kind": "role",
+    "id": "pen"
+   },
+   "signature": {
+    "family": "grain",
+    "seed": 5
+   }
+  },
+  "size": 140,
+  "state": "answering",
+  "font": "'Young Serif', Georgia, 'Times New Roman', serif",
+  "uid": "20"
+ },
+ {
+  "name": "kilele-guardian-20",
+  "kind": "mark",
+  "spec": {
+   "markSpec": 1,
+   "site": "kilele",
+   "webagent": "guardian",
+   "silhouette": {
+    "shape": "squircle",
+    "squareness": 4.6
+   },
+   "color": {
+    "fill": "#2b1d14",
+    "glyph": "#ffffff"
+   },
+   "glyph": {
+    "kind": "role",
+    "id": "shield"
+   },
+   "signature": {
+    "family": "grain",
+    "seed": 2
+   }
+  },
+  "size": 20,
+  "state": "speaking",
+  "font": "'Young Serif', Georgia, 'Times New Roman', serif",
+  "uid": "21"
+ },
+ {
+  "name": "kilele-guardian-28",
+  "kind": "mark",
+  "spec": {
+   "markSpec": 1,
+   "site": "kilele",
+   "webagent": "guardian",
+   "silhouette": {
+    "shape": "squircle",
+    "squareness": 4.6
+   },
+   "color": {
+    "fill": "#2b1d14",
+    "glyph": "#ffffff"
+   },
+   "glyph": {
+    "kind": "role",
+    "id": "shield"
+   },
+   "signature": {
+    "family": "grain",
+    "seed": 2
+   }
+  },
+  "size": 28,
+  "state": "working",
+  "font": "'Young Serif', Georgia, 'Times New Roman', serif",
+  "uid": "22"
+ },
+ {
+  "name": "kilele-guardian-40",
+  "kind": "mark",
+  "spec": {
+   "markSpec": 1,
+   "site": "kilele",
+   "webagent": "guardian",
+   "silhouette": {
+    "shape": "squircle",
+    "squareness": 4.6
+   },
+   "color": {
+    "fill": "#2b1d14",
+    "glyph": "#ffffff"
+   },
+   "glyph": {
+    "kind": "role",
+    "id": "shield"
+   },
+   "signature": {
+    "family": "grain",
+    "seed": 2
+   }
+  },
+  "size": 40,
+  "state": "speaking",
+  "font": "'Young Serif', Georgia, 'Times New Roman', serif",
+  "uid": "23"
+ },
+ {
+  "name": "kilele-guardian-64",
+  "kind": "mark",
+  "spec": {
+   "markSpec": 1,
+   "site": "kilele",
+   "webagent": "guardian",
+   "silhouette": {
+    "shape": "squircle",
+    "squareness": 4.6
+   },
+   "color": {
+    "fill": "#2b1d14",
+    "glyph": "#ffffff"
+   },
+   "glyph": {
+    "kind": "role",
+    "id": "shield"
+   },
+   "signature": {
+    "family": "grain",
+    "seed": 2
+   }
+  },
+  "size": 64,
+  "state": "paused",
+  "font": "'Young Serif', Georgia, 'Times New Roman', serif",
+  "uid": "24"
+ },
+ {
+  "name": "kilele-guardian-140",
+  "kind": "mark",
+  "spec": {
+   "markSpec": 1,
+   "site": "kilele",
+   "webagent": "guardian",
+   "silhouette": {
+    "shape": "squircle",
+    "squareness": 4.6
+   },
+   "color": {
+    "fill": "#2b1d14",
+    "glyph": "#ffffff"
+   },
+   "glyph": {
+    "kind": "role",
+    "id": "shield"
+   },
+   "signature": {
+    "family": "grain",
+    "seed": 2
+   }
+  },
+  "size": 140,
+  "state": "speaking",
+  "font": "'Young Serif', Georgia, 'Times New Roman', serif",
+  "uid": "25"
+ },
+ {
+  "name": "kilele-team-48",
+  "kind": "team",
+  "team": {
+   "site": "kilele",
+   "ink": "#2b1d14",
+   "squareness": 4.6,
+   "letters": "K",
+   "members": [
+    {
+     "webagent": "cakes",
+     "fill": "#8e3b46"
+    },
+    {
+     "webagent": "bread",
+     "fill": "#9c5725"
+    },
+    {
+     "webagent": "orders",
+     "fill": "#3b2416"
+    },
+    {
+     "webagent": "editor",
+     "fill": "#577035"
+    },
+    {
+     "webagent": "guardian",
+     "fill": "#2b1d14"
+    }
+   ]
+  },
+  "size": 48,
+  "state": "idle",
+  "busy": [
+   "cakes",
+   "editor"
+  ],
+  "font": "'Young Serif', Georgia, 'Times New Roman', serif"
+ },
+ {
+  "name": "classy-gifts-20",
+  "kind": "mark",
+  "spec": {
+   "markSpec": 1,
+   "site": "classy",
+   "webagent": "gifts",
+   "silhouette": {
+    "shape": "squircle",
+    "squareness": 6.2
+   },
+   "color": {
+    "fill": "#6d2e4f",
+    "glyph": "#ffffff"
+   },
+   "glyph": {
+    "kind": "role",
+    "id": "gift"
+   },
+   "signature": {
+    "family": "facets",
+    "seed": 19
+   }
+  },
+  "size": 20,
+  "state": "idle",
+  "font": "'Italiana', Didot, 'Bodoni 72', Georgia, serif",
+  "uid": "26"
+ },
+ {
+  "name": "classy-gifts-28",
+  "kind": "mark",
+  "spec": {
+   "markSpec": 1,
+   "site": "classy",
+   "webagent": "gifts",
+   "silhouette": {
+    "shape": "squircle",
+    "squareness": 6.2
+   },
+   "color": {
+    "fill": "#6d2e4f",
+    "glyph": "#ffffff"
+   },
+   "glyph": {
+    "kind": "role",
+    "id": "gift"
+   },
+   "signature": {
+    "family": "facets",
+    "seed": 19
+   }
+  },
+  "size": 28,
+  "state": "paused",
+  "font": "'Italiana', Didot, 'Bodoni 72', Georgia, serif",
+  "uid": "27"
+ },
+ {
+  "name": "classy-gifts-40",
+  "kind": "mark",
+  "spec": {
+   "markSpec": 1,
+   "site": "classy",
+   "webagent": "gifts",
+   "silhouette": {
+    "shape": "squircle",
+    "squareness": 6.2
+   },
+   "color": {
+    "fill": "#6d2e4f",
+    "glyph": "#ffffff"
+   },
+   "glyph": {
+    "kind": "role",
+    "id": "gift"
+   },
+   "signature": {
+    "family": "facets",
+    "seed": 19
+   }
+  },
+  "size": 40,
+  "state": "idle",
+  "font": "'Italiana', Didot, 'Bodoni 72', Georgia, serif",
+  "uid": "28"
+ },
+ {
+  "name": "classy-gifts-64",
+  "kind": "mark",
+  "spec": {
+   "markSpec": 1,
+   "site": "classy",
+   "webagent": "gifts",
+   "silhouette": {
+    "shape": "squircle",
+    "squareness": 6.2
+   },
+   "color": {
+    "fill": "#6d2e4f",
+    "glyph": "#ffffff"
+   },
+   "glyph": {
+    "kind": "role",
+    "id": "gift"
+   },
+   "signature": {
+    "family": "facets",
+    "seed": 19
+   }
+  },
+  "size": 64,
+  "state": "speaking",
+  "font": "'Italiana', Didot, 'Bodoni 72', Georgia, serif",
+  "uid": "29"
+ },
+ {
+  "name": "classy-gifts-140",
+  "kind": "mark",
+  "spec": {
+   "markSpec": 1,
+   "site": "classy",
+   "webagent": "gifts",
+   "silhouette": {
+    "shape": "squircle",
+    "squareness": 6.2
+   },
+   "color": {
+    "fill": "#6d2e4f",
+    "glyph": "#ffffff"
+   },
+   "glyph": {
+    "kind": "role",
+    "id": "gift"
+   },
+   "signature": {
+    "family": "facets",
+    "seed": 19
+   }
+  },
+  "size": 140,
+  "state": "idle",
+  "font": "'Italiana', Didot, 'Bodoni 72', Georgia, serif",
+  "uid": "30"
+ },
+ {
+  "name": "classy-fragrances-20",
+  "kind": "mark",
+  "spec": {
+   "markSpec": 1,
+   "site": "classy",
+   "webagent": "fragrances",
+   "silhouette": {
+    "shape": "squircle",
+    "squareness": 6.2
+   },
+   "color": {
+    "fill": "#2a1f3d",
+    "glyph": "#ffffff"
+   },
+   "glyph": {
+    "kind": "role",
+    "id": "perfume"
+   },
+   "signature": {
+    "family": "facets",
+    "seed": 4
+   }
+  },
+  "size": 20,
+  "state": "listening",
+  "font": "'Italiana', Didot, 'Bodoni 72', Georgia, serif",
+  "uid": "31"
+ },
+ {
+  "name": "classy-fragrances-28",
+  "kind": "mark",
+  "spec": {
+   "markSpec": 1,
+   "site": "classy",
+   "webagent": "fragrances",
+   "silhouette": {
+    "shape": "squircle",
+    "squareness": 6.2
+   },
+   "color": {
+    "fill": "#2a1f3d",
+    "glyph": "#ffffff"
+   },
+   "glyph": {
+    "kind": "role",
+    "id": "perfume"
+   },
+   "signature": {
+    "family": "facets",
+    "seed": 4
+   }
+  },
+  "size": 28,
+  "state": "frozen",
+  "font": "'Italiana', Didot, 'Bodoni 72', Georgia, serif",
+  "uid": "32"
+ },
+ {
+  "name": "classy-fragrances-40",
+  "kind": "mark",
+  "spec": {
+   "markSpec": 1,
+   "site": "classy",
+   "webagent": "fragrances",
+   "silhouette": {
+    "shape": "squircle",
+    "squareness": 6.2
+   },
+   "color": {
+    "fill": "#2a1f3d",
+    "glyph": "#ffffff"
+   },
+   "glyph": {
+    "kind": "role",
+    "id": "perfume"
+   },
+   "signature": {
+    "family": "facets",
+    "seed": 4
+   }
+  },
+  "size": 40,
+  "state": "listening",
+  "font": "'Italiana', Didot, 'Bodoni 72', Georgia, serif",
+  "uid": "33"
+ },
+ {
+  "name": "classy-fragrances-64",
+  "kind": "mark",
+  "spec": {
+   "markSpec": 1,
+   "site": "classy",
+   "webagent": "fragrances",
+   "silhouette": {
+    "shape": "squircle",
+    "squareness": 6.2
+   },
+   "color": {
+    "fill": "#2a1f3d",
+    "glyph": "#ffffff"
+   },
+   "glyph": {
+    "kind": "role",
+    "id": "perfume"
+   },
+   "signature": {
+    "family": "facets",
+    "seed": 4
+   }
+  },
+  "size": 64,
+  "state": "waiting",
+  "font": "'Italiana', Didot, 'Bodoni 72', Georgia, serif",
+  "uid": "34"
+ },
+ {
+  "name": "classy-fragrances-140",
+  "kind": "mark",
+  "spec": {
+   "markSpec": 1,
+   "site": "classy",
+   "webagent": "fragrances",
+   "silhouette": {
+    "shape": "squircle",
+    "squareness": 6.2
+   },
+   "color": {
+    "fill": "#2a1f3d",
+    "glyph": "#ffffff"
+   },
+   "glyph": {
+    "kind": "role",
+    "id": "perfume"
+   },
+   "signature": {
+    "family": "facets",
+    "seed": 4
+   }
+  },
+  "size": 140,
+  "state": "listening",
+  "font": "'Italiana', Didot, 'Bodoni 72', Georgia, serif",
+  "uid": "35"
+ },
+ {
+  "name": "classy-orders-20",
+  "kind": "mark",
+  "spec": {
+   "markSpec": 1,
+   "site": "classy",
+   "webagent": "orders",
+   "silhouette": {
+    "shape": "squircle",
+    "squareness": 6.2
+   },
+   "color": {
+    "fill": "#3d5a6c",
+    "glyph": "#ffffff"
+   },
+   "glyph": {
+    "kind": "role",
+    "id": "bag"
+   },
+   "signature": {
+    "family": "facets",
+    "seed": 8
+   }
+  },
+  "size": 20,
+  "state": "working",
+  "font": "'Italiana', Didot, 'Bodoni 72', Georgia, serif",
+  "uid": "36"
+ },
+ {
+  "name": "classy-orders-28",
+  "kind": "mark",
+  "spec": {
+   "markSpec": 1,
+   "site": "classy",
+   "webagent": "orders",
+   "silhouette": {
+    "shape": "squircle",
+    "squareness": 6.2
+   },
+   "color": {
+    "fill": "#3d5a6c",
+    "glyph": "#ffffff"
+   },
+   "glyph": {
+    "kind": "role",
+    "id": "bag"
+   },
+   "signature": {
+    "family": "facets",
+    "seed": 8
+   }
+  },
+  "size": 28,
+  "state": "idle",
+  "font": "'Italiana', Didot, 'Bodoni 72', Georgia, serif",
+  "uid": "37"
+ },
+ {
+  "name": "classy-orders-40",
+  "kind": "mark",
+  "spec": {
+   "markSpec": 1,
+   "site": "classy",
+   "webagent": "orders",
+   "silhouette": {
+    "shape": "squircle",
+    "squareness": 6.2
+   },
+   "color": {
+    "fill": "#3d5a6c",
+    "glyph": "#ffffff"
+   },
+   "glyph": {
+    "kind": "role",
+    "id": "bag"
+   },
+   "signature": {
+    "family": "facets",
+    "seed": 8
+   }
+  },
+  "size": 40,
+  "state": "working",
+  "font": "'Italiana', Didot, 'Bodoni 72', Georgia, serif",
+  "uid": "38"
+ },
+ {
+  "name": "classy-orders-64",
+  "kind": "mark",
+  "spec": {
+   "markSpec": 1,
+   "site": "classy",
+   "webagent": "orders",
+   "silhouette": {
+    "shape": "squircle",
+    "squareness": 6.2
+   },
+   "color": {
+    "fill": "#3d5a6c",
+    "glyph": "#ffffff"
+   },
+   "glyph": {
+    "kind": "role",
+    "id": "bag"
+   },
+   "signature": {
+    "family": "facets",
+    "seed": 8
+   }
+  },
+  "size": 64,
+  "state": "resting",
+  "font": "'Italiana', Didot, 'Bodoni 72', Georgia, serif",
+  "uid": "39"
+ },
+ {
+  "name": "classy-orders-140",
+  "kind": "mark",
+  "spec": {
+   "markSpec": 1,
+   "site": "classy",
+   "webagent": "orders",
+   "silhouette": {
+    "shape": "squircle",
+    "squareness": 6.2
+   },
+   "color": {
+    "fill": "#3d5a6c",
+    "glyph": "#ffffff"
+   },
+   "glyph": {
+    "kind": "role",
+    "id": "bag"
+   },
+   "signature": {
+    "family": "facets",
+    "seed": 8
+   }
+  },
+  "size": 140,
+  "state": "working",
+  "font": "'Italiana', Didot, 'Bodoni 72', Georgia, serif",
+  "uid": "40"
+ },
+ {
+  "name": "classy-reputation-20",
+  "kind": "mark",
+  "spec": {
+   "markSpec": 1,
+   "site": "classy",
+   "webagent": "reputation",
+   "silhouette": {
+    "shape": "squircle",
+    "squareness": 6.2
+   },
+   "color": {
+    "fill": "#7f6236",
+    "glyph": "#ffffff"
+   },
+   "glyph": {
+    "kind": "role",
+    "id": "star"
+   },
+   "signature": {
+    "family": "facets",
+    "seed": 13
+   }
+  },
+  "size": 20,
+  "state": "answering",
+  "font": "'Italiana', Didot, 'Bodoni 72', Georgia, serif",
+  "uid": "41"
+ },
+ {
+  "name": "classy-reputation-28",
+  "kind": "mark",
+  "spec": {
+   "markSpec": 1,
+   "site": "classy",
+   "webagent": "reputation",
+   "silhouette": {
+    "shape": "squircle",
+    "squareness": 6.2
+   },
+   "color": {
+    "fill": "#7f6236",
+    "glyph": "#ffffff"
+   },
+   "glyph": {
+    "kind": "role",
+    "id": "star"
+   },
+   "signature": {
+    "family": "facets",
+    "seed": 13
+   }
+  },
+  "size": 28,
+  "state": "listening",
+  "font": "'Italiana', Didot, 'Bodoni 72', Georgia, serif",
+  "uid": "42"
+ },
+ {
+  "name": "classy-reputation-40",
+  "kind": "mark",
+  "spec": {
+   "markSpec": 1,
+   "site": "classy",
+   "webagent": "reputation",
+   "silhouette": {
+    "shape": "squircle",
+    "squareness": 6.2
+   },
+   "color": {
+    "fill": "#7f6236",
+    "glyph": "#ffffff"
+   },
+   "glyph": {
+    "kind": "role",
+    "id": "star"
+   },
+   "signature": {
+    "family": "facets",
+    "seed": 13
+   }
+  },
+  "size": 40,
+  "state": "answering",
+  "font": "'Italiana', Didot, 'Bodoni 72', Georgia, serif",
+  "uid": "43"
+ },
+ {
+  "name": "classy-reputation-64",
+  "kind": "mark",
+  "spec": {
+   "markSpec": 1,
+   "site": "classy",
+   "webagent": "reputation",
+   "silhouette": {
+    "shape": "squircle",
+    "squareness": 6.2
+   },
+   "color": {
+    "fill": "#7f6236",
+    "glyph": "#ffffff"
+   },
+   "glyph": {
+    "kind": "role",
+    "id": "star"
+   },
+   "signature": {
+    "family": "facets",
+    "seed": 13
+   }
+  },
+  "size": 64,
+  "state": "asleep",
+  "font": "'Italiana', Didot, 'Bodoni 72', Georgia, serif",
+  "uid": "44"
+ },
+ {
+  "name": "classy-reputation-140",
+  "kind": "mark",
+  "spec": {
+   "markSpec": 1,
+   "site": "classy",
+   "webagent": "reputation",
+   "silhouette": {
+    "shape": "squircle",
+    "squareness": 6.2
+   },
+   "color": {
+    "fill": "#7f6236",
+    "glyph": "#ffffff"
+   },
+   "glyph": {
+    "kind": "role",
+    "id": "star"
+   },
+   "signature": {
+    "family": "facets",
+    "seed": 13
+   }
+  },
+  "size": 140,
+  "state": "answering",
+  "font": "'Italiana', Didot, 'Bodoni 72', Georgia, serif",
+  "uid": "45"
+ },
+ {
+  "name": "classy-cashier-20",
+  "kind": "mark",
+  "spec": {
+   "markSpec": 1,
+   "site": "classy",
+   "webagent": "cashier",
+   "silhouette": {
+    "shape": "squircle",
+    "squareness": 6.2
+   },
+   "color": {
+    "fill": "#9d506b",
+    "glyph": "#ffffff"
+   },
+   "glyph": {
+    "kind": "role",
+    "id": "coin"
+   },
+   "signature": {
+    "family": "facets",
+    "seed": 6
+   }
+  },
+  "size": 20,
+  "state": "speaking",
+  "font": "'Italiana', Didot, 'Bodoni 72', Georgia, serif",
+  "uid": "46"
+ },
+ {
+  "name": "classy-cashier-28",
+  "kind": "mark",
+  "spec": {
+   "markSpec": 1,
+   "site": "classy",
+   "webagent": "cashier",
+   "silhouette": {
+    "shape": "squircle",
+    "squareness": 6.2
+   },
+   "color": {
+    "fill": "#9d506b",
+    "glyph": "#ffffff"
+   },
+   "glyph": {
+    "kind": "role",
+    "id": "coin"
+   },
+   "signature": {
+    "family": "facets",
+    "seed": 6
+   }
+  },
+  "size": 28,
+  "state": "working",
+  "font": "'Italiana', Didot, 'Bodoni 72', Georgia, serif",
+  "uid": "47"
+ },
+ {
+  "name": "classy-cashier-40",
+  "kind": "mark",
+  "spec": {
+   "markSpec": 1,
+   "site": "classy",
+   "webagent": "cashier",
+   "silhouette": {
+    "shape": "squircle",
+    "squareness": 6.2
+   },
+   "color": {
+    "fill": "#9d506b",
+    "glyph": "#ffffff"
+   },
+   "glyph": {
+    "kind": "role",
+    "id": "coin"
+   },
+   "signature": {
+    "family": "facets",
+    "seed": 6
+   }
+  },
+  "size": 40,
+  "state": "speaking",
+  "font": "'Italiana', Didot, 'Bodoni 72', Georgia, serif",
+  "uid": "48"
+ },
+ {
+  "name": "classy-cashier-64",
+  "kind": "mark",
+  "spec": {
+   "markSpec": 1,
+   "site": "classy",
+   "webagent": "cashier",
+   "silhouette": {
+    "shape": "squircle",
+    "squareness": 6.2
+   },
+   "color": {
+    "fill": "#9d506b",
+    "glyph": "#ffffff"
+   },
+   "glyph": {
+    "kind": "role",
+    "id": "coin"
+   },
+   "signature": {
+    "family": "facets",
+    "seed": 6
+   }
+  },
+  "size": 64,
+  "state": "paused",
+  "font": "'Italiana', Didot, 'Bodoni 72', Georgia, serif",
+  "uid": "49"
+ },
+ {
+  "name": "classy-cashier-140",
+  "kind": "mark",
+  "spec": {
+   "markSpec": 1,
+   "site": "classy",
+   "webagent": "cashier",
+   "silhouette": {
+    "shape": "squircle",
+    "squareness": 6.2
+   },
+   "color": {
+    "fill": "#9d506b",
+    "glyph": "#ffffff"
+   },
+   "glyph": {
+    "kind": "role",
+    "id": "coin"
+   },
+   "signature": {
+    "family": "facets",
+    "seed": 6
+   }
+  },
+  "size": 140,
+  "state": "speaking",
+  "font": "'Italiana', Didot, 'Bodoni 72', Georgia, serif",
+  "uid": "50"
+ },
+ {
+  "name": "classy-team-48",
+  "kind": "team",
+  "team": {
+   "site": "classy",
+   "ink": "#1d1626",
+   "squareness": 6.2,
+   "letters": "C",
+   "members": [
+    {
+     "webagent": "gifts",
+     "fill": "#6d2e4f"
+    },
+    {
+     "webagent": "fragrances",
+     "fill": "#2a1f3d"
+    },
+    {
+     "webagent": "orders",
+     "fill": "#3d5a6c"
+    },
+    {
+     "webagent": "reputation",
+     "fill": "#7f6236"
+    },
+    {
+     "webagent": "cashier",
+     "fill": "#9d506b"
+    }
+   ]
+  },
+  "size": 48,
+  "state": "waiting",
+  "busy": [
+   "gifts",
+   "reputation"
+  ],
+  "font": "'Italiana', Didot, 'Bodoni 72', Georgia, serif"
+ },
+ {
+  "name": "tana-newsroom-20",
+  "kind": "mark",
+  "spec": {
+   "markSpec": 1,
+   "site": "tana",
+   "webagent": "newsroom",
+   "silhouette": {
+    "shape": "squircle",
+    "squareness": 7.2
+   },
+   "color": {
+    "fill": "#b3261e",
+    "glyph": "#ffffff"
+   },
+   "glyph": {
+    "kind": "role",
+    "id": "news"
+   },
+   "signature": {
+    "family": "strata",
+    "seed": 21
+   }
+  },
+  "size": 20,
+  "state": "idle",
+  "font": "'Libre Caslon Text', Georgia, 'Times New Roman', serif",
+  "uid": "51"
+ },
+ {
+  "name": "tana-newsroom-28",
+  "kind": "mark",
+  "spec": {
+   "markSpec": 1,
+   "site": "tana",
+   "webagent": "newsroom",
+   "silhouette": {
+    "shape": "squircle",
+    "squareness": 7.2
+   },
+   "color": {
+    "fill": "#b3261e",
+    "glyph": "#ffffff"
+   },
+   "glyph": {
+    "kind": "role",
+    "id": "news"
+   },
+   "signature": {
+    "family": "strata",
+    "seed": 21
+   }
+  },
+  "size": 28,
+  "state": "paused",
+  "font": "'Libre Caslon Text', Georgia, 'Times New Roman', serif",
+  "uid": "52"
+ },
+ {
+  "name": "tana-newsroom-40",
+  "kind": "mark",
+  "spec": {
+   "markSpec": 1,
+   "site": "tana",
+   "webagent": "newsroom",
+   "silhouette": {
+    "shape": "squircle",
+    "squareness": 7.2
+   },
+   "color": {
+    "fill": "#b3261e",
+    "glyph": "#ffffff"
+   },
+   "glyph": {
+    "kind": "role",
+    "id": "news"
+   },
+   "signature": {
+    "family": "strata",
+    "seed": 21
+   }
+  },
+  "size": 40,
+  "state": "idle",
+  "font": "'Libre Caslon Text', Georgia, 'Times New Roman', serif",
+  "uid": "53"
+ },
+ {
+  "name": "tana-newsroom-64",
+  "kind": "mark",
+  "spec": {
+   "markSpec": 1,
+   "site": "tana",
+   "webagent": "newsroom",
+   "silhouette": {
+    "shape": "squircle",
+    "squareness": 7.2
+   },
+   "color": {
+    "fill": "#b3261e",
+    "glyph": "#ffffff"
+   },
+   "glyph": {
+    "kind": "role",
+    "id": "news"
+   },
+   "signature": {
+    "family": "strata",
+    "seed": 21
+   }
+  },
+  "size": 64,
+  "state": "speaking",
+  "font": "'Libre Caslon Text', Georgia, 'Times New Roman', serif",
+  "uid": "54"
+ },
+ {
+  "name": "tana-newsroom-140",
+  "kind": "mark",
+  "spec": {
+   "markSpec": 1,
+   "site": "tana",
+   "webagent": "newsroom",
+   "silhouette": {
+    "shape": "squircle",
+    "squareness": 7.2
+   },
+   "color": {
+    "fill": "#b3261e",
+    "glyph": "#ffffff"
+   },
+   "glyph": {
+    "kind": "role",
+    "id": "news"
+   },
+   "signature": {
+    "family": "strata",
+    "seed": 21
+   }
+  },
+  "size": 140,
+  "state": "idle",
+  "font": "'Libre Caslon Text', Georgia, 'Times New Roman', serif",
+  "uid": "55"
+ },
+ {
+  "name": "tana-archive-20",
+  "kind": "mark",
+  "spec": {
+   "markSpec": 1,
+   "site": "tana",
+   "webagent": "archive",
+   "silhouette": {
+    "shape": "squircle",
+    "squareness": 7.2
+   },
+   "color": {
+    "fill": "#2f5d8a",
+    "glyph": "#ffffff"
+   },
+   "glyph": {
+    "kind": "role",
+    "id": "calendar"
+   },
+   "signature": {
+    "family": "strata",
+    "seed": 9
+   }
+  },
+  "size": 20,
+  "state": "listening",
+  "font": "'Libre Caslon Text', Georgia, 'Times New Roman', serif",
+  "uid": "56"
+ },
+ {
+  "name": "tana-archive-28",
+  "kind": "mark",
+  "spec": {
+   "markSpec": 1,
+   "site": "tana",
+   "webagent": "archive",
+   "silhouette": {
+    "shape": "squircle",
+    "squareness": 7.2
+   },
+   "color": {
+    "fill": "#2f5d8a",
+    "glyph": "#ffffff"
+   },
+   "glyph": {
+    "kind": "role",
+    "id": "calendar"
+   },
+   "signature": {
+    "family": "strata",
+    "seed": 9
+   }
+  },
+  "size": 28,
+  "state": "frozen",
+  "font": "'Libre Caslon Text', Georgia, 'Times New Roman', serif",
+  "uid": "57"
+ },
+ {
+  "name": "tana-archive-40",
+  "kind": "mark",
+  "spec": {
+   "markSpec": 1,
+   "site": "tana",
+   "webagent": "archive",
+   "silhouette": {
+    "shape": "squircle",
+    "squareness": 7.2
+   },
+   "color": {
+    "fill": "#2f5d8a",
+    "glyph": "#ffffff"
+   },
+   "glyph": {
+    "kind": "role",
+    "id": "calendar"
+   },
+   "signature": {
+    "family": "strata",
+    "seed": 9
+   }
+  },
+  "size": 40,
+  "state": "listening",
+  "font": "'Libre Caslon Text', Georgia, 'Times New Roman', serif",
+  "uid": "58"
+ },
+ {
+  "name": "tana-archive-64",
+  "kind": "mark",
+  "spec": {
+   "markSpec": 1,
+   "site": "tana",
+   "webagent": "archive",
+   "silhouette": {
+    "shape": "squircle",
+    "squareness": 7.2
+   },
+   "color": {
+    "fill": "#2f5d8a",
+    "glyph": "#ffffff"
+   },
+   "glyph": {
+    "kind": "role",
+    "id": "calendar"
+   },
+   "signature": {
+    "family": "strata",
+    "seed": 9
+   }
+  },
+  "size": 64,
+  "state": "waiting",
+  "font": "'Libre Caslon Text', Georgia, 'Times New Roman', serif",
+  "uid": "59"
+ },
+ {
+  "name": "tana-archive-140",
+  "kind": "mark",
+  "spec": {
+   "markSpec": 1,
+   "site": "tana",
+   "webagent": "archive",
+   "silhouette": {
+    "shape": "squircle",
+    "squareness": 7.2
+   },
+   "color": {
+    "fill": "#2f5d8a",
+    "glyph": "#ffffff"
+   },
+   "glyph": {
+    "kind": "role",
+    "id": "calendar"
+   },
+   "signature": {
+    "family": "strata",
+    "seed": 9
+   }
+  },
+  "size": 140,
+  "state": "listening",
+  "font": "'Libre Caslon Text', Georgia, 'Times New Roman', serif",
+  "uid": "60"
+ },
+ {
+  "name": "tana-subscriptions-20",
+  "kind": "mark",
+  "spec": {
+   "markSpec": 1,
+   "site": "tana",
+   "webagent": "subscriptions",
+   "silhouette": {
+    "shape": "squircle",
+    "squareness": 7.2
+   },
+   "color": {
+    "fill": "#14213d",
+    "glyph": "#ffffff"
+   },
+   "glyph": {
+    "kind": "role",
+    "id": "coin"
+   },
+   "signature": {
+    "family": "strata",
+    "seed": 15
+   }
+  },
+  "size": 20,
+  "state": "working",
+  "font": "'Libre Caslon Text', Georgia, 'Times New Roman', serif",
+  "uid": "61"
+ },
+ {
+  "name": "tana-subscriptions-28",
+  "kind": "mark",
+  "spec": {
+   "markSpec": 1,
+   "site": "tana",
+   "webagent": "subscriptions",
+   "silhouette": {
+    "shape": "squircle",
+    "squareness": 7.2
+   },
+   "color": {
+    "fill": "#14213d",
+    "glyph": "#ffffff"
+   },
+   "glyph": {
+    "kind": "role",
+    "id": "coin"
+   },
+   "signature": {
+    "family": "strata",
+    "seed": 15
+   }
+  },
+  "size": 28,
+  "state": "idle",
+  "font": "'Libre Caslon Text', Georgia, 'Times New Roman', serif",
+  "uid": "62"
+ },
+ {
+  "name": "tana-subscriptions-40",
+  "kind": "mark",
+  "spec": {
+   "markSpec": 1,
+   "site": "tana",
+   "webagent": "subscriptions",
+   "silhouette": {
+    "shape": "squircle",
+    "squareness": 7.2
+   },
+   "color": {
+    "fill": "#14213d",
+    "glyph": "#ffffff"
+   },
+   "glyph": {
+    "kind": "role",
+    "id": "coin"
+   },
+   "signature": {
+    "family": "strata",
+    "seed": 15
+   }
+  },
+  "size": 40,
+  "state": "working",
+  "font": "'Libre Caslon Text', Georgia, 'Times New Roman', serif",
+  "uid": "63"
+ },
+ {
+  "name": "tana-subscriptions-64",
+  "kind": "mark",
+  "spec": {
+   "markSpec": 1,
+   "site": "tana",
+   "webagent": "subscriptions",
+   "silhouette": {
+    "shape": "squircle",
+    "squareness": 7.2
+   },
+   "color": {
+    "fill": "#14213d",
+    "glyph": "#ffffff"
+   },
+   "glyph": {
+    "kind": "role",
+    "id": "coin"
+   },
+   "signature": {
+    "family": "strata",
+    "seed": 15
+   }
+  },
+  "size": 64,
+  "state": "resting",
+  "font": "'Libre Caslon Text', Georgia, 'Times New Roman', serif",
+  "uid": "64"
+ },
+ {
+  "name": "tana-subscriptions-140",
+  "kind": "mark",
+  "spec": {
+   "markSpec": 1,
+   "site": "tana",
+   "webagent": "subscriptions",
+   "silhouette": {
+    "shape": "squircle",
+    "squareness": 7.2
+   },
+   "color": {
+    "fill": "#14213d",
+    "glyph": "#ffffff"
+   },
+   "glyph": {
+    "kind": "role",
+    "id": "coin"
+   },
+   "signature": {
+    "family": "strata",
+    "seed": 15
+   }
+  },
+  "size": 140,
+  "state": "working",
+  "font": "'Libre Caslon Text', Georgia, 'Times New Roman', serif",
+  "uid": "65"
+ },
+ {
+  "name": "tana-editor-20",
+  "kind": "mark",
+  "spec": {
+   "markSpec": 1,
+   "site": "tana",
+   "webagent": "editor",
+   "silhouette": {
+    "shape": "squircle",
+    "squareness": 7.2
+   },
+   "color": {
+    "fill": "#7a4b2a",
+    "glyph": "#ffffff"
+   },
+   "glyph": {
+    "kind": "role",
+    "id": "pen"
+   },
+   "signature": {
+    "family": "strata",
+    "seed": 1
+   }
+  },
+  "size": 20,
+  "state": "answering",
+  "font": "'Libre Caslon Text', Georgia, 'Times New Roman', serif",
+  "uid": "66"
+ },
+ {
+  "name": "tana-editor-28",
+  "kind": "mark",
+  "spec": {
+   "markSpec": 1,
+   "site": "tana",
+   "webagent": "editor",
+   "silhouette": {
+    "shape": "squircle",
+    "squareness": 7.2
+   },
+   "color": {
+    "fill": "#7a4b2a",
+    "glyph": "#ffffff"
+   },
+   "glyph": {
+    "kind": "role",
+    "id": "pen"
+   },
+   "signature": {
+    "family": "strata",
+    "seed": 1
+   }
+  },
+  "size": 28,
+  "state": "listening",
+  "font": "'Libre Caslon Text', Georgia, 'Times New Roman', serif",
+  "uid": "67"
+ },
+ {
+  "name": "tana-editor-40",
+  "kind": "mark",
+  "spec": {
+   "markSpec": 1,
+   "site": "tana",
+   "webagent": "editor",
+   "silhouette": {
+    "shape": "squircle",
+    "squareness": 7.2
+   },
+   "color": {
+    "fill": "#7a4b2a",
+    "glyph": "#ffffff"
+   },
+   "glyph": {
+    "kind": "role",
+    "id": "pen"
+   },
+   "signature": {
+    "family": "strata",
+    "seed": 1
+   }
+  },
+  "size": 40,
+  "state": "answering",
+  "font": "'Libre Caslon Text', Georgia, 'Times New Roman', serif",
+  "uid": "68"
+ },
+ {
+  "name": "tana-editor-64",
+  "kind": "mark",
+  "spec": {
+   "markSpec": 1,
+   "site": "tana",
+   "webagent": "editor",
+   "silhouette": {
+    "shape": "squircle",
+    "squareness": 7.2
+   },
+   "color": {
+    "fill": "#7a4b2a",
+    "glyph": "#ffffff"
+   },
+   "glyph": {
+    "kind": "role",
+    "id": "pen"
+   },
+   "signature": {
+    "family": "strata",
+    "seed": 1
+   }
+  },
+  "size": 64,
+  "state": "asleep",
+  "font": "'Libre Caslon Text', Georgia, 'Times New Roman', serif",
+  "uid": "69"
+ },
+ {
+  "name": "tana-editor-140",
+  "kind": "mark",
+  "spec": {
+   "markSpec": 1,
+   "site": "tana",
+   "webagent": "editor",
+   "silhouette": {
+    "shape": "squircle",
+    "squareness": 7.2
+   },
+   "color": {
+    "fill": "#7a4b2a",
+    "glyph": "#ffffff"
+   },
+   "glyph": {
+    "kind": "role",
+    "id": "pen"
+   },
+   "signature": {
+    "family": "strata",
+    "seed": 1
+   }
+  },
+  "size": 140,
+  "state": "answering",
+  "font": "'Libre Caslon Text', Georgia, 'Times New Roman', serif",
+  "uid": "70"
+ },
+ {
+  "name": "tana-guardian-20",
+  "kind": "mark",
+  "spec": {
+   "markSpec": 1,
+   "site": "tana",
+   "webagent": "guardian",
+   "silhouette": {
+    "shape": "squircle",
+    "squareness": 7.2
+   },
+   "color": {
+    "fill": "#56636f",
+    "glyph": "#ffffff"
+   },
+   "glyph": {
+    "kind": "role",
+    "id": "shield"
+   },
+   "signature": {
+    "family": "strata",
+    "seed": 12
+   }
+  },
+  "size": 20,
+  "state": "speaking",
+  "font": "'Libre Caslon Text', Georgia, 'Times New Roman', serif",
+  "uid": "71"
+ },
+ {
+  "name": "tana-guardian-28",
+  "kind": "mark",
+  "spec": {
+   "markSpec": 1,
+   "site": "tana",
+   "webagent": "guardian",
+   "silhouette": {
+    "shape": "squircle",
+    "squareness": 7.2
+   },
+   "color": {
+    "fill": "#56636f",
+    "glyph": "#ffffff"
+   },
+   "glyph": {
+    "kind": "role",
+    "id": "shield"
+   },
+   "signature": {
+    "family": "strata",
+    "seed": 12
+   }
+  },
+  "size": 28,
+  "state": "working",
+  "font": "'Libre Caslon Text', Georgia, 'Times New Roman', serif",
+  "uid": "72"
+ },
+ {
+  "name": "tana-guardian-40",
+  "kind": "mark",
+  "spec": {
+   "markSpec": 1,
+   "site": "tana",
+   "webagent": "guardian",
+   "silhouette": {
+    "shape": "squircle",
+    "squareness": 7.2
+   },
+   "color": {
+    "fill": "#56636f",
+    "glyph": "#ffffff"
+   },
+   "glyph": {
+    "kind": "role",
+    "id": "shield"
+   },
+   "signature": {
+    "family": "strata",
+    "seed": 12
+   }
+  },
+  "size": 40,
+  "state": "speaking",
+  "font": "'Libre Caslon Text', Georgia, 'Times New Roman', serif",
+  "uid": "73"
+ },
+ {
+  "name": "tana-guardian-64",
+  "kind": "mark",
+  "spec": {
+   "markSpec": 1,
+   "site": "tana",
+   "webagent": "guardian",
+   "silhouette": {
+    "shape": "squircle",
+    "squareness": 7.2
+   },
+   "color": {
+    "fill": "#56636f",
+    "glyph": "#ffffff"
+   },
+   "glyph": {
+    "kind": "role",
+    "id": "shield"
+   },
+   "signature": {
+    "family": "strata",
+    "seed": 12
+   }
+  },
+  "size": 64,
+  "state": "paused",
+  "font": "'Libre Caslon Text', Georgia, 'Times New Roman', serif",
+  "uid": "74"
+ },
+ {
+  "name": "tana-guardian-140",
+  "kind": "mark",
+  "spec": {
+   "markSpec": 1,
+   "site": "tana",
+   "webagent": "guardian",
+   "silhouette": {
+    "shape": "squircle",
+    "squareness": 7.2
+   },
+   "color": {
+    "fill": "#56636f",
+    "glyph": "#ffffff"
+   },
+   "glyph": {
+    "kind": "role",
+    "id": "shield"
+   },
+   "signature": {
+    "family": "strata",
+    "seed": 12
+   }
+  },
+  "size": 140,
+  "state": "speaking",
+  "font": "'Libre Caslon Text', Georgia, 'Times New Roman', serif",
+  "uid": "75"
+ },
+ {
+  "name": "tana-team-48",
+  "kind": "team",
+  "team": {
+   "site": "tana",
+   "ink": "#14213d",
+   "squareness": 7.2,
+   "letters": "T",
+   "members": [
+    {
+     "webagent": "newsroom",
+     "fill": "#b3261e"
+    },
+    {
+     "webagent": "archive",
+     "fill": "#2f5d8a"
+    },
+    {
+     "webagent": "subscriptions",
+     "fill": "#14213d"
+    },
+    {
+     "webagent": "editor",
+     "fill": "#7a4b2a"
+    },
+    {
+     "webagent": "guardian",
+     "fill": "#56636f"
+    }
+   ]
+  },
+  "size": 48,
+  "state": "idle",
+  "busy": [
+   "newsroom",
+   "editor"
+  ],
+  "font": "'Libre Caslon Text', Georgia, 'Times New Roman', serif"
+ },
+ {
+  "name": "family-orbits-34",
+  "kind": "mark",
+  "spec": {
+   "markSpec": 1,
+   "site": "kilele",
+   "webagent": "cakes",
+   "silhouette": {
+    "shape": "squircle",
+    "squareness": 4.6
+   },
+   "color": {
+    "fill": "#8e3b46",
+    "glyph": "#ffffff"
+   },
+   "glyph": {
+    "kind": "role",
+    "id": "cake"
+   },
+   "signature": {
+    "family": "orbits",
+    "seed": 4242
+   }
+  },
+  "size": 34,
+  "state": "working",
+  "font": "'Young Serif', Georgia, 'Times New Roman', serif",
+  "uid": "76"
+ },
+ {
+  "name": "family-orbits-96",
+  "kind": "mark",
+  "spec": {
+   "markSpec": 1,
+   "site": "kilele",
+   "webagent": "cakes",
+   "silhouette": {
+    "shape": "squircle",
+    "squareness": 4.6
+   },
+   "color": {
+    "fill": "#8e3b46",
+    "glyph": "#ffffff"
+   },
+   "glyph": {
+    "kind": "role",
+    "id": "cake"
+   },
+   "signature": {
+    "family": "orbits",
+    "seed": 4242
+   }
+  },
+  "size": 96,
+  "state": "working",
+  "font": "'Young Serif', Georgia, 'Times New Roman', serif",
+  "uid": "77"
+ },
+ {
+  "name": "family-grain-34",
+  "kind": "mark",
+  "spec": {
+   "markSpec": 1,
+   "site": "kilele",
+   "webagent": "cakes",
+   "silhouette": {
+    "shape": "squircle",
+    "squareness": 4.6
+   },
+   "color": {
+    "fill": "#8e3b46",
+    "glyph": "#ffffff"
+   },
+   "glyph": {
+    "kind": "role",
+    "id": "cake"
+   },
+   "signature": {
+    "family": "grain",
+    "seed": 4242
+   }
+  },
+  "size": 34,
+  "state": "working",
+  "font": "'Young Serif', Georgia, 'Times New Roman', serif",
+  "uid": "78"
+ },
+ {
+  "name": "family-grain-96",
+  "kind": "mark",
+  "spec": {
+   "markSpec": 1,
+   "site": "kilele",
+   "webagent": "cakes",
+   "silhouette": {
+    "shape": "squircle",
+    "squareness": 4.6
+   },
+   "color": {
+    "fill": "#8e3b46",
+    "glyph": "#ffffff"
+   },
+   "glyph": {
+    "kind": "role",
+    "id": "cake"
+   },
+   "signature": {
+    "family": "grain",
+    "seed": 4242
+   }
+  },
+  "size": 96,
+  "state": "working",
+  "font": "'Young Serif', Georgia, 'Times New Roman', serif",
+  "uid": "79"
+ },
+ {
+  "name": "family-strata-34",
+  "kind": "mark",
+  "spec": {
+   "markSpec": 1,
+   "site": "kilele",
+   "webagent": "cakes",
+   "silhouette": {
+    "shape": "squircle",
+    "squareness": 4.6
+   },
+   "color": {
+    "fill": "#8e3b46",
+    "glyph": "#ffffff"
+   },
+   "glyph": {
+    "kind": "role",
+    "id": "cake"
+   },
+   "signature": {
+    "family": "strata",
+    "seed": 4242
+   }
+  },
+  "size": 34,
+  "state": "working",
+  "font": "'Young Serif', Georgia, 'Times New Roman', serif",
+  "uid": "80"
+ },
+ {
+  "name": "family-strata-96",
+  "kind": "mark",
+  "spec": {
+   "markSpec": 1,
+   "site": "kilele",
+   "webagent": "cakes",
+   "silhouette": {
+    "shape": "squircle",
+    "squareness": 4.6
+   },
+   "color": {
+    "fill": "#8e3b46",
+    "glyph": "#ffffff"
+   },
+   "glyph": {
+    "kind": "role",
+    "id": "cake"
+   },
+   "signature": {
+    "family": "strata",
+    "seed": 4242
+   }
+  },
+  "size": 96,
+  "state": "working",
+  "font": "'Young Serif', Georgia, 'Times New Roman', serif",
+  "uid": "81"
+ },
+ {
+  "name": "family-weave-34",
+  "kind": "mark",
+  "spec": {
+   "markSpec": 1,
+   "site": "kilele",
+   "webagent": "cakes",
+   "silhouette": {
+    "shape": "squircle",
+    "squareness": 4.6
+   },
+   "color": {
+    "fill": "#8e3b46",
+    "glyph": "#ffffff"
+   },
+   "glyph": {
+    "kind": "role",
+    "id": "cake"
+   },
+   "signature": {
+    "family": "weave",
+    "seed": 4242
+   }
+  },
+  "size": 34,
+  "state": "working",
+  "font": "'Young Serif', Georgia, 'Times New Roman', serif",
+  "uid": "82"
+ },
+ {
+  "name": "family-weave-96",
+  "kind": "mark",
+  "spec": {
+   "markSpec": 1,
+   "site": "kilele",
+   "webagent": "cakes",
+   "silhouette": {
+    "shape": "squircle",
+    "squareness": 4.6
+   },
+   "color": {
+    "fill": "#8e3b46",
+    "glyph": "#ffffff"
+   },
+   "glyph": {
+    "kind": "role",
+    "id": "cake"
+   },
+   "signature": {
+    "family": "weave",
+    "seed": 4242
+   }
+  },
+  "size": 96,
+  "state": "working",
+  "font": "'Young Serif', Georgia, 'Times New Roman', serif",
+  "uid": "83"
+ },
+ {
+  "name": "family-facets-34",
+  "kind": "mark",
+  "spec": {
+   "markSpec": 1,
+   "site": "kilele",
+   "webagent": "cakes",
+   "silhouette": {
+    "shape": "squircle",
+    "squareness": 4.6
+   },
+   "color": {
+    "fill": "#8e3b46",
+    "glyph": "#ffffff"
+   },
+   "glyph": {
+    "kind": "role",
+    "id": "cake"
+   },
+   "signature": {
+    "family": "facets",
+    "seed": 4242
+   }
+  },
+  "size": 34,
+  "state": "working",
+  "font": "'Young Serif', Georgia, 'Times New Roman', serif",
+  "uid": "84"
+ },
+ {
+  "name": "family-facets-96",
+  "kind": "mark",
+  "spec": {
+   "markSpec": 1,
+   "site": "kilele",
+   "webagent": "cakes",
+   "silhouette": {
+    "shape": "squircle",
+    "squareness": 4.6
+   },
+   "color": {
+    "fill": "#8e3b46",
+    "glyph": "#ffffff"
+   },
+   "glyph": {
+    "kind": "role",
+    "id": "cake"
+   },
+   "signature": {
+    "family": "facets",
+    "seed": 4242
+   }
+  },
+  "size": 96,
+  "state": "working",
+  "font": "'Young Serif', Georgia, 'Times New Roman', serif",
+  "uid": "85"
+ },
+ {
+  "name": "squareness-3.2",
+  "kind": "mark",
+  "spec": {
+   "markSpec": 1,
+   "site": "tana",
+   "webagent": "archive",
+   "silhouette": {
+    "shape": "squircle",
+    "squareness": 3.2
+   },
+   "color": {
+    "fill": "#2f5d8a",
+    "glyph": "#ffffff"
+   },
+   "glyph": {
+    "kind": "role",
+    "id": "calendar"
+   },
+   "signature": {
+    "family": "strata",
+    "seed": 9
+   }
+  },
+  "size": 140,
+  "state": "idle",
+  "font": "'Libre Caslon Text', Georgia, 'Times New Roman', serif",
+  "uid": "86"
+ },
+ {
+  "name": "squareness-8",
+  "kind": "mark",
+  "spec": {
+   "markSpec": 1,
+   "site": "tana",
+   "webagent": "archive",
+   "silhouette": {
+    "shape": "squircle",
+    "squareness": 8
+   },
+   "color": {
+    "fill": "#2f5d8a",
+    "glyph": "#ffffff"
+   },
+   "glyph": {
+    "kind": "role",
+    "id": "calendar"
+   },
+   "signature": {
+    "family": "strata",
+    "seed": 9
+   }
+  },
+  "size": 140,
+  "state": "idle",
+  "font": "'Libre Caslon Text', Georgia, 'Times New Roman', serif",
+  "uid": "87"
+ },
+ {
+  "name": "monogram-one-28",
+  "kind": "mark",
+  "spec": {
+   "markSpec": 1,
+   "site": "kilele",
+   "webagent": "cakes",
+   "silhouette": {
+    "shape": "squircle",
+    "squareness": 4.6
+   },
+   "color": {
+    "fill": "#8e3b46",
+    "glyph": "#ffffff"
+   },
+   "glyph": {
+    "kind": "monogram",
+    "letters": "C",
+    "face": "site display"
+   },
+   "signature": {
+    "family": "grain",
+    "seed": 7
+   }
+  },
+  "size": 28,
+  "state": "idle",
+  "font": "'Young Serif', Georgia, 'Times New Roman', serif",
+  "uid": "88"
+ },
+ {
+  "name": "monogram-one-20",
+  "kind": "mark",
+  "spec": {
+   "markSpec": 1,
+   "site": "kilele",
+   "webagent": "bread",
+   "silhouette": {
+    "shape": "squircle",
+    "squareness": 4.6
+   },
+   "color": {
+    "fill": "#9c5725",
+    "glyph": "#ffffff"
+   },
+   "glyph": {
+    "kind": "monogram",
+    "letters": "B",
+    "face": "site display"
+   },
+   "signature": {
+    "family": "grain",
+    "seed": 3
+   }
+  },
+  "size": 20,
+  "state": "idle",
+  "font": "'Young Serif', Georgia, 'Times New Roman', serif",
+  "uid": "89"
+ },
+ {
+  "name": "monogram-two-64",
+  "kind": "mark",
+  "spec": {
+   "markSpec": 1,
+   "site": "tana",
+   "webagent": "newsroom",
+   "silhouette": {
+    "shape": "squircle",
+    "squareness": 7.2
+   },
+   "color": {
+    "fill": "#b3261e",
+    "glyph": "#ffffff"
+   },
+   "glyph": {
+    "kind": "monogram",
+    "letters": "TV",
+    "face": "site display"
+   },
+   "signature": {
+    "family": "strata",
+    "seed": 21
+   }
+  },
+  "size": 64,
+  "state": "working",
+  "font": "'Libre Caslon Text', Georgia, 'Times New Roman', serif",
+  "uid": "90"
+ },
+ {
+  "name": "monogram-escaped-64",
+  "kind": "mark",
+  "spec": {
+   "markSpec": 1,
+   "site": "classy",
+   "webagent": "gifts",
+   "silhouette": {
+    "shape": "squircle",
+    "squareness": 6.2
+   },
+   "color": {
+    "fill": "#6d2e4f",
+    "glyph": "#ffffff"
+   },
+   "glyph": {
+    "kind": "monogram",
+    "letters": "<&",
+    "face": "site display"
+   },
+   "signature": {
+    "family": "facets",
+    "seed": 19
+   }
+  },
+  "size": 64,
+  "state": "idle",
+  "font": "\"Bodoni\" <x>",
+  "uid": "91"
+ },
+ {
+  "name": "light-fill-40",
+  "kind": "mark",
+  "spec": {
+   "markSpec": 1,
+   "site": "kilele",
+   "webagent": "bread",
+   "silhouette": {
+    "shape": "squircle",
+    "squareness": 4.6
+   },
+   "color": {
+    "fill": "#f2d7a8",
+    "glyph": "#1b1726"
+   },
+   "glyph": {
+    "kind": "role",
+    "id": "loaf"
+   },
+   "signature": {
+    "family": "grain",
+    "seed": 3
+   }
+  },
+  "size": 40,
+  "state": "waiting",
+  "font": "",
+  "uid": "92"
+ },
+ {
+  "name": "seed-0",
+  "kind": "mark",
+  "spec": {
+   "markSpec": 1,
+   "site": "classy",
+   "webagent": "orders",
+   "silhouette": {
+    "shape": "squircle",
+    "squareness": 6.2
+   },
+   "color": {
+    "fill": "#3d5a6c",
+    "glyph": "#ffffff"
+   },
+   "glyph": {
+    "kind": "role",
+    "id": "bag"
+   },
+   "signature": {
+    "family": "orbits",
+    "seed": 0
+   }
+  },
+  "size": 56,
+  "state": "working",
+  "font": "",
+  "uid": "93"
+ },
+ {
+  "name": "seed-1",
+  "kind": "mark",
+  "spec": {
+   "markSpec": 1,
+   "site": "classy",
+   "webagent": "orders",
+   "silhouette": {
+    "shape": "squircle",
+    "squareness": 6.2
+   },
+   "color": {
+    "fill": "#3d5a6c",
+    "glyph": "#ffffff"
+   },
+   "glyph": {
+    "kind": "role",
+    "id": "bag"
+   },
+   "signature": {
+    "family": "orbits",
+    "seed": 1
+   }
+  },
+  "size": 56,
+  "state": "working",
+  "font": "",
+  "uid": "94"
+ },
+ {
+  "name": "seed-4294967295",
+  "kind": "mark",
+  "spec": {
+   "markSpec": 1,
+   "site": "classy",
+   "webagent": "orders",
+   "silhouette": {
+    "shape": "squircle",
+    "squareness": 6.2
+   },
+   "color": {
+    "fill": "#3d5a6c",
+    "glyph": "#ffffff"
+   },
+   "glyph": {
+    "kind": "role",
+    "id": "bag"
+   },
+   "signature": {
+    "family": "orbits",
+    "seed": 4294967295
+   }
+  },
+  "size": 56,
+  "state": "working",
+  "font": "",
+  "uid": "95"
+ },
+ {
+  "name": "team-nine-44",
+  "kind": "team",
+  "team": {
+   "site": "kilele",
+   "ink": "#2b1d14",
+   "squareness": 4.6,
+   "letters": "K",
+   "members": [
+    {
+     "webagent": "concierge",
+     "fill": "#8e3b46"
+    },
+    {
+     "webagent": "sales",
+     "fill": "#9c5725"
+    },
+    {
+     "webagent": "editor",
+     "fill": "#577035"
+    },
+    {
+     "webagent": "reputation",
+     "fill": "#7f6236"
+    },
+    {
+     "webagent": "cashier",
+     "fill": "#11734a"
+    },
+    {
+     "webagent": "guardian",
+     "fill": "#56636f"
+    },
+    {
+     "webagent": "caretaker",
+     "fill": "#3d5a1f"
+    },
+    {
+     "webagent": "mover",
+     "fill": "#2f55c4"
+    }
+   ]
+  },
+  "size": 44,
+  "state": "listening",
+  "busy": [
+   "editor"
+  ],
+  "font": "'Young Serif', Georgia, 'Times New Roman', serif"
+ },
+ {
+  "name": "glyph-pin-64",
+  "kind": "mark",
+  "spec": {
+   "markSpec": 1,
+   "site": "kilele",
+   "webagent": "cakes",
+   "silhouette": {
+    "shape": "squircle",
+    "squareness": 4.6
+   },
+   "color": {
+    "fill": "#8e3b46",
+    "glyph": "#ffffff"
+   },
+   "glyph": {
+    "kind": "role",
+    "id": "pin"
+   },
+   "signature": {
+    "family": "grain",
+    "seed": 7
+   }
+  },
+  "size": 64,
+  "state": "idle",
+  "font": "'Young Serif', Georgia, 'Times New Roman', serif",
+  "uid": "96"
+ },
+ {
+  "name": "glyph-search-64",
+  "kind": "mark",
+  "spec": {
+   "markSpec": 1,
+   "site": "kilele",
+   "webagent": "cakes",
+   "silhouette": {
+    "shape": "squircle",
+    "squareness": 4.6
+   },
+   "color": {
+    "fill": "#8e3b46",
+    "glyph": "#ffffff"
+   },
+   "glyph": {
+    "kind": "role",
+    "id": "search"
+   },
+   "signature": {
+    "family": "grain",
+    "seed": 7
+   }
+  },
+  "size": 64,
+  "state": "idle",
+  "font": "'Young Serif', Georgia, 'Times New Roman', serif",
+  "uid": "97"
+ },
+ {
+  "name": "glyph-bottle-64",
+  "kind": "mark",
+  "spec": {
+   "markSpec": 1,
+   "site": "kilele",
+   "webagent": "cakes",
+   "silhouette": {
+    "shape": "squircle",
+    "squareness": 4.6
+   },
+   "color": {
+    "fill": "#8e3b46",
+    "glyph": "#ffffff"
+   },
+   "glyph": {
+    "kind": "role",
+    "id": "bottle"
+   },
+   "signature": {
+    "family": "grain",
+    "seed": 7
+   }
+  },
+  "size": 64,
+  "state": "idle",
+  "font": "'Young Serif', Georgia, 'Times New Roman', serif",
+  "uid": "98"
+ },
+ {
+  "name": "glyph-book-64",
+  "kind": "mark",
+  "spec": {
+   "markSpec": 1,
+   "site": "kilele",
+   "webagent": "cakes",
+   "silhouette": {
+    "shape": "squircle",
+    "squareness": 4.6
+   },
+   "color": {
+    "fill": "#8e3b46",
+    "glyph": "#ffffff"
+   },
+   "glyph": {
+    "kind": "role",
+    "id": "book"
+   },
+   "signature": {
+    "family": "grain",
+    "seed": 7
+   }
+  },
+  "size": 64,
+  "state": "idle",
+  "font": "'Young Serif', Georgia, 'Times New Roman', serif",
+  "uid": "99"
+ },
+ {
+  "name": "glyph-archive-64",
+  "kind": "mark",
+  "spec": {
+   "markSpec": 1,
+   "site": "kilele",
+   "webagent": "cakes",
+   "silhouette": {
+    "shape": "squircle",
+    "squareness": 4.6
+   },
+   "color": {
+    "fill": "#8e3b46",
+    "glyph": "#ffffff"
+   },
+   "glyph": {
+    "kind": "role",
+    "id": "archive"
+   },
+   "signature": {
+    "family": "grain",
+    "seed": 7
+   }
+  },
+  "size": 64,
+  "state": "idle",
+  "font": "'Young Serif', Georgia, 'Times New Roman', serif",
+  "uid": "100"
+ },
+ {
+  "name": "glyph-ticket-64",
+  "kind": "mark",
+  "spec": {
+   "markSpec": 1,
+   "site": "kilele",
+   "webagent": "cakes",
+   "silhouette": {
+    "shape": "squircle",
+    "squareness": 4.6
+   },
+   "color": {
+    "fill": "#8e3b46",
+    "glyph": "#ffffff"
+   },
+   "glyph": {
+    "kind": "role",
+    "id": "ticket"
+   },
+   "signature": {
+    "family": "grain",
+    "seed": 7
+   }
+  },
+  "size": 64,
+  "state": "idle",
+  "font": "'Young Serif', Georgia, 'Times New Roman', serif",
+  "uid": "101"
+ },
+ {
+  "name": "glyph-train-64",
+  "kind": "mark",
+  "spec": {
+   "markSpec": 1,
+   "site": "kilele",
+   "webagent": "cakes",
+   "silhouette": {
+    "shape": "squircle",
+    "squareness": 4.6
+   },
+   "color": {
+    "fill": "#8e3b46",
+    "glyph": "#ffffff"
+   },
+   "glyph": {
+    "kind": "role",
+    "id": "train"
+   },
+   "signature": {
+    "family": "grain",
+    "seed": 7
+   }
+  },
+  "size": 64,
+  "state": "idle",
+  "font": "'Young Serif', Georgia, 'Times New Roman', serif",
+  "uid": "102"
+ },
+ {
+  "name": "glyph-leaf-64",
+  "kind": "mark",
+  "spec": {
+   "markSpec": 1,
+   "site": "kilele",
+   "webagent": "cakes",
+   "silhouette": {
+    "shape": "squircle",
+    "squareness": 4.6
+   },
+   "color": {
+    "fill": "#8e3b46",
+    "glyph": "#ffffff"
+   },
+   "glyph": {
+    "kind": "role",
+    "id": "leaf"
+   },
+   "signature": {
+    "family": "grain",
+    "seed": 7
+   }
+  },
+  "size": 64,
+  "state": "idle",
+  "font": "'Young Serif', Georgia, 'Times New Roman', serif",
+  "uid": "103"
+ }
+]

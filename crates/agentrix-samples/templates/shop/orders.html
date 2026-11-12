@@ -1,0 +1,44 @@
+{% extends shell.layout %}
+{% import "shop/parts.html" as p %}
+{% from "macros.html" import mark %}
+{% block styles %}{{ super() }}{{ p.styles(shell) }}{% endblock %}
+{% block main %}
+<div class="shop">
+  <div class="k-head"><h1>{% if lookup %}Order status{% else %}Your orders{% endif %}</h1></div>
+  {% if lookup %}
+  <div class="k-card k-order">
+    <div class="k-head"><b class="k-oname">{{ lookup.id }}</b>{% if lookup.found %}<span class="k-pill {{ lookup.tone }}">{{ lookup.pill }}</span>{% endif %}</div>
+    <div class="k-deskline">{{ mark(desk, 28, shell.site) }}<span><b>{{ desk.name }}</b><br>{{ lookup.line }}{% if lookup.waiting and confirmations %} {{ confirmations }}{% endif %}</span></div>
+    {% if lookup.found %}
+    <p class="k-small">This page shows only the status, to keep the order private. {% if signed_in %}This order belongs to another account.{% else %}Sign in with the account on the order to see the details.{% endif %}</p>
+    {% if not signed_in %}<div class="k-acts"><a class="k-btn" href="{{ sign_in }}">Sign in to see details</a></div>{% endif %}
+    {% endif %}
+  </div>
+  {% elif signed_in %}
+  {% for c in cards %}
+  <div class="k-card k-order">
+    <div class="k-head"><a class="k-oname" href="/orders/{{ c.head.id }}">{{ c.head.id }} · {{ c.head.title }}</a><span class="k-pill {{ c.head.tone }}">{{ c.head.pill }}</span></div>
+    <div class="k-deskline">{{ mark(desk, 20, shell.site) }}<span><b>{{ desk.name }}</b><br>{{ c.line }}</span></div>
+    {% if c.extra %}<p class="k-small">{{ c.extra }}</p>{% endif %}
+    <div class="k-acts">
+      {% if c.head.payable %}<a class="k-btn" href="/orders/{{ c.head.id }}/pay">Pay {{ c.head.usd }}</a>{% endif %}
+      <a class="k-btn ghost sm" href="/orders/{{ c.head.id }}">Open {{ c.head.id }}</a>
+      {% if c.head.paid %}<a class="k-btn ghost sm" href="/orders/{{ c.head.id }}/receipt">Receipt</a>{% endif %}
+    </div>
+  </div>
+  {% else %}
+  <div class="k-card k-empty">
+    <h2>No orders yet.</h2>
+    <p>Orders you place on this site appear here, with where each one stands.</p>
+    <div class="k-acts">{% for b in browse %}<a class="k-btn{% if not loop.first %} ghost{% endif %}" href="{{ b.href }}">Open {{ b.name }}</a>{% endfor %}</div>
+  </div>
+  {% endfor %}
+  {% endif %}
+  <div class="k-card" id="track">
+    <h2>{% if signed_in %}Look up another order{% else %}Track an order{% endif %}</h2>
+    {% if confirmations and not lookup %}<p>{{ confirmations }}</p>{% endif %}
+    <form class="k-track" method="get" action="/orders"><label class="sr-only" for="ordno">Order number</label><input id="ordno" name="number" value="{{ number }}" placeholder="Order number, e.g. {{ prefix }}-1042" autocomplete="off"><button class="k-btn" type="submit">Track</button></form>
+    {% if not signed_in %}<p class="k-small">Tracking shows the status only. <a href="{{ sign_in }}">Sign in</a> to see your orders in full.</p>{% endif %}
+  </div>
+</div>
+{% endblock %}

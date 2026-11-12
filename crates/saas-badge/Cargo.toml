@@ -1,0 +1,56 @@
+[package]
+name = "saas-badge"
+description = "Agent badges for Agentrix sites: did:web identifiers served from the site's own domain, badges signed by the site's owner key, Agentrix's voucher for each site, JWS-signed A2A agent cards, identity resolvers (did:web, did:key, Web Bot Auth key directories), a verifier with a command and an endpoint, and the PayPal binding the owner approves with a passkey."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+authors.workspace = true
+
+# Owner: slices P (badge) and K (the PayPal binding), specs/saas/v3.md. Builds on saas-settle's
+# keys and agent doors; the contract types move to saas-core once slice A adds them.
+
+[[bin]]
+name = "agentrix-badge"
+path = "src/bin/agentrix-badge.rs"
+
+[dependencies]
+# The A2A card signer (EdDSA over JCS), reused rather than written twice (v3, adk-rust table).
+adk-awp = { workspace = true, features = ["signing"] }
+awp-types.workspace = true
+a2a-protocol-types = "0.12.1"
+adk-auth = { workspace = true, features = ["web-bot-auth"] }
+agentrix-host.workspace = true
+agentrix-types.workspace = true
+anyhow.workspace = true
+async-trait.workspace = true
+# ES256 passkey assertions, checked offline (already in the lock through adk-auth).
+aws-lc-rs = "1.18"
+axum.workspace = true
+base64.workspace = true
+chrono.workspace = true
+ed25519-dalek.workspace = true
+hex.workspace = true
+reqwest.workspace = true
+saas-core.workspace = true
+saas-settle = { path = "../saas-settle" }
+serde.workspace = true
+serde_json.workspace = true
+sha2.workspace = true
+sqlx.workspace = true
+thiserror.workspace = true
+tokio.workspace = true
+tracing.workspace = true
+url.workspace = true
+uuid.workspace = true
+
+[dev-dependencies]
+saas-federation.workspace = true
+agentrix-effects.workspace = true
+tower.workspace = true
+tracing-subscriber.workspace = true
+wiremock = "0.6"
+
+[lints]
+workspace = true

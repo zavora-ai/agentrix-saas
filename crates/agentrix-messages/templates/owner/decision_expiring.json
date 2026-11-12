@@ -1,0 +1,16 @@
+{
+ "site": {
+  "name": "Kilele Bakery",
+  "host": "kilele-bakery-sample.agentrix.website",
+  "sample": true
+ },
+ "person": {
+  "name": "Wanjiru"
+ },
+ "console_url": "https://agentrix.website/console/kilele-bakery-sample",
+ "card": {
+  "title": "Amani W.'s cake order KB-1044 (KSh 4,500)",
+  "expires_at": "20:00",
+  "url": "https://agentrix.website/d/d-121"
+ }
+}

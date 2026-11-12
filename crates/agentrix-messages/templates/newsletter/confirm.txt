@@ -1,0 +1,18 @@
+{% block subject %}Confirm the weekly fix from Agentrix{% endblock %}
+{% block preheader %}Nothing is sent until you confirm.{% endblock %}
+{% block body %}
+# One tap to confirm
+You asked for the weekly fix: one thing to improve on a small business website, in five lines or fewer, every {{ newsletter.day }}.
+
+::fact You get | One fix a week, five lines or fewer
+::fact We keep | Your email and when you agreed. Nothing else
+::fact Stop | One tap in any email takes you off the list
+
+::button Confirm the weekly fix | {{ confirm_url }}
+
+Nothing is sent until you confirm. Didn't ask for it? Ignore this email, and the address is deleted in {{ forget_after }}.
+{% endblock %}
+{% block chat %}
+Agentrix: reply YES to get the weekly fix, one website fix a week in five lines or fewer. Nothing is sent until you do. Reply STOP at any time.
+::reply YES
+{% endblock %}

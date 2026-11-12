@@ -1,0 +1,57 @@
+{% extends "ui/layouts/page.html" %}
+{% import "ui/kit.html" as ui %}
+{#- Operators' live activity: every source's real records, newest first, streamed. View: activity::page. -#}
+{% block title %}Activity · Agentrix ops{% endblock %}
+{% block description %}What every agent did, live, from the signed audit logs, the model gateway and the wallets.{% endblock %}
+{% block styles %}<link rel="stylesheet" href="/static/saas/saas.css?v={{ saas_v }}">{% endblock %}
+{% block nav %}<span class="small muted">Operators · live activity</span>{% endblock %}
+{% block topright %}<span class="pill" data-live><span class="dot"></span> <span data-live-words>Connecting…</span></span>{% endblock %}
+{% block main_class %}wrap{% endblock %}
+{% block main %}
+<div class="page-head"><p class="eyebrow">Agentrix ops · PayPal sandbox</p><h1>What the agents are doing</h1>
+<p class="lead">Newest first, from the records themselves. A source that isn't connected says so; nothing here is filled in.</p></div>
+
+<div class="kpis" data-totals>
+  <div class="kpi"><span class="k">Money moved today</span><span class="v small-v" data-t="money">{% if totals.money is none %}not connected{% else %}{{ totals.money | join(" · ") }}{% endif %}</span><span class="w">PayPal sandbox, from the wallets</span></div>
+  <div class="kpi"><span class="k">Waiting for owners</span><span class="v" data-t="held">{% if totals.held is none %}not connected{% else %}{{ totals.held }}{% endif %}</span><span class="w">held decisions</span></div>
+  <div class="kpi"><span class="k">Refusals today</span><span class="v" data-t="refusals">{{ totals.refusals }}</span><span class="w">denied or refused</span></div>
+  <div class="kpi"><span class="k">Model spend today</span><span class="v" data-t="spend">{% if totals.spend is none %}not connected{% else %}{{ totals.spend }}{% endif %}</span><span class="w" data-t="cap">{% if totals.cap %}cap {{ totals.cap }}{% else %}no cap set on this node{% endif %}</span></div>
+  <div class="kpi"><span class="k">Last reconciliation</span><span class="v small-v" data-t="reconciliation">{% if totals.reconciliation %}{{ totals.reconciliation.words }}{% else %}none yet{% endif %}</span><span class="w">wallet against PayPal</span></div>
+</div>
+
+<p class="small sources" data-sources>{% for s in sources %}<span class="src {{ 'ok' if s.connected else 'off' }}">{{ s.name }}{% if not s.connected %}: {{ s.note }}{% endif %}</span>{% endfor %}</p>
+
+<form class="activity-filters" method="get" action="/activity">
+  <label>Company <select name="company"><option value="">All</option>{% for c in companies %}<option value="{{ c }}"{% if filter.company == c %} selected{% endif %}>{{ c }}</option>{% endfor %}</select></label>
+  <label>Agent <select name="agent"><option value="">All</option>{% for a in agents %}<option value="{{ a }}"{% if filter.agent == a %} selected{% endif %}>{{ a }}</option>{% endfor %}</select></label>
+  <label><input type="checkbox" name="money" value="1"{% if filter.money %} checked{% endif %}> Money only</label>
+  <label><input type="checkbox" name="refusals" value="1"{% if filter.refusals %} checked{% endif %}> Refusals only</label>
+  <button class="btn btn-sm" type="submit">Filter</button>
+</form>
+
+<div class="table-wrap">
+<table class="activity" data-activity data-stream="{{ stream_url }}" data-after="{{ top }}">
+  <caption class="sr-only">Agent activity, newest first</caption>
+  <thead><tr><th>Time (EAT)</th><th>Who</th><th>Woke by</th><th>What</th><th>Model · tokens · cost</th><th>Tool</th><th>Decision</th><th>PayPal</th><th>ERA</th><th>Checkpoint</th></tr></thead>
+  <tbody data-rows>
+  {% for r in rows %}
+    <tr id="{{ r.anchor }}" class="src-{{ r.source }}{% if r.refusal %} refusal{% endif %}">
+      <td class="mono small">{{ r.when }}</td>
+      <td><b>{{ r.company }}</b>{% if r.agent %} · {{ r.agent }}{% endif %}</td>
+      <td class="small">{{ r.woke_by or "—" }}</td>
+      <td>{{ r.what }}{% if r.amount %} <span class="mono small">{{ r.amount }}</span>{% endif %}</td>
+      <td class="small mono">{{ r.usage or "" }}</td>
+      <td class="small mono">{{ r.tool or "" }}</td>
+      <td>{% if r.decision %}<span class="chip {{ 'chip-risk' if r.refusal else ('chip-wait' if r.decision == 'held' else 'chip-ok') }}">{{ r.decision }}</span>{% if r.reason %} <span class="small">{{ r.reason }}</span>{% endif %}{% endif %}</td>
+      <td class="mono small">{% if r.paypal_id %}<a href="{{ r.paypal_href }}" rel="noopener noreferrer" target="_blank">{{ r.paypal_id }}</a>{% endif %}</td>
+      <td class="mono small">{{ r.era or "" }}</td>
+      <td class="small">{% if r.checkpoint %}<span class="chip {{ 'chip-ok' if r.checkpoint == 'matches' else 'chip-risk' }}">{{ r.checkpoint }}</span>{% endif %}</td>
+    </tr>
+  {% else %}
+    <tr data-empty><td colspan="10">{{ ui.quiet("Nothing recorded yet from the connected sources.") }}</td></tr>
+  {% endfor %}
+  </tbody>
+</table>
+</div>
+{% endblock %}
+{% block scripts %}<script type="module" src="/static/saas/activity.js?v={{ saas_v }}"></script>{% endblock %}

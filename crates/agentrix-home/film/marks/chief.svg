@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" class="wa chief" data-state="idle" width="198.4" height="214.4" viewBox="-12 -12 124 134" aria-hidden="true" focusable="false"><style>/* The WebAgent living mark's states (ADR-031; motion values from 06 §4.3 and 07 §3.5).
+   One grammar on every site and in the console. All motion is on transform and opacity; it
+   stops under reduced motion, where each state still reads by its shape, and it settles after
+   5 seconds in one state (marks.js sets data-settled), except speaking, which follows the voice.
+   The host surface sets --wa-ground (the ring behind the waiting dot) to its own background. */
+wa-mark { display: inline-flex; flex: none; vertical-align: middle; line-height: 0; }
+.wa { display: block; overflow: visible; flex: none; }
+.wa .wa-halo { opacity: 0; transform-box: fill-box; transform-origin: center; }
+.wa .wa-trace { opacity: 0; stroke-dasharray: 22 120; }
+.wa .wa-dot { opacity: 0; }
+.wa .wa-sig { transform-box: fill-box; transform-origin: center; }
+.wa .wa-core, .wa { transition: filter .4s ease, opacity .4s ease; }
+.wa[data-state="listening"] .wa-halo { animation: wa-breathe 2.2s ease-in-out infinite; }
+.wa[data-state="answering"] .wa-halo { opacity: .45; }
+.wa[data-state="speaking"] .wa-halo { opacity: calc(.2 + var(--lvl, .4) * .6); transform: scale(calc(.97 + var(--lvl, .4) * .11)); }
+.wa[data-state="working"] .wa-trace { opacity: 1; animation: wa-trace 1s linear infinite; }
+.wa[data-state="working"][data-motion="spin"] .wa-sig { animation: wa-spin 16s linear infinite; }
+.wa[data-state="working"][data-motion="drift"] .wa-drift { animation: wa-drift 2.6s linear infinite; }
+.wa[data-state="waiting"] .wa-dot { opacity: 1; }
+.wa[data-state="resting"] { filter: grayscale(1); opacity: .55; }
+.wa[data-state="asleep"] { filter: saturate(.2); opacity: .72; }
+.wa[data-state="paused"], .wa[data-state="frozen"] { filter: grayscale(1); opacity: .82; }
+.wa .chief-dot { transform-box: fill-box; transform-origin: center; }
+.wa .chief-dot.busy { animation: wa-pulse 1.4s ease-in-out infinite; }
+@keyframes wa-breathe { 0%, 100% { opacity: 0; transform: scale(.96); } 50% { opacity: .55; transform: scale(1.04); } }
+@keyframes wa-trace { from { stroke-dashoffset: 142; } to { stroke-dashoffset: 0; } }
+@keyframes wa-spin { to { transform: rotate(360deg); } }
+@keyframes wa-drift { from { transform: translateX(0); } to { transform: translateX(var(--p, 0px)); } }
+@keyframes wa-pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.35); } }
+/* Settled: the reduced-motion look; the words beside the mark stay. */
+.wa[data-settled], .wa[data-settled] * { animation: none !important; }
+.wa[data-settled][data-state="listening"] .wa-halo { opacity: .35; }
+.wa[data-settled][data-state="working"] .wa-trace { stroke-dasharray: none; opacity: .8; }
+@media (prefers-reduced-motion: reduce) {
+  .wa *, .wa { animation: none !important; transition: none !important; }
+  .wa[data-state="listening"] .wa-halo { opacity: .35; }
+  .wa[data-state="working"] .wa-trace { stroke-dasharray: none; opacity: .8; }
+  .wa[data-state="speaking"] .wa-halo { opacity: .5; transform: none; }
+}
+</style><path class="wa-halo" d="M108 50L107.95 67.72L107.78 73.93L107.51 78.5L107.13 82.23L106.64 85.41L106.04 88.2L105.32 90.68L104.48 92.91L103.53 94.92L102.45 96.74L101.24 98.39L99.89 99.89L98.39 101.24L96.74 102.45L94.92 103.53L92.91 104.48L90.68 105.32L88.2 106.04L85.41 106.64L82.23 107.13L78.5 107.51L73.93 107.78L67.72 107.95L50 108L32.28 107.95L26.07 107.78L21.5 107.51L17.77 107.13L14.59 106.64L11.8 106.04L9.32 105.32L7.09 104.48L5.08 103.53L3.26 102.45L1.61 101.24L0.11 99.89L-1.24 98.39L-2.45 96.74L-3.53 94.92L-4.48 92.91L-5.32 90.68L-6.04 88.2L-6.64 85.41L-7.13 82.23L-7.51 78.5L-7.78 73.93L-7.95 67.72L-8 50L-7.95 32.28L-7.78 26.07L-7.51 21.5L-7.13 17.77L-6.64 14.59L-6.04 11.8L-5.32 9.32L-4.48 7.09L-3.53 5.08L-2.45 3.26L-1.24 1.61L0.11 0.11L1.61 -1.24L3.26 -2.45L5.08 -3.53L7.09 -4.48L9.32 -5.32L11.8 -6.04L14.59 -6.64L17.77 -7.13L21.5 -7.51L26.07 -7.78L32.28 -7.95L50 -8L67.72 -7.95L73.93 -7.78L78.5 -7.51L82.23 -7.13L85.41 -6.64L88.2 -6.04L90.68 -5.32L92.91 -4.48L94.92 -3.53L96.74 -2.45L98.39 -1.24L99.89 0.11L101.24 1.61L102.45 3.26L103.53 5.08L104.48 7.09L105.32 9.32L106.04 11.8L106.64 14.59L107.13 17.77L107.51 21.5L107.78 26.07L107.95 32.28Z" fill="none" stroke="#2b1d14" stroke-width="4"/><g class="wa-core"><path d="M100 50L99.95 65.28L99.81 70.63L99.58 74.57L99.25 77.78L98.83 80.53L98.31 82.93L97.69 85.07L96.97 86.99L96.14 88.72L95.21 90.3L94.17 91.72L93.01 93.01L91.72 94.17L90.3 95.21L88.72 96.14L86.99 96.97L85.07 97.69L82.93 98.31L80.53 98.83L77.78 99.25L74.57 99.58L70.63 99.81L65.28 99.95L50 100L34.72 99.95L29.37 99.81L25.43 99.58L22.22 99.25L19.47 98.83L17.07 98.31L14.93 97.69L13.01 96.97L11.28 96.14L9.7 95.21L8.28 94.17L6.99 93.01L5.83 91.72L4.79 90.3L3.86 88.72L3.03 86.99L2.31 85.07L1.69 82.93L1.17 80.53L0.75 77.78L0.42 74.57L0.19 70.63L0.05 65.28L0 50L0.05 34.72L0.19 29.37L0.42 25.43L0.75 22.22L1.17 19.47L1.69 17.07L2.31 14.93L3.03 13.01L3.86 11.28L4.79 9.7L5.83 8.28L6.99 6.99L8.28 5.83L9.7 4.79L11.28 3.86L13.01 3.03L14.93 2.31L17.07 1.69L19.47 1.17L22.22 0.75L25.43 0.42L29.37 0.19L34.72 0.05L50 0L65.28 0.05L70.63 0.19L74.57 0.42L77.78 0.75L80.53 1.17L82.93 1.69L85.07 2.31L86.99 3.03L88.72 3.86L90.3 4.79L91.72 5.83L93.01 6.99L94.17 8.28L95.21 9.7L96.14 11.28L96.97 13.01L97.69 14.93L98.31 17.07L98.83 19.47L99.25 22.22L99.58 25.43L99.81 29.37L99.95 34.72Z" fill="#2b1d14"/><circle cx="50" cy="50" r="33" fill="none" stroke="#ffffff" stroke-width="1.5" opacity=".25"/><circle class="chief-dot" data-webagent="desk-bread" cx="50" cy="17" r="7" fill="#9c5725" stroke="#ffffff" stroke-width="2.4"/><circle class="chief-dot" data-webagent="desk-cakes" cx="73.33" cy="26.67" r="7" fill="#8e3b46" stroke="#ffffff" stroke-width="2.4"/><circle class="chief-dot" data-webagent="desk-orders" cx="83" cy="50" r="7" fill="#3b2416" stroke="#ffffff" stroke-width="2.4"/><circle class="chief-dot" data-webagent="desk-visit" cx="73.33" cy="73.33" r="7" fill="#ad8b22" stroke="#ffffff" stroke-width="2.4"/><circle class="chief-dot" data-webagent="editor" cx="50" cy="83" r="7" fill="#577035" stroke="#ffffff" stroke-width="2.4"/><circle class="chief-dot" data-webagent="cashier" cx="26.67" cy="73.33" r="7" fill="#11734a" stroke="#ffffff" stroke-width="2.4"/><circle class="chief-dot" data-webagent="guardian" cx="17" cy="50" r="7" fill="#2b1d14" stroke="#ffffff" stroke-width="2.4"/><circle class="chief-dot" data-webagent="caretaker" cx="26.67" cy="26.67" r="7" fill="#3d5a1f" stroke="#ffffff" stroke-width="2.4"/><text x="50" y="52" text-anchor="middle" dominant-baseline="central" font-family="&#39;Young Serif&#39;, Georgia, &#39;Times New Roman&#39;, serif" font-size="34" fill="#ffffff">K</text></g><circle class="wa-dot" cx="96" cy="4" r="11" fill="#b26b00" stroke="var(--wa-ground, #ffffff)" stroke-width="5"/></svg>

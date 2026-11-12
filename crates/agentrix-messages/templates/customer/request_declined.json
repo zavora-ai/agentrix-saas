@@ -1,0 +1,18 @@
+{
+ "site": {
+  "name": "Kilele Bakery",
+  "host": "kilele-bakery-sample.agentrix.website",
+  "sample": true,
+  "owner": "Wanjiru",
+  "accent": "#3b2416",
+  "url": "https://kilele-bakery-sample.agentrix.website"
+ },
+ "person": {
+  "name": "Njeri"
+ },
+ "request": {
+  "number": "KB-1043",
+  "summary": "A 2-tier lemon sponge for Amina, forest-green ombré with berries.",
+  "reason": "We're full for 2-tier cakes that Saturday. A 1-tier lemon sponge for 15 on Sun 22 Nov works."
+ }
+}

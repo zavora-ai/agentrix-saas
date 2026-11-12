@@ -1,0 +1,23 @@
+{
+ "site": {
+  "name": "Kilele Bakery",
+  "host": "kilele-bakery-sample.agentrix.website",
+  "sample": true
+ },
+ "person": {
+  "name": "Wanjiru"
+ },
+ "console_url": "https://agentrix.website/console/kilele-bakery-sample",
+ "change": {
+  "kind": "changed",
+  "plan": "Commerce",
+  "price": 149,
+  "currency": "USD",
+  "charge": 35.0,
+  "effective": "The upgrade applies now. The Cashier can take payments from today.",
+  "stops": null,
+  "paid_until": null,
+  "closes_on": null,
+  "url": "https://agentrix.website/billing?site=kilele-bakery-sample"
+ }
+}

@@ -1,0 +1,167 @@
+{
+  "wallet": "agentrix/cashier",
+  "checkpoint": {
+    "size": 6,
+    "root_hash": "c3a23037b45bb28c442c4ccbbf971f489369accf91a4568678767be493f21d55",
+    "state": "matches",
+    "checked_at": "2026-11-10T17:57:43.489692Z",
+    "words": "Matches PayPal as of 20:57 EAT"
+  },
+  "history": [
+    {
+      "size": 4,
+      "root_hash": "6cae2885635c873aa710881eee5b99faf2e041a9c5b97f6bc09ae0c846110128",
+      "state": "matches",
+      "checked_at": "2026-11-10T17:52:03.978694Z",
+      "words": "Matches PayPal as of 20:52 EAT"
+    },
+    {
+      "size": 5,
+      "root_hash": "94c975d1c81839c3004bb19c7f54fe19393ab4f42affaadf54b894fd53240f8b",
+      "state": "matches",
+      "checked_at": "2026-11-10T17:52:26.532996Z",
+      "words": "Matches PayPal as of 20:52 EAT"
+    },
+    {
+      "size": 6,
+      "root_hash": "c3a23037b45bb28c442c4ccbbf971f489369accf91a4568678767be493f21d55",
+      "state": "matches",
+      "checked_at": "2026-11-10T17:57:43.489692Z",
+      "words": "Matches PayPal as of 20:57 EAT"
+    }
+  ],
+  "entries": [
+    {
+      "wallet": "agentrix/cashier",
+      "seq": 0,
+      "at": "2026-11-10T17:51:56Z",
+      "kind": "capture",
+      "amount": {
+        "currency": "USD",
+        "minor": 1900
+      },
+      "paypal": {
+        "kind": "capture",
+        "id": "3KT78856M2504654G"
+      },
+      "paypal_status": "COMPLETED",
+      "counterparty": {
+        "name": "Kilele Bakery",
+        "email": "kilele-seller@business.example.com",
+        "company": "kilele-bakery"
+      },
+      "cause": {
+        "cause": "order",
+        "order": "58F11926XN127970R",
+        "reference": "agentrix-saas/wallet/1a1c6967e45"
+      },
+      "acting": "agentrix/receivables",
+      "authority": {
+        "authority": "approval",
+        "fingerprint": "sha256:9afe60b6ba632d001113bd8647fcf1cc7bb6e3a8449045194e75643a093ffa8a",
+        "approved_by": "operator (wallet_capture example)"
+      },
+      "source": {
+        "source": "read_back",
+        "call": "GET /v2/payments/captures/3KT78856M2504654G"
+      }
+    },
+    {
+      "wallet": "agentrix/cashier",
+      "seq": 1,
+      "at": "2026-11-10T17:51:56Z",
+      "kind": "fee",
+      "amount": {
+        "currency": "USD",
+        "minor": -104
+      },
+      "paypal": {
+        "kind": "capture",
+        "id": "3KT78856M2504654G"
+      },
+      "paypal_status": "COMPLETED",
+      "counterparty": {
+        "name": "Kilele Bakery",
+        "email": "kilele-seller@business.example.com",
+        "company": "kilele-bakery"
+      },
+      "cause": {
+        "cause": "order",
+        "order": "58F11926XN127970R",
+        "reference": "agentrix-saas/wallet/1a1c6967e45"
+      },
+      "acting": "agentrix/receivables",
+      "authority": {
+        "authority": "approval",
+        "fingerprint": "sha256:9afe60b6ba632d001113bd8647fcf1cc7bb6e3a8449045194e75643a093ffa8a",
+        "approved_by": "operator (wallet_capture example)"
+      },
+      "source": {
+        "source": "read_back",
+        "call": "GET /v2/payments/captures/3KT78856M2504654G"
+      }
+    }
+  ],
+  "matches": [
+    {
+      "seq": 0,
+      "kind": "capture",
+      "amount": {
+        "currency": "USD",
+        "minor": 1900
+      },
+      "paypal": {
+        "kind": "capture",
+        "id": "3KT78856M2504654G"
+      },
+      "paypal_status": "COMPLETED",
+      "paypal_amount": {
+        "currency": "USD",
+        "minor": 1900
+      },
+      "books": {
+        "payment": "b0154c7e-d656-4589-be69-6e136a6d420d",
+        "journal": "9defb496-a64a-459b-b2b9-ef6ebaca0874",
+        "fee_journal": "811bd9b2-143e-490d-9381-5588e175ea22",
+        "payment_number": "PAY-2026-0009",
+        "journal_number": "JE-2026-0029",
+        "fee_journal_number": "JE-2026-0030"
+      },
+      "books_amount": {
+        "currency": "USD",
+        "minor": 1900
+      },
+      "state": "matched"
+    },
+    {
+      "seq": 1,
+      "kind": "fee",
+      "amount": {
+        "currency": "USD",
+        "minor": -104
+      },
+      "paypal": {
+        "kind": "capture",
+        "id": "3KT78856M2504654G"
+      },
+      "paypal_status": "COMPLETED",
+      "paypal_amount": {
+        "currency": "USD",
+        "minor": -104
+      },
+      "books": {
+        "payment": null,
+        "journal": "811bd9b2-143e-490d-9381-5588e175ea22",
+        "fee_journal": "811bd9b2-143e-490d-9381-5588e175ea22",
+        "payment_number": null,
+        "journal_number": "JE-2026-0030",
+        "fee_journal_number": "JE-2026-0030"
+      },
+      "books_amount": {
+        "currency": "USD",
+        "minor": -104
+      },
+      "state": "matched"
+    }
+  ]
+}

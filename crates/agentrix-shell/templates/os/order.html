@@ -1,0 +1,79 @@
+{% extends "os/base.html" %}
+{#- ShellPage::Order · view::OrderView (+ Chrome) {
+      o: OrderDetail { id, reference, reference_given, filter, label, tone, name, email, what, wanted, placed, source,
+                       source_words, decision_href, waiting, decided_words, expires_words, next_words,
+                       payments: [PaymentLine { id, provider, amount, label, tone, sandbox, at }],
+                       refunds: [RefundLine { id, amount, label, tone, at, receipt? }],
+                       receipts: [OrderReceiptLine { href, words, at, short }], customer_href, other_orders } }
+    One order, after the sample back office's owner/order.html. Approve and decline open the order's decision card
+    (the frozen approve contract); nothing on this page changes the order. -#}
+{% block title %}Order from {{ o.name or "a customer" }} · {{ site.name }}{% endblock %}
+{% block field %}
+<section class="view on" aria-labelledby="order-h">
+  <p class="small"><a href="{{ base }}/orders">← Orders</a></p>
+  <div class="field-head"><div><h2 id="order-h">Order from {{ o.name or "a customer" }}</h2><div class="sub">Came in {{ o.placed }} · {{ o.source }}{% if o.reference_given %} · {{ o.reference }}{% endif %}</div></div>{{ ui.chip(o.label, o.tone) }}</div>
+  <div class="cards">
+    <article class="fcard span2">
+      <h3>What they asked for</h3>
+      <p>{{ o.what or "The order says nothing about what to make." }}</p>
+      <dl class="kv">
+        <dt>Wanted</dt><dd>{{ o.wanted or "No date given" }}</dd>
+        <dt>Came in</dt><dd>{{ o.placed }} · {{ o.source }}</dd>
+        {% if o.reference_given %}<dt>Reference</dt><dd class="mono">{{ o.reference }}</dd>{% endif %}
+      </dl>
+      <p class="small muted">{{ o.source_words }}</p>
+    </article>
+
+    <article class="fcard accent">
+      <h3>{{ "Needs your answer" if o.waiting else "Where it is" }}</h3>
+      <p>{{ o.next_words }}</p>
+      {% if o.expires_words %}<p class="small muted">{{ o.expires_words }}</p>{% endif %}
+      {% if o.decided_words %}<p class="small">{{ o.decided_words }}</p>{% endif %}
+      {% if o.waiting %}
+      <div class="verbs"><a class="btn btn-primary btn-sm" href="{{ o.decision_href }}">Approve or decline</a></div>
+      {% else %}
+      <div class="verbs"><a class="btn btn-sm btn-ghost" href="{{ o.decision_href }}">See your decision</a></div>
+      {% endif %}
+    </article>
+
+    <article class="fcard">
+      <h3>Customer</h3>
+      <dl class="kv">
+        <dt>Name</dt><dd>{{ o.name or "Not given" }}</dd>
+        {% if o.email %}<dt>Email</dt><dd>{{ o.email }}</dd>{% endif %}
+        <dt>Other orders</dt><dd>{{ o.other_orders }}</dd>
+      </dl>
+      {% if o.customer_href %}<div class="verbs"><a class="btn btn-sm" href="{{ o.customer_href }}">Open their page</a></div>{% endif %}
+    </article>
+
+    <article class="fcard span2">
+      <h3>Payment</h3>
+      {% if o.payments %}
+      <div class="table-wrap"><table class="data">
+        <thead><tr><th scope="col">Payment</th><th scope="col" class="hide-sm">Through</th><th scope="col" class="r">Amount</th><th scope="col">State</th><th scope="col" class="hide-sm">When</th></tr></thead>
+        <tbody>{% for p in o.payments %}<tr><td class="mono">{{ p.id }}</td><td class="hide-sm">{{ p.provider }}</td><td class="r">{{ p.amount }}</td><td>{{ ui.chip(p.label, p.tone) }}{% if p.sandbox %} {{ ui.chip("Test payment, no money moved") }}{% endif %}</td><td class="hide-sm">{{ p.at }}</td></tr>{% endfor %}</tbody>
+      </table></div>
+      {% if o.refunds %}
+      <h4>Refunds</h4>
+      <div class="table-wrap"><table class="data">
+        <thead><tr><th scope="col">Refund</th><th scope="col" class="r">Amount</th><th scope="col">State</th><th scope="col" class="hide-sm">When</th></tr></thead>
+        <tbody>{% for r in o.refunds %}<tr><td class="mono">{% if r.receipt %}<a href="/receipts/{{ r.receipt }}">{{ r.id }}</a>{% else %}{{ r.id }}{% endif %}</td><td class="r">{{ r.amount }}</td><td>{{ ui.chip(r.label, r.tone) }}</td><td class="hide-sm">{{ r.at }}</td></tr>{% endfor %}</tbody>
+      </table></div>
+      {% endif %}
+      <p class="small muted">Refunds through PayPal aren't switched on for your site yet, so there's no refund button here.</p>
+      {% else %}
+      <p class="quiet">No payment on this order. The agent door takes no payment, so nothing was charged.</p>
+      {% endif %}
+    </article>
+
+    <article class="fcard">
+      <h3>Receipts</h3>
+      {% if o.receipts %}
+      <ul>{% for r in o.receipts %}<li><a href="{{ r.href }}">{{ r.words }}</a> <span class="small muted">{{ r.at }} · <span class="mono">{{ r.short }}</span></span></li>{% endfor %}</ul>
+      {% else %}
+      <p class="quiet">No receipts on this order yet. The receipt for your decision appears here once you answer.</p>
+      {% endif %}
+    </article>
+  </div>
+</section>
+{% endblock %}

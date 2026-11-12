@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light">
+<title>{% block title %}{% endblock %} · Agentrix</title>
+<meta name="description" content="{% block description %}Agentrix moves your website to WebAgents that answer customers, take orders and ask you before anything that matters. By Zavora.{% endblock %}">
+<link rel="stylesheet" href="/static/ui/brand.css?v={{ ui_v }}">
+<link rel="stylesheet" href="/static/onboarding/onboarding.css?v={{ onboarding_v }}">
+{% block head %}{% endblock %}
+</head>
+<body class="{% block body_class %}{% endblock %}">
+<a class="skip" href="#main">Skip to content</a>
+<header class="topbar">
+  <a class="logo" href="/"><span class="mark" aria-hidden="true"></span>Agentrix</a>
+  <div class="topbar-right">{% block topright %}<a class="btn btn-ghost btn-sm" href="/account/signin">Sign in</a>{% endblock %}</div>
+</header>
+<main id="main" class="wrap">
+{% block main %}{% endblock %}
+</main>
+<footer class="concept-foot">
+  <div class="wrap row">
+    <span>Agentrix WebAgent Platform · a Zavora product · built on ADK-Rust · runs on Vultr</span>
+    <span>Open source (MIT) · <a href="/.well-known/agentrix/keys">The key our receipts are signed with</a></span>
+  </div>
+</footer>
+{% block scripts %}{% endblock %}
+</body>
+</html>

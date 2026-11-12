@@ -1,0 +1,12 @@
+{% extends "owner/base.html" %}
+{% block field %}{% import "owner/macros.html" as m %}
+<div class="field-head"><div><h1>That isn't here</h1><div class="sub">{{ words }}</div></div></div>
+<div class="cards">
+  {% for s in c.sites %}
+  <article class="fcard">
+    <div class="fcard-head"><span class="sys">{{ m.icon("grid") }}</span><div class="who"><b>{{ s.name }}</b><span class="state-line">{% if s.loaded %}Sample {{ s.kind }}{% else %}Not loaded in this build{% endif %}</span></div></div>
+    {% if s.loaded %}<div class="verbs"><a class="btn btn-sm btn-primary" href="{{ s.href }}">Open the owner view</a></div>{% endif %}
+  </article>
+  {% endfor %}
+</div>
+{% endblock %}

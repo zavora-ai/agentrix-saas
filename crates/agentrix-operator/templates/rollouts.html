@@ -1,0 +1,57 @@
+{% extends "layout.html" %}
+{#- X2/X21 Rollouts (concept/control-plane/rollout.html). No release train runs yet; this shows
+    the rings as they'd be sized today and the artefacts that really reach sites. -#}
+{% block title %}Rollouts{% endblock %}
+{% block field %}
+<div class="field-head">
+  <div><h2>Rollouts</h2><div class="sub">No release train runs yet. Each platform version ships as one deploy, and every deploy re-runs the gauntlet on every live site.</div></div>
+  <div class="row"><a class="btn btn-sm" href="/cli">Zavora CLI and packs</a><span class="chip">No train in flight</span>{% if r.rollbacks_30d %}<span class="chip chip-wait">{{ r.rollbacks_30d }} site release rollback{{ "" if r.rollbacks_30d == 1 else "s" }} in 30 days (receipts)</span>{% endif %}</div>
+</div>
+<div class="cp-grid">
+  <article class="card tight">
+    <div class="card-title"><h4>Rings</h4><span class="small muted">sized from today's live sites</span></div>
+    <div class="rings">
+      <div class="ring"><b>Ring 0</b><span>Zavora's own sites · {{ r.ring0 }} sample and fixture site{{ "" if r.ring0 == 1 else "s" }} · 24 h bake</span></div>
+      <div class="ring next"><b>Ring 1</b><span>Canary cohort · {{ r.ring1 }} opted in: owners can't opt in yet</span></div>
+      <div class="ring next"><b>Ring 2</b><span>10% · {{ ring2 }} of {{ r.customers }} customer site{{ "" if r.customers == 1 else "s" }}</span></div>
+      <div class="ring next"><b>Ring 3</b><span>50% · {{ ring3 }} site{{ "" if ring3 == 1 else "s" }}</span></div>
+      <div class="ring next"><b>Ring 4</b><span>All · {{ r.customers }} site{{ "" if r.customers == 1 else "s" }}</span></div>
+    </div>
+    <p class="gapnote">Not built yet: waves, canary against a control group and two-person promotion (planned with the fleet profile).</p>
+  </article>
+
+  <div class="cp-grid cols-2e">
+    <article class="card tight">
+      <div class="card-title"><h4>Gates</h4><span class="small muted">what a train must pass</span></div>
+      <ul class="gates">
+        <li class="{{ '' if r.gauntlet_week[0] and r.gauntlet_week[0] == r.gauntlet_week[1] else ('failed' if r.gauntlet_week[0] else 'paused') }}"><span>Containment gauntlet on live sites</span><span class="r">{% if r.gauntlet_week[0] %}{{ r.gauntlet_week[1] }} of {{ r.gauntlet_week[0] }} runs held every attack · last 7 days{% else %}no runs{% endif %}</span></li>
+        <li class="paused"><span>Scenarios S1 to S19, scripted</span><span class="r">not recorded</span></li>
+        <li class="paused"><span>Cross-tenant suite, with operator and partner tokens</span><span class="r">not recorded</span></li>
+        <li class="paused"><span>Approval and release integrity</span><span class="r">not recorded</span></li>
+        <li class="paused"><span>WebAgent evaluation suites against baselines</span><span class="r">not recorded</span></li>
+        <li class="paused"><span>cargo-deny, cargo-audit, SBOM, signatures</span><span class="r">not recorded</span></li>
+      </ul>
+      <p class="gapnote">Only the gauntlet writes results the platform can read today; the rest run in CI and aren't recorded here yet.</p>
+    </article>
+
+    <article class="card tight">
+      <div class="card-title"><h4>Artefacts that reached sites</h4><span class="small muted">each told its owners with a receipt</span></div>
+      <ul class="artefacts">
+        {%- for title, at, sites in r.routing %}
+        <li><span><b>Model routing</b> · {{ title }}</span><span class="small muted">{{ sites }} site{{ "" if sites == 1 else "s" }} told · {{ at|when }} {{ shell.zone }}</span></li>
+        {%- else %}
+        <li><span class="muted">No model route change has reached a site yet.</span><span></span></li>
+        {%- endfor %}
+      </ul>
+      <h4 style="margin-top:12px">Site releases signed, last 7 days</h4>
+      <ul class="rows">
+        {%- for day, n in r.releases_by_day %}
+        <li><span class="dot"></span><span>{{ n }} release{{ "" if n == 1 else "s" }}</span><span class="meta">{{ day }}</span></li>
+        {%- else %}
+        <li><span></span><span class="small muted">No site release was signed in the last 7 days.</span><span></span></li>
+        {%- endfor %}
+      </ul>
+    </article>
+  </div>
+</div>
+{% endblock %}

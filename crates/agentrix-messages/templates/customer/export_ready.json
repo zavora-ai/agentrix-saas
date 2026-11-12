@@ -1,0 +1,2 @@
+{"site": {"name": "Kilele Bakery", "host": "kilele-bakery-sample.agentrix.website", "sample": true, "owner": "Wanjiru", "accent": "#3b2416", "url": "https://kilele-bakery-sample.agentrix.website"}, "person": {"name": "Njeri"},
+ "export": {"contents": "your account details, orders, receipts, your choices with their consent receipts, and your threads with the desks", "url": "https://kilele-bakery-sample.agentrix.website/account/data", "expires": "Thu 19 Nov, 09:00"}}

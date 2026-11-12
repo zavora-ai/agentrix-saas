@@ -1,0 +1,38 @@
+{#- Shared pieces for the onboarding pages. Views pass display-ready strings. -#}
+
+{% macro icon(name) -%}
+{%- if name == "lock" -%}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>
+{%- elif name == "globe" -%}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg>
+{%- elif name == "check" -%}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg>
+{%- elif name == "x" -%}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7l10 10M17 7L7 17"/></svg>
+{%- elif name == "arrow" -%}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+{%- elif name == "passkey" -%}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 11c0 3-1 6-3 8M8.5 7.5A5 5 0 0 1 17 11c0 1.5-.2 3-.6 4.4M6.3 10A6.5 6.5 0 0 1 9 5.6M12 14.5c-.2 1.8-.8 3.5-1.7 5M15.3 17.5c-.3 1-.7 2-1.2 2.9M4 13.5c.4-1 .6-2 .6-3"/></svg>
+{%- endif -%}
+{%- endmacro %}
+
+{% macro seal() -%}<span class="seal">{{ icon("lock") }}</span>{%- endmacro %}
+
+{% macro fixture_label(fixture) -%}
+{% if fixture %}<span class="chip chip-outline" title="This site is a fixture: an infected WordPress that Zavora hosts for demonstrations.">Zavora's fixture</span>{% endif %}
+{%- endmacro %}
+
+{% macro severity_chip(f) -%}
+<span class="chip {{ f.chip }}">{{ f.severity_words }} · {{ f.area }}</span>
+{%- endmacro %}
+
+{% macro finding(f) -%}
+<article class="finding" id="finding-{{ f.id }}">
+  {{ severity_chip(f) }}
+  <h4>{{ f.title }}</h4>
+  <p>{{ f.plain }}</p>
+  {% if f.evidence %}
+  <details>
+    <summary>Evidence{% if f.evidence|length > 1 %} ({{ f.evidence|length }}){% endif %}</summary>
+    {% for e in f.evidence %}
+    <p class="evidence-label">{{ e.label }}{% if e.receipt %} · <a href="/receipts/{{ e.receipt }}">receipt</a>{% endif %}</p>
+    {% if e.excerpt %}<pre>{{ e.excerpt }}</pre>{% endif %}
+    {% endfor %}
+  </details>
+  {% endif %}
+</article>
+{%- endmacro %}

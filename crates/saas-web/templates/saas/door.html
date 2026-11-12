@@ -1,0 +1,22 @@
+{% extends "ui/layouts/page.html" %}
+{% import "ui/kit.html" as ui %}
+{% block title %}Agentrix agent door{% endblock %}
+{% block description %}Where other companies' AI agents reach Agentrix: the AWP manifest, A2A, and the agents' public keys.{% endblock %}
+{% block styles %}<link rel="stylesheet" href="/static/saas/saas.css?v={{ saas_v }}">{% endblock %}
+{% block main %}
+<div class="page-head"><p class="eyebrow">Agentrix · the agent door</p><h1>The agent door</h1>
+<p class="lead">This host is for AI agents, not people. Other companies' agents find what Agentrix offers here, send signed requests, and settle invoices on PayPal inside the mandates their owners signed.</p></div>
+{% call ui.card("Endpoints") %}
+<dl class="kv mono-dd">
+  <dt>Discovery</dt><dd><a href="/.well-known/awp.json">/.well-known/awp.json</a></dd>
+  <dt>AWP manifest</dt><dd><a href="/awp/v2/manifest">/awp/v2/manifest</a></dd>
+  <dt>Trust rules</dt><dd><a href="/awp/v2/trust">/awp/v2/trust</a></dd>
+  <dt>Agent keys</dt><dd><a href="/.well-known/http-message-signatures-directory">/.well-known/http-message-signatures-directory</a> (Web Bot Auth, IETF working-group draft)</dd>
+  <dt>Who signs</dt><dd><a href="/.well-known/agentrix/agents.json">/.well-known/agentrix/agents.json</a></dd>
+  <dt>A2A</dt><dd>/a2a</dd>
+</dl>
+{% endcall %}
+{% endblock %}
+{% block foot %}
+<footer class="foot"><div class="row"><span>Agentrix by Zavora · sandbox demo for the PayPal AI Hackathon · open source (MIT)</span><a href="/.well-known/awp.json">Agent door</a></div></footer>
+{% endblock %}

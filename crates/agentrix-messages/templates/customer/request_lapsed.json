@@ -1,0 +1,19 @@
+{
+ "site": {
+  "name": "Kilele Bakery",
+  "host": "kilele-bakery-sample.agentrix.website",
+  "sample": true,
+  "owner": "Wanjiru",
+  "accent": "#3b2416",
+  "url": "https://kilele-bakery-sample.agentrix.website"
+ },
+ "person": {
+  "name": "Amani"
+ },
+ "request": {
+  "number": "KB-1044",
+  "summary": "A 2-tier vanilla sponge, smooth cream finish, to collect Sat 14 Nov at 10:00.",
+  "expired_at": "Thu 12 Nov, 20:00",
+  "url": "https://kilele-bakery-sample.agentrix.website/orders/KB-1044"
+ }
+}

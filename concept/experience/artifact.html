@@ -1,0 +1,342 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Website Artifacts</title>
+<meta name="description" content="Concept: a visitor and a WebAgent make a gift plan together, share it with friends who each choose, and turn it into one order the owner confirms.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Manrope:wght@600;700;800&family=Cormorant+Garamond:wght@600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../styles.css">
+<link rel="stylesheet" href="experience.css">
+<style>
+  .shop {
+    --cp-ink: #1c1719; --cp-ink-2: #5b5056; --cp-bg: #f7f3ee; --cp-line: #e7ddd2; --cp-gold: #a8842f; --cp-plum: #4a2340; --cp-dark: #1a1418;
+    --serif: "Cormorant Garamond", Georgia, serif;
+    --wa-bg: #ffffff; --wa-soft: #f7f3ee; --wa-ink: #1c1719; --wa-ink-2: #5b5056; --wa-line: #e7ddd2;
+    --wa-accent: #4a2340; --wa-accent-2: #a8842f; --wa-on-accent: #fff; --wa-display: "Cormorant Garamond", Georgia, serif;
+    background: var(--cp-bg); color: var(--cp-ink); font-family: var(--font-text);
+  }
+  .viewas { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 12px; }
+  .viewas .segmented button { font-size: 12.5px; padding: 9px 12px; }
+  .s-head { background: var(--cp-dark); color: #efe7dc; padding: 12px clamp(14px, 3vw, 24px); display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+  .s-logo { font: 700 24px/1 var(--serif); color: #f4ece1; text-decoration: none; }
+  .s-logo span { color: var(--cp-gold); }
+  .s-head .who { margin-left: auto; font: 600 12.5px/1.2 var(--font-text); color: #cfc4b8; display: flex; align-items: center; gap: 8px; }
+  .s-head .who i { width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; background: #3a2c33; color: #fff; font: 800 11px/1 var(--font-text); font-style: normal; }
+  .split { display: grid; grid-template-columns: minmax(0, 380px) minmax(0, 1fr); min-height: 760px; }
+  .left { border-right: 1px solid var(--cp-line); background: #fff; display: flex; flex-direction: column; min-width: 0; }
+  .left-head { display: flex; align-items: center; gap: 10px; padding: 14px 16px; border-bottom: 1px solid var(--cp-line); }
+  .left-head .who { flex: 1; min-width: 0; }
+  .left-head b { display: block; font: 700 19px/1.1 var(--serif); }
+  .left-head span { font-size: 12px; color: var(--cp-ink-2); }
+  .left-body { flex: 1; overflow: auto; padding: 0 16px 10px; max-height: 620px; }
+  .left-foot { border-top: 1px solid var(--cp-line); padding-bottom: 12px; }
+  .left-foot .wa-disclose { padding: 8px 16px 0; }
+  .start { margin: 14px 16px 0; padding: 12px; border-radius: 14px; background: var(--cp-bg); display: grid; gap: 10px; font-size: 13.5px; color: var(--cp-ink-2); }
+  .right { padding: clamp(14px, 2.5vw, 26px); display: grid; gap: 14px; align-content: start; min-width: 0; }
+  .art-url { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; font: 500 12px/1.2 var(--font-mono); color: var(--cp-ink-2); }
+  .art-url svg { width: 13px; height: 13px; }
+  .art-url .chip { font-family: var(--font-text); }
+  .artifact { --wa-display: "Cormorant Garamond", Georgia, serif; }
+  .artifact h2 { font-size: clamp(26px, 3vw, 34px); }
+  .meterline { display: grid; gap: 6px; }
+  .meterline .spread { font-size: 13px; color: #5d5243; }
+  .meterline b { color: #1d1a16; }
+  .meter.over > span { background: linear-gradient(90deg, #c46b2d, #e0913f); }
+  .people { display: grid; gap: 10px; }
+  .person { display: grid; grid-template-columns: 44px minmax(0, 1fr) auto; gap: 12px; align-items: center; padding: 10px; border: 1px solid #efe8dc; border-radius: 14px; background: #fff; }
+  .person.me { border-color: var(--cp-plum); box-shadow: 0 0 0 3px rgba(74,35,64,.1); }
+  .person img { width: 44px; height: 44px; border-radius: 10px; object-fit: cover; }
+  .person .nm { font: 700 15px/1.2 var(--font-text); color: #1d1a16; }
+  .person .pk { font: 700 19px/1.1 var(--serif); color: #1d1a16; }
+  .person .why { font-size: 12.5px; color: #7a6e5d; margin-top: 2px; }
+  .person .pr { font: 700 13.5px/1 var(--font-text); white-space: nowrap; text-align: right; }
+  .person .st { display: flex; width: fit-content; margin-top: 6px; }
+  .person .ph { width: 44px; height: 44px; border-radius: 10px; background: repeating-linear-gradient(45deg, #f3ece1 0 6px, #ebe2d4 6px 12px); }
+  .choose { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; }
+  .choose button { border: 1.5px solid var(--cp-line); background: var(--cp-bg); border-radius: 10px; padding: 8px 10px; font: 700 12.5px/1 var(--font-text); color: var(--cp-ink); cursor: pointer; }
+  .choose button[aria-pressed="true"] { border-color: var(--cp-plum); background: var(--cp-plum); color: #fff; }
+  .note-blk { padding: 12px 14px; border-radius: 12px; background: #faf6ef; border: 1px dashed #e2d6c3; font: italic 600 18px/1.35 var(--serif); color: #3b3127; }
+  .note-blk small { display: block; margin-top: 6px; font: 600 11px/1.2 var(--font-text); font-style: normal; color: #8a7b66; letter-spacing: .02em; }
+  .plainblk { font-size: 14px; color: #3b3127; line-height: 1.5; }
+  .plainblk b { color: #1d1a16; }
+  .hist { display: grid; gap: 0; }
+  .hist div { display: grid; grid-template-columns: 34px 1fr auto; gap: 8px; padding: 8px 0; border-top: 1px dashed var(--cp-line); font-size: 12.5px; color: var(--cp-ink-2); }
+  .hist div:first-child { border-top: 0; }
+  .hist b { color: var(--cp-ink); font: 700 11px/1.6 var(--font-mono); }
+  .panel { background: #fff; border: 1px solid var(--cp-line); border-radius: 16px; padding: 14px; }
+  .panel h4 { font: 700 11px/1 var(--font-text); letter-spacing: .08em; text-transform: uppercase; color: var(--cp-ink-2); margin-bottom: 8px; }
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .owner-dec { display: grid; gap: 10px; }
+  .owner-dec .line { display: flex; justify-content: space-between; gap: 8px; font-size: 13px; color: var(--ink-2); border-bottom: 1px dashed var(--line); padding: 6px 0; }
+  .owner-dec .line b { color: var(--indigo-900); }
+  .typed { font: 500 11.5px/1.5 var(--font-mono); background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 10px; color: var(--ink-2); white-space: pre-wrap; }
+  .hidden-price { color: #b3a79a; font-weight: 600; font-size: 12px; }
+  @media (max-width: 960px) {
+    .split { grid-template-columns: 1fr; }
+    .left { border-right: 0; border-bottom: 1px solid var(--cp-line); }
+    .left-body { max-height: 440px; }
+    .two { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 480px) {
+    .viewas .segmented { display: grid; grid-auto-flow: row; width: 100%; }
+    .person { grid-template-columns: 40px minmax(0, 1fr); }
+    .person .pr { grid-column: 2; text-align: left; }
+    .s-head .who span { display: none; }
+  }
+</style>
+</head>
+<body>
+<header class="conceptbar">
+  <a class="logo" href="index.html"><span class="mark" aria-hidden="true"></span>Agentrix</a>
+  <nav aria-label="Experience concepts">
+    <a href="index.html">Experience</a>
+    <a href="nav-agents.html">Menu as WebAgents</a>
+    <a href="creator.html">Make it with me</a>
+    <a href="search.html">Agentic search</a>
+    <a href="artifact.html" aria-current="page">Artifacts</a>
+    <a href="presentation.html">Presentations</a>
+    <a href="news.html">News publisher</a>
+    <a href="../index.html">All concepts</a>
+  </nav>
+  <span class="concept-label">Concept · illustrative data</span>
+</header>
+
+<main class="wrap">
+  <div class="xp-head">
+    <span class="eyebrow">Experience 04 · Website artifacts</span>
+    <h1>Plans you make with a desk and share with friends</h1>
+    <p class="lead">An artifact is a document a visitor and a WebAgent make together on the site: a gift plan, a cake brief, a quote, a comparison, an itinerary. It has its own private link. Friends can open it, choose and ask questions, each within the permissions they were given. When it's ready, it becomes one request the owner confirms. Prices are pinned to the release they came from.</p>
+  </div>
+
+  <div class="viewas">
+    <span class="xp-note"><b>View the same artifact as</b></span>
+    <div class="segmented" role="group" aria-label="View as">
+      <button type="button" aria-pressed="true" data-view="achieng">Achieng · made it</button>
+      <button type="button" aria-pressed="false" data-view="wambui">Wambui · invited</button>
+      <button type="button" aria-pressed="false" data-view="owner">The shop owner</button>
+    </div>
+  </div>
+
+  <div class="browser">
+    <div class="browser-bar"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="url"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg><span id="url">classyperfumes.shop/gifts/plan</span></span></div>
+    <div class="shop frame-body">
+      <div class="s-head"><a class="s-logo" href="search.html">classy <span>perfumes</span></a><span class="who" id="whoTag"><i>A</i><span>Signed in as Achieng (passkey)</span></span></div>
+      <div class="split">
+        <section class="left" id="left" aria-label="Side panel"></section>
+        <section class="right" id="right" aria-label="The artifact"></section>
+      </div>
+    </div>
+  </div>
+
+  <section class="notes" aria-label="Design notes">
+    <div class="card">
+      <h3>What an artifact is</h3>
+      <ul>
+        <li>A <b>typed document</b> (brief, plan, quote, comparison, itinerary, deck) made of safe blocks. No raw HTML, uploads or outside links, so it can't be used for phishing.</li>
+        <li><b>Its own link</b>, never indexed. Visibility is private, link or named people. Each person gets a permission: view, comment, choose or request.</li>
+        <li><b>Facts pinned to a release</b>, like a quote: prices hold until a date, and changed facts are flagged.</li>
+        <li><b>Visitor-written blocks are marked</b> and treated as untrusted when a WebAgent reads them.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>What the owner gets</h3>
+      <ul>
+        <li>One plan turns five separate decisions into <b>one order</b>.</li>
+        <li>Every shared link carries the shop's brand into a group chat: <b>word of mouth with a working "buy" inside</b>.</li>
+        <li>The owner sees the plan only if the visitor allows it. Back-office WebAgents get only typed fields.</li>
+        <li>Artifacts expire after 30 days unless saved.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Artifacts never</h3>
+      <ul class="never">
+        <li>Become public pages or appear in search engines</li>
+        <li>Let a recipient order or pay unless the creator allowed it</li>
+        <li>Show a recipient the prices if the creator hid them</li>
+        <li>Let text someone typed change what the WebAgent may do</li>
+      </ul>
+    </div>
+  </section>
+</main>
+
+<div class="sheet-back" id="shareSheet" role="dialog" aria-modal="true" aria-labelledby="shareTitle">
+  <div class="sheet">
+    <div class="sheet-head"><b id="shareTitle" style="font:800 18px/1.2 var(--font-display);color:var(--indigo-900)">Share with your bridesmaids</b><button class="icon-btn" type="button" data-close aria-label="Close"></button></div>
+    <div class="sheet-body">
+      <div class="opt-row"><div><b>Named people only</b><span>Wambui, Njeri, Atieno, Muthoni, Zawadi each get their own private link on WhatsApp</span></div><button class="switch" role="switch" aria-checked="true" aria-label="Named people only"></button></div>
+      <div class="opt-row"><div><b>Each can choose between her two options</b><span>She sees only her own row to choose from</span></div><button class="switch" role="switch" aria-checked="true" aria-label="Allow choosing"></button></div>
+      <div class="opt-row"><div><b>Hide prices from them</b><span>It's a gift. They see scents, not amounts.</span></div><button class="switch" role="switch" aria-checked="true" aria-label="Hide prices"></button></div>
+      <div class="opt-row"><div><b>They can place the order</b><span>Off: only you can request it</span></div><button class="switch" role="switch" aria-checked="false" aria-label="Allow them to order"></button></div>
+      <div class="opt-row"><div><b>Let Classy Perfumes see this plan</b><span>Needed to order. The shop sees the plan, not your chat.</span></div><button class="switch" role="switch" aria-checked="true" aria-label="Owner can see"></button></div>
+      <p class="small muted">Links expire in 30 days. Prices are held until 14 Nov from release v31. You can revoke any link at any time.</p>
+    </div>
+    <div class="sheet-foot"><button class="btn" type="button" data-close>Cancel</button><button class="btn btn-primary" type="button" id="doShare">Send five private links</button></div>
+  </div>
+</div>
+
+<footer class="concept-foot"><div class="wrap row"><span><a href="search.html">← Agentic search</a> · <a href="presentation.html">Next: presentations →</a></span><span>Concept screens with illustrative data. People and orders are fictional.</span></div></footer>
+
+<script src="experience.js"></script>
+<script>
+(() => {
+  const { I, esc, answer, visitor, presence, toast, wait, point } = XP;
+  const DESK = { name: "Gifts", color: "#4a2340", icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="9" width="16" height="11" rx="1.5"/><path d="M3 9h18M12 9v11M12 9c-2.5 0-4-1.2-4-2.7S9.5 4 12 9zm0 0c2.5 0 4-1.2 4-2.7S14.5 4 12 9z"/></svg>' };
+  const C = {
+    citrus: { name: "Citrus Dawn", price: 4900, img: "img/citrus.jpg", note: "bergamot and neroli, light and clean" },
+    rain: { name: "Rain Oud", price: 5800, img: "img/rain.jpg", note: "petrichor and oud, the long-rains run" },
+    vanilla: { name: "Vanilla Gift Set", price: 4500, img: "img/vanilla.jpg", note: "vanilla candle and travel spray, wrapped" },
+    amber: { name: "Amber Noir", price: 6400, img: "img/amber.jpg", note: "amber and smoked vanilla, for evenings" },
+  };
+  const S = {
+    built: false, step: 0, swapped: false, shared: false, requested: false,
+    rows: [
+      { who: "Wambui", word: "fresh, sporty", pick: "citrus", alt: "rain", chosen: null },
+      { who: "Njeri", word: "loves vanilla", pick: "vanilla", alt: "amber", chosen: null },
+      { who: "Atieno", word: "evenings out", pick: "amber", alt: "rain", chosen: null },
+      { who: "Muthoni", word: "not sure", pick: "vanilla", alt: "citrus", chosen: null },
+      { who: "Zawadi", word: "hates strong perfume", pick: "citrus", alt: "vanilla", chosen: null },
+    ],
+    hist: [],
+  };
+  const BUDGET = 25000;
+  const ksh = n => "KSh " + n.toLocaleString("en-KE");
+  const total = () => S.rows.reduce((a, r) => a + C[r.chosen || r.pick].price, 0);
+  let view = "achieng";
+  const left = document.getElementById("left"), right = document.getElementById("right");
+  const addHist = (who, what) => { S.hist.push([`v${S.hist.length + 1}`, who, what]); };
+
+  /* ---------- The artifact ---------- */
+  function renderArtifact(fresh = -1) {
+    if (!S.built && S.step === 0) { right.innerHTML = `<div class="artifact" style="padding:40px 20px;text-align:center;color:#8a7b66"><div class="artifact-kind">Plan · not started</div><p style="margin-top:8px">The plan appears here as you and the Gifts WebAgent make it.</p></div>`; return; }
+    const hidePrices = view === "wambui";
+    const rowsShown = S.rows.slice(0, S.built ? 5 : Math.max(0, S.step - 1));
+    const t = rowsShown.reduce((a, r) => a + C[r.chosen || r.pick].price, 0), over = t > BUDGET;
+    const blocks = [];
+    blocks.push(`<div class="meterline blk ${fresh === 1 ? "fresh" : ""}">${hidePrices ? `<div class="spread"><span>Budget</span><b>Hidden by Achieng</b></div>` : `<div class="spread"><span>Budget ${ksh(BUDGET)}</span><b>${ksh(t)} ${over ? `· ${ksh(t - BUDGET)} over` : `· ${ksh(BUDGET - t)} left`}</b></div><div class="meter ${over ? "over" : "ok"}"><span style="width:${Math.min(100, t / BUDGET * 100)}%"></span></div>`}</div>`);
+    blocks.push(`<div class="people">${rowsShown.map((r, i) => {
+      const k = r.chosen || r.pick, p = C[k], me = view === "wambui" && r.who === "Wambui";
+      const secret = view === "wambui" && !me && !r.chosen;
+      const status = r.chosen ? `<span class="status ok st">${r.who} chose</span>` : S.shared ? `<span class="status st">Waiting for ${r.who}</span>` : "";
+      const choose = me && !r.chosen ? `<div class="choose" role="group" aria-label="Choose your gift"><button type="button" data-choose="${r.pick}">${C[r.pick].name}</button><button type="button" data-choose="${r.alt}">${C[r.alt].name}</button></div>` : "";
+      if (secret) return `<div class="person blk"><span class="ph" aria-hidden="true"></span><div><div class="nm">${r.who}</div><div class="pk">A surprise until she chooses</div>${status}</div><div class="pr"><span class="hidden-price">hidden</span></div></div>`;
+      return `<div class="person blk ${me ? "me" : ""} ${fresh === i + 2 ? "fresh" : ""}"><img src="${p.img}" alt=""><div><div class="nm">${r.who} <span style="font-weight:500;color:#8a7b66">· “${esc(r.word)}”</span></div><div class="pk">${me && !r.chosen ? `${p.name} <span style="font:600 13px var(--font-text);color:#8a7b66">or</span> ${C[r.alt].name}` : p.name}</div><div class="why">${me && !r.chosen ? `${p.note} · or ${C[r.alt].note}` : p.note}${!me && !r.chosen ? ` · or ${C[r.alt].name}` : ""}</div>${choose}${status}</div><div class="pr">${hidePrices ? `<span class="hidden-price">price hidden</span>` : ksh(p.price)}</div></div>`;
+    }).join("")}</div>`);
+    if (S.built) {
+      blocks.push(`<div class="plainblk blk ${fresh === 8 ? "fresh" : ""}"><b>Delivery:</b> all five to Achieng in Nairobi by <b>Fri 4 Dec</b>, eight days before the wedding. Each one gift-wrapped with her name, free.</div>`);
+      blocks.push(`<div class="note-blk blk ${fresh === 9 ? "fresh" : ""}">“Thank you for standing with me. I couldn't do this without you.”<small>Written by Achieng · on every card</small></div>`);
+    }
+    const status = S.requested ? `<span class="status held">Order requested · waiting for the shop</span>` : S.shared ? `<span class="status shared">Shared · ${S.rows.filter(r => r.chosen).length} of 5 chosen</span>` : `<span class="status">Draft</span>`;
+    right.innerHTML = `
+      <div class="art-url">${I.lock}<span>classyperfumes.shop/a/plan-k29x</span><span class="chip">noindex</span><span class="chip">${view === "wambui" ? "Wambui · can choose" : view === "owner" ? "Shop · can view (Achieng allowed)" : "Achieng · owner of this plan"}</span></div>
+      <article class="artifact" aria-label="Gift plan">
+        <div class="artifact-head"><div><div class="artifact-kind">Plan · gifts</div><h2>Bridesmaids' gifts for 12 December</h2></div>${status}</div>
+        <div class="artifact-body">${blocks.join("")}</div>
+        <div class="artifact-foot"><span>Made by Achieng with Classy Perfumes' <b>Gifts WebAgent</b> (AI)</span><span>Prices pinned to release v31 · held until 14 Nov</span><span>Signed · r-4f0a…c21d</span><span>Expires 7 Dec unless saved</span></div>
+      </article>
+      ${view !== "owner" ? `<div class="two"><div class="panel"><h4>Versions</h4><div class="hist">${S.hist.length ? S.hist.map(([v, w, x]) => `<div><b>${v}</b><span>${esc(x)}</span><span>${esc(w)}</span></div>`).join("") : `<div><b>—</b><span>No versions yet</span><span></span></div>`}</div></div>
+        <div class="panel"><h4>${view === "wambui" ? "What you can do" : "Next"}</h4>${view === "wambui" ? `<p class="small" style="color:var(--cp-ink-2)">Choose between your two scents and ask about them. You can't see prices or other people's picks until they choose, and you can't order.</p>` :
+          `<div class="acts" style="display:flex;gap:6px;flex-wrap:wrap">${!S.shared ? `<button class="act primary" type="button" id="shareBtn" ${S.built ? "" : "disabled"}>${I.share}Share with them</button>` : ""}${S.shared && !S.requested ? `<button class="act primary" type="button" id="reqBtn">Request this order · ${ksh(total())}</button>` : ""}${S.requested ? `<span class="small" style="color:var(--cp-ink-2)">Held for the shop. You'll get WhatsApp confirmation, then pay with PayPal.</span>` : ""}</div>`}</div></div>` : ""}`;
+    right.querySelectorAll("[data-choose]").forEach(b => b.addEventListener("click", () => {
+      S.rows[0].chosen = b.dataset.choose; addHist("Wambui", `Wambui chose ${C[b.dataset.choose].name}`);
+      render(); toast(`Wambui chose ${C[b.dataset.choose].name}. Achieng sees it now.`);
+    }));
+    const sb = document.getElementById("shareBtn"); if (sb) sb.addEventListener("click", () => document.getElementById("shareSheet").classList.add("open"));
+    const rb = document.getElementById("reqBtn"); if (rb) rb.addEventListener("click", () => { S.requested = true; addHist("Achieng", `Order requested · ${ksh(total())}`); render(); toast("Request sent. The shop confirms it; nothing is charged yet."); });
+  }
+
+  /* ---------- Left panel per viewer ---------- */
+  let thread, body, mark; const logs = {}; let leftView = "achieng";
+  function leftAchieng() {
+    left.innerHTML = `<div class="left-head"><span class="wa-mark" id="mk" data-state="listening" style="--c:${DESK.color}">${DESK.icon}</span><div class="who"><b>Gifts</b><span>WebAgent · plans gifts from this shop's catalogue</span></div><span class="wa-ai">AI</span></div>
+      ${S.step === 0 ? `<div class="start"><span>Achieng is planning gifts for her five bridesmaids. Play the conversation to watch the plan being made.</span><button class="act primary" type="button" id="play">Play the conversation</button></div>` : ""}
+      <div class="left-body" id="lb"><div class="wa-thread" id="th"></div></div>
+      <div class="left-foot"><form class="wa-input" id="lf"><label class="sr-only" for="lq">Message</label><input id="lq" autocomplete="off" placeholder="Ask Gifts about the plan…"><button class="wa-send" type="submit" aria-label="Send">${I.send}</button></form><p class="wa-disclose">AI WebAgent · chooses only from this shop's catalogue · prices from release v31</p></div>`;
+    thread = document.getElementById("th"); body = document.getElementById("lb"); mark = document.getElementById("mk");
+    if (logs.achieng) thread.innerHTML = logs.achieng;
+    const p = document.getElementById("play"); if (p) p.addEventListener("click", play);
+    document.getElementById("lf").addEventListener("submit", async e => { e.preventDefault(); const i = document.getElementById("lq"); const q = i.value.trim(); if (!q) return; i.value = ""; visitor(thread, q);
+      await answer({ thread, desk: DESK, mark, steps: ["Reading the plan"], phrases: ["I can change any row, swap scents within the catalogue, or move the delivery date. I won't add items the shop doesn't sell."], scroller: body, meta: "Answers about this plan only" }); S.log = thread.innerHTML; });
+  }
+  function leftWambui() {
+    left.innerHTML = `<div class="left-head"><span class="wa-mark" id="mk" data-state="listening" style="--c:${DESK.color}">${DESK.icon}</span><div class="who"><b>Ask about this plan</b><span>Gifts WebAgent · scoped to Wambui's two scents</span></div><span class="wa-ai">AI</span></div>
+      <div class="left-body" id="lb"><div class="wa-thread" id="th"></div></div>
+      <div class="chips" style="display:flex;gap:6px;flex-wrap:wrap;padding:10px 16px 0"><button class="act" type="button" data-q="diff">What's the difference?</button><button class="act" type="button" data-q="gym">Which is better after the gym?</button><button class="act" type="button" data-q="price">How much did she spend?</button></div>
+      <div class="left-foot"><form class="wa-input" id="lf"><label class="sr-only" for="lq">Ask</label><input id="lq" autocomplete="off" placeholder="Ask about Citrus Dawn or Rain Oud…"><button class="wa-send" type="submit" aria-label="Send">${I.send}</button></form><p class="wa-disclose">You opened Achieng's private link. You can choose and ask; you can't see prices or order.</p></div>`;
+    thread = document.getElementById("th"); body = document.getElementById("lb"); mark = document.getElementById("mk");
+    if (logs.wambui) thread.innerHTML = logs.wambui;
+    const A = {
+      diff: ["<b>Citrus Dawn</b> is bergamot and neroli over a clean musk: light, the morning one.", "<b>Rain Oud</b> is petrichor and oud: deeper, from the long-rains limited run."],
+      gym: ["The site doesn't say how either wears after exercise, so I won't guess.", "Citrus Dawn is the lighter of the two, if that helps."],
+      price: ["Achieng chose to keep prices private, so I can't share them."],
+    };
+    const ask = async (k, q) => { visitor(thread, q); await answer({ thread, desk: DESK, mark, steps: k === "price" ? [] : ["Reading the two product pages"], phrases: A[k], scroller: body, meta: k === "price" ? "Held back by the plan's permissions" : "From this shop's product pages" }); };
+    left.querySelectorAll("[data-q]").forEach(b => b.addEventListener("click", () => ask(b.dataset.q, b.textContent)));
+    document.getElementById("lf").addEventListener("submit", e => { e.preventDefault(); const i = document.getElementById("lq"); const q = i.value.trim(); if (!q) return; i.value = ""; ask(/price|cost|spend|much/i.test(q) ? "price" : /gym|sport|sweat|heat/i.test(q) ? "gym" : "diff", q); });
+  }
+  function leftOwner() {
+    left.innerHTML = `<div class="left-head" style="background:var(--surface)"><span class="wa-mark" style="--c:var(--indigo)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M5 12l4 4 10-10"/></svg></span><div class="who"><b style="font-family:var(--font-display);font-size:16px">Owner console · Decisions</b><span>What the shop owner sees</span></div></div>
+      <div class="left-body" style="padding-top:14px">${S.requested ? `<div class="owner-dec">
+        <div class="spread"><b style="font:800 16px/1.2 var(--font-display);color:var(--indigo-900)">Order request · 5 gifts</b><span class="chip chip-wait">Waiting for you</span></div>
+        <div class="line"><span>Total</span><b>${ksh(total())}</b></div><div class="line"><span>Deliver</span><b>Nairobi · by Fri 4 Dec</b></div><div class="line"><span>Stock</span><b>All in stock (re-checked now)</b></div><div class="line"><span>Prices</span><b>Release v31 · held to 14 Nov</b></div>
+        <div class="row" style="gap:6px"><span class="chip chip-info">Sales recommends: approve</span><span class="chip chip-ok">Low risk</span></div>
+        <div class="row" style="gap:8px"><button class="btn btn-primary btn-sm" type="button">Approve with passkey</button><button class="btn btn-sm" type="button">Edit</button><button class="btn btn-ghost btn-sm" type="button">Decline</button></div>
+        <p class="small muted">Achieng allowed you to see the plan on the right. Back-office WebAgents only get the typed request below, never her chat or the card text.</p>
+        <div class="typed">order.request {
+  items: 5, total_minor: ${total() * 100},
+  currency: "KES",
+  deliver_by: "2026-12-04",
+  gift_wrap: true,
+  artifact: "sha256:9b1e…7a40",
+  release_seq: 31
+}</div></div>` : `<div class="note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></svg><span>No request yet. ${S.built ? "Achieng's plan exists and she has allowed the shop to see it, but nothing waits on you until she requests the order." : "Nothing to see. Plans are private until a visitor shares them with the shop."} Switch to Achieng and ${S.shared ? "request the order" : S.built ? "share, then request" : "play the conversation"}.</span></div>`}</div>`;
+  }
+  function render() {
+    if (thread && document.body.contains(thread)) logs[leftView] = thread.innerHTML;
+    leftView = view;
+    document.getElementById("whoTag").innerHTML = view === "achieng" ? `<i>A</i><span>Signed in as Achieng (passkey)</span>` : view === "wambui" ? `<i style="background:#2f5d50">W</i><span>Wambui · private link from Achieng</span>` : `<i style="background:var(--indigo)">CP</i><span>Shop owner · console</span>`;
+    document.getElementById("url").textContent = view === "achieng" ? "classyperfumes.shop/gifts/plan" : view === "wambui" ? "classyperfumes.shop/a/plan-k29x?for=wambui" : "console · Decisions";
+    if (view === "achieng") leftAchieng(); else if (view === "wambui") leftWambui(); else leftOwner();
+    renderArtifact();
+  }
+
+  /* ---------- Play: the plan being made ---------- */
+  async function play() {
+    S.step = 1; document.querySelector(".start")?.remove();
+    const say = async (ph, extra = {}) => answer({ thread, desk: DESK, mark, phrases: ph, scroller: body, steps: extra.steps || [], actions: extra.actions, meta: extra.meta === undefined ? false : extra.meta });
+    visitor(thread, "Gifts for my 5 bridesmaids, wedding on 12 Dec. About KSh 25,000 in total. They're all different.");
+    await wait(300);
+    await say(["Give me a word or two about each person. I'll draft a plan from what the shop has. You can share it so they each choose."]);
+    await wait(500);
+    visitor(thread, "Wambui: fresh, sporty. Njeri: loves vanilla. Atieno: evenings out. Muthoni: not sure. Zawadi: hates strong perfume.");
+    await say(["Drafting the plan"], { steps: ["Reading the catalogue", "Checking stock for early December"] });
+    for (let i = 0; i < 5; i++) { S.step = i + 2; addHist("Gifts", i === 0 ? "Plan created" : `Added ${S.rows[i].who}`); renderArtifact(i + 2); await wait(650); }
+    S.built = true; S.hist = [["v1", "Achieng + Gifts", "Plan created with 5 picks"]]; renderArtifact(8); await wait(500);
+    await say([`Here's a draft. Each person has a pick and one alternative she can choose instead.`, `It comes to <b>${ksh(total())}</b>, KSh 200 over. Swapping Atieno to <b>Rain Oud</b> (also an evening scent) brings it to <b>${ksh(total() - 600)}</b>.`, `Muthoni wasn't sure, so the gift set is the safe choice, and she can swap it for Citrus Dawn.`],
+      { meta: "Picked from this shop's catalogue · prices from release v31", actions: [{ label: "Apply the swap", primary: true, on: e => { e.currentTarget.disabled = true; S.rows[2].pick = "rain"; S.rows[2].alt = "amber"; S.swapped = true; S.hist.push(["v2", "Achieng", "Atieno swapped to Rain Oud"]); renderArtifact(4); toast(`Under budget: ${ksh(total())}`); S.log = thread.innerHTML; } }, { label: "Share with them", on: () => document.getElementById("shareSheet").classList.add("open") }] });
+    S.log = thread.innerHTML;
+  }
+
+  /* Share sheet */
+  const sheet = document.getElementById("shareSheet");
+  sheet.querySelector(".icon-btn").innerHTML = I.close;
+  sheet.addEventListener("click", e => { if (e.target === sheet || e.target.closest("[data-close]")) sheet.classList.remove("open"); });
+  document.addEventListener("keydown", e => { if (e.key === "Escape") sheet.classList.remove("open"); });
+  sheet.querySelectorAll(".switch").forEach(s => s.addEventListener("click", () => s.setAttribute("aria-checked", String(s.getAttribute("aria-checked") !== "true"))));
+  document.getElementById("doShare").addEventListener("click", () => {
+    sheet.classList.remove("open"); S.shared = true; S.hist.push([`v${S.hist.length + 1}`, "Achieng", "Shared with 5 people (prices hidden)"]);
+    if (S.log === undefined && thread) S.log = thread.innerHTML;
+    render(); toast("Five private links sent. Now view it as Wambui.");
+  });
+  document.querySelectorAll("[data-view]").forEach(b => b.addEventListener("click", () => {
+    if (view === "achieng" && thread) S.log = thread.innerHTML;
+    view = b.dataset.view; document.querySelectorAll("[data-view]").forEach(x => x.setAttribute("aria-pressed", String(x === b)));
+    render();
+  }));
+  render();
+})();
+</script>
+</body>
+</html>

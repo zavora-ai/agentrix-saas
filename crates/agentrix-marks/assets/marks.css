@@ -1,0 +1,39 @@
+/* The WebAgent living mark's states (ADR-031; motion values from 06 §4.3 and 07 §3.5).
+   One grammar on every site and in the console. All motion is on transform and opacity; it
+   stops under reduced motion, where each state still reads by its shape, and it settles after
+   5 seconds in one state (marks.js sets data-settled), except speaking, which follows the voice.
+   The host surface sets --wa-ground (the ring behind the waiting dot) to its own background. */
+wa-mark { display: inline-flex; flex: none; vertical-align: middle; line-height: 0; }
+.wa { display: block; overflow: visible; flex: none; }
+.wa .wa-halo { opacity: 0; transform-box: fill-box; transform-origin: center; }
+.wa .wa-trace { opacity: 0; stroke-dasharray: 22 120; }
+.wa .wa-dot { opacity: 0; }
+.wa .wa-sig { transform-box: fill-box; transform-origin: center; }
+.wa .wa-core, .wa { transition: filter .4s ease, opacity .4s ease; }
+.wa[data-state="listening"] .wa-halo { animation: wa-breathe 2.2s ease-in-out infinite; }
+.wa[data-state="answering"] .wa-halo { opacity: .45; }
+.wa[data-state="speaking"] .wa-halo { opacity: calc(.2 + var(--lvl, .4) * .6); transform: scale(calc(.97 + var(--lvl, .4) * .11)); }
+.wa[data-state="working"] .wa-trace { opacity: 1; animation: wa-trace 1s linear infinite; }
+.wa[data-state="working"][data-motion="spin"] .wa-sig { animation: wa-spin 16s linear infinite; }
+.wa[data-state="working"][data-motion="drift"] .wa-drift { animation: wa-drift 2.6s linear infinite; }
+.wa[data-state="waiting"] .wa-dot { opacity: 1; }
+.wa[data-state="resting"] { filter: grayscale(1); opacity: .55; }
+.wa[data-state="asleep"] { filter: saturate(.2); opacity: .72; }
+.wa[data-state="paused"], .wa[data-state="frozen"] { filter: grayscale(1); opacity: .82; }
+.wa .chief-dot { transform-box: fill-box; transform-origin: center; }
+.wa .chief-dot.busy { animation: wa-pulse 1.4s ease-in-out infinite; }
+@keyframes wa-breathe { 0%, 100% { opacity: 0; transform: scale(.96); } 50% { opacity: .55; transform: scale(1.04); } }
+@keyframes wa-trace { from { stroke-dashoffset: 142; } to { stroke-dashoffset: 0; } }
+@keyframes wa-spin { to { transform: rotate(360deg); } }
+@keyframes wa-drift { from { transform: translateX(0); } to { transform: translateX(var(--p, 0px)); } }
+@keyframes wa-pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.35); } }
+/* Settled: the reduced-motion look; the words beside the mark stay. */
+.wa[data-settled], .wa[data-settled] * { animation: none !important; }
+.wa[data-settled][data-state="listening"] .wa-halo { opacity: .35; }
+.wa[data-settled][data-state="working"] .wa-trace { stroke-dasharray: none; opacity: .8; }
+@media (prefers-reduced-motion: reduce) {
+  .wa *, .wa { animation: none !important; transition: none !important; }
+  .wa[data-state="listening"] .wa-halo { opacity: .35; }
+  .wa[data-state="working"] .wa-trace { stroke-dasharray: none; opacity: .8; }
+  .wa[data-state="speaking"] .wa-halo { opacity: .5; transform: none; }
+}

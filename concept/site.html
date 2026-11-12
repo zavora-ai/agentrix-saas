@@ -1,0 +1,397 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kilele Bakery Website</title>
+<meta name="description" content="Concept: the converted Kilele Bakery website, with an Ask this site bar, held orders, and an agent view.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Manrope:wght@600;700;800&family=Fraunces:opsz,wght@9..144,600;9..144,800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<style>
+  /* The bakery's own brand (extracted from its old site), not Agentrix's. */
+  .bake {
+    --cream: #fbf4ea; --cream-2: #f5e9d8; --brown: #3b2416; --brown-2: #6b4b36; --terra: #b4541f; --terra-2: #8f3f13; --line-b: #ecdcc6;
+    --serif: "Fraunces", Georgia, "Times New Roman", serif;
+    background: var(--cream); color: var(--brown); font-family: var(--font-text);
+  }
+  .viewbar { display: flex; align-items: center; justify-content: space-between; gap: var(--s3); flex-wrap: wrap; margin: 0 0 var(--s3); }
+  .frame { height: auto; }
+  .frame .url { max-width: 520px; }
+
+  .b-wrap { max-width: 1080px; margin: 0 auto; padding: 0 clamp(16px, 3vw, 28px); }
+  .b-head { display: flex; align-items: center; gap: 18px; padding: 16px 0; border-bottom: 1px solid var(--line-b); flex-wrap: wrap; }
+  .b-logo { display: flex; align-items: center; gap: 10px; font: 800 22px/1 var(--serif); color: var(--brown); text-decoration: none; letter-spacing: -.01em; }
+  .b-logo svg { width: 30px; height: 30px; color: var(--terra); }
+  .b-nav { display: flex; gap: 4px; margin-left: auto; flex-wrap: wrap; }
+  .b-nav a { color: var(--brown-2); text-decoration: none; font: 600 14px/1 var(--font-text); padding: 9px 10px; border-radius: 999px; }
+  .b-nav a:hover { background: var(--cream-2); color: var(--brown); }
+  .b-lang { font: 700 12px/1 var(--font-text); color: var(--brown-2); border: 1px solid var(--line-b); border-radius: 999px; padding: 7px 10px; }
+  .b-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 0 18px; border-radius: 999px; border: 0; background: var(--terra); color: #fff; font: 700 14px/1 var(--font-text); cursor: pointer; text-decoration: none; }
+  .b-btn:hover { background: var(--terra-2); color: #fff; }
+  .b-btn.ghost { background: transparent; color: var(--brown); border: 1.5px solid var(--brown); }
+  .b-btn.ghost:hover { background: var(--cream-2); color: var(--brown); }
+
+  .b-hero { display: grid; grid-template-columns: 1.1fr .9fr; gap: clamp(20px, 4vw, 48px); align-items: center; padding: clamp(28px, 5vw, 56px) 0 clamp(20px, 3vw, 28px); }
+  .b-hero h1 { font: 800 clamp(36px, 5.4vw, 64px)/1.02 var(--serif); color: var(--brown); letter-spacing: -.02em; }
+  .b-hero p { margin-top: 14px; font-size: 18px; color: var(--brown-2); max-width: 46ch; }
+  .b-hero .row { margin-top: 20px; }
+  .b-art { aspect-ratio: 5 / 4; border-radius: 28px; position: relative; overflow: hidden; background: radial-gradient(120% 90% at 80% 10%, #f4c98e, transparent 60%), linear-gradient(140deg, #6e3417, #b4541f 60%, #d98c48); box-shadow: 0 30px 60px -30px rgba(59,36,22,.6); }
+  .b-art .loaf { position: absolute; border-radius: 50% 50% 46% 46% / 62% 62% 38% 38%; background: radial-gradient(circle at 40% 30%, #f2c58a, #c0782f 55%, #8f4a18); box-shadow: inset -10px -14px 24px rgba(80,35,10,.35); }
+  .b-art .l1 { width: 46%; height: 34%; left: 10%; bottom: 14%; transform: rotate(-8deg); }
+  .b-art .l2 { width: 38%; height: 30%; right: 9%; bottom: 22%; transform: rotate(10deg); }
+  .b-art .score { position: absolute; height: 4px; border-radius: 4px; background: rgba(255,240,215,.75); }
+  .b-art .s1 { width: 22%; left: 20%; bottom: 33%; transform: rotate(-20deg); }
+  .b-art .s2 { width: 18%; right: 18%; bottom: 40%; transform: rotate(-10deg); }
+  .b-art .tag { position: absolute; left: 16px; top: 16px; background: rgba(255,255,255,.92); color: var(--brown); border-radius: 999px; padding: 7px 12px; font: 700 12px/1 var(--font-text); }
+
+  .ask { margin: 8px 0 clamp(28px, 4vw, 44px); background: #fff; border: 1.5px solid var(--brown); border-radius: 24px; padding: 18px; box-shadow: 0 18px 40px -26px rgba(59,36,22,.55); }
+  .ask-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+  .ask-top b { font: 800 20px/1.2 var(--serif); color: var(--brown); }
+  .ai-pill { display: inline-flex; align-items: center; gap: 6px; padding: 5px 10px; border-radius: 999px; background: var(--cream); border: 1px solid var(--line-b); font: 700 12px/1 var(--font-text); color: var(--brown-2); }
+  .ask-form { display: flex; gap: 8px; margin-top: 12px; }
+  .ask-form input { flex: 1; min-width: 0; border: 1.5px solid var(--line-b); border-radius: 999px; padding: 0 18px; min-height: 52px; font: 500 16px/1 var(--font-text); color: var(--brown); background: var(--cream); outline: none; }
+  .ask-form input:focus { border-color: var(--terra); box-shadow: 0 0 0 3px rgba(180,84,31,.18); }
+  .ask-chips { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
+  .ask-chips button { border: 1px solid var(--line-b); background: var(--cream); color: var(--brown); border-radius: 999px; padding: 9px 14px; font: 600 13px/1 var(--font-text); cursor: pointer; }
+  .ask-chips button:hover { border-color: var(--terra); }
+  .answers { display: grid; gap: 10px; margin-top: 12px; }
+  .qa { animation: rise .35s var(--ease) both; }
+  .qa .q { justify-self: end; margin-left: auto; width: fit-content; max-width: 80%; background: var(--brown); color: #fff; padding: 10px 14px; border-radius: 16px 16px 6px 16px; font-size: 15px; }
+  .qa .a { margin-top: 8px; max-width: 86%; background: var(--cream); border: 1px solid var(--line-b); padding: 12px 14px; border-radius: 16px 16px 16px 6px; font-size: 15px; line-height: 1.55; }
+  .qa .a .src { display: inline-flex; gap: 6px; align-items: center; margin-top: 8px; font: 700 12px/1 var(--font-text); color: var(--terra-2); background: #fff; border: 1px solid var(--line-b); padding: 6px 9px; border-radius: 8px; text-decoration: none; }
+  .ask-foot { margin-top: 12px; font-size: 12px; color: var(--brown-2); }
+
+  .b-section { padding: clamp(28px, 4vw, 48px) 0; border-top: 1px solid var(--line-b); }
+  .b-section h2 { font: 800 clamp(26px, 3.4vw, 36px)/1.1 var(--serif); color: var(--brown); }
+  .b-section .sub { color: var(--brown-2); margin-top: 6px; }
+  .bakes { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-top: 18px; }
+  .bake-card { background: #fff; border: 1px solid var(--line-b); border-radius: 18px; overflow: hidden; }
+  .bake-card .img { height: 110px; background: linear-gradient(135deg, #8f4a18, #e1a15c); position: relative; }
+  .bake-card:nth-child(2) .img { background: linear-gradient(135deg, #c0782f, #f4d39c); }
+  .bake-card:nth-child(3) .img { background: linear-gradient(135deg, #6e3417, #c98a52); }
+  .bake-card:nth-child(4) .img { background: linear-gradient(135deg, #7b2232, #e2878f); }
+  .bake-card .body { padding: 12px 14px 14px; }
+  .bake-card h3 { font: 800 17px/1.2 var(--serif); color: var(--brown); }
+  .bake-card .price { font: 700 15px/1 var(--font-text); margin-top: 6px; color: var(--brown); }
+  .stock { display: inline-flex; align-items: center; gap: 6px; margin-top: 8px; font: 700 12px/1 var(--font-text); padding: 5px 9px; border-radius: 999px; background: #e9f3e7; color: #2c6a2a; }
+  .stock.out { background: #f7e7e2; color: #8f3f13; }
+
+  .order { display: grid; grid-template-columns: 1.1fr .9fr; gap: 20px; margin-top: 18px; align-items: start; }
+  .form { background: #fff; border: 1px solid var(--line-b); border-radius: 20px; padding: 18px; display: grid; gap: 12px; }
+  .form .two { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .form label { display: grid; gap: 6px; font: 700 13px/1 var(--font-text); color: var(--brown-2); }
+  .form input, .form select { min-height: 46px; border: 1.5px solid var(--line-b); border-radius: 12px; padding: 0 12px; font: 500 15px/1 var(--font-text); color: var(--brown); background: var(--cream); outline: none; width: 100%; }
+  .form input:focus, .form select:focus { border-color: var(--terra); }
+  .held { background: #fff; border: 1.5px solid var(--terra); border-radius: 20px; padding: 18px; display: none; animation: rise .4s var(--ease) both; }
+  .held.on { display: block; }
+  .held h3 { font: 800 22px/1.15 var(--serif); color: var(--brown); }
+  .track { list-style: none; padding: 0; margin: 14px 0 0; display: grid; gap: 10px; }
+  .track li { display: grid; grid-template-columns: 26px 1fr; gap: 10px; align-items: center; font-size: 15px; color: var(--brown-2); }
+  .track li i { width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; border: 2px solid var(--line-b); font: 800 12px/1 var(--font-text); font-style: normal; color: var(--brown-2); background: #fff; }
+  .track li.done i { background: #2c6a2a; border-color: #2c6a2a; color: #fff; }
+  .track li.now i { border-color: var(--terra); color: var(--terra); }
+  .track li.now { color: var(--brown); font-weight: 700; }
+  .why { background: var(--cream-2); border-radius: 18px; padding: 16px; font-size: 14px; color: var(--brown-2); }
+  .why b { color: var(--brown); }
+
+  .visit { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 18px; }
+  .visit div { background: #fff; border: 1px solid var(--line-b); border-radius: 16px; padding: 14px; font-size: 14px; color: var(--brown-2); }
+  .visit b { display: block; font: 800 16px/1.2 var(--serif); color: var(--brown); margin-bottom: 6px; }
+  .b-foot { border-top: 1px solid var(--line-b); padding: 18px 0 26px; display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; font-size: 13px; color: var(--brown-2); }
+  .made { display: inline-flex; align-items: center; gap: 8px; text-decoration: none; color: var(--brown); font-weight: 700; border: 1px solid var(--line-b); background: #fff; border-radius: 999px; padding: 7px 12px; }
+  .made .mark { width: 16px; height: 16px; border-radius: 5px; background: conic-gradient(from 210deg, var(--indigo) 0 55%, var(--coral) 55% 100%); }
+
+  /* ---------- Agent view ---------- */
+  .agent { display: none; background: #0f0e1f; color: #dcdbf0; padding: clamp(16px, 3vw, 28px); font-family: var(--font-mono); }
+  .site-human { display: block; }
+  .show-agent .agent { display: block; }
+  .show-agent .site-human { display: none; }
+  .agent h2 { font: 800 22px/1.2 var(--font-display); color: #fff; }
+  .agent .intro { font: 400 14px/1.6 var(--font-text); color: #b9b8d6; max-width: 70ch; margin-top: 6px; }
+  .agent .reqline { margin-top: 14px; padding: 10px 12px; border-radius: 10px; background: #1a1932; border: 1px solid #2c2b4d; font-size: 12.5px; color: #c9c8ea; overflow-x: auto; white-space: nowrap; }
+  .agent .reqline b { color: #8ee3b5; font-weight: 600; }
+  .agrid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 14px; }
+  .apanel { background: #16152b; border: 1px solid #2c2b4d; border-radius: 14px; overflow: hidden; }
+  .apanel header { display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 10px 12px; border-bottom: 1px solid #2c2b4d; font: 700 12px/1.2 var(--font-text); color: #fff; letter-spacing: .02em; }
+  .apanel header span { font: 600 11px/1 var(--font-mono); color: #9a99c3; }
+  .apanel pre { margin: 0; padding: 12px; font: 400 12px/1.6 var(--font-mono); color: #dcdbf0; overflow-x: auto; }
+  .k { color: #9fb6ff; } .s { color: #ffc98b; } .n { color: #8ee3b5; } .c { color: #6f6e95; }
+  .atable { width: 100%; border-collapse: collapse; font-size: 12px; }
+  .atable th, .atable td { text-align: left; padding: 8px 12px; border-bottom: 1px solid #23223f; }
+  .atable th { color: #9a99c3; font-weight: 600; }
+  .atable td.ok { color: #8ee3b5; }
+  .apanel .foot { padding: 10px 12px; font: 500 11px/1.5 var(--font-mono); color: #9a99c3; border-top: 1px solid #23223f; }
+  .apanel.wide { grid-column: 1 / -1; }
+  .agent .same { display: inline-flex; gap: 8px; align-items: center; margin-top: 12px; padding: 6px 10px; border-radius: 999px; background: rgba(142,227,181,.12); color: #8ee3b5; font: 700 12px/1 var(--font-text); }
+
+  @media (max-width: 900px) {
+    .b-hero, .order { grid-template-columns: 1fr; }
+    .bakes { grid-template-columns: 1fr 1fr; }
+    .visit, .agrid { grid-template-columns: 1fr; }
+    .b-nav { display: none; }
+  }
+  @media (max-width: 480px) {
+    .b-head { flex-wrap: nowrap; gap: 10px; }
+    .b-lang { display: none; }
+    .b-head .b-btn { margin-left: auto; min-height: 38px; padding: 0 14px; font-size: 13px; }
+    .b-logo { font-size: 19px; }
+    .bakes { grid-template-columns: 1fr; }
+    .form .two { grid-template-columns: 1fr; }
+    .ask-form { flex-direction: column; }
+    .ask-form .b-btn { width: 100%; }
+    .qa .a, .qa .q { max-width: 100%; }
+  }
+</style>
+</head>
+<body>
+<header class="conceptbar">
+  <a class="logo" href="index.html"><span class="mark" aria-hidden="true"></span>Agentrix</a>
+  <nav aria-label="Concept screens">
+    <a href="index.html">Overview</a>
+    <a href="assess.html">Assess</a>
+    <a href="move.html">The Move</a>
+    <a href="console.html">Owner console</a>
+    <a href="site.html" aria-current="page">The website</a>
+  </nav>
+  <span class="concept-label">Concept · illustrative data</span>
+</header>
+
+<main class="wrap">
+  <div class="page-head">
+    <span class="eyebrow">Surface 04 · The website</span>
+    <h1 style="margin-top:12px">"Ask this site."</h1>
+    <p class="lead">The converted Kilele Bakery site, in its own brand. Pages are static and signed; answers cite their source; orders are real and held for Wanjiru. Switch to <b>Agent view</b> to see the same truth served to AI assistants.</p>
+  </div>
+
+  <div class="viewbar">
+    <div class="segmented" role="group" aria-label="View as">
+      <button type="button" aria-pressed="true" data-view="human">Human view</button>
+      <button type="button" aria-pressed="false" data-view="agent">Agent view</button>
+    </div>
+    <span class="small muted">Release v14 · signed · served from the edge in 0.4 s</span>
+  </div>
+
+  <div class="browser frame" id="frame">
+    <div class="browser-bar"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="url"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg><span id="urltext">kilele-bakery.example</span></span></div>
+
+    <!-- HUMAN VIEW -->
+    <div class="bake site-human">
+      <div class="b-wrap">
+        <div class="b-head">
+          <a class="b-logo" href="#top"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 28V8"/><path d="M16 12c-3-1-5-3-5-6 3 0 5 2 5 6zM16 12c3-1 5-3 5-6-3 0-5 2-5 6zM16 18c-3-1-5-3-5-6 3 0 5 2 5 6zM16 18c3-1 5-3 5-6-3 0-5 2-5 6zM16 24c-3-1-5-3-5-6 3 0 5 2 5 6zM16 24c3-1 5-3 5-6-3 0-5 2-5 6z"/></svg>Kilele Bakery</a>
+          <nav class="b-nav" aria-label="Kilele Bakery"><a href="#bakes">Today's bakes</a><a href="#order">Cakes &amp; orders</a><a href="#visit">Visit</a></nav>
+          <span class="b-lang" aria-label="Language">EN · SW</span>
+          <a class="b-btn" href="#order">Order a cake</a>
+        </div>
+
+        <section class="b-hero" id="top">
+          <div>
+            <h1>Baked at dawn<br>in Westlands.</h1>
+            <p>Sourdough, croissants and celebration cakes since 2016. Open from 6:30 every morning, with delivery across Westlands and Kilimani.</p>
+            <div class="row"><a class="b-btn" href="#order">Order a celebration cake</a><a class="b-btn ghost" href="#bakes">See today's bakes</a></div>
+          </div>
+          <div class="b-art" aria-hidden="true"><span class="tag">Out of the oven 6:30 am</span><span class="loaf l1"></span><span class="loaf l2"></span><span class="score s1"></span><span class="score s2"></span></div>
+        </section>
+
+        <section class="ask" aria-label="Ask this site">
+          <div class="ask-top"><b>Ask Kilele Bakery</b><span class="ai-pill"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l1.9 5.8L20 11l-6.1 2.2L12 19l-1.9-5.8L4 11l6.1-2.2z"/></svg>Front desk · AI · answers from this site</span></div>
+          <form class="ask-form" id="askform">
+            <label class="sr-only" for="askq">Your question</label>
+            <input id="askq" type="text" autocomplete="off" placeholder="Delivery, cakes, opening hours, today's bread…">
+            <button class="b-btn" type="submit">Ask</button>
+          </form>
+          <div class="ask-chips">
+            <button type="button" data-q="Do you deliver on Sundays?">Do you deliver on Sundays?</button>
+            <button type="button" data-q="Is there sourdough today?">Is there sourdough today?</button>
+            <button type="button" data-q="Can you make a gluten-free birthday cake?">Gluten-free cakes?</button>
+            <button type="button" data-q="I'd like to order a birthday cake">Order a birthday cake</button>
+          </div>
+          <div class="answers" id="answers" aria-live="polite"></div>
+          <p class="ask-foot">You're talking to AI. It answers only from this site and never guesses prices, dates or allergens. Wanjiru replies on WhatsApp, usually within 2 hours (7:00–20:00).</p>
+        </section>
+
+        <section class="b-section" id="bakes">
+          <h2>Today's bakes</h2>
+          <p class="sub">Stock updates as the morning goes.</p>
+          <div class="bakes">
+            <article class="bake-card"><div class="img"></div><div class="body"><h3>Country sourdough</h3><div class="price">KSh 450</div><span class="stock">6 left today</span></div></article>
+            <article class="bake-card"><div class="img"></div><div class="body"><h3>Butter croissant</h3><div class="price">KSh 180</div><span class="stock">In the oven again at 10:00</span></div></article>
+            <article class="bake-card"><div class="img"></div><div class="body"><h3>Cinnamon roll</h3><div class="price">KSh 220</div><span class="stock out">Sold out · back at 6:30</span></div></article>
+            <article class="bake-card"><div class="img"></div><div class="body"><h3>Red velvet slice</h3><div class="price">KSh 350</div><span class="stock">12 left today</span></div></article>
+          </div>
+        </section>
+
+        <section class="b-section" id="order">
+          <h2>Order a celebration cake</h2>
+          <p class="sub">Two days' notice. Wanjiru confirms every order herself.</p>
+          <div class="order">
+            <form class="form" id="orderform">
+              <div class="two">
+                <label>Cake<select id="cake"><option>Vanilla, 2-tier · KSh 4,500</option><option>Red velvet · KSh 3,800</option><option>Chocolate fudge · KSh 4,200</option></select></label>
+                <label>Pickup or delivery<select><option>Pickup, Westlands</option><option>Delivery · KSh 300</option></select></label>
+              </div>
+              <label>Message on the cake<input id="msg" type="text" placeholder="Happy birthday…"></label>
+              <div class="two">
+                <label>Date<input type="text" value="Saturday 14 Nov, 10:00"></label>
+                <label>Your name<input id="nm" type="text" placeholder="Your name"></label>
+              </div>
+              <label>WhatsApp number<input type="tel" placeholder="+254 7…"></label>
+              <button class="b-btn" type="submit">Request this cake</button>
+              <p class="small" style="color:var(--brown-2);margin:0">Nothing is charged until Wanjiru confirms.</p>
+            </form>
+            <div>
+              <div class="held" id="held" role="status">
+                <span class="ai-pill">Order KB-1042</span>
+                <h3 style="margin-top:10px">Held for Wanjiru's OK</h3>
+                <p style="margin-top:6px;color:var(--brown-2)">You'll get a WhatsApp confirmation, usually within two hours (7 am–8 pm). Then you pay with PayPal, and the order is confirmed.</p>
+                <ol class="track">
+                  <li class="done"><i>✓</i>Requested</li>
+                  <li class="now"><i>2</i>Wanjiru confirms</li>
+                  <li><i>3</i>Pay with PayPal</li>
+                  <li><i>4</i>Collect on Saturday</li>
+                </ol>
+              </div>
+              <div class="why" id="why">
+                <b>Why does a person confirm?</b><br>Kilele's Cashier can take an order and prepare the payment request, but money and promises wait for Wanjiru. That's her rule, and the site keeps it.
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="b-section" id="visit">
+          <h2>Visit</h2>
+          <div class="visit">
+            <div><b>Hours</b>Mon–Sat 6:30–19:00<br>Sun 7:00–14:00</div>
+            <div><b>Find us</b>Woodvale Grove, Westlands, Nairobi<br>Parking at the back</div>
+            <div><b>Delivery</b>Westlands &amp; Kilimani · KSh 300<br>Sundays 9:00–13:00</div>
+          </div>
+        </section>
+
+        <footer class="b-foot">
+          <span>© 2026 Kilele Bakery · Privacy · The WebAgents on this site are AI.</span>
+          <a class="made" href="assess.html"><span class="mark" aria-hidden="true"></span>Made with Agentrix · Get a free check of your own site</a>
+        </footer>
+      </div>
+    </div>
+
+    <!-- AGENT VIEW -->
+    <div class="agent" aria-label="What an AI agent sees">
+      <h2>What an AI agent sees</h2>
+      <p class="intro">No scraping and no special prices: the same facts as the human page, from the same signed release, through a door built for agents. Verified agents can request orders; they are held for Wanjiru like everyone else's.</p>
+      <div class="reqline"><b>GET</b> https://kilele-bakery.example/  ·  Accept: application/awp+json  ·  Signature-Agent: "shopping-assistant.example" (Web Bot Auth, verified)</div>
+      <span class="same">✓ Same truth as the human page · release v14</span>
+      <div class="agrid">
+        <section class="apanel">
+          <header>Discovery<span>/.well-known/awp.json</span></header>
+<pre>{
+  <span class="k">"name"</span>: <span class="s">"Kilele Bakery"</span>,
+  <span class="k">"release"</span>: { <span class="k">"version"</span>: <span class="n">14</span>, <span class="k">"digest"</span>: <span class="s">"sha256:3f9c…b21e"</span> },
+  <span class="k">"capabilities"</span>: [
+    { <span class="k">"id"</span>: <span class="s">"menu.read"</span>,      <span class="k">"access"</span>: <span class="s">"anyone"</span> },
+    { <span class="k">"id"</span>: <span class="s">"stock.read"</span>,     <span class="k">"access"</span>: <span class="s">"anyone"</span> },
+    { <span class="k">"id"</span>: <span class="s">"order.request"</span>,  <span class="k">"access"</span>: <span class="s">"verified"</span>,
+      <span class="k">"effect"</span>: <span class="s">"held_for_owner"</span> },
+    { <span class="k">"id"</span>: <span class="s">"quote.request"</span>,  <span class="k">"access"</span>: <span class="s">"verified"</span> }
+  ],
+  <span class="k">"doors"</span>: { <span class="k">"mcp"</span>: <span class="s">"/mcp"</span>, <span class="k">"a2a"</span>: <span class="s">"/a2a"</span>, <span class="k">"cli"</span>: <span class="s">"/cli"</span> }
+}</pre>
+        </section>
+        <section class="apanel">
+          <header>Verified prices &amp; stock<span>signed · v14</span></header>
+          <table class="atable">
+            <thead><tr><th>Item</th><th>Price</th><th>Today</th></tr></thead>
+            <tbody>
+              <tr><td>Country sourdough</td><td>KSh 450</td><td class="ok">6 left</td></tr>
+              <tr><td>Butter croissant</td><td>KSh 180</td><td class="ok">next batch 10:00</td></tr>
+              <tr><td>Cinnamon roll</td><td>KSh 220</td><td>sold out</td></tr>
+              <tr><td>Vanilla cake, 2-tier</td><td>KSh 4,500</td><td class="ok">2 days' notice</td></tr>
+            </tbody>
+          </table>
+          <div class="foot">Stock is a live capability, not page text. Prices come from the signed release.</div>
+        </section>
+        <section class="apanel">
+          <header>The door<span>MCP tools · A2A skills</span></header>
+<pre><span class="c"># tools</span>
+menu.list()                 → items, prices
+stock.get(item)             → count, next_batch
+order.request(item, date,   → held_for_owner
+              name, contact)
+quote.request(brief)        → lead for Sales
+
+<span class="c"># every call is metered, rate-limited, receipted</span></pre>
+        </section>
+        <section class="apanel">
+          <header>A held order, as the agent sees it<span>order.request</span></header>
+<pre>{
+  <span class="k">"status"</span>: <span class="s">"held_for_owner"</span>,
+  <span class="k">"order"</span>: <span class="s">"KB-1043"</span>,
+  <span class="k">"expect"</span>: <span class="s">"WhatsApp confirmation within 2h, 07:00–20:00"</span>,
+  <span class="k">"charged"</span>: <span class="n">false</span>,
+  <span class="k">"receipt"</span>: <span class="s">"r-91d2…4c0a"</span>
+}</pre>
+        </section>
+        <section class="apanel wide">
+          <header>Receipts anyone can check<span>awp verify</span></header>
+<pre><span class="c">$</span> awp verify kilele-bakery.example r-91d2…4c0a
+✓ release v14 digest matches the live site
+✓ receipt chain intact (412 entries since go-live)
+✓ order KB-1043 held · no payment taken · owner not yet decided</pre>
+        </section>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer class="concept-foot">
+  <div class="wrap row">
+    <span><a href="console.html">← Owner console</a> · <a href="index.html">Overview</a></span>
+    <span>Concept screens with illustrative data. Kilele Bakery is fictional.</span>
+  </div>
+</footer>
+
+<script>
+(() => {
+  // Human / Agent view
+  const frame = document.getElementById("frame"), urltext = document.getElementById("urltext");
+  document.querySelectorAll("[data-view]").forEach(b => b.addEventListener("click", () => {
+    const agent = b.dataset.view === "agent";
+    document.querySelectorAll("[data-view]").forEach(x => x.setAttribute("aria-pressed", String(x === b)));
+    frame.classList.toggle("show-agent", agent);
+    urltext.textContent = agent ? "kilele-bakery.example  ·  as seen by a verified AI agent" : "kilele-bakery.example";
+  }));
+
+  // Ask this site (scripted, grounded answers)
+  const answers = document.getElementById("answers");
+  const kb = [
+    { m: /sunday|deliver/i, a: "Yes. On Sundays we deliver within Westlands and Kilimani between 9 am and 1 pm. Delivery is KSh 300.", src: "Visit · Delivery", href: "#visit" },
+    { m: /sourdough|bread|stock|today/i, a: "There are 6 country sourdough loaves left today, at KSh 450 each. Croissants come out of the oven again at 10:00.", src: "Today's bakes", href: "#bakes" },
+    { m: /hour|open|close|time/i, a: "We're open Monday to Saturday 6:30–19:00 and Sunday 7:00–14:00.", src: "Visit · Hours", href: "#visit" },
+    { m: /order|birthday|cake/i, a: "Celebration cakes need two days' notice, and Wanjiru confirms every order herself. I've opened the order form for you below.", src: "Cakes & orders", href: "#order", act: "order" },
+  ];
+  const ask = q => {
+    if (!q.trim()) return;
+    let hit = /gluten/i.test(q) ? null : kb.find(k => k.m.test(q));
+    const div = document.createElement("div"); div.className = "qa";
+    const safe = q.replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+    div.innerHTML = `<div class="q">${safe}</div><div class="a">${hit ? `${hit.a}<br><a class="src" href="${hit.href}">Source: ${hit.src}</a>` :
+      `This site doesn't say, so I won't guess. I've passed your question to Wanjiru. Want her to reply to you on WhatsApp?<br><span class="src">Handed to Wanjiru</span>`}</div>`;
+    answers.prepend(div);
+    while (answers.children.length > 3) answers.lastChild.remove();
+    if (hit && hit.act === "order") setTimeout(() => document.getElementById("order").scrollIntoView({ behavior: "smooth", block: "start" }), 900);
+  };
+  document.getElementById("askform").addEventListener("submit", e => { e.preventDefault(); const i = document.getElementById("askq"); ask(i.value); i.value = ""; });
+  document.querySelectorAll("[data-q]").forEach(b => b.addEventListener("click", () => ask(b.dataset.q)));
+
+  // Order → held for the owner
+  document.getElementById("orderform").addEventListener("submit", e => {
+    e.preventDefault();
+    document.getElementById("held").classList.add("on");
+    document.getElementById("why").style.marginTop = "12px";
+    document.getElementById("held").scrollIntoView({ behavior: "smooth", block: "nearest" });
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,65 @@
+<section id="architecture" data-transition="fade" style="background:#f6f6fa;color:#23223a;font-family:'DM Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:24px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#b72d50">Built on Vultr</p>
+<h2 style="font-family:'Manrope', Arial, sans-serif;font-size:72px;font-weight:800;line-height:1.1;letter-spacing:-1px;color:#1f1d3d">Hostile code runs where no keys live.</h2>
+<div style="display:flex;align-items:stretch">
+<div style="width:220px;display:flex;flex-direction:column;justify-content:center;gap:12px">
+<p style="font-size:24px;color:#1f1d3d;background:#ffffff;padding:10px 16px;border-radius:12px;border:1px solid #cfcedd">Owner’s phone</p>
+<p style="font-size:24px;color:#1f1d3d;background:#ffffff;padding:10px 16px;border-radius:12px;border:1px solid #cfcedd">Visitors</p>
+<p style="font-size:24px;color:#1f1d3d;background:#ffffff;padding:10px 16px;border-radius:12px;border:1px solid #cfcedd">Customers’ AI agents</p>
+</div>
+<div style="width:96px;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:6px">
+<p style="font-size:24px;color:#4a4960">HTTPS</p>
+<x-shape kind="arrow-right" style="background:#38356d;width:64px;height:32px"></x-shape>
+</div>
+<div style="width:460px;display:flex;flex-direction:column;gap:8px;background:#ffffff;padding:24px;border-radius:18px;border:2px solid #2f55c4">
+<p style="font-size:24px;font-weight:700;color:#2f55c4">Vultr Cloud Compute</p>
+<h3 style="font-family:'Manrope', Arial, sans-serif;font-size:32px;font-weight:700;color:#1f1d3d">control VM</h3>
+<p style="font-size:24px;color:#4a4960;background:#f6f6fa;padding:8px 16px;border-radius:10px">Caddy, TLS · in: 80/443 only</p>
+<p style="font-size:24px;color:#4a4960;background:#f6f6fa;padding:8px 16px;border-radius:10px">agentrix-node: site, console</p>
+<p style="font-size:24px;color:#1f1d3d;background:#fff0f4;padding:8px 16px;border-radius:10px;border:2px solid #b72d50">Model Gateway: holds the keys</p>
+<p style="font-size:24px;color:#4a4960;background:#f6f6fa;padding:8px 16px;border-radius:10px">SQLite + content store</p>
+</div>
+<div style="width:96px;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:6px">
+<p style="font-size:24px;color:#4a4960">VPC</p>
+<x-shape kind="arrow-right" style="background:#38356d;width:64px;height:32px"></x-shape>
+<p style="font-size:24px;color:#4a4960">signed</p>
+</div>
+<div style="width:460px;display:flex;flex-direction:column;gap:8px;background:#fff9ec;padding:24px;border-radius:18px;border:3px dashed #8a5300">
+<p style="font-size:24px;font-weight:700;color:#2f55c4">Vultr Cloud Compute VX1</p>
+<h3 style="font-family:'Manrope', Arial, sans-serif;font-size:32px;font-weight:700;color:#1f1d3d">sandbox VM, sealed</h3>
+<p style="font-size:24px;color:#4a4960;background:#ffffff;padding:8px 16px;border-radius:10px">runner on :7443, from control</p>
+<p style="font-size:24px;color:#4a4960;background:#ffffff;padding:8px 16px;border-radius:10px">rooms: Docker + gVisor, capped</p>
+<p style="font-size:24px;color:#4a4960;background:#ffffff;padding:8px 16px;border-radius:10px">one egress proxy per room</p>
+<p style="font-size:24px;color:#8a5300;background:#ffffff;padding:8px 16px;border-radius:10px">no secrets, no public inbound</p>
+</div>
+<div style="width:96px;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:6px">
+<p style="font-size:24px;color:#4a4960">proxy</p>
+<x-shape kind="arrow-right" style="background:#38356d;width:64px;height:32px"></x-shape>
+<p style="font-size:24px;color:#4a4960">only</p>
+</div>
+<div style="width:236px;display:flex;flex-direction:column;justify-content:center;gap:8px;background:#ffffff;padding:24px;border-radius:18px;border:2px solid #2f55c4">
+<p style="font-size:24px;font-weight:700;color:#2f55c4">Vultr Compute</p>
+<h3 style="font-family:'Manrope', Arial, sans-serif;font-size:32px;font-weight:700;color:#1f1d3d">fixture VM</h3>
+<p style="font-size:24px;line-height:1.35;color:#4a4960">Zavora’s infected WordPress</p>
+</div>
+</div>
+<div style="display:flex;gap:22px">
+<div style="flex:2;display:flex;flex-direction:column;gap:8px;background:#eaf0ff;padding:20px 28px;border-radius:18px;border:2px solid #2f55c4">
+<h3 style="font-family:'Manrope', Arial, sans-serif;font-size:32px;font-weight:700;color:#1f1d3d">Vultr Serverless Inference</h3>
+<p style="font-size:24px;line-height:1.4;color:#23223a">Every model call, by purpose [after the S3-10 switch]: qwen3.8-27b, glm-5.3, deepseek-v4.1-flash, nemotron-3.5-content-safety, systemone clef, qwen3-embedding-4b. The switch is config plus a signed receipt.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:8px;background:#eaf0ff;padding:20px 28px;border-radius:18px;border:2px solid #2f55c4">
+<h3 style="font-family:'Manrope', Arial, sans-serif;font-size:32px;font-weight:700;color:#1f1d3d">Object Storage</h3>
+<p style="font-size:24px;line-height:1.4;color:#23223a">Every blob and signed receipt, mirrored each minute; read back if a file is lost</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:8px;background:#eaf0ff;padding:20px 28px;border-radius:18px;border:2px solid #2f55c4">
+<h3 style="font-family:'Manrope', Arial, sans-serif;font-size:32px;font-weight:700;color:#1f1d3d">VPC, firewalls, DNS</h3>
+<p style="font-size:24px;line-height:1.4;color:#23223a">Created from the repo through the Vultr API</p>
+</div>
+</div>
+<div style="position:absolute;left:128px;bottom:64px;width:1664px;display:flex;justify-content:space-between">
+<p style="font-size:24px;color:#656479">Blue border: Vultr product · dashed: sealed, untrusted work · coral: holds model keys</p>
+<p style="font-size:24px;color:#656479">8</p>
+</div>
+<aside>Three Vultr VMs on one VPC. The control VM runs the site edge, the console, the Move and the Model Gateway, which is the only process holding a model key. The sandbox VM, a VX1, runs every untrusted job in gVisor rooms, holds no secrets and accepts nothing from the internet; each room’s only way out is its own egress proxy with the job’s allowlist. The fixture VM serves Zavora’s infected WordPress for the gauntlet. Every model call goes to Vultr Serverless Inference by purpose once the switch gate has passed; until then the pipeline is validated on Claude, with embeddings and rerank already on Vultr. Remove the bracket only when the switch-gate receipt exists. Every routing change is a signed routing.changed receipt the owner sees; the first, “Models in use, on anthropic”, is live. Object Storage is live: node mirrors every content-store blob and every signed receipt to a bucket in Amsterdam (ams1) each minute, and reads a lost file back, checked against its digest. Its keys are a systemd credential, never in node’s environment. The whole substrate is created from the repo with deploy/provision.sh. The same binaries are designed to run as a fleet on VKE for the managed service.</aside>
+</section>

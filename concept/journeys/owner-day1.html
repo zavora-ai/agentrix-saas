@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The first brief</title>
+<meta name="description" content="Owner journey, step 7: the first Night Time timeline, then the 07:00 morning brief on WhatsApp and in the console, built only from recorded activity.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Manrope:wght@600;700;800&family=Fraunces:opsz,wght@9..144,600;9..144,800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../styles.css">
+<link rel="stylesheet" href="../console/console.css">
+<link rel="stylesheet" href="journeys.css">
+<link rel="stylesheet" href="owner.css">
+</head>
+<body data-lane="owner" data-step="7">
+<header class="j-top">
+  <a class="logo" href="../index.html"><span class="mark" aria-hidden="true"></span>Agentrix</a>
+  <a class="j-maplink" href="index.html">Journey map</a>
+  <span class="j-lane">Owner · Wanjiru</span>
+  <span class="concept-label">Concept · illustrative data</span>
+</header>
+<nav class="j-steps" aria-label="Owner journey" data-steps></nav>
+<main class="wrap j-main">
+  <header class="j-head">
+    <p class="eyebrow">Step 7 of 9 · Owner</p>
+    <h1>My website worked while I slept</h1>
+    <p class="lead">After closing time the console turns to Night Time and records what the WebAgents do. At 07:00 the Chief WebAgent condenses that record into her first morning brief, sent to WhatsApp and waiting in the console. It reports only what happened.</p>
+  </header>
+  <div class="j-grid">
+    <section class="j-stage" aria-label="What Wanjiru sees">
+      <div class="o-card">
+        <div class="spread"><h3>Night Time · what your WebAgents did</h3><span class="chip">18:00 → 06:00</span></div>
+        <ol class="o-tl">
+          <li><time>19:40</time><div><b>Cakes</b> answered 3 questions about birthday cakes, 1 in Swahili, each with the page it used</div></li>
+          <li><time>22:15</time><div><b>Guardian</b> blocked 38 requests probing the old WordPress login address. Within its role; nothing for you to decide</div></li>
+          <li><time>01:30</time><div><b>Editor</b> noticed your price list still says 2023 and drafted this year's prices for you to confirm. Nothing is published until you do</div></li>
+          <li><time>05:50</time><div><b>Caretaker</b> renewed the site's certificate and checked last night's backup</div></li>
+          <li><time>06:40</time><div><b>Chief WebAgent</b> wrote your brief from 23 recorded events. Nothing was invented</div></li>
+        </ol>
+      </div>
+
+      <div class="j-screens" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px">
+        <div class="o-wa" aria-label="The brief on WhatsApp">
+          <div class="head"><span class="j-mark" data-chief data-size="28"></span>Kilele · Agentrix</div>
+          <div class="bub"><b>Good morning, Wanjiru.</b> Your first night live: 27 visitors, 5 questions answered (1 in Swahili). <b>1 thing needs you:</b> confirm this year's prices (Editor's draft). The Guardian blocked 38 bot requests. Spend: $0.21 of your $30 AI budget.<small>07:00</small></div>
+          <div class="btns"><span>See the prices</span><span>Ask me anything</span></div>
+        </div>
+        <div class="o-card">
+          <div class="from"><span class="j-mark" data-chief data-size="28" data-state="waiting"></span>Chief WebAgent · Morning brief<span class="chip">07:00</span></div>
+          <p class="small" style="margin:0">Overnight your site welcomed <b>27 visitors</b> and answered <b>5 questions</b>. <b>1 decision</b> is waiting: this year's prices. The old WordPress login address is still being probed; the Guardian is handling it.</p>
+          <div class="o-acts"><button class="btn btn-primary btn-sm" type="button">Review the prices</button><button class="btn btn-sm" type="button">Share "my website did this overnight"</button></div>
+        </div>
+      </div>
+      <a class="btn btn-primary" href="owner-order.html" style="justify-self:start">Next: the first customer order</a>
+    </section>
+
+    <aside class="j-notes" aria-label="What happens underneath">
+      <div class="j-note gate"><h3>Only what happened</h3><p>The brief is composed from the ledger, the agenda, the stores and spend, never from a model's guess. Every number links to the records behind it (07 §3.5, §8). The figures here are illustrative.</p></div>
+      <div class="j-note"><h3>Where she already is</h3><p>WhatsApp at 07:00, email if she prefers, and the console's Back office. On the phone's lock screen it says only "Your morning brief is ready", with no details.</p></div>
+      <div class="j-note"><h3>Quiet nights</h3><p>Night Time follows her quiet hours. Only a P1 (the site down, a payment anomaly, an incident) would have woken her. Nothing did.</p></div>
+    </aside>
+  </div>
+</main>
+<nav class="wrap j-pager" aria-label="Previous and next step" data-pager></nav>
+<script src="journeys.js"></script>
+<script src="owner.js"></script>
+</body>
+</html>

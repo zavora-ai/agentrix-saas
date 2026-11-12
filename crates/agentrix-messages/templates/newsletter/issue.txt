@@ -1,0 +1,21 @@
+{% block subject %}The weekly fix: {{ issue.title }}{% endblock %}
+{% block preheader %}{{ issue.lines[0] }}{% endblock %}
+{% block body %}
+# {{ issue.title }}
+{% for line in issue.lines %}
+- {{ line }}
+{% endfor %}
+
+{% if issue.link %}
+::link {{ issue.link.label }} | {{ issue.link.url }}
+{% endif %}
+{% endblock %}
+{% block chat %}
+# The weekly fix: {{ issue.title }}
+
+{% for line in issue.lines %}
+- {{ line }}
+{% endfor %}
+
+Reply STOP to stop these.
+{% endblock %}

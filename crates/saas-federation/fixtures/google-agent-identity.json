@@ -1,0 +1,12 @@
+{
+  "kind": "google_agent_identity",
+  "label": "Google Agent Identity (fixture organisation)",
+  "source": "The claim shape of a Google Agent Runtime agent's identity token validated live on Tue 10 Nov 2026 (specs/saas/identity-validation.md): RS256 from Google's Security Token Service path for the organisation's agent pool; iss, sub (the agent's SPIFFE id), aud (an array), exp, iat and an opaque google object; requested unbound, so no cnf. The issuer path and all ids are made up.",
+  "issuer": "https://sts.googleapis.com/v1/fixture/organizations/000000000000/agentPools/global",
+  "audience": "agentrix-door",
+  "claims": {
+    "sub": "spiffe://agents.global.org-000000000000.system.id.goog/resources/aiplatform/projects/987654321098/locations/us-central1/reasoningEngines/4242",
+    "aud": ["agentrix-door"],
+    "google": {"fixture": true}
+  }
+}

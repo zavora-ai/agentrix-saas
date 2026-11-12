@@ -1,0 +1,18 @@
+{% block subject %}Your claim on {{ claim.domain }} is waiting for one DNS record{% endblock %}
+{% block preheader %}Add it where you manage {{ claim.domain }}. We check every {{ claim.check_every }}.{% endblock %}
+{% block body %}
+# One DNS record to go
+To prove {{ claim.domain }} is yours, add this record where you manage the domain{% if claim.registrar %} ({{ claim.registrar }}){% endif %}. It changes nothing for visitors.
+
+::fact Type | {{ claim.record.type }}
+::fact Name | {{ claim.record.name }}
+::fact Value | {{ claim.record.value }}
+
+We check every {{ claim.check_every }}, and the claim stays open until {{ claim.expires }}. Records can take an hour to show.
+
+::button Check it now | {{ claim.url }}
+{% endblock %}
+{% block chat %}
+Agentrix: your claim on {{ claim.domain }} is waiting for its DNS record ({{ claim.record.type }} {{ claim.record.name }}). It stays open until {{ claim.expires }}.
+::button Open the claim | {{ claim.url }}
+{% endblock %}

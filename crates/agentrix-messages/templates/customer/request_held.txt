@@ -1,0 +1,24 @@
+{% block subject %}Your request {{ request.number }} is with {{ site.owner }}{% endblock %}
+{% block preheader %}Waiting for {{ site.owner }}'s OK. Nothing charged.{% endblock %}
+{% block body %}
+# Waiting for {{ site.owner }}'s OK
+{{ request.summary }}
+
+{% if request.quote %}
+::fact Quote | {{ request.quote|money(request.currency) }}
+{% endif %}
+{% if request.when %}
+::fact For | {{ request.when }}
+{% endif %}
+::fact Charged | Nothing yet
+
+{{ site.owner }} usually answers within {{ request.answer_within }}. The request stays open until {{ request.expires }}.
+
+When {{ site.owner }} says yes, you'll get a link to pay on {{ site.host }}. Payment links for this order only ever come from that address.
+
+::button See your request | {{ request.url }}
+{% endblock %}
+{% block chat %}
+{{ site.name }}: request {{ request.number }} is waiting for {{ site.owner }}'s OK. Nothing has been charged. You'll hear by {{ request.expires }}.
+::button See your request | {{ request.url }}
+{% endblock %}

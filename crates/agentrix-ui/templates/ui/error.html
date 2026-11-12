@@ -1,0 +1,17 @@
+{#- agentrix-ui · 404, 403 and 500 for the platform host. Site hosts render the same state inside
+ui/layouts/site.html with ui.error_state, in the site's brand.
+
+Variables: status (404, 403 or 500); ref (500: the request id support can look up);
+who (403: the signed-in account, as the person would recognise it). -#}
+{% extends "ui/layouts/page.html" %}
+{% block title %}{% if status == 404 %}{{ words.error['404_title'] }}{% elif status == 403 %}{{ words.error['403_title'] }}{% else %}{{ words.error['500_title'] }}{% endif %} · Agentrix{% endblock %}
+{% block main %}
+{%- import "ui/kit.html" as ui %}
+{% if status == 404 %}
+{{ ui.error_state(words.error['404_title'], words.error['404_body'], action={"label": words.error.home, "href": "/"}) }}
+{% elif status == 403 %}
+{{ ui.error_state(words.error['403_title'], words.error['403_body']|replace("{who}", who|default("another account")), action={"label": words.error.home, "href": "/"}) }}
+{% else %}
+{{ ui.error_state(words.error['500_title'], words.error['500_body'] ~ ((" " ~ words.error['500_ref']|replace("{ref}", ref)) if ref is defined and ref else ""), action={"label": words.error.reload, "href": ""}) }}
+{% endif %}
+{% endblock %}

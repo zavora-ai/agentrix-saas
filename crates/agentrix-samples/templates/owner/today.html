@@ -1,0 +1,54 @@
+{% extends "owner/base.html" %}
+{% block field %}{% import "owner/macros.html" as m %}{% set f = c.figures %}
+{{ m.head(c) }}
+<div class="cards">
+  <article class="fcard accent span2">
+    <div class="fcard-head"><span class="sys">{{ m.icon("today") }}</span><div class="who"><b>Today, from the records</b><span class="state-line">{{ c.today }} · {{ c.clock }} · counted now, nothing estimated</span></div></div>
+    <ul class="summary">{% for line in summary %}<li>{{ line }}</li>{% endfor %}</ul>
+    <div class="verbs">
+      {% if c.site.archetype == "news" %}
+      <a class="btn btn-sm btn-primary" href="{{ c.base }}stories">Open Stories</a><a class="btn btn-sm" href="{{ c.base }}subscribers">Subscribers</a><a class="btn btn-sm btn-ghost" href="{{ c.site.url }}">Open the site</a>
+      {% else %}
+      {% if f.held %}<a class="btn btn-sm btn-primary" href="{{ c.base }}custom">Decide {{ f.held }} custom {% if f.held == 1 %}order{% else %}orders{% endif %}</a>{% endif %}
+      <a class="btn btn-sm{% if not f.held %} btn-primary{% endif %}" href="{{ c.base }}orders?state=open">Orders to fulfil</a><a class="btn btn-sm btn-ghost" href="{{ c.site.url }}">Open the site</a>
+      {% endif %}
+    </div>
+  </article>
+</div>
+<div class="tiles">
+  {% if c.site.archetype == "news" %}
+  <a class="tile" href="{{ c.base }}stories?state=published"><span class="k">Stories, last 7 days</span><b class="big">{{ f.stories_week }}</b><small>of {{ f.stories }} in all</small></a>
+  <a class="tile{% if f.drafts %} warn{% endif %}" href="{{ c.base }}stories?state=draft"><span class="k">Not published</span><b class="big">{{ f.drafts }}</b><small>readers don't see these</small></a>
+  <a class="tile" href="{{ c.base }}subscribers"><span class="k">Subscribers</span><b class="big">{{ f.subscribers }}</b><small>active now</small></a>
+  <a class="tile" href="{{ c.base }}digest"><span class="k">Friday five</span><b class="big">{{ f.digest_confirmed }}</b><small>confirmed · {{ f.digest_pending }} waiting</small></a>
+  <a class="tile{% if f.questions_open %} hot{% endif %}" href="{{ c.base }}questions"><span class="k">Questions open</span><b class="big">{{ f.questions_open }}</b><small>passed on by the desks</small></a>
+  {% else %}
+  <a class="tile" href="{{ c.base }}orders?state=open"><span class="k">Orders to fulfil</span><b class="big">{{ f.to_fulfil }}</b><small>{{ f.due_today }} due today</small></a>
+  <a class="tile{% if f.held %} hot{% endif %}" href="{{ c.base }}custom"><span class="k">Custom orders held</span><b class="big">{{ f.held }}</b><small>{% if f.held %}{{ f.held_total }} waiting for you{% else %}nothing waiting{% endif %}</small></a>
+  <a class="tile" href="{{ c.base }}orders"><span class="k">Placed today</span><b class="big">{{ f.placed_today }}</b><small>{{ f.placed_today_total }}</small></a>
+  <a class="tile{% if f.stock_alerts %} warn{% endif %}" href="{{ c.base }}stock"><span class="k">Stock alerts</span><b class="big">{{ f.stock_alerts }}</b><small>low or sold out</small></a>
+  <a class="tile{% if f.questions_open %} hot{% endif %}" href="{{ c.base }}questions"><span class="k">Questions open</span><b class="big">{{ f.questions_open }}</b><small>passed on by the desks</small></a>
+  {% endif %}
+</div>
+{% if c.site.archetype == "news" %}
+<article class="fcard">
+  <div class="spread"><h3>Latest stories</h3><a class="btn btn-sm btn-ghost" href="{{ c.base }}stories">All stories</a></div>
+  {% if stories %}
+  <div class="tbl"><table class="procs">
+    <thead><tr><th>Story</th><th class="hide-sm">Date</th><th>Status</th></tr></thead>
+    <tbody>{% for s in stories %}<tr><td><b>{{ s.title }}</b><small class="muted"> {{ s.section }} · {{ s.author }}</small></td><td class="hide-sm">{{ s.date }}</td><td>{% if s.published %}{{ m.chip("Published", "ok") }}{% else %}{{ m.chip("Not published", "wait") }}{% endif %}</td></tr>{% endfor %}</tbody>
+  </table></div>
+  {% else %}{{ m.empty("No stories yet. Stories appear here when you or a reporter draft or publish one.") }}{% endif %}
+</article>
+{% else %}
+<article class="fcard">
+  <div class="spread"><h3>Latest orders</h3><a class="btn btn-sm btn-ghost" href="{{ c.base }}orders">All orders</a></div>
+  {% if latest %}
+  <div class="tbl"><table class="procs">
+    <thead><tr><th>Order</th><th class="hide-sm">Placed</th><th>Customer</th><th class="hide-sm">Items</th><th>Total</th><th>State</th></tr></thead>
+    <tbody>{% for o in latest %}<tr><td><a href="{{ o.href }}"><b>{{ o.id }}</b></a></td><td class="hide-sm">{{ o.placed }}</td><td>{{ o.name }}</td><td class="hide-sm">{{ o.items }}</td><td>{{ o.total }}</td><td>{{ m.chip(o.label, o.tone) }}</td></tr>{% endfor %}</tbody>
+  </table></div>
+  {% else %}{{ m.empty("No orders yet. They appear here the moment someone orders on the site or through the agent door.") }}{% endif %}
+</article>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,46 @@
+# agentrix-node on control, installed by deploy/deploy.sh (S1-12; first written by the spec
+# session for the first deploy, S2-10). It makes its own signing and sealing keys under
+# /var/lib/agentrix/keys on first start; back that folder up, since sealed TOTP seeds and
+# published receipt keys depend on it.
+[Unit]
+Description=Agentrix node (edge, control, kernel)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+User=agentrix
+Group=agentrix
+EnvironmentFile=/etc/agentrix/node.env
+# The gauntlet token stays in the root-only secrets directory; systemd hands node a copy.
+LoadCredential=gauntlet.token:/etc/agentrix/secrets/gauntlet.token
+Environment=AGENTRIX_GAUNTLET_TOKEN_FILE=%d/gauntlet.token
+# Vultr Object Storage keys for releases and evidence (R14.4, a Should, so optional). systemd
+# will not start node if a credential file is missing, and systemd 255 (Ubuntu 24.04) rejects an
+# empty SetCredential= default ("Invalid syntax, ignoring"). So deploy.sh writes an empty
+# root-only file when there is none, and node reads an empty file as "Object Storage off".
+LoadCredential=objects.json:/etc/agentrix/secrets/objects.json
+Environment=AGENTRIX_OBJECTS_FILE=%d/objects.json
+# PayPal sandbox keys for agentrix-effects (platform W6): {client_id, client_secret, webhook_id}.
+# Same rule as objects.json: deploy.sh writes an empty file when there is none, and an empty
+# file means payments are off ("Payments aren't switched on for this sample yet").
+LoadCredential=paypal.json:/etc/agentrix/secrets/paypal.json
+Environment=AGENTRIX_PAYPAL_FILE=%d/paypal.json
+# The Telegram bot file for agentrix-channels (platform W13): {"bots":[{site, token}]}, written by
+# deploy.sh --secrets. deploy.sh writes one that lists no bot when there is none (Telegram off).
+LoadCredential=telegram.json:/etc/agentrix/secrets/telegram.json
+Environment=AGENTRIX_TELEGRAM_FILE=%d/telegram.json
+# Email keys (RESEND_API_KEY, platform W9), written by deploy.sh --email. No file: email is off.
+EnvironmentFile=-/etc/agentrix/secrets/node.env
+ExecStart=/opt/agentrix/bin/agentrix-node
+WorkingDirectory=/var/lib/agentrix
+UMask=0007
+Restart=on-failure
+RestartSec=3
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=yes
+ReadWritePaths=/var/lib/agentrix
+
+[Install]
+WantedBy=multi-user.target

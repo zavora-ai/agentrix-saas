@@ -1,0 +1,532 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Your website has one job · storyboard</title>
+<!-- The home page film, "Your website has one job". Each scene is one 1280x720 SVG, drawn once
+     and used twice: as a storyboard panel here, and as the film's frames (render.py). The cast
+     are Kilele Bakery's real WebAgent marks (film/marks/, W1's generator). Kilele Bakery is a
+     sample business; Wanjiru is shown only by her hands, apron and phone. -->
+<style>
+@font-face { font-family: "Manrope"; font-weight: 200 800; src: url(../../agentrix-ui/static/fonts/manrope-latin-wght-normal.woff2) format("woff2-variations"); }
+@font-face { font-family: "DM Sans"; font-weight: 100 1000; src: url(../../agentrix-ui/static/fonts/dm-sans-latin-wght-normal.woff2) format("woff2-variations"); }
+@font-face { font-family: "Fraunces"; font-weight: 100 900; src: url(../../agentrix-ui/static/fonts/fraunces-latin-opsz-normal.woff2) format("woff2-variations"); }
+:root { --ink: #23223a; --muted: #5f5e73; --line: #e3e2ec; }
+* { box-sizing: border-box; }
+body { margin: 0; background: #efeff5; color: var(--ink); font: 400 16px/1.5 "DM Sans", system-ui, sans-serif; }
+header { max-width: 1240px; margin: 0 auto; padding: 40px 24px 8px; }
+h1 { font: 800 40px/1.1 Manrope, system-ui, sans-serif; color: #1f1d3d; margin: 0; letter-spacing: -.02em; }
+h2 { font: 800 24px/1.2 Manrope, system-ui, sans-serif; color: #1f1d3d; margin: 40px 0 6px; }
+.meta { color: var(--muted); max-width: 70ch; margin-top: 10px; }
+.board { max-width: 1240px; margin: 0 auto; padding: 0 24px 64px; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(380px, 1fr)); gap: 22px; margin-top: 16px; }
+.panel { background: #fff; border: 1px solid var(--line); border-radius: 14px; overflow: hidden; }
+.panel svg.scene { display: block; width: 100%; height: auto; }
+.panel .notes { padding: 12px 16px 16px; }
+.panel .t { font: 700 12px/1 "DM Sans", sans-serif; letter-spacing: .08em; text-transform: uppercase; color: #b72d50; }
+.panel .vo { font: 600 17px/1.4 "DM Sans", sans-serif; color: #1f1d3d; margin-top: 8px; }
+.panel .act { font-size: 14px; color: var(--muted); margin-top: 6px; }
+body.film header, body.film .notes, body.film h2, body.film .meta { display: none; }
+body.film .board { padding: 0; max-width: none; }
+body.film .grid { display: block; margin: 0; }
+body.film .panel { display: none; border: 0; border-radius: 0; }
+body.film .panel.on { display: block; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+svg text { font-family: "DM Sans", system-ui, sans-serif; }
+</style>
+</head>
+<body>
+
+<!-- Shared drawings: the cast and props, used by every scene. -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+<defs>
+  <pattern id="awning" width="80" height="10" patternUnits="userSpaceOnUse"><rect width="40" height="10" fill="#b72d50"/><rect x="40" width="40" height="10" fill="#e9d8c4"/></pattern>
+  <pattern id="awning-day" width="80" height="10" patternUnits="userSpaceOnUse"><rect width="40" height="10" fill="#de4060"/><rect x="40" width="40" height="10" fill="#fff4e6"/></pattern>
+  <pattern id="check" width="28" height="28" patternUnits="userSpaceOnUse"><rect width="28" height="28" fill="#fff0f4"/><rect width="14" height="28" fill="#de4060" opacity=".35"/><rect width="28" height="14" fill="#de4060" opacity=".35"/></pattern>
+  <radialGradient id="lampglow"><stop offset="0" stop-color="#f2c46a" stop-opacity=".55"/><stop offset="1" stop-color="#f2c46a" stop-opacity="0"/></radialGradient>
+  <radialGradient id="windowglow"><stop offset="0" stop-color="#ffe2a8" stop-opacity=".9"/><stop offset="1" stop-color="#f2c46a" stop-opacity="0"/></radialGradient>
+  <linearGradient id="sunrise" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffe9c7"/><stop offset="1" stop-color="#fbf6ef"/></linearGradient>
+
+  <!-- The old website: a grey browser window, fast asleep. -->
+  <symbol id="oldsite" viewBox="0 0 220 180">
+    <rect x="10" y="14" width="200" height="150" rx="16" fill="#c9c8d8" stroke="#8e8da3" stroke-width="4"/>
+    <path d="M12 48 V30 a16 16 0 0 1 16 -14 h164 a16 16 0 0 1 16 14 V48 Z" fill="#a9a8bf"/>
+    <circle cx="34" cy="31" r="5" fill="#8e8da3"/><circle cx="50" cy="31" r="5" fill="#8e8da3"/><circle cx="66" cy="31" r="5" fill="#8e8da3"/>
+    <path d="M66 94 q16 12 32 0" fill="none" stroke="#3a3950" stroke-width="5" stroke-linecap="round"/>
+    <path d="M122 94 q16 12 32 0" fill="none" stroke="#3a3950" stroke-width="5" stroke-linecap="round"/>
+    <ellipse cx="110" cy="126" rx="11" ry="8" fill="#3a3950"/>
+    <circle cx="56" cy="112" r="9" fill="#e8a7b6" opacity=".55"/><circle cx="164" cy="112" r="9" fill="#e8a7b6" opacity=".55"/>
+    <rect x="34" y="146" width="66" height="6" rx="3" fill="#b3b2c6"/><rect x="120" y="146" width="66" height="6" rx="3" fill="#b3b2c6"/>
+  </symbol>
+  <!-- The old website, awake and content on its bench. -->
+  <symbol id="oldsite-awake" viewBox="0 0 220 180">
+    <rect x="10" y="14" width="200" height="150" rx="16" fill="#c9c8d8" stroke="#8e8da3" stroke-width="4"/>
+    <path d="M12 48 V30 a16 16 0 0 1 16 -14 h164 a16 16 0 0 1 16 14 V48 Z" fill="#a9a8bf"/>
+    <circle cx="34" cy="31" r="5" fill="#8e8da3"/><circle cx="50" cy="31" r="5" fill="#8e8da3"/><circle cx="66" cy="31" r="5" fill="#8e8da3"/>
+    <circle cx="82" cy="92" r="7" fill="#3a3950"/><circle cx="138" cy="92" r="7" fill="#3a3950"/>
+    <path d="M94 118 q16 12 32 0" fill="none" stroke="#3a3950" stroke-width="5" stroke-linecap="round"/>
+    <circle cx="56" cy="112" r="9" fill="#e8a7b6" opacity=".55"/><circle cx="164" cy="112" r="9" fill="#e8a7b6" opacity=".55"/>
+  </symbol>
+  <!-- The stranger: a beetle in a burglar's mask. -->
+  <symbol id="bug" viewBox="0 0 140 120">
+    <path d="M56 26 q-12 -18 -26 -16" stroke="#2b3a16" stroke-width="4" fill="none" stroke-linecap="round"/>
+    <path d="M84 26 q12 -18 26 -16" stroke="#2b3a16" stroke-width="4" fill="none" stroke-linecap="round"/>
+    <g stroke="#2b3a16" stroke-width="5" stroke-linecap="round"><path d="M38 70 l-20 8"/><path d="M38 88 l-18 14"/><path d="M102 70 l20 8"/><path d="M102 88 l18 14"/></g>
+    <ellipse cx="70" cy="78" rx="38" ry="32" fill="#4f6f2a"/>
+    <path d="M70 50 v58" stroke="#3d5a1f" stroke-width="3"/>
+    <circle cx="70" cy="40" r="20" fill="#3d5a1f"/>
+    <rect x="50" y="32" width="40" height="13" rx="6.5" fill="#1f1d3d"/>
+    <circle cx="61" cy="38.5" r="3.4" fill="#fff"/><circle cx="79" cy="38.5" r="3.4" fill="#fff"/>
+    <path d="M62 50 q8 5 16 0" stroke="#1f1d3d" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  </symbol>
+  <symbol id="bug-sulk" viewBox="0 0 140 120">
+    <use href="#bug"/>
+    <rect x="58" y="47" width="24" height="8" fill="#3d5a1f"/>
+    <path d="M62 54 q8 -5 16 0" stroke="#1f1d3d" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  </symbol>
+  <symbol id="sack" viewBox="0 0 60 64">
+    <path d="M18 20 q-14 30 4 38 h16 q18 -8 4 -38 z" fill="#c9a227"/>
+    <path d="M19 18 h22" stroke="#8a5300" stroke-width="5" stroke-linecap="round"/>
+  </symbol>
+  <!-- The customer's AI agent. -->
+  <symbol id="robot" viewBox="0 0 160 200">
+    <line x1="80" y1="12" x2="80" y2="30" stroke="#38356d" stroke-width="5"/><circle cx="80" cy="12" r="8" fill="#de4060"/>
+    <rect x="34" y="28" width="92" height="70" rx="22" fill="#2f55c4"/>
+    <rect x="46" y="42" width="68" height="40" rx="14" fill="#eaf0ff"/>
+    <circle cx="66" cy="62" r="7" fill="#1f1d3d"/><circle cx="94" cy="62" r="7" fill="#1f1d3d"/>
+    <path d="M70 74 q10 6 20 0" stroke="#1f1d3d" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <path d="M50 118 q-24 6 -26 30" stroke="#2f55c4" stroke-width="10" fill="none" stroke-linecap="round"/>
+    <path d="M110 118 q24 6 26 30" stroke="#2f55c4" stroke-width="10" fill="none" stroke-linecap="round"/>
+    <rect x="50" y="104" width="60" height="58" rx="16" fill="#6b8cf0"/>
+    <text x="80" y="141" text-anchor="middle" style="font: 800 20px Manrope, sans-serif" fill="#fff">AI</text>
+    <rect x="58" y="160" width="14" height="28" rx="7" fill="#2f55c4"/><rect x="88" y="160" width="14" height="28" rx="7" fill="#2f55c4"/>
+  </symbol>
+  <symbol id="robot-squint" viewBox="0 0 160 200">
+    <use href="#robot"/>
+    <rect x="52" y="50" width="56" height="30" rx="8" fill="#eaf0ff"/>
+    <path d="M58 62 h16 M86 62 h16" stroke="#1f1d3d" stroke-width="5" stroke-linecap="round"/>
+    <path d="M70 76 q10 -5 20 0" stroke="#1f1d3d" stroke-width="3" fill="none" stroke-linecap="round"/>
+  </symbol>
+  <!-- A phone, and a thumb. -->
+  <symbol id="phone" viewBox="0 0 220 420">
+    <rect width="220" height="420" rx="34" fill="#1f1d3d"/>
+    <rect x="11" y="11" width="198" height="398" rx="25" fill="#f6f6fa"/>
+    <rect x="80" y="20" width="60" height="14" rx="7" fill="#1f1d3d"/>
+  </symbol>
+  <symbol id="thumb" viewBox="0 0 120 220">
+    <path d="M40 220 V70 q0 -50 30 -50 q30 0 30 50 V220 Z" fill="#8d5a3b"/>
+    <path d="M52 44 q18 -16 36 0 v20 q-18 8 -36 0 Z" fill="#c48a66"/>
+  </symbol>
+  <symbol id="hand" viewBox="0 0 140 150">
+    <ellipse cx="62" cy="88" rx="50" ry="56" fill="#8d5a3b"/>
+    <ellipse cx="104" cy="44" rx="17" ry="36" fill="#8d5a3b" transform="rotate(28 104 44)"/>
+    <ellipse cx="112" cy="20" rx="9" ry="11" fill="#c48a66" transform="rotate(28 112 20)"/>
+  </symbol>
+  <!-- Wanjiru, from the chest down: shirt, apron and arms. Her face stays out of frame. -->
+  <symbol id="baker" viewBox="0 0 1280 720">
+    <path d="M370 0 H910 Q950 320 930 720 H350 Q330 320 370 0 Z" fill="#6b4b36"/>
+    <path d="M470 70 H810 L850 720 H430 Z" fill="url(#check)"/>
+    <path d="M470 70 L430 0 M810 70 L850 0" stroke="#b72d50" stroke-width="12"/>
+    <path d="M380 60 Q290 330 330 470 Q370 560 520 560" stroke="#5b3a29" stroke-width="96" fill="none" stroke-linecap="round"/>
+    <path d="M900 60 Q990 330 950 470 Q910 560 760 560" stroke="#5b3a29" stroke-width="96" fill="none" stroke-linecap="round"/>
+  </symbol>
+  <symbol id="chai" viewBox="0 0 120 140">
+    <path d="M44 22 q-10 -12 0 -22 M64 22 q-10 -12 0 -22 M84 22 q-10 -12 0 -22" stroke="#cfcedd" stroke-width="4" fill="none" stroke-linecap="round"/>
+    <path d="M20 36 h84 l-8 86 q-2 12 -14 12 h-40 q-12 0 -14 -12 Z" fill="#fff" stroke="#e3e2ec" stroke-width="3"/>
+    <rect x="22" y="40" width="80" height="16" fill="#c58016" opacity=".7"/>
+    <path d="M104 56 q24 4 18 30 q-4 18 -24 16" stroke="#fff" stroke-width="10" fill="none"/>
+  </symbol>
+  <!-- The Agentrix logo mark. -->
+  <symbol id="logo" viewBox="0 0 26 26">
+    <clipPath id="lc"><rect width="26" height="26" rx="8"/></clipPath>
+    <g clip-path="url(#lc)"><rect width="26" height="26" fill="#38356d"/><path d="M13 13 27.86-.38A20 20 0 0 1 3 30.32Z" fill="#de4060"/></g>
+    <rect x="7" y="7" width="12" height="12" rx="4" fill="#fff"/>
+  </symbol>
+  <symbol id="fingerprint" viewBox="0 0 60 60">
+    <g fill="none" stroke="#b72d50" stroke-width="3" stroke-linecap="round">
+      <path d="M14 30 a16 16 0 0 1 32 0 v6"/><path d="M20 32 a10 10 0 0 1 20 0 v10"/><path d="M26 34 a4 4 0 0 1 8 0 v14"/><path d="M14 38 v4"/><path d="M46 42 q0 8 -4 12"/>
+    </g>
+  </symbol>
+  <!-- The night shopfront, shared by the opening and the hero loop. -->
+  <symbol id="shopfront" viewBox="0 0 1280 720">
+    <rect width="1280" height="720" fill="#1f1d3d"/>
+    <g fill="#f3f2fb"><circle cx="120" cy="80" r="2.5"/><circle cx="260" cy="140" r="1.8"/><circle cx="400" cy="60" r="2"/><circle cx="560" cy="110" r="1.6"/><circle cx="760" cy="70" r="2.2"/><circle cx="900" cy="130" r="1.6"/><circle cx="980" cy="50" r="2"/><circle cx="1210" cy="200" r="1.8"/><circle cx="60" cy="220" r="1.6"/></g>
+    <circle cx="1110" cy="110" r="44" fill="#f3f2fb"/><circle cx="1130" cy="96" r="42" fill="#1f1d3d"/>
+    <rect y="600" width="1280" height="120" fill="#17152b"/><rect y="600" width="1280" height="8" fill="#2c2a57"/>
+    <rect x="240" y="150" width="800" height="450" fill="#2c2a57"/>
+    <rect x="220" y="130" width="840" height="30" rx="6" fill="#38356d"/>
+    <rect x="420" y="172" width="440" height="68" rx="12" fill="#3b2416"/>
+    <text x="640" y="219" text-anchor="middle" style="font: 600 40px Fraunces, Georgia, serif" fill="#f3e6d6">Kilele Bakery</text>
+    <path d="M290 254 H990 L1010 318 H270 Z" fill="url(#awning)" opacity=".85"/>
+    <g fill="#b72d50" opacity=".85"><circle cx="290" cy="318" r="20"/><circle cx="370" cy="318" r="20"/><circle cx="450" cy="318" r="20"/><circle cx="530" cy="318" r="20"/><circle cx="610" cy="318" r="20"/><circle cx="690" cy="318" r="20"/><circle cx="770" cy="318" r="20"/><circle cx="850" cy="318" r="20"/><circle cx="930" cy="318" r="20"/><circle cx="1000" cy="318" r="20"/></g>
+    <rect x="330" y="350" width="420" height="220" rx="10" fill="#13122a" stroke="#38356d" stroke-width="10"/>
+    <rect x="340" y="514" width="400" height="14" fill="#3b2416"/>
+    <rect x="800" y="350" width="150" height="250" rx="8" fill="#3b2416"/><circle cx="930" cy="480" r="7" fill="#c9a227"/>
+    <path d="M845 380 L875 352 L905 380" stroke="#a9a6d6" stroke-width="2" fill="none"/>
+    <rect x="830" y="380" width="90" height="40" rx="6" fill="#f3e6d6"/>
+    <text x="875" y="407" text-anchor="middle" style="font: 800 16px Manrope, sans-serif; letter-spacing: .1em" fill="#b72d50">CLOSED</text>
+    <circle cx="1105" cy="300" r="120" fill="url(#lampglow)"/>
+    <rect x="1100" y="300" width="10" height="300" fill="#38356d"/><path d="M1080 290 h50 l-10 -26 h-30 Z" fill="#38356d"/><circle cx="1105" cy="296" r="9" fill="#f2c46a"/>
+  </symbol>
+  <!-- A Sealed room: glass, with its chip. -->
+  <symbol id="glassroom" viewBox="0 0 300 340">
+    <rect x="4" y="40" width="292" height="296" rx="14" fill="#9db4ff" fill-opacity=".18" stroke="#6b8cf0" stroke-width="5"/>
+    <path d="M40 80 l40 -30 M40 120 l80 -60 M230 300 l40 -30" stroke="#fff" stroke-width="5" stroke-linecap="round" opacity=".7"/>
+    <rect x="74" y="0" width="152" height="36" rx="18" fill="#3b3a78"/>
+    <rect x="92" y="10" width="14" height="14" rx="3" fill="#fff"/>
+    <text x="164" y="24" text-anchor="middle" style="font: 700 16px 'DM Sans', sans-serif" fill="#fff">Sealed room</text>
+  </symbol>
+</defs>
+</svg>
+
+<header>
+  <h1>Your website has one job.</h1>
+  <p class="meta">Storyboard for the home page film. About 90 seconds, plus a 12-second silent loop for the hero. Warm, flat 2D in the Agentrix colours. The cast are Kilele Bakery's own WebAgent marks. Kilele Bakery is a sample business, and Wanjiru appears only as hands, apron and phone. Every line is on screen as a caption, so the film works on mute.</p>
+</header>
+
+<div class="board">
+<h2>The hero loop (12 seconds, silent)</h2>
+<div class="grid">
+
+<section class="panel" data-film="loop" data-at="0" data-for="4">
+<svg class="scene" viewBox="0 0 1280 720" role="img" aria-label="Kilele Bakery at night, closed, with its website asleep on the counter">
+  <use href="#shopfront" width="1280" height="720"/>
+  <use href="#oldsite" x="455" y="388" width="170" height="140"/>
+  <text x="640" y="402" style="font: 800 28px Manrope, sans-serif" fill="#a9a6d6">z</text><text x="664" y="380" style="font: 800 36px Manrope, sans-serif" fill="#a9a6d6">z</text>
+  <rect x="0" y="640" width="1280" height="80" fill="#1f1d3d" opacity=".85"/>
+  <text x="640" y="693" text-anchor="middle" style="font: 800 44px Manrope, sans-serif" fill="#f3f2fb">Your website closes at six.</text>
+</svg>
+<div class="notes"><p class="t">Loop · 0:00–0:04</p><p class="vo">"Your website closes at six."</p><p class="act">The shop at night. The website snores on the counter.</p></div>
+</section>
+
+<section class="panel" data-film="loop" data-at="4" data-for="4">
+<svg class="scene" viewBox="0 0 1280 720" role="img" aria-label="The same shop at night, its window now glowing, with Kilele's WebAgents at work inside">
+  <use href="#shopfront" width="1280" height="720"/>
+  <rect x="335" y="355" width="410" height="210" rx="6" fill="#3a2d1f"/>
+  <circle cx="540" cy="450" r="240" fill="url(#windowglow)"/>
+  <rect x="340" y="514" width="400" height="14" fill="#5b3a29"/>
+  <image href="marks/concierge.svg" x="360" y="400" width="96" height="104"/>
+  <image href="marks/desk-cakes.svg" x="470" y="400" width="96" height="104"/>
+  <image href="marks/cashier.svg" x="580" y="400" width="96" height="104"/>
+  <rect x="0" y="640" width="1280" height="80" fill="#1f1d3d" opacity=".85"/>
+  <text x="640" y="693" text-anchor="middle" style="font: 800 44px Manrope, sans-serif" fill="#ff8fa6">Your WebAgents don't.</text>
+</svg>
+<div class="notes"><p class="t">Loop · 0:04–0:08</p><p class="vo">"Your WebAgents don't."</p><p class="act">The window warms up. Kilele's WebAgents are at work behind the glass.</p></div>
+</section>
+
+<section class="panel" data-film="loop" data-at="8" data-for="4">
+<svg class="scene" viewBox="0 0 1280 720" role="img" aria-label="Upgrade your website into WebAgents">
+  <rect width="1280" height="720" fill="#1f1d3d"/>
+  <use href="#logo" x="560" y="170" width="56" height="56"/>
+  <text x="630" y="212" style="font: 800 40px Manrope, sans-serif" fill="#f3f2fb">Agentrix</text>
+  <text x="640" y="350" text-anchor="middle" style="font: 800 64px Manrope, sans-serif" fill="#f3f2fb">Upgrade your website</text>
+  <text x="640" y="430" text-anchor="middle" style="font: 800 64px Manrope, sans-serif" fill="#f3f2fb">into <tspan fill="#ff8fa6">WebAgents.</tspan></text>
+  <text x="640" y="520" text-anchor="middle" style="font: 500 26px 'DM Sans', sans-serif" fill="#c9c7e6">Watch the 90-second film</text>
+</svg>
+<div class="notes"><p class="t">Loop · 0:08–0:12</p><p class="vo">"Upgrade your website into WebAgents."</p><p class="act">The brand line, then back to the start. On the page, a play button opens the film.</p></div>
+</section>
+
+</div>
+
+<h2>The film (about 90 seconds)</h2>
+<div class="grid">
+
+<section class="panel" data-film="film" data-at="0" data-for="6">
+<svg class="scene" viewBox="0 0 1280 720" role="img" aria-label="Kilele Bakery at night, closed. Inside, the website sleeps on the counter.">
+  <use href="#shopfront" width="1280" height="720"/>
+  <use href="#oldsite" x="455" y="388" width="170" height="140"/>
+  <text x="640" y="402" style="font: 800 28px Manrope, sans-serif" fill="#a9a6d6">z</text><text x="664" y="380" style="font: 800 36px Manrope, sans-serif" fill="#a9a6d6">z</text>
+</svg>
+<div class="notes"><p class="t">1 · 0:00–0:06</p><p class="vo">"This is Kilele Bakery's website. It closes at six."</p><p class="act">Slow push in on the shop window, past the CLOSED sign, to the website snoring on the counter.</p></div>
+</section>
+
+<section class="panel" data-film="film" data-at="6" data-for="7">
+<svg class="scene" viewBox="0 0 1280 720" role="img" aria-label="A customer's message about a gluten-free birthday cake arrives at 11:04 p.m. The website keeps sleeping.">
+  <rect width="1280" height="720" fill="#1f1d3d"/>
+  <rect y="560" width="1280" height="160" fill="#3b2416"/>
+  <use href="#oldsite" x="130" y="170" width="480" height="393"/>
+  <text x="560" y="210" style="font: 800 48px Manrope, sans-serif" fill="#a9a6d6">z</text><text x="604" y="160" style="font: 800 66px Manrope, sans-serif" fill="#a9a6d6">Z</text>
+  <path d="M722 368 l-34 30 l48 -6 Z" fill="#f6f6fa"/>
+  <rect x="700" y="190" width="500" height="190" rx="28" fill="#f6f6fa"/>
+  <text x="732" y="236" style="font: 700 20px 'DM Sans', sans-serif" fill="#656479">New message from the website's form</text>
+  <text x="732" y="284" style="font: 500 30px 'DM Sans', sans-serif" fill="#23223a">Do you do gluten-free birthday</text>
+  <text x="732" y="324" style="font: 500 30px 'DM Sans', sans-serif" fill="#23223a">cakes? Need one for Saturday 🙏</text>
+  <text x="1170" y="360" text-anchor="end" style="font: 500 20px 'DM Sans', sans-serif" fill="#656479">11:04 p.m.</text>
+  <circle cx="1196" cy="196" r="20" fill="#de4060"/><text x="1196" y="204" text-anchor="middle" style="font: 800 20px Manrope, sans-serif" fill="#fff">1</text>
+</svg>
+<div class="notes"><p class="t">2 · 0:06–0:13</p><p class="vo">"It doesn't do Saturdays."</p><p class="act">11:04 p.m. A customer's message pops up. The website snores louder. The unread badge sits there.</p></div>
+</section>
+
+<section class="panel" data-film="film" data-at="13" data-for="8">
+<svg class="scene" viewBox="0 0 1280 720" role="img" aria-label="A beetle in a burglar's mask squeezes in through a cat flap marked plugins, while the website sleeps">
+  <rect width="1280" height="720" fill="#2c2a57"/>
+  <rect y="600" width="1280" height="120" fill="#1f1d3d"/>
+  <use href="#oldsite" x="100" y="150" width="260" height="213"/>
+  <text x="350" y="170" style="font: 800 30px Manrope, sans-serif" fill="#a9a6d6">z</text><text x="378" y="140" style="font: 800 42px Manrope, sans-serif" fill="#a9a6d6">Z</text>
+  <rect x="520" y="110" width="660" height="490" fill="#38356d"/>
+  <g stroke="#2c2a57" stroke-width="3" opacity=".6"><path d="M520 180 H1180 M520 260 H1180 M520 340 H1180 M520 420 H1180 M520 500 H1180"/><path d="M640 110 V180 M840 110 V180 M1040 110 V180 M740 180 V260 M940 180 V260 M640 260 V340 M840 260 V340 M1040 260 V340"/></g>
+  <rect x="690" y="400" width="220" height="200" rx="18" fill="#1f1d3d" stroke="#6f6ba8" stroke-width="5"/>
+  <path d="M700 410 L900 410 L880 470 L720 470 Z" fill="#2c2a57" opacity=".9"/>
+  <rect x="725" y="350" width="150" height="40" rx="20" fill="#8a5300"/>
+  <text x="800" y="377" text-anchor="middle" style="font: 700 21px 'DM Sans', sans-serif" fill="#fff4dd">plugins</text>
+  <use href="#bug" x="715" y="468" width="160" height="137"/>
+  <use href="#sack" x="830" y="452" width="66" height="70"/>
+  <g fill="#6f6ba8" opacity=".7"><ellipse cx="960" cy="600" rx="8" ry="4"/><ellipse cx="1000" cy="610" rx="8" ry="4"/><ellipse cx="1040" cy="600" rx="8" ry="4"/></g>
+</svg>
+<div class="notes"><p class="t">3 · 0:13–0:21</p><p class="vo">"Last month it let a stranger in through the back. Didn't say a word."</p><p class="act">A beetle in a burglar's mask, with a sack, squeezes through a cat flap marked "plugins". The website doesn't stir.</p></div>
+</section>
+
+<section class="panel" data-film="film" data-at="21" data-for="9">
+<svg class="scene" viewBox="0 0 1280 720" role="img" aria-label="A customer's AI agent, a small robot, squints at a blurry photo of a menu that the website handed it">
+  <rect width="1280" height="720" fill="#1f1d3d"/>
+  <rect y="600" width="1280" height="120" fill="#17152b"/>
+  <use href="#oldsite" x="120" y="200" width="380" height="311"/>
+  <text x="470" y="230" style="font: 800 34px Manrope, sans-serif" fill="#a9a6d6">z</text>
+  <g transform="rotate(10 680 400)">
+    <rect x="565" y="320" width="230" height="170" rx="6" fill="#fbf6ef" stroke="#e8dccd" stroke-width="4"/>
+    <text x="680" y="362" text-anchor="middle" style="font: 600 26px Fraunces, Georgia, serif" fill="#9c5725" opacity=".55" filter="blur(1.2px)">MENU</text>
+    <g fill="#9c5725" opacity=".35"><rect x="595" y="382" width="170" height="10" rx="5"/><rect x="595" y="404" width="140" height="10" rx="5"/><rect x="595" y="426" width="160" height="10" rx="5"/><rect x="595" y="448" width="110" height="10" rx="5"/></g>
+  </g>
+  <use href="#robot-squint" x="740" y="250" width="280" height="350"/>
+  <path d="M990 470 h96 l-10 60 h-76 Z" fill="none" stroke="#a9a6d6" stroke-width="6"/>
+  <path d="M1000 470 q38 -38 76 0" fill="none" stroke="#a9a6d6" stroke-width="6"/>
+  <circle cx="1080" cy="240" r="48" fill="#f6f6fa"/><text x="1080" y="262" text-anchor="middle" style="font: 800 56px Manrope, sans-serif" fill="#2f55c4">?</text>
+  <path d="M1040 278 l-28 26 l40 -10 Z" fill="#f6f6fa"/>
+</svg>
+<div class="notes"><p class="t">4 · 0:21–0:30</p><p class="vo">"And when a customer's AI agent came to order a cake, it got a picture of the menu."</p><p class="act">A small robot with an empty basket knocks. The sleeping website prints a blurry photo of the menu. The robot squints, turns it upside down, gives up.</p></div>
+</section>
+
+<section class="panel" data-film="film" data-at="30" data-for="5">
+<svg class="scene" viewBox="0 0 1280 720" role="img" aria-label="Morning. Wanjiru's hands hold her phone over a floury counter: one message missed at 11:04 p.m.">
+  <rect width="1280" height="720" fill="url(#sunrise)"/>
+  <path d="M0 0 L380 0 L120 720 L0 720 Z" fill="#fff4dd" opacity=".6"/>
+  <rect y="540" width="1280" height="180" fill="#e8dccd"/>
+  <g fill="#fff" opacity=".8"><circle cx="180" cy="600" r="5"/><circle cx="220" cy="620" r="3"/><circle cx="960" cy="590" r="4"/><circle cx="1010" cy="630" r="6"/></g>
+  <use href="#baker" width="1280" height="720"/>
+  <use href="#phone" x="525" y="150" width="230" height="439"/>
+  <rect x="550" y="230" width="180" height="120" rx="14" fill="#fff" stroke="#e3e2ec" stroke-width="2"/>
+  <text x="566" y="262" style="font: 700 16px 'DM Sans', sans-serif" fill="#b72d50">Missed · 11:04 p.m.</text>
+  <text x="566" y="292" style="font: 500 15px 'DM Sans', sans-serif" fill="#23223a">Do you do gluten-free</text>
+  <text x="566" y="314" style="font: 500 15px 'DM Sans', sans-serif" fill="#23223a">birthday cakes? Need…</text>
+  <use href="#hand" x="455" y="470" width="130" height="139"/>
+  <use href="#hand" x="695" y="470" width="130" height="139" transform="translate(1520 0) scale(-1 1)"/>
+  <use href="#chai" x="1010" y="400" width="140" height="163"/>
+  <g stroke="#9c5725" stroke-width="4" fill="none" stroke-linecap="round" opacity=".6"><path d="M640 120 q12 -16 0 -32"/><path d="M670 112 q12 -16 0 -32"/></g>
+</svg>
+<div class="notes"><p class="t">5 · 0:30–0:35</p><p class="vo">"Wanjiru deserves better."</p><p class="act">Morning light, flour on the counter, chai steaming. We see only her apron and hands. Her phone: one message missed at 11:04 p.m. A sigh.</p></div>
+</section>
+
+<section class="panel" data-film="film" data-at="35" data-for="8">
+<svg class="scene" viewBox="0 0 1280 720" role="img" aria-label="She pastes her address into Agentrix and gets a free check-up: three things hiding in her plugins">
+  <rect width="1280" height="720" fill="#f6f6fa"/>
+  <rect x="200" y="70" width="880" height="590" rx="26" fill="#fff" stroke="#e3e2ec" stroke-width="2"/>
+  <use href="#logo" x="250" y="110" width="40" height="40"/><text x="302" y="140" style="font: 800 28px Manrope, sans-serif" fill="#1f1d3d">Agentrix</text>
+  <rect x="250" y="180" width="780" height="80" rx="18" fill="#fff" stroke="#38356d" stroke-width="3"/>
+  <circle cx="290" cy="220" r="12" fill="none" stroke="#5f5e73" stroke-width="3"/>
+  <text x="316" y="230" style="font: 600 28px 'DM Sans', sans-serif" fill="#1f1d3d">kilele-bakery.example</text>
+  <rect x="868" y="192" width="150" height="56" rx="14" fill="#38356d"/><text x="943" y="228" text-anchor="middle" style="font: 700 22px 'DM Sans', sans-serif" fill="#fff">Show me</text>
+  <text x="254" y="296" style="font: 500 18px 'DM Sans', sans-serif" fill="#11734a">✓ No account   ✓ No passwords   ✓ Only what's already public</text>
+  <rect x="250" y="330" width="780" height="290" rx="18" fill="#fbfbfe" stroke="#e3e2ec" stroke-width="2"/>
+  <text x="280" y="378" style="font: 800 28px Manrope, sans-serif" fill="#1f1d3d">Your site's check-up</text>
+  <circle cx="290" cy="428" r="9" fill="#a3302a"/><text x="312" y="436" style="font: 600 24px 'DM Sans', sans-serif" fill="#23223a">3 things hiding in your plugins</text>
+  <circle cx="290" cy="484" r="9" fill="#8a5300"/><text x="312" y="492" style="font: 600 24px 'DM Sans', sans-serif" fill="#23223a">Questions after 6 p.m. go unanswered</text>
+  <circle cx="290" cy="540" r="9" fill="#2f55c4"/><text x="312" y="548" style="font: 600 24px 'DM Sans', sans-serif" fill="#23223a">AI agents can't place an order</text>
+  <g style="font: 700 16px 'DM Sans', sans-serif"><rect x="880" y="412" width="120" height="32" rx="16" fill="#ecebf6"/><text x="940" y="434" text-anchor="middle" fill="#38356d">Evidence</text><rect x="880" y="468" width="120" height="32" rx="16" fill="#ecebf6"/><text x="940" y="490" text-anchor="middle" fill="#38356d">Evidence</text><rect x="880" y="524" width="120" height="32" rx="16" fill="#ecebf6"/><text x="940" y="546" text-anchor="middle" fill="#38356d">Evidence</text></g>
+</svg>
+<div class="notes"><p class="t">6 · 0:35–0:43</p><p class="vo">"So she asked Agentrix for a free check-up. No password, nothing to install."</p><p class="act">She types her address and taps Show me. The check-up slides in, each finding with its evidence.</p></div>
+</section>
+
+<section class="panel" data-film="film" data-at="43" data-for="10">
+<svg class="scene" viewBox="0 0 1280 720" role="img" aria-label="An Agentrix moving van loads boxes marked Menu, Cakes, Photos and Prices. The beetle is left behind in a sealed glass room.">
+  <rect width="1280" height="720" fill="#eaf0ff"/>
+  <rect y="560" width="1280" height="160" fill="#cfd6ee"/>
+  <rect x="120" y="290" width="500" height="230" rx="18" fill="#38356d"/>
+  <rect x="620" y="350" width="180" height="170" rx="18" fill="#2c2a57"/>
+  <rect x="650" y="372" width="120" height="70" rx="10" fill="#b6b2f2"/>
+  <use href="#logo" x="160" y="320" width="56" height="56"/>
+  <text x="230" y="362" style="font: 800 40px Manrope, sans-serif" fill="#fff">Agentrix</text>
+  <g style="font: 700 20px 'DM Sans', sans-serif" fill="#3b2416">
+    <rect x="170" y="408" width="110" height="90" rx="6" fill="#e8c37a"/><text x="225" y="460" text-anchor="middle">Menu</text>
+    <rect x="292" y="408" width="110" height="90" rx="6" fill="#d9ad5c"/><text x="347" y="460" text-anchor="middle">Cakes</text>
+    <rect x="414" y="408" width="110" height="90" rx="6" fill="#e8c37a"/><text x="469" y="460" text-anchor="middle">Photos</text>
+    <rect x="292" y="320" width="110" height="80" rx="6" fill="#e8c37a" opacity="0"/>
+  </g>
+  <rect x="534" y="430" width="90" height="70" rx="6" fill="#d9ad5c"/><text x="579" y="472" text-anchor="middle" style="font: 700 18px 'DM Sans', sans-serif" fill="#3b2416">Prices</text>
+  <circle cx="250" cy="530" r="44" fill="#1f1d3d"/><circle cx="250" cy="530" r="16" fill="#a9a6d6"/>
+  <circle cx="700" cy="530" r="44" fill="#1f1d3d"/><circle cx="700" cy="530" r="16" fill="#a9a6d6"/>
+  <use href="#glassroom" x="880" y="190" width="300" height="340"/>
+  <use href="#bug-sulk" x="950" y="350" width="160" height="137"/>
+  <use href="#sack" x="900" y="470" width="50" height="54"/>
+  <rect x="890" y="560" width="280" height="44" rx="22" fill="#fdecea"/>
+  <text x="1030" y="589" text-anchor="middle" style="font: 700 19px 'DM Sans', sans-serif" fill="#a3302a">Left behind: hidden spam links</text>
+</svg>
+<div class="notes"><p class="t">7 · 0:43–0:53</p><p class="vo">"Then everything moves to a new site. Everything except the stranger."</p><p class="act">The Agentrix van loads Menu, Cakes, Photos and Prices. The beetle tries to hop into a box; a glass door slides shut. It sulks behind the glass, with a label saying why it was left behind.</p></div>
+</section>
+
+<section class="panel" data-film="film" data-at="53" data-for="6">
+<svg class="scene" viewBox="0 0 1280 720" role="img" aria-label="Her phone asks: your new site is ready, go live? Her thumb approves with her passkey.">
+  <rect width="1280" height="720" fill="#fbf6ef"/>
+  <use href="#phone" x="490" y="40" width="300" height="573"/>
+  <image href="marks/chief.svg" x="526" y="110" width="60" height="64"/>
+  <text x="596" y="148" style="font: 700 20px 'DM Sans', sans-serif" fill="#1f1d3d">Chief WebAgent</text>
+  <text x="526" y="226" style="font: 600 21px 'DM Sans', sans-serif" fill="#4a4960">Your new site is ready.</text>
+  <text x="526" y="276" style="font: 800 40px Manrope, sans-serif" fill="#1f1d3d">Go live?</text>
+  <text x="526" y="322" style="font: 500 19px 'DM Sans', sans-serif" fill="#5f5e73">Old site: kept for 30 days</text>
+  <text x="526" y="352" style="font: 500 19px 'DM Sans', sans-serif" fill="#5f5e73">Undo: one tap</text>
+  <rect x="526" y="384" width="228" height="56" rx="14" fill="#b72d50"/><text x="640" y="419" text-anchor="middle" style="font: 700 20px 'DM Sans', sans-serif" fill="#fff">Approve with passkey</text>
+  <use href="#fingerprint" x="600" y="460" width="80" height="80"/>
+  <use href="#thumb" x="700" y="470" width="150" height="275" transform="rotate(-24 775 600)"/>
+</svg>
+<div class="notes"><p class="t">8 · 0:53–0:59</p><p class="vo">"Nothing goes live until she says so."</p><p class="act">Her phone: "Your new site is ready. Go live?" Her thumb lands on the fingerprint. A soft click.</p></div>
+</section>
+
+<section class="panel" data-film="film" data-at="59" data-for="7">
+<svg class="scene" viewBox="0 0 1280 720" role="img" aria-label="The old website, in a dressing gown, sips tea on a bench under a sign that says Standby, 30 days">
+  <rect width="1280" height="720" fill="#fff4dd"/>
+  <circle cx="1080" cy="140" r="70" fill="#f2c46a" opacity=".7"/>
+  <rect y="520" width="1280" height="200" fill="#cfe2bd"/>
+  <rect x="980" y="230" width="12" height="300" fill="#6b4b36"/>
+  <rect x="880" y="200" width="220" height="90" rx="12" fill="#38356d"/>
+  <text x="990" y="238" text-anchor="middle" style="font: 800 26px Manrope, sans-serif" fill="#fff">Standby</text>
+  <text x="990" y="272" text-anchor="middle" style="font: 600 22px 'DM Sans', sans-serif" fill="#c9c7e6">30 days</text>
+  <rect x="380" y="430" width="500" height="22" rx="8" fill="#9c5725"/>
+  <rect x="380" y="470" width="500" height="26" rx="8" fill="#9c5725"/>
+  <rect x="410" y="496" width="16" height="80" fill="#3b2416"/><rect x="834" y="496" width="16" height="80" fill="#3b2416"/>
+  <use href="#oldsite-awake" x="500" y="270" width="260" height="213"/>
+  <path d="M496 428 q134 34 268 0 l18 70 h-304 Z" fill="#de4060"/>
+  <path d="M496 428 l40 70 M764 428 l-40 70" stroke="#b72d50" stroke-width="6"/>
+  <path d="M556 466 h148" stroke="#b72d50" stroke-width="8" stroke-linecap="round"/>
+  <use href="#chai" x="700" y="380" width="70" height="82"/>
+  <path d="M300 520 q10 -30 30 -30 q20 0 24 20 l20 -4 l-14 14 Z" fill="#8e8da3"/>
+</svg>
+<div class="notes"><p class="t">9 · 0:59–1:06</p><p class="vo">"The old site? It waits on standby for 30 days. Just in case."</p><p class="act">The old website, now awake, in a coral dressing gown, sips tea on a park bench under a "Standby · 30 days" sign. A pigeon keeps it company.</p></div>
+</section>
+
+<section class="panel" data-film="film" data-at="66" data-for="6">
+<svg class="scene" viewBox="0 0 1280 720" role="img" aria-label="Meet her WebAgents: the Concierge, Cakes, the Chief WebAgent, the Cashier and the Guardian, each labelled AI">
+  <rect width="1280" height="720" fill="#fbf6ef"/>
+  <g fill="#de4060" opacity=".5"><rect x="160" y="90" width="12" height="20" rx="3" transform="rotate(20 166 100)"/><rect x="1080" y="120" width="12" height="20" rx="3" transform="rotate(-30 1086 130)"/><circle cx="380" cy="120" r="6"/><circle cx="900" cy="80" r="7"/></g>
+  <g fill="#c9a227" opacity=".6"><rect x="620" y="70" width="12" height="20" rx="3" transform="rotate(40 626 80)"/><circle cx="240" cy="200" r="6"/><circle cx="1180" cy="230" r="5"/></g>
+  <image href="marks/concierge.svg" x="90" y="250" width="170" height="184"/>
+  <image href="marks/desk-cakes.svg" x="330" y="250" width="170" height="184"/>
+  <image href="marks/chief.svg" x="540" y="200" width="200" height="216"/>
+  <image href="marks/cashier.svg" x="780" y="250" width="170" height="184"/>
+  <image href="marks/guardian.svg" x="1020" y="250" width="170" height="184"/>
+  <g style="font: 800 28px Manrope, sans-serif" fill="#2b1d14" text-anchor="middle">
+    <text x="175" y="490">Concierge</text><text x="415" y="490">Cakes</text><text x="640" y="490">Chief</text><text x="865" y="490">Cashier</text><text x="1105" y="490">Guardian</text>
+  </g>
+  <g style="font: 500 20px 'DM Sans', sans-serif" fill="#6b5647" text-anchor="middle">
+    <text x="175" y="522">Answers visitors</text><text x="415" y="522">Knows every cake</text><text x="640" y="522">Briefs Wanjiru</text><text x="865" y="522">Holds the orders</text><text x="1105" y="522">Shuts the back door</text>
+  </g>
+  <g style="font: 700 16px 'DM Sans', sans-serif" text-anchor="middle">
+    <rect x="151" y="540" width="48" height="26" rx="13" fill="#ecebf6"/><text x="175" y="559" fill="#38356d">AI</text>
+    <rect x="391" y="540" width="48" height="26" rx="13" fill="#ecebf6"/><text x="415" y="559" fill="#38356d">AI</text>
+    <rect x="616" y="540" width="48" height="26" rx="13" fill="#ecebf6"/><text x="640" y="559" fill="#38356d">AI</text>
+    <rect x="841" y="540" width="48" height="26" rx="13" fill="#ecebf6"/><text x="865" y="559" fill="#38356d">AI</text>
+    <rect x="1081" y="540" width="48" height="26" rx="13" fill="#ecebf6"/><text x="1105" y="559" fill="#38356d">AI</text>
+  </g>
+</svg>
+<div class="notes"><p class="t">10 · 1:06–1:12</p><p class="vo">"Meet her WebAgents."</p><p class="act">The marks pop in one by one in Kilele's colours, each with its name, its job and an AI label.</p></div>
+</section>
+
+<section class="panel" data-film="film" data-at="72" data-for="7">
+<svg class="scene" viewBox="0 0 1280 720" role="img" aria-label="At 11:04 p.m. the Concierge answers the cake question from the bakery's own Cakes page">
+  <rect width="1280" height="720" fill="#1f1d3d"/>
+  <circle cx="1170" cy="90" r="34" fill="#f3f2fb"/><circle cx="1186" cy="80" r="32" fill="#1f1d3d"/>
+  <rect x="160" y="70" width="960" height="590" rx="26" fill="#fbf6ef"/>
+  <text x="200" y="128" style="font: 600 32px Fraunces, Georgia, serif" fill="#2b1d14">Kilele Bakery</text>
+  <rect x="870" y="100" width="210" height="38" rx="19" fill="#ecebf6"/><text x="975" y="126" text-anchor="middle" style="font: 700 18px 'DM Sans', sans-serif" fill="#38356d">WebAgent · AI</text>
+  <rect x="560" y="170" width="520" height="112" rx="22" fill="#38356d"/>
+  <text x="588" y="216" style="font: 500 25px 'DM Sans', sans-serif" fill="#fff">Do you do gluten-free birthday</text>
+  <text x="588" y="252" style="font: 500 25px 'DM Sans', sans-serif" fill="#fff">cakes? Need one for Saturday 🙏</text>
+  <image href="marks/concierge.svg" x="196" y="306" width="70" height="76"/>
+  <rect x="284" y="306" width="760" height="230" rx="22" fill="#fff" stroke="#e8dccd" stroke-width="2"/>
+  <text x="312" y="352" style="font: 500 25px 'DM Sans', sans-serif" fill="#2b1d14">Yes. Our gluten-free sponge comes in the</text>
+  <text x="312" y="388" style="font: 500 25px 'DM Sans', sans-serif" fill="#2b1d14">two smaller sizes. Our kitchen also uses</text>
+  <text x="312" y="424" style="font: 500 25px 'DM Sans', sans-serif" fill="#2b1d14">wheat flour, so we can't promise it's safe</text>
+  <text x="312" y="460" style="font: 500 25px 'DM Sans', sans-serif" fill="#2b1d14">for coeliac guests.</text>
+  <rect x="312" y="484" width="150" height="34" rx="17" fill="#f3e6d6"/><text x="387" y="507" text-anchor="middle" style="font: 700 17px 'DM Sans', sans-serif" fill="#9c5725">From: Cakes</text>
+  <text x="1044" y="590" text-anchor="end" style="font: 500 20px 'DM Sans', sans-serif" fill="#6b5647">11:04 p.m.</text>
+</svg>
+<div class="notes"><p class="t">11 · 1:12–1:19</p><p class="vo">"They answer at 11 p.m., from her own menu."</p><p class="act">The same message, the same 11:04 p.m. This time the Concierge answers, honestly, and cites the Cakes page it read.</p></div>
+</section>
+
+<section class="panel" data-film="film" data-at="79" data-for="8">
+<svg class="scene" viewBox="0 0 1280 720" role="img" aria-label="The robot walks through a door marked For AI agents with an order, which the Cashier holds for Wanjiru. The Guardian has padlocked the cat flap and the beetle walks off.">
+  <rect width="640" height="720" fill="#fbf6ef"/><rect x="640" width="640" height="720" fill="#2c2a57"/>
+  <rect y="600" width="640" height="120" fill="#e8dccd"/><rect x="640" y="600" width="640" height="120" fill="#1f1d3d"/>
+  <rect x="70" y="190" width="200" height="410" rx="10" fill="#38356d"/><rect x="88" y="210" width="164" height="390" rx="6" fill="#4a4785"/>
+  <rect x="80" y="136" width="180" height="40" rx="20" fill="#2f55c4"/><text x="170" y="163" text-anchor="middle" style="font: 700 18px 'DM Sans', sans-serif" fill="#fff">For AI agents</text>
+  <use href="#robot" x="190" y="300" width="230" height="288"/>
+  <rect x="330" y="480" width="124" height="58" rx="6" fill="#fff" stroke="#cfcedd" stroke-width="2" transform="rotate(8 392 509)"/>
+  <text x="392" y="515" text-anchor="middle" style="font: 600 15px 'DM Sans', sans-serif" fill="#23223a" transform="rotate(8 392 509)">1 × GF sponge</text>
+  <image href="marks/cashier.svg" x="470" y="170" width="120" height="130"/>
+  <rect x="430" y="310" width="200" height="56" rx="16" fill="#fff4dd"/>
+  <text x="530" y="334" text-anchor="middle" style="font: 700 16px 'DM Sans', sans-serif" fill="#8a5300">Held for</text>
+  <text x="530" y="356" text-anchor="middle" style="font: 700 16px 'DM Sans', sans-serif" fill="#8a5300">Wanjiru's OK</text>
+  <rect x="780" y="380" width="220" height="220" rx="18" fill="#1f1d3d" stroke="#6f6ba8" stroke-width="5"/>
+  <rect x="860" y="460" width="60" height="50" rx="8" fill="#c9a227"/><path d="M872 460 v-16 a18 18 0 0 1 36 0 v16" stroke="#c9a227" stroke-width="8" fill="none"/>
+  <image href="marks/guardian.svg" x="1030" y="250" width="140" height="152"/>
+  <use href="#bug-sulk" x="1040" y="490" width="140" height="120" transform="translate(2220 0) scale(-1 1)"/>
+  <rect x="790" y="330" width="200" height="38" rx="19" fill="#e6f5ee"/><text x="890" y="356" text-anchor="middle" style="font: 700 18px 'DM Sans', sans-serif" fill="#11734a">Back door shut</text>
+</svg>
+<div class="notes"><p class="t">12 · 1:19–1:27</p><p class="vo">"They take orders from people, and from their AI agents. And they keep the back door shut."</p><p class="act">Left: the robot strolls through a proper door marked "For AI agents" with its order; the Cashier holds it for Wanjiru's OK. Right: the Guardian has padlocked the cat flap; the beetle wanders off, sack empty.</p></div>
+</section>
+
+<section class="panel" data-film="film" data-at="87" data-for="7">
+<svg class="scene" viewBox="0 0 1280 720" role="img" aria-label="Morning. Her phone shows the Chief WebAgent's brief: nine questions answered overnight, one cake order waiting for her OK. Her thumb taps Approve.">
+  <rect width="1280" height="720" fill="url(#sunrise)"/>
+  <path d="M0 0 L380 0 L120 720 L0 720 Z" fill="#fff4dd" opacity=".6"/>
+  <rect y="540" width="1280" height="180" fill="#e8dccd"/>
+  <use href="#baker" width="1280" height="720"/>
+  <use href="#phone" x="490" y="90" width="300" height="573"/>
+  <use href="#hand" x="410" y="520" width="150" height="160"/>
+  <image href="marks/chief.svg" x="522" y="150" width="56" height="60"/>
+  <text x="588" y="176" style="font: 700 18px 'DM Sans', sans-serif" fill="#1f1d3d">Chief WebAgent</text>
+  <text x="588" y="200" style="font: 500 16px 'DM Sans', sans-serif" fill="#5f5e73">7:00 a.m.</text>
+  <text x="522" y="250" style="font: 800 25px Manrope, sans-serif" fill="#1f1d3d">Habari ya asubuhi,</text>
+  <text x="522" y="282" style="font: 800 25px Manrope, sans-serif" fill="#1f1d3d">Wanjiru.</text>
+  <text x="522" y="326" style="font: 500 18px 'DM Sans', sans-serif" fill="#4a4960">9 questions answered</text>
+  <text x="522" y="350" style="font: 500 18px 'DM Sans', sans-serif" fill="#4a4960">overnight.</text>
+  <text x="522" y="382" style="font: 500 18px 'DM Sans', sans-serif" fill="#4a4960">1 cake order waiting</text>
+  <text x="522" y="406" style="font: 500 18px 'DM Sans', sans-serif" fill="#4a4960">for your OK.</text>
+  <rect x="522" y="428" width="236" height="56" rx="14" fill="#38356d"/><text x="640" y="463" text-anchor="middle" style="font: 700 21px 'DM Sans', sans-serif" fill="#fff">Approve</text>
+  <use href="#thumb" x="660" y="470" width="150" height="275" transform="rotate(-20 735 610)"/>
+  <use href="#chai" x="1010" y="400" width="140" height="163"/>
+</svg>
+<div class="notes"><p class="t">13 · 1:27–1:34</p><p class="vo">"Every morning they tell her what they did. She decides what matters."</p><p class="act">Same counter, same chai, a better morning. The Chief WebAgent's brief in Swahili and English. Her thumb taps Approve on the cake order.</p></div>
+</section>
+
+<section class="panel" data-film="film" data-at="94" data-for="6">
+<svg class="scene" viewBox="0 0 1280 720" role="img" aria-label="Upgrade your website into WebAgents. Free check-up at agentrix.website. Kilele Bakery is a sample business. WebAgents are AI, and say so.">
+  <rect width="1280" height="720" fill="#1f1d3d"/>
+  <use href="#logo" x="80" y="70" width="44" height="44"/><text x="136" y="103" style="font: 800 30px Manrope, sans-serif" fill="#f3f2fb">Agentrix</text>
+  <text x="640" y="268" text-anchor="middle" style="font: 800 66px Manrope, sans-serif" fill="#f3f2fb">Upgrade your website</text>
+  <text x="640" y="350" text-anchor="middle" style="font: 800 66px Manrope, sans-serif" fill="#f3f2fb">into <tspan fill="#ff8fa6">WebAgents.</tspan></text>
+  <rect x="290" y="408" width="700" height="80" rx="18" fill="#fff"/>
+  <text x="330" y="458" style="font: 500 28px 'DM Sans', sans-serif" fill="#656479">your-business.example</text>
+  <rect x="820" y="420" width="156" height="56" rx="14" fill="#b72d50"/><text x="898" y="456" text-anchor="middle" style="font: 700 22px 'DM Sans', sans-serif" fill="#fff">Show me</text>
+  <text x="640" y="548" text-anchor="middle" style="font: 600 26px 'DM Sans', sans-serif" fill="#c9c7e6">Free check-up at agentrix.website</text>
+  <text x="640" y="672" text-anchor="middle" style="font: 500 18px 'DM Sans', sans-serif" fill="#a9a6d6">Kilele Bakery is a sample business. WebAgents are AI, and say so.</text>
+</svg>
+<div class="notes"><p class="t">14 · 1:34–1:40</p><p class="vo">"Upgrade your website into WebAgents."</p><p class="act">The brand line and the address box. Small print: Kilele Bakery is a sample business; WebAgents are AI, and say so.</p></div>
+</section>
+
+</div>
+</div>
+
+<script>
+// ?film=loop or ?film=film&t=12.5 shows the one scene playing at that moment, full size (render.py).
+const q = new URLSearchParams(location.search);
+if (q.has("film")) {
+  document.body.classList.add("film");
+  const which = q.get("film"), t = Number(q.get("t") || 0);
+  for (const p of document.querySelectorAll(`.panel[data-film="${which}"]`)) {
+    const at = Number(p.dataset.at), dur = Number(p.dataset.for);
+    if (t >= at && t < at + dur) p.classList.add("on");
+  }
+}
+</script>
+</body>
+</html>

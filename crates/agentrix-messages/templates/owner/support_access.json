@@ -1,0 +1,22 @@
+{
+ "site": {
+  "name": "Kilele Bakery",
+  "host": "kilele-bakery-sample.agentrix.website",
+  "sample": true
+ },
+ "person": {
+  "name": "Wanjiru"
+ },
+ "console_url": "https://agentrix.website/console/kilele-bakery-sample",
+ "access": {
+  "state": "requested",
+  "who": "Agentrix support (Kevin)",
+  "reason": "the cake prices showing the old values after your last publish (ticket T-204)",
+  "scope": "Pages and releases, read-only",
+  "length": "4 hours from when you grant it",
+  "at": null,
+  "ends": null,
+  "summary": null,
+  "url": "https://agentrix.website/support-access/g-12"
+ }
+}

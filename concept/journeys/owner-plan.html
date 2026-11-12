@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Plan and pay</title>
+<meta name="description" content="Owner journey, step 3: Wanjiru chooses a plan, sets her AI budget as a boundary, and approves a PayPal subscription on PayPal's own page. Nothing is charged until her site goes live.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Manrope:wght@600;700;800&family=Fraunces:opsz,wght@9..144,600;9..144,800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../styles.css">
+<link rel="stylesheet" href="../console/console.css">
+<link rel="stylesheet" href="journeys.css">
+<link rel="stylesheet" href="owner.css">
+</head>
+<body data-lane="owner" data-step="3">
+<header class="j-top">
+  <a class="logo" href="../index.html"><span class="mark" aria-hidden="true"></span>Agentrix</a>
+  <a class="j-maplink" href="index.html">Journey map</a>
+  <span class="j-lane">Owner · Wanjiru</span>
+  <span class="concept-label">Concept · illustrative data</span>
+</header>
+<nav class="j-steps" aria-label="Owner journey" data-steps></nav>
+<main class="wrap j-main">
+  <header class="j-head">
+    <p class="eyebrow">Step 3 of 9 · Owner <span class="j-first">The fleet release</span></p>
+    <h1>Choose a plan and pay</h1>
+    <p class="lead">Wanjiru picks Commerce because her site will take paid custom orders. She sets her AI budget as a limit, sees what her site really costs to run, and approves a PayPal subscription on PayPal's own page. Nothing is charged until her site goes live.</p>
+  </header>
+  <div class="j-grid">
+    <section class="j-stage" aria-label="What Wanjiru sees">
+      <div class="o-frame">
+        <div class="browser-bar"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="url"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>os.agentrix.ai/kilele/setup/plan</span></div>
+        <div class="o-body">
+          <div><h2>Kilele Bakery · site in setup</h2><p class="sub">Your old site is untouched. The Move starts after you claim your domain.</p></div>
+
+          <div class="o-chief">
+            <span class="j-mark" data-chief data-size="40"></span>
+            <p><b>Chief WebAgent:</b> I'd suggest <b>Commerce</b>. Your old site takes cake orders by phone. Commerce adds the Cashier, so a customer can pay once you've approved their order. If you only want enquiries, Business is enough.</p>
+          </div>
+
+          <div class="o-plans" data-plans role="group" aria-label="Plans">
+            <button class="o-plan" type="button" aria-pressed="false" data-name="Essential" data-price="$29" data-budget="5">
+              <h3>Essential</h3><div class="price">$29 <small>a month</small></div>
+              <ul><li>Your site, the Chief WebAgent and the morning brief</li><li>Concierge, Editor, Guardian, Caretaker</li><li>$5 a month of AI included</li></ul>
+            </button>
+            <button class="o-plan" type="button" aria-pressed="false" data-name="Business" data-price="$79" data-budget="15">
+              <h3>Business</h3><div class="price">$79 <small>a month</small></div>
+              <ul><li>Everything in Essential</li><li>Sales and Reputation, bookings and forms</li><li>WhatsApp channel</li><li>$15 a month of AI included</li></ul>
+            </button>
+            <button class="o-plan" type="button" aria-pressed="true" data-name="Commerce" data-price="$149" data-budget="30">
+              <span class="rec">Suggested for Kilele</span>
+              <h3>Commerce</h3><div class="price">$149 <small>a month</small></div>
+              <ul><li>Everything in Business</li><li>The Cashier: orders, payments and refunds within your limits</li><li>Payment fees pass through at cost</li><li>$30 a month of AI included</li></ul>
+            </button>
+          </div>
+
+          <div class="o-budget">
+            <div class="spread"><span><b data-budget-out>$30</b> a month: your AI budget</span><span class="o-hint"><span data-plan-name>Commerce</span> includes $<span data-plan-budget>30</span></span></div>
+            <label class="sr-only" for="budget">Monthly AI budget</label>
+            <input id="budget" type="range" min="0" max="120" step="5" value="30" data-budget data-included="30">
+            <p class="o-hint" data-budget-note></p>
+          </div>
+
+          <div class="o-cost">
+            <span aria-hidden="true">ⓘ</span>
+            <div><b>What it costs us:</b> about $4–12 a month to run a site like yours on Vultr. That's an estimate until the first real bill (01 §6.2). The rest of the fee pays for support, updates and the people who run the platform. <b>Migration is free</b> on every plan.</div>
+          </div>
+
+          <fieldset class="o-rails" data-rails style="border:0;padding:0;margin:0">
+            <legend class="o-field" style="margin-bottom:6px">How do you want to pay?</legend>
+            <label class="o-rail"><input type="radio" name="rail" value="paypal" data-label="PayPal" checked><div><b>PayPal</b><span>A PayPal subscription, approved on PayPal's own page. Charged in USD.</span></div><span class="tag">Subscription</span></label>
+            <label class="o-rail"><input type="radio" name="rail" value="card" data-label="the card page"><div><b>Card</b><span>Paystack's hosted page. Your card details never reach Agentrix.</span></div><span class="tag">Saved card</span></label>
+            <label class="o-rail"><input type="radio" name="rail" value="mpesa" data-label="M-Pesa"><div><b>M-Pesa</b><span>A prompt on your phone each month, in KES at the rate on the invoice.</span></div><span class="tag">Monthly prompt</span></label>
+          </fieldset>
+
+          <div class="spread" style="flex-wrap:wrap;gap:10px">
+            <p class="small" style="margin:0"><b><span data-plan-name>Commerce</span> · <span data-plan-price>$149</span> a month</b> · first charge on the day your site goes live</p>
+            <button class="btn btn-primary" type="button" data-next="#provider">Continue to <span data-rail-name>PayPal</span></button>
+          </div>
+
+          <div class="j-provider" id="provider" data-reveal>
+            <div data-rail-panel="paypal" data-reveal>
+              <div class="bar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>paypal.com · PayPal's own page</div>
+              <div class="body">
+                <div class="stand-in">PayPal's own page goes here, drawn as a placeholder. Wanjiru signs in to PayPal and agrees to <b>"Agentrix Commerce for kilele-bakery.example, $149 a month, starting on go-live day."</b> Agentrix never sees her PayPal password, card or bank details.</div>
+                <button class="btn btn-primary" type="button" data-next="#subscribed" data-hide="#provider">Agree and subscribe (on PayPal)</button>
+              </div>
+            </div>
+            <div data-rail-panel="card" data-reveal>
+              <div class="bar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>checkout.paystack.com · Paystack's hosted page</div>
+              <div class="body">
+                <div class="stand-in">Paystack's hosted card page goes here, drawn as a placeholder. The card is saved with Paystack, and Agentrix keeps only a reference to it.</div>
+                <button class="btn btn-primary" type="button" data-next="#subscribed" data-hide="#provider">Save card (on Paystack)</button>
+              </div>
+            </div>
+            <div data-rail-panel="mpesa" data-reveal>
+              <div class="bar">M-Pesa · a prompt on your phone</div>
+              <div class="body">
+                <div class="stand-in">No page to visit. On go-live day, and then each month, an M-Pesa prompt arrives on 07•• ••• 214 for the invoice amount in KES. Wanjiru confirms it with her M-Pesa PIN on her phone.</div>
+                <button class="btn btn-primary" type="button" data-next="#subscribed" data-hide="#provider">Use M-Pesa</button>
+              </div>
+            </div>
+          </div>
+
+          <div id="subscribed" data-reveal>
+            <div class="o-ok" data-rail-panel="paypal" data-reveal>✓ Subscription approved on PayPal · I-7KX2…Q9 · nothing charged yet</div>
+            <div class="o-ok" data-rail-panel="card" data-reveal>✓ Card saved with Paystack · ending 4417 · nothing charged yet</div>
+            <div class="o-ok" data-rail-panel="mpesa" data-reveal>✓ M-Pesa set up · prompts go to 07•• ••• 214 · nothing charged yet</div>
+            <p class="small muted" style="margin-top:8px">Your <span data-plan-name>Commerce</span> plan starts the day your site goes live, and the go-live card will say so. If you never go live, you're never charged. Receipt r-a81c…04, written by the Effects Gateway.</p>
+            <a class="btn btn-primary" href="owner-domain.html" style="margin-top:10px">Next: claim your domain</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <aside class="j-notes" aria-label="What happens underneath">
+      <div class="j-note"><h3><span class="j-first">The fleet release</span> Paid plans come after the demo</h3><p>This weekend PayPal is in the journeys and mockups only (d-paypal-first-scope). The first release demo creates the account and runs the Move with no payment step.</p></div>
+      <div class="j-note gate"><h3>Nothing is charged until go-live</h3><p>The plan and the subscription are approved now. The first charge is on go-live day, and an owner who never goes live is never charged (08 §4.1).</p></div>
+      <div class="j-note"><h3>One door for money</h3><ul><li>The Effects Gateway creates, revises and cancels the PayPal subscription. Each change is an effect with a receipt.</li><li>PayPal collects each period. Verified webhooks post each payment to the ledger against its invoice.</li><li>Overage and other one-off charges never go on the subscription; they take Steward's governed path (08 §4.2).</li></ul></div>
+      <div class="j-note"><h3>The budget is a limit, not a meter</h3><p>Wanjiru sets the cap. AI above the included amount is billed only up to the cap she chose, at cost plus a disclosed margin. Raising the cap later is a decision card. Prices are hypotheses (01 §6).</p></div>
+      <div class="j-note never"><h3>Never</h3><ul><li>Card or PayPal credentials in the platform</li><li>A charge she didn't approve</li><li>Two prices for the same thing</li></ul></div>
+    </aside>
+  </div>
+</main>
+<nav class="wrap j-pager" aria-label="Previous and next step" data-pager></nav>
+<script src="journeys.js"></script>
+<script src="owner.js"></script>
+</body>
+</html>

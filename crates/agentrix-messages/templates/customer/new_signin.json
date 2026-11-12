@@ -1,0 +1,4 @@
+{"site": {"name": "Kilele Bakery", "host": "kilele-bakery-sample.agentrix.website", "sample": true, "owner": "Wanjiru", "accent": "#3b2416"},
+ "person": {"name": "Njeri"},
+ "signin": {"device": "a Windows PC", "place": "Leeds", "when": "Wed 11 Nov 2026, 21:14 London time"},
+ "account_url": "https://kilele-bakery-sample.agentrix.website/account/security"}

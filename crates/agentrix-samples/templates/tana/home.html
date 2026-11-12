@@ -1,0 +1,52 @@
+{% extends "tana/layout.html" %}
+{% from "macros.html" import mark %}
+{% from "tana/macros.html" import card, timeline, digest_form, rules %}
+{% block main %}
+{% if "hero" in shell.pictures %}{% set pic = shell.pictures["hero"] %}<figure class="pic n-hero"><img src="{{ pic.url }}" alt="{{ pic.alt }}"{% if pic.width and pic.height %} width="{{ pic.width }}" height="{{ pic.height }}"{% endif %}>{% if pic.label %}<span class="rtag">{{ pic.label }}</span>{% endif %}</figure>{% endif %}
+<div class="n-grid">
+  <div>
+    <section class="catch" id="catch" aria-label="Catch me up" data-sample-last="{{ memory.sample_last }}" data-sample-follows="{{ memory.sample_follows | join('|') }}">
+      <div class="catch-top">{% for d in shell.desks if d.id == "newsroom" %}{{ mark(d, 28, shell.site) }}{% endfor %}<h2>Catch me up</h2><span class="wa-ai">{% if shell.ai %}AI · {% endif %}from published stories only</span></div>
+      <div class="devmem" id="devmem"><span>Nothing remembered on this device.</span></div>
+      <div class="wa-thread" id="cmThread" role="log" aria-label="Catch me up answer"></div>
+      <div class="acts" id="cmActs"><button class="act primary" type="button" id="cmBtn">Catch me up on this week</button><button class="act" type="button" id="cmAll">Just today's front page</button></div>
+      <noscript><p class="small">Catch me up needs JavaScript. Every story is still in the <a href="/archive">archive</a>.</p></noscript>
+    </section>
+
+    {% if lead %}
+    <article class="lead-story" id="st-{{ lead.slug }}">
+      {% if ("story:" ~ lead.slug) in shell.pictures %}{% set pic = shell.pictures["story:" ~ lead.slug] %}<figure class="ph pic"><img src="{{ pic.url }}" alt="{{ pic.alt }}">{% if pic.label %}<span class="rtag">{{ pic.label }}</span>{% endif %}</figure>{% else %}<div class="ph" aria-hidden="true"></div>{% endif %}
+      <div><span class="kicker">{{ lead.kicker }}</span>{% if lead.locked %} <span class="n-lock">Subscriber</span>{% endif %}<h3><a href="{{ lead.href }}">{{ lead.title }}</a></h3>
+        {% if not lead.locked or subscriber %}<p>{{ lead.standfirst }}</p>{% endif %}
+        <div class="by">By {{ lead.author }} · <time datetime="{{ lead.iso }}">{{ lead.date }}, {{ lead.clock }}</time>{% if lead.corrected %} · <a class="corr" href="{{ lead.href }}#correction">Corrected {{ lead.corrected }}</a>{% endif %}</div></div>
+    </article>
+    {% else %}
+    <p class="note">No stories published yet. The first appears here the moment the editor publishes it.</p>
+    {% endif %}
+
+    {% if more %}
+    <div class="more">
+      {% for c in more %}{{ card(c, subscriber) }}{% endfor %}
+    </div>
+    <p class="more-link"><a href="/archive">Every story in the archive</a></p>
+    {% endif %}
+  </div>
+
+  <aside class="rail-n">
+    {% if steps %}
+    <div class="box" id="timeline"><span class="kicker">Story so far</span><h4>{{ topic_title }}</h4><p class="sub">Every step links to the published story. Corrections stay visible.</p>
+      {{ timeline(steps) }}
+      <p class="box-link"><a href="/stories/{{ topic }}">The whole story so far</a></p>
+    </div>
+    {% endif %}
+
+    <div class="box" id="digest"><span class="kicker">By email</span><h4>Your {{ digest.name }}</h4><p class="sub">Choose topics. Every {{ digest.day }} at {{ digest.time }}: five stories published that week, picked by the editor's rules. A desk writes two lines on each, with links.</p>
+      {{ digest_form(digest, sections, compact=true) }}
+    </div>
+
+    <div class="box" id="rules"><span class="kicker">House rules for desks</span>
+      {{ rules(house_rules) }}
+    </div>
+  </aside>
+</div>
+{% endblock %}

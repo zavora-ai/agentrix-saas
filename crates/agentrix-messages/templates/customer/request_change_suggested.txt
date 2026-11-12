@@ -1,0 +1,26 @@
+{% block subject %}{{ site.owner }} suggests a change to {{ request.number }}{% endblock %}
+{% block preheader %}Nothing is charged unless you accept it.{% endblock %}
+{% block body %}
+# A change from {{ site.owner }}
+You asked for: {{ request.summary }}
+
+{{ site.owner }} suggests:
+
+::quote {{ change.text }}
+
+{% if change.quote %}
+::fact New price | {{ change.quote|money(request.currency) }}
+{% endif %}
+{% if change.when %}
+::fact New time | {{ change.when }}
+{% endif %}
+::fact Answer by | {{ change.expires }}
+
+Nothing is charged unless you accept. If it doesn't suit you, decline it on the same page and the request closes.
+
+::button See the change | {{ request.url }}
+{% endblock %}
+{% block chat %}
+{{ site.name }}: {{ site.owner }} suggests a change to {{ request.number }}: "{{ change.text }}" Answer by {{ change.expires }}. Nothing is charged unless you accept.
+::button See the change | {{ request.url }}
+{% endblock %}

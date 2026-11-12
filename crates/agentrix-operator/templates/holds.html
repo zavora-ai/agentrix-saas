@@ -1,0 +1,44 @@
+{% extends "layout.html" %}
+{#- Platform holds (08 §2.4, §3.8): every hold in force and the ones lifted lately, read from
+    platform_holds. Holds are placed and lifted on each site's page. -#}
+{% block title %}Platform holds{% endblock %}
+{% block field %}
+<div class="field-head">
+  <div><h2>Platform holds</h2><div class="sub">The operator's switch, separate from an owner's freeze · {{ active|plural("hold", "holds") }} in force</div></div>
+  <div class="row">{% if enforced %}<span class="chip chip-ok">Enforced at the edge</span>{% else %}<span class="chip chip-wait">Recorded, not enforced</span>{% endif %}</div>
+</div>
+
+{%- if not enforced %}
+<p class="gapnote">This build records holds and writes the owner's receipt, but the edge doesn't enforce them yet: a held site is still served as usual. Holds take effect once the edge reads them and the node runs with <code>AGENTRIX_HOLDS_ENFORCED=1</code>.</p>
+{%- endif %}
+
+<article class="card tight" id="active">
+  <div class="card-title"><h4>In force</h4><span class="small muted">newest first</span></div>
+  <ul class="rows">
+    {%- for h in holds if h.on %}
+    <li><span class="chip chip-risk">{{ "notice page" if h.mode == "notice" else "read only" }}</span>
+      <span>{% if h.scope == "site" %}<a href="/sites/{{ h.target }}#access">{{ h.domain or h.target }}</a>{% else %}{{ h.scope|capitalize }} {{ h.target }}{% endif %}
+        <div class="small muted">Reason the owner reads: {{ h.reason }}</div>
+        <div class="small muted">Placed by {{ h.placed_by_name }} with {{ "a passkey" if h.placed_method == "passkey" else "an authenticator code" }}{% if not h.receipt %} · no owner receipt was written{% endif %}</div></span>
+      <span class="ledger-id">{{ h.placed_at|when }}</span></li>
+    {%- else %}
+    <li><span></span><span class="small muted">No site is on platform hold. {% if can_hold %}Place one from a site's page, under Support access, break-glass and holds.{% else %}Placing one needs op.security or op.sre.{% endif %}</span><span></span></li>
+    {%- endfor %}
+  </ul>
+</article>
+
+<article class="card tight" id="lifted">
+  <div class="card-title"><h4>Lifted lately</h4><span class="small muted">the last 20</span></div>
+  <ul class="rows">
+    {%- for h in holds if not h.on %}
+    <li><span class="chip">lifted</span>
+      <span>{% if h.scope == "site" %}<a href="/sites/{{ h.target }}#access">{{ h.domain or h.target }}</a>{% else %}{{ h.scope|capitalize }} {{ h.target }}{% endif %} · {{ "notice page" if h.mode == "notice" else "read only" }}
+        <div class="small muted">Placed {{ h.placed_at|when }} by {{ h.placed_by_name }}: {{ h.reason }}</div>
+        <div class="small muted">Lifted by {{ h.lifted_by_name or "someone" }}: {{ h.lift_reason or "no reason recorded" }}</div></span>
+      <span class="ledger-id">{{ h.lifted_at|when }}</span></li>
+    {%- else %}
+    <li><span></span><span class="small muted">No hold has been lifted yet.</span><span></span></li>
+    {%- endfor %}
+  </ul>
+</article>
+{% endblock %}

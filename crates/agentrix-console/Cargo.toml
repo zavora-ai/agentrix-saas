@@ -1,0 +1,29 @@
+[package]
+name = "agentrix-console"
+description = "Console and public page templates ported from concept/, with static assets and SSE islands."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+authors.workspace = true
+
+[features]
+# Read templates from disk on every render, for editing markup without rebuilding. Never in release.
+dev-reload = []
+
+[dependencies]
+axum.workspace = true
+minijinja.workspace = true
+minijinja-embed.workspace = true
+serde.workspace = true
+thiserror.workspace = true
+
+[build-dependencies]
+minijinja-embed.workspace = true
+
+[dev-dependencies]
+serde_json.workspace = true
+
+[lints]
+workspace = true

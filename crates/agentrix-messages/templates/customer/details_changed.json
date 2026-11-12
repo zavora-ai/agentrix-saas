@@ -1,0 +1,4 @@
+{"site": {"name": "Kilele Bakery", "host": "kilele-bakery-sample.agentrix.website", "sample": true, "owner": "Wanjiru", "accent": "#3b2416"},
+ "person": {"name": "Njeri"}, "change": {"what": "email address", "when": "Thu 12 Nov, 08:02"},
+ "account_url": "https://kilele-bakery-sample.agentrix.website/account/security",
+ "help_url": "https://kilele-bakery-sample.agentrix.website/help"}

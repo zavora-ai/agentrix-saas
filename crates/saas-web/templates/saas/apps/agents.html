@@ -1,0 +1,11 @@
+{% extends "ui/layouts/page.html" %}
+{% block title %}Agents · {{ name }}{% endblock %}
+{% block description %}{{ name }}'s AI agents, their badges, and a Verify box anyone can use.{% endblock %}
+{% block styles %}<link rel="stylesheet" href="/static/saas/saas.css?v={{ saas_v }}">{% endblock %}
+{% block main_class %}wrap{% endblock %}
+{% block main %}
+<div class="page-head"><p class="eyebrow">Know your agent</p><h1>{{ name }}'s agents</h1>
+<p class="lead">Every agent that acts for {{ name }} has a badge: who it is, who answers for it, and where its money goes. Check any of them here.</p></div>
+{% include "saas/apps/verify_box.html" %}
+{% endblock %}
+{% block scripts %}<script type="module" src="/static/saas/verify.js?v={{ saas_v }}"></script>{% endblock %}

@@ -1,0 +1,112 @@
+/* Agentrix WebAgent Platform: the owner lane of the dual journeys (07 §7.1).
+   Loaded after ../console/console.css and journeys.css on owner-*.html only.
+   The owner console session owns this file; journeys.css owns the shared chrome. */
+
+/* ---------- Frames ---------- */
+.o-frame { border-radius: 18px; overflow: hidden; border: 1px solid var(--line); background: var(--paper); box-shadow: var(--shadow-2); }
+.o-frame .browser-bar { border-bottom: 1px solid var(--line); }
+.o-body { padding: clamp(16px, 2.6vw, 26px); display: grid; gap: 16px; }
+.o-body h2 { font-size: clamp(20px, 2.4vw, 26px); }
+.o-body .sub { color: var(--muted); font-size: var(--fs-14); margin-top: 4px; }
+.o-who { display: flex; align-items: center; gap: 10px; }
+.o-who b { display: block; font: 700 var(--fs-14)/1.25 var(--font-text); color: var(--indigo-900); }
+.o-who span { font-size: var(--fs-12); color: var(--muted); }
+.o-chief { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 12px; align-items: start; padding: 14px; border-radius: 16px; background: var(--indigo-50); border: 1px solid var(--indigo-100); }
+.o-chief p { margin: 0; font-size: var(--fs-14); color: var(--ink-2); }
+.o-chief p b { color: var(--indigo-900); }
+
+/* ---------- Buttons and fields on owner surfaces ---------- */
+.o-field { display: grid; gap: 6px; font: 600 var(--fs-13)/1.2 var(--font-text); color: var(--ink-2); }
+.o-field input, .o-field select { min-height: 44px; border-radius: 12px; border: 1.5px solid var(--line-strong); background: #fff; padding: 0 12px; font: 500 15px/1 var(--font-text); color: var(--ink); width: 100%; }
+.o-field input:focus-visible, .o-field select:focus-visible { outline: 3px solid var(--indigo-100); border-color: var(--indigo); }
+.o-big { width: 100%; min-height: 52px; font-size: var(--fs-16); }
+.o-or { display: flex; align-items: center; gap: 10px; color: var(--muted); font: 600 var(--fs-12)/1 var(--font-text); }
+.o-or::before, .o-or::after { content: ""; flex: 1; height: 1px; background: var(--line); }
+.o-providers { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.o-providers .btn { justify-content: center; }
+.o-hint { font-size: var(--fs-12); color: var(--muted); }
+.o-ok { display: flex; align-items: center; gap: 8px; padding: 10px 12px; border-radius: 12px; background: var(--ok-bg); color: var(--ok); font: 700 var(--fs-13)/1.4 var(--font-text); }
+.o-wait { display: flex; align-items: center; gap: 8px; padding: 10px 12px; border-radius: 12px; background: var(--wait-bg); color: var(--wait); font: 700 var(--fs-13)/1.4 var(--font-text); }
+[data-reveal]:not(.on) { display: none !important; }
+
+/* ---------- Authenticator enrolment ---------- */
+.o-totp { display: grid; grid-template-columns: 120px minmax(0, 1fr); gap: 14px; align-items: center; padding: 14px; border-radius: 14px; border: 1px solid var(--line); background: var(--surface); }
+.o-qr { width: 120px; height: 120px; border-radius: 10px; background:
+  conic-gradient(from 90deg at 18% 18%, var(--ink) 25%, transparent 0) 0 0 / 20px 20px,
+  repeating-linear-gradient(90deg, var(--ink) 0 6px, transparent 6px 11px),
+  #fff; opacity: .85; position: relative; }
+.o-qr::after { content: "QR"; position: absolute; inset: 40px; display: grid; place-items: center; border-radius: 8px; background: #fff; font: 700 11px/1 var(--font-mono); color: var(--muted); }
+.o-code { font: 600 var(--fs-13)/1.5 var(--font-mono); background: var(--surface-2); border-radius: 10px; padding: 10px 12px; color: var(--ink); overflow-wrap: anywhere; }
+
+/* ---------- Plans ---------- */
+.o-plans { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.o-plan { position: relative; display: grid; gap: 8px; align-content: start; padding: 16px; border-radius: 16px; border: 1.5px solid var(--line); background: var(--paper); cursor: pointer; text-align: left; font: inherit; color: inherit; }
+.o-plan:hover { border-color: var(--indigo-100); }
+.o-plan[aria-pressed="true"] { border-color: var(--indigo); box-shadow: 0 0 0 3px var(--indigo-100); }
+.o-plan h3 { font-size: var(--fs-18); }
+.o-plan .price { font: 800 var(--fs-24)/1 var(--font-display); color: var(--indigo-900); }
+.o-plan .price small { font: 600 var(--fs-13)/1 var(--font-text); color: var(--muted); }
+.o-plan ul { margin: 0; padding-left: 18px; display: grid; gap: 4px; font-size: var(--fs-13); color: var(--ink-2); }
+.o-plan .rec { position: absolute; top: -11px; left: 14px; padding: 4px 9px; border-radius: 999px; background: var(--indigo-900); color: #fff; font: 700 11px/1 var(--font-text); }
+.o-budget { display: grid; gap: 8px; padding: 14px; border-radius: 14px; border: 1px solid var(--line); background: var(--surface); }
+.o-budget .spread b { font: 700 var(--fs-16)/1 var(--font-display); color: var(--indigo-900); }
+.o-budget input[type="range"] { width: 100%; accent-color: var(--indigo); }
+.o-cost { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 10px; padding: 12px 14px; border-radius: 14px; background: var(--paper); border: 1px dashed var(--line-strong); font-size: var(--fs-13); color: var(--ink-2); }
+.o-cost b { color: var(--ink); }
+.o-rails { display: grid; gap: 8px; }
+.o-rail { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 10px; align-items: center; padding: 12px 14px; border-radius: 14px; border: 1.5px solid var(--line); background: var(--paper); cursor: pointer; }
+.o-rail:has(input:checked) { border-color: var(--indigo); box-shadow: 0 0 0 3px var(--indigo-100); }
+.o-rail input { accent-color: var(--indigo); width: 18px; height: 18px; }
+.o-rail b { display: block; font: 700 var(--fs-14)/1.25 var(--font-text); color: var(--ink); }
+.o-rail span { font-size: var(--fs-12); color: var(--muted); }
+.o-rail .tag { font: 700 11px/1 var(--font-text); padding: 5px 8px; border-radius: 999px; background: var(--surface-2); color: var(--ink-2); white-space: nowrap; }
+
+/* ---------- Cards, money and books ---------- */
+.o-card { padding: 16px; border-radius: 18px; background: var(--paper); border: 1px solid var(--line); box-shadow: var(--shadow-2); display: grid; gap: 10px; }
+.o-card .from { display: flex; align-items: center; gap: 8px; font: 700 var(--fs-13)/1.2 var(--font-text); color: var(--indigo-900); flex-wrap: wrap; }
+.o-card .from .chip { margin-left: auto; }
+.o-card h3 { font-size: var(--fs-20); }
+.o-effect { padding: 12px; border-radius: 14px; background: var(--surface); border: 1px solid var(--line); }
+.o-effect h4 { margin: 0 0 6px; font: 700 10.5px/1 var(--font-text); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.o-effect ul { margin: 0; padding-left: 18px; display: grid; gap: 4px; font-size: var(--fs-13); color: var(--ink-2); }
+.o-acts { display: flex; gap: 8px; flex-wrap: wrap; }
+.o-state { display: none; }
+.o-card.is-done .o-acts, .o-card.done .o-acts { display: none; }
+.o-card.is-done .o-state.done, .o-card.done .o-state.done, .o-card.is-paid .o-state.paid, .o-card.is-undone .o-state.undone { display: flex; }
+.o-card.is-undone .o-state.done { display: none; }
+.o-card.is-paid .o-state.done { display: none; }
+.o-money { width: 100%; border-collapse: collapse; font-size: var(--fs-13); }
+.o-money th, .o-money td { padding: 9px 10px; border-top: 1px solid var(--line); text-align: left; }
+.o-money th { font: 700 11px/1.2 var(--font-text); letter-spacing: .05em; text-transform: uppercase; color: var(--muted); border-top: 0; }
+.o-money td.n { text-align: right; font-family: var(--font-mono); white-space: nowrap; }
+.o-money tr.total td { font-weight: 700; color: var(--ink); border-top: 1.5px solid var(--ink); }
+.o-tl { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; }
+.o-tl li { display: grid; grid-template-columns: 58px minmax(0, 1fr); gap: 10px; padding: 9px 0; border-top: 1px dashed var(--line); font-size: var(--fs-13); color: var(--ink-2); }
+.o-tl li:first-child { border-top: 0; }
+.o-tl time { font: 600 var(--fs-12)/1.5 var(--font-mono); color: var(--muted); }
+.o-tl b { color: var(--ink); }
+
+/* ---------- WhatsApp, drawn generically (never WhatsApp's own brand) ---------- */
+.o-wa { background: #ece6dc; border-radius: 18px; padding: 14px; border: 1px solid #ddd6cb; display: grid; gap: 6px; }
+.o-wa .head { display: flex; align-items: center; gap: 10px; font: 700 var(--fs-14)/1 var(--font-text); color: #263a30; margin-bottom: 4px; }
+.o-wa .bub { background: #fff; border-radius: 4px 14px 14px 14px; padding: 10px 12px; font-size: var(--fs-14); color: #222; box-shadow: 0 1px 1px rgba(0,0,0,.06); }
+.o-wa .bub small { display: block; text-align: right; color: #888; font-size: 11px; margin-top: 4px; }
+.o-wa .btns { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+.o-wa .btns span { text-align: center; background: #fff; border-radius: 10px; padding: 8px; font: 600 var(--fs-13)/1 var(--font-text); color: #1f6f5c; }
+
+/* ---------- Domain proof ---------- */
+.o-proof { display: grid; gap: 10px; }
+.o-steps { margin: 0; padding-left: 20px; display: grid; gap: 6px; font-size: var(--fs-14); color: var(--ink-2); }
+
+/* ---------- Plan and books on narrow screens ---------- */
+@media (max-width: 760px) {
+  .o-plans { grid-template-columns: 1fr; }
+  .o-providers { grid-template-columns: 1fr; }
+  .o-totp { grid-template-columns: 1fr; justify-items: start; }
+  .o-money { font-size: var(--fs-12); }
+  .o-money th, .o-money td { padding: 8px 6px; }
+}
+
+.o-sec { display: grid; gap: 10px; }
+.o-sec > .spread { flex-wrap: wrap; gap: 8px; }
+.o-sec h3 { font-size: var(--fs-18); }

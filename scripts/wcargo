@@ -1,0 +1,48 @@
+#!/usr/bin/env bash
+# Agentrix WebApp Platform · cargo for worktrees that share one build cache.
+#
+#   scripts/wcargo <cargo args…>      e.g. scripts/wcargo test -p agentrix-kernel --locked
+#
+# Every platform worktree builds into the same CARGO_TARGET_DIR so crates.io and git
+# dependencies are built once. But cargo names a workspace crate's output by its path relative
+# to the workspace root, so two worktrees write the same libagentrix_host-<hash>.rlib, and
+# cargo's mtime-based freshness check can take another worktree's newer build as yours (found
+# by W4, 8 Nov 2026). This wrapper gives this worktree's workspace crates a codegen-units value
+# no other worktree uses, which changes only their hashes: dependencies stay shared, and your
+# code is always built from your files.
+#
+# The number: 100 for the platform worktree, 100+N for workstream N's worktree (w7-… → 107),
+# 1100+ for anything else.
+set -euo pipefail
+
+root=$(git rev-parse --show-toplevel)
+export CARGO_TARGET_DIR=${CARGO_TARGET_DIR:-/Users/jameskaranja/Developer/hackathons/.agentrix-saas-target}
+
+name=$(basename "$root")
+case "$name" in
+  agentrix-saas) n=100 ;;
+  w[0-9]*-*) num=${name#w}; num=${num%%-*}; n=$((100 + 10#$num)) ;;
+  *) n=$(( $(printf '%s' "$root" | cksum | cut -d' ' -f1) % 1000 + 1100 )) ;;
+esac
+
+members=$(cargo metadata --no-deps --format-version 1 --manifest-path "$root/Cargo.toml" \
+  | python3 -c 'import json,sys; print("\n".join(p["name"] for p in json.load(sys.stdin)["packages"]))')
+
+args=()
+while IFS= read -r m; do
+  [ -n "$m" ] || continue
+  for profile in dev test; do
+    args+=(--config "profile.$profile.package.\"$m\".codegen-units=$n")
+  done
+done <<< "$members"
+
+# Build scripts and proc macros build under `build-override`, not the package's profile, so
+# the overrides above don't separate them: a worktree can run another worktree's newer
+# build script against its own source. WCARGO_ISOLATE_BUILD=1 separates those too, at the cost
+# of building proc macros once more for this worktree. The merge check always sets it.
+if [ "${WCARGO_ISOLATE_BUILD:-0}" = 1 ]; then
+  args+=(--config "profile.dev.build-override.codegen-units=$n")
+  args+=(--config "profile.test.build-override.codegen-units=$n")
+fi
+
+exec cargo "${args[@]}" "$@"

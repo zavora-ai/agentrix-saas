@@ -1,0 +1,24 @@
+{#- The console's Messages pages, on the kit's platform layout until W5's shell hosts them. -#}
+{% extends "ui/layouts/page.html" %}
+{% block title %}{{ title }} · Agentrix{% endblock %}
+{% block styles %}<link rel="stylesheet" href="/console/messages/assets/messages.css?v={{ ui_v }}">{% endblock %}
+{% block nav %}
+<nav aria-label="Console">
+  <a href="/os">Console</a>
+  <a href="/os/trust">Trust centre</a>
+  <a href="/console/messages" aria-current="page">Messages</a>
+</nav>
+{% endblock %}
+{% block main_class %}page wide{% endblock %}
+{% block main %}
+{% if missing is defined %}
+<div class="page-head">
+  <span class="eyebrow">Messages</span>
+  <h1>No message here</h1>
+  <p class="lead">No message with that link belongs to your sites. It may be for another account.</p>
+  <p><a class="btn" href="/console/messages">Back to messages</a></p>
+</div>
+{% else %}
+{% block content %}{% endblock %}
+{% endif %}
+{% endblock %}

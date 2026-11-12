@@ -1,0 +1,39 @@
+<section class="acct" id="acct" data-acct="choices">
+  <div>
+    <h1 class="acct-h">Your choices</h1>
+    <p class="small">Receipts and order updates by email come with every order. These are extra. Each one is separate, and each gives you a receipt.</p>
+  </div>
+  <div class="choices" role="group" aria-label="Optional choices">
+    {% for c in choices %}
+    <div class="choice">
+      <div class="t"><b id="c-{{ c.key }}">{{ c.title }}</b><span id="c-{{ c.key }}-d">{{ c.line }}</span>
+        {% if c.needs_adult %}<label class="small adult"><input type="checkbox" id="acct-adult"{% if c.on %} checked disabled{% endif %}> I'm 18 or over</label>{% endif %}
+      </div>
+      <span class="switch-wrap"><span aria-hidden="true" data-state-for="{{ c.key }}">{% if c.on %}On{% else %}Off{% endif %}</span><span class="switch"><input type="checkbox" role="switch" data-purpose="{{ c.key }}" aria-labelledby="c-{{ c.key }}" aria-describedby="c-{{ c.key }}-d"{% if c.on %} checked{% endif %}{% if c.blocked %} disabled{% endif %}><i aria-hidden="true"></i></span></span>
+    </div>
+    {% endfor %}
+  </div>
+  <p class="note warn" id="acct-error" role="alert" hidden></p>
+  {% if receipts %}
+  <div class="receipts">
+    {% for r in receipts %}
+    <article class="receipt" aria-labelledby="r-{{ r.id }}">
+      <header><h3 id="r-{{ r.id }}">Consent receipt · {{ r.short }}</h3>{% if r.withdrawn %}<span class="pill">Withdrawn</span>{% else %}<span class="pill ok">Active</span>{% endif %}</header>
+      <dl>
+        <div><dt>Purpose</dt><dd>{{ r.purpose }}</dd></div>
+        <div><dt>What</dt><dd>{{ r.what }}</dd></div>
+        <div><dt>Shared with</dt><dd>{{ r.shared_with }}</dd></div>
+        <div><dt>Kept for</dt><dd>{{ r.kept_for }}</dd></div>
+        <div><dt>Given</dt><dd>{{ r.given }}</dd></div>
+        {% if r.withdrawn %}<div><dt>Withdrawn</dt><dd>{{ r.withdrawn }}</dd></div>{% endif %}
+        {% if r.adult %}<div><dt>Age</dt><dd>You confirmed you're 18 or over</dd></div>{% endif %}
+        <div><dt>To withdraw</dt><dd>{{ r.to_withdraw }}</dd></div>
+      </dl>
+      <p class="sig">Receipt {{ r.short_id }} · {% if r.signed %}signed{% else %}recorded{% endif %} by {{ host }} · {{ r.digest }}</p>
+    </article>
+    {% endfor %}
+  </div>
+  {% endif %}
+  {% if next %}<p><a class="btn" href="{{ next }}">Back to where you were</a></p>{% endif %}
+  <p class="small"><a class="link" href="/account/security">Sign-in and security</a> · <a class="link" href="/account/keeps">What {{ site }} keeps</a></p>
+</section>

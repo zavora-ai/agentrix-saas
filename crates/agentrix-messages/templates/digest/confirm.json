@@ -1,0 +1,20 @@
+{
+ "site": {
+  "name": "Tana Valley Times",
+  "host": "tana-valley-times-sample.agentrix.website",
+  "sample": true,
+  "owner": "Nduku",
+  "accent": "#b3261e",
+  "url": "https://tana-valley-times-sample.agentrix.website"
+ },
+ "person": {
+  "name": null
+ },
+ "digest": {
+  "name": "your Friday five",
+  "schedule": "Every Friday at 07:00",
+  "topics": "transport and council"
+ },
+ "confirm_url": "https://tana-valley-times-sample.agentrix.website/digest/confirm?token=dg_4kq7m2",
+ "forget_after": "7 days"
+}

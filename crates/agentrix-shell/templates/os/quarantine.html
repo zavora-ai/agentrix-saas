@@ -1,0 +1,33 @@
+{% extends "os/base.html" %}
+{#- ShellPage::Quarantine · view::QuarantineView (+ Chrome) {
+      items: [QuarantineItem { id, title, plain, where, evidence: [{ label }], state: left-behind|restore-asked|restored,
+               decision_href?, restore_url }] }
+    S2-06. Asking for an item back raises a decision card (POST restore_url, owned by decisions/). -#}
+{% block title %}Left behind · {{ site.name }}{% endblock %}
+{% block field %}
+<section class="view on" aria-labelledby="q-h">
+  <p class="small"><a href="{{ base }}/trust">← Trust centre</a></p>
+  <div class="field-head"><div><h2 id="q-h">Left behind by the Move</h2><div class="sub">Things from your old site that didn't come across, and why</div></div></div>
+  <div class="cards">
+    {% for q in items %}
+    <article class="fcard">
+      <div class="spread"><b>{{ q.title }}</b>{% if q.state == "restored" %}<span class="chip chip-ok">Put back</span>{% elif q.state == "restore-asked" %}<span class="chip chip-wait">Waiting for your approval</span>{% else %}<span class="chip">Left behind</span>{% endif %}</div>
+      <p>{{ q.plain }}</p>
+      <p class="small muted">Found at {{ q["where"] }}{% if q.evidence %} · {{ q.evidence|length }} evidence file{{ "" if q.evidence|length == 1 else "s" }}{% endif %}</p>
+      {% if q.state == "left-behind" %}
+      <details class="fallback"><summary>Ask for it back</summary>
+        <form method="post" action="{{ q.restore_url }}" class="code-form">
+          <label for="why-{{ q.id }}">Why should it come back?</label>
+          <input id="why-{{ q.id }}" name="reason" maxlength="500" required>
+          <p class="small muted">This raises a decision for you to approve. Code a web server would run can never come back.</p>
+          <button class="btn btn-sm" type="submit">Ask for it back</button>
+        </form>
+      </details>
+      {% elif q.decision_href %}<div class="verbs"><a class="btn btn-sm" href="{{ q.decision_href }}">Open the decision</a></div>{% endif %}
+    </article>
+    {% else %}
+    <article class="fcard span2"><h3>Nothing was left behind</h3><p>Everything the Move found on your old site came across, or the Move hasn't run yet.</p></article>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

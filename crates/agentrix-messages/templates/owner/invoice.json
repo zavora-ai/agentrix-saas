@@ -1,0 +1,32 @@
+{
+ "site": {
+  "name": "Kilele Bakery",
+  "host": "kilele-bakery-sample.agentrix.website",
+  "sample": true
+ },
+ "person": {
+  "name": "Wanjiru"
+ },
+ "console_url": "https://agentrix.website/console/kilele-bakery-sample",
+ "invoice": {
+  "number": "AGX-2026-0412",
+  "paid": false,
+  "period": "14 Nov to 13 Dec",
+  "due": "Mon 14 Dec",
+  "paid_at": null,
+  "method": "PayPal",
+  "currency": "USD",
+  "amount": 151.2,
+  "lines": [
+   {
+    "label": "Commerce plan",
+    "amount": 149
+   },
+   {
+    "label": "AI use above the plan's allowance",
+    "amount": 2.2
+   }
+  ],
+  "url": "https://agentrix.website/billing?site=kilele-bakery-sample"
+ }
+}

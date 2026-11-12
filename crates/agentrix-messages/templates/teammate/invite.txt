@@ -1,0 +1,15 @@
+{% block subject %}{{ invite.by }} invited you to help run {{ site.name }}{% endblock %}
+{% block preheader %}As {{ invite.role }}. The invitation works until {{ invite.expires }}.{% endblock %}
+{% block body %}
+# Help run {{ site.name }}
+{{ invite.by }} invited you to {{ site.name }} on Agentrix, as {{ invite.role }}.
+
+::fact You'll be able to | {{ invite.can }}
+::fact You won't | {{ invite.cannot }}
+
+First, make your Agentrix account with this email address. You'll make a passkey on your phone or computer. That's how you sign in and approve things; nobody else can use it.
+
+::button Make your account | {{ invite.url }}
+
+You can't accept the invitation online yet, so {{ invite.by }} still sees you as invited after you make the account. Not expecting this? Ignore the email and nothing happens.
+{% endblock %}

@@ -1,0 +1,52 @@
+{% extends "os/base.html" %}
+{#- ShellPage::Mission · view::MissionView (+ Chrome) { mission: MissionRow }
+    concept/console/mission.html: the mission's count and pace, its contract, and pause or end. The weekly written
+    report (what worked, what didn't, what next) needs the Chief WebAgent's report job and isn't built yet, and no
+    WebAgent works towards a mission in the background yet (W1's runtime); the page says both rather than drawing them. -#}
+{% set x = mission %}
+{% block title %}{{ x.goal }} · Missions · {{ site.name }}{% endblock %}
+{% block field %}
+<section class="view on" aria-labelledby="msn-h">
+  <div class="field-head">
+    <div><h2 id="msn-h">{{ x.goal }}</h2><div class="sub">{{ x.state_words }}{% if x.since_words %} · {{ x.since_words }}{% endif %} · {{ x.lead }} named to lead · ends {{ x.ends_words }}</div></div>
+    <div class="row">
+      {% if x.state == "active" %}
+      <form method="post" action="{{ x.href }}/state"><input type="hidden" name="to" value="paused"><button class="btn btn-ghost btn-sm" type="submit">Pause mission</button></form>
+      {% elif x.state == "paused" %}
+      <form method="post" action="{{ x.href }}/state"><input type="hidden" name="to" value="active"><button class="btn btn-sm" type="submit">Resume mission</button></form>
+      {% endif %}
+      {% if x.state != "ended" %}
+      <form method="post" action="{{ x.href }}/state"><input type="hidden" name="to" value="ended"><button class="btn btn-ghost btn-sm" type="submit">End mission</button></form>
+      {% endif %}
+    </div>
+  </div>
+  {% if x.card_href %}<p class="note" role="status"><span>This mission starts when you approve its contract. <a href="{{ x.card_href }}">Read the contract</a></span></p>{% endif %}
+  <div class="cards">
+    <article class="fcard span2 rep" aria-labelledby="rep-h">
+      <div class="fcard-head"><span class="sysmark" aria-hidden="true">{{ m.icon("missions") }}</span><div class="who"><b id="rep-h">How it's going</b><span class="state-line">Counted from what your site recorded</span></div></div>
+      <div class="stats">
+        <div><span>{{ "Counted" if x.count is not none else "Count" }}</span><b>{% if x.count is not none %}{{ x.count }}{% if x.target %} of {{ x.target }}{% endif %}{% else %}Not counted{% endif %}</b></div>
+        <div><span>Time</span><b>{{ x.left_words }}</b></div>
+        <div><span>Named on it</span><b>{{ x.members|length }} WebAgent{{ "" if x.members|length == 1 else "s" }}</b></div>
+      </div>
+      {% if x.count is not none and x.target %}
+      <div class="progress"><div class="spread"><span>{{ x.pace_words }}</span><span>{{ x.pct }}%</span></div>{{ ui.meter(x.count, x.target, tone="ok", label=x.count ~ " of " ~ x.target) }}</div>
+      {% else %}
+      <p>{{ x.pace_words }}</p>
+      {% endif %}
+      <div class="method">How it counts: {{ x.measure_words }}.</div>
+      <p class="small muted">The WebAgents named on this mission don't yet change what they do to reach it, and a weekly written report (what worked, what didn't and what to try next) isn't available yet. Until then this page shows the count, from your site's records.</p>
+    </article>
+    <article class="fcard" aria-labelledby="ct-h">
+      <div class="fcard-head"><span class="sysmark" aria-hidden="true">{{ m.icon("decisions") }}</span><div class="who"><b id="ct-h">The mission contract</b><span class="state-line">{{ "Waiting for your approval" if x.state == "proposed" else "Approved by you" }}</span></div></div>
+      <dl class="contract">
+        <dt>Goal</dt><dd><b>{{ x.goal }}</b></dd>
+        <dt>Counts</dt><dd>{{ x.measure_words }}{% if x.target %}, aiming for {{ x.target }}{% endif %}</dd>
+        <dt>Who</dt><dd>{{ x.lead }} (lead){% if x.members|length > 1 %}, {{ x.members[1:]|join(", ") }}{% endif %}</dd>
+        <dt>Authority</dt><dd>Each WebAgent keeps its own levels. <b>A mission can't raise any.</b></dd>
+        <dt>Ends</dt><dd>{{ x.ends_words }}, or when you end it</dd>
+      </dl>
+    </article>
+  </div>
+</section>
+{% endblock %}

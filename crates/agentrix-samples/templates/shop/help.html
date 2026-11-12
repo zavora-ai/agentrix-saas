@@ -1,0 +1,61 @@
+{% extends shell.layout %}
+{% import "shop/parts.html" as p %}
+{% from "macros.html" import mark %}
+{% block styles %}{{ super() }}{{ p.styles(shell) }}{% endblock %}
+{% block main %}
+<div class="shop">
+  <p class="k-crumb"><a href="/orders">Your orders</a> · <a href="/orders/{{ o.id }}">{{ o.id }}</a> · Something's wrong</p>
+  <h1>Something's wrong with {{ o.id }}</h1>
+  <div class="k-card">
+    <div class="k-desk">{{ mark(desk, 40, shell.site, "lg") }}<div class="who"><b>{{ desk.name }} <span class="k-ai">AI</span></b><span>WebAgent · orders, changes and refunds</span></div></div>
+    {% if closed %}
+    <p>{{ closed }}</p>
+    <div class="k-acts"><a class="k-btn" href="/orders/{{ o.id }}">Open {{ o.id }}</a><a class="k-btn ghost" href="/help#contact" data-person>Talk to {{ owner }}</a></div>
+    {% else %}
+    <div class="k-thread" role="log" aria-live="polite">
+      {% if not outcome %}<div class="k-msg desk">Tell me what happened and what it affected. {{ rule_line }}</div>{% endif %}
+      {% if message and outcome %}<p class="k-msg me">{{ message }}</p>{% endif %}
+      {% if outcome %}
+      {% if outcome.step == "offer" %}
+      <div class="k-msg desk">Thanks for telling me. I've passed it to the Cashier, which handles refunds under {{ owner }}'s rule.</div>
+      <p class="k-hand">You don't talk to the Cashier yourself. It sees the order and the request, not your account.</p>
+      {% endif %}
+      <div class="k-msg desk">{{ outcome.words }}{% if outcome.small %}<small>{{ outcome.small }}</small>{% endif %}</div>
+      {% if outcome.pill %}<span class="k-pill {% if outcome.covered %}ok{% else %}wait{% endif %}">{{ outcome.pill }}</span>{% endif %}
+      {% endif %}
+    </div>
+    {% if error %}<p class="k-note risk" role="alert">{{ error }}</p>{% endif %}
+    {% if outcome and outcome.step == "offer" %}
+    <form class="k-form" method="post" action="/orders/{{ o.id }}/help">
+      <input type="hidden" name="what" value="{{ what }}">
+      <input type="hidden" name="message" value="{{ message }}">
+      <input type="hidden" name="confirm" value="1">
+      <button class="k-btn wide" type="submit">{{ outcome.button }}</button>
+    </form>
+    <a class="k-link" href="/orders/{{ o.id }}/help">Start again</a>
+    {% elif not outcome %}
+    <form class="k-form" method="post" action="/orders/{{ o.id }}/help">
+      <label class="k-field">What went wrong?
+        <textarea name="message" maxlength="600" required>{{ message }}</textarea>
+      </label>
+      <fieldset class="k-choices">
+        <legend>What it affected</legend>
+        {% for i in items %}<label class="k-choice"><span><input type="radio" name="what" value="{{ i.key }}"{% if i.checked %} checked{% endif %}>{{ i.label }}</span><b>{{ i.amount }}</b></label>{% endfor %}
+      </fieldset>
+      <p class="k-small">This sample doesn't take photos yet. Describe it in words; {{ owner }} sees what you write.</p>
+      <button class="k-btn wide" type="submit">Send to {{ desk.name }}</button>
+    </form>
+    {% endif %}
+    {% if outcome and outcome.checks %}
+    <div class="k-checks"><b>Checked against {{ owner }}'s rule</b><ul>{% for c in outcome.checks %}<li>{{ c }}</li>{% endfor %}</ul></div>
+    {% endif %}
+    {% endif %}
+  </div>
+  {% if refunds %}
+  <div class="k-card">
+    <h2>Refunds on {{ o.id }}</h2>
+    <ul class="k-list">{% for r in refunds %}<li><b>{{ r.id }} · {{ r.amount }}</b><span>{% if r.state == "done" %}Refunded{% elif r.state == "waiting" %}Waiting for {{ owner }}'s OK{% else %}Declined by {{ owner }}{% endif %}</span></li>{% endfor %}</ul>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

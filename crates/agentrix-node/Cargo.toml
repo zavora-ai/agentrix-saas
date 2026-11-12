@@ -1,0 +1,95 @@
+[package]
+name = "agentrix-node"
+description = "The single-node server: public pages, Assess, sign-in, the console, sites by Host, Ask, the agent door, the Move orchestrator and the broker client."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+authors.workspace = true
+
+# Crate-root files (this manifest, lib.rs, main.rs, app.rs, state.rs) belong to the integration
+# lead; each module folder belongs to the lane in specs/first-release/design.md §3.0. Ask the
+# coordinator for a dependency.
+
+[lib]
+path = "src/lib.rs"
+
+[[bin]]
+name = "agentrix-node"
+path = "src/main.rs"
+
+[dependencies]
+agentrix-move.workspace = true
+agentrix-gauntlet.workspace = true
+adk-core.workspace = true
+agentrix-types.workspace = true
+agentrix-console.workspace = true
+agentrix-host.workspace = true
+agentrix-kernel.workspace = true
+agentrix-onboarding.workspace = true
+agentrix-ui.workspace = true
+agentrix-operator.workspace = true
+agentrix-identity.workspace = true
+agentrix-home.workspace = true
+agentrix-store.workspace = true
+agentrix-media.workspace = true
+agentrix-shell.workspace = true
+agentrix-messages.workspace = true
+agentrix-samples.workspace = true
+agentrix-effects.workspace = true
+agentrix-decisions.workspace = true
+agentrix-channels.workspace = true
+agentrix-concepts.workspace = true
+# W3's billing: the subscription's first charge is go-live day (handover-wiring 1.3).
+agentrix-billing.workspace = true
+# v3 slice J: the money layer (two AI-run companies, settlement, books on Zavora ERA) as a module.
+saas-node = { path = "../saas-node" }
+# Releases: awp-types' ReleaseManifest, adk-site's manifest digest, content types and the
+# site log whose signed checkpoints `awp verify` checks.
+adk-site.workspace = true
+awp-types.workspace = true
+anyhow.workspace = true
+argon2.workspace = true
+async-trait.workspace = true
+axum.workspace = true
+base64.workspace = true
+bytes.workspace = true
+chacha20poly1305.workspace = true
+chrono.workspace = true
+clap.workspace = true
+ed25519-dalek.workspace = true
+futures.workspace = true
+hex.workspace = true
+hmac.workspace = true
+minijinja.workspace = true
+minijinja-embed.workspace = true
+qrcode.workspace = true
+rand.workspace = true
+reqwest.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+sha1.workspace = true
+sha2.workspace = true
+sqlx.workspace = true
+subtle.workspace = true
+thiserror.workspace = true
+tokio.workspace = true
+tokio-stream.workspace = true
+tower.workspace = true
+tower-http.workspace = true
+tracing.workspace = true
+tracing-subscriber.workspace = true
+url.workspace = true
+uuid.workspace = true
+webauthn-rs.workspace = true
+
+[dev-dependencies]
+# Site and door tests build a real signed release over adk-core's in-memory audit log store.
+adk-core.workspace = true
+tempfile.workspace = true
+tokio.workspace = true
+tower.workspace = true
+
+[lints]
+workspace = true

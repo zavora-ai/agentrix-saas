@@ -1,0 +1,172 @@
+/* agentrix-ui · shell. The Agentrix OS shell for every scope (site, portfolio, operator), from
+   concept/console/console.css and concept/control-plane/cp.css. One partial, three scopes
+   (01b §5.4): ui/layouts/shell.html sets data-scope on .os.
+   The concept draws the shell in a 780 px frame; the product fills the window on a desk and
+   becomes the phone layout under 900 px. Night Time is data-time="night" on <html> (tokens.css),
+   so nothing here repeats night colours. */
+
+.os {
+  --dock-w: 84px;
+  --lane-w: 340px;
+  position: relative;
+  display: grid;
+  grid-template-columns: var(--dock-w) minmax(0, 1fr) var(--lane-w);
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  grid-template-areas: "bar bar bar" "dock field lane" "dock cmd lane";
+  height: 100vh;
+  height: 100dvh;
+  background: var(--os-bg);
+  color: var(--os-ink);
+  font-family: var(--font-text);
+  transition: background .5s var(--ease), color .5s var(--ease);
+}
+.os.no-lane { grid-template-columns: var(--dock-w) minmax(0, 1fr); grid-template-areas: "bar bar" "dock field" "dock cmd"; }
+.os.no-cmd { grid-template-areas: "bar bar bar" "dock field lane" "dock field lane"; }
+.os.no-lane.no-cmd { grid-template-areas: "bar bar" "dock field" "dock field"; }
+.os > .banner { grid-column: 1 / -1; }
+
+/* ---------- Status bar ---------- */
+.os-bar { grid-area: bar; display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-bottom: 1px solid var(--os-line); background: var(--os-pane); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); min-width: 0; }
+.os-bar .bar-right { margin-left: auto; display: flex; align-items: center; gap: 8px; min-width: 0; }
+.site-chip, .scope-chip { display: inline-flex; align-items: center; gap: 10px; border: 1px solid var(--os-line); background: var(--os-pane-2); color: var(--os-head); border-radius: 12px; padding: 5px 10px 5px 5px; font: 700 var(--fs-14)/1.1 var(--font-display); cursor: pointer; white-space: nowrap; text-decoration: none; min-height: 40px; }
+.site-chip small, .scope-chip small { display: block; font: 500 11px/1.2 var(--font-text); color: var(--os-muted); }
+.site-chip .logo-bake, .scope-chip .logo-bake, .site-tile { width: 30px; height: 30px; border-radius: 9px; background: var(--site-tile, linear-gradient(135deg, #7a3f1d, #c06a2b)); display: grid; place-items: center; color: #fff; font: 800 13px/1 var(--font-display); flex: none; overflow: hidden; }
+.site-tile img { width: 100%; height: 100%; object-fit: cover; }
+.site-chip .caret, .scope-chip .caret { color: var(--os-muted); margin-left: 2px; }
+/* Scope markers: operator indigo, portfolio teal; the site scope shows the site's own tile */
+.scope-chip.op .logo-bake, [data-scope="operator"] .scope-chip .logo-bake { background: linear-gradient(135deg, var(--op), #4a4690); }
+.scope-chip.pf .logo-bake, [data-scope="portfolio"] .scope-chip .logo-bake { background: linear-gradient(135deg, #0b4f48, #22a394); }
+.scope-tag { display: inline-flex; align-items: center; gap: 6px; height: 28px; padding: 0 10px; border-radius: 999px; font: 700 var(--fs-12)/1 var(--font-text); white-space: nowrap; }
+.scope-tag.op { background: var(--op); color: #fff; }
+.scope-tag.pf { background: var(--pf-bg); color: var(--pf); }
+[data-time="night"] .scope-tag.op { background: #4a4690; }
+/* Worlds: Front of house and Back office (site scope) */
+.worlds { display: inline-grid; grid-auto-flow: column; padding: 3px; border-radius: 12px; background: var(--surface-2); border: 1px solid var(--os-line); margin: 0 auto; }
+.worlds button, .worlds a { display: inline-flex; align-items: center; gap: 8px; border: 0; background: transparent; color: var(--os-ink-2); font: 700 var(--fs-13)/1 var(--font-text); padding: 8px 14px; min-height: 36px; border-radius: 9px; cursor: pointer; white-space: nowrap; text-decoration: none; }
+.worlds [aria-pressed="true"], .worlds [aria-current="page"] { background: var(--paper); color: var(--head); box-shadow: var(--shadow-1); }
+.worlds .ct { font: 700 11px/1 var(--font-text); padding: 3px 6px; border-radius: 999px; background: var(--ok-bg); color: var(--ok); }
+/* Pills: time, budget, trust, freeze, hold */
+.pill { display: inline-flex; align-items: center; gap: 7px; height: 36px; padding: 0 11px; border-radius: 10px; border: 1px solid var(--os-line); background: var(--os-pane-2); color: var(--os-ink-2); font: 600 var(--fs-12)/1 var(--font-text); white-space: nowrap; cursor: pointer; text-decoration: none; }
+.pill b { color: var(--os-head); font-weight: 700; }
+.pill svg { width: 15px; height: 15px; flex: none; }
+.pill.trust svg { color: var(--ok); }
+.pill .n, .pill.trust .n { display: inline-grid; place-items: center; min-width: 18px; height: 18px; border-radius: 999px; background: var(--coral-strong); color: #fff; font: 700 11px/1 var(--font-text); padding: 0 5px; }
+.pill.freeze, .pill.hold { color: var(--risk); border-color: color-mix(in srgb, var(--risk) 35%, transparent); }
+.os.frozen .pill.freeze, .pill.freeze[aria-pressed="true"] { background: var(--risk); color: var(--paper); border-color: var(--risk); }
+.pill.time .sun { color: #d08a00; }
+.pill.time .moon { color: #a9a4ff; display: none; }
+[data-time="night"] .pill.time .sun { display: none; }
+[data-time="night"] .pill.time .moon { display: inline; }
+
+/* ---------- Dock: WebAgents are apps ---------- */
+.dock { grid-area: dock; display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 12px 0; border-right: 1px solid var(--os-line); background: var(--os-pane); overflow-y: auto; scrollbar-width: none; }
+.dock::-webkit-scrollbar { display: none; }
+.dock .sep { width: 36px; height: 1px; background: var(--os-line); margin: 6px 0; flex: none; }
+.app-ico { position: relative; display: grid; justify-items: center; gap: 4px; width: 72px; padding: 6px 0; border: 0; background: transparent; color: var(--os-ink-2); font: 600 10.5px/1.1 var(--font-text); cursor: pointer; border-radius: 12px; flex: none; text-decoration: none; text-align: center; }
+.app-ico:hover { background: var(--os-glow); }
+.app-ico[aria-current="true"], .app-ico[aria-current="page"] { background: var(--os-glow); color: var(--os-head); }
+.app-ico .avatar { width: 40px; height: 40px; border-radius: 12px; font-size: 13px; }
+.app-ico .badge { position: absolute; top: 2px; right: 12px; }
+.app-ico .sys { display: grid; place-items: center; width: 40px; height: 40px; border-radius: 12px; background: var(--surface-2); color: var(--indigo); }
+.app-ico .sys svg { width: 20px; height: 20px; }
+.app-ico.paused .avatar, .app-ico.paused .mk { filter: grayscale(1); opacity: .5; }
+
+/* Presence wrapper for the concept's letter avatars (.os-mark). Living marks use .mark-slot. */
+.os-mark { --c: var(--indigo); position: relative; display: inline-grid; flex: none; }
+.os-mark::before, .os-mark::after { content: ""; position: absolute; pointer-events: none; }
+.os-mark::after { inset: -4px; border-radius: 15px; border: 2px solid var(--c); opacity: 0; transform: scale(.92); }
+.os-mark[data-state="listening"]::after { animation: os-breathe 2.2s ease-in-out infinite; }
+.os-mark::before { left: 4px; right: 4px; bottom: -6px; height: 2px; border-radius: 2px; background: linear-gradient(90deg, transparent, var(--c), transparent); background-size: 200% 100%; opacity: 0; }
+.os-mark[data-state="working"]::before { opacity: 1; animation: os-trace 1s linear infinite; }
+.os-mark[data-state="answering"]::after { opacity: .45; transform: none; }
+.os-mark[data-state="waiting"]::before { left: auto; right: -3px; top: -3px; bottom: auto; width: 9px; height: 9px; border-radius: 50%; background: var(--pm-wait); border: 2px solid var(--os-pane-solid); opacity: 1; animation: none; z-index: 2; }
+.os-mark[data-state="asleep"] > .avatar { filter: saturate(.25); opacity: .7; }
+.os-mark[data-state="resting"] > .avatar { filter: grayscale(1); opacity: .55; }
+.os-mark[data-state="paused"] > .avatar { filter: grayscale(1); opacity: .45; }
+@keyframes os-breathe { 0%, 100% { opacity: 0; transform: scale(.92); } 50% { opacity: .55; transform: scale(1.04); } }
+@keyframes os-trace { from { background-position: 100% 0; } to { background-position: -100% 0; } }
+
+/* ---------- Field ---------- */
+.os > .field { grid-area: field; position: relative; min-height: 0; overflow-y: auto; padding: 18px 20px 12px; background: var(--os-field); scrollbar-width: thin; }
+.field-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 12px; margin-bottom: 14px; flex-wrap: wrap; }
+.field-head h1, .field-head h2 { font-size: var(--fs-24); color: var(--os-head); letter-spacing: -.015em; line-height: 1.2; }
+.field-head .sub { font-size: var(--fs-13); color: var(--os-muted); margin-top: 3px; }
+.cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; align-items: start; }
+.cp-field { container-type: inline-size; }
+.fcard { background: var(--os-pane); border: 1px solid var(--os-line); border-radius: 16px; padding: 14px; box-shadow: var(--shadow-1); color: var(--os-ink); min-width: 0; }
+[data-time="night"] .fcard { box-shadow: 0 20px 40px -24px rgba(0, 0, 0, .6); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); }
+.fcard.span2 { grid-column: span 2; }
+.fcard.accent { border-left: 4px solid var(--coral); }
+.fcard-head { display: flex; align-items: center; gap: 10px; }
+.fcard-head .who { min-width: 0; flex: 1; }
+.fcard-head .who b { display: block; font: 700 var(--fs-14)/1.2 var(--font-display); color: var(--os-head); }
+.fcard-head .avatar { width: 32px; height: 32px; border-radius: 10px; font-size: 12px; }
+.fcard h3 { margin-top: 10px; font-size: var(--fs-16); color: var(--os-head); }
+.fcard p { font-size: var(--fs-13); color: var(--os-ink-2); margin-top: 6px; line-height: 1.5; }
+.fcard p b { color: var(--os-head); }
+.progress { margin-top: 10px; }
+.progress .spread { font-size: var(--fs-12); color: var(--os-muted); margin-bottom: 5px; }
+.progress .spread b { color: var(--os-head); }
+
+/* ---------- Lane: what needs you ---------- */
+.lane { grid-area: lane; display: flex; flex-direction: column; min-height: 0; border-left: 1px solid var(--os-line); background: var(--os-pane); }
+.lane-scroll { flex: 1; min-height: 0; overflow-y: auto; padding: 14px; display: grid; gap: 10px; align-content: start; scrollbar-width: thin; }
+.lane h2, .lane h4 { display: flex; align-items: center; justify-content: space-between; font: 700 11px/1 var(--font-text); letter-spacing: .1em; text-transform: uppercase; color: var(--os-muted); margin: 6px 2px 0; }
+.lane h2 .badge, .lane h4 .badge { letter-spacing: 0; }
+.lane .ldec { background: var(--os-pane-2); border-color: var(--os-line); }
+
+/* ---------- Command bar: the Chief WebAgent ---------- */
+.cmd { grid-area: cmd; padding: 10px 20px 14px; background: transparent; display: grid; gap: 8px; }
+.plan { padding: 10px 12px; border-radius: 14px; background: var(--os-pane); border: 1px solid var(--os-line); box-shadow: var(--shadow-2); font-size: var(--fs-13); color: var(--os-ink-2); }
+.plan .plan-head { display: flex; align-items: center; gap: 8px; font: 700 var(--fs-12)/1 var(--font-text); letter-spacing: .08em; text-transform: uppercase; color: var(--os-muted); }
+.plan ol { margin: 8px 0 0; padding-left: 20px; display: grid; gap: 4px; }
+.plan ol b { color: var(--os-head); }
+.plan .foot { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-top: 8px; border: 0; padding: 0; }
+.askline { display: flex; align-items: center; gap: 10px; padding: 6px 6px 6px 8px; border-radius: 18px; background: var(--os-pane); border: 1.5px solid var(--indigo-100); box-shadow: var(--shadow-2); }
+[data-time="night"] .askline { border-color: rgba(255, 255, 255, .18); }
+.askline input { flex: 1; min-width: 0; border: 0; outline: 0; background: transparent; color: var(--os-ink); font: 500 var(--fs-14)/1 var(--font-text); padding: 10px 0; min-height: 40px; }
+.askline input::placeholder { color: var(--os-muted); }
+.activity-strip { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; font: 600 var(--fs-12)/1 var(--font-text); color: var(--os-muted); padding: 0 6px; }
+.activity-strip a, .activity-strip button { border: 0; background: none; color: var(--link); font: inherit; cursor: pointer; padding: 0; }
+
+/* ---------- Overlay window (Activity monitor, consent) and process table ---------- */
+.window { width: min(860px, 100%); max-height: 100%; overflow: auto; background: var(--paper); color: var(--ink); border-radius: 18px; box-shadow: var(--shadow-3); border: 1px solid var(--line); }
+.window-bar { position: sticky; top: 0; display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 12px 16px; border-bottom: 1px solid var(--line); background: color-mix(in srgb, var(--paper) 95%, transparent); z-index: 1; }
+.window-bar h3 { font-size: var(--fs-16); }
+.window-body { padding: 14px 16px 18px; }
+
+/* ---------- Receipts ---------- */
+.receipt { display: grid; grid-template-columns: 58px minmax(0, 1fr); gap: 10px; padding: 10px 0; border-bottom: 1px dashed var(--os-line); font-size: var(--fs-13); color: var(--os-ink-2); }
+.receipt:last-of-type { border-bottom: 0; }
+.receipt .when { font: 600 var(--fs-12)/1.5 var(--font-mono); color: var(--os-muted); }
+.receipt .meta { display: flex; gap: 10px; align-items: center; margin-top: 4px; font: 500 11px/1 var(--font-mono); color: var(--os-muted); flex-wrap: wrap; }
+
+/* ---------- Responsive: the shell becomes the phone ---------- */
+@media (max-width: 1500px) { .pill .hide-md { display: none; } .os-bar { gap: 8px; } }
+@media (max-width: 1100px) { .os { --lane-w: 300px; } }
+@media (max-width: 900px) {
+  .os, .os.no-lane, .os.no-cmd, .os.no-lane.no-cmd {
+    height: auto; min-height: 100vh; min-height: 100dvh;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto auto 1fr auto auto;
+    grid-template-areas: "bar" "lane" "field" "cmd" "dock";
+  }
+  .os-bar { flex-wrap: wrap; padding: 10px 12px; gap: 8px; }
+  .worlds { order: 3; width: 100%; margin: 0; grid-auto-columns: 1fr; }
+  .worlds button, .worlds a { justify-content: center; padding: 9px 8px; }
+  .pill .hide-sm { display: none; }
+  .dock { position: sticky; bottom: 0; z-index: 5; flex-direction: row; justify-content: flex-start; gap: 2px; padding: 6px 8px calc(10px + env(safe-area-inset-bottom)); border-right: 0; border-top: 1px solid var(--os-line); overflow-x: auto; overflow-y: hidden; }
+  .dock .sep { width: 1px; height: 36px; margin: 0 4px; }
+  .app-ico { width: 62px; }
+  .lane { border-left: 0; border-bottom: 1px solid var(--os-line); }
+  .lane-scroll { overflow: visible; padding: 12px; }
+  .os > .field { overflow: visible; padding: 14px 12px; }
+  .cmd { position: sticky; bottom: 78px; z-index: 6; padding: 8px 12px; background: linear-gradient(180deg, transparent, var(--os-bg) 30%); }
+  .cmd .activity-strip { display: none; }
+  .fcard.span2 { grid-column: auto; }
+  .cards { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 520px) {
+  .site-chip small, .scope-chip small { display: none; }
+  .pill { padding: 0 9px; }
+}

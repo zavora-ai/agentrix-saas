@@ -1,0 +1,67 @@
+{% extends "os/base.html" %}
+{#- ShellPage::WebAgents · view::WebAgentsView (+ Chrome) {
+      members: [MemberView { id, name, role_words, mandate, never: [String], status_words, agent (for ui.mark),
+                 dial: ladder|fixed-rules|undo-only, jobs: [JobView { name, note, current, ceiling, ceiling_reason, level_words, can }],
+                 wakes: [String], share_percent, asks }],
+      available: [MemberView],
+      agents: [AgentCard] (the charter's WebAgents, when the kernel has no roster) }
+    01b C11, C12; concept/console/trust.html's ladder per job and store.html's can and never.
+    Dials are read-only here until raising one is a decision card (card v2); lowering comes with it. -#}
+{% block title %}WebAgents · {{ site.name }}{% endblock %}
+{% block field %}
+<section class="view on" aria-labelledby="wa-h">
+  <div class="field-head"><div><h2 id="wa-h">WebAgents</h2><div class="sub">Who works on your site, what each may never do, and how much each job may do without asking you</div></div></div>
+  {% if members %}
+  <div class="cards">
+    {% for a in members %}
+    <article class="fcard" id="agent-{{ a.id }}">
+      <div class="fcard-head">{{ ui.mark(a.agent, size=40, show_name=false) }}<div class="who"><b><a href="{{ base }}/webagents/{{ a.id }}">{{ a.name }}</a></b><span class="state-line">{{ a.role_words }}</span></div>{% if a.asks %}<span class="chip chip-wait">{{ a.asks }} waiting</span>{% endif %}</div>
+      <p>{{ a.mandate }}</p>
+      {% if a.never %}<p class="small"><b>Never:</b> {{ a.never|join("; ") }}</p>{% endif %}
+      {% for j in a.jobs %}
+      <div class="job">
+        <div class="spread"><b>{{ j.name }}</b>{% if a.dial == "ladder" %}<span class="chip">{{ j.level_words }}</span>{% endif %}</div>
+        {{ m.dial(a, j, site.id) }}
+        {% if j.note %}<p class="small muted">{{ j.note }}</p>{% endif %}
+      </div>
+      {% endfor %}
+      {% if a.wakes %}<p class="small muted">Wakes: {{ a.wakes|join(" · ") }}</p>{% endif %}
+      {% if a.share_percent %}<p class="small muted">Up to {{ a.share_percent }}% of your AI budget</p>{% endif %}
+      <div class="verbs"><a class="btn btn-sm" href="{{ base }}/webagents/{{ a.id }}">Open {{ a.name }}</a></div>
+    </article>
+    {% endfor %}
+  </div>
+  {% if available %}
+  <h3 class="section-h">Not working for you now</h3>
+  <div class="cards">
+    {% for a in available %}
+    <article class="fcard" id="agent-{{ a.id }}">
+      <div class="fcard-head">{{ ui.mark(a.agent, size=40, show_name=false) }}<div class="who"><b>{{ a.name }}</b><span class="state-line">{{ a.role_words }}</span></div><span class="chip">{{ a.status_words }}</span></div>
+      <p>{{ a.mandate }}</p>
+    </article>
+    {% endfor %}
+  </div>
+  {% endif %}
+  <p class="note after-cards"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg><span>Lower a job and it applies at once. Raising one is a decision you approve with your {{ "passkey" if has_passkey else "authenticator app" }}. Anything that can't be undone, such as money, messages and deletions, asks you first, unless you chose "Allow, and tell me" for it. Money leaving your business always asks.</span></p>
+
+  {% elif agents %}
+  <div class="cards">
+    {% for a in agents %}
+    <article class="fcard" id="agent-{{ a.name|lower|replace(' ', '-') }}">
+      <div class="fcard-head">{{ m.mark(a.mark) }}<div class="who"><b>{{ a.name }}</b><span class="state-line">{{ a.role_words }}</span></div></div>
+      {% for j in a.jobs %}
+      <div class="job">
+        <div class="spread"><b>{{ j.job }}</b><span class="chip {{ 'chip-info' if j.above_ask_first else '' }}">{{ j.level_words }}</span></div>
+        <div class="ladder" role="group" aria-label="{{ a.name }}, {{ j.job }}">{% for p in j.positions %}<button type="button" disabled aria-pressed="{{ 'true' if p.current else 'false' }}"{% if p.locked %} title="{{ p.reason }}"{% endif %}>{{ p.name }}</button>{% endfor %}</div>
+        {% for p in j.positions if p.locked %}{% if loop.first %}<p class="small muted lock-note">Higher levels are locked: {{ p.reason }}</p>{% endif %}{% endfor %}
+      </div>
+      {% endfor %}
+    </article>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="cards"><article class="fcard span2"><h3>No WebAgents yet</h3><p>Your WebAgents start work when your site goes live: the go-live card asks you to sign what each job may do.</p></article></div>
+  {% endif %}
+</section>
+{% endblock %}
+{% block scripts %}{{ super() }}<script type="module" src="/static/os/dials.js?v={{ asset_v }}"></script>{% endblock %}

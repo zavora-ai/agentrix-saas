@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{#- Privacy · facts from docs/03-trust.md §5; James reviews the wording (board ask w10-legal) -#}
+{% block title %}Privacy · Agentrix{% endblock %}
+{% block description %}What Agentrix keeps about you, why, for how long, and how to get it or delete it.{% endblock %}
+{% block path %}/privacy{% endblock %}
+{% block main %}
+<article class="doc wrap">
+  <p class="eyebrow">Privacy</p>
+  <h1>What we keep, and why</h1>
+  <p class="lead">Agentrix is run by Zavora Technologies Ltd in Nairobi. This page says what we keep when you use agentrix.website and the sites it runs. Updated Sun 8 Nov 2026.</p>
+
+  <h2>This page and the rest of agentrix.website</h2>
+  <ul class="ticks">
+    <li>No trackers, no advertising and no analytics scripts.</li>
+    <li>No cookies until you sign in. Signing in sets one cookie that keeps you signed in.</li>
+    <li>Our servers log requests to keep the service running. The logs hold no page content.</li>
+  </ul>
+
+  <h2>A free health report</h2>
+  <p>We keep the address you paste, the public pages our crawler read, what it found and the signed receipts of each step. They prove what the report says, so we keep them for a year.</p>
+
+  <h2>An owner's account and site</h2>
+  <ul class="ticks">
+    <li>Your email, your passkeys' public keys, a hash of your password if you set one, and your authenticator enrolment. We keep them while you have an account.</li>
+    <li>Your site's content and every signed release of it, until you delete them.</li>
+    <li>The receipts of what your WebAgents did and what you approved.</li>
+  </ul>
+  <p>You can ask us to export everything we keep about you and your site, or to delete it.</p>
+
+  <h2>Visitors to a site we run</h2>
+  <p>When a visitor asks a site a question, the conversation is kept for up to 90 days, or less if the site's owner chooses, so the owner can answer what the site couldn't. Conversations stay with that business. They are never used to train models, and one site never reads another's.</p>
+
+  <h2>AI models</h2>
+  <p>WebAgents call AI models through our Model Gateway, which sends each call to the model provider and keeps only the receipt and the usage (tokens and cost), not the prompt or the answer. Which provider serves which kind of call is on the home page, from its signed receipt.</p>
+
+  <h2>Questions and requests</h2>
+  <p>Write to Zavora Technologies through <a href="https://zavora.ai">zavora.ai</a>. We answer requests to see, export or delete your data.</p>
+</article>
+{% endblock %}

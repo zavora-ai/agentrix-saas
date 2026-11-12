@@ -1,0 +1,54 @@
+[package]
+name = "agentrix-home"
+description = "The agentrix.website home page: the promise, the Move, containment, go-live, the site, the console, the architecture on Vultr, the samples, plans and the trust promises, with live numbers read from receipts."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+authors.workspace = true
+
+[features]
+# Read templates from disk on every render, for editing markup without rebuilding. Never in release.
+dev-reload = []
+
+[dependencies]
+agentrix-billing.workspace = true
+agentrix-decisions.workspace = true
+agentrix-host.workspace = true
+agentrix-kernel.workspace = true
+agentrix-media.workspace = true
+agentrix-messages.workspace = true
+agentrix-marks = { path = "../agentrix-marks" }
+agentrix-store.workspace = true
+agentrix-types.workspace = true
+agentrix-ui.workspace = true
+anyhow.workspace = true
+async-trait.workspace = true
+axum.workspace = true
+chrono.workspace = true
+futures.workspace = true
+minijinja.workspace = true
+minijinja-embed.workspace = true
+reqwest.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+sqlx.workspace = true
+thiserror.workspace = true
+tokio.workspace = true
+tower.workspace = true
+tower-http.workspace = true
+tracing.workspace = true
+uuid.workspace = true
+
+[build-dependencies]
+minijinja-embed.workspace = true
+
+[dev-dependencies]
+bytes.workspace = true
+agentrix-store.workspace = true
+tower.workspace = true
+tracing-subscriber.workspace = true
+
+[lints]
+workspace = true

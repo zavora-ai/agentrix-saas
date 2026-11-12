@@ -1,0 +1,78 @@
+{% extends "os/base.html" %}
+{#- ShellPage::WebAgent · view::WebAgentView (+ Chrome) { member: MemberView, on_duty, rules: [RuleView], grants: [GrantView],
+      remove: RemoveView { url, effects, waiting_href? }?, stays_words? }
+    01b C11 (a WebAgent's app window) and C13 (Appearance): what it does and may never do, each job's
+    dial, and W1's Workshop island (<wa-workshop>), which saves the mark only when the owner presses Save. -#}
+{% block title %}{{ member.name }} · {{ site.name }}{% endblock %}
+{% block head %}{{ super() }}<link rel="stylesheet" href="/_agentrix/workshop.css?v={{ asset_v }}">{% endblock %}
+{% block field %}
+<section class="view on" aria-labelledby="wa1-h">
+  <p class="small"><a href="{{ base }}/webagents">← WebAgents</a></p>
+  <div class="field-head"><div><h2 id="wa1-h">{{ member.name }}</h2><div class="sub">{{ member.role_words }} · {{ member.status_words }}</div></div>{% if not on_duty %}<a class="btn btn-sm btn-primary" href="{{ base }}/store?add={{ member.id }}">Add from the Store</a>{% endif %}</div>
+  <div class="cards">
+    <article class="fcard span2" id="agent-{{ member.id }}">
+      <div class="fcard-head">{{ ui.mark(member.agent, size=40, show_name=false) }}<div class="who"><b>{{ member.name }}</b><span class="state-line">{{ member.role_words }}</span></div>{% if member.asks %}<span class="chip chip-wait">{{ member.asks }} waiting</span>{% endif %}</div>
+      <p>{{ member.mandate }}</p>
+      {% if member.never %}<p class="small"><b>Never:</b> {{ member.never|join("; ") }}</p>{% endif %}
+      {% for j in member.jobs %}
+      <div class="job">
+        <div class="spread"><b>{{ j.name }}</b>{% if member.dial == "ladder" %}<span class="chip">{{ j.level_words }}</span>{% endif %}</div>
+        {{ m.dial(member, j, site.id) }}
+        {% if j.note %}<p class="small muted">{{ j.note }}</p>{% endif %}
+        {% if j.can %}<p class="small muted">Can: {% for c in j.can %}{{ c.words }}{% if not loop.last %}; {% endif %}{% endfor %}</p>{% endif %}
+      </div>
+      {% endfor %}
+      {% if member.wakes %}<p class="small muted">Wakes: {{ member.wakes|join(" · ") }}</p>{% endif %}
+      {% if member.share_percent %}<p class="small muted">Up to {{ member.share_percent }}% of your AI budget</p>{% endif %}
+    </article>
+    <article class="fcard span2" id="rules" aria-labelledby="rules-h">
+      <div class="spread-h"><h3 id="rules-h">Your rules</h3><span class="small muted">{{ member.name }} follows these when it asks you</span></div>
+      {% for r in rules %}
+      <div class="rule-row">
+        <div><b>{{ r.words }}</b><p class="small muted">{{ r.made_words }} · <a href="{{ r.card_href }}">The card</a> · <a href="/receipts/{{ r.receipt }}">Receipt</a></p></div>
+        <form method="post" action="{{ r.remove_url }}" data-remove-rule><button class="btn btn-sm btn-ghost" type="submit">Remove</button></form>
+      </div>
+      {% else %}
+      <p class="small">No rules yet. When you decline one of its cards, you can tell it why and make that a rule. It shows here, and you can remove it any time.</p>
+      {% endfor %}
+    </article>
+    <article class="fcard span2" id="grants" aria-labelledby="grants-h">
+      <div class="spread-h"><h3 id="grants-h">Allowed without asking</h3><span class="small muted">It goes ahead with these and tells you</span></div>
+      {% for g in grants %}
+      <div class="rule-row">
+        <div><b>{{ g.sentence }}</b><p class="small muted">{{ g.state_words }} · <a href="{{ g.card_href }}">The card</a> · <a href="/receipts/{{ g.receipt }}">Receipt</a></p></div>
+        {% if not g.ended %}<form method="post" action="{{ g.revoke_url }}"><button class="btn btn-sm btn-ghost" type="submit">Stop</button></form>{% endif %}
+      </div>
+      {% else %}
+      <p class="small">Nothing yet. When you approve one of its cards, "Allow, and tell me" lets it handle the same again for that person or kind, inside a limit, and tell you each time.</p>
+      {% endfor %}
+    </article>
+    {% if remove %}
+    <article class="fcard span2" id="remove" aria-labelledby="remove-h">
+      <div class="spread-h"><h3 id="remove-h">Remove from your team</h3></div>
+      {% if remove.waiting_href %}
+      <p class="small">You asked to remove {{ member.name }}. It stays on your team until you approve that. <a href="{{ remove.waiting_href }}">Open the decision</a></p>
+      {% else %}
+      <details>
+        <summary>Remove {{ member.name }}</summary>
+        <p class="small">If you remove {{ member.name }}:</p>
+        <ul class="small">{% for e in remove.effects %}<li>{{ e }}.</li>{% endfor %}</ul>
+        <form method="post" action="{{ remove.url }}"><button class="btn btn-sm" type="submit">Remove {{ member.name }}</button></form>
+        <p class="small muted">Nothing changes yet. You approve it with your passkey or a code on the next screen.</p>
+      </details>
+      {% endif %}
+    </article>
+    {% elif stays_words %}
+    <article class="fcard span2" aria-labelledby="stays-h">
+      <div class="spread-h"><h3 id="stays-h">On your team</h3></div>
+      <p class="small">{{ stays_words }}</p>
+    </article>
+    {% endif %}
+    <article class="fcard span2" aria-labelledby="look-h">
+      <div class="spread-h"><h3 id="look-h">Appearance</h3><span class="small muted">The mark visitors and you see. Nothing changes until you press Save.</span></div>
+      <wa-workshop site="{{ site.id }}" webagent="{{ member.id }}"></wa-workshop>
+    </article>
+  </div>
+</section>
+{% endblock %}
+{% block scripts %}{{ super() }}<script type="module" src="/static/os/dials.js?v={{ asset_v }}"></script><script type="module" src="/_agentrix/workshop.js?v={{ asset_v }}"></script>{% endblock %}

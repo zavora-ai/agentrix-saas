@@ -1,0 +1,41 @@
+[package]
+name = "saas-wallet"
+description = "Agentrix SaaS wallet records (v3 Technology 3): one append-only, tamper-evident record per money-handling agent, a stream in adk-auth's signed audit log. Entries come only from a verified PayPal webhook or a read-back from PayPal; every entry posts to Zavora ERA (hosted) through saas-core's posting rules; checkpoints reconcile against PayPal; a three-way match and a feed for the board."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+authors.workspace = true
+
+# Owner: slice W (wallet).
+
+[dependencies]
+saas-core.workspace = true
+agentrix-effects.workspace = true
+adk-auth = { workspace = true, features = ["signed-audit"] }
+adk-core.workspace = true
+# The signed log's SQLite store (the same rev and feature saas-company uses).
+adk-session = { git = "https://github.com/zavora-ai/adk-rust", rev = "3e797c38204ef21f603c84b5ee4270798270f2d6", default-features = false, features = ["sqlite"] }
+sqlx.workspace = true
+axum.workspace = true
+chrono.workspace = true
+reqwest.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+thiserror.workspace = true
+tokio.workspace = true
+tracing.workspace = true
+
+[dev-dependencies]
+saas-core = { workspace = true, features = ["fake"] }
+wiremock = "0.6"
+tower.workspace = true
+# examples/wallet_capture.rs: a real sandbox capture into a wallet and Zavora ERA.
+saas-books.workspace = true
+anyhow.workspace = true
+sha2.workspace = true
+hex.workspace = true
+
+[lints]
+workspace = true

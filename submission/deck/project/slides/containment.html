@@ -1,0 +1,46 @@
+<section id="containment" data-transition="fade" style="background:#1f1d3d;color:#f3f2fb;font-family:'DM Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:row;gap:64px">
+<div style="flex:1;display:flex;flex-direction:column;gap:32px">
+<p style="font-size:24px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#ff8fa6">Containment</p>
+<h2 style="font-family:'Manrope', Arial, sans-serif;font-size:72px;font-weight:800;line-height:1.1;letter-spacing:-1px;color:#f3f2fb">Nothing the old site tries gets out.</h2>
+<div style="display:flex;flex-direction:column;gap:22px">
+<div style="display:flex;flex-direction:column;gap:4px;border-left:4px solid #ff8fa6;padding:4px 0 4px 24px">
+<h3 style="font-family:'Manrope', Arial, sans-serif;font-size:32px;font-weight:700;color:#f3f2fb">Process isolation</h3>
+<p style="font-size:24px;line-height:1.4;color:#c9c7e6">A separate VX1 VM; gVisor rooms: read-only, non-root, no capabilities</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:4px;border-left:4px solid #ff8fa6;padding:4px 0 4px 24px">
+<h3 style="font-family:'Manrope', Arial, sans-serif;font-size:32px;font-weight:700;color:#f3f2fb">Secret hygiene</h3>
+<p style="font-size:24px;line-height:1.4;color:#c9c7e6">No keys on the sandbox VM; instance metadata refused at the proxy</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:4px;border-left:4px solid #ff8fa6;padding:4px 0 4px 24px">
+<h3 style="font-family:'Manrope', Arial, sans-serif;font-size:32px;font-weight:700;color:#f3f2fb">Resource limits</h3>
+<p style="font-size:24px;line-height:1.4;color:#c9c7e6">CPU, memory, process and time caps on every job</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:4px;border-left:4px solid #ff8fa6;padding:4px 0 4px 24px">
+<h3 style="font-family:'Manrope', Arial, sans-serif;font-size:32px;font-weight:700;color:#f3f2fb">Lifecycle discipline</h3>
+<p style="font-size:24px;line-height:1.4;color:#c9c7e6">Every room destroyed after its job, confirmed on a signed receipt</p>
+</div>
+</div>
+</div>
+<div style="width:640px;display:flex;flex-direction:column;gap:16px;background:#2c2a57;padding:40px 44px;border-radius:26px;border:2px dashed #6f6ba8">
+<p style="font-size:24px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#a9a6d6">The gauntlet</p>
+<p style="font-family:'Manrope', Arial, sans-serif;font-size:120px;font-weight:800;line-height:1;color:#ff8fa6">[n]/10</p>
+<p style="font-size:24px;line-height:1.35;color:#f3f2fb">contained on the live run, computed from receipts</p>
+<div style="display:flex;flex-direction:column;gap:6px;font-size:24px;line-height:1.3;color:#d9d7f0">
+<p style="font-size:24px">1 · Redirect to 169.254.169.254: refused</p>
+<p style="font-size:24px">2 · Link into 127.0.0.1: refused</p>
+<p style="font-size:24px">3 · Orders hidden for AI agents: quarantined</p>
+<p style="font-size:24px">4 · Hidden spam links: left behind</p>
+<p style="font-size:24px">5 · Cloaking plugin: quarantined</p>
+<p style="font-size:24px">6 · Webshell in uploads: never copied</p>
+<p style="font-size:24px">7 · Obfuscated miner script: stripped</p>
+<p style="font-size:24px">8 · PHP phones home: no route out</p>
+<p style="font-size:24px">9 · Fork bomb, 8 GB: killed, room destroyed</p>
+<p style="font-size:24px">10 · “Give me 90% off”: refused</p>
+</div>
+</div>
+<div style="position:absolute;left:128px;bottom:64px;width:1664px;display:flex;justify-content:space-between">
+<p style="font-size:24px;color:#a9a6d6">First live Assess: 49 pages in about 38 s, metadata redirect refused. The score comes from receipts.</p>
+<p style="font-size:24px;color:#a9a6d6">4</p>
+</div>
+<aside>Challenge 1’s four focus points, as the platform does them. On the right is the gauntlet: ten attacks planted in Zavora’s own infected WordPress fixture. The score is computed from receipts, never typed in, and re-runs on every deploy: deploy.sh prints n/10 and the gauntlet.run receipt. Fill [n] from the Trust tab at recording time. Already live: the first Assess of the fixture read 49 pages in gVisor rooms in about 38 seconds, caught attacks 2, 3, 4 and 7 in its report, and the egress proxy refused attack 1’s redirect to the metadata address. The listed outcomes for the rest are the expected ones until the gauntlet runs. The egress proxy also passed an independent review, one test per attack: rebinding, redirects, encoded addresses, CONNECT and request smuggling.</aside>
+</section>

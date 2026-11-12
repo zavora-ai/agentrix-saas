@@ -1,0 +1,36 @@
+[package]
+name = "saas-core"
+description = "Agentrix SaaS shared contracts: company and agent ids, money, counterparties, PayPal references, the Books trait over Zavora ERA, and the PayPal-to-books posting rules. An in-memory FakeBooks sits behind the `fake` feature."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+authors.workspace = true
+
+# Owner: slice A (books). Slices B, C and D build on these types; change them only by asking
+# slice A, and keep the crate light (no HTTP, no database).
+
+[features]
+default = []
+# In-memory `FakeBooks` for the other slices' tests.
+fake = []
+
+[dependencies]
+adk-core.workspace = true
+anyhow.workspace = true
+async-trait.workspace = true
+chrono.workspace = true
+hex.workspace = true
+http.workspace = true
+serde.workspace = true
+serde_jcs.workspace = true
+serde_json.workspace = true
+sha2.workspace = true
+thiserror.workspace = true
+
+[dev-dependencies]
+tokio.workspace = true
+
+[lints]
+workspace = true

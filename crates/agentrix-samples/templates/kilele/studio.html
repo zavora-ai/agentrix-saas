@@ -1,0 +1,131 @@
+{% extends "kilele/layout.html" %}
+{% from "macros.html" import mark %}
+{% block styles %}{{ super() }}<link rel="stylesheet" href="/_s/studio.css?v={{ shell.v }}">{% endblock %}
+{% block scripts %}<script src="/_s/studio.js?v={{ shell.v }}" defer></script>{% endblock %}
+{# The studio talks through its own Cakes desk, as the concept draws it. #}
+{% block askdock %}{% endblock %}
+{% block main %}
+<div class="st" id="studio">
+  <div class="st-crumb"><span class="crumb"><a href="/cakes">Cakes</a> › <b>Cake studio</b></span><span class="st-confirms">{{ owner }} confirms every cake</span></div>
+  <noscript><p class="st-noscript">The studio needs JavaScript. <a href="/order-a-cake">Use the simple cake form</a> instead; it sends the same request to {{ owner }}.</p></noscript>
+  <div class="studio">
+    <section class="talk" aria-label="Conversation with {{ desk.name }}">
+      <div class="talk-head"><span id="studioMark">{{ mark(desk, 28, shell.site) }}</span><div class="who"><b id="deskName" data-ai="{{ desk.name }}">Cake studio</b><span id="deskSub" data-ai="WebAgent · designs from Kilele's real options">Matches your words to Kilele's own options</span></div><span class="wa-ai" id="deskAi" hidden>AI</span></div>
+      <div class="talk-body" id="talkBody">
+        <div class="wa-thread" id="thread" role="log" aria-label="Conversation with {{ desk.name }}">
+          <div class="wa-a"><div class="by">{{ mark(desk, 20, shell.site) }} <span class="by-name">Cake studio</span></div><div class="txt"><p>What's the occasion, and who's it for? Tell me in your own words, or start with the size.</p></div></div>
+        </div>
+      </div>
+      <div class="talk-foot">
+        <div class="chips" data-step="size" aria-label="Sizes">
+          {% for o in groups.size %}<button class="chip-opt" type="button" data-group="size" data-code="{{ o.code }}">{{ o.label }} · serves {{ o.serves }} <small>{{ o.price }}</small></button>{% endfor %}
+        </div>
+        <div class="chips" data-step="sponge" aria-label="Sponges" hidden>
+          {% for o in groups.sponge %}<button class="chip-opt" type="button" data-group="sponge" data-code="{{ o.code }}"{% if o.only_sizes %} data-only="{{ o.only_sizes | join(' ') }}" data-why="{{ o.only }}"{% endif %}>{{ o.short }}{% if o.price %} <small>{{ o.price }}</small>{% endif %}{% if o.only %} <small class="only">{{ o.only }}</small>{% endif %}</button>{% endfor %}
+        </div>
+        <div class="chips" data-step="colour" aria-label="Buttercream colours" hidden>
+          {% for o in groups.colour %}<button class="chip-opt" type="button" data-group="colour" data-code="{{ o.code }}"><span class="sw" style="background:{{ o.swatch }}"></span>{{ o.short }}{% if o.price %} <small>{{ o.price }}</small>{% endif %}</button>{% endfor %}
+        </div>
+        <div class="chips" data-step="finish" aria-label="Finishes" hidden>
+          {% for o in groups.finish %}<button class="chip-opt" type="button" data-group="finish" data-code="{{ o.code }}">{{ o.short }}{% if o.price %} <small>{{ o.price }}</small>{% endif %}</button>{% endfor %}
+        </div>
+        <div class="chips" data-step="deco" aria-label="Decorations" hidden>
+          {% for o in groups.deco %}<button class="chip-opt" type="button" data-group="deco" data-code="{{ o.code }}">{{ o.short }}{% if o.price %} <small>{{ o.price }}</small>{% endif %}</button>{% endfor %}
+        </div>
+        <div class="chips" data-step="message" aria-label="Message suggestions" hidden>
+          <button class="chip-opt" type="button" data-message="Happy birthday">Happy birthday</button>
+          <button class="chip-opt" type="button" data-message="Congratulations">Congratulations</button>
+          <button class="chip-opt" type="button" data-message="">No message <small>free</small></button>
+        </div>
+        <div class="chips" data-step="fulfilment" aria-label="Delivery or collection" hidden>
+          <button class="chip-opt" type="button" data-fulfilment="collection">Collect from the bakery <small>free</small></button>
+          {% if zone %}<button class="chip-opt" type="button" data-fulfilment="delivery">Delivery to {{ zone.areas }} <small>+{{ zone.fee }}</small></button>{% endif %}
+        </div>
+        <div class="chips cal" data-step="date" aria-label="Days {{ owner }} has room for" hidden>
+          {% for d in days %}<button class="day" type="button" data-date="{{ d.date }}" data-label="{{ d.label }}"{% if d.reason %} aria-disabled="true" title="{{ d.reason }}"{% endif %}><span class="dow">{{ d.dow }}</span><b>{{ d.num }}</b><small class="why">{{ d.reason }}</small></button>{% endfor %}
+        </div>
+        <form class="wa-input" id="form"><label class="sr-only" for="q">Describe your cake</label><input id="q" autocomplete="off" maxlength="300" placeholder="Describe it in your own words…"><button class="wa-send" type="submit" aria-label="Send"></button></form>
+        <p class="wa-disclose" id="disclose" data-ai="You're talking to AI. It never guesses prices, dates or allergens. It offers only what Kilele makes.">The studio matches your words to Kilele's own options. It never guesses prices, dates or allergens.</p>
+      </div>
+    </section>
+
+    <section class="cake-side" aria-label="Your cake">
+      <div class="cake-card">
+        <div class="cake-stage">
+          <span class="sketch-tag" id="sketchTag">Sketch, not a photo · {{ owner }} bakes the real one</span>
+          <svg id="cake" viewBox="0 0 340 300" role="img" aria-label="Sketch of your cake"></svg>
+          <figure class="idea" id="idea" hidden>
+            <img id="ideaImg" alt="" width="768" height="768" decoding="async">
+            <figcaption class="sketch-tag idea-tag" id="ideaTag"></figcaption>
+          </figure>
+        </div>
+        <div class="idea-bar">
+          <p class="idea-plaque" id="ideaPlaque" hidden></p>
+          <div class="idea-acts">
+            <button class="b-btn ghost" type="button" id="ideaBtn" disabled>Show me an idea of it</button>
+            <button class="b-btn ghost" type="button" id="viewBtn" hidden>Show the sketch</button>
+          </div>
+          <p class="idea-line" id="ideaLine" role="status">Pick the size, sponge, buttercream, finish and decoration, then see an idea of it made with AI.</p>
+        </div>
+        <div class="cake-name"><h2 id="cakeTitle">Your cake</h2><span class="total" id="cakeTotal"></span></div>
+        <p class="serves" id="cakeServes" hidden></p>
+        <div class="spec" id="spec">
+          <button type="button" class="unset" data-row="size"><i>Size</i><span>Not chosen yet</span></button>
+          <button type="button" class="unset" data-row="sponge"><i>Sponge</i><span>Not chosen yet</span></button>
+          <button type="button" class="unset" data-row="colour"><i>Buttercream</i><span>Not chosen yet</span></button>
+          <button type="button" class="unset" data-row="finish"><i>Finish</i><span>Not chosen yet</span></button>
+          <button type="button" class="unset" data-row="deco"><i>Decoration</i><span>Not chosen yet</span></button>
+          <button type="button" class="unset" data-row="message"><i>Message</i><span>Not chosen yet</span></button>
+          <button type="button" class="unset" data-row="fulfilment"><i>Delivery or collection</i><span>Not chosen yet</span></button>
+          <button type="button" class="unset" data-row="date"><i>Day</i><span>Not chosen yet</span></button>
+        </div>
+      </div>
+      <div class="flags" id="flags" aria-live="polite"></div>
+      <div class="price-card" id="price">
+        <h3>Price <span class="pl">Kilele's price list · valid until {{ valid_until }}</span></h3>
+        <ul class="lines" id="lines"><li class="empty"><span>Pick a size to see the price.</span></li></ul>
+        <p class="rules-note"><span class="wa-ai">rules</span><span>Every line is a rule from Kilele's price list. The WebAgent picks options; it never sets or rounds a price.</span></p>
+      </div>
+
+      <div class="req-card" id="request">
+        <h3>Your request</h3>
+        <dl class="k-facts">
+          <div><dt>Cake</dt><dd id="rCake">Not chosen yet</dd></div>
+          <div><dt>Message</dt><dd id="rMessage">None</dd></div>
+          <div><dt><label for="rNote">Note</label></dt><dd><input id="rNote" maxlength="240" autocomplete="off" placeholder="For {{ owner }}, such as “No nuts”"></dd></div>
+          <div><dt id="rWhenLabel">When</dt><dd id="rWhen">Not chosen yet</dd></div>
+          {% if zone %}<div id="rRecipientRow" hidden><dt><label for="rRecipient">Deliver to</label></dt><dd><input id="rRecipient" maxlength="160" autocomplete="off" placeholder="Name and place in {{ zone.areas }}"></dd></div>{% endif %}
+          <div><dt>Price</dt><dd id="rPrice">From the price list once you pick a size</dd></div>
+        </dl>
+        <div class="cake-actions">
+          <button class="b-btn" type="button" id="requestBtn" disabled>Request this cake</button>
+          <button class="b-btn ghost" type="button" id="shareBtn" disabled>Save &amp; share the design</button>
+        </div>
+        <p class="who-line" id="whoLine">{% if visitor %}Requesting as {{ visitor }}.{% else %}You'll sign in first, so {{ owner }} knows who it's for. Your design is kept.{% endif %}</p>
+        <div class="share-box" id="shareBox" hidden>
+          <label for="shareLink">Link to this design</label>
+          <div class="linkbox"><input id="shareLink" readonly><button class="b-btn ghost" type="button" id="copyLink">Copy link</button></div>
+          <p>The link holds the design itself, so nothing is saved on Kilele's side. Opening it prices the cake again from the live price list.</p>
+        </div>
+        <div class="k-status" id="status">
+          <div class="k-desk"><span id="reqMark">{{ mark(orders_desk, 40, shell.site, "lg") }}</span><div class="who"><b>{{ orders_desk.name }} <span class="wa-ai">AI</span></b><span>WebAgent · sends cake requests to {{ owner }}</span></div></div>
+          <p class="k-statusline" id="reqLine" role="status">Nothing is sent until you tap “Request this cake”.</p>
+          <span class="k-pill wait" id="reqPill" hidden></span>
+          <a class="b-btn ghost" id="reqLink" href="/orders" hidden>Open your order</a>
+        </div>
+        <div class="k-next">
+          <h4>What happens next</h4>
+          <ol>
+            <li>{{ owner }} gets the order card on her phone.</li>
+            <li>{{ confirmations }}</li>
+            <li>The payment request appears on your order page<span id="nextUsd"></span>.</li>
+            <li>Nothing is charged until you pay it there.</li>
+          </ol>
+          <p class="k-small">If {{ owner }} suggests a change or declines, you'll see it on the same page. Prefer a plain form? <a href="/order-a-cake">Use the simple cake form</a>.</p>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+<script type="application/json" id="studio-data">{{ data | tojson }}</script>
+{% endblock %}

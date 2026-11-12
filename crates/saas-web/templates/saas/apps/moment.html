@@ -1,0 +1,24 @@
+{% extends "saas/apps/base.html" %}
+{% block title %}{{ moment_words }} · {{ site.name }}{% endblock %}
+{% block field %}
+{% if subject %}
+<div class="field-head"><div><p class="eyebrow">{{ moment_words }}{% if subject.reason %} · {{ subject.reason|replace("-", " ") }}{% endif %}</p><h1>{{ subject.title }}</h1><div class="sub">{{ owner }}, this is exactly what your passkey signs.</div></div></div>
+<article class="card ceremony" data-ceremony data-challenge-url="{{ challenge_url }}" data-sign-url="{{ sign_url }}">
+  <ul class="plain ceremony-lines">{% for l in subject.lines %}<li>{{ l }}</li>{% endfor %}</ul>
+  <div class="sig"><b>Your passkey signs</b> <span class="mono wrap-any">{{ subject.fingerprint }}</span> <span class="small muted">with a fresh nonce: SHA-256(fingerprint ‖ nonce).</span></div>
+  {% if subject.expiresAt %}<p class="small muted">Good until {{ subject.expiresAt }}.</p>{% endif %}
+  {% if subject.state != "pending" %}
+    {{ ui.banner("", "This is " ~ subject.state ~ ".") }}
+  {% elif not ready %}
+    {{ ui.banner("wait", "Set up your passkey first, on the Passkey page.") }}
+  {% elif may_act %}
+    <div class="row"><button class="btn btn-primary btn-lg" type="button" data-ceremony-sign>Sign with passkey</button></div>
+  {% endif %}
+  <p class="lead" data-ceremony-status role="status"></p>
+  <pre class="cmd" data-ceremony-record hidden></pre>
+</article>
+{% else %}
+{{ ui.empty("Nothing to sign here", error) }}
+{% endif %}
+{% endblock %}
+{% block scripts %}<script type="module" src="/static/saas/ceremony.js?v={{ saas_v }}"></script>{% endblock %}

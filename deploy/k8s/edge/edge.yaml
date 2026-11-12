@@ -1,0 +1,103 @@
+# Caddy as the cluster's edge: routes each business's host to its Service and obtains certificates.
+# It listens on unprivileged ports and runs as a non-root user; the Service maps 80 and 443 to them.
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: edge
+  labels:
+    app.kubernetes.io/part-of: agentrix-saas
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: caddy-data
+  namespace: edge
+  labels:
+    app.kubernetes.io/part-of: agentrix-saas
+spec:
+  accessModes: ["ReadWriteOnce"]
+  storageClassName: vultr-block-storage
+  resources:
+    requests:
+      storage: 10Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: caddy
+  namespace: edge
+  labels:
+    app.kubernetes.io/name: caddy
+    app.kubernetes.io/part-of: agentrix-saas
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate   # one writer for the certificate volume
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: caddy
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: caddy
+        app.kubernetes.io/part-of: agentrix-saas
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: caddy
+          image: caddy:2.11.9
+          args: ["caddy", "run", "--config", "/etc/caddy/Caddyfile", "--adapter", "caddyfile"]
+          ports:
+            - {name: http, containerPort: 8080}
+            - {name: https, containerPort: 8443}
+          env:
+            - {name: XDG_DATA_HOME, value: /data}
+            - {name: XDG_CONFIG_HOME, value: /config}
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop: ["ALL"]
+          resources:
+            requests: {cpu: 50m, memory: 64Mi}
+            limits: {memory: 256Mi}
+          readinessProbe:
+            tcpSocket: {port: 8080}
+            periodSeconds: 5
+          volumeMounts:
+            - {name: config, mountPath: /etc/caddy, readOnly: true}
+            - {name: data, mountPath: /data}
+            - {name: runtime, mountPath: /config}
+      volumes:
+        - name: config
+          configMap:
+            name: caddyfile
+        - name: data
+          persistentVolumeClaim:
+            claimName: caddy-data
+        - name: runtime
+          emptyDir: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: caddy
+  namespace: edge
+  labels:
+    app.kubernetes.io/part-of: agentrix-saas
+  annotations:
+    service.beta.kubernetes.io/vultr-loadbalancer-protocol: "tcp"
+    service.beta.kubernetes.io/vultr-loadbalancer-label: "agentrix-saas-eco-edge"
+spec:
+  type: LoadBalancer
+  selector:
+    app.kubernetes.io/name: caddy
+  ports:
+    - {name: http, port: 80, targetPort: http}
+    - {name: https, port: 443, targetPort: https}

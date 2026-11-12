@@ -1,0 +1,45 @@
+{% extends "tana/layout.html" %}
+{% from "tana/macros.html" import digest_form %}
+{% block main %}
+<div class="n-grid">
+  <div>
+    <header class="front-head">
+      <span class="kicker">By email</span>
+      {% if state == "sent" %}<h2>Check your email to confirm</h2>
+      <p>Nothing is sent until you do. We sent a confirmation link to <b>{{ email }}</b>{% if topics %} for {{ topics | join(" and ") | lower }}{% endif %}.</p>
+      {% elif state == "confirmed" %}<h2>You're on the {{ digest.name }}</h2>
+      <p>The first one goes to <b>{{ email }}</b> on {{ digest.day }} at {{ digest.time }}: {{ digest.count }} {% if topics %}{{ topics | join(" and ") | lower }}{% else %}front-page{% endif %} stories, two lines each, with links.</p>
+      {% elif state == "stopped" %}<h2>Stopped</h2>
+      <p>The {{ digest.name }} won't go to <b>{{ email }}</b> again. Your topics were deleted with it, as the contract says.</p>
+      {% elif state == "pending" %}<h2>Not confirmed yet</h2>
+      <p>This digest hasn't been confirmed. Use the confirmation link in the email.</p>
+      {% elif state == "invalid" %}<h2>That link doesn't work</h2>
+      <p>It may have been copied in part, or the digest was set up again with a new link. Nothing was changed. You can set up the digest below.</p>
+      {% else %}<h2>Your {{ digest.name }}</h2>
+      <p>Choose topics. Every {{ digest.day }} at {{ digest.time }}: five stories published that week, picked by the editor's rules. A desk writes two lines on each, with links.</p>
+      {% endif %}
+    </header>
+
+    {% if sent and state in ["sent", "confirmed"] %}
+    <div class="mailbox" id="mailbox" role="note">
+      <span class="kicker">Sample mailbox</span>
+      <p>This sample site doesn't send email, so the {% if state == "sent" %}confirmation link is{% else %}links are{% endif %} shown here.</p>
+      {% if state == "sent" %}<a class="n-btn teal" href="{{ sent.confirm }}">Confirm my {{ digest.name }}</a>{% endif %}
+      <p class="small">Every {{ digest.name }} email ends with this stop link: <a href="{{ sent.stop }}">Stop the {{ digest.name }}</a></p>
+    </div>
+    {% endif %}
+
+    {% if state in ["form", "invalid", "stopped"] %}
+    <div class="box wide" id="contract-box">
+      {{ digest_form(digest, sections, topics, email, error) }}
+    </div>
+    {% endif %}
+  </div>
+  <aside class="rail-n">
+    <div class="box" id="contract"><span class="kicker">The contract</span>
+      <div class="contract">{% for r in digest.rows %}<div><b>{{ r.k }}</b><span>{{ r.text }}</span></div>{% endfor %}</div>
+    </div>
+    <div class="box"><span class="kicker">Subscriber stories</span><p class="sub">The {{ digest.name }} links subscriber stories by headline only, unless you subscribe.</p><p class="box-link"><a href="/subscribe">Subscribe</a></p></div>
+  </aside>
+</div>
+{% endblock %}

@@ -1,0 +1,431 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Security Moments</title>
+<meta name="description" content="Customer journey, step 7: four calm screens for Njeri when something looks wrong: a new sign-in, a changed payment link, a look-alike site, and exporting or erasing her data, each with what stops it underneath.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Manrope:wght@600;700;800&family=Fraunces:opsz,wght@9..144,600;9..144,800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../styles.css">
+<link rel="stylesheet" href="../experience/experience.css">
+<link rel="stylesheet" href="journeys.css">
+<style>
+  [hidden] { display: none !important; }
+  .j-note.never { margin: 0; }
+  .j-note.never ul { padding-left: 0; }
+  .sec-panel { display: grid; gap: var(--s4); }
+  .sec-intro { margin: 0; font-size: var(--fs-14); line-height: 1.6; color: var(--j-ink-2); }
+  .sec-stops { display: grid; gap: var(--s3); grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); }
+  .sec-stops > h3 { grid-column: 1 / -1; font-size: var(--fs-16); }
+  .j-screen.wide { grid-column: 1 / -1; }
+  .j-url.mail svg { color: var(--ink-2); }
+  .j-url u { text-decoration-thickness: 2px; text-underline-offset: 2px; }
+  .k-msg { overflow-wrap: anywhere; }
+  .k-small { margin: 0; font-size: 12.5px; line-height: 1.45; color: var(--k-brown-2); }
+  .k-mono { font-family: var(--font-mono); font-size: .9em; overflow-wrap: anywhere; color: var(--k-brown); }
+  .k-me { display: inline-grid; place-items: center; width: 24px; height: 24px; border-radius: 50%; background: var(--k-brown); color: #fff; font: 700 11px/1 var(--font-text); }
+  .k-row { display: flex; gap: 8px; flex-wrap: wrap; }
+  .k-head-row { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; flex-wrap: wrap; margin-bottom: 6px; }
+  .k-mail { padding: 14px 16px 16px; display: grid; gap: 10px; font-size: 14px; line-height: 1.5; color: var(--k-brown-2); }
+  .k-mail .hd { display: grid; gap: 3px; padding-bottom: 10px; border-bottom: 1px solid var(--k-line); font-size: 12.5px; overflow-wrap: anywhere; }
+  .k-mail .hd b { color: var(--k-brown); }
+  .k-mail h3 { font-size: 17px; line-height: 1.3; }
+  .k-mail p { margin: 0; }
+  .k-alert { display: grid; gap: 10px; padding: 12px 14px; border-radius: 14px; border: 1.5px solid var(--wait); background: var(--wait-bg); color: var(--k-brown); font-size: 14px; }
+  .k-alert p { margin: 0; }
+  .k-done { margin: 0; padding: 12px 14px; border-radius: 14px; background: #e4f1e4; color: var(--k-ok); font: 600 14px/1.45 var(--font-text); }
+  .k-done:empty { padding: 0; }
+  .k-devs { list-style: none; margin: 6px 0 0; padding: 0; display: grid; }
+  .k-devs li { display: flex; justify-content: space-between; align-items: center; gap: 4px 10px; flex-wrap: wrap; padding: 9px 0; border-top: 1px dashed var(--k-line); font-size: 14px; }
+  .k-devs li:first-child { border-top: 0; }
+  .k-devs b { color: var(--k-brown); }
+  .k-devs li > span { font-size: 13px; color: var(--k-brown-2); }
+  .k-devs h4 { font-size: 15px; }
+  .sec-from { margin: 0; font-size: 12.5px; color: var(--muted); }
+  .sec-sms { margin: 0; padding: 10px 12px; border-radius: 12px; border: 1px solid var(--line); background: var(--surface); font-size: 14px; color: var(--ink); overflow-wrap: anywhere; }
+  .sec-sms span { font-family: var(--font-mono); font-size: .92em; }
+  .k-fake-h { margin: 0 0 8px; font-size: 13px; color: var(--k-brown-2); }
+  .k-fake-h b { color: var(--k-brown); }
+  .k-foot { padding: 14px 16px 16px; display: grid; gap: 10px; font-size: 13px; color: var(--k-brown-2); }
+  .k-foot > p { margin: 0; }
+  .k-report { display: grid; gap: 10px; padding: 12px; border-radius: 12px; border: 1px solid var(--k-line); background: #fff; }
+  .k-report h3 { font-size: 16px; }
+  .k-list { margin: 8px 0 0; padding-left: 18px; display: grid; gap: 3px; font-size: 13.5px; color: var(--k-brown-2); }
+  .k-confirm { display: grid; gap: 8px; padding: 14px; border-radius: 14px; border: 1.5px solid var(--risk); background: #fff; }
+  .k-confirm h3 { font-size: 17px; }
+  .k-confirm p { margin: 0; font-size: 13.5px; line-height: 1.5; color: var(--k-brown-2); }
+  .k-confirm p b { color: var(--k-brown); }
+  .k-btn.danger { background: var(--risk); }
+  .k-btn.danger:hover { background: #7f231f; }
+  .k-receipt { display: grid; gap: 10px; padding: 14px; border: 1.5px dashed var(--k-brown-2); border-radius: 14px; background: #fff; }
+  .k-receipt header { display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .k-receipt h3 { font-size: 17px; }
+  .k-receipt .sig { margin: 0; padding-top: 8px; border-top: 1px dashed var(--k-line); font: 600 11.5px/1.45 var(--font-mono); color: var(--k-brown-2); overflow-wrap: anywhere; }
+  .k-er { list-style: none; margin: 0; padding: 0; display: grid; }
+  .k-er li { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 3px 12px; align-items: start; padding: 9px 0; border-top: 1px dashed var(--k-line); }
+  .k-er li:first-child { border-top: 0; }
+  .k-er b { font: 700 14px/1.35 var(--font-text); color: var(--k-brown); }
+  .k-er .d { grid-column: 1; font-size: 12.5px; line-height: 1.45; color: var(--k-brown-2); }
+  .k-er .k-pill { grid-column: 2; grid-row: 1 / span 2; white-space: nowrap; }
+  @media (max-width: 480px) {
+    .k-er li { grid-template-columns: minmax(0, 1fr); }
+    .k-er .k-pill { grid-column: 1; grid-row: auto; justify-self: start; white-space: normal; }
+  }
+  @media (max-width: 560px) {
+    .j-tabs { flex-wrap: wrap; }
+    .j-tabs button { flex: 1 1 calc(50% - 4px); white-space: normal; }
+  }
+</style>
+</head>
+<body data-lane="customer" data-step="7">
+<header class="j-top">
+  <a class="logo" href="../index.html"><span class="mark" aria-hidden="true"></span>Agentrix</a>
+  <a class="j-maplink" href="index.html">Journey map</a>
+  <span class="j-lane">Customer · Njeri</span>
+  <span class="concept-label">Concept · illustrative data</span>
+</header>
+<nav class="j-steps" aria-label="Customer journey" data-steps></nav>
+<main class="wrap j-main">
+  <header class="j-head">
+    <p class="eyebrow">Step 7 of 7 · Customer</p>
+    <h1>Security moments, in plain words</h1>
+    <p class="lead">Three things that can go wrong for a customer, and the day Njeri wants out. Each gets a calm screen that says what happened and what to do. A rule underneath does the real work, so her safety doesn't rest on spotting the trick.</p>
+  </header>
+  <div class="j-grid">
+    <section class="j-stage" aria-label="What Njeri sees">
+      <div class="j-tabs" role="tablist" aria-label="Four security moments">
+        <button type="button" role="tab" id="t-takeover" aria-selected="true" aria-controls="takeover">Account takeover</button>
+        <button type="button" role="tab" id="t-paylink" aria-selected="false" aria-controls="paylink">A changed payment link</button>
+        <button type="button" role="tab" id="t-lookalike" aria-selected="false" aria-controls="lookalike">A look-alike site</button>
+        <button type="button" role="tab" id="t-erasure" aria-selected="false" aria-controls="erasure">Export and erasure</button>
+      </div>
+
+      <!-- 1. Account takeover -->
+      <div class="sec-panel" role="tabpanel" id="takeover" aria-labelledby="t-takeover">
+        <p class="sec-intro">Someone signs in to Njeri's account from a computer she has never used.</p>
+        <div class="j-screens">
+          <div class="j-screen">
+            <p class="j-cap"><span class="n">1</span>An email, as soon as a new device signs in.</p>
+            <div class="j-device kilele">
+              <div class="j-url mail"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="6" width="17" height="12" rx="2"/><path d="M4 7l8 6 8-6"/></svg><span>Email to njeri@example.com</span></div>
+              <div class="k-mail">
+                <div class="hd"><span><b>From</b> Kilele Bakery &lt;account@kilele-bakery.example&gt;</span><span><b>Subject</b> New sign-in to your Kilele account</span></div>
+                <h3>New sign-in on a Windows PC in Leeds. Not you?</h3>
+                <p>Wed 11 Nov 2026, 21:14 London time. If it was you, there's nothing to do.</p>
+                <p>If it wasn't, open your account and choose <b>Sign out everywhere</b>:<br><span class="k-mono">kilele-bakery.example/account</span></p>
+                <p class="k-small">Kilele never asks for a password, a code or a card by email, WhatsApp or chat.</p>
+              </div>
+            </div>
+          </div>
+          <div class="j-screen">
+            <p class="j-cap"><span class="n">2</span>The same alert in her account, with one button.</p>
+            <div class="j-device kilele">
+              <div class="j-url"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg><span>kilele-bakery.example/account</span></div>
+              <div class="k-bar">
+                <a class="k-logo" href="#" onclick="return false"><i aria-hidden="true"></i>Kilele</a>
+                <span class="k-acct"><span class="k-me" aria-hidden="true">N</span>Njeri</span>
+              </div>
+              <div class="k-screen">
+                <div class="k-alert" id="tkAlert">
+                  <p><b>New sign-in on a Windows PC in Leeds. Not you?</b></p>
+                  <div class="k-row"><button class="k-btn" type="button" id="signOutAll">Sign out everywhere</button><button class="k-btn ghost" type="button" id="itWasMe">It was me</button></div>
+                </div>
+                <p class="k-done" id="tkMsg" role="status" tabindex="-1"></p>
+                <div>
+                  <h4>Signed in on</h4>
+                  <ul class="k-devs">
+                    <li><b>This phone · London</b><span data-when>Now, with your passkey</span></li>
+                    <li><b>Windows PC · Leeds</b><span data-when>Wed 11 Nov, 21:14 · <span class="k-pill wait">New</span></span></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="j-screen">
+            <p class="j-cap"><span class="n">3</span>Big changes need a fresh sign-in, and a desk can't make them.</p>
+            <div class="j-device kilele">
+              <div class="j-url"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg><span>kilele-bakery.example/account/details</span></div>
+              <div class="k-screen">
+                <div class="k-card">
+                  <h3>Change your delivery address</h3>
+                  <p>Sign in again to change this. We'll tell njeri@example.com when it changes.</p>
+                  <div class="k-row" style="margin-top:12px"><button class="k-btn" type="button">Continue with a passkey</button><button class="k-btn ghost" type="button">Password and code</button></div>
+                </div>
+                <div class="k-desk">
+                  <span class="j-mark" data-agent="orders" data-size="28" data-state="answering"></span>
+                  <div class="who"><b>Orders <span class="k-ai">AI</span></b><span>WebAgent · answers from this site</span></div>
+                </div>
+                <div class="k-thread">
+                  <p class="k-msg me">Can you change my email for me?</p>
+                  <div class="k-msg desk">I can't change account details, so nobody can change them through a chat<span class="cite">1</span>. Account → Details asks you to sign in again and tells your current email<span class="cite">2</span>.
+                    <div class="k-sources"><span>1 · Help: what the desks can and can't do</span><span>2 · Help: changing your details</span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="sec-stops">
+          <h3>What stops it</h3>
+          <div class="j-note gate"><h3>A new device needs proof</h3><p>Her passkey, or the password plus an authenticator code. A stolen password alone gets nowhere.</p></div>
+          <div class="j-note gate"><h3>Big changes need a fresh sign-in</h3><p>Changing the email, phone or delivery address asks her to sign in again and tells the old email. A thief can't quietly redirect her account or her cakes.</p></div>
+          <div class="j-note"><h3>Desks can't change account details</h3><p>No chat can be talked into it. The desk points to the account page instead (06 §4.10).</p></div>
+          <div class="j-note"><h3>Sign out everywhere</h3><p>Ends every session, this device included. She signs back in with her passkey.</p></div>
+        </div>
+      </div>
+
+      <!-- 2. A changed payment link -->
+      <div class="sec-panel" role="tabpanel" id="paylink" aria-labelledby="t-paylink" hidden>
+        <p class="sec-intro"><span class="j-first">The fleet release</span> Paying arrives with the Cashier, for 12 Nov. In the first release the custom order ends at Wanjiru's approval card.</p>
+        <p class="sec-intro">Wanjiru has approved Amina's cake, K-1043, so its payment request is live. Then a message arrives from a number Njeri doesn't know.</p>
+        <div class="j-screens">
+          <div class="j-screen">
+            <p class="j-cap"><span class="n">1</span>A WhatsApp message from an unknown number.</p>
+            <div class="j-provider">
+              <div class="bar">WhatsApp on Njeri's phone (placeholder, not drawn)</div>
+              <div class="body">
+                <p class="sec-from">From +44 7700 900961 · not in her contacts</p>
+                <p class="sec-sms">Kilele: your payment link changed, pay here: <span>kilele-bakery-pay.top/k-1043</span></p>
+                <div class="stand-in">WhatsApp's own screen goes here. The link is not on Kilele's domain.</div>
+              </div>
+            </div>
+          </div>
+          <div class="j-screen">
+            <p class="j-cap"><span class="n">2</span>Kilele's answer: payment requests live only on her orders page.</p>
+            <div class="j-device kilele">
+              <div class="j-url"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg><span>kilele-bakery.example/orders/K-1043</span></div>
+              <div class="k-screen">
+                <div class="k-card">
+                  <div class="k-head-row"><h3>K-1043 · Amina's forest cake</h3><span class="k-pill ok">Approved by Wanjiru</span></div>
+                  <div class="k-line">2-tier forest cake<b>KSh 5,250</b></div>
+                  <div class="k-line">Delivery<b>Sat 14 Nov, 10:00–12:00</b></div>
+                  <div class="k-line">Kilele's posted rate<b>1 USD = KSh 129.00</b></div>
+                  <div class="k-line">Payee<b>Kilele Bakery</b></div>
+                  <div class="k-total"><span>To pay</span><span>USD 40.70</span></div>
+                  <button class="k-btn wide" type="button" style="margin-top:12px">Pay USD 40.70 with PayPal</button>
+                  <p class="k-src" style="margin-top:8px">This order's payment request, issued after Wanjiru's OK</p>
+                </div>
+                <p class="k-small">Payment requests appear only here, on your orders page at kilele-bakery.example, with the amount and payee shown before PayPal opens. Messages from Kilele only ever link to kilele-bakery.example.</p>
+              </div>
+            </div>
+          </div>
+          <div class="j-screen">
+            <p class="j-cap"><span class="n">3</span>She asks the Orders desk. It checks the link against the order.</p>
+            <div class="j-device kilele">
+              <div class="j-url"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg><span>kilele-bakery.example/orders/K-1043</span></div>
+              <div class="k-screen">
+                <div class="k-desk">
+                  <span class="j-mark" data-agent="orders" data-size="28" data-state="answering"></span>
+                  <div class="who"><b>Orders <span class="k-ai">AI</span></b><span>WebAgent · answers from this site</span></div>
+                </div>
+                <div class="k-thread">
+                  <p class="k-msg me">Is this link real? kilele-bakery-pay.top/k-1043</p>
+                  <div class="k-msg desk">No, that link isn't Kilele's. K-1043 has one payment request: USD 40.70 to Kilele Bakery, on this page<span class="cite">1</span>. Kilele's messages only link to kilele-bakery.example<span class="cite">2</span>. Please don't pay through that link.
+                    <div class="k-sources"><span>1 · Order K-1043: payment request (live)</span><span>2 · Help: how Kilele contacts you</span></div>
+                  </div>
+                </div>
+                <div class="k-row"><button class="k-btn" type="button" id="reportLink">Report it</button></div>
+                <p class="k-small" id="reportMsg" role="status"></p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="sec-stops">
+          <h3>What stops it</h3>
+          <div class="j-note gate"><h3>One domain</h3><p>Messages from Kilele only ever link to kilele-bakery.example. A link anywhere else is not Kilele's.</p></div>
+          <div class="j-note gate"><h3>No quiet swaps</h3><p>Changing a payment request after Wanjiru's approval voids it. A new one needs her approval again, so a real request can't be replaced on the side.</p></div>
+          <div class="j-note"><h3>The desk checks, it doesn't guess</h3><p>Asked "Is this link real?", Orders compares it with K-1043's own payment request and cites it.</p></div>
+          <div class="j-note"><h3>PayPal opens from the order</h3><p>Amount, payee and Kilele's rate are shown before PayPal's own window opens. Desks never see a payment credential.</p></div>
+          <a class="j-meet" href="index.html#meet-payment"><span>Meets the owner lane</span><b>The payment</b></a>
+        </div>
+      </div>
+
+      <!-- 3. A look-alike site -->
+      <div class="sec-panel" role="tabpanel" id="lookalike" aria-labelledby="t-lookalike" hidden>
+        <p class="sec-intro">Someone copies Kilele's look on an address with one letter changed, and sends Njeri a link to it.</p>
+        <div class="j-screens">
+          <div class="j-screen">
+            <p class="j-cap"><span class="n">1</span>kilele-bakeri.example, with an i. Its chat asks for her password.</p>
+            <div class="j-device kilele">
+              <div class="j-url bad"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4l9 16H3z"/><path d="M12 10v4M12 17.5v.01"/></svg><span>kilele-baker<u>i</u>.example</span></div>
+              <div class="k-bar"><span class="k-logo"><i aria-hidden="true"></i>Kilele</span></div>
+              <div class="k-screen">
+                <div class="k-card">
+                  <p class="k-fake-h"><b>Kilele Support</b> · chat</p>
+                  <p class="k-msg desk">To confirm your cake order, type your password and the 6-digit code from your app here.</p>
+                  <label class="k-field" style="margin-top:10px">Password<input type="password" readonly></label>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="j-screen">
+            <p class="j-cap"><span class="n">2</span>She taps "Continue with a passkey". Her device has nothing to offer here.</p>
+            <div class="j-device kilele">
+              <div class="j-url bad"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4l9 16H3z"/><path d="M12 10v4M12 17.5v.01"/></svg><span>kilele-baker<u>i</u>.example/sign-in</span></div>
+              <div class="k-screen">
+                <h3>Sign in</h3>
+                <button class="k-btn wide" type="button">Continue with a passkey</button>
+              </div>
+            </div>
+            <div class="j-provider">
+              <div class="bar">Your device's own passkey prompt (not drawn here)</div>
+              <div class="body">
+                <div class="stand-in">No passkey for kilele-bakeri.example. Njeri's Kilele passkey belongs to kilele-bakery.example, so her device never offers it here. There is nothing for this site to catch.</div>
+              </div>
+            </div>
+          </div>
+          <div class="j-screen">
+            <p class="j-cap"><span class="n">3</span>On the real site, the footer says what desks never ask, and takes the report.</p>
+            <div class="j-device kilele">
+              <div class="j-url"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg><span>kilele-bakery.example</span></div>
+              <div class="k-foot">
+                <p>The WebAgents on this site are AI. They never ask for a password, a code or a card.</p>
+                <form class="k-report" id="lookForm">
+                  <h3>Report a look-alike</h3>
+                  <label class="k-field">The address you saw<input type="text" value="kilele-bakeri.example"></label>
+                  <label class="k-field">What it asked for (optional)<input type="text" value="My password and a code, in a chat"></label>
+                  <div class="k-row"><button class="k-btn" type="submit">Send to Kilele and Agentrix</button></div>
+                  <p class="k-small" id="lookMsg" role="status"></p>
+                </form>
+                <p>© Kilele Bakery · Made with Agentrix</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="sec-stops">
+          <h3>What stops it</h3>
+          <div class="j-note gate"><h3>Passkeys are scoped</h3><p>A passkey works only on the site it was made for (W3C WebAuthn). On kilele-bakeri.example it simply isn't there.</p></div>
+          <div class="j-note gate"><h3>Real desks never ask</h3><p>Kilele's desks never ask for a password, a code or a card (06 §4.10). A chat that does is not Kilele.</p></div>
+          <div class="j-note"><h3>Reports reach two places</h3><p>"Report a look-alike" goes to Wanjiru and to the operator.</p></div>
+          <div class="j-note"><h3>The honest limit</h3><p>A password can still be typed into a look-alike, and a fast one can pass a code on too. That is why the passkey comes first, and why the new-sign-in alert and "Sign out everywhere" exist.</p></div>
+        </div>
+      </div>
+
+      <!-- 4. Export and erasure -->
+      <div class="sec-panel" role="tabpanel" id="erasure" aria-labelledby="t-erasure" hidden>
+        <p class="sec-intro">After both orders are delivered, Njeri takes a copy of her data, then deletes her account.</p>
+        <div class="j-screens">
+          <div class="j-screen">
+            <p class="j-cap"><span class="n">1</span>"Download my data" says what's in the bundle.</p>
+            <div class="j-device kilele">
+              <div class="j-url"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg><span>kilele-bakery.example/account/data</span></div>
+              <div class="k-bar">
+                <a class="k-logo" href="#" onclick="return false"><i aria-hidden="true"></i>Kilele</a>
+                <span class="k-acct"><span class="k-me" aria-hidden="true">N</span>Njeri</span>
+              </div>
+              <div class="k-screen">
+                <div class="k-card">
+                  <h3>Download my data</h3>
+                  <p>One bundle with:</p>
+                  <ul class="k-list">
+                    <li>Your account: name, email, phone and addresses</li>
+                    <li>Your choices and their receipts</li>
+                    <li>Orders K-1042 and K-1043, with their receipts</li>
+                    <li>Saved designs and account memory, if any</li>
+                    <li>The threads you kept</li>
+                  </ul>
+                  <p>A page you can read, plus files a computer can read (JSON Lines and CSV). Signed by kilele-bakery.example.</p>
+                  <button class="k-btn wide" type="button" style="margin-top:12px">Download my data</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="j-screen">
+            <p class="j-cap"><span class="n">2</span>"Delete my account" says what goes, what stays, and that it can't be undone.</p>
+            <div class="j-device kilele">
+              <div class="j-url"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg><span>kilele-bakery.example/account/data</span></div>
+              <div class="k-screen">
+                <div class="k-confirm" role="group" aria-labelledby="delH">
+                  <h3 id="delH">Delete your Kilele account?</h3>
+                  <p><b>Erased:</b> your sign-in, contact details and addresses, your choices and their receipts, account memory and saved designs, and your threads.</p>
+                  <p><b>Kept:</b> orders K-1042 and K-1043, as long as the law requires for business records, reduced to what it requires. Your receipt will list exactly what stays.</p>
+                  <p>You have no open orders. This can't be undone.</p>
+                  <div class="k-row" style="margin-top:4px"><button class="k-btn danger" type="button">Delete, with my passkey</button><button class="k-btn ghost" type="button">Keep my account</button></div>
+                  <p class="k-small">Like changing your email, this needs a fresh sign-in.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="j-screen wide">
+            <p class="j-cap"><span class="n">3</span>An erasure receipt with an answer from every store, inside the hour.</p>
+            <div class="j-device kilele">
+              <div class="j-url"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg><span>kilele-bakery.example/account/data</span></div>
+              <div class="k-screen">
+                <article class="k-receipt" aria-labelledby="erH">
+                  <header><h3 id="erH">Erasure receipt</h3><span class="k-pill ok">Complete</span></header>
+                  <p class="k-small">Requested Mon 16 Nov 2026, 09:12 Nairobi time. Every store had answered by 09:41, within the hour.</p>
+                  <ol class="k-er">
+                    <li><b>Account</b><span class="d">Name, email, phone, addresses, passkey public key</span><span class="k-pill ok"><span aria-hidden="true">✓</span> Erased 09:12</span></li>
+                    <li><b>Choices and consent receipts</b><span class="d">WhatsApp updates withdrawn first</span><span class="k-pill ok"><span aria-hidden="true">✓</span> Erased 09:13</span></li>
+                    <li><b>Outside Kilele: WhatsApp</b><span class="d">Her number is off Kilele's update list. Messages already sent stay in her own WhatsApp.</span><span class="k-pill ok"><span aria-hidden="true">✓</span> Done 09:13</span></li>
+                    <li><b>Account memory</b><span class="d">Nothing to erase: memory was off</span><span class="k-pill ok"><span aria-hidden="true">✓</span> Checked 09:13</span></li>
+                    <li><b>Threads</b><span class="d">The threads she kept</span><span class="k-pill ok"><span aria-hidden="true">✓</span> Erased 09:15</span></li>
+                    <li><b>Search index</b><span class="d">Entries made from her threads</span><span class="k-pill ok"><span aria-hidden="true">✓</span> Erased 09:18</span></li>
+                    <li><b>Orders K-1042 and K-1043</b><span class="d">Kept as the law requires for business records, reduced to what it requires, then erased</span><span class="k-pill">Kept, reduced 09:24</span></li>
+                    <li><b>Payment records <span class="j-first">The fleet release</span></b><span class="d">Pseudonymised, not deleted: her name is replaced by a reference. Kept as the law requires</span><span class="k-pill">Pseudonymised 09:31</span></li>
+                    <li><b>Activity records</b><span class="d">Her pseudonymous reference removed</span><span class="k-pill ok"><span aria-hidden="true">✓</span> Erased 09:41</span></li>
+                    <li><b>Backups</b><span class="d">Never edited. This erasure is in the ledger and replayed before any restore. Copies age out on their schedule.</span><span class="k-pill wait">Scheduled</span></li>
+                  </ol>
+                  <p class="sig">Receipt er-c27d…5f10 · signed by kilele-bakery.example · chained into Kilele's site log</p>
+                  <p class="k-small">A copy went to njeri@example.com before that address was erased.</p>
+                </article>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="sec-stops">
+          <h3>What makes it true</h3>
+          <div class="j-note gate"><h3>One path, every store</h3><p>Every store that can hold her data is registered. The request completes only when each one has answered with a receipt (ADR-028).</p></div>
+          <div class="j-note"><h3>On a clock</h3><p>Account memory goes within an hour (06 §9); everything else within 30 days (ADR-028). The receipt shows each store's time.</p></div>
+          <div class="j-note"><h3>What the law keeps, said plainly</h3><p>Orders stay, reduced to what the law requires, and the receipt says which. Payment records are pseudonymised, not deleted.</p></div>
+          <div class="j-note"><h3>Backups don't bring her back</h3><p>Backups are never edited. The erasure ledger is replayed before any restore, so nothing returns.</p></div>
+        </div>
+      </div>
+    </section>
+    <aside class="j-notes" aria-label="What happens underneath">
+      <div class="j-note"><h3>Calm and specific</h3><p>Each screen says what happened, what Kilele has already done, and one next step. Nothing shouts, and nothing counts down.</p></div>
+      <div class="j-note gate"><h3>One domain, one place to pay</h3><p>Kilele's emails and messages link only to kilele-bakery.example. Payment requests appear only on her orders page there.</p></div>
+      <div class="j-note gate"><h3>Nothing to give away in a chat</h3><p>Desks never ask for a password, a code or a card, and can't change account details. They see "customer", not the account (06 §4.10).</p></div>
+      <div class="j-note"><h3>Reports go somewhere</h3><p>"Report it" reaches Wanjiru. "Report a look-alike" reaches Wanjiru and the operator.</p></div>
+      <div class="j-note never"><h3>Never</h3><ul><li>A link from Kilele to any other domain</li><li>A payment request changed after approval without Wanjiru approving again</li><li>A desk asking for a password, code or card</li><li>An erasure receipt that hides what was kept</li></ul></div>
+    </aside>
+  </div>
+</main>
+<nav class="wrap j-pager" aria-label="Previous and next step" data-pager></nav>
+<script>
+/* Open the moment named in the address (for example #paylink) before the tabs are wired. */
+(() => {
+  const id = location.hash.slice(1);
+  if (!id) return;
+  const tab = [...document.querySelectorAll('[role="tab"]')].find(t => t.getAttribute("aria-controls") === id);
+  if (tab) document.querySelectorAll('[role="tab"]').forEach(t => t.setAttribute("aria-selected", t === tab ? "true" : "false"));
+})();
+</script>
+<script src="journeys.js"></script>
+<script>
+(() => {
+  const msg = document.getElementById("tkMsg");
+  document.getElementById("signOutAll").addEventListener("click", () => {
+    document.getElementById("tkAlert").hidden = true;
+    document.querySelectorAll(".k-devs [data-when]").forEach(s => { s.textContent = "Signed out"; });
+    msg.textContent = "Done. Every device is signed out, the PC in Leeds included. Sign in again here with your passkey.";
+    msg.focus();
+  });
+  document.getElementById("itWasMe").addEventListener("click", () => {
+    document.getElementById("tkAlert").hidden = true;
+    msg.textContent = "Thanks. The PC in Leeds stays signed in. You can sign it out here at any time.";
+    msg.focus();
+  });
+  document.getElementById("reportLink").addEventListener("click", () => {
+    document.getElementById("reportMsg").textContent = "Reported to Wanjiru, with the message and the link.";
+  });
+  document.getElementById("lookForm").addEventListener("submit", e => {
+    e.preventDefault();
+    document.getElementById("lookMsg").textContent = "Sent to Wanjiru and to Agentrix, which runs this site. Thank you.";
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,19 @@
+{% block subject %}{{ site.owner }} answered your question{% endblock %}
+{% block preheader %}{{ answer.text }}{% endblock %}
+{% block body %}
+# {{ site.owner }} answered
+You asked at {{ site.host }} on {{ question.asked_at }}:
+
+::quote {{ question.text }}
+
+{{ site.owner }} wrote:
+
+::quote {{ answer.text }}
+
+Got a follow-up? Ask it on the site, and a desk will pass it on again if the site doesn't say.
+
+::link Open {{ site.name }} | {{ site.url }}
+{% endblock %}
+{% block chat %}
+{{ site.name }}: {{ site.owner }} answered your question ("{{ question.text }}"): {{ answer.text }}
+{% endblock %}

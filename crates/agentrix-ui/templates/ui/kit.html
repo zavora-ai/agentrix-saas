@@ -1,0 +1,486 @@
+{#- agentrix-ui · the component macros (contract C10). Import once per template:
+
+    {% import "ui/kit.html" as ui %}
+    {{ ui.button("Approve", kind="primary") }}
+    {% call ui.card(title="Orders") %} … {% endcall %}
+
+Views pass display-ready strings: templates don't format money, dates or counts. Every word a
+person reads comes from the view or from `words` (words/en.json), written to voice.md.
+Names here are the contract: a macro may gain optional arguments, never lose or rename one.
+Class names are the concepts' own, so ported concept markup and these macros render the same. -#}
+
+{#- ===================== helpers (private) ===================== -#}
+
+{% macro _attrs(attrs) -%}
+{%- if attrs %}{% for k, v in attrs|items %} {{ k }}="{{ v }}"{% endfor %}{% endif -%}
+{%- endmacro %}
+
+{% macro _action(a, size="", kind="") -%}
+{%- if a %}{% set k = a.kind if a.kind is defined else kind %}<a class="btn{% if k %} btn-{{ k }}{% endif %}{% if size %} btn-{{ size }}{% endif %}" href="{{ a.href }}">{{ a.label }}</a>{% endif -%}
+{%- endmacro %}
+
+{#- ===================== primitives ===================== -#}
+
+{#- A button, or a link styled as one when href is given.
+    kind: "" (secondary), "primary", "coral", "danger", "ghost". size: "", "sm", "lg", "wide". -#}
+{% macro button(label, href=none, kind="", size="", type="button", name=none, value=none, form=none, disabled=false, open=none, attrs=none) -%}
+{%- set cls = "btn" ~ (" btn-" ~ kind if kind else "") ~ (" btn-" ~ size if size else "") -%}
+{%- if href is not none -%}
+<a class="{{ cls }}" href="{{ href }}"{% if disabled %} aria-disabled="true"{% endif %}{% if open %} data-open="{{ open }}"{% endif %}{{ _attrs(attrs) }}>{{ label }}</a>
+{%- else -%}
+<button class="{{ cls }}" type="{{ type }}"{% if name %} name="{{ name }}"{% endif %}{% if value is not none %} value="{{ value }}"{% endif %}{% if form %} form="{{ form }}"{% endif %}{% if disabled %} disabled{% endif %}{% if open %} data-open="{{ open }}"{% endif %}{{ _attrs(attrs) }}>{{ label }}</button>
+{%- endif -%}
+{%- endmacro %}
+
+{#- tone: "", "ok", "wait", "risk", "info", "coral", "sealed", "outline" -#}
+{% macro chip(text, tone="") -%}
+<span class="chip{% if tone %} chip-{{ tone }}{% endif %}">{{ text }}</span>
+{%- endmacro %}
+
+{% macro badge(n, label="") -%}
+<span class="badge"{% if label %} aria-label="{{ n }} {{ label }}"{% endif %}>{{ n }}</span>
+{%- endmacro %}
+
+{#- Order, payment and artifact states. state: draft, shared, held, waiting, ok, paid, done, risk, failed, info -#}
+{% macro status(state, words) -%}
+<span class="status" data-state="{{ state }}">{{ words }}</span>
+{%- endmacro %}
+
+{#- What a WebAgent or process is doing now. state: working, answering, live, waiting, asleep, frozen, risk, or "" -#}
+{% macro state_line(state, words) -%}
+<span class="state-line{% if state %} {{ state }}{% endif %}"><span class="dot" aria-hidden="true"></span>{{ words }}</span>
+{%- endmacro %}
+
+{#- Every number names its source: ui.source("Price list, 2 Nov") or ui.source("Delivery calendar", live=true) -#}
+{% macro source(text, live=false) -%}
+<span class="source">Source · <b>{{ text }}</b>{% if live %} (live){% endif %}</span>
+{%- endmacro %}
+
+{% macro cite(n, href) -%}
+<a class="cite" href="{{ href }}">{{ n }}</a>
+{%- endmacro %}
+
+{#- A bar for a value out of a maximum. label is read aloud ("KSh 38 of KSh 1,500 this month"). -#}
+{% macro meter(value, max=100, tone="", label="", mini=false) -%}
+{%- set pct = (value / max * 100) if max else 0 -%}
+{%- set pct = 0 if pct < 0 else (100 if pct > 100 else pct) -%}
+<div class="{{ 'meter-mini' if mini else 'meter' }}{% if tone %} {{ tone }}{% endif %}" data-value="{{ value }}" data-max="{{ max }}" role="img" aria-label="{{ label }}"><span class="p{{ ((pct / 5)|round|int) * 5 }}"></span></div>
+{%- endmacro %}
+
+{#- rows: [{k, v}] -#}
+{% macro kv(rows) -%}
+<dl class="kv">{% for r in rows %}<dt>{{ r.k }}</dt><dd>{{ r.v }}</dd>{% endfor %}</dl>
+{%- endmacro %}
+
+{#- items: [{label, href, current}] -#}
+{% macro tabs(items, label) -%}
+<nav class="tabs" aria-label="{{ label }}">{% for t in items %}<a href="{{ t.href }}"{% if t.current %} aria-current="page"{% endif %}>{{ t.label }}</a>{% endfor %}</nav>
+{%- endmacro %}
+
+{#- A segmented choice that navigates (filters, views). items: [{label, href, current}] -#}
+{% macro segmented(items, label) -%}
+<div class="segmented" role="group" aria-label="{{ label }}">{% for t in items %}<a href="{{ t.href }}"{% if t.current %} aria-current="page"{% endif %}>{{ t.label }}</a>{% endfor %}</div>
+{%- endmacro %}
+
+{% macro kbd(key) -%}
+<kbd class="kbd">{{ key }}</kbd>
+{%- endmacro %}
+
+{#- The Agentrix logo for platform-owned chrome -#}
+{% macro logo(href="/") -%}
+<a class="logo" href="{{ href }}"><span class="mark" aria-hidden="true"></span>Agentrix</a>
+{%- endmacro %}
+
+{#- A person: a circle with an initial. Circles mean a person; squircles mean a WebAgent. -#}
+{% macro person(name, initial="") -%}
+<span class="person" aria-hidden="true">{{ initial or name[:1] }}</span>
+{%- endmacro %}
+
+{#- ===================== surfaces ===================== -#}
+
+{#- {% call ui.card(title="Orders", tone="accent") %}…{% endcall %}. tone: "", "accent". -#}
+{% macro card(title="", tone="", tight=false, raised=false, id="", level=2) -%}
+<section class="card{% if tight %} tight{% endif %}{% if raised %} raised{% endif %}{% if tone %} {{ tone }}{% endif %}"{% if id %} id="{{ id }}"{% endif %}>
+{%- if title %}<div class="card-title"><h{{ level }}>{{ title }}</h{{ level }}></div>{% endif %}
+{{ caller() }}
+</section>
+{%- endmacro %}
+
+{#- A card in the shell's field (console .fcard). who: a WebAgent {name, …} for ui.mark, or none. -#}
+{% macro fcard(title="", sub="", who=none, accent=false, span2=false, id="") -%}
+<article class="fcard{% if accent %} accent{% endif %}{% if span2 %} span2{% endif %}"{% if id %} id="{{ id }}"{% endif %}>
+{%- if title or who %}
+<div class="fcard-head">{% if who %}{{ mark(who, size=28, show_name=false) }}{% endif %}<div class="who"><b>{{ title }}</b>{% if sub %}<span class="state-line">{{ sub }}</span>{% endif %}</div></div>
+{%- endif %}
+{{ caller() }}
+</article>
+{%- endmacro %}
+
+{% macro note(text) -%}
+<p class="note">{{ text }}</p>
+{%- endmacro %}
+
+{#- One sentence of status. tone: "ok", "wait", "error", "notice" -#}
+{% macro line(tone, text) -%}
+{%- set cls = {"ok": "o-ok", "wait": "o-wait", "error": "errline", "notice": "notice"}[tone] -%}
+<p class="{{ cls }}" role="{{ 'alert' if tone == 'error' else 'status' }}">{{ text }}</p>
+{%- endmacro %}
+
+{#- ===================== forms ===================== -#}
+
+{#- A labelled input. error makes the field invalid and is read with it. -#}
+{% macro field(name, label, type="text", value="", hint="", error="", required=false, autocomplete="", inputmode="", placeholder="", attrs=none) -%}
+<label class="o-field"{% if error %} data-invalid{% endif %}>
+  <span>{{ label }}</span>
+  <input name="{{ name }}" type="{{ type }}" value="{{ value }}"{% if required %} required{% endif %}{% if autocomplete %} autocomplete="{{ autocomplete }}"{% endif %}{% if inputmode %} inputmode="{{ inputmode }}"{% endif %}{% if placeholder %} placeholder="{{ placeholder }}"{% endif %}{% if hint or error %} aria-describedby="{{ name }}-note"{% endif %}{% if error %} aria-invalid="true"{% endif %}{{ _attrs(attrs) }}>
+  {%- if error %}<span class="o-hint err" id="{{ name }}-note">{{ error }}</span>{% elif hint %}<span class="o-hint" id="{{ name }}-note">{{ hint }}</span>{% endif %}
+</label>
+{%- endmacro %}
+
+{#- A one-time code: six digits, the phone's code autofill, one field. -#}
+{% macro code_field(name, label, hint="", error="") -%}
+{{ field(name, label, type="text", hint=hint, error=error, required=true, autocomplete="one-time-code", inputmode="numeric", attrs={"pattern": "[0-9]{6}", "maxlength": "6", "class": "o-otp"}) }}
+{%- endmacro %}
+
+{% macro textarea(name, label, value="", hint="", error="", rows=4, required=false) -%}
+<label class="o-field"{% if error %} data-invalid{% endif %}>
+  <span>{{ label }}</span>
+  <textarea name="{{ name }}" rows="{{ rows }}"{% if required %} required{% endif %}{% if hint or error %} aria-describedby="{{ name }}-note"{% endif %}{% if error %} aria-invalid="true"{% endif %}>{{ value }}</textarea>
+  {%- if error %}<span class="o-hint err" id="{{ name }}-note">{{ error }}</span>{% elif hint %}<span class="o-hint" id="{{ name }}-note">{{ hint }}</span>{% endif %}
+</label>
+{%- endmacro %}
+
+{#- options: [{value, label}] -#}
+{% macro select(name, label, options, value="", hint="", error="") -%}
+<label class="o-field"{% if error %} data-invalid{% endif %}>
+  <span>{{ label }}</span>
+  <select name="{{ name }}"{% if hint or error %} aria-describedby="{{ name }}-note"{% endif %}>{% for o in options %}<option value="{{ o.value }}"{% if o.value == value %} selected{% endif %}>{{ o.label }}</option>{% endfor %}</select>
+  {%- if error %}<span class="o-hint err" id="{{ name }}-note">{{ error }}</span>{% elif hint %}<span class="o-hint" id="{{ name }}-note">{{ hint }}</span>{% endif %}
+</label>
+{%- endmacro %}
+
+{% macro check(name, label, checked=false, value="on") -%}
+<label class="o-check"><input type="checkbox" name="{{ name }}" value="{{ value }}"{% if checked %} checked{% endif %}><span>{{ label }}</span></label>
+{%- endmacro %}
+
+{#- A switch says On or Off in words, not only by position. -#}
+{% macro switch(name, label, on=false) -%}
+<label class="switch"><input type="checkbox" role="switch" name="{{ name }}"{% if on %} checked{% endif %}><span>{{ label }}</span><span class="state on">On</span><span class="state off">Off</span></label>
+{%- endmacro %}
+
+{#- "or" between sign-in methods -#}
+{% macro or_line(text="or") -%}
+<p class="o-or">{{ text }}</p>
+{%- endmacro %}
+
+{#- ===================== data ===================== -#}
+
+{#- columns: [{key, label, align}] (align "r" for numbers); rows: [{key: text, …}] -#}
+{% macro data_table(columns, rows, caption="", empty="") -%}
+<div class="table-wrap"><table class="data">
+{%- if caption %}<caption>{{ caption }}</caption>{% endif %}
+<thead><tr>{% for c in columns %}<th scope="col"{% if c.align is defined and c.align %} class="{{ c.align }}"{% endif %}>{{ c.label }}</th>{% endfor %}</tr></thead>
+<tbody>
+{%- for r in rows %}<tr>{% for c in columns %}<td{% if c.align is defined and c.align %} class="{{ c.align }}"{% endif %}>{{ r[c.key] }}</td>{% endfor %}</tr>
+{%- else %}<tr><td colspan="{{ columns|length }}">{{ empty }}</td></tr>{% endfor %}
+</tbody></table></div>
+{%- endmacro %}
+
+{#- A number with its unit, window and source: {label, value, unit, window, source, href} -#}
+{% macro kpi(t) -%}
+{%- set tag = "a" if t.href is defined and t.href else "div" -%}
+<{{ tag }} class="kpi"{% if tag == "a" %} href="{{ t.href }}"{% endif %}>
+  <span class="k">{{ t.label }}</span>
+  <span class="v">{{ t.value }}{% if t.unit is defined and t.unit %}<small>{{ t.unit }}</small>{% endif %}</span>
+  {%- if t.window is defined and t.window %}<span class="w">{{ t.window }}{% if t.source is defined and t.source %} · {{ t.source }}{% endif %}</span>{% endif %}
+</{{ tag }}>
+{%- endmacro %}
+
+{#- items: [{when, title, body, state}] state: done, now, next, warn, ok, risk -#}
+{% macro timeline(items, label="") -%}
+<ol class="tl"{% if label %} aria-label="{{ label }}"{% endif %}>
+{%- for i in items %}
+<li{% if i.state is defined and i.state %} class="{{ i.state }}"{% endif %}><span class="t">{{ i.when }}</span><span class="pin" aria-hidden="true"></span><span><b>{{ i.title }}</b>{% if i.body is defined and i.body %} {{ i.body }}{% endif %}</span></li>
+{%- endfor %}
+</ol>
+{%- endmacro %}
+
+{#- Steps inside a card: items [{text, state}] state: done, now, "" -#}
+{% macro steps(items) -%}
+<ul class="steps">{% for s in items %}<li{% if s.state %} class="{{ s.state }}"{% endif %}>{{ s.text }}</li>{% endfor %}</ul>
+{%- endmacro %}
+
+{#- A receipt with its check (the first release's macro): {digest, title, verified, kind_words, at_words, digest_short} -#}
+{% macro receipt_row(r) -%}
+<li>
+  <div class="spread">
+    <b><a href="/receipts/{{ r.digest }}">{{ r.title }}</a></b>
+    {% if r.verified %}{{ chip("Verified", "ok") }}{% else %}{{ chip("Not verified", "risk") }}{% endif %}
+  </div>
+  <p class="small muted">{{ r.kind_words }} · {{ r.at_words }} · <span class="mono">{{ r.digest_short }}</span></p>
+</li>
+{%- endmacro %}
+
+{#- The sealed room's promise, part by part: ["Sealed room", "No network but the proxy", …] -#}
+{% macro sealed_chip(parts) -%}
+<span class="sealed"><span class="seal" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></span>{% for p in parts %}{% if not loop.first %}<span class="sep" aria-hidden="true">·</span>{% endif %}<span>{{ p }}</span>{% endfor %}</span>
+{%- endmacro %}
+
+{#- ===================== WebAgents ===================== -#}
+
+{#- The AI chip, beside every mark a visitor sees -#}
+{% macro ai_chip() -%}
+<span class="ai-chip">{{ words.visitor.ai_chip }}</span>
+{%- endmacro %}
+
+{#- The mark slot (ADR-031). agent: {name, id?, spec?, svg?, glyph?, color?, state?, state_words?,
+    label?, owner?, font?}
+    spec: the WebAgent's MarkSpec (agentrix-marks); the slot renders the living mark from it.
+    svg: an SVG already rendered by agentrix_marks::render, as a safe string.
+    Neither: the slot draws a plain squircle in agent.color with agent.glyph (two letters).
+    state: one of agentrix-marks' ten (idle, listening, working, answering, speaking, waiting,
+    resting, asleep, paused, frozen). size: 20, 28, 40, 44 or 64.
+    audience: "visitor" adds the AI chip and shows what a visitor may see (asleep looks idle,
+    paused and frozen look resting, never with the reason); "owner" (the default) shows all.
+    Status words come from agentrix-marks (label: the running tool, owner: whose OK it waits
+    for) unless the view passes state_words. The mark is aria-hidden; name and state are text. -#}
+{% macro mark(agent, size=28, state="", audience="owner", show_name=true, announce=true) -%}
+{%- set st = state or (agent.state if agent.state is defined else "idle") -%}
+{%- set vst = wa_state(st, audience) -%}
+{%- set said = agent.state_words if agent.state_words is defined else wa_words(st, audience, label=agent.label|default(""), owner=agent.owner|default("")) -%}
+{%- set live = (agent.spec is defined and agent.spec) or (agent.svg is defined and agent.svg) -%}
+<span class="mark-slot">
+<span class="mk s{{ size }}{% if live %} live{% endif %}"{% if not live %} data-state="{{ vst }}"{% if agent.color is defined %} data-c="{{ agent.color }}"{% endif %}{% endif %} aria-hidden="true">
+{%- if live %}<wa-mark{% if agent.id is defined %} webagent="{{ agent.id }}"{% endif %} state="{{ vst }}">{% if agent.spec is defined and agent.spec %}{{ wa_mark(agent.spec, size=size, state=st, audience=audience, font=agent.font|default("")) }}{% else %}{{ agent.svg }}{% endif %}</wa-mark>
+{%- else %}{{ agent.glyph if agent.glyph is defined else agent.name[:2] }}{% endif -%}
+</span>
+{%- if show_name %}<span><span class="name">{{ agent.name }}</span>{% if audience == "visitor" %} {{ ai_chip() }}{% endif %}<span class="said" role="status">{{ said }}</span></span>
+{%- elif announce %}<span class="sr-only" role="status">{{ agent.name }}{% if said %}: {{ said }}{% endif %}</span>{% endif %}
+</span>
+{%- endmacro %}
+
+{#- The Chief WebAgent's team mark in the site's ink and monogram.
+    site: {name, monogram, ink?, team?, busy?, font?}. team: agentrix-marks' TeamMark (site, ink,
+    squareness, letters, members); busy: the ids of WebAgents at work. Without team, a plain
+    squircle in site.ink with the monogram. size: 20, 32, 44 or 64. waiting: a card waits. -#}
+{% macro team_mark(site, size=44, waiting=false, state="") -%}
+{%- set cls = {20: "xs", 32: "sm", 44: "", 64: "lg"}[size] if size in [20, 32, 44, 64] else "" -%}
+{%- set live = site.team is defined and site.team -%}
+<span class="orb{% if cls %} {{ cls }}{% endif %}{% if live %} live{% endif %}"{% if site.ink is defined and not live %} data-orb-ink="{{ site.ink }}"{% endif %}{% if waiting %} data-waiting{% endif %}{% if state %} data-state="{{ state }}"{% endif %} role="img" aria-label="Chief WebAgent of {{ site.name }}{% if waiting %}, a decision is waiting{% endif %}">
+{%- if live %}<wa-mark team>{{ wa_team(site.team, size=size, state=wa_state(state or "idle", "owner"), busy=site.busy|default([]), font=site.font|default("")) }}</wa-mark>{% else %}<span class="mono" aria-hidden="true">{{ site.monogram }}</span>{% endif -%}
+</span>
+{%- endmacro %}
+
+{#- The ladder: how much a WebAgent may do on its own for one job.
+    current: "watch", "suggest", "ask", "tell" or "budget". ceiling: the highest the owner allows (rungs
+    above it are locked). name: give it to make the rungs submit buttons (value = the rung).
+    lowered: the platform lowered it; why says so. layout "list" for narrow cards. -#}
+{% macro ladder(current, ceiling="budget", name="", lowered=false, why="", layout="row", label="How much it may do on its own") -%}
+{%- set keys = ["watch", "suggest", "ask", "tell", "budget"] -%}
+{%- set rank = {"watch": 0, "suggest": 1, "ask": 2, "tell": 3, "budget": 4} -%}
+{%- set top = rank[ceiling] if ceiling in rank else 4 -%}
+<ol class="ladder{% if layout == 'list' %} as-list{% endif %}{% if lowered %} lowered{% endif %}{% if top < 4 %} has-ceiling{% endif %}" aria-label="{{ label }}">
+{%- for k in keys %}
+{%- set locked = loop.index0 > top %}
+<li>{% if name and not locked %}<button class="rung{% if loop.index0 == top and top < 4 %} ceiling{% endif %}" type="submit" name="{{ name }}" value="{{ k }}" aria-pressed="{{ 'true' if k == current else 'false' }}"{% if loop.index0 == top and top < 4 %} data-ceiling="{{ words.ladder.ceiling }}"{% endif %}>{{ words.ladder[k] }}</button>
+{%- else %}<span class="rung{% if locked %} locked{% endif %}{% if loop.index0 == top and top < 4 %} ceiling{% endif %}"{% if k == current %} aria-current="true"{% endif %}{% if loop.index0 == top and top < 4 %} data-ceiling="{{ words.ladder.ceiling }}"{% endif %}>{{ words.ladder[k] }}{% if locked %}<span class="sr-only"> (locked)</span>{% endif %}</span>{% endif %}</li>
+{%- endfor %}
+</ol>
+{%- if why %}<p class="ladder-why">{{ why }}</p>{% endif %}
+{%- endmacro %}
+
+{#- ===================== decisions ===================== -#}
+
+{#- One decision card for every surface (console lane, Decisions page, phone, control plane),
+    drawn as concept/console/shell.html's lane card.
+    c: {id, title, from: agent (for ui.mark), from_words?: "Editor asks" (default "{name} asks";
+        words.decision.suggests for proposals), href?: the card's page, body?: one line of facts,
+        chip?: {text, tone} (the risk, in words: "Low risk"), effects?: [text], risk?: the
+        reasons, never a bare score, expires?: text, why?: text, secondary?: {label, href}
+        ("See the diff", "Edit"), primary?: {label, href} for a card that isn't an approval (a
+        proposal: "Plan it"), why_label?: ("Why am I seeing this?"), signers?: [{name, signed}],
+        approve_href?: no-JS fallback,
+        decline_action?: url, state?: "open" | "done" | "expired" | "superseded", done_words?}
+    size: "lane" (compact) or "full". Approve opens ui.approval_sheet(id="approve-" ~ c.id). -#}
+{% macro decision_card(c, size="lane") -%}
+{%- set state = c.state if c.state is defined else "open" -%}
+{%- set who = c.from_words if c.from_words is defined else words.decision.asks|replace("{name}", c.from.name) -%}
+<article class="ldec{% if size == 'full' %} full{% endif %}{% if state != 'open' %} {{ state }}{% endif %}" id="card-{{ c.id }}" data-decision data-card="{{ c.id }}">
+  <div class="from">{{ mark(c.from, size=20 if size == "lane" else 28, show_name=false, announce=false) }}<span>{{ who }}</span>{% if c.chip is defined and c.chip %}{{ chip(c.chip.text, c.chip.tone) }}{% endif %}</div>
+  {%- set title %}{% if c.href is defined and c.href %}<a href="{{ c.href }}">{{ c.title }}</a>{% else %}{{ c.title }}{% endif %}{% endset %}
+  {% if size == "full" %}<h2 class="t">{{ title }}</h2>{% else %}<b class="t">{{ title }}</b>{% endif %}
+  {%- if c.body is defined and c.body %}<p>{{ c.body }}</p>{% endif %}
+  {%- if c.effects is defined and c.effects %}
+  <p class="effect-title">{{ words.decision.what_happens }}</p>
+  <ul class="effect">{% for e in c.effects %}<li>{{ e }}</li>{% endfor %}</ul>
+  {%- endif %}
+  {%- if c.risk is defined and c.risk %}<p class="risk-line">{{ c.risk }}</p>{% endif %}
+  {%- if c.signers is defined and c.signers %}<p class="signers">{% for s in c.signers %}<span{% if s.signed %} class="signed"{% endif %}>{{ s.name }}{% if s.signed %} · signed{% else %} · waiting{% endif %}</span>{% endfor %}</p>{% endif %}
+  {%- if c.expires is defined and c.expires and state == "open" %}<p class="expires">{{ c.expires }}</p>{% endif %}
+  {%- if state == "open" %}
+  <div class="verbs">
+    {%- if c.primary is defined and c.primary %}{{ button(c.primary.label, href=c.primary.href, kind="primary", size="sm") }}
+    {%- else %}{{ button(words.decision.approve, href=c.approve_href if c.approve_href is defined else "#approve-" ~ c.id, kind="primary", size="sm", open="approve-" ~ c.id, attrs={"data-needs-network": ""}) }}{% endif %}
+    {%- if c.secondary is defined and c.secondary %}{{ button(c.secondary.label, href=c.secondary.href, size="sm") }}{% endif %}
+    {%- if c.decline_action is defined and c.decline_action %}<form method="post" action="{{ c.decline_action }}">{{ button(words.decision.decline, type="submit", size="sm", kind="ghost") }}</form>{% endif %}
+    {%- if c.why is defined and c.why %}{{ button(c.why_label if c.why_label is defined else words.decision.why, size="sm", kind="ghost", attrs={"data-why": "", "aria-expanded": "false", "aria-controls": "why-" ~ c.id}) }}{% endif %}
+  </div>
+  {%- endif %}
+  {%- if c.why is defined and c.why %}<p class="whybox" id="why-{{ c.id }}">{{ c.why }}</p>{% endif %}
+  {%- if state == "done" %}<p class="done-line" role="status">{{ c.done_words if c.done_words is defined else words.decision.declined }}</p>
+  {%- elif state == "expired" %}<p class="done-line">{{ words.decision.expired }}</p>
+  {%- elif state == "superseded" %}<p class="done-line">{{ words.decision.superseded }}</p>
+  {%- else %}<p class="done-line" role="status"></p>{% endif %}
+</article>
+{%- endmacro %}
+
+{#- The approval sheet: passkey first, an authenticator code as the fallback. Overlay on a desk,
+    bottom sheet on a phone. kit.js opens it from any [data-open="approve-<id>"].
+    s: {id, summary (exactly what will be signed, one line), fingerprint?, passkey_action (the
+        island posts the WebAuthn assertion here), code_action (form POST for the code),
+        title?, error?}
+    The passkey ceremony itself is the identity island's (W6); it binds to [data-passkey]. -#}
+{% macro approval_sheet(s) -%}
+<div class="overlay" id="approve-{{ s.id }}" role="dialog" aria-modal="true" aria-labelledby="approve-{{ s.id }}-h" hidden>
+  <div class="passkey">
+    <div class="fpi" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 11c0 3.5-1 6.5-2.6 8.6"/><path d="M8.5 7.6A5 5 0 0 1 17 11c0 1.6-.1 3.1-.4 4.5"/><path d="M5.2 15.5c.5-1.4.8-2.9.8-4.5a6 6 0 0 1 3-5.2"/><path d="M14 11c0 2.8-.4 5.4-1.3 7.6"/><path d="M10.8 3.2A8 8 0 0 1 20 11c0 .8 0 1.6-.1 2.4"/><path d="M4 11a8 8 0 0 1 1.3-4.4"/></svg></div>
+    <h3 id="approve-{{ s.id }}-h">{{ s.title if s.title is defined else words.approve.title }}</h3>
+    <p data-sign-what>{{ s.summary }}</p>
+    {%- if s.fingerprint is defined and s.fingerprint %}<div class="sig"><b>{{ words.approve.sig_label }}</b> <span data-sign-fp>{{ s.fingerprint }}</span></div>{% endif %}
+    {%- if s.error is defined and s.error %}<p class="bad" role="alert">{{ s.error }}</p>{% endif %}
+    <div class="row">
+      <button class="btn" type="button" data-close>{{ words.approve.cancel }}</button>
+      <button class="btn btn-primary" type="button" data-passkey data-action="{{ s.passkey_action }}" data-card="{{ s.id }}" data-needs-network autofocus>{{ words.approve.use_passkey }}</button>
+    </div>
+    <button class="stepup-link" type="button" data-stepup>{{ words.approve.use_code }}</button>
+    <form class="stepup-box" method="post" action="{{ s.code_action }}">
+      <label for="approve-{{ s.id }}-code">{{ words.approve.code_label }}</label>
+      <input class="stepup-code" id="approve-{{ s.id }}-code" name="code" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6}" maxlength="6" placeholder="{{ words.approve.code_placeholder }}" required>
+      <p>{{ words.approve.code_note }}</p>
+      <div class="row"><button class="btn" type="button" data-stepup-back>{{ words.approve.back }}</button><button class="btn btn-primary" type="submit" data-needs-network>{{ words.approve.confirm_code }}</button></div>
+    </form>
+    <p class="ok" role="status">{{ words.approve.signed }}</p>
+  </div>
+</div>
+{%- endmacro %}
+
+{#- ===================== the shell ===================== -#}
+
+{#- The site chip in the status bar (site scope). site: {name, sub, monogram, tile?: "#hex", href?} -#}
+{% macro site_chip(site) -%}
+<a class="site-chip" href="{{ site.href if site.href is defined else '/os' }}"><span class="site-tile"{% if site.tile is defined %} data-site-tile="{{ site.tile }}"{% endif %} aria-hidden="true">{{ site.monogram }}</span><span>{{ site.name }}<small>{{ site.sub }}</small></span></a>
+{%- endmacro %}
+
+{#- The scope chip (portfolio and operator scopes). scope: "operator" or "portfolio"; name, sub. -#}
+{% macro scope_chip(scope, name, sub, href="/") -%}
+<a class="scope-chip {{ 'op' if scope == 'operator' else 'pf' }}" href="{{ href }}"><span class="logo-bake" aria-hidden="true">{{ name[:1] }}</span><span>{{ name }}<small>{{ sub }}</small></span></a>
+{%- endmacro %}
+
+{#- A dock icon. app: {label, href, current?, badge?, agent?: for ui.mark, icon?: svg (safe)} -#}
+{% macro app_icon(app) -%}
+<a class="app-ico" href="{{ app.href }}"{% if app.current is defined and app.current %} aria-current="page"{% endif %}>
+{%- if app.agent is defined and app.agent %}{{ mark(app.agent, size=40, show_name=false) }}{% elif app.icon is defined %}<span class="sys" aria-hidden="true">{{ app.icon }}</span>{% endif -%}
+{{ app.label }}{% if app.badge is defined and app.badge %}{{ badge(app.badge, "waiting") }}{% endif %}</a>
+{%- endmacro %}
+
+{#- A status-bar pill. kind: "time", "trust", "freeze", "hold", "". value in bold. -#}
+{% macro pill(text, kind="", value="", href="", count=0) -%}
+{%- set tag = "a" if href else "span" -%}
+<{{ tag }} class="pill{% if kind %} {{ kind }}{% endif %}"{% if href %} href="{{ href }}"{% endif %}><span class="hide-sm">{{ text }}</span>{% if value %} <b>{{ value }}</b>{% endif %}{% if count %}<span class="n">{{ count }}</span>{% endif %}</{{ tag }}>
+{%- endmacro %}
+
+{#- The Day Time / Night Time pill. day and night are the labels ("Day Time · until 18:00"). -#}
+{% macro time_pill(day, night) -%}
+<button class="pill time" type="button" data-time-toggle><span class="sun" aria-hidden="true">☀</span><span class="moon" aria-hidden="true">☾</span><span class="hide-sm" data-time-label data-day="{{ day }}" data-night="{{ night }}">{{ day }}</span></button>
+{%- endmacro %}
+
+{#- A lane section: {% call ui.lane_section("Needs you", 2) %}…cards…{% endcall %} -#}
+{% macro lane_section(title, count=0) -%}
+<section class="lane-section"><h2>{{ title }}{% if count %} {{ badge(count) }}{% endif %}</h2>
+{{ caller() }}
+</section>
+{%- endmacro %}
+
+{#- An empty lane or list in the lane's quiet voice -#}
+{% macro quiet(text) -%}
+<p class="quiet">{{ text }}</p>
+{%- endmacro %}
+
+{#- The command bar: the Chief WebAgent's input. action: form POST url; placeholder in the owner's words. -#}
+{% macro command_bar(action, placeholder, label="Ask your Chief WebAgent") -%}
+<form class="askline" method="post" action="{{ action }}" role="search">
+  <label class="sr-only" for="cmd-input">{{ label }}</label>
+  <input id="cmd-input" name="q" autocomplete="off" placeholder="{{ placeholder }}">
+  <button class="icon-btn" type="submit" aria-label="Send"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+</form>
+{%- endmacro %}
+
+{#- ===================== banners, toasts, states ===================== -#}
+
+{#- kind: "hold", "frozen", "read-only", "offline", "wait", "" (info). action: {label, href} -#}
+{% macro banner(kind, text, action=none) -%}
+<div class="banner{% if kind %} {{ kind }}{% endif %}" role="{{ 'alert' if kind in ['hold', 'frozen'] else 'status' }}"{% if kind == 'offline' %} data-offline-banner hidden{% endif %}>
+  <span>{{ text }}</span>{{ _action(action, size="sm") }}
+</div>
+{%- endmacro %}
+
+{#- A toast rendered by the server (after a redirect). kit.js's toast() makes them in the browser. -#}
+{% macro toast(text, tone="") -%}
+<div class="toast{% if tone %} {{ tone }}{% endif %}" data-flash>{{ text }}</div>
+{%- endmacro %}
+
+{#- Empty: why it's empty, and the next step. action: {label, href, kind?} -#}
+{% macro empty(title, body, action=none, level=2) -%}
+<div class="state empty">
+  <h{{ level }}>{{ title }}</h{{ level }}>
+  <p>{{ body }}</p>
+  {%- if action %}<div class="verbs">{{ _action(action, kind="primary") }}</div>{% endif %}
+</div>
+{%- endmacro %}
+
+{#- Loading: a real label ("Checking 50 pages against the old site"), never a bare spinner -#}
+{% macro loading(label) -%}
+<p class="loading" role="status" aria-live="polite">{{ label }}</p>
+{%- endmacro %}
+
+{#- Skeleton blocks that hold the layout while a live part connects (no layout shift) -#}
+{% macro skeleton(lines=3) -%}
+<div class="skeleton" aria-hidden="true">{% for _ in range(lines) %}<i></i>{% endfor %}</div>
+{%- endmacro %}
+
+{#- Error: what broke and what to do now. ref: the request id support can look up. -#}
+{% macro error_state(title, body, ref="", action=none, level=1) -%}
+<div class="state error" role="alert">
+  <h{{ level }}>{{ title }}</h{{ level }}>
+  <p>{{ body }}</p>
+  {%- if ref %}<p class="ref">Reference {{ ref }}</p>{% endif %}
+  {%- if action %}<div class="verbs">{{ _action(action, kind="primary") }}</div>{% endif %}
+</div>
+{%- endmacro %}
+
+{#- Offline (the console PWA): what's shown is a saved copy, and approvals wait. saved_at: "06:58" -#}
+{% macro offline(saved_at) -%}
+<div class="state offline" role="status"><p>{{ words.state.offline_banner|replace("{time}", saved_at) }}</p></div>
+{%- endmacro %}
+
+{#- Read-only (suspended, cancelled, after leaving): reason in one sentence ending with a full stop -#}
+{% macro read_only(reason) -%}
+<div class="state read-only" role="status"><p>{{ words.state.read_only|replace("{reason}", reason) }}</p></div>
+{%- endmacro %}
+
+{#- ===================== site hosts ===================== -#}
+
+{#- The Sample band on every page of a -sample host. site: {name}. Agentrix tokens, not the site's. -#}
+{% macro sample_band(site) -%}
+<p class="sample-band ax-platform" role="note"><span class="tag">{{ words.sample.tag }}</span><span>{{ words.sample.band|replace("{site}", site.name) }}</span></p>
+{%- endmacro %}
+
+{#- Another company's window (PayPal, the passkey prompt, WhatsApp), never redrawn -#}
+{% macro provider(name, body) -%}
+<div class="provider ax-platform" role="note"><b>{{ name }}</b><span>{{ body }}</span></div>
+{%- endmacro %}
+
+{#- The fixed first line of every thread -#}
+{% macro disclosure() -%}
+<p class="wa-disclose">{{ words.visitor.disclosure }}</p>
+{%- endmacro %}

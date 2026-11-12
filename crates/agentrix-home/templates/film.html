@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{#- The film, with what happens in it written out: the film has no sound, so the words below are its text alternative (WCAG 1.2.1). Keep them in step with film/split.html. -#}
+{% block title %}The same Saturday, twice · Agentrix{% endblock %}
+{% block description %}A 2-minute film: Kilele Bakery's Saturday, before and after its website moved to Agentrix, with everything that happens written out.{% endblock %}
+{% block path %}/film{% endblock %}
+{% block head %}
+<meta property="og:type" content="video.other">
+<meta property="og:title" content="The same Saturday, twice">
+<meta property="og:url" content="{{ origin }}/film">
+<meta property="og:image" content="{{ origin }}/_home/film-poster.webp?v={{ v }}">
+{% endblock %}
+{% block main %}
+<article class="film-page wrap">
+  <p class="eyebrow">A film · 2 min 24 s</p>
+  <h1>The same Saturday, twice.</h1>
+  <p class="lead">Kilele Bakery's Saturday, before and after its website moved to Agentrix. The shop is on the left and its website on the right. There's no sound: the words are on screen, and everything that happens is written out below.</p>
+  <video controls playsinline preload="none" width="1920" height="1080" poster="/_home/film-poster.webp?v={{ v }}" aria-describedby="what-happens-title">
+    {% if film.film.webm %}<source src="{{ film.film.webm }}" type="video/webm">{% endif %}
+    <source src="{{ film.film.mp4 }}" type="video/mp4">
+    <a href="{{ film.film.mp4 }}">Download the film (MP4)</a>
+  </video>
+  <p class="small muted">People made with AI. Kilele Bakery is a sample business. The website screens are Agentrix's own pages, with sample data.</p>
+
+  <h2 id="what-happens-title">What happens</h2>
+  <ol class="transcript">
+    <li><p class="when">0:00 · Saturday, 8 a.m.</p><p>A queue forms under Kilele Bakery's coral awning in Westlands. On its WordPress dashboard, visitors climb past a hundred.</p><p class="said">Saturday at Kilele Bakery. The shop is full. So is the website.</p></li>
+    <li><p class="when">0:08 · 11:02 a.m.</p><p>The morning rush. The laptop stays shut while four orders and two messages arrive, unread.</p><p class="said">Orders come in. Nobody sees them.</p></li>
+    <li><p class="when">0:16 · 2:14 p.m.</p><p>At home, Amani asks through the contact form for a gluten-free birthday cake for her daughter Zawadi, with her name in gold. The message sits unread.</p><p class="said">Amani asks about a cake for her daughter. Her question lands in an inbox nobody opens.</p></li>
+    <li><p class="when">0:25 · 6 p.m.</p><p>Wanjiru, the owner, closes up. Orders and questions keep arriving.</p><p class="said">The shop closes. The website doesn't know.</p></li>
+    <li><p class="when">0:33 · 11:40 p.m.</p><p>The street is dark and the shutter is down. Fourteen orders and nine messages, none of them read.</p><p class="said">People keep visiting, ordering and asking.</p></li>
+    <li><p class="when">0:39 · Sunday, 7 a.m.</p><p>Wanjiru is on the phone while order tickets spill from the printer.</p><p class="said">Sunday morning: fourteen orders nobody planned for.</p></li>
+    <li><p class="when">0:47 · 9:30 a.m.</p><p>Amani walks into another bakery. Kilele gets a one-star review: a cake ordered on Saturday night that nobody confirmed.</p><p class="said">Some customers waited. Some went elsewhere.</p></li>
+    <li class="after"><p class="when">0:54 · 10:48 p.m.</p><p>After closing, Wanjiru pastes her address into Agentrix's free check-up and reads the health report: hidden links she didn't put there, and an old login page. Then the Move: the site is live on Agentrix with 97% of it matching the old one, and three hidden links to gambling sites stay behind.</p><p class="said">That night, Wanjiru found Agentrix. A free check-up first. Then the Move. The old site's problems stay behind.</p></li>
+    <li class="after"><p class="when">1:06 · The same Saturday, 8 a.m.</p><p>Calm at the counter. Kilele's new site is up, with today's bakes on it.</p></li>
+    <li class="after"><p class="when">1:12 · 11:02 a.m.</p><p>In Wanjiru's console, every order sits in one list with a time to collect.</p><p class="said">Orders land in one list, each with a time to collect.</p></li>
+    <li class="after"><p class="when">1:20 · 2:14 p.m.</p><p>Amani and Zawadi design the cake on the site: two tiers, gluten-free sponge, vanilla, to collect. The site doesn't know about gold lettering, so it asks Wanjiru on Telegram, and she answers yes between batches.</p><p class="said">Amani designs Zawadi's cake from what Kilele actually makes. What the site doesn't know, it asks Wanjiru on Telegram. She answers between batches.</p></li>
+    <li class="after"><p class="when">1:32 · 6 p.m.</p><p>At closing, Wanjiru and her staff chat and smile at the counter. In the console, a reply and an order wait for Wanjiru's yes.</p><p class="said">The shop closes. The website keeps working.</p></li>
+    <li class="after"><p class="when">1:39 · 11:40 p.m.</p><p>Tomorrow's prep list, from fourteen orders: flour, butter, eggs, cake boxes and collection times. The prep list is coming next to Agentrix; the film shows it early.</p><p class="said">By morning, tomorrow's work is planned.</p></li>
+    <li class="after"><p class="when">1:47 · Sunday, 7 a.m.</p><p>Every order is boxed and labelled, and there's time for coffee. The console's morning brief is waiting.</p><p class="said">Sunday morning. Nobody's surprised.</p></li>
+    <li class="after"><p class="when">1:55 · 10 a.m.</p><p>Amani collects her cake, and leaves five stars.</p><p class="said">Amani's cake, on time.</p></li>
+    <li class="after"><p class="when">2:02 · 4 p.m.</p><p>Zawadi blows out her candles. Amani tells the Westlands parents' group they can design theirs on Kilele's site, even at night.</p><p class="said">And she tells her friends.</p></li>
+    <li class="after"><p class="when">2:08 · Months later</p><p>Kilele opens a second shop in Kilimani. Both sites are live.</p><p class="said">Kilele Bakery, now in Westlands and Kilimani.</p></li>
+    <li><p class="when">2:16</p><p>Agentrix. Upgrade your website into WebAgents. Free check-up at agentrix.website.</p></li>
+  </ol>
+  <p class="film-next"><a class="btn btn-primary" href="{{ assess_action }}">Check your website, free</a> <a href="/">Back to the home page</a></p>
+</article>
+{% endblock %}

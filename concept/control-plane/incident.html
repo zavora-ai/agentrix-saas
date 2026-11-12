@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Incident Handled by SRE</title>
+<meta name="description" content="Concept: a SEV2 incident at 03:12 handled by the SRE WebAgent. It pulls a reversible lever within its standing grant, holds the consequential fix for the on-call human's approval, and pages over WhatsApp.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Manrope:wght@600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../styles.css">
+<link rel="stylesheet" href="../console/console.css">
+<link rel="stylesheet" href="cp.css">
+<style>
+  .sev { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 999px; background: var(--risk); color: #fff; font: 800 var(--fs-12)/1.3 var(--font-display); letter-spacing: .04em; }
+  .evidence { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; font-size: var(--fs-13); color: var(--ink-2); }
+  .evidence li { display: grid; grid-template-columns: 20px minmax(0, 1fr); gap: 8px; }
+  .evidence li::before { content: ""; width: 8px; height: 8px; margin: 6px 0 0 6px; border-radius: 50%; background: var(--indigo); }
+  .evidence b { color: var(--indigo-900); }
+  .evidence code { font: 500 11.5px/1.4 var(--font-mono); color: var(--muted); overflow-wrap: anywhere; }
+  .lever { border: 1px solid #bfe3d1; background: linear-gradient(180deg, var(--ok-bg), #fff 70%); }
+  .lever h3 { margin-top: 8px; }
+  .lever p { font-size: var(--fs-13); color: var(--ink-2); margin-top: 6px; }
+  .chart-legend { display: flex; gap: 14px; flex-wrap: wrap; font-size: var(--fs-12); color: var(--muted); margin-top: 6px; }
+  .chart-legend i { display: inline-block; width: 14px; height: 3px; border-radius: 2px; vertical-align: middle; margin-right: 6px; }
+  .draft { border: 1px dashed var(--line-strong); border-radius: 12px; padding: 10px 12px; font-size: var(--fs-13); color: var(--ink-2); background: var(--paper); }
+  .draft + .draft { margin-top: 8px; }
+  .draft b { display: block; font: 700 var(--fs-12)/1.3 var(--font-text); color: var(--muted); letter-spacing: .06em; text-transform: uppercase; margin-bottom: 4px; }
+</style>
+</head>
+<body>
+<header class="conceptbar">
+  <a class="logo" href="../index.html"><span class="mark" aria-hidden="true"></span>Agentrix</a>
+  <nav aria-label="Control plane concepts">
+    <a href="index.html">Control plane</a>
+    <a href="fleet.html">Fleet</a>
+    <a href="portfolio.html">Agency portfolio</a>
+    <a href="rollout.html">Rollout</a>
+    <a href="incident.html" aria-current="page">Incident</a>
+    <a href="billing.html">Billing</a>
+    <a href="cli.html">Zavora CLI</a>
+  </nav>
+  <span class="concept-label">Concept · illustrative data</span>
+</header>
+
+<main class="wrap">
+  <div class="cp-head">
+    <span class="eyebrow">Control plane 04 · An incident, 03:12 EAT</span>
+    <h1 style="margin-top:12px">INC-0142: slow answers in ams-1, 03:12</h1>
+    <p class="lead">An agency's overnight import saturated a shared inference subscription, and answers on 212 sites slowed. The SRE WebAgent opened the incident, protected live answers with a reversible lever it is allowed to pull, and held the real fix for the on-call human's approval.</p>
+  </div>
+
+  <section class="os-frame cp-frame" aria-label="Operator console: incident INC-0142">
+    <div class="browser-bar"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="url"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg><span>console.agentrix.ai/<b>operator</b>/incidents/INC-0142</span></span></div>
+    <div class="os cp-os" data-shift="day" data-cp-scope="op" data-app="incidents">
+      <div class="os-bar" data-cp-bar></div>
+      <nav class="dock" data-cp-dock></nav>
+      <div class="field cp-field">
+        <div class="field-head">
+          <div><h2>Ask answers slow in ams-1</h2><div class="sub">INC-0142 · opened 03:12 by the SRE WebAgent · commander Achieng O. · now 03:31</div></div>
+          <div class="row"><span class="sev">SEV2</span><span class="chip chip-wait">Mitigating</span></div>
+        </div>
+
+        <div class="cp-grid cols-2">
+          <div class="cp-grid">
+            <article class="card tight">
+              <div class="card-title"><h4>Ask first token p95 · ams-pool-2 sites</h4><span class="small muted">03:00–03:30</span></div>
+              <svg class="spark" viewBox="0 0 300 80" preserveAspectRatio="none" role="img" aria-label="p95 rose from 1.1 seconds to 3.4 seconds at 03:15, then fell to 1.9 seconds after the lever">
+                <line x1="0" y1="46" x2="300" y2="46" stroke="#a3302a" stroke-width="1" stroke-dasharray="4 4"/>
+                <line x1="140" y1="0" x2="140" y2="80" stroke="#11734a" stroke-width="1.2" stroke-dasharray="3 3"/>
+                <polyline points="0,54 50,50 100,28 150,8 200,36 250,40 300,38" fill="none" stroke="#38356d" stroke-width="2.4" stroke-linejoin="round"/>
+                <circle cx="300" cy="38" r="3.5" fill="#38356d"/>
+              </svg>
+              <div class="chart-legend"><span><i style="background:#38356d"></i>p95 (peak 3.4 s)</span><span><i style="background:#a3302a"></i>SLO 1.5 s</span><span><i style="background:#11734a"></i>03:14 lever pulled</span></div>
+            </article>
+
+            <article class="card tight">
+              <div class="card-title"><h4>What the SRE WebAgent found</h4><span class="small muted">content-free evidence</span></div>
+              <ul class="evidence">
+                <li><span><b>212 sites</b> still on pooled subscription <code>ams-pool-2</code> while their own subscriptions are provisioned for the Studio Mwangaza import.</span></li>
+                <li><span>qwen3.8-27b concurrency on ams-pool-2: <b>16 of 16 slots held</b>, 13 by <code>vision.parity</code> from the Migration Factory and 3 by <code>concierge.answer</code>.</span></li>
+                <li><span>Concierge requests waited in the gateway queue for <b>2.1 s at p95</b>. Pages kept serving normally from the CDN.</span></li>
+                <li><span>No release in the window: train 2026.11.3 paused itself at 03:12. Vultr Inference status: normal.</span></li>
+                <li><span>Traces <code>4f1c…e2</code>, <code>9a07…41</code> · gateway queue metrics · Migration Factory receipts.</span></li>
+              </ul>
+            </article>
+
+            <article class="card tight lever">
+              <div class="spread"><span class="row" style="gap:8px"><span class="avatar op sm av-sre">Sr</span><b class="small" style="color:var(--indigo-900)">SRE did this alone · 03:14</b></span><span class="chip chip-ok">within grant G-17</span></div>
+              <h3>Capped <span class="mono">vision.parity</span> at 6 of 16 slots on ams-pool-2</h3>
+              <p>That leaves 10 slots for live answers. Parity checks queue instead; the import's estimate moved by about 3 hours. Reversible with one tap, and it lifts by itself at 07:14 (the grant allows 4 hours). A plain-words line was added to the Trust centre of the 212 affected sites.</p>
+              <div class="row" style="margin-top:10px"><button class="btn btn-sm" type="button">Undo the cap</button><span class="small muted">receipt op-9c40…1d</span></div>
+            </article>
+
+          </div>
+
+          <div class="cp-grid">
+            <article class="card tight">
+              <div class="card-title"><h4>Timeline</h4><span class="small muted">kept by the SRE WebAgent</span></div>
+              <ul class="timeline">
+                <li><span class="t">03:12</span><span class="ev risk">Fast-burn alert; the SRE opened <b>SEV2</b> and paged Achieng</span></li>
+                <li><span class="t">03:12</span><span class="ev wait">Train 2026.11.3 <b>paused itself</b> (SEV2 in a wave's cell)</span></li>
+                <li><span class="t">03:13</span><span class="ev ok">Achieng acknowledged on WhatsApp</span></li>
+                <li><span class="t">03:14</span><span class="ev ok">SRE capped <b>vision.parity</b> on ams-pool-2 (grant G-17)</span></li>
+                <li><span class="t">03:22</span><span class="ev">SRE proposed a dedicated subscription; held</span></li>
+                <li><span class="t">03:31</span><span class="ev wait">Waiting for the commander's approval</span></li>
+              </ul>
+            </article>
+
+            <article class="card tight">
+              <div class="card-title"><h4>Drafts for people to send</h4><span class="small muted">SEV2: a human publishes</span></div>
+              <div class="draft"><b>Status page · ams-1</b>Some websites hosted in Amsterdam answered questions slowly between 03:05 and 03:20 EAT. Pages kept loading normally. We have reduced the cause and are working on the fix.</div>
+              <div class="draft"><b>Studio Mwangaza</b>Your import is slower tonight because we protected your clients' live answers. New estimate: Tuesday 21:00.</div>
+              <div class="draft"><b>212 owners · Trust centre</b>Between 03:05 and 03:20 some answers took longer. Zavora's SRE limited background work on your provider at 03:14. Nothing on your site changed.</div>
+              <div class="row" style="margin-top:10px"><button class="btn btn-sm btn-primary" type="button">Publish status</button><button class="btn btn-sm" type="button">Edit</button></div>
+            </article>
+
+            <article class="card tight">
+              <div class="card-title"><h4>The SRE's authority here</h4></div>
+              <div class="authority">
+                <div class="can"><b>Alone, within grant G-17</b><ul><li>Cap or pause background work for up to 4 h</li><li>Move a purpose to its fallback model</li><li>Drain a host; halt a train; roll back by pin when the plan allows</li></ul></div>
+                <div class="never"><b>Needs a person</b><ul><li>Create or delete billable resources</li><li>Place a platform hold on a paying customer's site, or a cell</li><li>Restore data; break-glass; anything with money</li></ul></div>
+              </div>
+            </article>
+          </div>
+        </div>
+      </div>
+      <aside class="lane" aria-label="What needs you"><div class="lane-scroll">
+        <h4>Needs you <span class="badge">1</span></h4>
+        <article class="card decision" data-done="Approved · signed on Achieng's phone · subscription sub-mwangaza-factory created and its key stored in the Model Gateway · Mwangaza's parity and build traffic moved · p95 back to 1.2 s at 03:58 · receipt op-9cc1…08.">
+              <div class="head"><span class="from"><span class="avatar op sm av-sre">Sr</span>SRE asks · held for a human</span><span class="chip chip-ok">Low risk · 0.18</span></div>
+              <h3>Give Mwangaza's import its own Inference subscription</h3>
+              <p class="facts">This fixes the cause: bulk work stops sharing slots with live answers. The cap alone only trades import speed for answer speed.</p>
+              <div class="effect"><h4>If you approve, exactly this happens</h4>
+                <ul>
+                  <li>A new Vultr Inference subscription <code>sub-mwangaza-factory</code> is created through the API; its key goes straight into the Model Gateway's vault</li>
+                  <li>Routing: <code>vision.parity</code> and <code>build</code> for <code>pt:mwangaza</code> Moves use it; Concierge traffic stays on ams-pool-2</li>
+                  <li>Cost: usage-based, booked as Zavora's migration cost, not on the agency's bill</li>
+                  <li>The SRE lifts the cap after 30 minutes of normal p95</li>
+                </ul>
+              </div>
+              <div class="riskline"><span>Why low:</span><span class="chip">reversible</span><span class="chip">no customer data</span><span class="chip">creates a billable resource</span></div>
+              <div class="signers"><span class="signer"><i>A</i>Achieng O. · op.sre · commander</span></div>
+              <div class="actions"><button class="btn btn-primary" type="button" data-approve>Approve with passkey</button><button class="btn" type="button">Ask for more evidence</button><button class="btn btn-ghost" type="button" data-decline>Decline</button></div>
+              <div class="sheet" role="status"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 11c0 3-1 6-3 8M8.5 7.5A5 5 0 0 1 17 11c0 1.5-.2 3-.6 4.4M6.3 10A6.5 6.5 0 0 1 9 5.6M12 14.5c-.2 1.8-.8 3.5-1.7 5M15.3 17.5c-.3 1-.7 2-1.2 2.9M4 13.5c.4-1 .6-2 .6-3"/></svg><b>Confirm with your passkey</b><div class="small" style="opacity:.8">Signing: create sub-mwangaza-factory · route pt:mwangaza parity and build · expires 03:46</div></div>
+              <div class="done-line" role="status"></div>
+            </article>
+        <h4>Done for you</h4>
+        <div class="quiet">SRE opened INC-0142 and paged Achieng · paused train 2026.11.3 · capped background parity work within grant G-17 · drafted the status page, the partner note and 212 owner notices for a person to send.</div>
+      </div></aside>
+      <div class="cmd" data-cp-cmd></div>
+    </div>
+  </section>
+
+  <section class="pocket" aria-label="On call in your pocket">
+    <div class="wa" aria-label="On-call thread on WhatsApp">
+              <div class="wa-head"><i>Z</i>Agentrix Ops · on call</div>
+              <div class="wa-bubble"><b>SEV2 · ams-1.</b> Ask first token p95 is 3.0 s (SLO 1.5 s), burning 14×. It affects the 212 sites on pooled subscription ams-pool-2. I'm investigating. Pages are fine.<span class="time">03:12</span></div>
+              <div class="wa-replies"><span>Acknowledge</span><span>Show evidence</span></div>
+              <div class="wa-bubble me">Acknowledge<span class="time">03:13 ✓✓</span></div>
+              <div class="wa-bubble">I capped Migration Factory parity checks at 6 of 16 slots (grant G-17, reversible). p95 is now 1.9 s. <b>A fix is waiting:</b> a dedicated subscription for Mwangaza's import. It needs your approval in the console: your passkey, or your authenticator code.<span class="time">03:22</span></div>
+              <div class="wa-replies"><span>Open in console</span><span>Keep cap 2 h more</span></div>
+              <div class="wa-bubble me">Open in console<span class="time">03:30 ✓✓</span></div>
+            </div>
+    <div>
+      <span class="eyebrow">On call, in your pocket</span>
+      <h2 style="margin-top:10px">WhatsApp can acknowledge and ask for evidence. Approvals happen in the console.</h2>
+      <p class="lead" style="margin-top:10px">The SRE WebAgent pages the on-call person where they already are. WhatsApp can acknowledge, ask for evidence, or extend a lever the SRE already pulled. Creating a billable resource, a platform hold on a customer, restoring data or break-glass opens the console for a passkey, or an authenticator code without one: the same decision contract owners have.</p>
+    </div>
+  </section>
+
+  <section class="explain" aria-label="How this works">
+    <article class="card"><h3>Levers, not keys</h3><p>The SRE WebAgent holds an operator capability token for reversible levers in this cell. It holds no Vultr key. Creating the subscription is an effect the Effects Gateway runs only with the commander's signature.</p><p class="small muted">08-control-plane §3.7, §5.4</p></article>
+    <article class="card"><h3>The owner always hears about it</h3><p>Every operator action that touches a site is a receipt in the operator ledger and a plain-words line in that site's Trust centre. Data incidents also bring an owner notice within 72 hours.</p><p class="small muted">08-control-plane §2.4, 03-trust §7</p></article>
+    <article class="card"><h3>WhatsApp for awareness, the console for authority</h3><p>On-call people acknowledge and ask questions where they already are. Anything consequential opens the console for a passkey, or an authenticator code bound to that exact effect: the same decision contract owners have.</p><p class="small muted">08-control-plane §7.4, ADR-014</p></article>
+  </section>
+</main>
+
+<footer class="concept-foot"><div class="wrap row"><span>Agentrix WebAgent Platform by Zavora · MIT · Concept · illustrative data. Incident, people and numbers are fictional.</span><span>Design: docs/08-control-plane.md</span></div></footer>
+<script src="cp.js"></script>
+</body>
+</html>

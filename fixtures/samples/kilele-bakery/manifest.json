@@ -1,0 +1,191 @@
+{
+  "site": "kilele-bakery-sample",
+  "host": "kilele-bakery-sample.agentrix.website",
+  "name": "Kilele Bakery",
+  "archetype": "bakery",
+  "currency": "KES",
+  "utc_offset_min": 180,
+  "seed_version": "2026-11-08.7",
+  "facts": {
+    "order_prefix": "KB",
+    "domain": "kilele-bakery.example",
+    "since": "2016",
+    "headline": "Baked at dawn\nin Westlands.",
+    "intro": "Sourdough, croissants and celebration cakes since 2016. Open from 6:30 Monday to Saturday and 7:00 on Sunday. Weekend delivery to Westlands and Kilimani.",
+    "owner": {
+      "name": "Wanjiru Kamau",
+      "first": "Wanjiru",
+      "initial": "W",
+      "channel": "WhatsApp",
+      "wait": "~2 h",
+      "reply": "usually within 2 hours (7:00–20:00)",
+      "login": {
+        "email": "wanjiru@kilele-bakery.example",
+        "password": "kilele-sample-owner"
+      }
+    },
+    "address": "Woodvale Grove, Westlands, Nairobi",
+    "parking": "Parking at the back, off Woodvale Grove",
+    "hours": [
+      {
+        "days": "Mon–Sat",
+        "open": "06:30",
+        "close": "19:00",
+        "weekdays": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ]
+      },
+      {
+        "days": "Sun",
+        "open": "07:00",
+        "close": "14:00",
+        "weekdays": [
+          0
+        ]
+      }
+    ],
+    "collection": "Collection slots: Mon–Sat 08:00–12:00 and 14:00–16:00; Sun 08:00–12:00.",
+    "confirmations": "Wanjiru confirms every cake order herself on WhatsApp, usually within 2 hours (7:00–20:00).",
+    "changes": "Changes and cancellations are free until 24 hours before your slot.",
+    "changes_cutoff_hours": 24,
+    "hold_grant": {
+      "id": "g-2",
+      "max": 3,
+      "until": "12:00",
+      "words": "The Bread desk can hold up to 3 loaves for you until 12:00, free. You pay at the counter."
+    },
+    "refund_rule": {
+      "id": "g-3",
+      "per_order": 2000,
+      "per_week": 5,
+      "until": "31 Dec 2026",
+      "to": "the original payment method"
+    },
+    "allergens": "Kilele's kitchen uses wheat flour, so it can't promise anything is safe for coeliac guests.",
+    "not_offered": [
+      "Sculpted figures",
+      "Printed photos on cakes",
+      "Any cake sooner than its notice"
+    ],
+    "release": "v14",
+    "classes": "Saturday baking class, 9:00–13:00, eight seats, lunch included.",
+    "mark": {
+      "family": "grain",
+      "squareness": 4.6,
+      "key": "kilele",
+      "font": "Fraunces, Georgia, serif"
+    },
+    "front_color": "#3b2416",
+    "desks": [
+      {
+        "id": "bread",
+        "name": "Bread",
+        "href": "/bread",
+        "color": "#9c5725",
+        "glyph": "loaf",
+        "seed": 3,
+        "mandate": "I know what came out of the oven today, what's left and when the next batch is due.",
+        "starters": [
+          [
+            "What's still warm?",
+            "stock",
+            true
+          ],
+          [
+            "Anything without dairy?",
+            "dairy",
+            false
+          ],
+          [
+            "Can you hold 2 loaves for me?",
+            "hold",
+            false
+          ]
+        ]
+      },
+      {
+        "id": "cakes",
+        "name": "Cakes",
+        "href": "/cakes",
+        "color": "#8e3b46",
+        "glyph": "cake",
+        "seed": 7,
+        "mandate": "I help you design a cake from Kilele's own options. Prices come from the price list. Wanjiru confirms every cake.",
+        "starters": [
+          [
+            "Design a birthday cake with me",
+            "design",
+            false
+          ],
+          [
+            "How much for 30 people?",
+            "serves",
+            false
+          ],
+          [
+            "Is anything gluten-free?",
+            "gluten",
+            false
+          ]
+        ]
+      },
+      {
+        "id": "orders",
+        "name": "Orders",
+        "href": "/orders",
+        "color": "#3b2416",
+        "glyph": "bag",
+        "seed": 11,
+        "mandate": "I find your order and say where it stands. Changes go to Wanjiru.",
+        "starters": [
+          [
+            "Where is my order?",
+            "where",
+            false
+          ],
+          [
+            "Change my delivery time",
+            "change",
+            false
+          ],
+          [
+            "Can I cancel?",
+            "cancel",
+            false
+          ]
+        ]
+      },
+      {
+        "id": "visit",
+        "name": "Visit",
+        "href": "/visit",
+        "color": "#ad8b22",
+        "glyph": "pin",
+        "seed": 5,
+        "mandate": "I know the hours, directions, parking and where Kilele delivers.",
+        "starters": [
+          [
+            "Are you open on Sunday?",
+            "hours",
+            true
+          ],
+          [
+            "Do you deliver to Lavington?",
+            "deliver",
+            false
+          ],
+          [
+            "Where do I park?",
+            "park",
+            true
+          ]
+        ]
+      }
+    ]
+  }
+}

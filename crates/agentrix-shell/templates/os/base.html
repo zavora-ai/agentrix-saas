@@ -1,0 +1,149 @@
+{% extends "ui/layouts/shell.html" %}
+{% import "ui/kit.html" as ui %}
+{% import "os/macros.html" as m %}
+{#- The owner console in agentrix-ui's shell (concept/console/shell.html). Every page view carries Chrome:
+      site: { id, name, host, state_words, live_url?, fixture, sample, live, utc_offset_minutes }, monogram, base,
+      owner_name, active, world: back|front, night, quiet_hours: { from, to, tz }?,
+      time: { mode, day_label, night_label, quiet_words, start, end },
+      budget: { amount, words, pct }?, trust: { words, ok, waiting }, freeze: { words }?,
+      dock: [DockItem], system: [DockItem], apps: [DockItem],
+      lane: { needs_you: [LaneCard], done_words: [String] }, has_passkey, commands_json, activity: [MeterLine]
+    Page blocks: title, field. Night Time is <html data-time="night">, set here by the schedule and kept by kit.js. -#}
+{% block title %}{{ site.name }} · Agentrix{% endblock %}
+{% block head %}{% if team %}<meta name="agentrix-presence" content="{{ presence_url }}">{% endif %}{% endblock %}
+{% block shell_styles %}<link rel="stylesheet" href="/static/os/shell.css?v={{ asset_v }}">{% endblock %}
+{% block os_class %}world-{{ world }} on-{{ active }}{% if freeze %} frozen{% endif %}{% endblock %}
+
+{% block bar %}
+  <a class="site-chip" href="{{ base }}" title="{{ site.name }}: {{ site.state_words }}"><span class="site-tile generic" aria-hidden="true">{{ monogram }}</span><span>{{ site.name }}{% if site.sample %}<span class="tag-sample">Sample</span>{% endif %}{% if site.fixture %}<span class="tag-sample">Zavora's fixture</span>{% endif %}<small>{{ site.host }} · {{ site.state_words }}</small></span></a>
+  <div class="worlds" role="group" aria-label="Worlds">
+    <a href="{{ base }}?world=front" data-world="front" role="button" aria-pressed="{{ 'true' if world == 'front' and active in ['home', 'live'] else 'false' }}">Front of house{% if live_now %} <span class="ct">{{ live_now }} live</span>{% endif %}</a>
+    <a href="{{ base }}" data-world="back" role="button" aria-pressed="{{ 'true' if world == 'back' and active == 'home' else 'false' }}">Back office</a>
+  </div>
+  <div class="bar-right">
+    {% block bar_extra %}{% endblock %}
+    {{ ui.time_pill(time.day_label, time.night_label) }}
+    {% if budget %}<a class="pill hide-sm" href="{{ base }}#activity" data-open="activity" title="AI spend: {{ budget.words }}"><span class="hide-md">AI this month</span> <b>{{ budget.amount }}</b>{% if budget.pct is not none %}<span class="meter-mini" data-value="{{ budget.pct }}" data-max="100"><span></span></span>{% endif %}</a>{% endif %}
+    <a class="pill trust" href="{{ base }}/trust" title="Trust centre"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg><span class="hide-sm">{{ trust.words }}</span>{% if trust.waiting %}<span class="n" aria-label="{{ trust.waiting }} decisions waiting">{{ trust.waiting }}</span>{% endif %}</a>
+    {% if freeze %}
+    <button class="pill freeze" type="button" aria-pressed="true" data-unfreeze="{{ base }}/unfreeze/sheet" title="{{ freeze.words }}. Unfreezing needs your approval."><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></svg><span>Frozen</span></button>
+    {% elif freeze_enabled %}
+    <form method="post" action="{{ base }}/freeze" class="freeze-form"><input type="hidden" name="back" value="{{ base }}"><button class="pill freeze" type="submit" aria-pressed="false" title="Stop every WebAgent before its next step. Your site keeps serving its signed release."><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></svg><span>Freeze</span></button></form>
+    {% endif %}
+  </div>
+{% endblock %}
+
+{% block dock_label %}WebAgents and apps{% endblock %}
+{% block dock %}
+  {% for d in dock %}{{ m.dock_item(d) }}{% endfor %}
+  {% if dock %}<span class="sep" aria-hidden="true"></span>{% endif %}
+  {% for d in system %}{{ m.dock_item(d) }}{% endfor %}
+  {% if apps %}<span class="sep" aria-hidden="true"></span>{% for d in apps %}{{ m.dock_item(d) }}{% endfor %}{% endif %}
+  {#- Under 900 px the dock becomes the phone's four tabs (concept/console/phone.html, 01b C35-C38). -#}
+  {% set waiting_n = lane.needs_you|length %}
+  <div class="ptabs">
+    <a href="{{ base }}"{% if active == "home" %} aria-current="page"{% endif %}>{{ m.icon("home") }}Now</a>
+    <a href="{{ base }}/decisions"{% if active in ["decisions", "decision"] %} aria-current="page"{% endif %}>{{ m.icon("decisions") }}Decisions{% if waiting_n %}<span class="badge" aria-label="{{ waiting_n }} waiting">{{ waiting_n }}</span>{% endif %}</a>
+    {#- Live takes the third tab once the site's desks send it conversations; until then, Orders does. -#}
+    {% set third = "live" if live_on else "orders" %}
+    {% if live_on %}
+    <a href="{{ base }}/live"{% if active == "live" %} aria-current="page"{% endif %}>{{ m.icon("live") }}Live{% if live_now %}<span class="badge" aria-label="{{ live_now }} live">{{ live_now }}</span>{% endif %}</a>
+    {% else %}
+    <a href="{{ base }}/orders"{% if active == "orders" %} aria-current="page"{% endif %}>{{ m.icon("orders") }}Orders</a>
+    {% endif %}
+    <a href="{{ base }}/apps"{% if active not in ["home", "decisions", "decision", third] %} aria-current="page"{% endif %}>{{ m.icon("grid") }}Apps</a>
+  </div>
+{% endblock %}
+
+{% block banner %}
+  {% if freeze %}
+  <div class="banner frozen" role="alert"><span><b>{{ freeze.words }}.</b> Your WebAgents stop before their next step, and your site keeps serving its signed release. Unfreezing needs your {{ "passkey" if has_passkey else "authenticator app" }}.</span><button class="btn btn-sm" type="button" data-unfreeze="{{ base }}/unfreeze/sheet">Unfreeze</button></div>
+  {% endif %}
+  {{ ui.banner("offline", "You're offline. You can read what's here; approvals wait until you're back online.") }}
+{% endblock %}
+
+{% block lane %}
+  <div data-lane="day">
+    <h4>Needs you{% if lane.needs_you %} <span class="badge">{{ lane.needs_you|length }}</span>{% endif %}</h4>
+    {% for i in lane.others %}
+    <div class="ldec"><div class="from">{{ i.from }}<span class="chip chip-{{ i.tone }}">{{ i.chip }}</span></div><b class="t"><a href="{{ i.href }}">{{ i.title }}</a></b><p>{{ i.summary }}</p><p class="small muted">{{ i.when_words }}</p><div class="verbs"><a class="btn btn-primary btn-sm" href="{{ i.href }}">Read and decide</a></div></div>
+    {% endfor %}
+    {% for c in lane.needs_you %}{{ m.lane_card(c) }}{% else %}{% if not lane.others %}
+    <div class="quiet"><b>Nothing needs you.</b> When a WebAgent needs your approval, the card waits here. Nothing happens until you answer.</div>
+    {% endif %}{% endfor %}
+    {% if lane.done_words %}
+    <h4>Done for you</h4>
+    <div class="quiet">{{ lane.done_words|join(" · ") }}</div>
+    {% endif %}
+  </div>
+  <div data-lane="night">
+    <h4>Quiet hours</h4>
+    <div class="quiet"><b>Until {{ time.end }}, Night Time is on.</b> {% if lane.needs_you %}{{ lane.needs_you|length }} decision{{ "" if lane.needs_you|length == 1 else "s" }} will wait for you in the morning.{% else %}Nothing is waiting for you.{% endif %} Unanswered decisions wait; none is ever approved for you.</div>
+    {% if freeze_enabled %}<h4>Still yours, any time</h4>
+    <div class="ldec">
+      <div class="from">{{ ui.team_mark({"name": site.name, "monogram": monogram, "team": team}, size=20) }}Chief WebAgent</div>
+      <b class="t">Stop everything</b>
+      <p>Press Freeze in the bar above. Every WebAgent stops before its next step. Unfreezing needs your approval.</p>
+    </div>{% endif %}
+    {% if lane.needs_you %}<p class="small"><button class="linkish" type="button" data-time-toggle>Show the decisions now</button></p>{% endif %}
+  </div>
+{% endblock %}
+
+{% block cmd %}
+  <div class="plan" aria-live="polite" data-results>
+    <div class="plan-head">{{ ui.team_mark({"name": site.name, "monogram": monogram, "team": team}, size=20) }}<span>In your console</span><button class="btn btn-ghost btn-sm plan-close" type="button" data-plan-close aria-label="Close">✕</button></div>
+    <ol data-matches></ol>
+    <p class="small muted" data-nomatch hidden>Nothing in your console matches that.</p>
+    <div class="foot"><span class="chip">Opens pages and decisions</span><span class="chip">Your Chief WebAgent can't take jobs from here yet</span></div>
+  </div>
+  <form class="askline" role="search" data-cmd>
+    {{ ui.team_mark({"name": site.name, "monogram": monogram, "team": team}, size=32, waiting=lane.needs_you|length > 0) }}
+    <label class="sr-only" for="cmd-input">Find a page or a decision</label>
+    <input id="cmd-input" type="text" name="q" placeholder="Find a page or a decision… (press /)" autocomplete="off">
+    <button class="icon-btn" type="submit" aria-label="Go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+  </form>
+  <script type="application/json" data-commands>{{ commands_json|safe }}</script>
+  <div class="activity-strip"><span>Try:</span><button type="button" data-fill="Decisions">Decisions</button><span>·</span><button type="button" data-fill="Trust">Trust centre</button><span>·</span><button type="button" data-open="activity">Activity monitor ›</button></div>
+{% endblock %}
+
+{% block overlays %}
+  <div class="overlay" id="activity" role="dialog" aria-modal="true" aria-label="Activity monitor" hidden>
+    <div class="window">
+      <div class="window-bar"><div><h3>Activity monitor</h3><p class="small muted">What each job spent on AI this month, from the spending records.</p></div><button class="btn btn-sm" type="button" data-close>Close</button></div>
+      <div class="window-body">
+        {% if activity %}
+        <table class="procs"><thead><tr><th>Job</th><th>This month</th></tr></thead>
+          <tbody>{% for l in activity %}<tr><td><b>{{ l.label }}</b></td><td class="mono">{{ l.amount }}</td></tr>{% endfor %}</tbody></table>
+        {% else %}
+        <p class="small">No AI calls this month, so nothing has been spent.</p>
+        {% endif %}
+        <p class="small muted">{% if budget %}{{ budget.words }}. {% endif %}Every AI call is checked against your site's spending limits before it runs. This table doesn't show yet why each WebAgent woke or when it wakes next.</p>
+      </div>
+    </div>
+  </div>
+
+  {#- One approval sheet for every card on the page (01b C8): approve.js fills it from the card's sheet URL with a fresh ceremony. -#}
+  <div class="overlay" id="passkey" role="dialog" aria-modal="true" aria-labelledby="sheet-h" hidden>
+    <div class="passkey{% if not has_passkey %} stepup no-passkey{% endif %}" data-has-passkey="{{ 'true' if has_passkey else 'false' }}">
+      <div class="fpi" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 11c0 3.5-1 6.5-2.6 8.6"/><path d="M8.5 7.6A5 5 0 0 1 17 11c0 1.6-.1 3.1-.4 4.5"/><path d="M5.2 15.5c.5-1.4.8-2.9.8-4.5a6 6 0 0 1 3-5.2"/><path d="M14 11c0 2.8-.4 5.4-1.3 7.6"/><path d="M10.8 3.2A8 8 0 0 1 20 11c0 .8 0 1.6-.1 2.4"/><path d="M4 11a8 8 0 0 1 1.3-4.4"/></svg></div>
+      <h3 id="sheet-h">{{ words.approve.title if has_passkey else "Approve with your authenticator app" }}</h3>
+      <p data-sign-what>This exact action</p>
+      <div class="sig"><b data-sig-label>{{ "Your passkey signs:" if has_passkey else "Your code approves:" }}</b> <span data-sign-fp></span></div>
+      <div class="row"><button class="btn" type="button" data-close>{{ words.approve.cancel }}</button><button class="btn btn-primary" type="button" data-do-sign data-needs-network>{{ words.approve.use_passkey }}</button></div>
+      {% if has_passkey %}<button class="stepup-link" type="button" data-stepup>{{ words.approve.use_code }}</button>{% endif %}
+      <div class="stepup-box">
+        <label for="stepup-code">{{ words.approve.code_label }}</label>
+        <input id="stepup-code" class="stepup-code" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="6 digits">
+        <p>It works once, and only for this approval. Your receipt will say a code approved it, not a passkey.</p>
+        <div class="row">{% if has_passkey %}<button class="btn" type="button" data-stepup-back>Back to passkey</button>{% else %}<button class="btn" type="button" data-close>{{ words.approve.cancel }}</button>{% endif %}<button class="btn btn-primary" type="button" data-do-sign data-method="totp" data-needs-network>{{ words.approve.confirm_code }}</button></div>
+      </div>
+      <p class="sheet-error" role="alert" hidden></p>
+      <p class="ok" role="status">{{ words.approve.signed }}</p>
+    </div>
+  </div>
+{% endblock %}
+
+{% block scripts %}
+<script type="module" src="/static/os/os.js?v={{ asset_v }}"></script>
+<script type="module" src="/static/os/approve.js?v={{ asset_v }}"></script>
+{% endblock %}

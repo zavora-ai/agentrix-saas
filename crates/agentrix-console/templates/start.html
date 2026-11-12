@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{#- Page::Start · view::StartView { error, url, fixture_url } · R1.1, R1.7 -#}
+{% block title %}Move your website{% endblock %}
+{% block topright %}<a class="btn btn-ghost" href="/auth/signin">Sign in</a>{% endblock %}
+{% block main %}
+<section class="stack" style="gap:var(--s4)">
+  <p class="eyebrow">Free health report · no account</p>
+  <h1>Your website, run by a team of WebAgents.</h1>
+  <p class="lead">Paste your address. We read your public pages in sealed rooms, check them honestly, and show you what we found, with evidence for every finding.</p>
+</section>
+
+<form class="card" method="post" action="/assess">
+  {% if error %}<p class="error" role="alert">{{ error }}</p>{% endif %}
+  <label class="field">Your website address
+    <input name="url" type="text" inputmode="url" autocomplete="url" spellcheck="false" placeholder="your-business.example" value="{{ url or '' }}" required aria-describedby="url-hint">
+  </label>
+  <p class="hint" id="url-hint">We read public pages only, identified as Agentrix's crawler, respecting robots.txt, at a polite pace. Nothing is installed and your site isn't changed.</p>
+  <button class="btn btn-primary btn-wide" type="submit">Check my site</button>
+</form>
+
+{% if fixture_url %}
+<p class="small muted">Want to see it find a real infection? <a href="{{ fixture_url }}">Try it on Zavora's fixture</a>, an infected WordPress we host for demonstrations. It's labelled as a fixture everywhere.</p>
+{% endif %}
+
+<section class="card tight">
+  <h2>What happens next</h2>
+  <ol class="small" style="margin:0;padding-left:20px;display:grid;gap:6px">
+    <li>Each page is fetched in a sealed room that can reach only your site, and the room is destroyed afterwards.</li>
+    <li>You see the room's receipt tick as it works: hosts contacted, requests, bytes and refusals.</li>
+    <li>You get a report in plain words: security, speed, broken links, and whether AI assistants can use your site.</li>
+    <li>If you like what you see, <b>Move this site</b>: sign in, prove the domain is yours, and watch the Move.</li>
+  </ol>
+</section>
+{% endblock %}

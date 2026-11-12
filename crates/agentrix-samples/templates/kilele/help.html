@@ -1,0 +1,78 @@
+{% extends "kilele/layout.html" %}
+{% block main %}
+<section class="b-pagehead" id="top">
+  <h1>Help</h1>
+  <p>What the desks on this site can and can't do, how {{ shell.site.name }} contacts you, and how orders, changes and details work.</p>
+  <nav class="help-toc" aria-label="On this page"><a href="#desks">What the desks do</a><a href="#contact">How we contact you</a><a href="#details">Your details</a><a href="#changes">Changes</a><a href="#confirmations">Confirmations</a><a href="#classes">Baking classes</a></nav>
+</section>
+
+<section class="b-section" id="desks">
+  <h2>What the desks can and can't do</h2>
+  <p class="sub">The Front desk, Bread, Cakes, Orders and Visit are AI WebAgents. They answer from this site's pages and show where each answer came from. {{ shell.site.owner }} sets what they may do.</p>
+  <div class="help-grid">
+    <div class="b-card">
+      <h3>They can</h3>
+      <ul class="ticks">
+        <li>Answer questions from this site, with numbered sources you can open.</li>
+        <li>Hold up to {{ grant.max }} loaves for you until {{ grant.until }}, free. You pay at the counter.</li>
+        <li>Design a cake with you from {{ shell.site.name }}'s own options, priced from the price list.</li>
+        <li>Find your order, say where it stands, and pass changes or cancellations to {{ shell.site.owner }}.</li>
+        <li>Refund up to {{ refund.per_order }} an order, at most {{ refund.per_week }} refunds a week, to {{ refund.to }}. The Cashier does this under {{ shell.site.owner }}'s signed rule, valid until {{ refund.until }}. Anything more waits for her.</li>
+      </ul>
+    </div>
+    <div class="b-card">
+      <h3>They can't</h3>
+      <ul class="ticks no">
+        <li>Ask for a password, a one-time code or card details. They never will.</li>
+        <li>Change your name, email, phone number or address.</li>
+        <li>Charge you or change a price. A payment request appears on your order page only after {{ shell.site.owner }} approves.</li>
+        <li>Hold more than {{ grant.max }} loaves, or hold after {{ grant.until }}, without asking {{ shell.site.owner }}.</li>
+        <li>Promise anything the site doesn't say, such as another delivery area or a cake sooner than its notice.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="b-section" id="contact">
+  <h2>How {{ shell.site.name }} contacts you</h2>
+  <div class="b-card">
+    <p>{{ shell.site.owner }} answers herself on {{ shell.site.owner_channel }}, {{ reply }}.</p>
+    <p>Messages from {{ shell.site.name }} only link to <b>{{ domain }}</b>, the site you're on. Payment requests appear only on your orders page on this site. If a message asks you to pay anywhere else, don't pay: ask Orders "Is this link real?" or tell {{ shell.site.owner }}.</p>
+    <a class="wa-person" href="/help#contact" data-person><span class="ph">{{ shell.site.owner_initial }}</span>Talk to {{ shell.site.owner }} <i>· person · {{ shell.site.owner_channel }}, {{ shell.site.owner_wait }}</i></a>
+  </div>
+</section>
+
+<section class="b-section" id="details">
+  <h2>Changing your details</h2>
+  <div class="b-card">
+    <p>Sign in and open Account. Your name and phone are in Details, and delivery addresses in Addresses. Your email changes in Sign-in and security, which asks you to sign in again.</p>
+    <p>A desk can never change your details, so nobody can change them through a chat, including someone pretending to be you.</p>
+    <p><a class="link" href="/account">Your account</a></p>
+  </div>
+</section>
+
+<section class="b-section" id="changes">
+  <h2>Changes and cancellations</h2>
+  <div class="b-card">
+    <p><b>{{ changes }}</b></p>
+    <p>Open your order and choose Change, or ask Orders. {{ shell.site.owner }} confirms every change. Later than {{ cutoff }} hours before the slot, the order is already being made, so talk to {{ shell.site.owner }} directly.</p>
+    <p>To cancel, open your order and press Cancel. An order that isn't paid yet is cancelled at once. A paid order that isn't baked yet goes to {{ shell.site.owner }}; if she agrees, the whole amount goes back the way you paid.</p>
+  </div>
+</section>
+
+<section class="b-section" id="confirmations">
+  <h2>Confirmations</h2>
+  <div class="b-card">
+    <p>{{ confirmations }}</p>
+    <p>For a cake, nothing is charged until she confirms. When she approves, a payment request appears on your order page.</p>
+  </div>
+</section>
+
+<section class="b-section" id="classes">
+  <h2>Baking classes</h2>
+  <div class="b-card">
+    <p>{{ classes }}</p>
+    <p>To book a seat, <a class="link" href="/help#contact" data-person>ask {{ shell.site.owner }}</a>.</p>
+  </div>
+</section>
+{% endblock %}

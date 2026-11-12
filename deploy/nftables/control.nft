@@ -1,0 +1,34 @@
+#!/usr/sbin/nft -f
+# Agentrix · control VM host firewall (design §2, R14.2).
+#
+# Public: Caddy on 80 and 443. SSH is also accepted here, but the Vultr firewall group only lets
+# it in from ADMIN_CIDR (deploy/README.md, "SSH"). Nothing else listens publicly:
+# agentrix-node and agentrix-models bind to 127.0.0.1. Control opens connections to the runner;
+# nothing on the VPC opens connections to control.
+
+# Replace only this table. Docker's iptables-nft tables are left alone, so reloading this
+# file never breaks container networking.
+table inet agentrix
+delete table inet agentrix
+
+table inet agentrix {
+	chain input {
+		type filter hook input priority filter - 10; policy drop;
+
+		ct state established,related accept
+		ct state invalid drop
+		iif "lo" accept
+
+		tcp dport { 80, 443 } accept
+		tcp dport 22 accept
+
+		icmp type { echo-request, destination-unreachable, time-exceeded } accept
+		icmpv6 type { echo-request, destination-unreachable, packet-too-big, time-exceeded, parameter-problem, nd-router-advert, nd-neighbor-solicit, nd-neighbor-advert } accept
+
+		counter drop
+	}
+
+	chain forward {
+		type filter hook forward priority filter - 10; policy drop;
+	}
+}

@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Desktop tray</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap">
+<style>body{margin:0}</style>
+</helmet>
+<div style="width: 420px; height: 700px; box-sizing: border-box; padding: 16px; font-family: Inter, system-ui, sans-serif; color: {{t.text}}; background: {{t.desk}}; display: flex; flex-direction: column">
+  <div style="align-self: flex-end; display: flex; align-items: center; gap: 6px; padding: 5px 10px; border-radius: 8px; background: {{t.surface}}; border: 1px solid {{t.border}}; margin-bottom: 10px">
+    <span style="width: 8px; height: 8px; border-radius: 4px; background: {{t.brand}}"></span>
+    <span aria-label="2 waiting" style="min-width: 18px; height: 18px; padding: 0 5px; box-sizing: border-box; border-radius: 9px; background: {{t.accentFill}}; color: {{t.onAccent}}; font-size: 11px; font-weight: 700; line-height: 18px; text-align: center">2</span>
+  </div>
+  <div style="flex-grow: 1; background: {{t.surface}}; border-radius: 20px; border: 1px solid {{t.border}}; box-shadow: {{t.shadow}}; display: flex; flex-direction: column; overflow: hidden">
+    <div style="padding: 18px 20px 14px; display: flex; flex-direction: column; gap: 10px">
+      <span style="display: flex; justify-content: space-between; align-items: center"><span style="display: flex; align-items: center; gap: 8px"><span style="width: 10px; height: 10px; border-radius: 5px; background: {{t.brand}}"></span><span style="font-weight: 800; font-size: 17px; letter-spacing: -0.02em">ADK-Rust</span></span><span style="display: flex; align-items: center; gap: 6px; padding: 3px 10px; border-radius: 999px; background: {{t.greenSoft}}; color: {{t.green}}; font-size: 12px; font-weight: 600"><span style="width: 6px; height: 6px; border-radius: 3px; background: {{t.green}}"></span>Running</span></span>
+      <span style="display: flex; justify-content: space-between; font-size: 13px; color: {{t.text2}}"><span>$1.84 of $5.00 today</span><span>Quiet from 22:00</span></span>
+      <span style="display: block; height: 4px; border-radius: 2px; background: {{t.raised}}; overflow: hidden"><span style="display: block; width: 37%; height: 100%; background: {{t.brand}}"></span></span>
+    </div>
+
+    <div style="padding: 6px 20px 18px; display: flex; flex-direction: column; gap: 10px">
+      <div style="display: flex; align-items: center; gap: 8px"><span style="font-size: 15px; font-weight: 700">Decisions</span><span aria-label="2 waiting" style="min-width: 20px; height: 20px; padding: 0 6px; box-sizing: border-box; border-radius: 10px; background: {{t.accentFill}}; color: {{t.onAccent}}; font-size: 12px; font-weight: 700; line-height: 20px; text-align: center">2</span></div>
+      <div style="background: {{t.decision}}; border: 1px solid {{t.accentLine}}; border-radius: 14px; padding: 14px; display: flex; flex-direction: column; gap: 12px">
+        <span style="display: flex; align-items: center; gap: 10px"><span style="flex: 0 0 28px; height: 28px; border-radius: 9px; background: {{t.greenSoft}}; color: {{t.green}}; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 13px">F</span><span style="display: flex; flex-direction: column; gap: 1px"><span style="font-weight: 600; font-size: 15px">Send the October invoice</span><span style="font-size: 13px; color: {{t.muted}}">Finance · Medium risk</span></span></span>
+        <span style="display: flex; gap: 8px"><button type="button" style="font: inherit; font-size: 14px; font-weight: 600; padding: 8px 14px; border-radius: 9px; border: none; background: {{t.accentFill}}; color: {{t.onAccent}}; cursor: pointer; min-height: 38px">Allow once</button><button type="button" style="font: inherit; font-size: 14px; padding: 8px 12px; border-radius: 9px; border: 1px solid {{t.line}}; background: transparent; color: {{t.text}}; cursor: pointer; min-height: 38px">Deny</button></span>
+      </div>
+      <a href="PhoneDecide.dc.html" style="display: flex; justify-content: space-between; align-items: center; background: {{t.decision}}; border: 1px solid {{t.accentLine}}; border-radius: 14px; padding: 14px; text-decoration: none; color: {{t.text}}"><span style="display: flex; align-items: center; gap: 10px"><span style="flex: 0 0 28px; height: 28px; border-radius: 9px; background: {{t.blueSoft}}; color: {{t.blue}}; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 11px; font-family: 'JetBrains Mono', monospace">{ }</span><span style="display: flex; flex-direction: column; gap: 1px"><span style="font-weight: 600; font-size: 15px">Publish a release</span><span style="font-size: 13px; color: {{t.accent}}; font-weight: 500">Code · High risk · open to decide</span></span></span><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="{{t.muted}}" stroke-width="1.8" aria-hidden="true"><path d="M5 2l5 5-5 5"></path></svg></a>
+    </div>
+
+    <div style="padding: 16px 20px; border-top: 1px solid {{t.border}}; display: flex; flex-direction: column; gap: 8px">
+      <span style="font-size: 13px; font-weight: 600; color: {{t.muted}}">Now and next</span>
+      <span style="display: flex; justify-content: space-between; font-size: 14px"><span>Chief of staff · planning the week</span><span style="color: {{t.green}}">Working</span></span>
+      <span style="display: flex; justify-content: space-between; font-size: 14px"><span>Code · CI check</span><span style="font-family: 'JetBrains Mono', monospace; color: {{t.muted}}">09:00</span></span>
+    </div>
+
+    <div style="padding: 0 20px 16px">
+      <label style="display: flex"><span style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Quick message</span><input placeholder="Ask Chief of staff" style="font: inherit; font-size: 14px; flex-grow: 1; padding: 11px 12px; border: 1px solid {{t.line}}; border-radius: 12px; background: transparent; color: {{t.text}}"></label>
+    </div>
+
+    <div style="margin-top: auto; padding: 14px 20px; border-top: 1px solid {{t.border}}; display: flex; gap: 8px">
+      <a href="WebHome.dc.html" style="flex: 1 1 0; text-align: center; padding: 11px; border-radius: 10px; border: 1px solid {{t.line}}; color: {{t.text}}; text-decoration: none; font-weight: 600; font-size: 14px">Open home</a>
+      <button type="button" style="font: inherit; font-size: 14px; font-weight: 600; flex: 1 1 0; padding: 11px; border-radius: 10px; border: none; background: {{t.ink}}; color: {{t.onInk}}; cursor: pointer; min-height: 44px">Stop all</button>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"dark":{"editor":"boolean","default":false},"$preview":{"width":420,"height":700}}'>
+class Component extends DCLogic {
+  renderVals() {
+    var L = {desk: '#EEF2F7', surface: '#FFFFFF', raised: '#F1F3F6', border: '#E6E8EC', line: '#D3D7DE', text: '#0F172A', text2: '#475569', muted: '#64748B', brand: '#F74C00', accent: '#C03A00', accentFill: '#C03A00', onAccent: '#FFFFFF', accentSoft: '#FFF4EE', accentLine: '#FFD6C2', decision: '#FFF8F3', ink: '#0A1628', onInk: '#FFFFFF', green: '#12774B', greenSoft: '#E8F6EF', blue: '#2563EB', blueSoft: '#EAF1FE', shadow: '0 1px 2px rgba(15,23,42,0.04), 0 16px 40px rgba(15,23,42,0.10)'};
+    var D = {desk: '#050D1A', surface: '#15233B', raised: '#1C2B45', border: '#2A3D5C', line: '#3A5075', text: '#F1F5F9', text2: '#D5DEE8', muted: '#A7B4C6', brand: '#F74C00', accent: '#FF9C78', accentFill: '#F74C00', onAccent: '#0A1628', accentSoft: 'rgba(247,76,0,0.14)', accentLine: 'rgba(255,156,120,0.38)', decision: '#2A2432', ink: '#F1F5F9', onInk: '#0A1628', green: '#61E7A5', greenSoft: 'rgba(97,231,165,0.12)', blue: '#79B2FF', blueSoft: 'rgba(121,178,255,0.12)', shadow: 'none'};
+    return { t: this.props.dark ? D : L };
+  }
+}
+</script>
+</body>
+</html>

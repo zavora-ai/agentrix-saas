@@ -1,0 +1,17 @@
+{% extends "tana/layout.html" %}
+{% from "tana/macros.html" import card %}
+{% block main %}
+<div class="n-grid">
+  <div>
+    <header class="front-head">
+      <span class="kicker">Not found</span>
+      <h2>That page isn't in the paper</h2>
+      <p>The address may be mistyped, or the story was never published here. Nothing was moved or deleted. Try the <a href="/archive">archive</a>, or ask the Newsroom desk below.</p>
+    </header>
+    {% if latest %}<div class="n-list">{% for c in latest %}{{ card(c, false) }}{% endfor %}</div>{% endif %}
+  </div>
+  <aside class="rail-n">
+    <div class="box"><span class="kicker">Sections</span><div class="acts" style="margin-top:8px">{% for s in sections %}<a class="act" href="/{{ s.id }}">{{ s.name }}</a>{% endfor %}</div></div>
+  </aside>
+</div>
+{% endblock %}

@@ -1,0 +1,78 @@
+{% extends "ui/layouts/page.html" %}
+{% import "ui/kit.html" as ui %}
+{% import "saas/macros.html" as s %}
+{% block title %}Proofs · Agentrix{% endblock %}
+{% block description %}The attack suite's results, the signed audit log and the agents' public keys: what anyone can check about Agentrix for themselves.{% endblock %}
+{% block styles %}<link rel="stylesheet" href="/static/saas/saas.css?v={{ saas_v }}">{% endblock %}
+{% block nav %}{{ s.money_nav("proofs") }}{% endblock %}
+{% block main_class %}wrap{% endblock %}
+{% block main %}
+<div class="page-head"><p class="eyebrow">Proofs</p><h1>Check it yourself</h1>
+<p class="lead">Every claim on this site that matters is something you can check without trusting us: the attacks the agents refused, the signed audit log, and the keys their requests are signed with.</p></div>
+
+<div class="proof-grid">
+  <article class="card proof-audit{% if audit.verified %} ok{% else %} risk{% endif %}" aria-labelledby="audit-h">
+    <div class="spread"><h2 id="audit-h">Signed audit log</h2>{% if audit.verified %}{{ ui.chip("Verified", "ok") }}{% else %}{{ ui.chip("Not verified", "risk") }}{% endif %}</div>
+    <dl class="kv">
+      <dt>Entries</dt><dd>{{ audit.entries }}</dd>
+      <dt>Checkpoint</dt><dd class="mono wrap-any">{{ audit.checkpoint }}</dd>
+      <dt>Checked</dt><dd>{{ audit.checked }}</dd>
+      <dt>Checked with</dt><dd class="mono">{{ audit.tool }}</dd>
+    </dl>
+    <h3>Verify it yourself</h3>
+    {% if exports %}
+    <ol class="plain-steps">
+      <li>Download the log and its key:{% for e in exports %} <a href="{{ e.log }}">{{ e.company }}.jsonl</a>{% if e.key %} · <a href="{{ e.key }}">{{ e.company }}.vkey</a>{% endif %}{% if not loop.last %};{% endif %}{% endfor %}</li>
+      <li>Run, for each company:{% for e in exports %}<pre class="cmd">{{ e.command }}</pre>{% endfor %}<span class="small muted">This runs adk-auth's signed-audit verifier, the same code as <span class="mono">adk-rust audit verify</span> at the pinned adk-rust revision, shipped in this repo as <span class="mono">agentrix-saas audit verify</span>.</span></li>
+      <li>Flip one byte in the log and run it again: it fails.</li>
+    </ol>
+    {% else %}
+    <p class="small muted">The log's export isn't published on this node yet. When it is, its two files appear here with the one command that checks them.</p>
+    {% endif %}
+  </article>
+
+  <article class="card" aria-labelledby="keys-h">
+    <h2 id="keys-h">The agents' public keys</h2>
+    <p class="small">Agents sign every request to another company (Web Bot Auth, IETF working-group draft). The other side checks the signature against these directories:</p>
+    <ul class="plain links-list">
+      <li><a href="{{ links.pay }}/.well-known/http-message-signatures-directory">Agentrix's key directory</a></li>
+      <li><a href="{{ links.kilele }}/.well-known/http-message-signatures-directory">Kilele Bakery's key directory</a></li>
+      <li><a href="{{ links.pay }}/.well-known/agentrix/agents.json">Who signs with which key</a></li>
+    </ul>
+    {% if keys %}
+    {{ ui.data_table([{"key": "company", "label": "Company"}, {"key": "agent", "label": "Agent"}, {"key": "kid", "label": "Key id"}], keys) }}
+    {% elif signers %}
+    {{ ui.data_table([{"key": "company", "label": "Company"}, {"key": "agent", "label": "Agent"}, {"key": "kid", "label": "Key id"}], signers) }}
+    {% endif %}
+  </article>
+</div>
+
+<section class="section" aria-labelledby="suite-h">
+  <div class="spread"><h2 id="suite-h">The attack suite</h2>{% if suite %}<span class="chip{% if held == suite.cases|length %} chip-ok{% else %} chip-risk{% endif %}">{{ held }} of {{ suite.cases|length }} held</span>{% endif %}</div>
+  {% if suite %}
+  <p class="small muted">{% if suite.suite %}{{ suite.suite }}. {% endif %}{% if suite.committed %}Case list committed first as <span class="mono">{{ suite.committed }}</span>. {% endif %}{% if suite.ran_at %}Ran {{ suite.ran_at }}. {% endif %}{% if suite.scored_from %}Scored from {{ suite.scored_from }}, never from the conversation.{% endif %}</p>
+  <div class="table-wrap"><table class="data">
+    <thead><tr><th scope="col">Attack</th><th scope="col">Expected</th><th scope="col">What happened</th><th scope="col">Evidence</th><th scope="col">Held</th></tr></thead>
+    <tbody>
+    {% for c in suite.cases %}
+      <tr><td><b>{{ c.name }}</b>{% if c.attack %}<br><span class="small muted">{{ c.attack }}</span>{% endif %}</td><td>{{ c.expected }}</td><td>{{ c.outcome }}</td><td class="small mono wrap-any">{{ c.evidence }}</td><td>{% if c.passed %}{{ ui.chip("Held", "ok") }}{% else %}{{ ui.chip("Failed", "risk") }}{% endif %}</td></tr>
+    {% endfor %}
+    </tbody>
+  </table></div>
+  {% if commitment %}<p class="small">{% if commitment.matches %}{{ ui.chip("Case list matches its commitment", "ok") }}{% else %}{{ ui.chip("Case list doesn't match the run's commitment", "risk") }}{% endif %} The committed list hashes to <span class="mono wrap-any">{{ commitment.hash }}</span>. <a href="/proofs/files/attacks.json">The case list</a></p>{% endif %}
+  <p class="small"><a href="/proofs/files/proofs/attacks.json">The results as JSON</a></p>
+  {% else %}
+  {{ ui.empty("The suite hasn't run on this node yet", "Its results appear here, read from the run's own output, as soon as it has.") }}
+  {% endif %}
+</section>
+
+{% if proofs_md %}
+<section class="section prose" aria-label="How the proofs work">
+{{ proofs_md|safe }}
+<p class="small"><a href="/proofs/files/PROOFS.md">PROOFS.md as text</a></p>
+</section>
+{% endif %}
+{% endblock %}
+{% block foot %}
+<footer class="foot"><div class="row"><span>Agentrix by Zavora · sandbox demo for the PayPal AI Hackathon · open source (MIT)</span><a href="/judges">For judges</a></div></footer>
+{% endblock %}

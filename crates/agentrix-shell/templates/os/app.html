@@ -1,0 +1,9 @@
+{% extends "os/base.html" %}
+{#- ShellPage::App · view::AppView (+ Chrome) { title, html }
+    Contract C9: a registered app's page inside the shell. The app renders `html` and escapes what it prints. -#}
+{% block title %}{{ title }} · {{ site.name }}{% endblock %}
+{% block field %}
+<section class="view on app-view">
+{{ html|safe }}
+</section>
+{% endblock %}

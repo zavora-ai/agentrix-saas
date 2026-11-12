@@ -1,0 +1,46 @@
+{% import "ui/kit.html" as ui %}
+<div class="field-head">
+  <div><h2>Notifications</h2><div class="sub">Where Agentrix reaches you about {{ site_name }}, and when.</div></div>
+  {{ ui.segmented(tabs, "Messages") }}
+</div>
+{% if saved %}<p class="note ok-note" role="status"><span>Saved. The next message follows these choices.</span></p>{% endif %}
+<div class="cards">
+  <article class="fcard span2" aria-labelledby="where-h">
+    <div class="fcard-head"><div class="who"><b id="where-h">What reaches you, and where</b><span class="state-line">Turn off what you'd rather read in the console</span></div></div>
+    {% if not_on %}<p class="small muted">{% for c in not_on %}{{ c.state }}. {% endfor %}Your choices apply as soon as each one is switched on.</p>{% endif %}
+    <form method="post" action="{{ base }}/notifications">
+      <table class="surface-table">
+        <thead><tr><th scope="col">Messages</th>{% for c in channels %}<th scope="col">{{ c.label }}</th>{% endfor %}</tr></thead>
+        <tbody>
+        {% for f in families %}
+          <tr>
+            <td><b>{{ f.label }}</b><br><span class="small muted">{{ f.covers }}</span></td>
+            {% for ch in f.channels %}
+            <td><label class="msg-check"><input type="checkbox" name="{{ f.key }}.{{ ch[0] }}"{% if ch[1] %} checked{% endif %}><span class="visually-hidden">{{ f.label }} by {{ ch[0] }}</span></label></td>
+            {% endfor %}
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+      <div class="verbs"><button class="btn btn-primary btn-sm" type="submit">Save</button></div>
+    </form>
+  </article>
+  <article class="fcard" aria-labelledby="always-h">
+    <div class="fcard-head"><div class="who"><b id="always-h">Always sent</b><span class="state-line">These can't be turned off</span></div></div>
+    <p>Sign-in codes, security alerts, receipts, invoices, payment problems and alarms when the site is down or payments fail. They always reach you, so nobody can quietly switch off your alarms.</p>
+  </article>
+  <article class="fcard" aria-labelledby="quiet-h">
+    <div class="fcard-head"><div class="who"><b id="quiet-h">Quiet hours</b><span class="state-line">Night Time runs {{ quiet_words }}, your site's time</span></div></div>
+    <p>Messages that can wait arrive when quiet hours end. Alarms and security alerts still reach you at night.</p>
+    <div class="verbs">{{ ui.button("Change quiet hours", href=console ~ "/settings", size="sm") }}</div>
+  </article>
+  <article class="fcard" aria-labelledby="wa-h">
+    <div class="fcard-head"><div class="who"><b id="wa-h">WhatsApp and Telegram</b><span class="state-line">{{ whatsapp_state }}</span></div></div>
+    <p>When you connect one, the morning brief and decisions can come there. From the chat you can open a decision or decline it. Approving always happens in the console, with your passkey or an authenticator code. Reply STOP to freeze every WebAgent.</p>
+  </article>
+  <article class="fcard" aria-labelledby="push-h">
+    <div class="fcard-head"><div class="who"><b id="push-h">Phone notifications</b><span class="state-line">{{ push_state }}</span></div></div>
+    <p>A notification only says that something is waiting, like "A decision is waiting". The details show only in the console, once you are past the lock screen.</p>
+  </article>
+</div>
+<link rel="stylesheet" href="/console/messages/assets/messages.css?v={{ ui_v }}">

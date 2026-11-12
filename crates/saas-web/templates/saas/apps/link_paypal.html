@@ -1,0 +1,19 @@
+{% extends "saas/apps/base.html" %}
+{% block title %}Link PayPal · {{ site.name }}{% endblock %}
+{% block field %}
+{{ ui.banner("wait", "Sandbox: no real money moves. Link a PayPal sandbox business account, never your own PayPal account.") }}
+<div class="field-head"><div><p class="eyebrow">Link PayPal · once</p><h1>Link {{ site.name }}'s PayPal to its agents</h1><div class="sub">PayPal tells us the account; your passkey says which agents may use it. Nothing typed in here becomes a PayPal id.</div></div></div>
+<article class="card ceremony" data-paypal-link data-api="{{ api }}"{% if binding %} data-binding="{{ binding }}"{% endif %}>
+  {% if binding %}
+    <p class="lead" data-link-status role="status">Reading what PayPal returned…</p>
+    <dl class="kv" data-link-draft hidden></dl>
+    <div class="sig" data-link-fp hidden><b>Your passkey signs</b> <span class="mono wrap-any" data-link-fp-value></span></div>
+    {% if may_act %}<div class="row"><button class="btn btn-primary btn-lg" type="button" data-link-approve hidden>Approve with passkey</button></div>{% endif %}
+    <pre class="cmd" data-link-signed hidden></pre>
+  {% else %}
+    <p>Start on PayPal: sign in to the business's PayPal account and save it with Agentrix. PayPal sends you back here to approve the link with your passkey.</p>
+    {% if may_act %}{{ ui.button("Link PayPal", href=api ~ "/start", kind="primary", size="lg") }}{% endif %}
+  {% endif %}
+</article>
+{% endblock %}
+{% block scripts %}<script type="module" src="/static/saas/paypal-link.js?v={{ saas_v }}"></script>{% endblock %}

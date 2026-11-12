@@ -1,0 +1,20 @@
+{#- A living mark for a desk (S-6). Sizes 20, 28, 40. -#}
+{% macro mark(d, size, site, cls="") -%}
+<span class="wa-living {{ cls }}" data-size="{{ size }}" data-color="{{ d.color }}" data-glyph="{{ d.glyph }}" data-seed="{{ d.seed }}" data-id="{{ d.id }}" data-site="{{ site.mark_key }}" data-family="{{ site.family }}" data-n="{{ site.squareness }}" data-mono="{{ d.name[:1] }}" aria-hidden="true"></span>
+{%- endmacro %}
+
+{#- A desk's menu item with its peek (S-1). -#}
+{% macro navdesk(d, site, right=false, current="") -%}
+<div class="wa-navitem">
+  <a href="{{ d.href }}" aria-haspopup="dialog" aria-expanded="false" aria-controls="peek-{{ d.id }}"{% if current == d.id %} aria-current="page"{% endif %}>{{ mark(d, 20, site) }}{{ d.name }}</a>
+  <div class="peek{% if right %} right{% endif %}" id="peek-{{ d.id }}" role="dialog" aria-label="{{ d.name }} WebAgent" data-desk="{{ d.id }}">
+    <div class="peek-head">{{ mark(d, 40, site, "lg") }}<div class="who"><b>{{ d.name }}</b><span>WebAgent · answers from this site</span></div><span class="wa-ai">AI</span><button class="icon-btn peek-x" type="button" aria-label="Close {{ d.name }}"></button></div>
+    <p class="peek-mandate">{{ d.mandate }}</p>
+    <div class="peek-facts">{% for f in d.facts %}<span class="fact"><span class="dot"></span>{{ f.k }} <i>{{ f.v }}</i></span>{% endfor %}{% if d.asof %}<span class="fact"><i>{{ d.asof }}</i></span>{% endif %}</div>
+    <div class="peek-starters">{% for s in d.starters %}<button class="starter" type="button" data-q="{{ s.text }}"><span>{{ s.text }}</span>{% if s.instant %}<small>Instant</small>{% endif %}</button>{% endfor %}</div>
+    <div class="peek-body"><div class="wa-thread" data-role="thread" role="log" aria-label="Conversation with {{ d.name }}"></div></div>
+    <form class="wa-input" data-role="form" action="/ask" method="post"><label class="sr-only" for="pq-{{ d.id }}">Ask {{ d.name }}</label><input id="pq-{{ d.id }}" name="q" autocomplete="off" placeholder="Ask {{ d.name }}…"><button class="wa-send" type="submit" aria-label="Send"></button></form>
+    <div class="peek-foot"><span>Click <b>{{ d.name }}</b> to open its page</span><span data-role="pin">Esc to close</span></div>
+  </div>
+</div>
+{%- endmacro %}

@@ -1,0 +1,39 @@
+{% extends shell.layout %}
+{% import "shop/parts.html" as p %}
+{% block styles %}{{ super() }}{{ p.styles(shell) }}{% endblock %}
+{% block main %}
+<div class="shop">
+  <p class="k-crumb"><a href="/orders">Your orders</a> · <a href="/orders/{{ o.id }}">{{ o.id }}</a> · Receipt</p>
+  {% if payment %}
+  <div class="k-card k-receipt">
+    <div class="k-head"><h1>Receipt · {{ o.id }}</h1><span class="k-pill ok">Paid</span></div>
+    {% if shell.sample or payment.sample %}<p class="k-note warn">Sample receipt: PayPal test payment, no real money moved.</p>{% endif %}
+    <div>
+      {% for l in lines %}<div class="k-line"><span>{{ l.name }}</span><b>{{ l.amount }}</b></div>{% endfor %}
+      <div class="k-total"><span>Total</span><span>{{ o.total }}</span></div>
+    </div>
+    <dl class="k-meta">
+      <dt>{% if shell.sample or payment.sample %}Charged (test){% else %}Charged{% endif %}</dt><dd>{{ payment.charged }}</dd>
+      {% if payment.usd %}<dt>Rate</dt><dd>{{ rate }}. {{ short }}'s posted rate, pinned on this order</dd>{% endif %}
+      <dt>Paid to</dt><dd>{{ payee }}{% if shell.sample %} · {{ shell.site.host }}{% elif domain %} · {{ domain }}{% endif %}</dd>
+      <dt>Paid on</dt><dd>{{ payment.paid_at }}</dd>
+      <dt>Receipt</dt><dd class="mono">{{ payment.id }}</dd>
+      {% if payment.provider_ref %}<dt>{{ payment.rail }} reference</dt><dd class="mono">{{ payment.provider_ref }}</dd>{% endif %}
+    </dl>
+    {% for r in refunds %}<p class="{% if r.state == 'done' %}k-okline{% else %}k-waitline{% endif %}">{{ r.words }}</p>{% endfor %}
+    {% if payment.sample %}
+    <p class="k-small">A sample payment isn't signed, because nothing was charged. A real payment's receipt is signed by the payment service that took it, so anyone can check it.</p>
+    {% else %}
+    <p class="k-small">{{ payment.rail }} also sends its own receipt for {{ payment.amount }}. Both show the same amount and payee.</p>
+    {% endif %}
+  </div>
+  <div class="k-acts"><a class="k-btn ghost" href="/orders/{{ o.id }}">Back to {{ o.id }}</a></div>
+  {% else %}
+  <div class="k-card">
+    <h1>No receipt yet</h1>
+    <p>{{ o.id }} isn't paid, so there's no receipt. It appears here once it's paid.</p>
+    <div class="k-acts">{% if o.payable %}<a class="k-btn" href="/orders/{{ o.id }}/pay">Pay for {{ o.id }}</a>{% endif %}<a class="k-btn ghost" href="/orders/{{ o.id }}">Open {{ o.id }}</a></div>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

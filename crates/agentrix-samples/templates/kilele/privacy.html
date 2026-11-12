@@ -1,0 +1,98 @@
+{% extends "kilele/layout.html" %}
+{% block main %}
+<section class="b-pagehead" id="top">
+  <h1>Privacy</h1>
+  <p>What {{ shell.site.name }} keeps about you, why, and for how long. It's a sample: the bakery and its people are invented, and payments run in PayPal's sandbox, so no real money moves. Agentrix runs this site.</p>
+  <nav class="help-toc" aria-label="On this page"><a href="#account">Your account</a><a href="#codes">Sign-in codes</a><a href="#orders">Orders and holds</a><a href="#desks">The desks</a><a href="#visits">Visits</a><a href="#cookies">Cookies</a><a href="#others">Who else sees it</a><a href="#your-data">Your data</a><a href="#report">Report a look-alike</a></nav>
+</section>
+
+<section class="b-section" id="account">
+  <h2>Your account</h2>
+  <p class="sub">You can browse, ask the desks and hold loaves without one. Ordering needs one.</p>
+  <div class="b-card">
+    <p>An account works on <b>{{ shell.site.host }}</b> only. It keeps:</p>
+    <ul class="ticks">
+      <li>Your name and email, and your phone if you give it, for receipts, delivery and order updates.</li>
+      <li>Your passkey's public key and your recovery codes, stored so nobody can read them back.</li>
+      <li>Which devices signed in and when, so the site can warn you about a sign-in that wasn't you.</li>
+      <li>Anything extra you turn on in <a class="link" href="/account/choices">Your choices</a>, with a receipt each time you turn it on or off.</li>
+    </ul>
+    <p><a class="link" href="/account/keeps">Everything your account keeps</a></p>
+  </div>
+</section>
+
+<section class="b-section" id="codes">
+  <h2>Sign-in codes</h2>
+  <div class="b-card">
+    <p>Without a passkey, you sign in with a 6-digit code sent to your email. It works once, for {{ privacy.code_minutes }} minutes, and stops after {{ privacy.code_tries }} wrong tries.</p>
+    <p>The site holds the code in memory only while it works, and the copy of the email it keeps has the code taken out. Nobody from {{ shell.site.name }} will ever ask you for a code.</p>
+  </div>
+</section>
+
+<section class="b-section" id="orders">
+  <h2>Orders and holds</h2>
+  <div class="b-card">
+    <p>When you order, the site keeps your name, email and phone, who receives it and where, what you ordered, the time slot and any note. It keeps each step of the order with it, the PayPal reference for the payment and the receipt. {{ shell.site.owner }} and the desks use them to bake and deliver your order.</p>
+    <p>Saved addresses stay until you delete them. Orders and receipts stay as the bakery's records, even if you delete your account. A hold keeps only the name you give it.</p>
+    <p>You pay on PayPal's own page, so the site never sees a card number or a PayPal password. When this sample is reset with fresh data, its orders and holds are cleared.</p>
+  </div>
+</section>
+
+<section class="b-section" id="desks">
+  <h2>What you ask the desks</h2>
+  <div class="b-card">
+    <p>The desks are AI. The site doesn't save what you ask them: the conversation stays in this tab and is gone when you close it.</p>
+    <p>If a desk passes your question to {{ shell.site.owner }}, the site keeps the question, the page you asked on and any contact you leave, so {{ shell.site.owner }} can reply.</p>
+    <p>A picture of a cake idea is drawn from the bakery's own options, never your words, and isn't tied to you.</p>
+  </div>
+</section>
+
+<section class="b-section" id="visits">
+  <h2>Visits</h2>
+  <div class="b-card">
+    <p>The site counts visits without cookies. For each day it keeps totals: which page, the website you came from (just its name, such as google.com), and whether it was a phone, a tablet or a computer.</p>
+    <p>It never keeps your internet address, your browser's details or anything that says who you are, and it deletes the totals after {{ privacy.visit_months }} months. Browsers that send Global Privacy Control aren't counted. To stop counting on this device, tap Don't count my visits at the bottom of the page; this browser remembers that choice.</p>
+  </div>
+</section>
+
+<section class="b-section" id="cookies">
+  <h2>Cookies and this browser</h2>
+  <div class="b-card">
+    <p>A cookie appears only when you use what it's for, and only {{ shell.site.host }} can read it:</p>
+    <ul class="ticks">
+      <li>One keeps your bag for {{ privacy.bag_days }} days.</li>
+      <li>One keeps you signed in for {{ privacy.session_days }} days.</li>
+      <li>One remembers if you said Not now to a passkey.</li>
+    </ul>
+    <p>A cake design you're making stays in this tab while you sign in. There are no tracking or advertising cookies, and nothing from other companies loads on these pages.</p>
+  </div>
+</section>
+
+<section class="b-section" id="others">
+  <h2>Who else sees it</h2>
+  <div class="b-card">
+    <ul class="ticks">
+      <li><b>Agentrix</b> runs this site, so what this page lists is kept on its servers. Write to <a class="link" href="mailto:{{ privacy.report_to }}">{{ privacy.report_to }}</a> about any of it.</li>
+      <li><b>PayPal</b>, when you pay on its page.</li>
+      <li><b>The AI service</b> that writes the desks' answers gets what you ask, with the parts of this site it needs to answer.</li>
+      <li><b>The email service</b> that delivers sign-in codes and order updates gets your email address and the message.</li>
+    </ul>
+  </div>
+</section>
+
+<section class="b-section" id="your-data">
+  <h2>Your data</h2>
+  <div class="b-card">
+    <p>Sign in and open <a class="link" href="/account/data">Your data</a>. Download my data gives you one file with what the site keeps about you. Delete my account erases your account, sign-ins, devices, choices and saved addresses, once none of your orders is still open. Orders and receipts stay as the bakery's records.</p>
+  </div>
+</section>
+
+<section class="b-section" id="report">
+  <h2>Report a site pretending to be this one</h2>
+  <div class="b-card">
+    <p>The desks on {{ shell.site.name }} never ask for a password, a sign-in code or card details. Your passkey works on {{ shell.site.host }} only, so a copy at another address can't use it.</p>
+    <p>If a site that looks like this one asks for any of those, don't type anything. Tell Agentrix, which runs this sample: write to <a class="link" href="{{ privacy.report_href }}">{{ privacy.report_to }}</a> with the address you saw and what it asked for.</p>
+    <p><a class="b-btn" href="{{ privacy.report_href }}">Email a report to Agentrix</a></p>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,225 @@
+{% extends "base.html" %}
+{#- The home page · view::HomeView · seven screens, one button (reports/Agentic home page that converts.md, 8 Nov). Screen 1 is the free check, in place; the detail lives on the desks' pages one click away. -#}
+{% from "macros.html" import paste, person %}
+{% block title %}Agentrix · Your website, run by AI agents you can check{% endblock %}
+{% block description %}Agentrix turns a business's website into a team of AI agents. Each can be identified by anyone, answers to a human with a passkey, and keeps a PayPal wallet anyone can check.{% endblock %}
+{% block head %}
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Agentrix">
+<meta property="og:title" content="Agentrix: your website, run by AI agents you can check.">
+<meta property="og:description" content="Agentrix turns a business's website into a team of AI agents. Each can be identified by anyone, answers to a human with a passkey, and keeps a PayPal wallet anyone can check.">
+<meta property="og:url" content="{{ origin }}/">
+<meta property="og:image" content="{{ origin }}/_home/og.png?v={{ v }}">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Agentrix: Upgrade your website into WebAgents.">
+<meta name="twitter:card" content="summary_large_image">
+{% endblock %}
+
+{% block main %}
+<section class="hero wrap" aria-labelledby="hero-title">
+  <div class="hero-text" id="check">
+    <p class="eyebrow">Agentrix WebAgent Platform</p>
+    <h1 id="hero-title">Turn your website into a team of <span>AI agents.</span></h1>
+    <p class="lead">Each one can be identified by anyone, answers to a human with a passkey, and keeps a PayPal wallet anyone can check.</p>
+    <p class="hero-verbs"><a class="btn btn-primary" href="{{ judges_url }}">For judges: run the day</a> <a class="btn" href="{{ verify_url }}">Verify an agent</a></p>
+    {{ paste("url", assess_action, true, true) }}
+    {{ person(contact) }}
+  </div>
+
+  <figure class="hero-film">
+    <div class="hero-film-frame">
+      {% if film.hero %}
+      <video muted loop playsinline preload="none" width="1280" height="720" poster="/_home/hero-poster.webp?v={{ v }}" aria-label="A sample story: a bakery's Saturday, before and after" aria-describedby="hero-film-says">
+        {% if film.hero.webm %}<source src="{{ film.hero.webm }}" type="video/webm">{% endif %}
+        <source src="{{ film.hero.mp4 }}" type="video/mp4">
+      </video>
+      {% else %}
+      <img src="/_home/hero-poster.webp?v={{ v }}" width="1280" height="720" alt="Kilele Bakery's staff at closing time, beside the site's list of decisions. On screen: Agentrix WebAgents are proactive, responsive and supportive of customer needs.">
+      {% endif %}
+      <span class="film-tag" role="img" aria-label="Sample story, made with AI" title="Sample story, made with AI"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2l1.9 5.6 5.6 1.9-5.6 1.9L12 17l-1.9-5.6-5.6-1.9 5.6-1.9z"/></svg>AI</span>
+    </div>
+    <figcaption>
+      {% if film.hero %}<button type="button" class="film-toggle" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path class="i-play" d="M8 5v14l11-7z"/><path class="i-pause" d="M7 5h4v14H7zM13 5h4v14h-4z"/></svg><span>Play</span></button>{% endif %}
+      <span id="hero-film-says">See how a bakery transformed its business into an Agentrix Website.{% if film.film %} <a href="/film">Watch the whole film</a>.{% endif %}</span>
+    </figcaption>
+    {% if film.hero %}<script src="/_home/hero.js?v={{ v }}" defer></script>{% endif %}
+  </figure>
+</section>
+
+
+<section class="screen screen-alt" id="film" aria-labelledby="film-title">
+  <div class="wrap">
+    <h2 id="film-title">How an Agentrix Website can transform your business</h2>
+    <p class="lead">Every Saturday, Kilele Bakery's owner was overwhelmed. Agentrix gave the site WebAgents, and now customers get answers while the bread bakes.</p>
+    <p class="small muted">AI-generated images</p>
+    <div class="film-box"{% if film.film %} data-film="{{ film.film.mp4 }}"{% endif %}>
+      <img src="/_home/film-poster.webp?v={{ v }}" width="1280" height="720" alt="The film's first frame: a queue outside Kilele Bakery, and its old website's dashboard." loading="lazy">
+      <span class="film-tag" role="img" aria-label="Sample story, made with AI" title="Sample story, made with AI"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2l1.9 5.6 5.6 1.9-5.6 1.9L12 17l-1.9-5.6-5.6-1.9 5.6-1.9z"/></svg>AI</span>
+      {% if film.film %}<a class="film-play" href="/film" aria-label="Play the film (2 min 24 s)"><span class="film-play-ico" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><path d="M8 5v14l11-7z"/></svg></span><span class="film-play-len" aria-hidden="true">2:24</span></a>{% endif %}
+    </div>
+    <ol class="chapters">
+      <li><img src="/_home/marks/role-concierge.svg?v={{ v }}" width="30" height="32" alt="" aria-hidden="true" loading="lazy"><div><b>Before</b> <span class="chapter-at" data-at="0">0:00</span><p>A busy shop, and an idle, passive website.</p></div></li>
+      <li><img src="/_home/marks/role-mover.svg?v={{ v }}" width="30" height="32" alt="" aria-hidden="true" loading="lazy"><div><b>The move</b> <span class="chapter-at" data-at="54">0:54</span><p>A free check of the current website, then the move to WebAgents.</p></div></li>
+      <li><img src="/_home/marks/role-cashier.svg?v={{ v }}" width="30" height="32" alt="" aria-hidden="true" loading="lazy"><div><b>After</b> <span class="chapter-at" data-at="66">1:06</span><p>The website is now an autonomous AI business that works for you, handling orders, talking with customers and supporting them.</p></div></li>
+    </ol>
+    {% if film.film %}<p class="small"><a href="/film">Read what happens, scene by scene</a></p>{% endif %}
+  </div>
+</section>
+
+<section class="screen wrap" id="samples" aria-labelledby="samples-title">
+  <p class="eyebrow">Agentrix WebAgent showcase websites</p>
+  <h2 id="samples-title">See three businesses after the move</h2>
+  <p class="lead">A bakery, a perfume shop and a local paper. Each keeps its own look and gets a team of WebAgents that answers customers from the site. Open one and ask it anything.</p>
+  <p class="small">These businesses are made up, to show what Agentrix does.</p>
+  <ul class="proof-cards">
+    {% for s in samples %}
+    <li class="proof-card s-{{ s.id }}">
+      <figure>
+        {% if s.picture %}<img src="{{ s.picture.url }}"{% if s.picture.width and s.picture.height %} width="{{ s.picture.width }}" height="{{ s.picture.height }}"{% endif %} alt="{{ s.picture.alt }}" loading="lazy">{% else %}<img src="/_home/shot-{{ s.id }}.webp?v={{ v }}" width="640" height="400" alt="The front page of the {{ s.name }} sample" loading="lazy">{% endif %}
+        <figcaption class="film-tag" role="img" aria-label="Sample, fictional business" title="Sample, fictional business"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2l1.9 5.6 5.6 1.9-5.6 1.9L12 17l-1.9-5.6-5.6-1.9 5.6-1.9z"/></svg>AI</figcaption>
+      </figure>
+      <h3>{{ s.name }}</h3>
+      <p class="sample-tagline">{{ s.tag }}</p>
+      <p class="proof-try">{{ s.try_this }}</p>
+      {% if s.url %}<a class="btn btn-sm" href="{{ s.url }}">Open the sample<span class="sr-only">: {{ s.name }}</span></a>{% else %}<p class="sample-soon">Opening soon at {{ s.host }}</p>{% endif %}
+    </li>
+    {% endfor %}
+  </ul>
+  <p class="small"><a href="/samples">See the samples and films for a shop, a paper and a salon</a></p>
+</section>
+
+<section class="screen screen-alt" id="owner" aria-labelledby="owner-title">
+  <div class="wrap owner">
+    <div class="owner-text">
+      <p class="eyebrow">The owner console</p>
+      <h2 id="owner-title">Your WebAgents work for you. You stay in charge.</h2>
+      <p class="lead">Every morning your Chief WebAgent tells you how the site did and what needs you. The rest of the team asks before anything that costs money or makes a promise.</p>
+      <ul class="owner-ways" data-walk>
+        <li class="owner-way" data-way="brief"><img src="/_home/marks/role-coordinator.svg?v={{ v }}" width="32" height="34" alt="" aria-hidden="true" loading="lazy"><div><b>A brief each morning</b><p>What happened, what's waiting for you and what the day cost, in a few lines.</p></div>
+          <figure class="owner-frame" id="owner-frame-brief"><img src="/_home/owner-brief.webp?v={{ v }}" width="1280" height="800" alt="The Back office of the Classy Perfumes sample's console. The Chief WebAgent's brief, written at 15:23: a quiet day, nothing needed approval, no orders are waiting, and models cost $0.10 across 33 calls. Beside it, AI spend today: $0.10 of a $5.00 daily limit." loading="lazy"><figcaption class="small muted">On the Classy Perfumes sample.</figcaption></figure></li>
+        <li class="owner-way" data-way="decide"><img src="/_home/marks/role-cashier.svg?v={{ v }}" width="32" height="34" alt="" aria-hidden="true" loading="lazy"><div><b>Decide with one tap</b><p>Allow it once or decline. Money and promises need your fingerprint, face or PIN.</p></div>
+          <figure class="owner-frame" id="owner-frame-decide"><img src="/_home/owner-decide.webp?v={{ v }}" width="1280" height="800" alt="The approval sheet over a held cake order on the Kilele Bakery sample: Amani W., 2-tier vanilla, collect Sat 14 Nov at 10:00. It asks for a code from an authenticator app that approves this one order, with Cancel and Approve with code." loading="lazy"><figcaption class="small muted">On the Kilele Bakery sample.</figcaption></figure></li>
+        <li class="owner-way" data-way="live"><img src="/_home/marks/role-concierge.svg?v={{ v }}" width="32" height="34" alt="" aria-hidden="true" loading="lazy"><div><b>Step into any conversation</b><p>Read along while a desk talks to a customer. Take over as yourself, then hand it back.</p></div>
+          <figure class="owner-frame" id="owner-frame-live"><img src="/_home/owner-live.webp?v={{ v }}" width="1280" height="800" alt="Live on the Kilele Bakery sample: the owner sits in on a visitor's chat on the cakes page, unseen. The visitor asks about a wedding cake for 120 guests, then whether it can be gluten-free. The Cakes desk says the pages don't say and offers to ask the bakery. A Take over button lets the owner reply in person." loading="lazy"><figcaption class="small muted">On the Kilele Bakery sample.</figcaption></figure></li>
+        <li class="owner-way" data-way="ask"><img src="/_home/marks/role-sales.svg?v={{ v }}" width="32" height="34" alt="" aria-hidden="true" loading="lazy"><div><b>Ask your team anything</b><p>"How was this week?" Your Chief answers from your own orders, questions and visits.</p></div>
+          <figure class="owner-frame" id="owner-frame-ask"><img src="/_home/owner-ask.webp?v={{ v }}" width="1280" height="800" alt="Talk to your Chief WebAgent on the Classy Perfumes sample. Asked how the week was, the Chief answers: 6 orders totalling KSh 58,700, one delivered, two out for delivery, two paid, and custom order CP-2016 for KSh 26,200 waiting for the owner's OK; three visitor questions still open; model spend today $0.11 of the $5 daily limit." loading="lazy"><figcaption class="small muted">On the Classy Perfumes sample.</figcaption></figure></li>
+      </ul>
+      <p class="owner-go"><a class="btn btn-primary" href="/samples/">Try the owner's side of a sample</a></p>
+    </div>
+  </div>
+</section>
+
+<section class="screen wrap" id="price" aria-labelledby="price-title">
+  <p class="eyebrow">Pricing</p>
+  <h2 id="price-title">{% if from_price %}Plans start at {{ from_price }} a month{% else %}Plans and prices{% endif %}</h2>
+  <p class="lead">Moving your site is free, and a 12-month plan comes with a {{ annual_discount_percent }}% discount. Pay annually or monthly in US dollars, through PayPal.</p>
+  {% if plans %}
+  <ul class="plans plans-home">
+    {% for p in plans %}
+    <li class="plan">
+      {% if p.first_month %}<p class="plan-offer">{{ p.first_month }}</p>{% endif %}
+      <h3>{{ p.name }}</h3>
+      <p class="plan-price"><b>USD {{ p.price | replace("$", "") }}</b> a {{ p.interval }}</p>
+      <ul class="plan-points">{% for point in p.points %}<li>{{ point }}</li>{% endfor %}</ul>
+      {% if p.webagents %}
+      <p class="plan-team-h">Your WebAgents</p>
+      {% for g in p.groups %}<p class="plan-group">{{ g.name }}</p>
+      <ul class="plan-team">{% for a in g.agents %}<li{% if a.soon %} class="soon"{% endif %}><b>{{ a.name }}</b> {{ a.role }}{% if a.soon %} <span class="plan-soon">Coming</span>{% endif %}</li>{% endfor %}</ul>{% endfor %}
+      {% endif %}
+      <a class="btn btn-primary plan-go" href="#check">Start with {{ p.name }}</a>
+    </li>
+    {% endfor %}
+  </ul>
+  <p class="small muted plans-note">The first-month AI is a launch offer. Need more AI? Buy credits as you go, at what the models cost plus a margin we show you. These are pilot prices. Running a large online store or many sites? We agree custom prices. <a href="/prices#questions">Price questions answered</a></p>
+  {% else %}
+  <p><a class="btn" href="/prices">See all plans</a></p>
+  {% endif %}
+</section>
+
+<section class="band band-cta" id="start" aria-labelledby="start-title">
+  <div class="wrap cta">
+    <h2 id="start-title">See what your site could do</h2>
+    <p>Paste your address. See your site's health, with the evidence for each finding.</p>
+    {{ paste("url-end", assess_action, false, true) }}
+    {{ person(contact) }}
+    <div class="fix" aria-labelledby="fix-title">
+      <h3 id="fix-title"><img src="/_home/marks/role-editor.svg?v={{ v }}" width="28" height="30" alt="" aria-hidden="true" loading="lazy">The weekly fix</h3>
+      <p class="fix-promise">Our Friday newsletter on what an ordinary website can become with Agentrix. Each issue shows one change you could make: a question your site answers on its own at midnight, an order it takes while you sleep, a page AI assistants can finally read and recommend.</p>
+      {% if issues.last_sent %}<p class="fix-last">The last fix: {{ issues.last_sent }}</p>{% endif %}
+      <form class="fix-join" method="post" action="/_home/fix/join" data-join>
+        <label for="fix-email">Your email</label>
+        <div class="ask-row"><input id="fix-email" name="email" type="email" autocomplete="email" required><button class="btn btn-coral" type="submit">Send me the weekly fix</button></div>
+        <p class="fix-small">We use your email only for this. You confirm by email first. Stop any time.</p>
+      </form>
+      <p class="fix-done" role="status" data-joined hidden></p>
+    </div>
+  </div>
+</section>
+
+<section class="screen wrap" id="team" aria-labelledby="team-title">
+  <h2 id="team-title">This site has a team of WebAgents.</h2>
+  <p class="lead">Each one does one job and shows what it is doing now.{% if desks_ai %} The desks that talk to you are AI.{% endif %} None of them guesses a price. Anything that costs money or makes a promise waits for a person.</p>
+  {% for side, label in [("front", "They talk to you"), ("back", "They work behind the scenes")] %}
+  <h3 class="team-side">{{ label }}</h3>
+  <ul class="team-cards">
+    {% for t in team if t.side == side %}
+    <li class="team-card"{% if t.desk %} data-desk="{{ t.desk }}"{% endif %}>
+      <img src="/_home/marks/role-{{ t.mark }}.svg?v={{ v }}" width="40" height="43" alt="" aria-hidden="true" loading="lazy">
+      <div class="team-body">
+        <p class="team-name">{{ t.name }} <span class="team-runs">{{ t.runs_on }}</span></p>
+        <p class="team-job">{{ t.job }}</p>
+        <p class="team-state" role="status">{{ t.state }}</p>
+        {% if t.action %}<p class="team-more"><a href="{{ t.action[1] }}">{{ t.action[0] }}</a></p>{% else %}<p class="team-more team-only">Only James talks to the Chief.</p>{% endif %}
+      </div>
+      {% if t.desk %}<div class="team-pop" hidden></div>{% else %}<div class="team-pop" hidden><div class="peek" role="dialog" aria-label="{{ t.name }}"><p class="peek-head"><b>{{ t.name }}</b></p><p class="peek-job">{{ t.job }}</p><p class="peek-fact">{{ t.state }}</p>{% if t.action %}<p><a class="btn btn-sm" href="{{ t.action[1] }}">{{ t.action[0] }}</a></p>{% else %}<p class="peek-foot">Only James talks to the Chief.</p>{% endif %}</div></div>{% endif %}
+    </li>
+    {% endfor %}
+  </ul>
+  {% endfor %}
+</section>
+{% if film.film %}<script src="/_home/play.js?v={{ v }}" defer></script>{% endif %}
+
+{#- The free check, in place: check.js fills these with W4's Assess events. Without JavaScript the box posts to Assess and its own page shows the check. -#}
+<template id="check-tpl">
+  <div class="check-live" role="region" aria-labelledby="check-title">
+    <p class="check-head"><img class="check-mark" src="/_home/marks/role-mover.svg?v={{ v }}" width="34" height="36" alt="" aria-hidden="true"><b id="check-title">Checking <span data-site></span></b></p>
+    <p class="check-state" role="status" data-state>Starting the check.</p>
+    <ol class="check-findings" data-findings aria-label="What we found so far"></ol>
+    <div class="check-done" data-done hidden>
+      <p class="check-done-words" data-done-words>Your report is ready.</p>
+      <p><a class="btn btn-ghost" data-report href="/">See the full report</a></p>
+      <section class="talk" data-talk aria-labelledby="talk-title">
+        <h2 class="keep-title" id="talk-title">Talk about your site</h2>
+        <p class="talk-ai">{% if desks_ai %}You're talking to AI. It reads only your public pages and never guesses.{% else %}Answers come from your own pages, quoted as they are.{% endif %}</p>
+        <p class="talk-ask">What do customers ask you most on WhatsApp? Ask it here and see how your new site would answer.</p>
+        <div class="peek-starters">
+          <button type="button" class="starter" data-q="What did you find first?">What did you find first?</button>
+          <button type="button" class="starter" data-q="Is anything hacked?">Is anything hacked?</button>
+          <button type="button" class="starter" data-focus>Ask my new site a customer's question</button>
+          <button type="button" class="starter" data-q="What happens next?">What happens next?</button>
+        </div>
+        <div class="answers" role="log" aria-live="polite" aria-label="Answers about your site"></div>
+        <form class="ask" data-talk-form>
+          <label class="sr-only" for="talk-q">Your question</label>
+          <input id="talk-q" name="q" type="text" maxlength="400" autocomplete="off" placeholder="Do you deliver on Sundays?" required>
+          <button class="btn btn-sm btn-primary" type="submit">Ask</button>
+        </form>
+      </section>
+      <form class="keep" method="post" action="/_home/keep" data-keep>
+        <h2 class="keep-title">Keep this report</h2>
+        <input type="hidden" name="assessment" data-assessment>
+        <label for="keep-email">Your email</label>
+        <div class="keep-row"><input id="keep-email" name="email" type="email" autocomplete="email" required><button class="btn btn-primary" type="submit">Send my report</button></div>
+        <label class="keep-tick"><input type="checkbox" name="weekly" value="1"> Also send me one website fix a week. Stop any time.</label>
+        <p class="keep-small">We use your email to send this report. We keep it for 30 days. <a href="/privacy">Privacy</a></p>
+      </form>
+      <p class="keep-result" role="status" data-kept hidden></p>
+    </div>
+    <p class="check-fail" role="alert" data-fail hidden></p>
+    <p class="check-again"><a href="/">Check another site</a></p>
+  </div>
+</template>
+<script src="/_home/check.js?v={{ v }}" defer></script>
+<script src="/_home/owner.js?v={{ v }}" defer></script>
+{% endblock %}

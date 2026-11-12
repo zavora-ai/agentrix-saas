@@ -1,0 +1,21 @@
+{
+ "site": {
+  "name": "Kilele Bakery",
+  "host": "kilele-bakery-sample.agentrix.website",
+  "sample": true
+ },
+ "person": {
+  "name": "Wanjiru"
+ },
+ "console_url": "https://agentrix.website/console/kilele-bakery-sample",
+ "incident": {
+  "what": "We misconfigured a backup copy of order records, and anyone on the internet could read it for 3 hours.",
+  "when": "Tue 17 Nov, 01:10 to 04:12",
+  "found": "Tue 17 Nov, 04:05, by our own monitoring",
+  "data": "Customer names, phone numbers and order totals. No passwords, codes or payment details.",
+  "affected": "212 customers of Kilele Bakery",
+  "done": "Closed the copy at 04:12, checked the access logs (2 requests, both from our own scanner), and changed the keys to the storage it was in.",
+  "your_steps": "Nothing is needed from you. If you want to tell your customers, a draft notice is ready in the console for you to edit and send.",
+  "url": "https://agentrix.website/console/kilele-bakery-sample/trust"
+ }
+}

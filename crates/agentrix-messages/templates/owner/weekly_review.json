@@ -1,0 +1,29 @@
+{
+ "site": {
+  "name": "Kilele Bakery",
+  "host": "kilele-bakery-sample.agentrix.website",
+  "sample": true
+ },
+ "person": {
+  "name": "Wanjiru"
+ },
+ "console_url": "https://agentrix.website/console/kilele-bakery-sample",
+ "review": {
+  "period": "Mon 9 to Sun 15 Nov",
+  "headline": "18 orders, KSh 46,200, and 3 questions the site couldn't answer.",
+  "lines": [
+   "The Concierge answered 61 questions; you taught it 2 new answers.",
+   "The Cashier refunded KSh 1,350 under your rule.",
+   "Christmas cake preorders: 23 of 60."
+  ],
+  "spend": {
+   "used": 1240,
+   "budget": 3870,
+   "currency": "KES"
+  },
+  "decided": 9,
+  "offers": [
+   "Let the Cashier hold up to 5 loaves until 12:00 without asking: you approved all 6 bigger holds this month."
+  ]
+ }
+}

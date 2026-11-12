@@ -1,0 +1,74 @@
+{% extends "kilele/layout.html" %}
+{% block styles %}{{ super() }}<link rel="stylesheet" href="/_s/studio.css?v={{ shell.v }}">{% endblock %}
+{% block main %}
+<section class="b-section oc" id="order">
+  <h2>Order a celebration cake</h2>
+  <p class="sub">{{ notice | capitalize }}. {{ owner }} confirms every cake herself. Prefer to design it with the Cakes desk? <a href="/cakes/studio">Open the cake studio</a>.</p>
+  <div class="order">
+    {% if held %}
+    <div class="summary">
+      <h3>Your request</h3>
+      <dl class="k-facts">
+        <div><dt>Cake</dt><dd>{{ held.cake }}</dd></div>
+        <div><dt>Message</dt><dd>{% if held.message %}“{{ held.message }}”{% else %}None{% endif %}</dd></div>
+        {% if held.note %}<div><dt>Note</dt><dd>{{ held.note }}</dd></div>{% endif %}
+        <div><dt>When</dt><dd>{{ held.when }}</dd></div>
+        <div><dt>Price</dt><dd>{{ held.total }}, which is {{ held.usd }} at Kilele's rate of {{ held.rate }}</dd></div>
+      </dl>
+      <p class="k-small">Priced from Kilele's price list, valid until {{ valid_until }}. Every cake from this form has {{ defaults }}; ask {{ owner }} on WhatsApp if you'd like something else.</p>
+      <p><a class="b-btn ghost" href="/order-a-cake">Request another cake</a></p>
+    </div>
+    {% else %}
+    <form class="form" id="orderform" method="post" action="/order-a-cake">
+      {% if error %}<p class="err" role="alert">{{ error }}</p>{% endif %}
+      <input type="hidden" name="key" value="{{ form.key }}">
+      <div class="two">
+        <label>Cake<select name="size" required>
+          {% for o in sizes %}<option value="{{ o.code }}"{% if form.size == o.code %} selected{% endif %}>{{ o.label }}, serves {{ o.serves }} · {{ o.price }}</option>{% endfor %}
+        </select></label>
+        <label>Sponge<select name="sponge" required>
+          {% for o in sponges %}<option value="{{ o.code }}"{% if form.sponge == o.code %} selected{% endif %}>{{ o.label }}{% if o.price %} · {{ o.price }}{% endif %}{% if o.only %} ({{ o.only }}){% endif %}</option>{% endfor %}
+        </select></label>
+      </div>
+      <div class="two">
+        <label>Collection or delivery<select name="fulfilment">
+          <option value="collection"{% if form.fulfilment != "delivery" %} selected{% endif %}>Collection, {{ address }}</option>
+          {% if zone %}<option value="delivery"{% if form.fulfilment == "delivery" %} selected{% endif %}>Delivery to {{ zone.areas }} · {{ zone.fee }}</option>{% endif %}
+        </select></label>
+        <label>Date<select name="date" required>
+          {% for d in days %}<option value="{{ d.date }}"{% if form.date == d.date %} selected{% endif %}>{{ d.label }}</option>{% else %}<option value="">No free days in the next three weeks</option>{% endfor %}
+        </select></label>
+      </div>
+      <label>Message on the cake <small>(up to {{ max_chars }} characters, free)</small><input name="message" type="text" maxlength="{{ max_chars }}" value="{{ form.message }}" placeholder="Happy birthday…"></label>
+      {% if zone %}<label>Deliver to <small>(only for delivery: a name and a place in {{ zone.areas }})</small><input name="recipient" type="text" maxlength="160" value="{{ form.recipient }}" placeholder="Amina, at home in Kilimani"></label>{% endif %}
+      <div class="two">
+        <label>Your name<input name="name" type="text" maxlength="80" autocomplete="name" value="{{ form.name }}" placeholder="Your name" required></label>
+        <label>WhatsApp number<input name="phone" type="tel" maxlength="30" autocomplete="tel" value="{{ form.phone }}" placeholder="+254 7…" required></label>
+      </div>
+      <label>Note for {{ owner }} <small>(optional)</small><input name="note" type="text" maxlength="240" value="{{ form.note }}" placeholder="No nuts"></label>
+      <button class="b-btn" type="submit">Request this cake</button>
+      <p class="k-small">Nothing is charged until {{ owner }} confirms. Prices from Kilele's price list, valid until {{ valid_until }}. The cake comes with {{ defaults }}.</p>
+    </form>
+    {% endif %}
+    <div class="side">
+      {% if held %}
+      <div class="held" id="held" role="status">
+        <span class="ai-pill">Order {{ held.order_id }} · waiting for {{ owner }}</span>
+        <h3>Waiting for {{ owner }}'s OK. Nothing charged.</h3>
+        <p>{{ confirmations }} When she approves, you pay on your order page.</p>
+        <ol class="track">
+          <li class="done"><i>✓</i>Requested</li>
+          <li class="now"><i>2</i>{{ owner }} confirms</li>
+          <li><i>3</i>Pay on your order page</li>
+          <li><i>4</i>{{ held.last_step }}</li>
+        </ol>
+        {% if held.signed_in %}<p><a class="b-btn ghost" href="{{ held.url }}">Open {{ held.order_id }}</a></p>{% else %}<p class="k-small">Keep the number {{ held.order_id }}. {{ owner }} replies on WhatsApp at {{ held.phone }}, and the Orders desk can tell you where it stands.</p>{% endif %}
+      </div>
+      {% endif %}
+      <div class="why" id="why">
+        <b>Why does a person confirm?</b><br>Kilele's Orders desk takes the request. The Cashier asks for payment only after {{ owner }} approves.
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

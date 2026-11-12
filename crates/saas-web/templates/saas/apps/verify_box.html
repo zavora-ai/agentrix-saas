@@ -1,0 +1,46 @@
+{#- The Verify box, the token check and the badges. View: badges [badge_row], compact (the Verify box alone), error, note, verify_url, token_url. -#}
+{% import "ui/kit.html" as ui %}
+{% if note %}{{ ui.banner("", note) }}{% endif %}
+<form class="card verify-box" data-verify action="{{ verify_url }}" method="get">
+  <label for="verify-did"><b>Verify an agent</b> <span class="small muted">{% if compact %}Paste any agent's DID.{% else %}Paste any of this site's agent DIDs.{% endif %}</span></label>
+  <div class="askline">
+    <input id="verify-did" name="did" list="verify-dids" autocomplete="off" spellcheck="false" placeholder="did:web:…:agents:cashier" required maxlength="512"{% if badges %} value="{{ badges[0].did }}"{% endif %}>
+    <button class="btn btn-primary" type="submit">Verify</button>
+  </div>
+  <datalist id="verify-dids">{% for p in badges %}<option value="{{ p.did }}">{{ p.role }}</option>{% endfor %}</datalist>
+  <div class="verify-result" data-verify-result role="status" aria-live="polite"></div>
+</form>
+{% if token_url and not compact %}
+<form class="card verify-box" data-verify-token action="{{ token_url }}" method="post">
+  <label for="verify-token"><b>Check an agent's token</b> <span class="small muted">A token an agent presents, from its own site or a cloud: who it names, and who vouched for it.</span></label>
+  <div class="askline">
+    <textarea id="verify-token" name="token" rows="2" spellcheck="false" autocomplete="off" required maxlength="16384" placeholder="eyJ…"></textarea>
+    <button class="btn" type="submit">Check token</button>
+  </div>
+  <div class="verify-result" data-verify-result role="status" aria-live="polite"></div>
+</form>
+{% endif %}
+{% if compact %}{% elif badges %}
+<div class="agent-badges">
+{% for p in badges %}
+  <article class="card agent-badge{% if p.frozen %} frozen{% endif %}">
+    <div class="spread"><h3>{{ p.name }}</h3>{% if p.frozen %}{{ ui.chip("Frozen", "risk") }}{% else %}{{ ui.chip("Active", "ok") }}{% endif %}</div>
+    <p class="mono small wrap-any">{{ p.did }}</p>
+    <dl class="kv">
+      <dt>Also known as</dt><dd class="mono small">{{ p.urn }}</dd>
+      <dt>Secrets</dt><dd>Holds no secrets; PayPal access is issued per call</dd>
+      <dt>Site</dt><dd>{{ p.site }}{% if p.sample %} <span class="muted small">(sample site)</span>{% endif %}<br><span class="mono small">{{ p.site_did }}</span></dd>
+      <dt>Answers to</dt><dd>{{ p.sponsor }}{% if p.passkey %} · <span class="mono small">{{ p.passkey }}</span>{% if p.approved_at %} · approved {{ p.approved_at }}{% endif %}{% else %} · <span class="muted">no passkey linked yet</span>{% endif %}</dd>
+      <dt>Keys</dt><dd>{% if p.keys %}<span class="mono small">{{ p.keys }}</span>{% else %}<span class="muted">none published on this node</span>{% endif %}</dd>
+      <dt>PayPal</dt><dd>{% if p.paypal %}linked ({{ p.paypal.environment }}) · saved payment …{{ p.paypal.tail }} · binding <span class="mono small">{{ p.paypal.binding }}</span>{% else %}<span class="muted">not linked yet</span>{% endif %}</dd>
+      <dt>Mandate</dt><dd>{% if p.mandate %}{{ p.mandate.summary }} · until {{ p.mandate.expires }} <span class="mono small">{{ p.mandate.digest }}</span>{% else %}<span class="muted">none signed yet</span>{% endif %}</dd>
+      <dt>Wallet</dt><dd>{% if p.wallet %}{{ p.wallet }}{% else %}<span class="muted">no checkpoint yet</span>{% endif %}</dd>
+      <dt>Vouched for</dt><dd>{% if p.voucher %}by Agentrix, the platform hosting the site <span class="mono small">{{ p.voucher }}</span>{% else %}<span class="muted">no voucher yet</span>{% endif %}</dd>
+    </dl>
+    <p class="small"><a href="{{ p.badge_url }}">badge.json</a> · good until {{ p.expires }}</p>
+  </article>
+{% endfor %}
+</div>
+{% else %}
+{{ ui.quiet(error if error else "No agents listed.") }}
+{% endif %}

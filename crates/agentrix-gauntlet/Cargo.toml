@@ -1,0 +1,57 @@
+[package]
+name = "agentrix-gauntlet"
+description = "Runs the ten containment attacks against a deployment and scores them from receipts only."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+authors.workspace = true
+
+# The library (`score`, `verify_receipt`, the attack manifest) is pure and small, so
+# agentrix-node can recompute a posted run with `default-features = false`. The `runner`
+# feature adds the command-line runner and its HTTP client; `server` adds the two platform
+# routes (`GET /receipts`, `POST /gauntlet/runs`) over a `RunBackend` the node implements.
+[lib]
+path = "src/lib.rs"
+
+[[bin]]
+name = "agentrix-gauntlet"
+path = "src/main.rs"
+required-features = ["runner"]
+
+[features]
+default = ["runner", "server"]
+runner = [
+    "dep:anyhow",
+    "dep:chrono",
+    "dep:clap",
+    "dep:reqwest",
+    "dep:tokio",
+    "dep:tracing",
+    "dep:tracing-subscriber",
+]
+server = ["dep:anyhow", "dep:async-trait", "dep:axum", "dep:tracing"]
+
+[dependencies]
+agentrix-types.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+
+anyhow = { workspace = true, optional = true }
+async-trait = { workspace = true, optional = true }
+axum = { workspace = true, optional = true }
+chrono = { workspace = true, optional = true }
+clap = { workspace = true, optional = true }
+reqwest = { workspace = true, optional = true }
+tokio = { workspace = true, optional = true }
+tracing = { workspace = true, optional = true }
+tracing-subscriber = { workspace = true, optional = true }
+
+[dev-dependencies]
+chrono.workspace = true
+tokio.workspace = true
+tower.workspace = true
+
+[lints]
+workspace = true

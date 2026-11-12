@@ -1,0 +1,14 @@
+<section class="acct" id="acct" data-acct="recovery-codes" data-site="{{ host }}">
+  <div>
+    <h1 class="acct-h">Save your recovery codes</h1>
+    <p class="acct-why">We show these once. Each one works one time, if you lose the phone that has your passkey or can't get to your email.</p>
+  </div>
+  <ol class="codes" id="acct-codes" aria-label="Recovery codes">
+    {% for code in codes %}<li>{{ code }}</li>{% endfor %}
+  </ol>
+  <div class="acct-row">
+    <button class="btn ghost" type="button" id="acct-download" hidden>Download</button>
+    <a class="btn" href="{{ next }}">I've saved them</a>
+  </div>
+  <p class="small">Keep them somewhere other than this phone: a password manager, or on paper at home.</p>
+</section>

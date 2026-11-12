@@ -1,0 +1,1 @@
+{"site": {"name": "Kilele Bakery", "host": "kilele-bakery-sample.agentrix.website", "sample": true}, "person": {"name": "Wanjiru"}, "console_url": "https://agentrix.website/console/kilele-bakery-sample", "fallback": {"domain": "kilele-bakery.example", "retires_on": "Mon 14 Dec", "days_left": 7}}

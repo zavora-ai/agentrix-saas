@@ -1,0 +1,19 @@
+/target
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+.DS_Store
+node_modules/
+
+# Local data and credentials never belong in the repository.
+*.db
+*.db-wal
+*.db-shm
+*.age
+.agentrix-local/
+secrets/
+deploy/.state/
+# Local agent worktrees.
+.claude/worktrees/

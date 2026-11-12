@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{#- A desk's answer as a page, for a browser without JavaScript (GET /_home/ask). Never indexed. -#}
+{% block title %}{{ desk.name }} · Agentrix{% endblock %}
+{% block path %}{{ desk.href }}{% endblock %}
+{% block head %}<meta name="robots" content="noindex">{% endblock %}
+{% block main %}
+<section class="desk-intro wrap" aria-labelledby="ask-title">
+  <p class="eyebrow">{{ answer.name }}</p>
+  <h1 id="ask-title">{{ q }}</h1>
+  <div class="answer-page">
+    {{ answer.html|safe }}
+    {% if answer.sources %}<ol class="answer-sources">{% for s in answer.sources %}<li><a href="{{ s.href }}">{{ s.label }}</a></li>{% endfor %}</ol>{% endif %}
+    <p class="answer-foot">{{ answer.footer }}</p>
+    {% if answer.step %}<p><a class="btn" href="{{ answer.step.href }}">{{ answer.step.label }}</a></p>{% endif %}
+  </div>
+  <form class="ask ask-page" method="get" action="/_home/ask">
+    <input type="hidden" name="desk" value="{{ desk.id }}">
+    <label for="ask-again">Ask {{ desk.name }} something else</label>
+    <div class="ask-row"><input id="ask-again" name="q" type="text" maxlength="400" required><button class="btn btn-primary" type="submit">Ask</button></div>
+  </form>
+  <p class="small"><a href="{{ desk.href }}">Back to {{ desk.name }}</a> · <a href="/">Home</a></p>
+</section>
+{% endblock %}

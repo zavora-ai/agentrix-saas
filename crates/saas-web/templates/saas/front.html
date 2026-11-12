@@ -1,0 +1,66 @@
+{% extends "ui/layouts/page.html" %}
+{% import "ui/kit.html" as ui %}
+{% import "saas/macros.html" as s %}
+{% block title %}Agentrix · an AI company that runs itself, inside the authority its owner signs{% endblock %}
+{% block description %}Agentrix sells WebAgent plans and runs its own receivables, payables and debt with AI agents, settled on PayPal and booked in Zavora ERA.{% endblock %}
+{% block styles %}<link rel="stylesheet" href="/static/saas/saas.css?v={{ saas_v }}">{% endblock %}
+{% block nav %}{{ s.money_nav() }}{% endblock %}
+{% block topright %}<a class="btn btn-sm" href="/console">Sign in</a>{% endblock %}
+{% block main_class %}wrap{% endblock %}
+{% block main %}
+<section class="hero">
+  <p class="eyebrow">Agentrix · {{ host }}</p>
+  <h1>An AI company that bills, collects, pays and settles on its own.</h1>
+  <p class="lead">Agentrix sells WebAgent plans. Its agents run the receivables, payables and debt behind them: autonomous inside the authority the owner signs, settled on PayPal, booked in Zavora ERA, and provable from a signed audit log.</p>
+  <div class="row">
+    <a class="btn btn-primary btn-lg" href="/plans">See the plans</a>
+    <a class="btn btn-lg" href="#desks">Talk to Sales</a>
+    <a class="btn btn-lg btn-ghost" href="/board/">Open the treasury board</a>
+    <a class="btn btn-lg btn-ghost" href="/judges">For judges: the story in five scenes</a>
+  </div>
+</section>
+
+<section class="section" aria-labelledby="plans-h">
+  <div class="spread"><h2 id="plans-h">Plans</h2><span class="small muted">{{ discount }}% off when you pay 12 months up front</span></div>
+  <div class="plan-grid">{% for p in plans %}{{ s.plan_card(p) }}{% endfor %}</div>
+</section>
+
+<section class="section" id="desks" aria-labelledby="desks-h">
+  <h2 id="desks-h">Talk to us</h2>
+  <p class="muted">Sales and Support answer from this site's price list and billing notes, and cite them. An answer a model wrote says so.</p>
+  <div class="desks" data-desks>
+    <div class="tabs" role="tablist" aria-label="Desks">
+      {% for d in desks %}<button class="tab" role="tab" type="button" id="tab-{{ d.id }}" aria-controls="desk-{{ d.id }}" aria-selected="{{ 'true' if loop.first else 'false' }}" data-desk-tab="{{ d.id }}">{{ d.name }}</button>{% endfor %}
+    </div>
+    {% for d in desks %}
+    <div class="desk card" role="tabpanel" id="desk-{{ d.id }}" aria-labelledby="tab-{{ d.id }}" data-desk="{{ d.id }}"{% if not loop.first %} hidden{% endif %}>
+      <p class="small muted">{{ d.job }} Answered by {{ d.agent }}.</p>
+      <ol class="thread" data-thread aria-live="polite"></ol>
+      <div class="starters">{% for q in d.starters %}<button class="chip chip-outline" type="button" data-starter>{{ q }}</button>{% endfor %}</div>
+      <form class="askline" data-ask action="/desk/{{ d.id }}" method="post">
+        <label class="sr-only" for="ask-{{ d.id }}">Ask {{ d.name }}</label>
+        <input id="ask-{{ d.id }}" name="q" autocomplete="off" placeholder="Ask {{ d.name }} anything about Agentrix" required maxlength="500">
+        <button class="btn btn-primary" type="submit">Ask</button>
+      </form>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="section" aria-labelledby="staff-h">
+  <h2 id="staff-h">Who runs Agentrix</h2>
+  <div class="staff">
+    {% for a in agents %}
+    <article class="card tight">
+      {{ ui.mark(a, size=40) }}
+      <p class="small">{{ a.job }}</p>
+    </article>
+    {% endfor %}
+  </div>
+  <p class="small muted">Agents talk to other companies' agents through <a href="https://{{ door }}/">our agent door</a>, with signed requests and AP2-style mandates on both sides.</p>
+</section>
+{% endblock %}
+{% block foot %}
+<footer class="foot"><div class="row"><span>Agentrix by Zavora · sandbox demo for the PayPal AI Hackathon · open source (MIT)</span><a href="https://{{ door }}/.well-known/awp.json">Agent door</a></div></footer>
+{% endblock %}
+{% block scripts %}<script type="module" src="/static/saas/desk.js?v={{ saas_v }}"></script>{% endblock %}

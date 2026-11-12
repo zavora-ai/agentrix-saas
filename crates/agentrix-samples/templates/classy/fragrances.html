@@ -1,0 +1,23 @@
+{% extends "classy/layout.html" %}
+{% from "classy/parts.html" import card %}
+{% block main %}
+<section class="cp-section first">
+  <h1 class="cp-h1">Fragrances</h1>
+  <p class="sub">{{ in_stock }} of {{ count }} in stock · stock {{ asof }}{% if prices %} · prices from {{ prices }}{% endif %}</p>
+  <div class="refine cp-filters" role="group" aria-label="Filter">
+    <a href="/fragrances"{% if not family and not size %} aria-current="true"{% endif %}>All</a>
+    {% for f in families %}<a href="{{ f.href }}"{% if f.on %} aria-current="true"{% endif %}>{{ f.name }}</a>{% endfor %}
+    <span class="sep" aria-hidden="true"></span>
+    {% for s in sizes %}<a href="{{ s.href }}"{% if s.on %} aria-current="true"{% endif %}>{{ s.name }}</a>{% endfor %}
+  </div>
+</section>
+{% for g in groups %}
+<section class="cp-section" id="{{ g.anchor }}">
+  <h2>{{ g.name }}</h2>
+  <p class="sub">{{ g.words }}</p>
+  <div class="shortlist four">{% for s in g.items %}{{ card(s) }}{% endfor %}</div>
+</section>
+{% else %}
+<section class="cp-section"><p class="note">No scents match{% if family %} {{ family | lower }}{% endif %}{% if size %} in {{ size }}{% endif %}. <a href="/fragrances">Show every scent</a>.</p></section>
+{% endfor %}
+{% endblock %}

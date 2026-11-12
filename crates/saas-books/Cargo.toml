@@ -1,0 +1,41 @@
+[package]
+name = "saas-books"
+description = "Agentrix SaaS books: EraBooks, the saas-core Books contract over Zavora ERA (hosted). Ledger writes go through the open-source mcp-erp MCP server (adk-tool's MCP client); CRM, recurring invoices, ageing and credit limits through ERA's REST API. One login per company."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+authors.workspace = true
+
+# Owner: slice A (books).
+
+[features]
+default = ["mcp"]
+# Ledger writes through mcp-erp over MCP (adk-tool's client, a child process per company).
+# Without it, EraBooks makes the same writes over ERA's REST API.
+mcp = ["dep:adk-tool"]
+
+[dependencies]
+saas-core.workspace = true
+adk-tool = { workspace = true, features = ["mcp"], optional = true }
+async-trait.workspace = true
+chrono.workspace = true
+hex.workspace = true
+reqwest.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+sha2.workspace = true
+tokio.workspace = true
+tracing.workspace = true
+
+[dev-dependencies]
+saas-core = { workspace = true, features = ["fake"] }
+# HTTP mocks of ERA for EraBooks' mapping tests.
+wiremock = "0.6"
+# examples/book_paypal_capture.rs: the PayPal side of a real sandbox capture.
+agentrix-effects.workspace = true
+anyhow.workspace = true
+
+[lints]
+workspace = true

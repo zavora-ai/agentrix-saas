@@ -1,0 +1,128 @@
+#!/usr/bin/env bash
+# agentrix-backup: a copy of control.db and node's keys, checked, encrypted to keys held off the
+# host, kept on control and shipped to Object Storage. Installed as /opt/agentrix/bin/agentrix-backup
+# and run by agentrix-backup.timer every 15 minutes (proposed by W8, Sun 8 Nov 2026).
+#
+# Settings (environment):
+#   AGENTRIX_DATA_DIR           node's data folder (default /var/lib/agentrix)
+#   AGENTRIX_BACKUP_RECIPIENTS  age recipients, public keys only (default /etc/agentrix/backup-recipients.txt)
+#   AGENTRIX_BACKUP_KEEP        copies kept on control (default 96: a day at 15 minutes)
+#   CREDENTIALS_DIRECTORY       set by systemd; an objects.json there turns the upload on
+#
+# Exit codes: 0 copy made (and shipped when Object Storage is on); 1 no copy made; 2 copy made
+# on control but the upload failed (the next run tries again with a new copy).
+set -euo pipefail
+umask 077
+
+data=${AGENTRIX_DATA_DIR:-/var/lib/agentrix}
+recipients=${AGENTRIX_BACKUP_RECIPIENTS:-/etc/agentrix/backup-recipients.txt}
+keep=${AGENTRIX_BACKUP_KEEP:-96}
+objects=${CREDENTIALS_DIRECTORY:-/nonexistent}/objects.json
+out=$data/backups
+stamp=$(date -u +%Y%m%dT%H%M%SZ)
+
+say() { printf 'agentrix-backup: %s\n' "$*"; }
+die() { say "$*" >&2; exit 1; }
+sha256() {
+  if command -v sha256sum >/dev/null; then sha256sum "$1" | cut -d' ' -f1
+  else shasum -a 256 "$1" | cut -d' ' -f1; fi
+}
+
+for tool in sqlite3 tar age python3; do
+  command -v "$tool" >/dev/null || die "$tool is not installed, so no copy was made."
+done
+grep -q '^age1' "$recipients" 2>/dev/null \
+  || die "no age recipient in $recipients, so no copy was made (a copy nobody can open is no backup)."
+[ -f "$data/control.db" ] || die "there is no control.db in $data."
+
+install -d -m 0700 "$out"
+work=$(mktemp -d "$out/.work-XXXXXX")
+trap 'rm -rf "$work"' EXIT
+
+# 1. A consistent copy. VACUUM INTO reads one snapshot of the WAL database; node and the
+#    gateway keep writing meanwhile.
+sqlite3 "$data/control.db" "VACUUM INTO '$work/control.db'"
+
+# 2. Check the copy before anything leaves the host.
+check=$(sqlite3 "$work/control.db" 'PRAGMA integrity_check')
+[ "$check" = ok ] || die "the copy failed its integrity check ($check), so it was not kept."
+count() { sqlite3 "$work/control.db" "SELECT COUNT(*) FROM $1" 2>/dev/null || echo null; }
+migrations() {
+  sqlite3 "$work/control.db" \
+    "SELECT COALESCE(group_concat(version, ','), '') FROM (SELECT version FROM $1 ORDER BY version)" \
+    2>/dev/null || true
+}
+
+# 3. One bundle: the database and node's keys (receipt signing, TOTP sealing, release master).
+#    Losing the keys ends the receipt chain and every site log, so they travel together.
+files=(control.db)
+if [ -d "$data/keys" ]; then cp -R "$data/keys" "$work/keys"; files+=(keys); fi
+tar -C "$work" -cf "$work/bundle.tar" "${files[@]}"
+if command -v zstd >/dev/null; then
+  zstd -q -10 --rm "$work/bundle.tar" -o "$work/bundle.tar.zst"; ext=tar.zst
+else
+  gzip -9 "$work/bundle.tar"; ext=tar.gz
+fi
+plain_sha=$(sha256 "$work/bundle.$ext")
+
+# 4. Encrypt to the recipients. Control holds public keys only: it can make copies, never open one.
+name="control-$stamp.$ext.age"
+age -R "$recipients" -o "$work/$name" "$work/bundle.$ext"
+sealed_sha=$(sha256 "$work/$name")
+python3 - "$work/$name.json" <<PY
+import json, sys
+def n(v):
+    return None if v == "null" else int(v)
+json.dump({
+    "made_at": "$stamp",
+    "file": "$name",
+    "bundle_sha256": "$plain_sha",
+    "file_sha256": "$sealed_sha",
+    "integrity_check": "ok",
+    "contains": "${files[*]}".split(),
+    "rows": {
+        "sites": n("$(count sites)"),
+        "accounts": n("$(count accounts)"),
+        "moves": n("$(count moves)"),
+        "decisions": n("$(count decisions)"),
+        "receipts": n("$(count receipts)"),
+        "usage": n("$(count usage)"),
+    },
+    "migrations": {
+        "node": "$(migrations _sqlx_migrations)",
+        "store": "$(migrations _sqlx_migrations_store)",
+    },
+}, open(sys.argv[1], "w"), indent=2)
+PY
+mv "$work/$name" "$work/$name.json" "$out/"
+say "made $name ($(wc -c < "$out/$name" | tr -d ' ') bytes, integrity ok)"
+
+# 5. Ship it when Object Storage is on: the releases bucket, under backups/control/, path-style
+#    with SigV4, the keys passed to curl on stdin and never on a command line.
+status=0
+if [ -s "$objects" ]; then
+  for f in "$name" "$name.json"; do
+    if python3 - "$objects" "$out/$f" "backups/control/$f" <<'PY' | curl -K - ; then :; else status=2; fi
+import json, sys
+c = json.load(open(sys.argv[1]))
+q = lambda s: '"' + s.replace('\\', '\\\\').replace('"', '\\"') + '"'
+region = c.get("region") or "us-east-1"
+url = c["endpoint"].rstrip("/") + "/" + c["bucket"] + "/" + sys.argv[3]
+print("url = " + q(url))
+print("upload-file = " + q(sys.argv[2]))
+print("aws-sigv4 = " + q("aws:amz:%s:s3" % region))
+print("user = " + q(c["access_key"] + ":" + c["secret_key"]))
+print("fail\nsilent\nshow-error\nretry = 2\nmax-time = 300")
+PY
+  done
+  if [ "$status" = 0 ]; then say "shipped $name to Object Storage"; else say "upload failed; $name is kept on control" >&2; fi
+else
+  say "Object Storage is off (objects.json is empty), so the copy stays on control only"
+fi
+
+# 6. Keep the newest $keep copies on control.
+# Names carry a UTC stamp, so name order is time order.
+printf '%s\n' "$out"/control-*.age | sort -r | tail -n +"$((keep + 1))" | while IFS= read -r old; do
+  [ -e "$old" ] && rm -f -- "$old" "$old.json"
+done
+exit "$status"

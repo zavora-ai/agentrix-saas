@@ -1,0 +1,89 @@
+# Agentrix (spec v3) · saas-node serving the judged build under one platform host. A template:
+# deploy/saas/deploy.sh renders it to /etc/caddy/Caddyfile when SAAS_SHAPE (agentrix-saas.env)
+# is one or two; while it is v2, deploy.sh installs Caddyfile.v2 (spec v2's four hosts).
+#
+#   @@HOST@@      the platform host, SAAS_PLATFORM_HOST (paypal.agentrix.website); its A record
+#                 and *.@@HOST@@ point at this VM
+#   @@PLATFORM@@  agentrix-node's public listener, 127.0.0.1:8080
+#   @@MONEY@@     the money layer: agentrix-saas on 127.0.0.1:18190 when it runs as a second
+#                 process (SAAS_SHAPE=two), or the same as @@PLATFORM@@ when it is mounted
+#                 into agentrix-node (SAAS_SHAPE=one)
+#   @@ASK@@       agentrix-node's internal listener, 127.0.0.1:8079 (loopback only)
+#   @@TESTAGENTS@@  agentrix-test-agents, 127.0.0.1:18195
+#
+# Named hosts get their certificates at start. Any other name gets one on demand, and only
+# when agentrix-node's /internal/tls-ask says it serves that host: on-demand TLS is never open.
+
+{
+	admin localhost:2019
+	servers {
+		protocols h1 h2
+	}
+	on_demand_tls {
+		ask http://@@ASK@@/internal/tls-ask
+	}
+}
+
+(common) {
+	encode zstd gzip
+	header {
+		Strict-Transport-Security "max-age=31536000"
+		X-Content-Type-Options "nosniff"
+		Referrer-Policy "strict-origin-when-cross-origin"
+		-Server
+	}
+}
+
+# The platform: home, sign-in, Agentrix OS, Agentrix's own door and passports; the operator
+# console; the three sample sites (pages, checkout, door, did.json, passports).
+@@HOST@@, ops.@@HOST@@, kilele-bakery-sample.@@HOST@@, classy-perfumes-sample.@@HOST@@, tana-valley-times-sample.@@HOST@@ {
+	import common
+	reverse_proxy @@PLATFORM@@ {
+		flush_interval -1
+	}
+}
+
+# The money layer: PayPal webhooks (pay.), v2's fronts and the judges' routes (money.,
+# kilele.money.) until the console apps land, and spec v2's names until they are retired. Caddy passes the client's Host through unchanged: signed agent requests cover
+# @authority, and the node answers only the hosts it is configured with.
+pay.@@HOST@@, money.@@HOST@@, kilele.money.@@HOST@@, money.agentrix.website, kilele.money.agentrix.website, pay.agentrix.website {
+	import common
+	reverse_proxy @@MONEY@@ {
+		flush_interval -1
+	}
+}
+
+# The test customer agents (labelled, sandbox only): each agent's key directory and did.json, and
+# the control host. A 502 here means agentrix-test-agents isn't running.
+test-agent-amani.@@HOST@@, test-agent-baraka.@@HOST@@, test-agent-chiku.@@HOST@@, test-agents.@@HOST@@ {
+	import common
+	reverse_proxy @@TESTAGENTS@@
+}
+
+# Zavora ERA (hosted), the read-only view: ERA's UI container serves the app and forwards /api.
+books.@@HOST@@, books.agentrix.website {
+	import common
+	# Closed on this demo instance. ERA lets anyone sign up, and any logged-in user (the read-only
+	# judge logins too) make a tenant, switch, register, archive or leave one, or reach platform
+	# routes; leaving would lock every judge out of a company. The seed and the node reach ERA's
+	# API on loopback, not through here. GET /api/v1/auth/tenants stays open: the UI lists with it.
+	@closed path /api/v1/auth/signup /api/v1/auth/signup/* /api/v1/auth/register /api/v1/auth/register/* /api/v1/auth/switch-tenant /api/v1/auth/tenants/*/archive /api/v1/auth/tenants/*/unarchive /api/v1/auth/tenants/*/leave /api/v1/platform /api/v1/platform/*
+	respond @closed "Closed on this demo instance." 403
+	@new_tenant {
+		method POST
+		path /api/v1/auth/tenants /api/v1/auth/tenants/
+	}
+	respond @new_tenant "Closed on this demo instance." 403
+	reverse_proxy 127.0.0.1:18181
+}
+
+# Every other name: on-demand certificates, asked of agentrix-node first.
+https:// {
+	tls {
+		on_demand
+	}
+	import common
+	reverse_proxy @@PLATFORM@@ {
+		flush_interval -1
+	}
+}

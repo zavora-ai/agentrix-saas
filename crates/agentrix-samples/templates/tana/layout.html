@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% from "macros.html" import mark, navdesk %}
+{% block styles %}<link rel="stylesheet" href="/_s/tana.css?v={{ shell.v }}">{% endblock %}
+{% block scripts %}<script src="/_s/tana.js?v={{ shell.v }}" defer></script>{% endblock %}
+{% block body_class %}tana{% endblock %}
+{% block body %}
+<div class="np">
+  <header class="mast">
+    <div class="top">
+      <span>{% if today is defined %}{{ today }} · {% endif %}Sample weekly, invented stories</span>
+      <span class="mast-acts">
+        <a class="mast-sub" href="/subscribe">Subscribe</a>
+        {% if shell.account %}<a class="s-chip" href="/account"><span class="ph">{{ shell.account.initial }}</span>{{ shell.account.name }}</a>{% else %}<a class="s-chip signin" href="{{ shell.sign_in }}">Sign in</a>{% endif %}
+        <button class="n-btn ghost n-menu" id="menuBtn" type="button" aria-expanded="false" aria-controls="teamSheet">Menu</button>
+      </span>
+    </div>
+    <h1><a href="/">{{ shell.site.name }}</a></h1>
+    {% if tagline is defined and tagline %}<p class="tagline">{{ tagline }}</p>{% endif %}
+  </header>
+  <nav class="desks" id="desks" aria-label="Desks and sections: each desk is a WebAgent">
+    {% for d in shell.desks %}{{ navdesk(d, shell.site, loop.index > 2, shell.current) }}{% endfor %}
+    {% if sections is defined and sections %}<span class="sep" aria-hidden="true"></span>
+    {% for s in sections %}<a class="sec" href="/{{ s.id }}"{% if shell.path == "/" ~ s.id %} aria-current="page"{% endif %}>{{ s.name }}</a>{% endfor %}{% endif %}
+  </nav>
+  <main id="main">
+  {% block main %}{% endblock %}
+  </main>
+  <footer class="s-foot n-foot">
+    <div class="row"><span class="ai">The WebAgents on this site are AI. They answer only from published stories, link every one, and never ask for a password, a code or a card. <a href="/privacy#report">Report a site pretending to be this one</a></span><a class="wa-person" href="/corrections#contact" data-person><span class="ph">{{ shell.site.owner_initial }}</span>Talk to {{ shell.site.owner }} <i>· the editor, a person · {{ shell.site.owner_channel }}, usually within {{ shell.site.owner_wait | replace("~", "") }}</i></a></div>
+    <div class="row"><span>© {{ shell.site.year }} {{ shell.site.name }} (a sample paper) · <a href="/archive">Archive</a> · <a href="/corrections">Corrections</a> · <a href="/digest">Friday five</a> · <a href="/subscribe">Subscribe</a> · <a href="/privacy">Privacy</a> · <a href="/agents">For AI agents</a></span><span>Made with Agentrix</span></div>
+    <div class="row small"><span>Payments run in PayPal's sandbox; no real money moves. Every story, person and place here is invented.</span></div>
+      <div class="row small s-visits"><span data-visits="on">This site counts visits as daily totals, with no cookies and nothing that says who you are. Browsers that send Global Privacy Control aren't counted.</span><span data-visits="gpc" hidden>Your browser asks sites not to track you, so your visits aren't counted.</span><span data-visits="off" hidden>Your visits on this device aren't counted.</span><button class="link-btn" type="button" data-agx-count="off" data-visits="on">Don't count my visits</button><button class="link-btn" type="button" data-agx-count="on" data-visits="off" hidden>Count them again</button></div>
+  </footer>
+</div>
+<div class="ask-dock" id="dock">
+  <form class="bar" id="dockForm" action="/ask" method="post">
+    {{ mark(shell.front, 20, shell.site, "sm") }}
+    <label class="sr-only" for="dockQ">Ask {{ shell.site.name }}</label>
+    <input id="dockQ" name="q" autocomplete="off" placeholder="Ask {{ shell.site.name }} about its stories…">
+    {% if shell.ai %}<span class="wa-ai">AI</span>{% endif %}
+    <button class="wa-send" type="submit" aria-label="Ask"></button>
+  </form>
+  <div class="hint"><span><span class="kbd">/</span> to ask</span><span>Answers link published stories</span><span>{{ shell.site.owner }}, the editor, is one tap away</span></div>
+</div>
+<aside class="rail" id="rail" aria-label="Conversation">
+  <div class="rail-head">
+    <span id="railMark">{{ mark(shell.front, 28, shell.site) }}</span>
+    <div class="who"><b id="railName">{{ shell.front.name }}</b><span id="railMandate">AI WebAgent · answers from published stories</span></div>
+    <button class="icon-btn" id="railClose" type="button" aria-label="Close conversation"></button>
+  </div>
+  <div class="rail-body" id="railBody"><div class="wa-thread" id="railThread" role="log" aria-label="Conversation"></div></div>
+  <div class="rail-foot">
+    <div class="memory-chip"><span>This chat is forgotten when you close the tab.</span></div>
+    <form class="wa-input" id="railForm"><label class="sr-only" for="railQ">Message</label><input id="railQ" autocomplete="off" placeholder="Ask a follow-up…"><button class="wa-mic" type="button" aria-disabled="true" aria-label="Voice (later)" title="Voice: later"></button><button class="wa-send" type="submit" aria-label="Send"></button></form>
+    <div class="wa-disclose rail-disclose"><span>You're talking to <b>AI</b>. It never writes news or gives opinions.</span><a class="wa-person" href="/corrections#contact" data-person><span class="ph">{{ shell.site.owner_initial }}</span>{{ shell.site.owner }} <i>· the editor · {{ shell.site.owner_channel }}, usually within {{ shell.site.owner_wait | replace("~", "") }}</i></a></div>
+  </div>
+</aside>
+<div class="team-sheet" id="teamSheet" role="dialog" aria-label="{{ shell.site.name }}'s desks">
+  <div class="spread sheet-top"><b class="sheet-title">The desks at {{ shell.site.name }}</b><button class="icon-btn" id="sheetClose" type="button" aria-label="Close menu"></button></div>
+  {% for d in shell.desks %}
+  <div class="team-row">{{ mark(d, 40, shell.site, "lg") }}<div><b>{{ d.name }}</b><p>{{ d.mandate }}</p>
+    <div class="acts"><button class="act primary" type="button" data-ask="{{ d.id }}">Ask {{ d.name }}</button><a class="act" href="{{ d.href }}">Open page</a></div></div></div>
+  {% endfor %}
+  {% if sections is defined and sections %}<div class="team-row"><span></span><div><b>Sections</b><div class="acts">{% for s in sections %}<a class="act" href="/{{ s.id }}">{{ s.name }}</a>{% endfor %}</div></div></div>{% endif %}
+  <div class="team-row"><span></span><div class="acts">{% if shell.account %}<a class="act" href="/account">Your account</a>{% else %}<a class="act" href="{{ shell.sign_in }}">Sign in</a>{% endif %}<a class="act" href="/subscribe">Subscribe</a><a class="act" href="/digest">Friday five</a></div></div>
+</div>
+{% endblock %}

@@ -1,0 +1,34 @@
+# agentrix-runner on the sandbox, installed by deploy/deploy.sh (S1-12), per deploy/README.md's
+# runner contract agreed with the architecture lane (first written by the spec session, S2-10).
+# The runner trusts only control's job-signing public key (/etc/agentrix/control-job.pub, the
+# base64url key node publishes at /.well-known/agentrix/keys). The sandbox holds no secrets (N6).
+# CAP_KILL: the runner stops each job's egress proxy, which runs as another user (65533); without
+# it the proxy can't be stopped and every room fails destroy-and-confirm.
+[Unit]
+Description=Agentrix sealed-room runner
+After=network-online.target docker.service
+Wants=network-online.target
+Requires=docker.service
+
+[Service]
+User=agentrix
+Group=agentrix
+SupplementaryGroups=docker
+EnvironmentFile=/etc/agentrix/host.env
+ExecStart=/opt/agentrix/bin/agentrix-runner \
+  --listen 0.0.0.0:7443 \
+  --work-dir /var/lib/agentrix-runner \
+  --control-key /etc/agentrix/control-job.pub \
+  --egress-bin /opt/agentrix/bin/agentrix-egress \
+  --egress-user 65533:65533 \
+  --setpriv /usr/bin/setpriv
+AmbientCapabilities=CAP_SETUID CAP_SETGID CAP_CHOWN CAP_DAC_OVERRIDE CAP_KILL
+CapabilityBoundingSet=CAP_SETUID CAP_SETGID CAP_CHOWN CAP_DAC_OVERRIDE CAP_KILL
+NoNewPrivileges=yes
+StateDirectory=agentrix-runner
+WorkingDirectory=/var/lib/agentrix-runner
+Restart=on-failure
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target

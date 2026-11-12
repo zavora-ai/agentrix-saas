@@ -1,0 +1,85 @@
+/* The board's frame and its three widgets, in the Agentrix look (tokens from agentrix-ui's
+   /static/ui/tokens.css: --indigo, --coral, --ink, --line …, with fallbacks for the dev server). */
+
+:root {
+  --ax-indigo: var(--indigo, #38356d);
+  --ax-coral: var(--coral, #de4060);
+  --ax-ink: var(--ink, #23223a);
+  --ax-muted: var(--muted, #5f5e73);
+  --ax-line: var(--line, #e3e2ec);
+  --ax-paper: var(--paper, #ffffff);
+  --ax-surface: var(--surface, #f6f6fa);
+  --ax-ok: var(--ok, #11734a);
+  --ax-wait: var(--wait, #8a5300);
+  --ax-risk: var(--risk, #a3302a);
+  --ax-font: var(--font-text, "DM Sans", system-ui, sans-serif);
+  --ax-display: var(--font-display, "Manrope", system-ui, sans-serif);
+}
+
+html, body { height: 100%; margin: 0; }
+body { display: flex; flex-direction: column; background: var(--ax-surface); color: var(--ax-ink); font-family: var(--ax-font); }
+
+.board-bar { display: flex; align-items: center; gap: 16px; padding: 10px 20px; background: var(--ax-paper); border-bottom: 1px solid var(--ax-line); }
+.board-bar .brand { display: inline-flex; align-items: center; gap: 8px; font-family: var(--ax-display); font-weight: 800; font-size: 18px; color: var(--ax-indigo); text-decoration: none; }
+.board-bar .brand .mark { width: 22px; height: 22px; border-radius: 7px; background: linear-gradient(135deg, var(--ax-indigo), var(--ax-coral)); }
+.board-bar .title { font-family: var(--ax-display); font-weight: 700; color: var(--ax-ink); }
+.board-bar .badges { display: inline-flex; gap: 8px; }
+.board-bar .badge { font-size: 12px; padding: 3px 10px; border-radius: 999px; background: var(--ax-surface); border: 1px solid var(--ax-line); color: var(--ax-muted); }
+.board-bar .badge[data-tone="wait"] { color: var(--ax-wait); background: #fff4dd; border-color: #f2d9a6; }
+.board-bar .badge[data-tone="ok"] { color: var(--ax-ok); background: #e6f5ee; border-color: #b9e3cd; }
+.board-bar nav { margin-left: auto; display: flex; gap: 16px; }
+.board-bar nav a { color: var(--ax-ink); text-decoration: none; font-weight: 600; font-size: 14px; }
+.board-bar nav a:hover { color: var(--ax-coral); }
+@media (max-width: 720px) { .board-bar nav, .board-bar .badges { display: none; } }
+
+#studio { flex: 1; min-height: 0; }
+.board-failed { margin: 48px auto; max-width: 560px; padding: 20px; border: 1px solid var(--ax-line); border-radius: 12px; background: var(--ax-paper); }
+
+/* Widgets */
+.ax-caption { margin: 6px 0 0; font-size: 12px; line-height: 1.4; color: var(--ax-muted); }
+.ax-gauge, .ax-audit, .ax-timeline { height: 100%; box-sizing: border-box; padding: 4px 8px; display: flex; flex-direction: column; font-family: var(--ax-font); color: var(--ax-ink); overflow: auto; }
+
+.ax-gauge { align-items: center; justify-content: center; text-align: center; }
+.ax-gauge-arc { width: min(100%, 220px); height: auto; }
+.ax-gauge-arc .track { stroke: var(--ax-line); }
+.ax-gauge-arc .fill.ok { stroke: var(--ax-indigo); }
+.ax-gauge-arc .fill.wait { stroke: #b26b00; }
+.ax-gauge-arc .fill.risk { stroke: var(--ax-coral); }
+.ax-gauge-figure { margin-top: -6px; }
+.ax-gauge-figure b { font-family: var(--ax-display); font-size: 24px; }
+.ax-gauge-figure span { color: var(--ax-muted); }
+
+.ax-audit { justify-content: center; gap: 6px; }
+.ax-seal { display: inline-flex; align-items: center; gap: 8px; font-family: var(--ax-display); font-size: 18px; }
+.ax-seal svg { width: 34px; height: 34px; }
+.ax-seal.ok { color: var(--ax-ok); }
+.ax-seal.risk { color: var(--ax-risk); }
+.ax-facts { display: grid; grid-template-columns: auto 1fr; gap: 2px 12px; margin: 4px 0 0; font-size: 13px; }
+.ax-facts dt { color: var(--ax-muted); }
+.ax-facts dd { margin: 0; font-variant-numeric: tabular-nums; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ax-audit code { font-family: var(--font-mono, ui-monospace, monospace); font-size: 12px; }
+
+.ax-tl-head { display: flex; justify-content: space-between; gap: 8px; font-size: 14px; }
+.ax-tl-head span { color: var(--ax-muted); }
+.ax-tl-bar { height: 8px; border-radius: 999px; background: var(--ax-line); margin: 8px 0 10px; overflow: hidden; }
+.ax-tl-bar span { display: block; height: 100%; background: linear-gradient(90deg, var(--ax-indigo), var(--ax-coral)); border-radius: inherit; }
+.ax-tl { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; }
+.ax-tl li { display: grid; grid-template-columns: 88px 18px 1fr auto; align-items: center; gap: 8px; padding: 6px 0; position: relative; font-size: 13px; }
+.ax-tl li time { color: var(--ax-muted); font-variant-numeric: tabular-nums; }
+.ax-tl li .pin { width: 12px; height: 12px; border-radius: 50%; border: 2px solid var(--ax-indigo); background: var(--ax-paper); box-sizing: border-box; justify-self: center; z-index: 1; }
+.ax-tl li::before { content: ""; position: absolute; left: 104px; top: 0; bottom: 0; width: 2px; background: var(--ax-line); }
+.ax-tl li:first-child::before { top: 50%; }
+.ax-tl li:last-child::before { bottom: 50%; }
+.ax-tl li.st-paid .pin { background: var(--ax-indigo); }
+.ax-tl li.st-due .pin, .ax-tl li.st-late .pin { border-color: var(--ax-coral); }
+.ax-tl li div { display: flex; justify-content: space-between; gap: 8px; }
+.ax-tl li .amt { font-variant-numeric: tabular-nums; }
+.ax-tl .chip { font-size: 11px; padding: 2px 8px; border-radius: 999px; background: var(--ax-surface); border: 1px solid var(--ax-line); color: var(--ax-muted); text-transform: capitalize; }
+.ax-tl .chip.paid { color: var(--ax-ok); border-color: #b9e3cd; background: #e6f5ee; }
+.ax-tl .chip.late { color: var(--ax-risk); border-color: #f1c2be; background: #fdecea; }
+
+[data-ag-theme-mode="dark"] .ax-gauge-arc .track, [data-ag-theme-mode="dark"] .ax-tl-bar { stroke: #2c2a57; background: #2c2a57; }
+[data-ag-theme-mode="dark"] body, body[data-ag-theme-mode="dark"] { background: #0f0e1f; color: #ecebf6; }
+body[data-ag-theme-mode="dark"] .board-bar { background: #17162b; border-color: #2c2a57; }
+body[data-ag-theme-mode="dark"] .board-bar .title, body[data-ag-theme-mode="dark"] .board-bar nav a { color: #ecebf6; }
+body[data-ag-theme-mode="dark"] .ax-gauge, body[data-ag-theme-mode="dark"] .ax-audit, body[data-ag-theme-mode="dark"] .ax-timeline { color: #ecebf6; }

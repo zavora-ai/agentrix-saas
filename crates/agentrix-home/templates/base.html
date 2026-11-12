@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>{% block title %}Agentrix{% endblock %}</title>
+<meta name="description" content="{% block description %}Agentrix turns a business's website into a team of AI agents. Each can be identified by anyone, answers to a human with a passkey, and keeps a PayPal wallet anyone can check.{% endblock %}">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#f6f6fa" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#121120" media="(prefers-color-scheme: dark)">
+<link rel="canonical" href="{{ origin }}{% block path %}/{% endblock %}">
+<link rel="icon" href="/_home/mark.svg?v={{ v }}" type="image/svg+xml">
+<link rel="preload" href="/static/ui/fonts/manrope-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/static/ui/brand.css?v={{ ui_v }}">
+<link rel="stylesheet" href="/_home/home.css?v={{ v }}">
+{% block head %}{% endblock %}
+</head>
+<body>
+<a class="skip" href="#main">Skip to the page</a>
+{%- set here = page if page is defined else "" -%}
+{%- macro desks(cls) -%}
+<nav class="{{ cls }}" aria-label="Agentrix's desks">
+  <a class="desk desk-yoursite" data-desk="your-site" href="/your-site"{% if here == "yoursite" %} aria-current="page"{% endif %}><img src="/_home/marks/role-mover.svg?v={{ v }}" width="26" height="28" alt="" aria-hidden="true">Your site{% if desks_ai is defined and desks_ai %}<span class="ai-chip">AI</span>{% endif %}</a>
+  <a class="desk" data-desk="how-it-works" href="/how-it-works"{% if here == "how" %} aria-current="page"{% endif %}><img src="/_home/marks/role-concierge.svg?v={{ v }}" width="26" height="28" alt="" aria-hidden="true">How it works{% if desks_ai is defined and desks_ai %}<span class="ai-chip">AI</span>{% endif %}</a>
+  <a class="desk" data-desk="samples" href="/samples"{% if here == "samples" %} aria-current="page"{% endif %}><img src="/_home/marks/role-sales.svg?v={{ v }}" width="26" height="28" alt="" aria-hidden="true">Samples{% if desks_ai is defined and desks_ai %}<span class="ai-chip">AI</span>{% endif %}</a>
+  <a class="desk" data-desk="prices" href="/prices"{% if here == "prices" %} aria-current="page"{% endif %}><img src="/_home/marks/role-cashier.svg?v={{ v }}" width="26" height="28" alt="" aria-hidden="true">Prices{% if desks_ai is defined and desks_ai %}<span class="ai-chip">AI</span>{% endif %}</a>
+</nav>
+{%- endmacro -%}
+<header class="top">
+  <div class="wrap top-in">
+    <a class="logo" href="/" aria-label="Agentrix home"><span class="mark" aria-hidden="true"></span>Agentrix</a>
+    {{ desks("desks") }}
+    <details class="team-sheet">
+      <summary><span class="team-dots" aria-hidden="true"><i></i><i></i><i></i><i></i></span>Team</summary>
+      {{ desks("desks-sheet") }}
+    </details>
+    {% if contact is defined and contact %}<a class="top-person" href="{{ contact.href }}">Talk to a person</a>{% endif %}
+    <a class="top-signin" href="/account/signin?next=%2Fos">Sign in</a>
+  </div>
+</header>
+<main id="main">
+{% block main %}{% endblock %}
+</main>
+<footer class="foot">
+  <div class="wrap foot-in">
+    <div class="foot-brand">
+      <a class="logo" href="/"><span class="mark" aria-hidden="true"></span>Agentrix</a>
+      <p>Made by Zavora Technologies Ltd in Nairobi. Built in Rust on adk-rust v3. Open source under the MIT licence.</p>
+    </div>
+    <nav class="foot-links" aria-label="About Agentrix">
+      <a href="/how-it-works">How it works</a>
+      <a href="/prices">Prices</a>
+      <a href="/samples">Samples</a>
+      <a href="/status">Status</a>
+      <a href="/privacy">Privacy</a>
+      <a href="/terms">Terms</a>
+      <a href="/.well-known/agentrix-crawler">Our crawler</a>
+      {% if links.code %}<a href="{{ links.code }}">Open source (MIT)</a>{% endif %}
+    </nav>
+    <p class="foot-note">No trackers and no cookies on this page. A cookie is set only when you sign in.</p>
+  </div>
+</footer>
+<script src="/_home/desks.js?v={{ v }}" defer></script>
+<script src="/_home/guide.js?v={{ v }}" defer></script>
+</body>
+</html>

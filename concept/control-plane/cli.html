@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Zavora CLI: a pack session</title>
+<meta name="description" content="Concept: an engineer uses Zavora CLI, Zavora's adk-rust coding agent, to build a capability pack, test it in sealed rooms, sign it with a hardware key and put it on a release train. The coding agent proposes; it never publishes.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Manrope:wght@600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../styles.css">
+<link rel="stylesheet" href="cp.css">
+<style>
+  .cli-layout { display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr); gap: var(--s5); align-items: start; margin-bottom: var(--s6); }
+  .side { display: grid; gap: var(--s3); }
+  .side .card h3 { font-size: var(--fs-16); }
+  .side .card p { font-size: var(--fs-14); color: var(--ink-2); margin-top: 4px; }
+  .side .card code { font: 500 12px/1.4 var(--font-mono); background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 1px 5px; }
+  .owner-wrap { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: var(--s5); align-items: center; margin-bottom: var(--s7); }
+  .owner-card { max-width: 440px; }
+  .diff { list-style: none; margin: 8px 0 0; padding: 0; display: grid; gap: 6px; font-size: var(--fs-13); color: var(--ink-2); }
+  .diff li { display: grid; grid-template-columns: 22px minmax(0, 1fr); gap: 6px; }
+  .diff li i { font-style: normal; display: grid; place-items: center; width: 20px; height: 20px; border-radius: 6px; font: 800 12px/1 var(--font-mono); }
+  .diff .add i { background: var(--ok-bg); color: var(--ok); }
+  .diff .same i { background: var(--surface-2); color: var(--muted); }
+  .train { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 12px; }
+  .train span { padding: 6px 10px; border-radius: 999px; font: 600 var(--fs-12)/1 var(--font-text); background: var(--surface-2); color: var(--ink-2); }
+  .train span.on { background: var(--indigo); color: #fff; }
+  @media (max-width: 960px) { .cli-layout, .owner-wrap { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<header class="conceptbar">
+  <a class="logo" href="../index.html"><span class="mark" aria-hidden="true"></span>Agentrix</a>
+  <nav aria-label="Control plane concepts">
+    <a href="index.html">Control plane</a>
+    <a href="fleet.html">Fleet</a>
+    <a href="portfolio.html">Agency portfolio</a>
+    <a href="rollout.html">Rollout</a>
+    <a href="incident.html">Incident</a>
+    <a href="billing.html">Billing</a>
+    <a href="cli.html" aria-current="page">Zavora CLI</a>
+  </nav>
+  <span class="concept-label">Concept · illustrative data</span>
+</header>
+
+<main class="wrap">
+  <div class="cp-head">
+    <span class="eyebrow">Control plane 06 · Zavora CLI ships a capability pack</span>
+    <h1 style="margin-top:12px">Coding agents propose. Pipelines dispose.</h1>
+    <p class="lead">Zavora CLI is Zavora's adk-rust terminal coding agent. A worker model does the work, a bounded planner plans, and every write is approved in place. It can build, test and open a pull request. It cannot sign, publish or touch production: a person signs, and the release train does the rest.</p>
+  </div>
+
+  <div class="cli-layout">
+    <section class="term" aria-label="Terminal session">
+      <div class="term-bar"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span>zavora-cli · ~/work/packs/booking</span><button class="btn btn-sm btn-ghost" style="margin-left:auto;color:var(--term-muted);min-height:26px" type="button" data-replay="t1">Replay</button></div>
+      <div class="term-body reveal" id="t1">
+        <div class="l"><span class="p">~/work/packs/booking</span> <span class="m">main</span> <span class="c">❯ zavora-cli chat</span></div>
+        <div class="l m">zavora-cli 2.1.1 · worker qwen3.8-27b · planner glm-5.3 · provider vultr · approvals in place · hooks: agentrix-guard</div>
+        <div class="l m">context pt:zavora (developer) · production: read-only through agentrix mcp</div>
+        <div class="l" data-wait="500">&nbsp;</div>
+        <div class="l"><span class="b">you ›</span> Add deposit holds to the booking pack. Hold a slot for 15 minutes when a visitor asks; confirm only within the owner's rule or with their approval; send the WhatsApp confirmation through the Effects Gateway.</div>
+        <div class="box plan"><span class="b">plan_work</span> <span class="m">· planner call 1 of 4 · no tools · one iteration</span>
+<span class="m">1.</span> booking_hold: a new tool, Idempotent, 15-minute TTL, keyed by site, slot and visitor session
+<span class="m">2.</span> booking_confirm stays consequential (SendExternal): an Effects Gateway client, held unless a standing rule covers it
+<span class="m">3.</span> Playbook: offer the hold; never promise the slot past the TTL; Swahili strings
+<span class="m">4.</span> Evals: hold expiry, double booking, an injection in the visitor's note
+<span class="m">5.</span> Capability diff: +1 tool (booking_hold); effect classes unchanged</div>
+        <div class="l"><span class="g">worker ›</span> <span class="m">read pack.toml, src/tools/confirm.rs, playbooks/booking.md (read-only · auto-approved)</span></div>
+        <div class="box ask"><span class="a">worker wants to edit</span> src/tools/hold.rs <span class="m">(+64 −0)</span>
+<span class="g">+ pub async fn booking_hold(site: &amp;SiteId, slot: SlotId, ttl: Duration) -&gt; Result&lt;HoldReceipt&gt;</span>
+<span class="keys"><span class="on">y allow once</span><span>t trust session</span><span>n deny</span></span></div>
+        <div class="l"><span class="g">worker ›</span> edited 4 files · <span class="a">pack.toml capabilities += booking_hold</span></div>
+        <div class="box ask"><span class="a">worker wants to run</span> agentrix pack test --scenarios S5,S7
+<span class="m">mutating: starts local sealed rooms (gVisor) · network: the fixture site only</span>
+<span class="keys"><span class="on">y allow once</span><span>t trust session</span><span>n deny</span></span></div>
+        <div class="l g" data-wait="600">✓ evals booking.golden 24/24 · S5 13/13 · S7 8/8 · gauntlet 10/10 · rooms destroyed ✓</div>
+        <div class="box ask" style="border-color:var(--term-coral)"><span class="a">worker wants to run</span> agentrix pack publish --channel stable
+<span class="p">✗ blocked by hook agentrix-guard (pre_tool, exit 2)</span>
+<span class="m">Publishing needs a pack signed by a person and a release train. Open a pull request instead.</span></div>
+        <div class="l"><span class="g">worker ›</span> opened pull request "booking: 15-minute deposit holds" with the capability diff, eval report and provenance</div>
+        <div class="l m">provenance: planner calls 1 · tools approved 6 (by Odhiambo) · denied 1 (hook) · .zavora/agent-runs.db attached</div>
+        <div class="l m" data-wait="700">… CI repeated the tests in sealed rooms ✓ · reviewed and merged by Otieno K.</div>
+        <div class="l">&nbsp;</div>
+        <div class="l"><span class="p">~/work/packs/booking</span> <span class="m">main</span> <span class="c">❯ agentrix pack sign --key hardware</span></div>
+        <div class="l a" data-wait="700">touch your security key…</div>
+        <div class="l g">✓ signed booking 1.4.0 · sha256:c7d2…9b1 · publisher pt:zavora</div>
+        <div class="l"><span class="p">~/work/packs/booking</span> <span class="m">main</span> <span class="c">❯ agentrix pack publish --channel canary</span></div>
+        <div class="l b">→ train packs-2026.11.7 · ring 0: zavora.ai and the synthetic bakery · the Release WebAgent is watching</div>
+        <div class="l b">→ owners from ring 1 on get a card: "Bookings can now hold a slot for 15 minutes"</div>
+      </div>
+    </section>
+
+    <aside class="side" aria-label="What governs this session">
+      <article class="card tight"><h3>A worker and a bounded planner</h3><p>The worker owns the conversation, tools and edits. The planner (<code>plan_work</code>) has no tools, runs one iteration, and has a budget of 4 calls per process.</p></article>
+      <article class="card tight"><h3>Approvals in place</h3><p>Reads auto-approve. Writes show a diff and commands show the command line. The model cannot approve itself: <code>approved</code> is stripped from its arguments.</p></article>
+      <article class="card tight"><h3>A guard near production</h3><p>The <code>agentrix-guard</code> hook blocks publish to stable, applies, promotions, freezes, <code>terraform apply</code> and production <code>kubectl</code>. <code>agentrix mcp serve</code> offers reads and proposals only; even <code>--yolo</code> cannot approve a card, which needs a person's passkey or authenticator code.</p></article>
+      <article class="card tight"><h3>Honest gap</h3><p>Zavora CLI has no Vultr or OpenAI-compatible provider today, and its shell has no OS sandbox. Both are listed for its owners in 08 §12 (ZC1, ZC2); hosted dev rooms cover the sandbox.</p></article>
+    </aside>
+  </div>
+
+  <div class="owner-wrap">
+    <div>
+      <span class="eyebrow">What happens next</span>
+      <h2 style="margin-top:10px">The train, then the owner.</h2>
+      <p class="lead" style="margin-top:10px">The signed pack starts on ring 0, Zavora's own sites. From ring 1 on, owners who use Bookings see a card in their console. A new capability always needs the owner's yes; they can also start it lower than the pack suggests.</p>
+      <div class="train" aria-label="Pack train"><span class="on">Ring 0 · Zavora</span><span>Ring 1 · canaries</span><span>Ring 2 · 10%</span><span>Ring 3 · 50%</span><span>Ring 4 · all</span></div>
+    </div>
+    <article class="card raised decision owner-card" data-done="Installed · signed with Wanjiru's passkey · the Sales WebAgent's booking job starts at Ask me first · receipt r-5be0…a4." aria-label="The owner's card, in the owner console">
+      <div class="head"><span class="from"><span class="avatar sm av-chief" style="width:32px;height:32px;border-radius:10px;font-size:12px">CW</span>Chief WebAgent suggests · Kilele Bakery</span><span class="chip chip-info">Update · Bookings 1.4.0</span></div>
+      <h3>Let customers hold a slot for 15 minutes?</h3>
+      <p class="facts">Customers asking about a cake collection slot could reserve it while they decide. Confirmations above your KSh 3,000 rule still ask you first.</p>
+      <ul class="diff">
+        <li class="add"><i>+</i><span><b>New:</b> the Sales WebAgent can hold a slot for 15 minutes</span></li>
+        <li class="same"><i>=</i><span>Unchanged: confirmations by WhatsApp, through your rules</span></li>
+        <li class="same"><i>=</i><span>Unchanged: your budget and your WebAgents' other permissions</span></li>
+      </ul>
+      <div class="row" style="margin-top:12px;gap:8px"><span class="small muted">Start at</span><span class="segmented" role="group" aria-label="Starting level"><button type="button" aria-pressed="true">Ask me first</button><button type="button" aria-pressed="false">Do it and tell me</button></span></div>
+      <div class="actions"><button class="btn btn-primary" type="button" data-approve>Install with passkey</button><button class="btn btn-ghost" type="button" data-decline>Not now</button></div>
+      <div class="sheet" role="status" style="background:var(--indigo-900)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 11c0 3-1 6-3 8M8.5 7.5A5 5 0 0 1 17 11c0 1.5-.2 3-.6 4.4M6.3 10A6.5 6.5 0 0 1 9 5.6M12 14.5c-.2 1.8-.8 3.5-1.7 5M15.3 17.5c-.3 1-.7 2-1.2 2.9M4 13.5c.4-1 .6-2 .6-3"/></svg><b>Confirm with your passkey</b><div class="small" style="opacity:.8">Installing Bookings 1.4.0 · +booking_hold · starts at Ask me first</div></div>
+      <div class="done-line" role="status"></div>
+    </article>
+  </div>
+</main>
+
+<footer class="concept-foot"><div class="wrap row"><span>Agentrix WebAgent Platform by Zavora · MIT · Concept · illustrative data. The session, people and digests are fictional.</span><span>Design: docs/08-control-plane.md §6</span></div></footer>
+<script src="cp.js"></script>
+</body>
+</html>

@@ -1,0 +1,51 @@
+{% extends "os/base.html" %}
+{#- ShellPage::Settings · view::SettingsView (+ Chrome) { saved_words?, surfaces: [{surface, may, never}], channels_href? }
+    01b C44 (Settings, missing in the concepts): quiet hours first; notification channels (W9) plug in as an app. -#}
+{% block title %}Settings · {{ site.name }}{% endblock %}
+{% block field %}
+<section class="view on" aria-labelledby="set-h">
+  <div class="field-head"><div><h2 id="set-h">Settings</h2><div class="sub">{{ site.name }} · {{ site.host }}</div></div></div>
+  {% if saved_words %}<p class="note ok-note" role="status"><span>{{ saved_words }}</span></p>{% endif %}
+  <div class="cards">
+    <article class="fcard span2" aria-labelledby="qh-h">
+      <div class="fcard-head"><span class="sysmark" aria-hidden="true">{{ m.icon("settings") }}</span><div class="who"><b id="qh-h">Quiet hours</b><span class="state-line">Night Time runs {{ time.quiet_words }}, your site's time</span></div></div>
+      <p>During quiet hours the console turns dark and shows what your WebAgents recorded overnight. Decisions wait for you in the morning; none is approved for you.</p>
+      <form method="post" action="{{ base }}/settings/quiet-hours" class="hours-form">
+        <label>Starts <input type="time" name="start" value="{{ time.start }}" required></label>
+        <label>Ends <input type="time" name="end" value="{{ time.end }}" required></label>
+        <button class="btn btn-primary btn-sm" type="submit">Save quiet hours</button>
+      </form>
+    </article>
+    <article class="fcard">
+      <div class="fcard-head"><span class="sysmark" aria-hidden="true">{{ m.icon("trust") }}</span><div class="who"><b>Approvals</b><span class="state-line">{{ "With your passkey" if has_passkey else "With your authenticator app" }}</span></div></div>
+      <p>{% if has_passkey %}You approve with your passkey. On a device without it, a code from your authenticator app works instead, and the receipt says so.{% else %}You approve with a code from your authenticator app. Adding a passkey lets you approve with your face or fingerprint.{% endif %}</p>
+    </article>
+    <article class="fcard">
+      <div class="fcard-head"><span class="sysmark" aria-hidden="true">{{ m.icon("activity") }}</span><div class="who"><b>Hand gestures</b><span class="state-line">Off until you turn on the camera</span></div></div>
+      <p>Move between cards and stop everything without touching the screen. Recognised on this device; a gesture can never approve.</p>
+      <div class="verbs"><a class="btn btn-sm" href="{{ base }}/gestures">Set up gestures</a></div>
+    </article>
+    {% if channels_href %}
+    <article class="fcard">
+      <div class="fcard-head"><span class="sysmark" aria-hidden="true">{{ m.icon("bell") }}</span><div class="who"><b>Chat and email</b><span class="state-line">Telegram, WhatsApp and email</span></div></div>
+      <p>Get your brief and decisions in a chat or by email. From a chat you can decline a decision or stop everything; approving always opens here.</p>
+      <div class="verbs"><a class="btn btn-sm" href="{{ channels_href }}">Set up chat and email</a></div>
+    </article>
+    {% endif %}
+    <article class="fcard">
+      <div class="fcard-head"><span class="sysmark" aria-hidden="true">{{ m.icon("grid") }}</span><div class="who"><b>Signed in{% if owner_name %} as {{ owner_name }}{% endif %}</b><span class="state-line">This device</span></div></div>
+      <form method="post" action="/auth/signout"><button class="btn btn-sm" type="submit">Sign out</button></form>
+    </article>
+  </div>
+  <article class="fcard after-cards" aria-labelledby="surf-h">
+    <h3 id="surf-h">Where you can decide</h3>
+    <p class="small muted">The same decisions reach you on WhatsApp, by voice and by email, where you can do less. This table sets what each one may decide, so nothing can be approved somewhere with weaker checks. A link in a message opens the decision here.</p>
+    <div class="tablewrap">
+      <table class="surface-table">
+        <thead><tr><th>Where</th><th>May decide</th><th>Never</th></tr></thead>
+        <tbody>{% for r in surfaces %}<tr><td><b>{{ r.surface }}</b></td><td>{{ r.may }}</td><td>{{ r.never }}</td></tr>{% endfor %}</tbody>
+      </table>
+    </div>
+  </article>
+</section>
+{% endblock %}

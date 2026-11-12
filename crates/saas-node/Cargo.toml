@@ -1,0 +1,68 @@
+[package]
+name = "saas-node"
+description = "agentrix-saas: the one process that runs Agentrix SaaS. Both companies' kernels on durable stores, the four hosts by Host (saas-web), the agent door, PayPal webhooks verified by agentrix-effects and posted to the books, and a judge mode on scripted models."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+authors.workspace = true
+
+# Slice B (company) owns this crate.
+
+[lib]
+name = "saas_node"
+path = "src/lib.rs"
+
+[[bin]]
+name = "agentrix-saas"
+path = "src/main.rs"
+
+[dependencies]
+adk-core.workspace = true
+adk-auth = { workspace = true, features = ["web-bot-auth", "signed-audit"] }
+adk-eval = { git = "https://github.com/zavora-ai/adk-rust", rev = "3e797c38204ef21f603c84b5ee4270798270f2d6", default-features = false }
+adk-sandbox = { workspace = true, features = ["process", "sandbox-macos", "sandbox-linux"] }
+agentrix-decisions.workspace = true
+agentrix-effects.workspace = true
+agentrix-models = { path = "../agentrix-models" }
+agentrix-records = { path = "../agentrix-records" }
+agentrix-host.workspace = true
+agentrix-shell.workspace = true
+agentrix-samples.workspace = true
+agentrix-channels.workspace = true
+agentrix-messages.workspace = true
+agentrix-types.workspace = true
+anyhow.workspace = true
+async-trait.workspace = true
+axum.workspace = true
+chrono.workspace = true
+clap.workspace = true
+futures.workspace = true
+hex.workspace = true
+reqwest.workspace = true
+saas-books = { path = "../saas-books" }
+saas-company = { path = "../saas-company", features = ["effects"] }
+saas-core = { workspace = true, features = ["fake"] }
+saas-settle = { path = "../saas-settle" }
+saas-web = { path = "../saas-web" }
+saas-wallet.workspace = true
+saas-badge = { path = "../saas-badge" }
+saas-federation.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+sha2.workspace = true
+sqlx.workspace = true
+tokio.workspace = true
+tracing.workspace = true
+tracing-subscriber.workspace = true
+url.workspace = true
+uuid.workspace = true
+tower.workspace = true
+
+[dev-dependencies]
+tempfile.workspace = true
+wiremock = "0.6"
+
+[lints]
+workspace = true

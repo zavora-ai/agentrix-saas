@@ -1,0 +1,27 @@
+[package]
+name = "agentrix-ui"
+description = "The shared UI kit: tokens, self-hosted fonts, base layouts, minijinja macros, small JS islands and the words catalogue every surface renders with."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+authors.workspace = true
+
+[dependencies]
+agentrix-host.workspace = true
+agentrix-marks = { path = "../agentrix-marks" }
+anyhow.workspace = true
+axum.workspace = true
+minijinja.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+
+[dev-dependencies]
+agentrix-marks = { path = "../agentrix-marks", features = ["serve"] }
+serde_json.workspace = true
+tokio.workspace = true
+tower.workspace = true
+
+[lints]
+workspace = true

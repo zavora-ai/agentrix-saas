@@ -1,0 +1,36 @@
+{#- agentrix-ui · the Agentrix OS shell for every scope (concept/console/shell.html,
+concept/control-plane/). One partial, three scopes (01b §5.4): the owner console fills it in the
+site scope, the control plane in the portfolio and operator scopes.
+
+Desk: status bar on top, dock on the left, field in the middle, lane on the right, command bar
+under the field. Under 900 px it becomes the phone: bar, lane, field, command bar, dock as a tab bar.
+
+Blocks:
+  scope       "site" (default), "portfolio" or "operator"; sets data-scope on .os
+  os_class    modifiers: "no-lane", "no-cmd", "frozen"
+  bar         the status bar's contents: ui.site_chip or ui.scope_chip, worlds, pills
+  dock_label  the dock's accessible name ("WebAgents" by default; "Apps" for operators)
+  dock        app icons (ui.app_icon)
+  banner      top of the field: frozen, hold, read-only, offline (ui.banner)
+  field       the page itself (start with <div class="field-head">)
+  lane_label  the lane's accessible name ("What needs you" by default)
+  lane        lane sections (ui.lane_section) and cards (ui.decision_card)
+  cmd         the command bar (ui.command_bar)
+  overlays    approval sheets and windows, outside the grid
+Night Time: pass night=true and quiet_hours (see ui/base.html). -#}
+{% extends "ui/base.html" %}
+{% block styles %}<link rel="stylesheet" href="{{ ui_base }}/shell.css?v={{ ui_v }}">{% block shell_styles %}{% endblock %}{% endblock %}
+{% block body_class %}shell{% endblock %}
+{% block body %}
+<div class="os {% block os_class %}{% endblock %}" data-scope="{% block scope %}site{% endblock %}">
+  <header class="os-bar">{% block bar %}{% endblock %}</header>
+  <nav class="dock" aria-label="{% block dock_label %}WebAgents{% endblock %}">{% block dock %}{% endblock %}</nav>
+  <main class="field" id="main">
+    {% block banner %}{% endblock %}
+    {% block field %}{% endblock %}
+  </main>
+  <aside class="lane" aria-label="{% block lane_label %}What needs you{% endblock %}"><div class="lane-scroll">{% block lane %}{% endblock %}</div></aside>
+  <div class="cmd">{% block cmd %}{% endblock %}</div>
+</div>
+{% block overlays %}{% endblock %}
+{% endblock %}

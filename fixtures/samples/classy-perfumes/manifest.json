@@ -1,0 +1,234 @@
+{
+  "site": "classy-perfumes-sample",
+  "host": "classy-perfumes-sample.agentrix.website",
+  "name": "Classy Perfumes",
+  "archetype": "shop",
+  "currency": "KES",
+  "utc_offset_min": 180,
+  "seed_version": "2026-11-08.7",
+  "facts": {
+    "order_prefix": "CP",
+    "domain": "classy-perfumes.example",
+    "headline": "Perfume and gift sets,\nwrapped free in Westlands.",
+    "intro": "Perfumes in three sizes across five scent families, gift sets wrapped by hand, same-day delivery in Nairobi and courier delivery to 18 towns. Every name and price here is a sample.",
+    "owner": {
+      "name": "Makena Wafula",
+      "first": "Makena",
+      "initial": "M",
+      "channel": "WhatsApp",
+      "wait": "~3 hours",
+      "hours": "9:00–19:00",
+      "reply": "usually within 3 hours (9:00–19:00)",
+      "login": {
+        "email": "makena@classy-perfumes.example",
+        "password": "classy-sample-owner"
+      }
+    },
+    "address": "Westlands, Nairobi",
+    "release": "v31",
+    "same_day_cutoff": "14:00",
+    "returns": {
+      "days": 14,
+      "opened": "Opened bottles can't be returned, so ask for a free 2 ml sample first.",
+      "how": "Tell the Orders desk your order number and it passes the return to Makena, who replies with a courier pickup."
+    },
+    "samples": "Any order can include a free 2 ml sample of any scent. Add it from a product page.",
+    "wrapping": "Every order can be gift-wrapped free, with a handwritten card. Write your card message in the note for Makena at checkout.",
+    "wrapping_how": "Makena wraps each gift in plum paper with a gold ribbon and writes your card by hand, word for word.",
+    "not_published": [
+      {
+        "label": "Long-lasting",
+        "terms": [
+          "longevity",
+          "long-lasting",
+          "long lasting",
+          "lasting",
+          "last long",
+          "lasts"
+        ],
+        "what": "how long {x} lasts"
+      },
+      {
+        "label": "Vegan",
+        "terms": [
+          "vegan",
+          "cruelty",
+          "animal"
+        ],
+        "what": "whether {x} is vegan"
+      }
+    ],
+    "families": [
+      {
+        "name": "Fresh citrus",
+        "words": "Light and clean. For mornings and hot afternoons."
+      },
+      {
+        "name": "Floral",
+        "words": "Flowers, from soft violet to strong tuberose."
+      },
+      {
+        "name": "Woody",
+        "words": "Cedar, moss, vetiver and oud. Dry and calm."
+      },
+      {
+        "name": "Amber",
+        "words": "Warm resins and spice. For evenings."
+      },
+      {
+        "name": "Gourmand",
+        "words": "Vanilla, coffee and cocoa. Sweet and close to the skin."
+      }
+    ],
+    "featured": [
+      "vanilla-gift-set",
+      "citrus-dawn",
+      "amber-noir",
+      "rain-oud"
+    ],
+    "gift_bands": [
+      5000,
+      7000
+    ],
+    "example_plan": {
+      "title": "Bridesmaids' gifts for Sat 12 Dec",
+      "budget": 25000,
+      "by": "Achieng",
+      "people": "Wambui: fresh, sporty\nNyokabi: loves vanilla\nAwino: evenings out\nKawira: not sure\nJemutai: hates strong perfume"
+    },
+    "journal": [
+      {
+        "slug": "how-amber-wears-in-cold-air",
+        "title": "How amber wears in cold air",
+        "at": "d-9 08:00",
+        "standfirst": "Why Amber Noir's smoked vanilla opens slowly on a cool Nairobi evening.",
+        "body": [
+          "Amber isn't one material. In perfume it means a warm accord, usually labdanum resin, benzoin and vanilla.",
+          "Cold air slows a perfume down. On a July evening in Nairobi, Amber Noir opens with the smoke first and lets the vanilla through later, once your skin warms it.",
+          "Spray it on skin, not on a coat. Wool holds the smoke and loses the vanilla.",
+          "If amber is new to you, start with a free 2 ml sample. Amber Lantern is the softer one, with cardamom where Amber Noir has smoke."
+        ]
+      },
+      {
+        "slug": "scents-for-the-short-rains",
+        "title": "Scents for the short rains",
+        "at": "d-3 08:00",
+        "standfirst": "Rain Oud and the petrichor accord behind this season's limited run.",
+        "body": [
+          "Petrichor is the smell of the first rain on dry ground. Perfumers rebuild it from a few materials that smell of wet stone and earth.",
+          "Rain Oud puts that accord over oud, so it starts like a wet afternoon and dries down darker. It's a limited run for the short rains.",
+          "For something lighter in the wet months, Karura Moss smells of oakmoss and wet leaves, and Lime Market keeps a bright edge when the sky is grey.",
+          "Not sure which way to go? Add a free 2 ml sample of each to your next order and try them at home."
+        ]
+      }
+    ],
+    "mark": {
+      "family": "facets",
+      "squareness": 6.2,
+      "key": "classy",
+      "font": "Cormorant Garamond, Georgia, serif"
+    },
+    "front_color": "#1c1719",
+    "desks": [
+      {
+        "id": "fragrances",
+        "name": "Fragrances",
+        "href": "/fragrances",
+        "color": "#2a1f3d",
+        "glyph": "perfume",
+        "seed": 4,
+        "mandate": "I explain notes, sizes and what is in stock, from this shop's catalogue.",
+        "starters": [
+          [
+            "What smells like rain?",
+            "notes",
+            false
+          ],
+          [
+            "Which is lightest?",
+            "lightest",
+            true
+          ],
+          [
+            "Is Citrus Dawn in stock?",
+            "stock",
+            true
+          ]
+        ]
+      },
+      {
+        "id": "gifts",
+        "name": "Gifts",
+        "href": "/gifts/plan",
+        "color": "#6d2e4f",
+        "glyph": "gift",
+        "seed": 19,
+        "mandate": "I help you choose a gift from the catalogue and have it wrapped.",
+        "starters": [
+          [
+            "A gift under KSh 5,000",
+            "budget",
+            true
+          ],
+          [
+            "Plan gifts for a group",
+            "plan",
+            false
+          ],
+          [
+            "Is gift wrapping free?",
+            "wrap",
+            true
+          ]
+        ]
+      },
+      {
+        "id": "orders",
+        "name": "Orders",
+        "href": "/orders",
+        "color": "#3d5a6c",
+        "glyph": "bag",
+        "seed": 8,
+        "mandate": "I find your order, tell you where it stands, and answer delivery and returns questions.",
+        "starters": [
+          [
+            "Where is my order?",
+            "where",
+            false
+          ],
+          [
+            "Do you deliver to Mombasa?",
+            "deliver",
+            true
+          ],
+          [
+            "Can I return it?",
+            "returns",
+            true
+          ]
+        ]
+      },
+      {
+        "id": "journal",
+        "name": "Journal",
+        "href": "/journal",
+        "color": "#5e5468",
+        "glyph": "book",
+        "seed": 27,
+        "mandate": "I answer from the shop's journal posts only.",
+        "starters": [
+          [
+            "Which scent for the short rains?",
+            "rains",
+            false
+          ],
+          [
+            "How does amber wear in cold air?",
+            "amber",
+            false
+          ]
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,21 @@
+{% block subject %}Alarm: {{ alarm.title }}{% endblock %}
+{% block preheader %}Since {{ alarm.since }}. {{ alarm.status }}{% endblock %}
+{% block body %}
+# {{ alarm.title }}
+{{ alarm.detail }}
+
+::fact Since | {{ alarm.since }}
+::fact What we're doing | {{ alarm.status }}
+
+This alarm repeats, even in quiet hours, until someone acknowledges it in the console.
+
+::button Open the console | {{ alarm.url }}
+
+If you need everything to stop, Freeze in the console stops every WebAgent at once. Your pages stay up from the signed copy.
+{% endblock %}
+{% block push %}Alarm on {{ site.name }}. Open Agentrix to see it.{% endblock %}
+{% block push_url %}{{ alarm.url }}{% endblock %}
+{% block chat %}
+Agentrix alarm: {{ alarm.title }}, since {{ alarm.since }}. {{ alarm.status }} Reply STOP to freeze every WebAgent.
+::button Open the console | {{ alarm.url }}
+{% endblock %}

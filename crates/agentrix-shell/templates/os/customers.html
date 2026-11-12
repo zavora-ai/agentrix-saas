@@ -1,0 +1,39 @@
+{% extends "os/base.html" %}
+{#- ShellPage::Customers · view::CustomersView (+ Chrome) {
+      q, rows: [CustomerRow { href, name, contact, has_account, orders, questions, last }], total, accounts }
+    concept/console.html's Customers panel and the sample back office's owner/customers.html: the people the site
+    served (accounts, people named on orders, visitors who left a way to reach them), most recent first. -#}
+{% block title %}Customers · {{ site.name }}{% endblock %}
+{% block field %}
+<section class="view on" aria-labelledby="cust-h">
+  <div class="field-head"><div><h2 id="cust-h">Customers</h2><div class="sub">{% if total %}{{ total }} {{ "person" if total == 1 else "people" }} your site served · {{ accounts }} with an account{% else %}Nobody recorded yet{% endif %}</div></div><a class="btn btn-sm" href="{{ base }}/orders">Orders</a></div>
+  {% if total %}
+  <form method="get" action="{{ base }}/customers" role="search">
+    {{ ui.field("q", "Search by name or email", type="search", value=q, autocomplete="off") }}
+    <div class="verbs"><button class="btn btn-sm" type="submit">Search</button>{% if q %}<a class="btn btn-sm btn-ghost" href="{{ base }}/customers">Show everyone</a>{% endif %}</div>
+  </form>
+  {% if rows %}
+  <div class="table-wrap after-cards"><table class="data">
+    <thead><tr><th scope="col">Customer</th><th scope="col" class="hide-sm">Contact</th><th scope="col" class="r">Orders</th><th scope="col" class="hide-sm r">Questions</th><th scope="col">Last seen</th></tr></thead>
+    <tbody>
+    {% for r in rows %}
+    <tr>
+      <td><a href="{{ r.href }}"><b>{{ r.name }}</b></a>{% if r.has_account %} {{ ui.chip("Account", "info") }}{% endif %}</td>
+      <td class="hide-sm">{{ r.contact }}</td>
+      <td class="r">{{ r.orders }}</td>
+      <td class="hide-sm r">{{ r.questions }}</td>
+      <td>{{ r.last }}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+  </table></div>
+  {% else %}
+  <p class="quiet after-cards">Nobody matches "{{ q }}". Search by part of a name or an email address.</p>
+  {% endif %}
+  {% else %}
+  <article class="fcard">
+    {{ ui.empty("No customers yet", "People appear here after they order through your site, make an account on it, or pass you a question with a way to reach them.", level=3) }}
+  </article>
+  {% endif %}
+</section>
+{% endblock %}

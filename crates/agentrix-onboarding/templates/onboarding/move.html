@@ -1,0 +1,249 @@
+{% extends "onboarding/base.html" %}
+{% import "onboarding/macros.html" as m %}
+{#- OnboardingPage::Move · view::MovePage {
+      site_id, host, fixture, live_url?, move_id, state: "none"|"running"|"waiting"|"live"|"stopped",
+      title, state_chip {class, words}, started_words, progress_words?,
+      rail: [{key, name, class, words, anchor}], rooms: [{key, title, what, network, summary, state,
+      state_words, took_words, receipt?, receipt_short?}], tick, frame?, parity? {score_words,
+      score_pct, ok, pages_words, pages: [{url, chip, score_words, verdict, flagged}]},
+      quarantine {count, items: [{title, reason, where}]}, card? {title, href}, spend_words?, uploads,
+      pictures_href?, look? {name, sentence, href} }
+    concept/move.html (O5.2 to O5.5) with owner-golive.html's "you're live" and undo (O6.2).
+    The go-live card itself is the console's decision page (card.href), approved with a passkey
+    or a code under the frozen approve contract. static/onboarding/move.js follows the Move live.
+    Once live, and only when W13's Channels app is registered (Pages::with_channels), an optional
+    step asks where the WebAgents should reach the owner; email is always on, Not now always there.
+    Once live, when pictures drafted for pages that had none wait (pictures_href, set by node from
+    W11's library), the live card says so and links Pictures. -#}
+{% block title %}{{ title }}{% endblock %}
+{% block body_class %}page-move{% endblock %}
+{% block topright %}<span class="chip chip-outline">{{ host }}</span><a class="btn btn-ghost btn-sm" href="/os">Console</a>{% endblock %}
+{% block main %}
+<div class="move" id="move" data-state="{{ state }}" data-events="{{ '/moves/' ~ move_id ~ '/events' if move_id else '' }}">
+<div class="move-head">
+  <div class="row eyebrow-row"><span class="eyebrow">The Move</span>{{ m.fixture_label(fixture) }}</div>
+  <h1 class="h2 scene-title">{{ title }}</h1>
+  {% if state != "none" %}<p class="muted small move-when">Started {{ started_words }}{% if progress_words %} · <span id="move-progress">{{ progress_words }}</span>{% endif %} · your old site keeps serving the whole time</p>{% endif %}
+</div>
+
+<div class="card overview">
+  <div>
+    <div class="route"><span class="old">{{ host }} on WordPress</span><span class="arrow">→</span><span>{{ host }} on Agentrix</span></div>
+    <div class="row overview-chips">
+      <span class="chip {{ state_chip.class }}" id="move-state">{{ state_chip.words }}</span>
+      {% if parity %}<span class="chip {{ 'chip-ok' if parity.ok else 'chip-wait' }}">{{ parity.score_words }} match</span>{% endif %}
+      {% if quarantine.count %}<span class="chip chip-risk">{{ quarantine.count }} left behind</span>{% endif %}
+    </div>
+    {% if spend_words %}<p class="small muted spend" id="move-spend">{{ spend_words }}</p>{% endif %}
+    {% if look %}<p class="small move-look" id="move-look">Your new look: <b>{{ look.name }}</b>. {{ look.sentence }} The rebuild uses its colours and fonts. <a href="{{ look.href }}">Change it</a></p>{% endif %}
+  </div>
+  <div class="row mover"><span class="avatar av-mover">Mv</span><div><b class="small">Mover</b><div class="small muted">Hands over to your WebAgents after go-live</div></div></div>
+</div>
+
+{% if state == "none" %}
+<div class="layout">
+  <div>
+    {% if not fixture %}
+    <section class="block" aria-labelledby="up-h">
+      <div class="block-head"><h2 id="up-h">Your WordPress export</h2><p>In WordPress, go to Tools → Export → All content and upload the file here. If your host lets you, add the database dump and the wp-content folder as a .tar.gz too: the Move then replays your old site in a sealed room instead of reading only its export.</p></div>
+      <div class="card uploads" id="uploads" data-site="{{ site_id }}">
+        {% for slot in [["export.xml", "WordPress export (.xml)", ".xml,application/xml,text/xml"], ["dump.sql.gz", "Database dump (.sql.gz), optional", ".gz,application/gzip"], ["wp-content.tar.gz", "wp-content folder (.tar.gz), optional", ".gz,application/gzip"]] %}
+        {% set have = uploads | selectattr("name", "equalto", slot[0]) | list %}
+        <label class="o-field">{{ slot[1] }}<input type="file" id="up-{{ loop.index }}" data-name="{{ slot[0] }}" accept="{{ slot[2] }}"></label>
+        <p class="o-hint" id="up-{{ loop.index }}-status" role="status">{% if have %}Uploaded {{ have[0].size_words }} · {{ have[0].when_words }}{% else %}Not uploaded yet{% endif %}</p>
+        {% endfor %}
+        <p class="o-hint">Files stay on the platform, are checked by type before they're kept, and are only ever opened inside sealed rooms.</p>
+      </div>
+    </section>
+    {% endif %}
+  </div>
+  <aside class="side">
+    <article class="card golive">
+      <h3>Start the Move</h3>
+      <p class="small">The Mover reads your site in sealed rooms, leaves anything suspicious behind, rebuilds it, and proves the new site matches the old one before you decide to go live.</p>
+      <form method="post" action="/sites/{{ site_id }}/moves"><button class="btn btn-primary btn-lg" type="submit">Start the Move</button></form>
+    </article>
+  </aside>
+</div>
+{% else %}
+
+<ol class="rail" id="rail" aria-label="Stages of the Move">
+  {% for r in rail %}
+  <li class="{{ r.class }}" data-key="{{ r.key }}"><a href="{{ r.anchor }}"><span class="dot">{% if r.class == "" %}{{ m.icon("check") }}{% elif r.class == "fail" %}{{ m.icon("x") }}{% endif %}</span><b>{{ r.name }}</b><span class="w">{{ r.words }}</span></a></li>
+  {% endfor %}
+</ol>
+
+<p class="fact block live-error" id="live-error" role="status" hidden></p>
+
+<div class="layout">
+  <div>
+    <section class="block" id="rooms" aria-labelledby="rooms-h">
+      <div class="block-head">
+        <h2 id="rooms-h">Sealed rooms</h2>
+        <p>Anything that touches the old site, or code a model wrote, runs in a room that is created for one job and destroyed after it. No room holds a key.</p>
+      </div>
+      {% if state == "running" %}
+      <figure class="room-frame now-frame" id="frame">
+        {% if frame %}
+        <img id="frame-img" src="{{ frame.src }}" alt="What the sealed browser sees on {{ frame.page_url }}">
+        <figcaption id="frame-cap"><span class="chip {{ 'chip-ok' if frame.kind == 'live' else 'chip-sealed' }}" id="frame-label">{{ "Live" if frame.kind == "live" else "Sealed screenshot, about 1 a second" }}</span><span class="mono frame-url" id="frame-url">{{ frame.page_url }}</span></figcaption>
+        {% else %}
+        <img id="frame-img" alt="" hidden>
+        <figcaption id="frame-cap" hidden><span class="chip chip-sealed" id="frame-label"></span><span class="mono frame-url" id="frame-url"></span></figcaption>
+        <p class="frame-empty" id="frame-empty">No frame from this room yet.</p>
+        {% endif %}
+      </figure>
+      <dl class="ticks ticks-row" aria-live="off">
+        <div><dt>Hosts contacted</dt><dd id="tick-hosts">{{ tick.hosts }}</dd></div>
+        <div><dt>Requests</dt><dd id="tick-requests">{{ tick.requests }}</dd></div>
+        <div><dt>Downloaded</dt><dd id="tick-bytes">{{ tick.bytes_words }}</dd></div>
+        <div><dt>Refused</dt><dd id="tick-refusals">{{ tick.refusals }}</dd></div>
+      </dl>
+      {% endif %}
+      <div class="rooms">
+        {% for r in rooms %}
+        <article class="room" data-key="{{ r.key }}" data-state="{{ r.state }}">
+          <h3><span class="seal">{{ m.icon("lock") }}</span>{{ r.title }}</h3>
+          <p class="what">{{ r.what }}</p>
+          <dl>
+            <dt>Network</dt><dd>{{ r.network }}</dd>
+            <dt>Keys</dt><dd>None</dd>
+          </dl>
+          <p class="room-summary" data-summary>{{ r.summary }}</p>
+          <div class="foot">
+            <span class="chip {{ 'chip-ok' if r.state == 'done' else ('chip-risk' if r.state == 'failed' else ('chip-info' if r.state == 'running' else '')) }}" data-chip>{{ r.state_words }}{% if r.took_words %} · {{ r.took_words }}{% endif %}</span>
+            {% if r.receipt %}<a class="mono" href="/receipts/{{ r.receipt }}" data-receipt>receipt {{ r.receipt_short }}</a>{% else %}<a class="mono" data-receipt hidden></a>{% endif %}
+          </div>
+        </article>
+        {% endfor %}
+      </div>
+    </section>
+
+    <section class="block" id="left-behind" aria-labelledby="q-h">
+      <div class="block-head">
+        <h2 id="q-h">Left behind <span class="badge" id="quarantine-count">{{ quarantine.count }}</span></h2>
+        <p>Things found in the old site that won't come to the new one. Each stays behind unless you ask to restore it, and restoring is a decision you sign.</p>
+      </div>
+      <div class="quarantine" id="quarantine-live">
+        {% for q in quarantine["items"] %}
+        <article class="qitem">
+          <div class="qicon" aria-hidden="true">{{ m.icon("lock") }}</div>
+          <div>
+            <div class="spread"><h3>{{ q.title }}</h3><span class="chip chip-risk">Left behind</span></div>
+            <p class="plain">{{ q.reason }}</p>
+            <p class="where">{{ q.where }}</p>
+          </div>
+        </article>
+        {% endfor %}
+      </div>
+      {% if quarantine.count %}<p class="small q-review"><a href="/console/{{ site_id }}/quarantine">See the evidence, or ask to restore one</a></p>{% else %}<p class="small muted" id="quarantine-empty">Nothing left behind so far.</p>{% endif %}
+    </section>
+
+    <section class="block" id="prove" aria-labelledby="prove-h">
+      <div class="block-head">
+        <h2 id="prove-h">Prove it matches</h2>
+        <p>Every page, old and new, photographed in the render room and compared on words, links, prices and look. A page below 95% waits for you to accept it or fix it before anything goes live.</p>
+      </div>
+      <div class="facts">
+        <div><b id="parity-score">{{ parity.score_words if parity else "Not yet" }}</b><span>overall match</span></div>
+        <div><b>{{ parity.pages | length if parity else 0 }}</b><span>pages compared</span></div>
+        <div><b>{{ quarantine.count }}</b><span>items left behind</span></div>
+        <div><b>95%</b><span>the bar to go live</span></div>
+      </div>
+      <div class="meter parity-meter pct-{{ ((parity.score_pct if parity else 0) // 5) * 5 }}{{ ' ok' if parity and parity.ok else '' }}" aria-hidden="true"><span id="parity-bar"></span></div>
+      <ul class="parity-list" id="parity-pages"{% if not parity or not parity.pages %} hidden{% endif %}>
+        {% if parity %}{% for p in parity.pages %}
+        <li data-page="{{ p.url }}">
+          <div class="spread"><b class="mono">{{ p.url }}</b><span class="chip {{ p.chip }}">{{ p.score_words }}</span></div>
+          <p class="small muted">{{ p.verdict }}</p>
+          {% if p.flagged %}<form method="post" action="/moves/{{ move_id }}/accept"><input type="hidden" name="page" value="{{ p.url }}"><button class="btn btn-ghost btn-sm" type="submit">Accept this page as it is</button></form>{% endif %}
+        </li>
+        {% endfor %}{% endif %}
+      </ul>
+    </section>
+  </div>
+
+  <aside class="side">
+    {% if state == "waiting" %}
+    <article class="card golive" id="golive" aria-labelledby="golive-title">
+      <div class="spread"><span class="chip chip-wait">Mover asks</span></div>
+      <h3 id="golive-title">{{ card.title if card else host ~ " is ready to go live" }}</h3>
+      <p class="small">If you approve, this happens:</p>
+      <ul>
+        <li>{{ m.icon("check") }}<span>Within seconds, your new site starts answering at its Agentrix address, from a signed release.</span></li>
+        <li>{{ m.icon("check") }}<span><b>{{ host }}'s address record doesn't change.</b> We don't edit your DNS, so your own address keeps showing your old site until you point it here. After you change it, your DNS provider's settings decide how soon visitors see the new site.</span></li>
+        <li>{{ m.icon("check") }}<span>Your WebAgents start work, at the starting levels the card lists. Anything that can't be undone still asks you first.</span></li>
+        <li>{{ m.icon("check") }}<span>Going live charges nothing. Your plan's first charge is the day you approve it on PayPal's page, just before go-live. Its price is under Your plan and payment.</span></li>
+        <li>{{ m.icon("check") }}<span><b>Your old site stays untouched as a fallback</b>, and Undo puts it back in one tap for 30 days.</span></li>
+        {% if quarantine.count == 1 %}<li>{{ m.icon("check") }}<span>The item left behind stays behind.</span></li>{% elif quarantine.count %}<li>{{ m.icon("check") }}<span>The {{ quarantine.count }} items left behind stay behind.</span></li>{% endif %}
+      </ul>
+      <div class="checks">
+        {% if parity %}<span class="chip {{ 'chip-ok' if parity.ok else 'chip-wait' }}">{{ parity.score_words }} {{ "≥" if parity.ok else "<" }} 95%</span>{% endif %}
+        <span class="chip chip-ok">{{ quarantine.count }} left behind</span>
+        <span class="chip chip-ok">Signed release</span>
+      </div>
+      <a class="btn plan-pay" href="/setup/pay?site={{ site_id }}&amp;next=/console/move">Your plan and payment</a>
+      {% if card %}<a class="btn btn-primary btn-lg" href="{{ card.href }}">Go live · approve with passkey</a>{% endif %}
+      <p class="small muted">Not ready? Leave the card. It keeps waiting for you in Decisions, and leaving it never declines it.</p>
+      <p class="small muted">Your approval is signed by your device and bound to this exact release. No passkey on this device? The card takes a code from your authenticator app.</p>
+    </article>
+    {% elif state == "live" %}
+    <article class="card golive live" id="golive" aria-labelledby="golive-title">
+      <div class="o-ok">✓ Live</div>
+      <h3 id="golive-title">{{ host }} is live</h3>
+      {% if live_url %}<p class="small">Your new site answers at <a href="{{ live_url }}" rel="noopener">{{ live_url }}</a>.</p>{% endif %}
+      <p class="small">For 30 days you can undo in one step. Nothing is deleted: this release stays in your history and can go live again.</p>
+      {% if pictures_href %}<p class="small" id="pictures-waiting">Pictures for pages that had none wait for you in <a href="{{ pictures_href }}">Pictures</a>.</p>{% endif %}
+      <form method="post" action="/sites/{{ site_id }}/rollback"><input type="hidden" name="to" value="previous"><button class="btn" type="submit">Undo: the release before this one</button></form>
+      <form method="post" action="/sites/{{ site_id }}/rollback"><input type="hidden" name="to" value="old-site"><button class="btn btn-ghost" type="submit">Undo: back to your old site</button></form>
+      <p class="small muted">On your first release both go back to your old site. Each undo is written as a receipt.</p>
+    </article>
+    <div class="o-chief"><span class="avatar av-chief">CW</span><p><b>Chief WebAgent:</b> You're live. Your first brief is on your console's Today page tomorrow morning: what came in, what needs you, what it cost.</p></div>
+    {% if channels_on %}
+    <article class="card reach" id="reach" data-site="{{ site_id }}" aria-labelledby="reach-title">
+      <span class="chip">Optional</span>
+      <h3 id="reach-title">Where should your WebAgents reach you?</h3>
+      <p class="small">Decisions and your morning brief come to your console and by email. Add the places you already look.</p>
+      {% for group, title in [["you", "For you"], ["team", "For your team"]] %}
+      <h4 class="reach-group">{{ title }}</h4>
+      <ul class="reach-list">
+        {% for c in reach_channels if c.group == group %}
+        <li><div><b>{{ c.name }}</b><span>{{ c.words }}</span></div>
+          {% if c.state == "on" %}<span class="chip chip-ok">On</span>
+          {% elif c.state == "soon" %}<span class="chip">Not available yet</span>
+          {% else %}<a class="btn btn-sm" href="/console/{{ site_id }}/apps/channels?connect={{ c.id }}&amp;back=%2Fconsole%2Fmove">{{ "Turn on" if c.id == "device" else "Connect" }}</a>{% endif %}
+        </li>
+        {% endfor %}
+      </ul>
+      {% endfor %}
+      <button class="btn btn-ghost" type="button" id="reach-later">Not now</button>
+      <p class="small muted">Connecting opens Channels, with a link back here. You can change this any time there.</p>
+    </article>
+    {% endif %}
+    {% elif state == "stopped" %}
+    <article class="card golive" id="golive" aria-labelledby="golive-title">
+      <h3 id="golive-title">Start again</h3>
+      <p class="small">This Move ended without going live: it was declined, undone, or stopped on a fault. Your old site kept serving the whole time, and every step it took is on its receipts.</p>
+      <form method="post" action="/sites/{{ site_id }}/moves"><button class="btn btn-primary btn-lg" type="submit">Start a new Move</button></form>
+      <p class="small muted">A Move that stopped on a fault picks up where it stopped; otherwise a fresh Move starts from your site's exports.</p>
+    </article>
+    {% else %}
+    <article class="card golive soon" id="golive" aria-labelledby="golive-title">
+      <h3 id="golive-title">Go live comes last</h3>
+      <p class="small">When every page matches at 95% or better, the Mover asks you to go live. Nothing changes on your site until you approve. You can leave this page; the card waits for you in Decisions.</p>
+      <p class="okline" id="card-banner"{% if not card %} hidden{% endif %}>Your decision: <a href="{{ card.href if card else '#' }}">{{ card.title if card else '' }}</a></p>
+    </article>
+    {% endif %}
+
+    <article class="card tight refused">
+      <div class="card-title"><h4>Refused during the Move</h4><span class="chip {{ 'chip-risk' if tick.refusals else 'chip-ok' }}" id="refused-count">{{ tick.refusals }}</span></div>
+      <p class="small muted">{% if tick.refusals %}Something tried to reach beyond its room and was stopped. Each refusal is written into that room's receipt.{% else %}Nothing has tried to leave its room.{% endif %}</p>
+    </article>
+
+    <div class="note">{{ m.icon("lock") }}<span>Your old site stays exactly as it is until you approve going live, and for 30 days after that, as the fallback Undo returns to.</span></div>
+  </aside>
+</div>
+{% endif %}
+</div>
+{% endblock %}
+{% block scripts %}{% if state == "running" or state == "waiting" %}<script src="/static/onboarding/move.js?v={{ onboarding_v }}" defer></script>{% endif %}{% if state == "live" and channels_on %}<script src="/static/onboarding/reach.js?v={{ onboarding_v }}" defer></script>{% endif %}{% if (state == "none" or state == "stopped") and not fixture %}<script src="/static/onboarding/upload.js?v={{ onboarding_v }}" defer></script>{% endif %}{% endblock %}

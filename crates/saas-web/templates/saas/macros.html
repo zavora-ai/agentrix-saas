@@ -1,0 +1,31 @@
+{% import "ui/kit.html" as ui %}
+{#- saas-web · small pieces shared by the money and Kilele pages. -#}
+
+{#- The top bar's links on the money host. current: "plans", "desks", "board", "console", "" -#}
+{% macro money_nav(current="") -%}
+<nav class="saas-nav" aria-label="Agentrix">
+  <a href="/plans"{% if current == "plans" %} aria-current="page"{% endif %}>Plans</a>
+  <a href="/#desks"{% if current == "desks" %} aria-current="page"{% endif %}>Talk to us</a>
+  <a href="/board/"{% if current == "board" %} aria-current="page"{% endif %}>Treasury board</a>
+  <a href="/console"{% if current == "console" %} aria-current="page"{% endif %}>Owner console</a>
+  <a href="/proofs"{% if current == "proofs" %} aria-current="page"{% endif %}>Proofs</a>
+  <a href="/judges"{% if current == "judges" %} aria-current="page"{% endif %}>For judges</a>
+</nav>
+{%- endmacro %}
+
+{#- A plan card. p: plans_view().plans[i] -#}
+{% macro plan_card(p) -%}
+<article class="card plan{% if p.featured %} featured{% endif %}" id="plan-{{ p.id }}">
+  <h3>{{ p.name }}</h3>
+  <p class="price"><b>{{ p.monthly }}</b><small> a month</small></p>
+  <p class="small muted">{{ p.annual }} a year paid up front (save {{ p.saving }})</p>
+  <ul class="plain">{% for i in p.includes %}<li>{{ i }}</li>{% endfor %}</ul>
+  <p class="small muted">WebAgents: {{ p.webagents }}</p>
+  <a class="btn{% if p.featured %} btn-primary{% endif %} btn-wide" href="/subscribe?plan={{ p.id }}">Subscribe with PayPal</a>
+</article>
+{%- endmacro %}
+
+{#- Checkout and PayPal pages say Sandbox where a person can't miss it. -#}
+{% macro sandbox_banner() -%}
+{{ ui.banner("wait", "Sandbox: no real money moves. When PayPal asks you to sign in, use a PayPal sandbox test account, never your own PayPal account.") }}
+{%- endmacro %}

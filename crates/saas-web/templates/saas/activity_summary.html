@@ -1,0 +1,27 @@
+{#- The operators' activity summary: a fragment the ops console embeds (activity::summary_html,
+    /activity/summary). View: rows (row_view + href), totals, sources, saas_v. -#}
+<link rel="stylesheet" href="/static/saas/activity-summary.css?v={{ saas_v }}">
+<section class="ax-summary" aria-labelledby="ax-summary-h">
+  <div class="ax-head"><h2 id="ax-summary-h">Live activity</h2><a class="ax-open" href="/activity">Open full activity</a></div>
+  <div class="ax-totals">
+    <div><span>Money moved today</span><b>{% if totals.money is none %}not connected{% else %}{{ totals.money | join(" · ") }}{% endif %}</b></div>
+    <div><span>Waiting for owners</span><b>{% if totals.held is none %}not connected{% else %}{{ totals.held }}{% endif %}</b></div>
+    <div><span>Refusals today</span><b>{{ totals.refusals }}</b></div>
+    <div><span>Model spend today</span><b>{% if totals.spend is none %}not connected{% else %}{{ totals.spend }}{% endif %}</b>{% if totals.cap %}<small>cap {{ totals.cap }}</small>{% endif %}</div>
+    <div><span>Last reconciliation</span><b>{% if totals.reconciliation %}{{ totals.reconciliation.words }}{% else %}none yet{% endif %}</b></div>
+  </div>
+  {% set off = sources | rejectattr("connected") | list %}
+  {% if off %}<p class="ax-off">{% for s in off %}{{ s.name }}: {{ s.note }}{% if not loop.last %} · {% endif %}{% endfor %}</p>{% endif %}
+  <ol class="ax-rows">
+  {% for r in rows %}
+    <li class="{{ 'ax-refusal' if r.refusal else '' }}"><a href="{{ r.href }}">
+      <span class="ax-when">{{ r.when }}</span>
+      <span class="ax-who"><b>{{ r.company }}</b>{% if r.agent %} · {{ r.agent }}{% endif %}</span>
+      <span class="ax-what">{{ r.what }}{% if r.amount %} <em>{{ r.amount }}</em>{% endif %}{% if r.paypal_id %} <code>{{ r.paypal_id }}</code>{% endif %}</span>
+      <span class="ax-decision">{% if r.decision %}<span class="ax-chip ax-{{ 'risk' if r.refusal else ('wait' if r.decision == 'held' else 'ok') }}">{{ r.decision }}</span>{% endif %}</span>
+    </a></li>
+  {% else %}
+    <li class="ax-empty">Nothing recorded yet from the connected sources.</li>
+  {% endfor %}
+  </ol>
+</section>

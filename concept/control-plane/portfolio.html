@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Agency Portfolio</title>
+<meta name="description" content="Concept: an agency's customer portfolio on Agentrix, white-labelled. Clients and health, client decisions held for the agency as Approver, a 40-site WordPress import, the agency's own ring, margin and brand.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Manrope:wght@600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../styles.css">
+<link rel="stylesheet" href="../console/console.css">
+<link rel="stylesheet" href="cp.css">
+<style>
+  .pfbrief { border-left: 4px solid var(--pf); }
+  .pfbrief p { font-size: var(--fs-14); color: var(--ink-2); margin-top: 6px; }
+  .pfbrief p b { color: var(--indigo-900); }
+  .client { display: flex; align-items: center; gap: 10px; min-width: 0; }
+  .client .logo-c { width: 30px; height: 30px; border-radius: 9px; display: grid; place-items: center; color: #fff; font: 800 12px/1 var(--font-display); flex: none; }
+  .client small { display: block; color: var(--muted); font-size: 11.5px; }
+  .pstack { display: flex; height: 14px; border-radius: 999px; overflow: hidden; background: var(--surface-2); margin-top: 8px; }
+  .pstack i { display: block; height: 100%; }
+  .legend { display: flex; flex-wrap: wrap; gap: 6px 14px; margin-top: 10px; font-size: var(--fs-12); color: var(--ink-2); }
+  .legend span { display: inline-flex; align-items: center; gap: 6px; }
+  .legend i { width: 10px; height: 10px; border-radius: 3px; display: inline-block; }
+  .swatches { display: flex; gap: 6px; }
+  .swatches i { width: 26px; height: 26px; border-radius: 8px; border: 1px solid var(--line); display: block; }
+  .kv { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 6px 12px; font-size: var(--fs-13); margin-top: 8px; }
+  .kv dt { color: var(--muted); }
+  .kv dd { margin: 0; color: var(--ink-2); overflow-wrap: anywhere; }
+  .money { display: grid; gap: 6px; font-size: var(--fs-13); }
+  .money div { display: flex; justify-content: space-between; gap: 10px; color: var(--ink-2); }
+  .money div.total { border-top: 1px solid var(--line); padding-top: 8px; font-weight: 700; color: var(--indigo-900); }
+  .pf-tag { display: inline-flex; align-items: center; gap: 6px; font: 600 11px/1 var(--font-text); color: var(--pf); background: var(--pf-bg); border-radius: 999px; padding: 4px 8px; }
+</style>
+</head>
+<body>
+<header class="conceptbar">
+  <a class="logo" href="../index.html"><span class="mark" aria-hidden="true"></span>Agentrix</a>
+  <nav aria-label="Control plane concepts">
+    <a href="index.html">Control plane</a>
+    <a href="fleet.html">Fleet</a>
+    <a href="portfolio.html" aria-current="page">Agency portfolio</a>
+    <a href="rollout.html">Rollout</a>
+    <a href="incident.html">Incident</a>
+    <a href="billing.html">Billing</a>
+    <a href="cli.html">Zavora CLI</a>
+  </nav>
+  <span class="concept-label">Concept · illustrative data</span>
+</header>
+
+<main class="wrap">
+  <div class="cp-head">
+    <span class="eyebrow">Control plane 02 · Portfolio scope · an agency</span>
+    <h1 style="margin-top:12px">Clients</h1>
+    <p class="lead">Studio Mwangaza, a fictional Nairobi web studio, runs its whole book on Agentrix under its own brand. It sees health, spend and the decisions its clients made it Approver for. It never sees another agency's sites, and it acts on a client's site only where that owner granted it a role.</p>
+  </div>
+
+  <section class="os-frame cp-frame" aria-label="Agency console: client portfolio, white-labelled">
+    <div class="browser-bar"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="url"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg><span><b>clients.mwangaza.example</b>/portfolio</span></span><span class="pf-tag">white-label</span></div>
+    <div class="os cp-os" data-shift="day" data-cp-scope="pf" data-app="clients">
+      <div class="os-bar" data-cp-bar></div>
+      <nav class="dock" data-cp-dock></nav>
+      <div class="field cp-field">
+        <div class="field-head">
+          <div><h2>Clients</h2><div class="sub">24 clients · 31 sites · Saturday 7 Nov</div></div>
+          <div class="row"><button class="btn btn-sm" type="button">Invite a client</button><a class="btn btn-primary btn-sm" href="#import">Import sites</a></div>
+        </div>
+
+        <div class="cp-grid">
+          <article class="card tight pfbrief">
+            <div class="spread"><span class="row" style="gap:8px"><span class="avatar sm av-chief">CW</span><b class="small" style="color:var(--indigo-900)">Your Chief WebAgent · portfolio brief 07:30</b></span><span class="small muted">WhatsApp · email</span></div>
+            <p><b>Habari, Muthoni.</b> <b>4 client decisions</b> wait for you as Approver; Baraka Hardware's quote expires at 12:00. The WordPress import is at <b>14 of 40</b> live; the next batch starts Monday 08:00. Your theme <b>Mwangaza Clean 2.1</b> is live on 3 of 9 opted-in sites. Two clients look at risk.</p>
+          </article>
+
+          <div class="kpis five">
+            <div class="kpi"><div class="label">Sites live</div><div class="value">25</div><div class="foot">6 moving · 12 queued</div></div>
+            <div class="kpi"><div class="label">Waiting on you</div><div class="value">4</div><div class="foot">as Approver, on 3 clients' sites</div></div>
+            <div class="kpi"><div class="label">Client health</div><div class="value">21<small>healthy</small></div><div class="foot">3 at risk · 1 new</div></div>
+            <div class="kpi"><div class="label">Corrections / 100 actions</div><div class="value">2.4</div><div class="foot">across your clients · falling</div></div>
+            <div class="kpi"><div class="label">Margin · Nov (est.)</div><div class="value">$1,140</div><div class="foot">after wholesale and overage</div></div>
+          </div>
+
+          <article class="card tight">
+            <div class="card-title"><h4>Clients</h4><span class="small muted">8 of 24 · sorted by what needs you</span></div>
+            <div class="tbl-wrap"><table class="tbl" style="min-width:720px">
+              <thead><tr><th>Client</th><th>Plan</th><th>Health</th><th class="num">Waiting</th><th>AI spend / cap</th><th>Your role</th><th>Ring</th></tr></thead>
+              <tbody>
+                <tr><td><div class="client"><span class="logo-c" style="background:#5b4636">BH</span><span><b>Baraka Hardware</b><small>baraka-hardware.example</small></span></div></td><td>Commerce</td><td><span class="chip chip-wait"><span class="dot wait"></span>At risk · 2 cards expired</span></td><td class="num"><span class="badge">3</span></td><td>KSh 2,940 / 4,000</td><td>Approver</td><td>stable</td></tr>
+                <tr><td><div class="client"><span class="logo-c" style="background:#c06a2b">K</span><span><b>Kilele Bakery</b><small>kilele-bakery.example</small></span></div></td><td>Business</td><td><span class="chip chip-ok"><span class="dot"></span>Healthy</span></td><td class="num"><span class="badge">1</span></td><td>KSh 38 / 1,500</td><td>Approver</td><td>canary</td></tr>
+                <tr><td><div class="client"><span class="logo-c" style="background:#476b2c">ML</span><span><b>Mara Eco Lodge</b><small>mara-lodge.example</small></span></div></td><td>Commerce</td><td><span class="chip chip-wait"><span class="dot wait"></span>At risk · spend at 92%</span></td><td class="num">0</td><td>$27.60 / $30</td><td>Editor</td><td>stable</td></tr>
+                <tr><td><div class="client"><span class="logo-c" style="background:#a35dc1">NS</span><span><b>Neema Salon</b><small>neema-salon.example</small></span></div></td><td>Essential</td><td><span class="chip chip-info">Moving · Prove 96%</span></td><td class="num">—</td><td>—</td><td>Editor</td><td>—</td></tr>
+                <tr><td><div class="client"><span class="logo-c" style="background:#0b6c8a">PD</span><span><b>Pwani Dental Clinic</b><small>pwani-dental.example</small></span></div></td><td>Business</td><td><span class="chip chip-ok"><span class="dot"></span>Healthy</span></td><td class="num">0</td><td>KSh 612 / 2,000</td><td>Editor</td><td>stable</td></tr>
+                <tr><td><div class="client"><span class="logo-c" style="background:#2f55c4">KB</span><span><b>Kijiji Books</b><small>kijiji-books.example</small></span></div></td><td>Essential</td><td><span class="chip chip-ok"><span class="dot"></span>Healthy</span></td><td class="num">0</td><td>KSh 210 / 650</td><td>Editor</td><td>canary</td></tr>
+                <tr><td><div class="client"><span class="logo-c" style="background:#0f6b62">LD</span><span><b>Lamu Dhow Tours</b><small>lamu-dhow.example</small></span></div></td><td>Business</td><td><span class="chip chip-ok"><span class="dot"></span>Healthy</span></td><td class="num">0</td><td>$9.10 / $15</td><td>Viewer</td><td>stable</td></tr>
+                <tr><td><div class="client"><span class="logo-c" style="background:#7a4b00">TC</span><span><b>Tamu Coffee Roasters</b><small>tamu-coffee.example</small></span></div></td><td>Essential</td><td><span class="chip">Queued · #3</span></td><td class="num">—</td><td>—</td><td>Editor</td><td>—</td></tr>
+              </tbody>
+            </table></div>
+            <p class="small muted" style="margin-top:8px">Health comes from content-free signals: decisions handled or expired, corrections, spend against cap, open tickets, payments. You never see a client's conversations here.</p>
+          </article>
+
+          <div class="cp-grid cols-2e">
+              <article class="card tight" id="import">
+                <div class="card-title"><h4>WordPress import · 40 client sites</h4><span class="chip chip-info">Migration Factory</span></div>
+                <div class="pstack" aria-label="Import progress"><i style="width:35%;background:#2fb07a"></i><i style="width:15%;background:var(--indigo)"></i><i style="width:20%;background:#e7a93a"></i><i style="width:30%;background:var(--line-strong)"></i></div>
+                <div class="legend"><span><i style="background:#2fb07a"></i>14 live</span><span><i style="background:var(--indigo)"></i>6 moving</span><span><i style="background:#e7a93a"></i>8 waiting for the owner</span><span><i style="background:var(--line-strong)"></i>12 queued</span></div>
+                <p class="small" style="margin-top:10px;color:var(--ink-2)">At your fair share of 6 concurrent Moves, the rest should be ready by <b>Tuesday evening</b> (estimate). Zavora reserved runner hours for Monday and Tuesday.</p>
+                <ul class="rows" style="margin-top:8px">
+                  <li><span class="dot wait"></span><span><b>Neema Salon</b>: parity 96%, go-live card goes to Neema</span><span class="meta">owner signs</span></li>
+                  <li><span class="dot wait"></span><span><b>Kibo Motors</b>: domain proof needed (one DNS record)</span><span class="meta">reminder sent</span></li>
+                  <li><span class="dot risk"></span><span><b>Shamba Fresh</b>: 3 items quarantined (a hidden casino redirect)</span><span class="meta">owner decides</span></li>
+                </ul>
+              </article>
+
+              <article class="card tight" id="ring">
+                <div class="card-title"><h4>Your ring · theme Mwangaza Clean 2.1</h4><span class="small muted">9 sites opted in</span></div>
+                <div class="rings" style="grid-template-columns:repeat(3,minmax(0,1fr))">
+                  <div class="ring done"><b>3</b><span>published within the owner's grant</span></div>
+                  <div class="ring held"><b>1</b><span>waiting for the owner: header layout changed</span></div>
+                  <div class="ring next"><b>5</b><span>queued after a 24 h bake</span></div>
+                </div>
+                <p class="small muted" style="margin-top:8px">Every site gets a candidate release that must pass its own LaunchGate (parity, accessibility, scans). A visual change outside the owner's standing grant becomes a card for the owner.</p>
+              </article>
+
+              <article class="card tight" id="margin">
+                <div class="card-title"><h4>November margin</h4><span class="small muted">estimate until invoices post</span></div>
+                <div class="money">
+                  <div><span>Your invoices to 25 live clients</span><span>$1,557</span></div>
+                  <div><span>Wholesale to Zavora Cloud (25 × $15, hypothesis)</span><span>− $375</span></div>
+                  <div><span>AI overage owners approved above included budgets</span><span>− $42</span></div>
+                  <div class="total"><span>Margin</span><span>$1,140</span></div>
+                </div>
+              </article>
+
+              <article class="card tight" id="brand">
+                <div class="card-title"><h4>Your brand</h4><span class="swatches" aria-label="Brand colours"><i style="background:#0f6b62"></i><i style="background:#f2b544"></i><i style="background:#1d2b2a"></i></span></div>
+                <dl class="kv"><dt>Console</dt><dd>clients.mwangaza.example</dd><dt>Email sender</dt><dd>Studio Mwangaza &lt;care@mwangaza.example&gt;</dd><dt>Footer credit</dt><dd>"Site care by Studio Mwangaza" (paid plans)</dd><dt>Status page</dt><dd>status.mwangaza.example</dd></dl>
+                <div class="note" style="margin-top:10px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg><span>Never white-labelled: the AI disclosure on every reply, the crawler's identity, and receipts, which read "Operated by Studio Mwangaza on Agentrix (Zavora Cloud)".</span></div>
+              </article>
+
+              <article class="card tight span-all">
+                <div class="card-title"><h4>Your authority, per client</h4><span class="small muted">granted by each owner</span></div>
+                <div class="authority">
+                  <div class="can"><b>You can</b><ul><li>Approve or draft on a client's cards where the owner made you Approver or Editor</li><li>Roll your own packs and themes to clients who opted into your ring</li><li>Freeze your clients' sites as a portfolio freeze</li><li>Set your own prices to your clients</li></ul></div>
+                  <div class="never"><b>You never</b><ul><li>Raise a WebAgent's autonomy: only the owner can</li><li>Act on a site whose owner revoked your role</li><li>Stop a client from exporting or leaving you</li><li>See another agency's clients, or Zavora's fleet</li></ul></div>
+                </div>
+              </article>
+          </div>
+        </div>
+      </div>
+      <aside class="lane" id="held" aria-label="What needs you"><div class="lane-scroll">
+        <h4>Needs you <span class="badge">2</span></h4>
+        <article class="card decision" data-done="Approved · signed with Muthoni's passkey as Approver for Baraka Hardware · the quote went out from Baraka's own email sender · receipt r-77a1…c2 in Baraka's Trust centre names you and Studio Mwangaza.">
+                <div class="head"><span class="from"><span class="avatar sm av-sales">Sa</span>Baraka Hardware · Sales asks</span><span class="chip chip-wait">Medium risk · 0.34</span></div>
+                <h3>Send quote KSh 186,000 to Mjengo Builders</h3>
+                <p class="facts">40 bags of cement and 12 lengths of Y12 rebar, delivered Tuesday. The lead came through Ask this site on Thursday.</p>
+                <div class="effect"><h4>If you approve, exactly this happens</h4>
+                  <ul><li>Email from <code>sales@baraka-hardware.example</code> to procurement at Mjengo Builders, with the quote PDF</li><li>Quote valid 7 days; prices from Baraka's published price list (v14)</li><li>A follow-up is scheduled for Monday 10:00</li></ul>
+                </div>
+                <div class="riskline"><span>Why medium:</span><span class="chip">above Baraka's KSh 100,000 rule</span><span class="chip">new customer</span><span class="chip">prices match list</span></div>
+                <div class="authority" style="margin-top:12px">
+                  <div class="can"><b>Why you can approve this</b>Juma, Baraka's owner, granted Studio Mwangaza the <strong>Approver</strong> role on 2 Oct. You act as yourself; receipts name you and the agency.</div>
+                </div>
+                <div class="actions"><button class="btn btn-primary" type="button" data-approve>Approve with passkey</button><button class="btn" type="button">Edit</button><button class="btn btn-ghost" type="button" data-decline>Decline</button></div>
+                <div class="sheet" role="status" style="background:var(--pf)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 11c0 3-1 6-3 8M8.5 7.5A5 5 0 0 1 17 11c0 1.5-.2 3-.6 4.4M6.3 10A6.5 6.5 0 0 1 9 5.6M12 14.5c-.2 1.8-.8 3.5-1.7 5M15.3 17.5c-.3 1-.7 2-1.2 2.9M4 13.5c.4-1 .6-2 .6-3"/></svg><b>Confirm with your passkey</b><div class="small" style="opacity:.85">Signing as Approver · Baraka Hardware · KSh 186,000 · Mjengo Builders</div></div>
+                <div class="done-line" role="status"></div>
+              </article>
+        <div class="ldec">
+          <div class="from"><span class="avatar av-chief">CW</span>Mara Eco Lodge · Chief WebAgent suggests<span class="chip">owner only</span></div>
+          <b class="t">Let the booking desk confirm stays under $400 without asking</b>
+          <p>41 booking changes approved unchanged in 30 days, and the evaluation suite passes. Raising autonomy is the owner's decision; you can add a note.</p>
+          <div class="verbs"><button class="btn btn-primary btn-sm" type="button" data-send>Send to client</button><button class="btn btn-ghost btn-sm" type="button">Not now</button></div>
+          <div class="done-line">Sent to Mara Eco Lodge's owner with your note. It opens on their phone for their passkey, or their authenticator code.</div>
+        </div>
+        <h4>Done for you</h4>
+        <div class="quiet">Release published Mwangaza Clean 2.1 on 3 opted-in sites within their owners' grants · Support answered 6 client questions · your Chief WebAgent sent the 07:30 brief.</div>
+      </div></aside>
+      <div class="cmd" data-cp-cmd></div>
+    </div>
+  </section>
+
+  <section class="explain" aria-label="How this works">
+    <article class="card"><h3>The client owns the site</h3><p>Studio Mwangaza's access to each site is a grant from that site's owner, approved with a passkey or an authenticator code and revocable at any time. A client can export or leave without the agency's consent.</p><p class="small muted">08-control-plane §2.1, §2.5</p></article>
+    <article class="card"><h3>One import queue, fairly shared</h3><p>An agency's bulk import and a single owner's Move share the Migration Factory under fair-share scheduling. The crawler stays polite fleet-wide, one request at a time per origin.</p><p class="small muted">08-control-plane §3.4</p></article>
+    <article class="card"><h3>White-label, honestly</h3><p>Console, emails, status page and footer can carry the agency's brand. AI disclosure, crawler identity and receipts always name the real operator chain, so abuse reports and verification stay true.</p><p class="small muted">08-control-plane §2.6</p></article>
+  </section>
+</main>
+
+<footer class="concept-foot"><div class="wrap row"><span>Agentrix WebAgent Platform by Zavora · MIT · Concept · illustrative data. Agencies, clients and people are fictional.</span><span>Design: docs/08-control-plane.md</span></div></footer>
+<script src="cp.js"></script>
+</body>
+</html>

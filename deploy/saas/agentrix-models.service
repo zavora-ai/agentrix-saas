@@ -1,0 +1,33 @@
+# agentrix-models on saas-node (spec v3, SAAS_SHAPE=one): the Model Gateway on 127.0.0.1:8090,
+# the only process holding model provider keys. It routes purposes to models, meters every call
+# into agentrix-node's control.db (where the money layer registers saas-agentrix and saas-kilele),
+# and stops a site, or everything, at the daily caps. Installed by deploy/saas/deploy.sh.
+#
+# Settings: /etc/agentrix-saas/agentrix-models.env (root, 0600), written on every deploy from the
+# repo's .env: ANTHROPIC_*, VULTR_INFERENCE_*, the AGENTRIX_* routing and caps, and
+# SAAS_DAILY_MODEL_CAP_USD as the fleet cap. It needs control.db, which agentrix-node makes on
+# its first start, so it restarts until that exists.
+[Unit]
+Description=Agentrix Model Gateway
+After=network-online.target agentrix-node.service
+Wants=network-online.target
+
+[Service]
+User=agentrix-saas
+Group=agentrix-saas
+EnvironmentFile=/etc/agentrix-saas/agentrix-models.env
+Environment=HOME=/var/lib/agentrix-node
+Environment=NO_COLOR=1
+ExecStart=/usr/local/bin/agentrix-models
+WorkingDirectory=/var/lib/agentrix-node
+UMask=0007
+Restart=on-failure
+RestartSec=3
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=yes
+ReadWritePaths=/var/lib/agentrix-node
+
+[Install]
+WantedBy=multi-user.target

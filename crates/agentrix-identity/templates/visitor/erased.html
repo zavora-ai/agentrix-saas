@@ -1,0 +1,12 @@
+<section class="acct" id="acct">
+  <article class="receipt" aria-labelledby="er-h">
+    <header><h1 class="acct-h" id="er-h">Erasure receipt</h1>{% if complete %}<span class="pill ok">Complete</span>{% else %}<span class="pill wait">Not finished</span>{% endif %}</header>
+    <p class="small">Requested {{ requested }}. {% if complete %}Every record below is cleared.{% else %}A record marked Open below isn't cleared yet; {{ site }} will try again, and the owner can see it.{% endif %}</p>
+    <ul class="list">
+      {% for s in stores %}<li><span><b>{{ s.store }}</b><span>{{ s.state }} · {{ s.at }}</span></span>{% if s.ok %}<span class="pill ok">Done</span>{% else %}<span class="pill wait">Open</span>{% endif %}</li>{% endfor %}
+    </ul>
+    <p class="sig">Receipt {{ short_id }} · recorded by {{ host }} · {{ digest }}</p>
+  </article>
+  <p class="small">Your account is gone from {{ site }}. Keep this page's address if you want this receipt later; it holds no personal details.</p>
+  <p><a class="btn ghost" href="/">Back to {{ site }}</a></p>
+</section>

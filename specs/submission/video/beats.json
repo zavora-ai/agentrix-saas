@@ -1,0 +1,167 @@
+{
+  "note": "The demo video, beat by beat (script.md). pic: slide:N (the deck PDF's page) or clip:FILE (under clips/). fallback: the slide shown while a clip is missing. fit=clip: the beat lasts as long as the clip. Narration is spoken by Vultr's qwen3-tts.",
+  "beats": [
+    {
+      "id": "b01",
+      "pic": "slide:1",
+      "min": 6,
+      "say": "Agentrix. Upgrade your website into WebAgents. This is our entry for Challenge 1, Blast Radius Zero."
+    },
+    {
+      "id": "b02",
+      "pic": "slide:2",
+      "say": "About two in five websites run on WordPress. For a small business, that often means a site that waits. Questions go unanswered at night, plugins go unpatched, and some sites are quietly hacked. Move one the usual way, and you copy the hack across."
+    },
+    {
+      "id": "b02b",
+      "pic": "slide:3",
+      "say": "Agentrix WebAgent Platform turns that website into an autonomous AI business. Its WebAgents work around the clock for the owner and for the customer: they act before anyone asks, answer when asked, and keep the owner in charge of anything that matters."
+    },
+    {
+      "id": "b03",
+      "pic": "clip:home.mp4",
+      "fallback": 7,
+      "badge": [
+        "Live",
+        "agentrix.website, running on Vultr"
+      ],
+      "say": "This is agentrix.website, running on Vultr. Paste your site's address for a free health report, watch the film, or open one of three sample businesses to see the owner's side.",
+      "fit": "clip",
+      "start": 0.5,
+      "end": 24
+    },
+    {
+      "id": "b04a",
+      "pic": "clip:assess.mp4",
+      "fallback": 11,
+      "start": 3.5,
+      "end": 14,
+      "fit": "clip",
+      "badge": [
+        "Live",
+        "Assess of Zavora's infected test site, on Vultr"
+      ],
+      "say": "Paste an address. Here it's Zavora's own infected test site, and no account is needed."
+    },
+    {
+      "id": "b04b",
+      "pic": "clip:assess.mp4",
+      "fallback": 11,
+      "start": 14,
+      "end": 112,
+      "speed": 6,
+      "fit": "clip",
+      "speed_label": "6x speed",
+      "badge": [
+        "Live",
+        "Assess of Zavora's infected test site, on Vultr"
+      ],
+      "say": "A real Firefox reads every page from sealed rooms on a separate Vultr VM. Each room holds no keys, can reach only this site, and is destroyed when its job is done."
+    },
+    {
+      "id": "b04c",
+      "pic": "clip:assess.mp4",
+      "fallback": 11,
+      "start": 114,
+      "badge": [
+        "Live",
+        "Assess of Zavora's infected test site, on Vultr"
+      ],
+      "say": "Then the honest report: hidden spam links, a disguised script in the footer, and hidden instructions aimed at AI assistants. Two pages tried to send our sealed room where it isn't allowed to go: Vultr's metadata address, and the machine's own loopback. Both were refused, and both are on the receipt."
+    },
+    {
+      "id": "b05",
+      "pic": "slide:9",
+      "say": "Vultr is the whole stack. A control VM plans the work and signs every job. A separate VX1 sandbox VM runs each job in its own gVisor room, with no secrets and no public inbound. Every model call goes to Vultr Serverless Inference, through one gateway that holds the only key."
+    },
+    {
+      "id": "b06",
+      "pic": "slide:8",
+      "say": "Every job is a signed spec going in, and a signed receipt coming out: what ran, what it touched, what was refused, and proof that the room was destroyed."
+    },
+    {
+      "id": "b07",
+      "pic": "clip:move.mp4",
+      "fallback": 7,
+      "fit": "clip",
+      "speed": 4,
+      "speed_label": "4x speed. The Move page shows real time",
+      "badge": [
+        "Live",
+        "the Move, on Vultr"
+      ],
+      "say": "Now the Move. The old WordPress runs from its own database in a sealed room, with no route out. Its code tries to phone home. That fails, and lands on the receipt. Everything infected is quarantined, with the reason in plain words. A Vultr model writes the new pages, a room with no network renders them, and a Vultr vision model checks each one against the old site."
+    },
+    {
+      "id": "b08",
+      "pic": "clip:golive.mp4",
+      "fallback": 14,
+      "badge": [
+        "Live",
+        "go-live, on the owner's passkey"
+      ],
+      "say": "Nothing goes live until the owner says so. My passkey signs this exact card. The new site is live, the old one is kept, and undo lasts thirty days."
+    },
+    {
+      "id": "b09",
+      "pic": "clip:receipt.mp4",
+      "fallback": 12,
+      "badge": [
+        "Live",
+        "a room's signed receipt"
+      ],
+      "say": "Here is one room's receipt: gVisor, a read-only root, caps on memory and processes, and destroyed: true. Ten attacks are planted in this test site, including a fork bomb and a webshell, and the gauntlet scores them from receipts."
+    },
+    {
+      "id": "b10",
+      "pic": "slide:10",
+      "say": "Each Vultr model has one job, and something checks its work. Qwen builds the pages, DeepSeek checks them by eye, Nemotron screens for instructions aimed at AI, and systemone scores the risk."
+    },
+    {
+      "id": "b11a",
+      "pic": "clip:ask.mp4",
+      "fallback": 7,
+      "badge": [
+        "Live",
+        "the new site's Ask"
+      ],
+      "say": "The new site answers visitors from its own pages, with citations, and says when it doesn't know."
+    },
+    {
+      "id": "b11b",
+      "pic": "clip:door.mp4",
+      "say": "Customers' AI agents get a door of their own. In our race on Sunday morning, an agent ordered a cake through the new site's door in under eight seconds. On the old site, it gave up after twenty-two steps.",
+      "fallback": 14,
+      "badge": [
+        "Live",
+        "a sample site's agent door"
+      ]
+    },
+    {
+      "id": "b12",
+      "pic": "slide:6",
+      "say": "Every morning, the owner gets a brief and a short list of decisions, each one a tap and a passkey."
+    },
+    {
+      "id": "b13",
+      "pic": "slide:15",
+      "say": "Moving is free. Plans start at twenty-nine dollars a month, paid with PayPal, and agencies pay per site. Every site moved is steady Vultr compute, storage and inference."
+    },
+    {
+      "id": "b14",
+      "pic": "slide:16",
+      "say": "We checked all hundred and eighty-nine entries. Containment is table stakes. None of them moves a business."
+    },
+    {
+      "id": "b15",
+      "pic": "slide:18",
+      "say": "Next: a throwaway Vultr VM for every Move, payments live, and ten pilot sites in Kenya."
+    },
+    {
+      "id": "b16",
+      "pic": "slide:19",
+      "min": 6,
+      "say": "Agentrix. Upgrade your website into WebAgents."
+    }
+  ]
+}

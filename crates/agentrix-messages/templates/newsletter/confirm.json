@@ -1,0 +1,7 @@
+{
+ "person": {"name": null},
+ "newsletter": {"day": "Tuesday"},
+ "confirm_url": "https://agentrix.website/_home/fix/confirm?token=nl_3b8x",
+ "forget_after": "7 days",
+ "consent": {"words": "Send me the weekly fix", "given_at": "Sun 8 Nov, 10:20", "source": "agentrix.website footer"}
+}

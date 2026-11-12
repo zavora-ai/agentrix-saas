@@ -1,0 +1,52 @@
+{#- The converted site's page (S1-09; 06 §4). Rendered by the Move's rebuild into each page of a
+    release, so the HTML is signed and served byte for byte. Variables:
+    site: {name, domain, lang, tokens: {bg, soft, ink, ink2, line, accent, on_accent, display, text},
+           nav: [{label, href}], contact_href, fixture: bool, counting: bool,
+           counter: W8's visit counter tag (agentrix_store::visits::script_tag) or none}
+    page: {title, description, path, md_href (its Markdown twin), body_html (sanitised by the
+           Move), updated}
+    The Move also copies static/site/site.css into the release as /assets/site.css.
+    The page keeps the site's own look (its tokens) and links the platform's Ask island. -#}
+<!doctype html>
+<html lang="{{ site.lang | default('en') }}">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>{{ page.title }}{% if page.path != "/" %} · {{ site.name }}{% endif %}</title>
+{% if page.description %}<meta name="description" content="{{ page.description }}">{% endif %}
+<link rel="alternate" type="text/markdown" href="{{ page.md_href }}">
+<link rel="stylesheet" href="/assets/site.css">
+<link rel="stylesheet" href="/_agentrix/ask.css">
+<style>
+  :root {
+    --wa-bg: {{ site.tokens.bg }}; --wa-soft: {{ site.tokens.soft }}; --wa-ink: {{ site.tokens.ink }};
+    --wa-ink-2: {{ site.tokens.ink2 }}; --wa-line: {{ site.tokens.line }}; --wa-accent: {{ site.tokens.accent }};
+    --wa-on-accent: {{ site.tokens.on_accent }}; --wa-display: {{ site.tokens.display }}; --wa-font: {{ site.tokens.text }};
+  }
+</style>
+<script src="/_agentrix/ask.js" defer></script>
+{% if site.counter %}{{ site.counter | safe }}
+{% endif %}</head>
+<body>
+<a class="s-skip" href="#main">Skip to content</a>
+{% if site.fixture %}<p class="s-fixture">Zavora's fixture site, used to demonstrate the platform.</p>{% endif %}
+<header class="s-head">
+  <a class="s-brand" href="/">{{ site.name }}</a>
+  <nav class="s-nav" aria-label="Main">
+    {% for item in site.nav %}<a href="{{ item.href }}"{% if item.href == page.path %} aria-current="page"{% endif %}>{{ item.label }}</a>{% endfor %}
+  </nav>
+</header>
+<main id="main" class="s-main">
+  <article class="s-article">
+    {{ page.body_html | safe }}
+  </article>
+  {% if page.updated %}<p class="s-updated">Updated {{ page.updated }}</p>{% endif %}
+</main>
+<footer class="s-foot">
+  <p>The WebAgents on this site are AI. They answer from this site's pages and never guess prices, dates or allergens.{% if site.contact_href %} A person is one step away: <a href="{{ site.contact_href }}">contact {{ site.name }}</a>.{% endif %}</p>
+  {% if site.counting %}<p class="s-visits"><span data-visits="on">This site counts visits as daily totals, with no cookies and nothing that says who you are. Browsers that send Global Privacy Control aren't counted.</span><span data-visits="gpc" hidden>Your browser asks sites not to track you, so your visits aren't counted.</span><span data-visits="off" hidden>Your visits on this device aren't counted.</span> <button type="button" data-agx-count="off" data-visits="on">Don't count my visits</button><button type="button" data-agx-count="on" data-visits="off" hidden>Count them again</button></p>{% endif %}
+  <p>© {{ site.name }} · Made with Agentrix</p>
+</footer>
+</body>
+</html>

@@ -1,0 +1,56 @@
+{% extends "os/base.html" %}
+{#- ShellPage::Store · view::StoreView (+ Chrome) {
+      listings: [MemberView] (W1's roster: WebAgents the site doesn't have yet),
+      selected: MemberView? (from ?add=), add_url }
+    01b C14, C15 (concept/console/store.html). Adding raises a card v2 the owner approves; nothing starts before. -#}
+{% block title %}Store · {{ site.name }}{% endblock %}
+{% block field %}
+<section class="view on" aria-labelledby="store-h">
+  <div class="field-head"><div><h2 id="store-h">Store</h2><div class="sub">WebAgents you can add to your team · signed by Zavora · open source (MIT)</div></div></div>
+  {% if selected %}
+  <article class="fcard span2 add-sheet" aria-labelledby="add-h">
+    <div class="sheet-top">{{ ui.mark(selected.agent, size=44, show_name=false) }}<div><b id="add-h">{{ selected.name }}</b><p>{{ selected.role_words }}</p></div></div>
+    <p>{{ selected.mandate }}</p>
+    <div class="sec"><h5>What it can do, and what it can never do</h5>
+      <div class="cannever">
+        <div class="yes"><h4>Can</h4><ul>{% for j in selected.jobs %}{% for c in j.can %}<li><span>{{ c.words }} <span class="effect-tag">{{ c.tag }}</span></span></li>{% endfor %}{% endfor %}</ul></div>
+        <div class="no"><h4>Never</h4><ul>{% for n in selected.never %}<li>{{ n }}</li>{% endfor %}</ul></div>
+      </div>
+    </div>
+    {% if selected.wakes %}<div class="sec"><h5>What wakes it</h5><div class="wakes">{% for w in selected.wakes %}<span class="chip">{{ w }}</span>{% endfor %}</div></div>{% endif %}
+    <div class="sec"><h5>How much it may do alone, per job</h5>
+      {% for j in selected.jobs %}
+      <div class="job">
+        <div class="spread"><b>{{ j.name }}</b>{% if selected.dial == "ladder" %}<span class="chip">Starts at {{ j.level_words }}</span>{% endif %}</div>
+        {% if selected.dial == "ladder" and j.current != "undo" %}{{ ui.ladder(j.current, ceiling=j.ceiling if j.ceiling != "undo" else "budget", why=j.ceiling_reason, label=selected.name ~ ", " ~ j.name) }}{% endif %}
+        {% if j.note %}<p class="small muted">{{ j.note }}</p>{% endif %}
+      </div>
+      {% endfor %}
+    </div>
+    {% if selected.share_percent %}<div class="sec"><h5>Budget</h5><p class="small">Up to {{ selected.share_percent }}% of your monthly AI budget. Above it, {{ selected.name }} sleeps until you raise it; asleep, it spends nothing.</p></div>{% endif %}
+    <form method="post" action="{{ add_url }}">
+      <input type="hidden" name="webagent" value="{{ selected.id }}">
+      <button class="btn btn-primary btn-lg btn-wide" type="submit">Add {{ selected.name }}</button>
+    </form>
+    <p class="small muted">This opens a decision with exactly what changes. {{ selected.name }} starts only after you approve it with your {{ "passkey" if has_passkey else "authenticator app" }}. You can pause it any time by lowering its jobs to Watch. Its receipts stay.</p>
+  </article>
+  {% endif %}
+
+  <div class="store-section">
+    <h3>WebAgents <small>new roles on your team</small></h3>
+    {% if listings %}
+    <div class="store-grid">
+      {% for a in listings %}
+      <a class="listing" href="{{ base }}/store?add={{ a.id }}"{% if selected and selected.id == a.id %} aria-current="true"{% endif %}>{{ ui.mark(a.agent, size=44, show_name=false) }}<span><b>{{ a.name }}</b><p>{{ a.role_words }}</p><span class="meta"><span class="chip">{{ a.jobs|length }} job{{ "" if a.jobs|length == 1 else "s" }}</span>{% for j in a.jobs %}{% for c in j.can if c.tag == "money" %}{% if loop.first %}<span class="chip">money</span>{% endif %}{% endfor %}{% endfor %}</span></span></a>
+      {% endfor %}
+    </div>
+    {% else %}
+    <p class="small">Every WebAgent the platform offers already works for {{ site.name }}, or your site isn't live yet.</p>
+    {% endif %}
+  </div>
+  <div class="store-section">
+    <h3>Packs and connections <small>new jobs for a WebAgent, and the services it uses</small></h3>
+    <p class="small muted">None are published yet. Each will list what it adds and what it can never do, and adding one is a decision you approve.</p>
+  </div>
+</section>
+{% endblock %}

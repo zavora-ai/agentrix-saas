@@ -1,0 +1,13 @@
+{
+  "fixture": "Zavora's fixture: Kilele Bakery (fictional), deliberately infected",
+  "size": "demo",
+  "public_origin": "https://kilele-bakery.example",
+  "pages": 10,
+  "posts": 40,
+  "infected": true,
+  "files": {
+    "export.xml": "sha256:b8bfae729ea524f0469c4dfa1932425c1d198d6d279530fd98d2afdf278d3fa5",
+    "dump.sql.gz": "sha256:5622d1a89bcba251136f9f9cf974808e17515c95d85ef4df1977a5a450f3053f",
+    "wp-content.tar.gz": "sha256:3d1bfe666dafbbd2f31165da034fd9f6ccc534ba76749dcbbee5ef12813d8c91"
+  }
+}

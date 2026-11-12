@@ -1,0 +1,56 @@
+{% extends "kilele/layout.html" %}
+{% from "macros.html" import mark %}
+{% block main %}
+<section class="b-hero" id="top">
+  <div>
+    <h1>{% for line in headline %}{{ line }}{% if not loop.last %}<br>{% endif %}{% endfor %}</h1>
+    <p>{{ intro }}</p>
+    <div class="row"><a class="b-btn" href="/cakes/studio">Design a celebration cake</a><a class="b-btn ghost" href="/bread">Today's bread</a></div>
+    <div class="team-line"><span class="marks">{% for d in shell.desks %}{{ mark(d, 20, shell.site, "sm") }}{% endfor %}</span><span>Each menu item is an AI WebAgent that answers from this site. {{ shell.site.owner }} approves anything that costs money.</span></div>
+  </div>
+  {% if "hero" in shell.pictures %}{% set pic = shell.pictures["hero"] %}
+  <figure class="b-art pic"><img src="{{ pic.url }}" alt="{{ pic.alt }}"{% if pic.width %} width="{{ pic.width }}" height="{{ pic.height }}"{% endif %}><span class="tag">{{ oven }}</span>{% if pic.label %}<span class="rtag">{{ pic.label }}</span>{% endif %}</figure>
+  {% else %}<div class="b-art" aria-hidden="true"><span class="tag">{{ oven }}</span><span class="loaf l1"></span><span class="loaf l2"></span></div>{% endif %}
+</section>
+
+<section class="b-section" id="bakes">
+  <h2>Today's bakes</h2>
+  <p class="sub">Stock updates as the morning goes · {{ asof }}</p>
+  <div class="bakes">
+    {% for c in bakes %}
+    <article class="bake-card tone-{{ c.tone }}" id="item-{{ c.slug }}">{% if ("product:" ~ c.sku) in shell.pictures %}{% set pic = shell.pictures["product:" ~ c.sku] %}<div class="img pic"><img src="{{ pic.url }}" alt="{{ pic.alt }}" loading="lazy">{% if pic.label %}<span class="rtag">{{ pic.label }}</span>{% endif %}</div>{% else %}<div class="img"></div>{% endif %}<div class="body"><h3>{{ c.name }}</h3><div class="price">{{ c.price }}</div><span class="stock{% if c.out %} out{% endif %}">{{ c.stock }}</span><p class="ingredients">{{ c.ingredients }}</p></div></article>
+    {% endfor %}
+  </div>
+  <p class="more-link"><a href="/bread">See everything baked today</a></p>
+</section>
+
+<section class="b-section" id="cakes">
+  <h2>Celebration cakes</h2>
+  <p class="sub">Designed with you and baked by {{ shell.site.owner }}, who confirms every order.</p>
+  <table class="prices">
+    <thead><tr><th>Cake</th><th>Serves</th><th>Notice</th><th>From</th></tr></thead>
+    <tbody>
+      {% for r in cakes.rows %}<tr id="{{ r.anchor }}"><td>{{ r.label }}</td><td>{{ r.serves }}</td><td>{{ r.notice }}</td><td>{{ r.from }}</td></tr>{% endfor %}
+    </tbody>
+  </table>
+  <div class="cake-notes">
+    <p id="note-gf"><b>Gluten-free sponge</b> is available for 1- and 2-tier cakes ({{ cakes.gf }}). {{ allergens }}</p>
+    <p id="note-cancel">{{ changes }} {{ collection }}</p>
+  </div>
+</section>
+
+<section class="b-section" id="orders">
+  <h2>Your order</h2>
+  <p class="sub" id="note-confirm">{{ confirmations }}</p>
+  <form class="track-form" action="/orders" method="get"><label class="sr-only" for="ordno">Order number</label><input id="ordno" name="number" placeholder="Order number, e.g. KB-1042" autocomplete="off"><button class="b-btn" type="submit">Track</button></form>
+</section>
+
+<section class="b-section" id="visit">
+  <h2>Visit</h2>
+  <div class="visit">
+    <div id="visit-hours"><b>Hours</b>{% for d, t in hours.rows %}{{ d }} {{ t }}{% if not loop.last %}<br>{% endif %}{% endfor %}<br><span class="small">{{ hours.now }}</span></div>
+    <div id="visit-where"><b>Find us</b>{{ address }}<br>{{ parking }}</div>
+    <div id="visit-delivery"><b>Delivery</b>{% for z in zones %}{{ z.areas | join(" & ") }} · {{ z.fee_minor | ksh }}{% endfor %}<br>{{ delivery_days }}</div>
+  </div>
+</section>
+{% endblock %}

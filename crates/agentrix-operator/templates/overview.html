@@ -1,0 +1,84 @@
+{% extends "layout.html" %}
+{#- The ops host's front page (concept/control-plane/index.html): the three scopes with their
+    real numbers. `f` is reads::Fleet, `portfolios` one line per partner, `mine` what waits for
+    the signed-in operator (overview.rs). Every number comes from a record; none is drawn. -#}
+{% block title %}Overview{% endblock %}
+{% block field %}
+<div class="field-head">
+  <div><h2>Overview</h2><div class="sub">{{ shell.now_words }} {{ shell.zone }} · the platform, the partners' portfolios and your lane, from the records</div></div>
+  <div class="row"><a class="btn btn-sm btn-primary" href="/fleet">Open the fleet</a></div>
+</div>
+
+{#- The money layer's live activity (saas-web's summary panel, served by saas-node in front of
+    this console): what the agents did, from their signed logs, wallets and PayPal. #}
+<section class="card tight ov-live" aria-label="Live activity" style="margin-bottom:12px">
+  <div data-activity-summary data-src="/activity/summary"><p class="small muted">The live activity appears here while the money layer runs. <a href="/activity">Open full activity</a></p></div>
+</section>
+<link rel="stylesheet" href="/static/saas/activity-summary.css">
+<script type="module" src="/static/saas/activity-summary.js"></script>
+
+<div class="ov-scopes">
+  <article class="card tight ov-scope op" aria-labelledby="ov-op">
+    <span class="chip">Operator scope</span>
+    <h3 id="ov-op">Zavora Cloud platform</h3>
+    <p class="small muted">Sites, Moves, incidents and money on this cell.</p>
+    <div class="ov-nums">
+      <div><b>{{ f.sites_live|num }}</b><span>{{ "site" if f.sites_live == 1 else "sites" }} live{% if f.sites_live_samples %}, {{ f.sites_live_samples }} sample{{ "" if f.sites_live_samples == 1 else "s" }}{% endif %} · {{ f.sites_owned|num }} claimed of {{ f.sites_total|plural("address", "addresses") }} assessed</span></div>
+      <div><b>{{ f.moves_in_flight|num }}</b><span>{{ "Move" if f.moves_in_flight == 1 else "Moves" }} in flight{% if f.moves_waiting_owner %} · {{ f.moves_waiting_owner }} waiting for the owner{% endif %} · {{ f.moves_live|num }} went live in all{% if f.moves_stopped_week %} · {{ f.moves_stopped_week }} stopped this week{% endif %}</span></div>
+      <div><b>{{ incidents_open }}</b><span>{{ "incident" if incidents_open == 1 else "incidents" }} open{% if incidents_worst %}, worst {{ incidents_worst }}{% endif %}</span></div>
+      <div><b>{{ f.spend.month_micro_usd|usd }}</b><span>model spend in {{ f.spend.month }}, gateway estimates</span></div>
+      {%- if money.ok %}
+      <div><b>{{ (money.mrr_cents * 10000)|usd }}</b><span>monthly recurring revenue{% if not money.mrr_cents %}: no paying subscription yet{% endif %}</span></div>
+      <div><b>{{ (money.collected_cents * 10000)|usd }}</b><span>collected in {{ money.month }}{% if money.outstanding_invoices %} · {{ (money.outstanding_cents * 10000)|usd }} unpaid on {{ money.outstanding_invoices|plural("invoice", "invoices") }}{% endif %}</span></div>
+      {%- else %}
+      <div><b>Not read</b><span>billing's records couldn't be read just now; the error is in the node's log</span></div>
+      {%- endif %}
+    </div>
+    <div class="row" style="margin-top:10px"><a class="btn btn-sm" href="/customers">Sites</a><a class="btn btn-sm" href="/incidents">Incidents</a><a class="btn btn-sm" href="/money">Money</a></div>
+  </article>
+
+  <article class="card tight ov-scope pf" aria-labelledby="ov-pf">
+    <span class="chip">Portfolio scope</span>
+    <h3 id="ov-pf">Partners' portfolios</h3>
+    <p class="small muted">Agencies and resellers act only on clients whose owners granted them a role.</p>
+    {%- if portfolios %}
+    <ul class="rows">
+      {%- for p in portfolios %}
+      <li><span class="avatar sm" style="background:var(--pf)">{{ p.name|initials }}</span>
+        <span><a href="/partners/{{ p.partner_id }}"><b>{{ p.name }}</b></a> <span class="small muted">{{ p.kind }}</span>
+          <div class="small muted">{{ p.clients|plural("client", "clients") }} · {{ p.live }} live{% if p.moving %} · {{ p.moving }} moving{% endif %}{% if p.invited %} · {{ p.invited }} waiting for the owner's grant{% endif %}</div>
+          <div class="small muted">{{ p.waiting|plural("decision", "decisions") }} waiting on owners · {{ p.spend_micro_usd|usd }} AI spend this month</div></span>
+        <span></span></li>
+      {%- endfor %}
+    </ul>
+    {%- if partners_total > portfolios|length %}<p class="gapnote">{{ (partners_total - portfolios|length)|plural("more partner", "more partners") }} on <a href="/partners">Partners</a>.</p>{% endif %}
+    {%- else %}
+    <div class="empty"><b>No partners yet.</b> When Zavora adds an agency or reseller on <a href="/partners">Partners</a>, its portfolio shows here with its clients and spend.</div>
+    {%- endif %}
+  </article>
+
+  <article class="card tight ov-scope me" aria-labelledby="ov-me">
+    <span class="chip">Your lane</span>
+    <h3 id="ov-me">What waits for you, {{ shell.first_name }}</h3>
+    <p class="small muted">Signed in as {{ shell.roles|join(", ") }}.</p>
+    <div class="ov-nums">
+      <div><b>{{ shell.waiting }}</b><span>{{ "card" if shell.waiting == 1 else "cards" }} you can sign as the second person</span></div>
+      <div><b>{{ mine.incidents|length }}</b><span>open {{ "incident" if mine.incidents|length == 1 else "incidents" }} you command</span></div>
+      <div><b>{{ mine.grants_waiting }}</b><span>support {{ "request" if mine.grants_waiting == 1 else "requests" }} waiting for the owner{% if mine.grants_active %} · {{ mine.grants_active }} open now{% endif %}</span></div>
+      <div><b>{{ mine.break_glass }}</b><span>break-glass you're part of, waiting or open</span></div>
+    </div>
+    {%- if mine.incidents %}
+    <ul class="rows" style="margin-top:10px">
+      {%- for id, sev, title, state in mine.incidents %}
+      <li><span class="chip{% if sev in ['sev1', 'sev2'] %} chip-risk{% else %} chip-wait{% endif %}">{{ sev|upper }}</span><span><a href="/incidents/{{ id }}">{{ id }}</a> · {{ title }}</span><span class="meta">{{ state }}</span></li>
+      {%- endfor %}
+    </ul>
+    {%- endif %}
+    {%- if not (shell.waiting or mine.incidents or mine.grants_waiting or mine.grants_active or mine.break_glass) %}
+    <p class="gapnote">Nothing waits for you. A break-glass request you can sign shows in the lane; support requests you make wait on each site's page.</p>
+    {%- endif %}
+  </article>
+</div>
+
+<p class="gapnote">The owner's scope is each site's own console on the platform host. Operators never see or decide an owner's cards; the counts above are all they get.</p>
+{% endblock %}

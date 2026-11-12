@@ -1,0 +1,66 @@
+{% extends "kilele/layout.html" %}
+{% macro opts(title, items) -%}
+<div class="opt-group">
+  <h3>{{ title }}</h3>
+  <ul>
+    {% for o in items %}<li id="opt-{{ o.code | replace('.', '-') }}">{% if o.swatch %}<span class="swatch" style="background:{{ o.swatch }}" aria-hidden="true"></span>{% endif %}<span>{{ o.label }}{% if o.note %}<small>{{ o.note }}</small>{% endif %}</span>{% if o.delta %}<span class="delta">{{ o.delta }}</span>{% else %}<span class="delta free">Included</span>{% endif %}</li>{% endfor %}
+  </ul>
+</div>
+{%- endmacro %}
+{% block main %}
+<section class="b-pagehead" id="top">
+  <h1>Celebration cakes</h1>
+  <p>Designed with you and baked by {{ shell.site.owner }}, who confirms every order before anything is charged.</p>
+  <div class="row"><span class="b-pill ok">Next free date {{ next_free }}</span>{% if cakes.rows %}<span class="b-pill">From {{ cakes.rows[0].from }}</span>{% endif %}</div>
+  <div class="cake-cta">
+    <a class="primary" href="/cakes/studio"><b>Design a celebration cake</b><span>Pick each part with the Cakes desk (an AI WebAgent) and see the exact price as you go. {{ shell.site.owner }} confirms it.</span></a>
+    <a href="/order-a-cake"><b>Order with a simple form</b><span>No chat. Tell {{ shell.site.owner }} the cake, the date and how to reach you. Nothing is charged until she confirms.</span></a>
+  </div>
+</section>
+
+<section class="b-section" id="cakes">
+  <h2>Sizes and prices</h2>
+  <p class="sub" id="notice">{{ notice }}</p>
+  <table class="prices">
+    <thead><tr><th>Cake</th><th>Serves</th><th>Notice</th><th>From</th></tr></thead>
+    <tbody>
+      {% for r in cakes.rows %}<tr id="{{ r.anchor }}"><td>{{ r.label }}</td><td>{{ r.serves }}</td><td>{{ r.notice }}</td><td>{{ r.from }}</td></tr>{% endfor %}
+    </tbody>
+  </table>
+  <div class="cake-notes">
+    <p id="note-gf"><b>Gluten-free sponge</b> is available for 1- and 2-tier cakes, for {{ cakes.gf }} more. {{ allergens }}</p>
+    <p id="note-cancel">{{ changes }} {{ collection }} <a class="link" href="/help#changes">How changes work</a></p>
+  </div>
+</section>
+
+<section class="b-section" id="options">
+  <h2>What you can choose</h2>
+  <p class="sub">Every option and its price, from {{ cakes.named }}. The studio adds these up for you.</p>
+  <div class="opt-groups">
+    {{ opts("Sponge", cakes.sponges) }}
+    {{ opts("Buttercream colour", cakes.colours) }}
+    {{ opts("Finish", cakes.finishes) }}
+    {{ opts("Decoration", cakes.decos) }}
+  </div>
+  <p class="opt-foot" id="opt-message"><b>Message on the cake:</b> up to {{ cakes.max_chars }} characters, included.</p>
+</section>
+
+<section class="b-section" id="not-offered">
+  <h2>What {{ shell.site.name }} doesn't make</h2>
+  <p class="sub">The desks won't take an order for these.</p>
+  <ul class="no-list">
+    {% for n in not_offered %}<li>{{ n }}</li>{% endfor %}
+  </ul>
+  <p class="more-link">Something else in mind? <a href="/help#contact" data-person>Ask {{ shell.site.owner }}</a>; a person reads it.</p>
+</section>
+
+<section class="b-section" id="price-list">
+  <h2>Price list</h2>
+  <p class="sub">{{ list_source }}. The price you're quoted is pinned to your order.</p>
+  <div class="list-facts">
+    <div>Price list of<b>{{ cakes.from_day }}</b></div>
+    <div>Valid until<b>{{ cakes.valid_until }}</b></div>
+    <div>Paying in dollars<b>{{ cakes.rate }}</b></div>
+  </div>
+</section>
+{% endblock %}

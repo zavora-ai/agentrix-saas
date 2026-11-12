@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Web home: agent memory and rules</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap">
+<style>body{margin:0}</style>
+</helmet>
+<div style="min-height: 980px; box-sizing: border-box; font-family: Inter, system-ui, sans-serif; color: {{t.text}}; background: {{t.bg}}; display: flex; flex-direction: column">
+
+  <header style="padding: 14px 28px; border-bottom: 1px solid {{t.border}}; display: flex; flex-wrap: wrap; align-items: center; gap: 12px 24px">
+    <span style="display: flex; align-items: center; gap: 10px"><span style="width: 10px; height: 10px; border-radius: 5px; background: {{t.brand}}"></span><span style="font-weight: 800; font-size: 17px; letter-spacing: -0.02em">ADK-Rust</span></span>
+    <nav aria-label="Sections" style="display: flex; gap: 4px; padding: 4px; border-radius: 12px; background: {{t.raised}}">
+      <a href="WebHome.dc.html" style="padding: 7px 14px; border-radius: 9px; color: {{t.text2}}; text-decoration: none; font-size: 14px">Threads</a>
+      <a href="WebToday.dc.html" style="padding: 7px 14px; border-radius: 9px; color: {{t.text2}}; text-decoration: none; font-size: 14px">Today</a>
+      <a href="#" aria-current="page" style="padding: 7px 14px; border-radius: 9px; background: {{t.surface}}; box-shadow: {{t.shadow}}; color: {{t.text}}; text-decoration: none; font-size: 14px; font-weight: 600">Memory &amp; rules</a>
+    </nav>
+    <span style="flex-grow: 1"></span>
+    <span style="font-size: 13px; color: {{t.text2}}">Kept on your computer</span>
+    <button type="button" style="font: inherit; font-size: 14px; font-weight: 600; padding: 9px 16px; border-radius: 10px; border: none; background: {{t.ink}}; color: {{t.onInk}}; cursor: pointer; min-height: 40px">Stop all</button>
+  </header>
+
+  <div style="width: 100%; max-width: 1280px; margin: 0 auto; box-sizing: border-box; padding: 48px 32px; display: flex; flex-direction: column; gap: 36px">
+    <div style="display: flex; flex-direction: column; gap: 12px">
+      <h1 style="margin: 0; font-size: 52px; line-height: 1.04; font-weight: 800; letter-spacing: -0.035em">Agent Memory <span style="color: {{t.brand}}">and Rules</span></h1>
+      <p style="margin: 0; font-size: 20px; line-height: 1.4; color: {{t.text2}}">A record of what your agents know, remember and have done, and the settings for what they can do.</p>
+    </div>
+
+    <div style="display: flex; flex-wrap: wrap; gap: 20px; align-items: stretch">
+
+      <section aria-label="What your agents remember" style="flex: 1 1 340px; min-width: 0; background: {{t.surface}}; border: 1px solid {{t.border}}; border-radius: 20px; padding: 24px; display: flex; flex-direction: column; gap: 16px; box-shadow: {{t.shadow}}">
+        <h2 style="margin: 0; font-size: 20px; font-weight: 700; letter-spacing: -0.01em">What your agents remember</h2>
+        <div style="display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 12px 14px; border-radius: 12px; background: {{t.raised}}">
+          <span style="font-size: 14px; line-height: 1.45; color: {{t.text2}}">Overnight, Finance merged two notes about your accountant.</span>
+          <button type="button" style="font: inherit; font-size: 14px; padding: 7px 12px; border-radius: 9px; border: 1px solid {{t.line}}; background: {{t.surface}}; color: {{t.text}}; cursor: pointer; min-height: 36px; white-space: nowrap">Undo</button>
+        </div>
+        <ul style="list-style: none; margin: 0; padding: 0; border: 1px solid {{t.border}}; border-radius: 14px; overflow: hidden">
+          <li style="padding: 14px 16px; display: flex; flex-direction: column; gap: 6px"><span style="font-size: 15px">You bill [CLIENT] at [RATE] an hour.</span><span style="align-self: flex-start; padding: 2px 9px; border-radius: 999px; background: {{t.greenSoft}}; color: {{t.green}}; font-size: 13px; font-weight: 600">You said this</span></li>
+          <li style="padding: 14px 16px; border-top: 1px solid {{t.border}}; display: flex; flex-direction: column; gap: 6px"><span style="font-size: 15px">Your accountant is [NAME].</span><span style="align-self: flex-start; padding: 2px 9px; border-radius: 999px; background: {{t.greenSoft}}; color: {{t.green}}; font-size: 13px; font-weight: 600">You confirmed this</span></li>
+          <li style="padding: 14px 16px; border-top: 1px solid {{t.border}}; display: flex; flex-direction: column; gap: 6px"><span style="font-size: 15px">You send invoices on the last working day.</span><span style="display: flex; gap: 8px; align-items: center; font-size: 13px; color: {{t.muted}}"><span style="padding: 2px 9px; border-radius: 999px; background: {{t.raised}}; border: 1px solid {{t.border}}; color: {{t.text2}}; font-weight: 600">A guess</span>Finance noticed this</span><span style="display: flex; gap: 16px; font-size: 14px; font-weight: 600"><a href="#" style="color: {{t.accent}}">That's right</a><a href="#" style="color: {{t.text2}}">Fix it</a><a href="#" style="color: {{t.text2}}">Forget it</a></span></li>
+        </ul>
+      </section>
+
+      <section aria-label="What your agents can do" style="flex: 1 1 340px; min-width: 0; background: {{t.surface}}; border: 1px solid {{t.border}}; border-radius: 20px; padding: 24px; display: flex; flex-direction: column; gap: 16px; box-shadow: {{t.shadow}}">
+        <h2 style="margin: 0; font-size: 20px; font-weight: 700; letter-spacing: -0.01em">What your agents can do</h2>
+        <div style="display: flex; flex-direction: column; gap: 8px">
+          <span style="font-size: 14px; color: {{t.text2}}">At work, your agents</span>
+          <div role="group" aria-label="How much agents at work do on their own" style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 4px; padding: 4px; border-radius: 12px; background: {{t.raised}}">
+            <button type="button" style="font: inherit; font-size: 13px; padding: 8px 4px; border-radius: 9px; border: none; background: transparent; color: {{t.text2}}; cursor: pointer">Just look</button>
+            <button type="button" style="font: inherit; font-size: 13px; padding: 8px 4px; border-radius: 9px; border: none; background: transparent; color: {{t.text2}}; cursor: pointer">Suggest</button>
+            <button type="button" aria-pressed="true" style="font: inherit; font-size: 13px; font-weight: 600; padding: 8px 4px; border-radius: 9px; border: none; background: {{t.surface}}; box-shadow: {{t.shadow}}; color: {{t.text}}; cursor: pointer">Ask first</button>
+            <button type="button" style="font: inherit; font-size: 13px; padding: 8px 4px; border-radius: 9px; border: none; background: transparent; color: {{t.text2}}; cursor: pointer">Go ahead</button>
+          </div>
+        </div>
+        <span style="font-size: 14px; font-weight: 600; color: {{t.muted}}">Allowed without asking</span>
+        <ul style="list-style: none; margin: 0; padding: 0; border: 1px solid {{t.border}}; border-radius: 14px; overflow: hidden">
+          <li style="padding: 14px 16px; display: flex; flex-direction: column; gap: 4px"><span style="font-size: 15px">Finance can email your accountant.</span><span style="display: flex; gap: 16px; font-size: 13px"><span style="color: {{t.muted}}">Until 30 November</span><a href="#" style="font-weight: 600; color: {{t.accent}}">Extend</a><a href="#" style="font-weight: 600; color: {{t.text2}}">Stop allowing</a></span></li>
+          <li style="padding: 14px 16px; border-top: 1px solid {{t.border}}; display: flex; flex-direction: column; gap: 4px"><span style="font-size: 15px">Code can run the tests in [REPO].</span><span style="display: flex; gap: 16px; font-size: 13px"><span style="color: {{t.muted}}">No end date</span><a href="#" style="font-weight: 600; color: {{t.text2}}">Stop allowing</a></span></li>
+        </ul>
+        <div style="font-size: 14px; line-height: 1.45; padding: 12px 14px; border-radius: 12px; background: {{t.accentSoft}}; color: {{t.text}}">Anything that spends money or publishes always asks you first. This can't be switched off.</div>
+        <ul style="list-style: none; margin: 0; padding: 0; border: 1px solid {{t.border}}; border-radius: 14px; overflow: hidden">
+          <li style="padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; gap: 10px"><span style="display: flex; flex-direction: column; gap: 2px"><span style="font-size: 13px; color: {{t.muted}}">Quiet time</span><span style="font-size: 16px; font-weight: 700">22:00–07:00</span></span><a href="#" style="font-size: 13px; font-weight: 600; color: {{t.accent}}">Change</a></li>
+          <li style="padding: 12px 16px; border-top: 1px solid {{t.border}}; display: flex; justify-content: space-between; align-items: center; gap: 10px"><span style="display: flex; flex-direction: column; gap: 2px"><span style="font-size: 13px; color: {{t.muted}}">Daily spending limit</span><span style="font-size: 16px; font-weight: 700">$5.00</span></span><a href="#" style="font-size: 13px; font-weight: 600; color: {{t.accent}}">Change</a></li>
+        </ul>
+      </section>
+
+      <section aria-label="What your agents did" style="flex: 1 1 340px; min-width: 0; background: {{t.surface}}; border: 1px solid {{t.border}}; border-radius: 20px; padding: 24px; display: flex; flex-direction: column; gap: 16px; box-shadow: {{t.shadow}}">
+        <h2 style="margin: 0; font-size: 20px; font-weight: 700; letter-spacing: -0.01em">What your agents did</h2>
+        <div style="display: flex; gap: 12px; align-items: flex-start">
+          <span style="flex: 0 0 40px; width: 40px; height: 40px; border-radius: 12px; background: {{t.greenSoft}}; display: flex; align-items: center; justify-content: center"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="{{t.green}}" stroke-width="2" aria-hidden="true"><path d="M4 9.5l3.2 3.2L14 5.5"></path></svg></span>
+          <span style="display: flex; flex-direction: column; gap: 3px"><span style="font-size: 16px; font-weight: 700">Every action is on record</span><span style="font-size: 14px; color: {{t.text2}}; line-height: 1.45">All 1,284 of them, and nothing has been changed or deleted. Checked just now. <a href="#" style="font-weight: 600; color: {{t.accent}}">Check again</a></span></span>
+        </div>
+        <ul style="list-style: none; margin: 0; padding: 0; border: 1px solid {{t.border}}; border-radius: 14px; overflow: hidden">
+          <li style="padding: 12px 16px; display: flex; gap: 12px; font-size: 14px; line-height: 1.4"><span style="flex: 0 0 44px; font-family: 'JetBrains Mono', monospace; font-size: 13px; color: {{t.muted}}">07:31</span><span>You let Finance send one email, from Telegram.</span></li>
+          <li style="padding: 12px 16px; border-top: 1px solid {{t.border}}; display: flex; gap: 12px; font-size: 14px; line-height: 1.4"><span style="flex: 0 0 44px; font-family: 'JetBrains Mono', monospace; font-size: 13px; color: {{t.muted}}">23:30</span><span>You let Code run the tests once, from your phone.</span></li>
+          <li style="padding: 12px 16px; border-top: 1px solid {{t.border}}; display: flex; gap: 12px; font-size: 14px; line-height: 1.4"><span style="flex: 0 0 44px; font-family: 'JetBrains Mono', monospace; font-size: 13px; color: {{t.muted}}">23:05</span><span>Finance suggested a payment. Nothing was paid.</span></li>
+        </ul>
+        <span style="font-size: 14px; font-weight: 600; color: {{t.muted}}">Where you can say yes from</span>
+        <ul style="list-style: none; margin: 0; padding: 0; border: 1px solid {{t.border}}; border-radius: 14px; overflow: hidden">
+          <li style="padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; gap: 10px; font-size: 15px"><span>Your phone <span style="color: {{t.muted}}">· asks for your face or fingerprint</span></span><a href="#" style="font-size: 13px; font-weight: 600; color: {{t.text2}}">Remove</a></li>
+          <li style="padding: 12px 16px; border-top: 1px solid {{t.border}}; display: flex; justify-content: space-between; align-items: center; gap: 10px; font-size: 15px"><span>Telegram <span style="color: {{t.muted}}">· yes once, or no</span></span><a href="#" style="font-size: 13px; font-weight: 600; color: {{t.text2}}">Remove</a></li>
+          <li style="padding: 12px 16px; border-top: 1px solid {{t.border}}; display: flex; justify-content: space-between; align-items: center; gap: 10px; font-size: 15px"><span>This computer <span style="color: {{t.muted}}">· everything</span></span></li>
+        </ul>
+        <button type="button" style="font: inherit; font-size: 15px; font-weight: 600; align-self: flex-start; margin-top: auto; padding: 11px 18px; border-radius: 10px; border: none; background: {{t.accentFill}}; color: {{t.onAccent}}; cursor: pointer; min-height: 44px">Add a phone or app</button>
+      </section>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"dark":{"editor":"boolean","default":false},"$preview":{"width":1440,"height":980}}'>
+class Component extends DCLogic {
+  renderVals() {
+    var L = {bg: '#FFFFFF', surface: '#FFFFFF', raised: '#F6F7F9', border: '#E6E8EC', line: '#D3D7DE', text: '#0F172A', text2: '#475569', muted: '#64748B', brand: '#F74C00', accent: '#C03A00', accentFill: '#C03A00', onAccent: '#FFFFFF', accentSoft: '#FFF4EE', ink: '#0A1628', onInk: '#FFFFFF', green: '#12774B', greenSoft: '#E8F6EF', shadow: '0 1px 2px rgba(15,23,42,0.04), 0 12px 32px rgba(15,23,42,0.06)'};
+    var D = {bg: '#0A1628', surface: '#15233B', raised: '#1C2B45', border: '#2A3D5C', line: '#3A5075', text: '#F1F5F9', text2: '#D5DEE8', muted: '#A7B4C6', brand: '#F74C00', accent: '#FF9C78', accentFill: '#F74C00', onAccent: '#0A1628', accentSoft: 'rgba(247,76,0,0.14)', ink: '#F1F5F9', onInk: '#0A1628', green: '#61E7A5', greenSoft: 'rgba(97,231,165,0.12)', shadow: 'none'};
+    return { t: this.props.dark ? D : L };
+  }
+}
+</script>
+</body>
+</html>

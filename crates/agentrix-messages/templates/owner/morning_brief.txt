@@ -1,0 +1,42 @@
+{% block subject %}Your morning brief for {{ site.name }}{% endblock %}
+{% block preheader %}{{ brief.headline }} {% if brief.waiting %}{{ brief.waiting|plural("decision is", "decisions are") }} waiting. {% endif %}{% if brief.spend.words %}AI spend {{ brief.spend.words }}.{% endif %}{% endblock %}
+{% block body %}
+# Good morning{% if person.name %}, {{ person.name }}{% endif %}.
+
+{{ brief.headline }}
+
+{% for line in brief.lines %}
+- {{ line }}
+{% endfor %}
+
+{% if brief.waiting %}
+{{ brief.waiting|plural("decision is", "decisions are") }} waiting for you.
+
+::button Open the console | {{ console_url }}
+{% else %}
+Nothing is waiting for you.
+
+::link Open the console | {{ console_url }}
+{% endif %}
+{% if brief.spend.words %}
+::fact AI spend | {{ brief.spend.words }}
+{% endif %}
+
+::note Composed from your site's records, receipts and spend. Each line links to its receipt in the console.
+{% endblock %}
+{% block push %}Your morning brief is ready.{% endblock %}
+{% block push_url %}{{ console_url }}{% endblock %}
+{% block chat %}
+# Good morning{% if person.name %}, {{ person.name }}{% endif %}.
+
+{{ brief.headline }}
+
+{% for line in brief.lines %}
+- {{ line }}
+{% endfor %}
+
+{% if brief.spend.words %}AI spend {{ brief.spend.words }}. {% endif %}{% if brief.waiting %}{{ brief.waiting|plural("decision is", "decisions are") }} waiting. {% endif %}Reply STOP at any time to freeze every WebAgent.
+
+::button Open the console | {{ console_url }}
+::reply Ask a question
+{% endblock %}

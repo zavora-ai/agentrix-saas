@@ -1,0 +1,12 @@
+{% block subject %}A recovery code was used on your {{ site.name }} account{% endblock %}
+{% block preheader %}On {{ recovery.device }}. {{ recovery.remaining|plural("code is", "codes are") }} left.{% endblock %}
+{% block body %}
+# A recovery code was used
+Someone signed in to your {{ site.name }} account with one of your recovery codes, on {{ recovery.device }}. Each code works once, so {{ recovery.remaining|plural("code is", "codes are") }} left.
+
+If it was you, add a new passkey on your account page, so you don't need the codes next time.
+
+If it wasn't, open your account and choose Sign out everywhere, then make new recovery codes.
+
+::button Open your account | {{ account_url }}
+{% endblock %}

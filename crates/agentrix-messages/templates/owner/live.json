@@ -1,0 +1,17 @@
+{
+ "site": {
+  "name": "Kilele Bakery",
+  "host": "kilele-bakery-sample.agentrix.website",
+  "sample": true
+ },
+ "person": {
+  "name": "Wanjiru"
+ },
+ "console_url": "https://agentrix.website/console/kilele-bakery-sample",
+ "live": {
+  "domain": "kilele-bakery.example",
+  "at": "Sat 14 Nov, 11:02",
+  "release": "v1",
+  "fallback_until": "Mon 14 Dec"
+ }
+}

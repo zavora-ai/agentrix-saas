@@ -1,0 +1,43 @@
+[package]
+name = "agentrix-effects"
+description = "The first slice of the Effects Gateway: PayPal sandbox checkout for the sample sites and PayPal Subscriptions for plans in USD, idempotent by fingerprint and receipted. No card data ever on our hosts."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+authors.workspace = true
+
+# Owner: W6 (identity, payments and trust). The PayPal client and Payouts are adapted from
+# Zavora's steward-paypal (same authors, Apache-2.0 there; see NOTICE). Horizon 1 runs in node's
+# process; Horizon 2 moves it to its own process and user, the only holder of provider keys
+# (ADR-004).
+
+[dependencies]
+agentrix-host.workspace = true
+agentrix-types.workspace = true
+anyhow.workspace = true
+async-trait.workspace = true
+axum.workspace = true
+chrono.workspace = true
+futures.workspace = true
+hex.workspace = true
+reqwest.workspace = true
+serde.workspace = true
+serde_json = { workspace = true, features = ["raw_value"] }
+sha2.workspace = true
+sqlx.workspace = true
+thiserror.workspace = true
+tokio.workspace = true
+tracing.workspace = true
+url.workspace = true
+uuid.workspace = true
+
+[dev-dependencies]
+tokio.workspace = true
+tower.workspace = true
+# HTTP mocks of PayPal for the webhook, subscription and payout tests.
+wiremock = "0.6"
+
+[lints]
+workspace = true

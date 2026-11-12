@@ -1,0 +1,361 @@
+<title>the first release Board</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&family=JetBrains+Mono:wght@400;600&family=Manrope:wght@600;700;800&display=swap">
+<style>
+/* Layout: an indigo masthead with the clock, a sprint rail, then the task ledger beside a
+   coverage-and-gates column; one column on phones. Tokens follow concept/styles.css. */
+:root {
+  --bg: #f6f6fa; --paper: #ffffff; --ink: #23223a; --ink-2: #4a4960; --muted: #656479;
+  --line: #e3e2ec; --line-strong: #cfcedd; --head: #1f1d3d; --head-ink: #f6f6fb;
+  --accent: #de4060; --accent-ink: #b72d50; --indigo: #38356d; --indigo-soft: #ecebf6;
+  --ok: #11734a; --ok-bg: #e6f5ee; --wait: #8a5300; --wait-bg: #fff4dd;
+  --risk: #a3302a; --risk-bg: #fdecea; --info: #2f55c4; --info-bg: #eaf0ff;
+  --font-display: "Manrope", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-text: "DM Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #15142a; --paper: #1d1c36; --ink: #ecebf6; --ink-2: #c9c8dc; --muted: #9b9ab3;
+  --line: #2e2d4d; --line-strong: #3d3c60; --head: #0f0e22; --head-ink: #f6f6fb;
+  --accent: #f0708a; --accent-ink: #f59aac; --indigo: #b7b4f0; --indigo-soft: #2a2950;
+  --ok: #5fd39e; --ok-bg: #12352a; --wait: #f2b85a; --wait-bg: #3a2c10;
+  --risk: #f38b84; --risk-bg: #3d1a1c; --info: #8fb0ff; --info-bg: #1b2647; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #15142a; --paper: #1d1c36; --ink: #ecebf6; --ink-2: #c9c8dc; --muted: #9b9ab3;
+  --line: #2e2d4d; --line-strong: #3d3c60; --head: #0f0e22; --head-ink: #f6f6fb;
+  --accent: #f0708a; --accent-ink: #f59aac; --indigo: #b7b4f0; --indigo-soft: #2a2950;
+  --ok: #5fd39e; --ok-bg: #12352a; --wait: #f2b85a; --wait-bg: #3a2c10;
+  --risk: #f38b84; --risk-bg: #3d1a1c; --info: #8fb0ff; --info-bg: #1b2647; color-scheme: dark }
+
+* { box-sizing: border-box }
+body { background: var(--bg); color: var(--ink); font-family: var(--font-text); font-size: 15px; line-height: 1.5 }
+.wrap { max-width: 1240px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)) }
+h1, h2, h3 { font-family: var(--font-display); margin: 0; letter-spacing: -0.015em; text-wrap: balance }
+.mono { font-family: var(--font-mono); font-variant-numeric: tabular-nums }
+
+.mast { background: var(--head); color: var(--head-ink) }
+.mast .wrap { padding-block: 28px 24px; display: grid; gap: 20px; grid-template-columns: minmax(0, 1fr) auto; align-items: end }
+.eyebrow { font-size: 12px; letter-spacing: .12em; text-transform: uppercase; opacity: .75 }
+.mast h1 { font-size: clamp(28px, 4vw, 40px); font-weight: 800 }
+.mast p { margin: 6px 0 0; max-width: 62ch; opacity: .85 }
+.clock { display: grid; gap: 6px; text-align: right }
+.clock .big { font-family: var(--font-mono); font-size: 28px; font-weight: 600; font-variant-numeric: tabular-nums }
+.clock .small { font-size: 13px; opacity: .8 }
+@media (max-width: 720px) { .mast .wrap { grid-template-columns: 1fr } .clock { text-align: left } }
+
+.stats { display: flex; flex-wrap: wrap; gap: 8px 28px; padding-block: 18px 6px }
+.stat b { font-family: var(--font-display); font-size: 22px; display: block; font-variant-numeric: tabular-nums }
+.stat span { font-size: 12px; color: var(--muted); letter-spacing: .06em; text-transform: uppercase }
+.banner { margin-top: 12px; padding: 10px 14px; border-radius: 10px; background: var(--wait-bg); color: var(--wait); font-size: 14px }
+
+.rail { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; padding-block: 16px }
+@media (max-width: 900px) { .rail { grid-template-columns: 1fr } }
+.sprint { background: var(--paper); border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; display: grid; gap: 6px; min-width: 0 }
+.sprint.now { border-color: var(--accent); box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 25%, transparent) }
+.sprint .top { display: flex; justify-content: space-between; gap: 8px; align-items: baseline }
+.sprint h3 { font-size: 15px }
+.sprint .win { font-size: 12px; color: var(--muted) }
+.sprint .goal { font-size: 13px; color: var(--ink-2) }
+.bar { height: 6px; border-radius: 99px; background: var(--line); overflow: hidden }
+.bar i { display: block; height: 100%; background: var(--ok); border-radius: 99px }
+.tag-now { font-size: 11px; font-weight: 700; color: var(--accent-ink); letter-spacing: .08em; text-transform: uppercase }
+
+.grid { display: grid; grid-template-columns: minmax(0, 1fr) 360px; gap: 20px; padding-block: 8px 48px }
+@media (max-width: 1000px) { .grid { grid-template-columns: 1fr } }
+
+.tools { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 12px }
+.tools label { font-size: 12px; color: var(--muted) }
+select, input[type=search] { font: inherit; font-size: 14px; color: var(--ink); background: var(--paper); border: 1px solid var(--line-strong); border-radius: 8px; padding: 6px 10px }
+input[type=search] { flex: 1 1 180px; min-width: 0 }
+select:focus-visible, input:focus-visible, button:focus-visible { outline: 3px solid color-mix(in srgb, var(--accent) 45%, transparent); outline-offset: 1px }
+.seg { display: inline-flex; border: 1px solid var(--line-strong); border-radius: 8px; overflow: hidden }
+.seg button { font: inherit; font-size: 13px; background: var(--paper); color: var(--ink-2); border: 0; padding: 6px 12px; cursor: pointer }
+.seg button[aria-pressed="true"] { background: var(--indigo); color: var(--paper) }
+
+.group { margin-bottom: 22px }
+.group h2 { font-size: 16px; display: flex; gap: 10px; align-items: baseline; margin-bottom: 8px }
+.group h2 small { font-family: var(--font-text); font-weight: 400; font-size: 13px; color: var(--muted) }
+.task { background: var(--paper); border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; display: grid; grid-template-columns: 70px minmax(0, 1fr) auto; gap: 4px 12px; margin-bottom: 8px; border-left: 4px solid var(--line-strong) }
+.task[data-s="doing"] { border-left-color: var(--info) }
+.task[data-s="review"] { border-left-color: var(--wait) }
+.task[data-s="done"] { border-left-color: var(--ok) }
+.task[data-s="blocked"] { border-left-color: var(--risk) }
+.task .id { font-family: var(--font-mono); font-size: 13px; color: var(--muted); padding-top: 2px }
+.task .title { font-weight: 500; min-width: 0 }
+.task .meta { grid-column: 2 / 4; display: flex; flex-wrap: wrap; gap: 6px 10px; font-size: 12.5px; color: var(--muted); min-width: 0 }
+.task .done-when { grid-column: 2 / 4; font-size: 13px; color: var(--ink-2) }
+.task .note { grid-column: 2 / 4; font-size: 13px; color: var(--ink); background: var(--indigo-soft); border-radius: 6px; padding: 6px 8px }
+@media (max-width: 560px) { .task { grid-template-columns: 1fr auto } .task .id { grid-column: 1 / 3 } .task .meta, .task .done-when, .task .note { grid-column: 1 / 3 } }
+.chip { display: inline-flex; align-items: center; gap: 4px; border-radius: 99px; padding: 1px 8px; font-size: 12px; background: var(--indigo-soft); color: var(--indigo); white-space: nowrap }
+.chip.pri-M { background: var(--risk-bg); color: var(--risk) }
+.chip.pri-S { background: var(--info-bg); color: var(--info) }
+.chip.wait { background: var(--wait-bg); color: var(--wait) }
+.pill { font-size: 12px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; border-radius: 6px; padding: 3px 8px; white-space: nowrap; align-self: start }
+.pill.todo { background: var(--line); color: var(--ink-2) }
+.pill.doing { background: var(--info-bg); color: var(--info) }
+.pill.review { background: var(--wait-bg); color: var(--wait) }
+.pill.done { background: var(--ok-bg); color: var(--ok) }
+.pill.blocked { background: var(--risk-bg); color: var(--risk) }
+select.status { font-size: 12px; font-weight: 700; padding: 3px 6px; align-self: start }
+
+aside { display: grid; gap: 16px; align-content: start; min-width: 0 }
+.panel { background: var(--paper); border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; min-width: 0 }
+.panel h2 { font-size: 15px; margin-bottom: 10px }
+.reqs { display: grid; gap: 6px }
+.req { display: grid; grid-template-columns: 42px minmax(0, 1fr) auto; gap: 8px; align-items: center; font-size: 13px }
+.req .rid { font-family: var(--font-mono); color: var(--muted) }
+.req .rt { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap }
+.req .rs { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; border-radius: 5px; padding: 2px 6px }
+.rs.verified { background: var(--ok-bg); color: var(--ok) }
+.rs.built { background: var(--ok-bg); color: var(--ok) }
+.rs.progress { background: var(--info-bg); color: var(--info) }
+.rs.none { background: var(--line); color: var(--ink-2) }
+.rs.failed { background: var(--risk-bg); color: var(--risk) }
+.qs { margin: 0; padding-left: 18px; display: grid; gap: 8px; font-size: 14px }
+.empty { color: var(--muted); font-size: 14px; padding: 16px; border: 1px dashed var(--line-strong); border-radius: 10px }
+.foot { font-size: 12px; color: var(--muted); padding-bottom: 32px }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important } }
+</style>
+
+<header class="mast">
+  <div class="wrap">
+    <div>
+      <div class="eyebrow">Agentrix WebAgent Platform · Vultr Agent Rush</div>
+      <h1>The first release Board</h1>
+      <p>Spec-driven build of the single-node platform: requirements, design, five sprints. Sessions update their rows; status here is live.</p>
+    </div>
+    <div class="clock" aria-live="polite">
+      <div class="small">Target submit · Sun 8 Nov, 20:00 EAT</div>
+      <div class="big" id="cd-target">--</div>
+      <div class="small" id="cd-hard">Hard close Mon 02:00 EAT</div>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="stats" id="stats" aria-label="Progress"></section>
+  <div id="banner" class="banner" hidden></div>
+  <section class="rail" id="rail" aria-label="Sprints"></section>
+
+  <div class="grid">
+    <section aria-label="Tasks">
+      <div class="tools">
+        <div class="seg" role="group" aria-label="Group by">
+          <button type="button" id="g-sprint" aria-pressed="true">By sprint</button>
+          <button type="button" id="g-lane" aria-pressed="false">By lane</button>
+        </div>
+        <label for="f-lane">Lane</label>
+        <select id="f-lane"><option value="all">All lanes</option></select>
+        <label for="f-status">Status</label>
+        <select id="f-status">
+          <option value="all">All</option><option value="open">Open</option><option value="todo">To do</option>
+          <option value="doing">Doing</option><option value="review">Review</option><option value="blocked">Blocked</option><option value="done">Done</option>
+        </select>
+        <input type="search" id="f-q" placeholder="Search tasks or requirement ids" aria-label="Search tasks">
+      </div>
+      <div id="tasks"><div class="empty">Connecting to the board's data…</div></div>
+    </section>
+
+    <aside>
+      <section class="panel" aria-labelledby="h-q">
+        <h2 id="h-q">Waiting on James</h2>
+        <ol class="qs" id="questions"><li>Loading…</li></ol>
+      </section>
+      <section class="panel" aria-labelledby="h-r">
+        <h2 id="h-r">Requirement coverage</h2>
+        <div class="reqs" id="reqs"><div class="empty">Loading requirements…</div></div>
+      </section>
+      <section class="panel" aria-labelledby="h-g">
+        <h2 id="h-g">Gates</h2>
+        <ol class="qs" id="gates"><li>Loading…</li></ol>
+      </section>
+    </aside>
+  </div>
+  <p class="foot" id="foot">Spec: <span class="mono">specs/first-release/</span> in the platform repo (requirements.md, design.md, tasks.md).</p>
+</main>
+
+<script>
+(() => {
+  const TARGET = Date.parse("2026-11-08T20:00:00+03:00");
+  const HARD = Date.parse("2026-11-09T02:00:00+03:00");
+  const STATUSES = ["todo", "doing", "review", "blocked", "done"];
+  const LABEL = { todo: "To do", doing: "Doing", review: "Review", blocked: "Blocked", done: "Done" };
+  const st = { tasks: new Map(), board: null, reqs: null, canEdit: false, live: false, group: "sprint" };
+  const $ = (id) => document.getElementById(id);
+  const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+
+  function fmtLeft(ms) {
+    if (ms <= 0) return "passed";
+    const h = Math.floor(ms / 3600000), m = Math.floor((ms % 3600000) / 60000);
+    return `${h}h ${String(m).padStart(2, "0")}m`;
+  }
+  function tick() {
+    const now = Date.now();
+    $("cd-target").textContent = fmtLeft(TARGET - now);
+    $("cd-hard").textContent = `Hard close Mon 02:00 EAT · ${fmtLeft(HARD - now)}`;
+  }
+  tick(); setInterval(tick, 30000);
+
+  const sprints = () => (st.board && Array.isArray(st.board.sprints)) ? st.board.sprints : [];
+  const lanes = () => (st.board && st.board.lanes) ? st.board.lanes : {};
+  const tasks = () => [...st.tasks.values()].sort((a, b) => a.id.localeCompare(b.id, "en", { numeric: true }));
+  const nowSprint = () => { const n = Date.now(); return sprints().find((s) => n >= Date.parse(s.start) && n < Date.parse(s.end))?.id; };
+  const isDone = (id) => st.tasks.get(id)?.status === "done";
+
+  function renderStats() {
+    const all = tasks(); const must = all.filter((t) => t.priority === "M");
+    const n = (f) => all.filter(f).length;
+    const items = [
+      [`${n((t) => t.status === "done")}/${all.length}`, "Tasks done"],
+      [`${must.filter((t) => t.status === "done").length}/${must.length}`, "Must tasks done"],
+      [n((t) => t.status === "doing" || t.status === "review"), "In flight"],
+      [n((t) => t.status === "blocked"), "Blocked"],
+      [sprints().find((s) => s.id === nowSprint())?.name ?? (Date.now() < Date.parse(sprints()[0]?.start ?? 0) ? "Not started" : "—"), "Current sprint"],
+    ];
+    $("stats").innerHTML = items.map(([v, l]) => `<div class="stat"><b>${esc(v)}</b><span>${esc(l)}</span></div>`).join("");
+  }
+
+  function renderRail() {
+    const cur = nowSprint();
+    $("rail").innerHTML = sprints().map((s) => {
+      const ts = tasks().filter((t) => t.sprint === s.id);
+      const d = ts.filter((t) => t.status === "done").length;
+      const pct = ts.length ? Math.round((d / ts.length) * 100) : 0;
+      return `<article class="sprint${s.id === cur ? " now" : ""}">
+        <div class="top"><h3>${esc(s.id)} · ${esc(s.name)}</h3>${s.id === cur ? '<span class="tag-now">Now</span>' : ""}</div>
+        <div class="win mono">${esc(s.window)} EAT · ${d}/${ts.length}</div>
+        <div class="bar" role="img" aria-label="${pct}% done"><i style="width:${pct}%"></i></div>
+        <div class="goal">${esc(s.goal)}</div>
+      </article>`;
+    }).join("");
+  }
+
+  function waitsOn(t) { return (t.depends || []).filter((d) => !isDone(d)); }
+
+  function taskHtml(t) {
+    const ln = lanes()[t.lane] || t.lane;
+    const waits = t.status !== "done" ? waitsOn(t) : [];
+    const control = st.canEdit
+      ? `<select class="status" data-id="${esc(t.id)}" aria-label="Status of ${esc(t.id)}">${STATUSES.map((s) => `<option value="${s}"${s === t.status ? " selected" : ""}>${LABEL[s]}</option>`).join("")}</select>`
+      : `<span class="pill ${esc(t.status)}">${esc(LABEL[t.status] || t.status)}</span>`;
+    const upd = t.updatedAt ? ` · updated ${esc(new Date(t.updatedAt).toLocaleString([], { weekday: "short", hour: "2-digit", minute: "2-digit" }))}${t.updatedBy ? " by " + esc(t.updatedBy) : ""}` : "";
+    return `<article class="task" data-s="${esc(t.status)}">
+      <div class="id">${esc(t.id)}</div>
+      <div class="title">${esc(t.title)}</div>
+      ${control}
+      <div class="meta">
+        <span class="chip" title="${esc(ln)}">${esc(t.lane)}</span>
+        <span class="chip pri-${esc(t.priority)}">${t.priority === "M" ? "Must" : t.priority === "S" ? "Should" : "Could"}</span>
+        <span class="mono">${esc((t.reqs || []).join(" "))}</span>
+        <span class="mono">${esc(t.est_h)} h</span>
+        ${waits.length ? `<span class="chip wait">waits on ${esc(waits.join(", "))}</span>` : ""}
+        <span>${upd}</span>
+      </div>
+      <div class="done-when"><strong>Done when:</strong> ${esc(t.done_when)}</div>
+      ${t.note ? `<div class="note">${esc(t.note)}</div>` : ""}
+    </article>`;
+  }
+
+  function filtered() {
+    const lane = $("f-lane").value, s = $("f-status").value, q = $("f-q").value.trim().toLowerCase();
+    return tasks().filter((t) => (lane === "all" || t.lane === lane)
+      && (s === "all" || (s === "open" ? t.status !== "done" : t.status === s))
+      && (!q || `${t.id} ${t.title} ${(t.reqs || []).join(" ")} ${t.lane}`.toLowerCase().includes(q)));
+  }
+
+  function renderTasks() {
+    if (!st.live && !st.tasks.size) return;
+    const list = filtered();
+    if (!st.tasks.size) { $("tasks").innerHTML = '<div class="empty">No tasks yet. The spec session seeds them from specs/first-release/tasks.json.</div>'; return; }
+    if (!list.length) { $("tasks").innerHTML = '<div class="empty">No task matches these filters.</div>'; return; }
+    let groups;
+    if (st.group === "sprint") {
+      groups = sprints().map((s) => ({ key: s.id, title: `${s.id} · ${s.name}`, sub: `${s.window} EAT · Gate: ${s.gate}`, items: list.filter((t) => t.sprint === s.id) }));
+    } else {
+      groups = Object.entries(lanes()).map(([k, v]) => ({ key: k, title: k, sub: v, items: list.filter((t) => t.lane === k) }));
+    }
+    $("tasks").innerHTML = groups.filter((g) => g.items.length).map((g) =>
+      `<section class="group"><h2>${esc(g.title)} <small>${esc(g.sub)}</small></h2>${g.items.map(taskHtml).join("")}</section>`).join("");
+  }
+
+  function reqState(r) {
+    if (r.acceptance === "verified") return ["verified", "Verified"];
+    if (r.acceptance === "failed") return ["failed", "Failed"];
+    const ts = tasks().filter((t) => (t.reqs || []).some((x) => x === r.id || x.startsWith(r.id + ".")));
+    if (!ts.length) return ["none", "No task"];
+    if (ts.every((t) => t.status === "done")) return ["built", "Built"];
+    if (ts.some((t) => t.status !== "todo")) return ["progress", "In progress"];
+    return ["none", "Not started"];
+  }
+
+  function renderSide() {
+    const items = (st.reqs && Array.isArray(st.reqs.items)) ? st.reqs.items : [];
+    $("reqs").innerHTML = items.length ? items.map((r) => {
+      const [c, l] = reqState(r);
+      return `<div class="req" title="${esc(r.title)}"><span class="rid">${esc(r.id)}</span><span class="rt">${esc(r.title)}${r.priority === "M" ? "" : ` (${esc(r.priority)})`}</span><span class="rs ${c}">${esc(l)}</span></div>`;
+    }).join("") : '<div class="empty">Requirements appear once the board is seeded.</div>';
+    const qs = (st.board && Array.isArray(st.board.questions)) ? st.board.questions : [];
+    const jt = tasks().filter((t) => t.lane === "james" && t.status !== "done");
+    const qItems = [...qs.map((q) => esc(q)), ...jt.map((t) => `<span class="mono">${esc(t.id)}</span> ${esc(t.title)}`)];
+    $("questions").innerHTML = qItems.length ? qItems.map((q) => `<li>${q}</li>`).join("") : "<li>Nothing waiting on James.</li>";
+    $("gates").innerHTML = sprints().length ? sprints().map((s) => `<li><strong>${esc(s.id)}</strong> ${esc(s.gate)}</li>`).join("") : "<li>Gates appear once the board is seeded.</li>";
+    if (st.board?.specCommit) $("foot").innerHTML = `Spec: <span class="mono">specs/first-release/</span> in the platform repo, commit <span class="mono">${esc(st.board.specCommit)}</span> (requirements.md, design.md, tasks.md).`;
+  }
+
+  function fillLanes() {
+    const sel = $("f-lane"); const cur = sel.value;
+    sel.innerHTML = '<option value="all">All lanes</option>' + Object.entries(lanes()).map(([k, v]) => `<option value="${esc(k)}">${esc(k)}</option>`).join("");
+    sel.value = [...sel.options].some((o) => o.value === cur) ? cur : "all";
+  }
+
+  function renderAll() { renderStats(); renderRail(); fillLanes(); renderTasks(); renderSide(); }
+
+  function setGroup(g) {
+    st.group = g; $("g-sprint").setAttribute("aria-pressed", String(g === "sprint")); $("g-lane").setAttribute("aria-pressed", String(g === "lane"));
+    try { localStorage.setItem("b1-group", g); } catch (e) {}
+    renderTasks();
+  }
+  $("g-sprint").addEventListener("click", () => setGroup("sprint"));
+  $("g-lane").addEventListener("click", () => setGroup("lane"));
+  ["f-lane", "f-status"].forEach((id) => $(id).addEventListener("change", renderTasks));
+  $("f-q").addEventListener("input", renderTasks);
+  try { const g = localStorage.getItem("b1-group"); if (g === "lane") setGroup("lane"); } catch (e) {}
+
+  function banner(msg) { const b = $("banner"); b.textContent = msg || ""; b.hidden = !msg; }
+
+  (async () => {
+    const db = await (window.claude?.use?.("db") ?? Promise.resolve(null));
+    if (!db) {
+      $("tasks").innerHTML = '<div class="empty">Live task status needs this board opened in claude.ai while signed in.</div>';
+      banner("The board's data isn't available in this view.");
+      return;
+    }
+    const user = await (window.claude?.use?.("user") ?? Promise.resolve(null));
+    try { st.canEdit = !!(user && await user.canEdit()); } catch (e) { st.canEdit = false; }
+
+    let timer = setTimeout(() => banner("The board's data can't be reached yet. Status shown may be out of date."), 10000);
+    const settle = (snap) => { if (!snap.metadata.fromCache) { clearTimeout(timer); banner(""); } };
+    const fail = (e) => { clearTimeout(timer); banner(`Live updates stopped (${e?.code || "error"}). Reopen the board to reconnect.`); };
+
+    db.collection("tasks").onSnapshot((snap) => {
+      st.live = true; st.tasks = new Map(snap.docs.map((d) => [d.id, { id: d.id, ...d.data() }]));
+      settle(snap); renderAll();
+    }, fail);
+    db.doc("meta/board").onSnapshot((snap) => { st.board = snap.exists ? snap.data() : null; renderAll(); }, fail);
+    db.doc("meta/reqs").onSnapshot((snap) => { st.reqs = snap.exists ? snap.data() : null; renderSide(); }, fail);
+
+    $("tasks").addEventListener("change", async (ev) => {
+      const sel = ev.target.closest("select.status"); if (!sel) return;
+      const id = sel.dataset.id; sel.disabled = true;
+      try {
+        await db.doc("tasks/" + id).update({ status: sel.value, updatedAt: new Date().toISOString(), updatedBy: "James (board)" });
+      } catch (e) {
+        banner(`Couldn't save ${id}: ${e?.message || e?.code || "write refused"}.`);
+        sel.value = st.tasks.get(id)?.status || "todo";
+      } finally { sel.disabled = false; }
+    });
+  })();
+})();
+</script>

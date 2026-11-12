@@ -1,0 +1,34 @@
+{% extends "classy/layout.html" %}
+{% block main %}
+<section class="cp-section first" id="zones">
+  <h1 class="cp-h1">Delivery &amp; returns</h1>
+  <table class="cp-table">
+    <thead><tr><th scope="col">Where</th><th scope="col">How fast</th><th scope="col">Fee</th></tr></thead>
+    <tbody>{% for z in zones %}<tr id="zone-{{ z.zone }}"><td><b>{{ z.label }}</b><span class="small">{{ z.areas | join(", ") }}</span></td><td>{{ z.note }}</td><td>{{ z.fee }}</td></tr>{% endfor %}</tbody>
+  </table>
+  <p class="note" id="same-day"><b>It's {{ now }} in Nairobi.</b> {{ same_day }}</p>
+  <p class="small">A town that isn't listed? Ask {{ shell.site.owner }} before you order; the desks won't promise a town the site doesn't name.</p>
+</section>
+<section class="cp-section cp-prose" id="returns">
+  <h2>Returns</h2>
+  <p>Unopened bottles can be returned within {{ returns_days }} days. {{ opened }}</p>
+  <p>{{ how }}</p>
+</section>
+<section class="cp-section cp-prose" id="samples">
+  <h2>Free samples</h2>
+  <p>{{ samples }}</p>
+</section>
+<section class="cp-section cp-prose" id="paying">
+  <h2>Paying</h2>
+  <p>{% if prices %}Prices are from {{ prices }}. PayPal charges in US dollars at {{ rate }}, fixed on your order. {% endif %}On this sample site, payments run in PayPal's sandbox; no real money moves.</p>
+</section>
+<section class="cp-section cp-prose" id="contact">
+  <h2>Talk to {{ shell.site.owner }}</h2>
+  <p>{{ shell.site.owner }} runs the shop (a sample person). She usually replies on {{ shell.site.owner_channel }} within {{ shell.site.owner_wait | replace("~", "") }}{% if hours %} ({{ hours }}){% endif %}. The sample shop is in {{ address }}.</p>
+  <p><a class="act primary" href="/delivery#contact" data-person>Send {{ shell.site.owner }} a question</a></p>
+</section>
+<section class="cp-section cp-prose" id="desks">
+  <h2>What the desks can and can't do</h2>
+  <p>The desks on this site are AI. They answer from this site's pages and catalogue, and build shortlists, comparisons and gift plans by rules. They pass anything else to {{ shell.site.owner }}. They never take payment details, change your account or promise anything the site doesn't say.</p>
+</section>
+{% endblock %}

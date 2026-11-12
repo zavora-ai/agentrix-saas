@@ -1,0 +1,83 @@
+#cloud-config
+# Agentrix · fixture VM (design §2): the deliberately infected WordPress with the
+# gauntlet's ten planted attacks, on Zavora's fixture domain. Rendered by deploy/provision.sh.
+#
+# The WordPress itself (fixtures/wordpress-infected, Docker Compose) is installed by the deploy
+# script. This file prepares Docker, Caddy and the firewall. Nothing on this host is trusted:
+# it can reach nothing on the VPC, and only control can SSH in.
+
+hostname: agx-fixture
+fqdn: agx-fixture
+preserve_hostname: false
+timezone: Africa/Nairobi
+
+package_update: true
+package_upgrade: true
+packages:
+  - nftables
+  - ca-certificates
+  - curl
+  - gnupg
+  - debian-keyring
+  - debian-archive-keyring
+  - apt-transport-https
+  - unattended-upgrades
+
+ssh_pwauth: false
+users:
+  - default
+  - name: deploy
+    gecos: Agentrix deploy
+    groups: [sudo]
+    shell: /bin/bash
+    sudo: "ALL=(ALL) NOPASSWD:ALL"
+    lock_passwd: true
+
+write_files:
+  - path: /etc/nftables.conf
+    encoding: b64
+    permissions: "0644"
+    content: @@NFT_B64@@
+  - path: /etc/agentrix/Caddyfile
+    encoding: b64
+    permissions: "0644"
+    content: @@CADDY_B64@@
+  # sshd keeps the first value it reads, and Vultr's image ships 50-cloud-init.conf (password
+  # login on), so this file must sort before it. Root login is off; deploys use `deploy`.
+  - path: /etc/ssh/sshd_config.d/00-agentrix.conf
+    permissions: "0644"
+    content: |
+      PasswordAuthentication no
+      KbdInteractiveAuthentication no
+      PermitRootLogin no
+      AllowAgentForwarding no
+      AllowTcpForwarding no
+      X11Forwarding no
+  - path: /etc/apt/apt.conf.d/20auto-upgrades
+    permissions: "0644"
+    content: |
+      APT::Periodic::Update-Package-Lists "1";
+      APT::Periodic::Unattended-Upgrade "1";
+
+runcmd:
+  - [systemctl, enable, --now, nftables]
+  - [nft, -f, /etc/nftables.conf]
+  # Vultr's image enables ufw with only 22 open; a packet must pass both ufw and our table.
+  - [sh, -c, "command -v ufw >/dev/null || exit 0; ufw allow 80/tcp && ufw allow 443/tcp"]
+  - [systemctl, try-reload-or-restart, ssh]
+  # Docker and the Compose plugin.
+  - [sh, -c, "install -m 0755 -d /etc/apt/keyrings && curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc && chmod a+r /etc/apt/keyrings/docker.asc"]
+  - [sh, -c, "echo \"deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu $(. /etc/os-release && echo $VERSION_CODENAME) stable\" > /etc/apt/sources.list.d/docker.list"]
+  # Caddy.
+  - [sh, -c, "curl -1sLf https://dl.cloudsmith.io/public/caddy/stable/gpg.key | gpg --dearmor -o /usr/share/keyrings/caddy-stable-archive-keyring.gpg"]
+  - [sh, -c, "curl -1sLf https://dl.cloudsmith.io/public/caddy/stable/debian.deb.txt -o /etc/apt/sources.list.d/caddy-stable.list"]
+  - [sh, -c, "apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y docker-ce docker-ce-cli containerd.io docker-compose-plugin caddy"]
+  - [systemctl, enable, --now, docker]
+  - [install, -m, "0644", /etc/agentrix/Caddyfile, /etc/caddy/Caddyfile]
+  - [systemctl, enable, caddy]
+  - [systemctl, restart, caddy]
+  - [usermod, -aG, docker, deploy]
+  - [install, -d, -m, "0755", -o, deploy, -g, deploy, /opt/fixture]
+  - [sh, -c, "install -d -m 0700 -o deploy -g deploy /home/deploy/.ssh && install -m 0600 -o deploy -g deploy /root/.ssh/authorized_keys /home/deploy/.ssh/authorized_keys"]
+
+final_message: "agx-fixture ready after $UPTIME s"

@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Control plane · Agentrix</title>
+<meta name="description" content="Concepts for the Agentrix WebAgent Platform control plane: how Zavora, agencies and resellers run customers, infrastructure on Vultr and the business, with operator WebAgents under human authority and Zavora CLI for engineers.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Manrope:wght@600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../styles.css">
+<link rel="stylesheet" href="cp.css">
+<style>
+  .hero { padding: clamp(32px, 6vw, 72px) 0 clamp(16px, 3vw, 28px); }
+  .hero h1 span { color: var(--coral-strong); }
+  .hero .lead { margin-top: var(--s4); }
+  .diagram { margin-top: var(--s5); padding: var(--s3); background: var(--paper); border: 1px solid var(--line); border-radius: var(--r-lg); box-shadow: var(--shadow-1); }
+  .diagram a { display: block; overflow-x: auto; }
+  .diagram img { width: 100%; min-width: 680px; height: auto; }
+  .roster { display: flex; flex-wrap: wrap; gap: var(--s3); margin-top: var(--s5); }
+  .member { display: flex; align-items: center; gap: 10px; background: var(--paper); border: 1px solid var(--line); border-radius: 14px; padding: 8px 14px 8px 8px; }
+  .member b { display: block; font: 700 var(--fs-14)/1.2 var(--font-display); color: var(--indigo-900); }
+  .member span.d { font-size: var(--fs-12); color: var(--muted); }
+  .rules { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--s3); margin-top: var(--s5); }
+  .rule { background: var(--paper); border: 1px solid var(--line); border-radius: var(--r); padding: var(--s4); font-size: var(--fs-14); color: var(--ink-2); }
+  .rule b { display: block; color: var(--indigo-900); font: 700 var(--fs-14)/1.3 var(--font-display); margin-bottom: 4px; }
+  @media (max-width: 960px) { .rules { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 560px) { .rules { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<header class="conceptbar">
+  <a class="logo" href="../index.html"><span class="mark" aria-hidden="true"></span>Agentrix</a>
+  <nav aria-label="Control plane concepts">
+    <a href="index.html" aria-current="page">Control plane</a>
+    <a href="fleet.html">Fleet</a>
+    <a href="portfolio.html">Agency portfolio</a>
+    <a href="rollout.html">Rollout</a>
+    <a href="incident.html">Incident</a>
+    <a href="billing.html">Billing</a>
+    <a href="cli.html">Zavora CLI</a>
+  </nav>
+  <span class="concept-label">Concept · illustrative data</span>
+</header>
+
+<main class="wrap">
+  <section class="hero">
+    <span class="eyebrow">Agentrix WebAgent Platform · the control plane · by Zavora</span>
+    <h1 style="margin-top:14px">Zavora runs on <span>Zavora.</span></h1>
+    <p class="lead">How Zavora, and any agency or reseller, runs all its customers, its infrastructure on Vultr and the business itself. The operator's own work is done by WebAgents, through the same governed path, gateways and sandboxes as a bakery's, under people who decide with passkeys (an authenticator code without one). Engineers and agencies change it with Zavora CLI, and every change rides a release train.</p>
+    <div class="row" style="margin-top:var(--s5)">
+      <a class="btn btn-primary btn-lg" href="fleet.html">Open the fleet overview</a>
+      <a class="btn btn-lg" href="cli.html">See Zavora CLI ship a pack</a>
+    </div>
+  </section>
+
+  <section aria-label="Three scopes">
+    <span class="eyebrow">One shell, three scopes</span>
+    <h2 style="margin-top:10px">The same console, from one site to the whole fleet.</h2>
+    <div class="scopes">
+      <article class="scope-card">
+        <span class="chip">Site scope</span>
+        <h3 style="margin-top:10px">The owner</h3>
+        <p>Today, Decisions, WebAgents, Website, Customers, Trust. Final authority over the site. Every operator action that touches it shows up here.</p>
+        <ul><li>Approves with a passkey, or an authenticator code without one</li><li>Grants and revokes agency roles and support access</li><li>Exports or leaves at any time</li></ul>
+        <a class="btn btn-sm" style="margin-top:12px" href="../console.html">Owner console concept</a>
+      </article>
+      <article class="scope-card pf">
+        <span class="chip" style="background:#fff;color:var(--pf)">Portfolio scope</span>
+        <h3 style="margin-top:10px">The agency or reseller</h3>
+        <p>Clients, held client cards, imports, its own ring for packs and themes, margin, its own brand. It acts only where each owner granted it a role.</p>
+        <ul><li>White-label console, emails and status page</li><li>Never raises autonomy; never blocks an export</li></ul>
+        <a class="btn btn-sm" style="margin-top:12px" href="portfolio.html">Agency portfolio</a>
+      </article>
+      <article class="scope-card op">
+        <span class="chip" style="background:rgba(255,255,255,.14);color:#fff">Operator scope</span>
+        <h3 style="margin-top:10px">Zavora Cloud</h3>
+        <p>Cells on Vultr, rollouts, incidents, customers, money, partners, trust. Platform levers, never an owner's decisions.</p>
+        <ul><li>Operator WebAgents propose and pull reversible levers</li><li>People approve with a passkey or an authenticator code: one approver or two</li></ul>
+        <a class="btn btn-sm" style="margin-top:12px" href="fleet.html">Fleet overview</a>
+      </article>
+    </div>
+  </section>
+
+  <section class="section" aria-label="Architecture">
+    <span class="eyebrow">The picture</span>
+    <h2 style="margin-top:10px">Tenancy, people, change path, operator tenant, cells.</h2>
+    <div class="diagram"><a href="control-plane.svg" aria-label="Open the control plane diagram"><img src="control-plane.svg" alt="The control plane: tenancy from operator to partner to organisation to site; owner, portfolio and operator consoles plus CLI and on-call channels; a change path from Zavora CLI through pull request, sealed CI, review, plan and approval to the Effects Gateway; the global layer of agentrix-control, agentrix-fleet, agentrix-billing and the operator ledger; the operator tenant's WebAgents and gateways; cells on Vultr with sandbox runner pools; and the Vultr account with Inference subscriptions, IAM, sub-accounts and Audit Logs." width="1280" height="1012"></a></div>
+  </section>
+
+  <section aria-label="Concept screens">
+    <span class="eyebrow">Six screens</span>
+    <h2 style="margin-top:10px">Walk the control plane.</h2>
+    <div class="screens">
+      <a class="screen-card" href="fleet.html"><span class="num">01 · OPERATOR FLEET</span><h3>Zavora runs on Zavora</h3><p>Cells on Vultr, runner pools, the Migration Factory, ten operator WebAgents, held decisions, SLOs and the operator ledger.</p><span class="go">Open →</span></a>
+      <a class="screen-card" href="portfolio.html"><span class="num">02 · AGENCY PORTFOLIO</span><h3>Every client, one calm view</h3><p>A white-labelled agency's clients and health, a quote it approves as the client's Approver, a 40-site import, its own ring and margin.</p><span class="go">Open →</span></a>
+      <a class="screen-card" href="rollout.html"><span class="num">03 · ROLLOUT</span><h3>Every change rides a train</h3><p>Ring 0 is Zavora's own sites. Canary versus control, gates, an automatic pause, and a promotion that needs two people.</p><span class="go">Open →</span></a>
+      <a class="screen-card" href="incident.html"><span class="num">04 · INCIDENT</span><h3>The SRE was already on it</h3><p>A 03:12 SEV2. The SRE WebAgent pulls a reversible lever within its grant and holds the real fix for the on-call person's approval.</p><span class="go">Open →</span></a>
+      <a class="screen-card" href="billing.html"><span class="num">05 · BILLING</span><h3>Metered at the source</h3><p>Per-site inference reconciled with Vultr, an invoice run with eTIMS, M-Pesa, Paystack and PayPal via Steward, payouts with two signers.</p><span class="go">Open →</span></a>
+      <a class="screen-card" href="cli.html"><span class="num">06 · ZAVORA CLI</span><h3>Agents propose, pipelines dispose</h3><p>A worker and a bounded planner build a pack with approvals in place. A guard blocks publishing; a person signs; the train and the owner decide.</p><span class="go">Open →</span></a>
+    </div>
+  </section>
+
+  <section class="section" aria-label="Operator WebAgents">
+    <span class="eyebrow">The operator's own team</span>
+    <h2 style="margin-top:10px">Operator WebAgents, under human authority.</h2>
+    <p class="lead" style="margin-top:10px">They live in Zavora's operator tenant: their own kernel, charter, budget, gateways and receipts. They hold no charter role, so they propose, investigate, draft and pull only reversible levers. They never read a site's content.</p>
+    <div class="roster">
+      <div class="member"><span class="avatar op av-op-coord">CW</span><span><b>Operator Chief WebAgent</b><span class="d">ops brief · routes decisions</span></span></div>
+      <div class="member"><span class="avatar op av-sre">Sr</span><span><b>SRE</b><span class="d">SLOs · incidents · drills</span></span></div>
+      <div class="member"><span class="avatar op av-release">Re</span><span><b>Release</b><span class="d">trains · gates · rollback</span></span></div>
+      <div class="member"><span class="avatar op av-capacity">Cp</span><span><b>Capacity</b><span class="d">Vultr · pools · cost</span></span></div>
+      <div class="member"><span class="avatar op av-billing">Bi</span><span><b>Billing</b><span class="d">metering · invoices · payouts</span></span></div>
+      <div class="member"><span class="avatar op av-support">Su</span><span><b>Support</b><span class="d">tickets · support grants</span></span></div>
+      <div class="member"><span class="avatar op av-growth">Gr</span><span><b>Growth</b><span class="d">assessments · previews</span></span></div>
+      <div class="member"><span class="avatar op av-security">Sc</span><span><b>Security &amp; Abuse</b><span class="d">abuse desk · drift</span></span></div>
+      <div class="member"><span class="avatar op av-partner">Ps</span><span><b>Partner Success</b><span class="d">agencies · imports</span></span></div>
+      <div class="member"><span class="avatar op av-compliance">Cm</span><span><b>Compliance</b><span class="d">evidence · access reviews</span></span></div>
+    </div>
+    <div class="rules">
+      <div class="rule"><b>Operators hold levers</b>Versions, capacity, billing state, safety switches. Owners hold their sites.</div>
+      <div class="rule"><b>Infrastructure is an effect</b>A Terraform plan's digest is approved with a passkey, or an authenticator code bound to it; the Effects Gateway applies it once.</div>
+      <div class="rule"><b>Content-free across sites</b>Ids, counts, durations and money. Support access to content needs the owner's signed grant.</div>
+      <div class="rule"><b>Honest numbers</b>Prices and targets here are hypotheses; screens use illustrative data.</div>
+    </div>
+  </section>
+</main>
+
+<footer class="concept-foot"><div class="wrap row"><span>Agentrix WebAgent Platform by Zavora · MIT · Concept · illustrative data. Agencies, clients and people are fictional.</span><span>Design: docs/08-control-plane.md</span></div></footer>
+<script src="cp.js"></script>
+</body>
+</html>

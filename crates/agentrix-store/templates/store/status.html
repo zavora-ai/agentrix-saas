@@ -1,0 +1,30 @@
+{#- agentrix-store · the public status page (GET /status). Each part of the platform now and over
+the last 30 days, from the health checks; nothing about any site or person. -#}
+{% extends "ui/layouts/page.html" %}
+{% import "ui/kit.html" as ui %}
+{% block title %}Status · Agentrix{% endblock %}
+{% block description %}Whether Agentrix's websites, answers, Moves, console and security checks are working now and over the last 30 days.{% endblock %}
+{% block styles %}<link rel="stylesheet" href="/static/store/status.css?v={{ store_v }}">{% endblock %}
+{% block head %}<meta http-equiv="refresh" content="60">{% endblock %}
+{% block main %}
+<header class="page-head">
+  <p class="eyebrow">Status</p>
+  <h1 class="status-headline" data-overall="{{ overall }}">{{ headline }}</h1>
+  <p class="lead">Checked every minute{% if measured_since %}, measured since {{ measured_since }}{% endif %}. This page refreshes on its own. Times are UTC.</p>
+</header>
+{% for part in parts %}
+<section class="card status-part" aria-labelledby="part-{{ loop.index }}">
+  <div class="card-title">
+    <h2 id="part-{{ loop.index }}">{{ part.name }}</h2>
+    {{ ui.status(part.state, part.state_words) }}
+  </div>
+  <p class="covers">{{ part.covers }}</p>
+  <p class="detail">{{ part.detail }}</p>
+  <ol class="uptime" aria-label="{{ part.name }}, the last 30 days">
+    {%- for day in part.days %}<li class="{{ day.class }}" title="{{ day.words }}"><span class="sr-only">{{ day.words }}</span></li>{% endfor -%}
+  </ol>
+  <div class="uptime-axis"><span>30 days ago</span><b>{{ part.uptime_words }}</b><span>Today</span></div>
+</section>
+{% endfor %}
+{{ ui.note("When something affects many sites, a person writes up what happened here and tells the owners affected. Site owners see their own site's checks in the console.") }}
+{% endblock %}

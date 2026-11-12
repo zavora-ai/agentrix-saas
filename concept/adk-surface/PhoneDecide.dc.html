@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Phone: high-risk decision</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap">
+<style>body{margin:0}</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; font-family: Inter, system-ui, sans-serif; color: {{t.text}}; background: {{t.decision}}; display: flex; flex-direction: column">
+  <header style="padding: 20px 20px 8px; display: flex; flex-direction: column; gap: 16px">
+    <a href="PhoneInbox.dc.html" style="display: flex; align-items: center; gap: 4px; font-size: 15px; font-weight: 600; text-decoration: none; color: {{t.accent}}; min-height: 32px"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="{{t.accent}}" stroke-width="1.8" aria-hidden="true"><path d="M9 2L4 7l5 5"></path></svg>Decisions</a>
+    <span style="display: flex; justify-content: space-between; align-items: center">
+      <span style="display: flex; align-items: center; gap: 10px"><span style="flex: 0 0 32px; height: 32px; border-radius: 10px; background: {{t.blueSoft}}; color: {{t.blue}}; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 12px; font-family: 'JetBrains Mono', monospace">{ }</span><span style="font-size: 15px"><span style="font-weight: 600">Code</span> <span style="color: {{t.muted}}">· since 07:32</span></span></span>
+      <span style="display: flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 999px; background: {{t.accentSoft}}; color: {{t.accent}}; font-size: 12px; font-weight: 600"><span style="width: 6px; height: 6px; border-radius: 3px; background: {{t.brand}}"></span>High risk</span>
+    </span>
+    <h1 style="margin: 0; font-size: 34px; line-height: 1.05; font-weight: 800; letter-spacing: -0.035em">Publish a <span style="color: {{t.brand}}">release</span></h1>
+    <p style="margin: 0; font-size: 15px; color: {{t.text2}}">Code wants to run this command. It can't be undone.</p>
+  </header>
+
+  <div style="flex-grow: 1; padding: 12px 20px; display: flex; flex-direction: column; gap: 18px">
+    <div style="border: 1px solid {{t.border}}; border-radius: 16px; overflow: hidden; background: {{t.surface}}">
+      <div style="display: flex; align-items: center; gap: 6px; padding: 10px 14px; background: {{t.raised}}; border-bottom: 1px solid {{t.border}}">
+        <span style="width: 9px; height: 9px; border-radius: 5px; background: #F87171"></span><span style="width: 9px; height: 9px; border-radius: 5px; background: #FBBF24"></span><span style="width: 9px; height: 9px; border-radius: 5px; background: #34D399"></span>
+        <span style="margin-left: 8px; font-size: 12px; color: {{t.muted}}">The exact command</span>
+      </div>
+      <pre style="margin: 0; padding: 14px; font-family: 'JetBrains Mono', monospace; font-size: 13px; line-height: 1.6; white-space: pre-wrap; color: {{t.text}}"><span style="color: {{t.fn}}">cargo</span> publish -p <span style="color: {{t.str}}">[CRATE]</span>
+<span style="color: {{t.muted}}">in</span> [REPO]</pre>
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: 10px; font-size: 14px">
+      <span style="display: flex; align-items: center; gap: 10px; color: {{t.text2}}"><span style="width: 8px; height: 8px; border-radius: 4px; background: {{t.green}}"></span>Tests passed at 23:30</span>
+      <span style="display: flex; align-items: center; gap: 10px; color: {{t.text2}}"><span style="width: 8px; height: 8px; border-radius: 4px; background: {{t.muted}}"></span>Asked at 07:32</span>
+      <span style="display: flex; align-items: center; gap: 10px; color: {{t.accent}}; font-weight: 600"><span style="width: 8px; height: 8px; border-radius: 4px; background: {{t.brand}}; box-shadow: 0 0 0 3px {{t.accentSoft}}"></span>Waiting for you</span>
+    </div>
+
+    <p style="margin: 0; font-size: 14px; line-height: 1.55; color: {{t.muted}}">Publishing always needs you, on a screen. Voice, chat and standing permissions can't say yes to it.</p>
+  </div>
+
+  <div style="padding: 16px 20px 22px; display: flex; flex-direction: column; gap: 10px; border-top: 1px solid {{t.border}}">
+    <button type="button" style="font: inherit; font-size: 16px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 8px; padding: 14px; border-radius: 14px; border: none; background: {{t.accentFill}}; color: {{t.onAccent}}; cursor: pointer; min-height: 52px"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="{{t.onAccent}}" stroke-width="1.7" aria-hidden="true"><rect x="3" y="7" width="10" height="7" rx="1.5"></rect><path d="M5.5 7V5a2.5 2.5 0 015 0v2"></path></svg>Confirm it's you and approve</button>
+    <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px">
+      <button type="button" style="font: inherit; font-size: 15px; padding: 12px; border-radius: 14px; border: 1px solid {{t.line}}; background: transparent; color: {{t.text}}; cursor: pointer; min-height: 48px">Edit</button>
+      <button type="button" style="font: inherit; font-size: 15px; padding: 12px; border-radius: 14px; border: 1px solid {{t.line}}; background: transparent; color: {{t.text}}; cursor: pointer; min-height: 48px">Deny</button>
+    </div>
+    <span style="font-size: 12px; color: {{t.muted}}; text-align: center">If you answer somewhere else first, this screen updates.</span>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"dark":{"editor":"boolean","default":false},"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() {
+    var L = {bg: '#FFFFFF', surface: '#FFFFFF', raised: '#F6F7F9', border: '#E6E8EC', line: '#D3D7DE', text: '#0F172A', text2: '#475569', muted: '#64748B', brand: '#F74C00', accent: '#C03A00', accentFill: '#C03A00', onAccent: '#FFFFFF', accentSoft: '#FFF4EE', decision: '#FFF8F3', green: '#12774B', blue: '#2563EB', blueSoft: '#EAF1FE', fn: '#2563EB', str: '#C03A00'};
+    var D = {bg: '#0A1628', surface: '#15233B', raised: '#1C2B45', border: '#2A3D5C', line: '#3A5075', text: '#F1F5F9', text2: '#D5DEE8', muted: '#A7B4C6', brand: '#F74C00', accent: '#FF9C78', accentFill: '#F74C00', onAccent: '#0A1628', accentSoft: 'rgba(247,76,0,0.14)', decision: '#2A2432', green: '#61E7A5', blue: '#79B2FF', blueSoft: 'rgba(121,178,255,0.12)', fn: '#79B2FF', str: '#FF9C78'};
+    return { t: this.props.dark ? D : L };
+  }
+}
+</script>
+</body>
+</html>

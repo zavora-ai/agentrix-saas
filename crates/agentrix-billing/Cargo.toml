@@ -1,0 +1,29 @@
+[package]
+name = "agentrix-billing"
+description = "Platform billing in USD: the plan catalogue, subscriptions (PayPal Subscriptions through the Effects Gateway), usage rated against included AI budgets, invoices and the invoice run."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+authors.workspace = true
+
+# W3 (control plane) owns this crate (docs/08-control-plane.md §4.2). Money never moves here:
+# collection runs in W6's Effects Gateway, which reports each provider event through
+# `Billing::on_event`.
+
+[dependencies]
+chrono.workspace = true
+hex.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+sha2.workspace = true
+sqlx.workspace = true
+thiserror.workspace = true
+uuid.workspace = true
+
+[dev-dependencies]
+tokio.workspace = true
+
+[lints]
+workspace = true

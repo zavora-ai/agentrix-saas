@@ -1,0 +1,48 @@
+{% extends "tana/layout.html" %}
+{% block main %}
+<div class="n-grid">
+  <div>
+    <header class="front-head">
+      <span class="kicker">Subscribe</span>
+      <h2>Support the valley's paper</h2>
+      <p>Subscribers read all {{ locked }} subscriber stories in full, including the archive. Every other story stays free.</p>
+    </header>
+    {% if flash == "paid" %}<p class="note ok" role="status"><b>You're a subscriber.</b> Subscriber stories now open in full{% if mine and mine.until %} until {{ mine.until }}{% endif %}. The sample payment moved no money.</p>{% endif %}
+    {% if flash == "cancelled" %}<p class="note warn" role="status">The payment was cancelled at PayPal. You weren't charged.</p>{% endif %}
+    {% if error %}<p class="note risk" role="alert">{{ error }}</p>{% endif %}
+
+    <section class="box wide offer" id="offer">
+      <span class="kicker">{{ offer.plan }}</span>
+      <h3>{{ offer.price_words }}</h3>
+      <ul class="keeps">{% for i in offer.includes %}<li>{{ i }}</li>{% endfor %}</ul>
+      <p class="small">{{ offer.renewal }}</p>
+
+      {% if active %}
+      <div class="note ok" id="mine"><b>Your {{ mine.plan if mine else offer.plan }} subscription is active</b>{% if mine %}, since {{ mine.since }}{% if mine.until %}, until {{ mine.until }}{% else %}, with no end date{% endif %}. {{ mine.source }}{% endif %}.</div>
+      {% elif shell.account %}
+      <div class="provider" id="mine">
+        {% if stand_in %}
+        <span class="sample-tag">Sample payment</span>
+        <b>Pay {{ usd }} to {{ shell.site.name }} ({{ price }} at {{ rate }})</b>
+        <p class="small">{{ offer.note }}. No money moves. Tapping Pay gives {{ shell.account.name }} a {{ offer.plan }} subscription for one {{ offer.period }}.</p>
+        {% else %}
+        <b>Pay {{ usd }} to {{ shell.site.name }} ({{ price }} at {{ rate }}) with PayPal (sandbox)</b>
+        <p class="small">{{ offer.note }}. No money moves: PayPal's sandbox takes test payments only. Paying gives {{ shell.account.name }} a {{ offer.plan }} subscription for one {{ offer.period }}.</p>
+        {% endif %}
+        <form action="/subscribe" method="post" style="margin-top:10px"><button class="n-btn" type="submit">Pay {{ usd }} (sample)</button></form>
+      </div>
+      {% else %}
+      <div class="provider" id="mine">
+        <b>Sign in to subscribe</b>
+        <p class="small">A subscription belongs to your account on this site, so it follows you to any device. Then you pay {{ usd }} to {{ shell.site.name }} ({{ price }} at {{ rate }}) with PayPal (sandbox). Already a subscriber? Sign in and subscriber stories open.</p>
+        <div class="row" style="margin-top:10px"><a class="n-btn" href="{{ sign_in }}">Sign in or create an account</a></div>
+      </div>
+      {% endif %}
+    </section>
+  </div>
+  <aside class="rail-n">
+    <div class="box"><span class="kicker">Free for everyone</span><p class="sub">The front page, every free story, the story so far, corrections and the Friday five.</p><p class="box-link"><a href="/digest">Set up the Friday five</a></p></div>
+    <div class="box"><span class="kicker">House rule</span><p class="sub">Desks show subscriber stories to non-subscribers as headline and link only. They never summarise them.</p></div>
+  </aside>
+</div>
+{% endblock %}

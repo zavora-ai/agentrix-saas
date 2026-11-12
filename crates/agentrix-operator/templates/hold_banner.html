@@ -1,0 +1,21 @@
+{#- A platform hold on this site, at the top of its page. -#}
+{%- set a = access -%}
+{%- if a.active_hold %}
+<article class="card tight hold-banner">
+  <div class="card-title"><h4>On platform hold · {{ a.active_hold.mode }}</h4><span class="chip chip-risk">since {{ a.active_hold.placed_at|when }}</span></div>
+  <p class="small">Reason the owner sees: {{ a.active_hold.reason }}</p>
+  {%- if not a.holds_enforced %}<p class="gapnote">Recorded, not enforced on this build: the edge still serves the site normally.</p>{% endif %}
+  {%- if a.can_hold %}
+  <div data-action-host>
+    <form class="access-form" data-action="lift">
+      <input type="hidden" name="hold_id" value="{{ a.active_hold.hold_id }}">
+      <label for="lift-reason">Why it's safe to lift</label>
+      <input id="lift-reason" type="text" name="reason" required maxlength="500">
+      <div class="row"><button class="btn btn-sm" type="submit">Lift the hold</button></div>
+    </form>
+    <div class="action-sheet decision"></div>
+  </div>
+  {%- endif %}
+</article>
+{%- endif %}
+

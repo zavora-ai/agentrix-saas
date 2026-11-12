@@ -1,0 +1,31 @@
+{#- The decision contract for an operator action (ADR-014): exactly what happens on approval.
+    `e` is access::Effect. Returned as a fragment to the action island. -#}
+{%- set a = e.action -%}
+<div class="effect"><h4>If you approve, exactly this happens</h4><ul>
+{%- if a.action == "break-glass" %}
+<li>Break-glass on <b>{{ e.domain }}</b> waits for a second person: someone else who holds {{ e.second_role }}.</li>
+<li>When they sign, the two of you can read its pages, releases, jobs and receipts for {{ e.hours|plural("hour", "hours") }}. Read only: nothing on the site can change.</li>
+<li>The owner gets a receipt at that moment, with your reason: “{{ a.reason }}”.</li>
+<li>Both approvals go in the operator ledger. The request lapses if nobody signs within 30 minutes.</li>
+{%- elif a.action == "break-glass-second" %}
+<li>Break-glass on <b>{{ e.domain }}</b> opens now, until about {{ e.ends_words }}. {{ e.first_name }} ({{ e.first_role }}) and you can read its pages, releases, jobs and receipts. Read only.</li>
+<li>The owner gets a receipt now, with the reason.</li>
+<li>Either of you can close it sooner; it closes itself after {{ e.hours|plural("hour", "hours") }}.</li>
+{%- elif a.action == "hold" %}
+{%- if e.holds_enforced %}
+<li><b>{{ e.domain }}</b> goes on platform hold now. {% if a.mode == "notice" %}Visitors see a neutral “This site isn't available right now” page.{% else %}Visitors can still read it; Ask, forms and the agent door pause.{% endif %}</li>
+{%- else %}
+<li>A platform hold on <b>{{ e.domain }}</b> is recorded now. The edge doesn't enforce holds on this build, so visitors still see the site as usual{% if a.mode == "notice" %}, not a notice page{% else %}, with Ask and forms working{% endif %}.</li>
+{%- endif %}
+<li>The owner gets a receipt with your reason: “{{ a.reason }}”{% if not e.holds_enforced %}, and it says Agentrix only records holds for now{% endif %}. The owner can't lift it; an operator lifts it.</li>
+{%- elif a.action == "invoice-run" %}
+<li><b>{{ e.run.drafts|length }} invoice{{ "" if e.run.drafts|length == 1 else "s" }}</b> for {{ e.run.period }} are issued now, {{ (e.run.total_cents * 10000)|usd }} in all, numbered INV-{{ e.run.period }}-0001 onward.</li>
+<li>Each is the plan's price and nothing else: AI use above what the plan includes isn't billed yet.</li>
+<li>PayPal collects each one on its subscription's schedule, and its payments mark them paid here.</li>
+<li>An invoice is never deleted. A mistake needs a credit note, which this console can't issue yet.</li>
+{%- elif a.action == "lift" %}
+<li>The platform hold on <b>{{ e.domain }}</b> is lifted now{% if e.holds_enforced %}, and visitors see the site as before{% else %}. Nothing changes for visitors: holds aren't enforced on this build{% endif %}.</li>
+<li>The owner gets a receipt saying so.</li>
+{%- endif %}
+</ul></div>
+<div class="riskline"><span>Approved by:</span><span class="chip">{{ e.operator }}</span><span class="chip">recorded in the operator ledger</span></div>

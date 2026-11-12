@@ -1,0 +1,100 @@
+{% extends "layout.html" %}
+{#- X3 One incident (concept/control-plane/incident.html): severity, what we know, the timeline,
+    drafts for people to send, and the authority each actor has. -#}
+{% block title %}{{ inc.incident_id }}{% endblock %}
+{% block field %}
+<div class="field-head">
+  <div><div class="crumbs"><a href="/incidents">Incidents</a> /</div><h2>{{ inc.incident_id }}: {{ inc.title }}</h2><div class="sub">Opened {{ inc.opened_at|when }} {{ shell.zone }} · commander {{ commander }} · cell {{ inc.cell }}{% if domain %} · <a href="/sites/{{ inc.site_id }}">{{ domain }}</a>{% endif %}</div></div>
+  <div class="row"><span class="sev {{ inc.severity }}">{{ sev }}</span><span class="chip{% if inc.state == 'open' %} chip-risk{% elif inc.state == 'mitigated' %} chip-wait{% else %} chip-ok{% endif %}">{{ {"open": "Open", "mitigated": "Mitigated", "resolved": "Resolved"}[inc.state] }}</span></div>
+</div>
+
+<div class="cp-grid cols-2">
+  <div class="cp-grid">
+    <article class="card tight">
+      <div class="card-title"><h4>What we know</h4><span class="small muted">content-free: ids, counts, times</span></div>
+      {%- if inc.summary %}<p class="small">{{ inc.summary }}</p>{% endif %}
+      <ul class="evidence" style="margin-top:8px">
+        {%- for e in events if e.kind == "evidence" %}
+        <li><span>{{ e.words }} <span class="small muted">· {{ e.actor_name }}, {{ e.at|clock }} {{ shell.zone }}</span></span></li>
+        {%- else %}
+        <li><span class="muted">No evidence added yet. Add what you checked to the timeline as evidence.</span></li>
+        {%- endfor %}
+      </ul>
+    </article>
+    <article class="card tight">
+      <div class="card-title"><h4>Model Gateway around the incident</h4><span class="small muted">the status page's check, each minute</span></div>
+      {%- if gateway_hours %}
+      <ul class="rows">
+        {%- for h in gateway_hours %}
+        {%- set all = h.ok + h.slow + h.down %}
+        <li><span class="ledger-id">{{ h.at|clock }}</span><span><div class="meter{% if h.down %} coral{% elif not h.slow %} ok{% endif %}"><span style="width:{{ (h.ok + h.slow)|pct(all) }}%"></span></div></span><span class="small muted">{% if h.down or h.slow %}{{ h.down }} down · {{ h.slow }} slow of {{ all }} min{% else %}answering all {{ all }} min{% endif %}</span></li>
+        {%- endfor %}
+      </ul>
+      <p class="gapnote">Slow means its health check took over 1.5 s. How long each Ask took isn't recorded: the gateway meters tokens and cost per call, not time.</p>
+      {%- elif gateway_hours is none %}
+      <div class="empty">This database doesn't record the status page's health checks, and the gateway meters cost, not time, so there's nothing to chart. Watch the site's Ask from outside and add what you see as evidence.</div>
+      {%- else %}
+      <div class="empty">No health checks ran around this incident, and the gateway meters cost, not time, so there's nothing to chart. Watch the site's Ask from outside and add what you see as evidence.</div>
+      {%- endif %}
+    </article>
+    <article class="card tight">
+      <div class="card-title"><h4>Who may do what here</h4><span class="small muted">set by each one's grant</span></div>
+      <div class="authority">
+        <div class="can"><b>The SRE WebAgent alone, within its grant (once it runs)</b><ul><li>Cap or pause background work for up to 4 h</li><li>Move a purpose to its fallback model</li><li>Halt a train; roll back by pin when the plan allows</li></ul></div>
+        <div class="never"><b>Needs a person</b><ul><li>A platform hold on a site; edge read-only for a cell</li><li>Restore data, break-glass, anything with money</li></ul></div>
+      </div>
+    </article>
+  </div>
+
+  <div class="cp-grid">
+    <article class="card tight" id="timeline">
+      <div class="card-title"><h4>Timeline</h4><span class="small muted">{{ events|length }} entr{{ "y" if events|length == 1 else "ies" }}</span></div>
+      <ul class="timeline">
+        {%- for e in events %}
+        <li><span class="t">{{ e.at|clock }} {{ shell.zone }}</span><span class="ev {{ 'ok' if e.kind == 'status' and 'resolved' in e.words else ('risk' if e.kind == 'status' and 'declared' in e.words else ('wait' if e.kind == 'comms' else 'note')) }}">{% if e.kind == "comms" %}<b>Draft to send</b>: {% elif e.kind == "evidence" %}<b>Evidence</b>: {% endif %}{{ e.words }} <span class="small muted">· {{ e.actor_name }}</span></span></li>
+        {%- endfor %}
+      </ul>
+      {%- if can_work and inc.state != "resolved" %}
+      <form class="access-form" method="post" action="/incidents/{{ inc.incident_id }}/events">
+        <div class="row"><select name="kind" aria-label="Kind"><option value="note" selected>Note</option><option value="evidence">Evidence</option><option value="comms">Draft for people to send</option></select></div>
+        <textarea name="words" required maxlength="2000" aria-label="What happened">{{ kept|field("note") }}</textarea>
+        <div class="row"><button class="btn btn-sm" type="submit">Add to the timeline</button></div>
+      </form>
+      {%- endif %}
+    </article>
+
+    <article class="card tight">
+      <div class="card-title"><h4>Drafts for people to send</h4><span class="small muted">Nothing here is sent. Copy a draft and send it yourself; owners aren't told automatically yet.</span></div>
+      {%- for e in events if e.kind == "comms" %}
+      <div class="draft"><b>{{ e.actor_name }} · {{ e.at|clock }} {{ shell.zone }}</b>{{ e.words }}</div>
+      {%- else %}
+      <div class="empty">No drafts yet. There's no status page to publish to yet, so drafts are for the people who send them by hand.</div>
+      {%- endfor %}
+    </article>
+
+    {%- if can_work %}
+    <article class="card tight">
+      <div class="card-title"><h4>Status</h4><span class="small muted">mitigated: the harm stopped; resolved: the cause is fixed</span></div>
+      <div class="row">
+        {%- if inc.state == "open" %}<form method="post" action="/incidents/{{ inc.incident_id }}/status"><input type="hidden" name="state" value="mitigated"><button class="btn btn-sm" type="submit">Mark mitigated</button></form>{% endif %}
+        {%- if inc.state != "resolved" %}<form method="post" action="/incidents/{{ inc.incident_id }}/status"><input type="hidden" name="state" value="resolved"><button class="btn btn-sm btn-primary" type="submit">Mark resolved</button></form>{% endif %}
+        {%- if inc.state == "resolved" %}<form method="post" action="/incidents/{{ inc.incident_id }}/status"><input type="hidden" name="state" value="open"><button class="btn btn-sm btn-ghost" type="submit">Open it again</button></form>{% endif %}
+      </div>
+    </article>
+    {%- endif %}
+
+    {%- if inc.state == "resolved" %}
+    <article class="card tight" id="postmortem">
+      <div class="card-title"><h4>Postmortem</h4><span class="small muted">blameless; people own the conclusions</span></div>
+      {%- if inc.postmortem %}<div class="draft">{{ inc.postmortem }}</div>{% endif %}
+      {%- if can_work %}
+      <form class="access-form" method="post" action="/incidents/{{ inc.incident_id }}/postmortem">
+        <textarea name="words" required maxlength="20000" aria-label="Postmortem">{{ kept|field("postmortem") or inc.postmortem or "" }}</textarea>
+        <div class="row"><button class="btn btn-sm" type="submit">Save the postmortem</button></div>
+      </form>
+      {%- endif %}
+    </article>
+    {%- endif %}
+  </div>
+</div>
+{% endblock %}

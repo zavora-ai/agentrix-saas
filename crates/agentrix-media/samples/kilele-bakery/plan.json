@@ -1,0 +1,98 @@
+{
+  "site": "kilele-bakery-sample",
+  "sample": true,
+  "look": "Warm cream, honey and toasted brown tones, soft morning light, a small neighbourhood bakery in Nairobi, honest and unfussy",
+  "images": [
+    {
+      "slot": "hero",
+      "kind": "hero",
+      "seed": 1131,
+      "brief": "Early morning inside a small bakery: plain round sourdough loaves with smooth flour-dusted tops and plain butter croissants on wooden racks by a window, golden sunrise light, a little flour on a wooden counter",
+      "context": "Home page hero for Kilele Bakery, a sample bakery site: Baked at dawn in Westlands"
+    },
+    {
+      "slot": "section:cakes",
+      "kind": "section",
+      "seed": 1102,
+      "brief": "A two-tier celebration cake with cream frosting and fresh berries on a cake stand, on a wooden table in a bakery",
+      "context": "Cakes section of Kilele Bakery, a sample bakery site: celebration cakes to order"
+    },
+    {
+      "slot": "section:visit",
+      "kind": "section",
+      "seed": 1103,
+      "brief": "The front of a small bakery shop on a leafy street at morning, an open wooden door, a chalkboard stand without writing, potted plants",
+      "context": "Visit page of Kilele Bakery, a sample bakery site: the shop on Woodvale Grove"
+    },
+    {
+      "slot": "product:sourdough",
+      "kind": "product",
+      "seed": 1111,
+      "brief": "A round country sourdough loaf with a deep golden, blistered crust and an open scored ear",
+      "context": "Product picture for Country sourdough, KSh 450: our everyday loaf, baked at dawn"
+    },
+    {
+      "slot": "product:rye",
+      "kind": "product",
+      "seed": 1112,
+      "brief": "A dark, dense rye loaf with caraway seeds on the crust, one slice cut to show a plain dark crumb with no fruit",
+      "context": "Product picture for Rye and caraway, KSh 500"
+    },
+    {
+      "slot": "product:croissant",
+      "kind": "product",
+      "seed": 1133,
+      "brief": "Two plain butter croissants with flaky, shiny golden layers, no seeds or toppings",
+      "context": "Product picture for Butter croissant, KSh 180"
+    },
+    {
+      "slot": "product:cardamom-bun",
+      "kind": "product",
+      "seed": 1114,
+      "brief": "A soft knotted cardamom bun with a golden glaze and a sprinkle of sugar, no filling",
+      "context": "Product picture for Cardamom bun, KSh 150"
+    },
+    {
+      "slot": "product:mandazi",
+      "kind": "product",
+      "seed": 1145,
+      "brief": "A woven plate of puffy golden-brown mandazi, plain East African fried doughnuts cut in triangles, one torn open to show a soft fluffy white inside",
+      "context": "Product picture for Mandazi, six, KSh 200"
+    },
+    {
+      "slot": "product:banana-bread",
+      "kind": "product",
+      "seed": 1146,
+      "brief": "A thick slice of plain golden banana bread with a soft yellow crumb, standing beside the loaf",
+      "context": "Product picture for Banana bread slice, KSh 220"
+    },
+    {
+      "slot": "product:cinnamon-roll",
+      "kind": "product",
+      "seed": 1117,
+      "brief": "A plain cinnamon roll with a dark brown sugar and cinnamon swirl and a glossy top, nothing else on it",
+      "context": "Product picture for Cinnamon roll, KSh 220"
+    },
+    {
+      "slot": "product:red-velvet",
+      "kind": "product",
+      "seed": 1118,
+      "brief": "A slice of red velvet cake with white cream cheese frosting between the layers, on a small plate",
+      "context": "Product picture for Red velvet slice, KSh 350"
+    },
+    {
+      "slot": "product:weekend-bake-box",
+      "kind": "product",
+      "seed": 1119,
+      "brief": "An open brown cardboard bakery box holding a sourdough loaf, four cinnamon buns and a banana loaf",
+      "context": "Product picture for Weekend bake box, KSh 1,350"
+    },
+    {
+      "slot": "product:fruit-cake",
+      "kind": "product",
+      "seed": 1120,
+      "brief": "A rich dark Christmas fruit cake with a glossy top and a slice cut to show dried fruit and nuts",
+      "context": "Product picture for Christmas fruit cake, 1 kg, KSh 2,800"
+    }
+  ]
+}

@@ -1,0 +1,37 @@
+{% extends "layout.html" %}
+{#- X18 Trust: the operator ledger, verified on every view (08 §4.6), and who may do what
+    (08 §2.4). -#}
+{% block title %}Trust{% endblock %}
+{% block field %}
+<div class="field-head">
+  <div><h2>Trust</h2><div class="sub">Each action an operator takes in this console is written here, hash-chained. The chain is checked each time this page loads.</div></div>
+  <div class="row">{% if verified.ok %}<span class="chip chip-ok"><span class="dot"></span>Chain intact · {{ verified.entries|plural("entry", "entries") }}</span>{% else %}<span class="chip chip-risk">Chain broken at entry {{ verified.broken[0] }}</span>{% endif %}</div>
+</div>
+<div class="cp-grid">
+  {%- if not verified.ok %}
+  <div class="empty" style="border-color:var(--risk);background:var(--risk-bg)"><b>Entry {{ verified.broken[0] }}: {{ verified.broken[1] }}.</b> Someone changed the ledger outside the platform. Treat it as a security incident: keep the database as it is and call op.security.</div>
+  {%- endif %}
+  <article class="card tight" id="ledger">
+    <div class="card-title"><h4>Operator ledger</h4><span class="small muted">newest first · head <span class="mono">{{ verified.head|digest }}</span></span></div>
+    {%- if entries %}
+    <div class="tbl-wrap"><table class="tbl">
+      <thead><tr><th>When</th><th>Who</th><th>What</th><th>Target</th><th>Entry</th></tr></thead>
+      <tbody>
+        {%- for e in entries %}
+        <tr><td>{{ e.at|when }}</td><td><b>{{ e.actor_name }}</b><div class="small muted">{{ e.verb }}</div></td><td>{{ e.summary }}</td><td class="mono-cell">{{ e.target }}</td><td class="mono-cell" title="{{ e.hash }}">{{ e.entry_id }}</td></tr>
+        {%- endfor %}
+      </tbody>
+    </table></div>
+    {%- else %}
+    <div class="empty">Nothing recorded yet. The first sign-in writes the first entry.</div>
+    {%- endif %}
+  </article>
+  <article class="card tight">
+    <div class="card-title"><h4>Who may do what</h4><span class="small muted">the same for every operator</span></div>
+    <div class="authority">
+      <div class="can"><b>Operators can</b><ul><li>Place a platform hold on a site, with the reason shown to its owner</li><li>Ask an owner for support access, scoped and time-boxed</li><li>Open break-glass on one site with two people, the owner told at once</li><li>Ship platform versions by deploy; release trains aren't built yet</li></ul></div>
+      <div class="never"><b>Operators never</b><ul><li>Approve an owner's card or raise a WebAgent's autonomy</li><li>Read conversations, leads or drafts without a grant</li><li>Lift an owner's freeze</li></ul></div>
+    </div>
+  </article>
+</div>
+{% endblock %}

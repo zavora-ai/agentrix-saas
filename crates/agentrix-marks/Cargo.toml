@@ -1,0 +1,29 @@
+[package]
+name = "agentrix-marks"
+description = "The WebAgent living mark (ADR-031): MarkSpec, the deterministic generator for static SVG, its JavaScript twin for live preview, and the state grammar."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+authors.workspace = true
+
+[features]
+# `serve`: an axum router for /_agentrix/marks.js and /_agentrix/marks.css. Off by default so
+# crates that only render (the UI kit, release builds) don't pull in axum.
+serve = ["dep:axum", "dep:http"]
+
+[dependencies]
+serde.workspace = true
+serde_json.workspace = true
+thiserror.workspace = true
+axum = { workspace = true, optional = true }
+http = { workspace = true, optional = true }
+
+[lints]
+workspace = true
+
+[dev-dependencies]
+sha2.workspace = true
+tokio.workspace = true
+tower.workspace = true

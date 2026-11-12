@@ -1,0 +1,146 @@
+{% extends "layout.html" %}
+{#- X1 Fleet (concept/control-plane/fleet.html) on the records the first release writes. Numbers with no
+    source yet say so instead of showing a figure. -#}
+{% block title %}Fleet{% endblock %}
+{% block field %}
+{%- set f = fleet -%}
+<div class="field-head">
+  <div><h2>Fleet</h2><div class="sub">{{ shell.now_words }} {{ shell.zone }} · cell {{ cell.id }}{% if gateway.reachable %} · models on {{ gateway.provider }}{% endif %}</div></div>
+  <div class="row">
+    {%- if f.sites_live %}<span class="chip chip-ok"><span class="dot"></span>{{ f.sites_live }} site{{ "" if f.sites_live == 1 else "s" }} serving signed releases</span>{% else %}<span class="chip">No site live yet</span>{% endif %}
+    {%- if f.approved_without_receipt %}<span class="chip chip-risk">{{ f.approved_without_receipt }} approval{{ "" if f.approved_without_receipt == 1 else "s" }} without a receipt</span>{% endif %}
+    {%- if f.rooms.failed_24h %}<span class="chip chip-wait">{{ f.rooms.failed_24h }} room job{{ "" if f.rooms.failed_24h == 1 else "s" }} failed in 24 h</span>{% endif %}
+    {%- if not shell.ledger_ok %}<span class="chip chip-risk">Operator ledger broken</span>{% endif %}
+  </div>
+</div>
+
+<div class="cp-grid">
+  <article class="card tight opbrief">
+    <div class="spread"><span class="row" style="gap:8px"><span class="avatar op sm av-op-coord">CW</span><b class="small" style="color:var(--indigo-900)">Ops brief · from the records at {{ shell.now_words[-5:] }}</b></span><span class="small muted">written from counts, not by a model</span></div>
+    <p><b>Good {{ "morning" if hour < 12 else ("afternoon" if hour < 18 else "evening") }}, {{ shell.first_name }}.</b>
+    {% if f.sites_live %}<b>{{ f.sites_live }} site{{ "" if f.sites_live == 1 else "s" }}</b> {{ "serves" if f.sites_live == 1 else "serve" }} signed releases{% if f.sites_live_samples %}, {{ f.sites_live_samples }} of them sample{{ "" if f.sites_live_samples == 1 else "s" }}{% endif %}{% if f.sites_live_week %}; {{ f.sites_live_week }} went live this week{% endif %}.{% else %}No site is live yet.{% endif %}
+    {% if f.moves_in_flight %}<b>{{ f.moves_in_flight }} Move{{ "" if f.moves_in_flight == 1 else "s" }}</b> {{ "is" if f.moves_in_flight == 1 else "are" }} in flight{% if f.moves_waiting_owner %}, and {{ f.moves_waiting_owner }} {{ "waits" if f.moves_waiting_owner == 1 else "wait" }} for the owner's go-live card{% endif %}.{% else %}No Move is in flight.{% endif %}
+    Models cost <b>{{ f.spend.month_micro_usd|usd }}</b> this month{% if f.calls_week.total %}, {{ f.calls_week.total|num }} call{{ "" if f.calls_week.total == 1 else "s" }} in the last 7 days{% endif %}.
+    {% if f.gauntlet.sites_run %}{{ f.gauntlet.sites_perfect }} of {{ f.gauntlet.sites_run }} live site{{ "" if f.gauntlet.sites_run == 1 else "s" }} held every attack in the last gauntlet run.{% endif %}
+    {% if f.owner_decisions_waiting %}Owners have {{ f.owner_decisions_waiting }} decision{{ "" if f.owner_decisions_waiting == 1 else "s" }} waiting; only they decide those.{% endif %}</p>
+    <div class="row" style="margin-top:10px"><a class="btn btn-primary btn-sm" href="/customers">See every site</a><a class="btn btn-sm" href="/trust#ledger">Operator ledger</a><a class="btn btn-ghost btn-sm" href="#routes">Model routes</a></div>
+  </article>
+
+  <div class="kpis five">
+    <div class="kpi"><div class="label">Sites live</div><div class="value">{{ f.sites_live|num }}</div><div class="foot">{% if f.sites_live_week %}+{{ f.sites_live_week }} this week{% else %}none new this week{% endif %}{% if f.sites_owned %} · {{ f.sites_owned|num }} claimed{% endif %}</div></div>
+    <div class="kpi"><div class="label">Moves in flight</div><div class="value">{{ f.moves_in_flight|num }}</div><div class="foot">{% if f.moves_waiting_owner %}{{ f.moves_waiting_owner }} waiting for the owner{% elif f.moves_live %}{{ f.moves_live|num }} went live in all{% else %}none has gone live yet{% endif %}</div></div>
+    <div class="kpi"><div class="label">Edge availability · 30 d</div><div class="value none">Not measured</div><div class="foot">nothing loads site pages from outside yet</div></div>
+    {%- set gw = f.checks.gateway_7d %}
+    <div class="kpi"><div class="label">Ask first token p95</div><div class="value none">Not recorded</div><div class="foot">the gateway meters tokens and cost per call, not time{% if gw %}; its health check was slow {{ gw.slow }} of {{ gw.minutes|plural("minute", "minutes") }} this week{% endif %}</div></div>
+    <div class="kpi"><div class="label">Inference spend · {{ f.spend.month }}</div><div class="value">{{ f.spend.month_micro_usd|usd }}</div>
+      {%- if f.spend.month_budgets_micro_usd %}<div class="meter{% if f.spend.forecast_micro_usd > f.spend.month_budgets_micro_usd %} coral{% endif %}"><span style="width:{{ f.spend.month_micro_usd|pct(f.spend.month_budgets_micro_usd) }}%"></span></div>{% endif %}
+      <div class="foot">forecast {{ f.spend.forecast_micro_usd|usd }}{% if f.spend.month_budgets_micro_usd %} of {{ f.spend.month_budgets_micro_usd|usd }} in site budgets{% endif %}{% if gateway.daily_cap_micro_usd is not none %} · cap {{ gateway.daily_cap_micro_usd|usd }} a day per site{% endif %}</div></div>
+  </div>
+
+  <article class="card tight">
+    <div class="card-title"><h4>Cells on Vultr</h4><span class="small muted">a cell is one region's whole stack and its blast radius</span></div>
+    <div class="cells">
+      <div class="cell">
+        <div class="name"><b>{{ cell.id }}</b><span class="dot" title="Serving: this page came from it"></span></div>
+        <div class="where">{{ cell.place }}{% if cell.place %} · {% endif %}{{ cell.profile }}</div>
+        <dl><dt>Sites</dt><dd>{{ f.sites_total|num }}</dd><dt>Live</dt><dd>{{ f.sites_live|num }}</dd><dt>Room jobs · 24 h</dt><dd>{{ f.rooms.done_24h|num }}</dd><dt>Queued now</dt><dd>{{ f.rooms.queued|num }}</dd></dl>
+        {%- if cell.products %}<div class="row" style="gap:4px;margin-top:8px">{% for p in cell.products %}<span class="vchip">{{ p }}</span>{% endfor %}</div>{% endif %}
+      </div>
+    </div>
+    <p class="gapnote">One cell runs today. Regional, standby and edge cells come when the platform runs in more than one region.</p>
+  </article>
+
+  <div class="cp-grid cols-2e">
+    <article class="card tight">
+      <div class="card-title"><h4>Operator WebAgents</h4><span class="small muted">in Zavora's operator tenant</span></div>
+      <div class="empty"><b>None is running yet.</b> They start when Zavora's operator tenant is set up. Until then people do this work, and every action they take in this console lands in the ledger.</div>
+      <div class="team" style="margin-top:8px">
+        {%- for ini, av, name, job in [("CW", "av-op-coord", "Operator Chief WebAgent", "Will write the 07:00 ops brief and route decisions to the right people."), ("Sr", "av-sre", "SRE", "Will watch SLOs, open incidents and pull reversible levers within its grant."), ("Re", "av-release", "Release", "Will compose release trains, compare canaries and halt bad waves."), ("Cp", "av-capacity", "Capacity", "Will size runner pools and put Terraform plans up for approval."), ("Bi", "av-billing", "Billing", "Will reconcile metered usage, draft invoices and send reminders within policy."), ("Su", "av-support", "Support", "Will answer tickets from the docs and ask owners for support grants."), ("Sc", "av-security", "Security & Abuse", "Will triage abuse reports and flag changes made outside the platform."), ("Ps", "av-partner", "Partner Success", "Will onboard agencies and plan bulk imports."), ("Gr", "av-growth", "Growth", "Will follow up previews, only where people gave consent."), ("Cm", "av-compliance", "Compliance", "Will run access reviews and retention checks.")] %}
+        <div class="team-row"><span class="avatar op sm {{ av }}" style="filter:grayscale(1);opacity:.6">{{ ini }}</span><div><b>{{ name }}</b><span>Not running. {{ job }}</span></div></div>
+        {%- endfor %}
+      </div>
+    </article>
+
+    <article class="card tight">
+      <div class="card-title"><h4>Sandbox runner pools</h4><span class="small muted">no secrets on these hosts</span></div>
+      <div class="pool"><span><b>{{ cell.id }} · sealed rooms</b> <span class="meta">{{ f.rooms.running }} running · {{ f.rooms.queued }} queued</span></span><span class="meta{% if f.rooms.failed_24h %} down{% endif %}">{{ f.rooms.done_24h }} done · {{ f.rooms.failed_24h }} failed · 24 h</span>
+        {%- set finished = f.rooms.done_24h + f.rooms.failed_24h %}<div class="meter{% if f.rooms.failed_24h %} coral{% else %} ok{% endif %}" title="Jobs that finished cleanly in the last 24 hours"><span style="width:{{ f.rooms.done_24h|pct(finished) if finished else 0 }}%"></span></div></div>
+      {%- for k in f.rooms.by_kind %}
+      <div class="pool"><span><b>{{ k.kind }}</b> <span class="meta">{{ k.count }} job{{ "" if k.count == 1 else "s" }} · 7 d</span></span><span class="meta">{% if k.run_p95_s is not none %}p95 {{ k.run_p95_s|dur }}{% else %}none finished{% endif %}</span></div>
+      {%- else %}
+      <div class="empty" style="margin-top:8px">No sealed-room jobs in the last 7 days. Assess and the Move start them.</div>
+      {%- endfor %}
+      <hr class="divider">
+      <div class="spread"><h4>Migration Factory</h4><span class="small muted">Moves by the step they're in now</span></div>
+      <div class="factory">{% for st in f.stages %}<div><b>{{ st.count }}</b><span>{{ st.label }}</span></div>{% endfor %}</div>
+      {%- if f.moves_stopped_week %}<p class="gapnote">{{ f.moves_stopped_week }} Move{{ "" if f.moves_stopped_week == 1 else "s" }} stopped or failed this week.</p>{% endif %}
+    </article>
+  </div>
+
+  <article class="card tight">
+    <div class="card-title"><h4>SLOs</h4><span class="small muted">targets are guesses until the pilot measures them</span></div>
+    <div class="tbl-wrap"><table class="tbl">
+      <thead><tr><th>Indicator</th><th class="num">Now</th><th class="num">SLO</th><th>Window</th><th>State</th></tr></thead>
+      <tbody>
+        <tr><td><b>Edge availability</b>, signed pages<div class="small muted">needs a probe that loads pages from outside; the status check only counts live releases</div></td><td class="num">—</td><td class="num">99.95%</td><td>30 d · per cell</td><td><span class="chip">not measured</span></td></tr>
+        <tr><td><b>Ask</b>: an answer, or “the site doesn't say”<div class="small muted">needs each answer's outcome recorded; the gateway records calls, not answers</div></td><td class="num">—</td><td class="num">99.9%</td><td>30 d</td><td><span class="chip">not measured</span></td></tr>
+        {%- set gw30 = f.checks.gateway_30d %}
+        <tr><td><b>Model Gateway</b> answering its health check<div class="small muted">checked each minute by the status page{% if gw30 %}, since {{ gw30.since[:10] }}{% endif %}</div></td><td class="num">{% if gw30 %}{{ gw30.percent_words }}{% else %}—{% endif %}</td><td class="num">—</td><td>30 d{% if gw30 %} · {{ gw30.minutes|plural("minute", "minutes") }}{% endif %}</td><td>{% if not f.checks.recorded %}<span class="chip">not recorded here</span>{% elif not gw30 %}<span class="chip">no checks yet</span>{% elif gw30.down %}<span class="chip chip-wait">down {{ gw30.down|plural("minute", "minutes") }}</span>{% else %}<span class="chip chip-ok">answering</span>{% endif %}</td></tr>
+        <tr><td><b>Ask first token</b> p95<div class="small muted">needs the gateway to record how long each call took</div></td><td class="num">—</td><td class="num">&lt; 1.5 s</td><td>7 d</td><td><span class="chip">not recorded</span></td></tr>
+        {%- set live_calls = f.calls_week.ok + f.calls_week.error %}
+        <tr><td><b>Model calls answered</b> by the provider</td><td class="num">{% if live_calls %}{{ (f.calls_week.ok * 1000 // live_calls) / 10 }}%{% else %}—{% endif %}</td><td class="num">—</td><td>7 d · {{ f.calls_week.total|plural("call", "calls") }}</td><td>{% if not live_calls %}<span class="chip">no live calls</span>{% elif f.calls_week.error %}<span class="chip chip-wait">{{ f.calls_week.error }} failed</span>{% else %}<span class="chip chip-ok">ok</span>{% endif %}{% if f.calls_week.over_budget %} <span class="chip">{{ f.calls_week.over_budget }} held by budgets</span>{% endif %}</td></tr>
+        <tr><td><b>Sealed room</b> queue wait p95</td><td class="num">{% if f.rooms.wait_p95_s is not none %}{{ f.rooms.wait_p95_s|dur }}{% else %}—{% endif %}</td><td class="num">—</td><td>7 d · {{ f.rooms.week|plural("job", "jobs") }}</td><td>{% if f.rooms.wait_p95_s is none %}<span class="chip">no jobs</span>{% else %}<span class="chip chip-ok">recorded</span>{% endif %}</td></tr>
+        <tr><td><b>The Move</b>, to the go-live card, p90</td><td class="num">{% if f.move_to_card_p90_s is not none %}{{ f.move_to_card_p90_s|dur }}{% else %}—{% endif %}</td><td class="num">&lt; 10 min</td><td>30 d · {{ f.move_to_card_n }} Move{{ "" if f.move_to_card_n == 1 else "s" }}</td><td>{% if f.move_to_card_p90_s is none %}<span class="chip">no Moves</span>{% elif f.move_to_card_p90_s <= 600 %}<span class="chip chip-ok">ok</span>{% else %}<span class="chip chip-wait">over target</span>{% endif %}</td></tr>
+        <tr><td><b>Gauntlet</b> on live sites, last run</td><td class="num">{% if f.gauntlet.sites_run %}{{ f.gauntlet.sites_perfect }} of {{ f.gauntlet.sites_run }}{% else %}—{% endif %}</td><td class="num">all</td><td>latest · {{ f.gauntlet.runs_24h }} runs in 24 h</td><td>{% if not f.gauntlet.sites_run %}<span class="chip">no runs</span>{% elif f.gauntlet.sites_perfect == f.gauntlet.sites_run %}<span class="chip chip-ok">every attack held</span>{% else %}<span class="chip chip-risk">lowest {{ f.gauntlet.lowest }}</span>{% endif %}</td></tr>
+        <tr><td><b>Invariants</b>: approved cards without a receipt · operator ledger chain</td><td class="num">{{ f.approved_without_receipt }} · {{ "intact" if shell.ledger_ok else "broken" }}</td><td class="num">0 · intact</td><td>always</td><td>{% if f.approved_without_receipt == 0 and shell.ledger_ok %}<span class="chip chip-ok">held</span>{% else %}<span class="chip chip-risk">broken</span>{% endif %}</td></tr>
+      </tbody>
+    </table></div>
+  </article>
+
+  <div class="cp-grid cols-2e">
+    <article class="card tight" id="routes">
+      <div class="card-title"><h4>Model routes</h4><span class="small muted">from the Model Gateway, read only</span></div>
+      {%- if gateway.reachable %}
+      <div class="tbl-wrap"><table class="tbl" style="min-width:0">
+        <thead><tr><th>Purpose</th><th>Provider</th><th>Model</th><th>Tier</th></tr></thead>
+        <tbody>{% for r in gateway.routes %}<tr><td><b>{{ r.purpose }}</b></td><td>{{ r.provider }}</td><td class="mono-cell">{{ r.model }}</td><td>{{ r.tier or "—" }}</td></tr>{% endfor %}</tbody>
+      </table></div>
+      <p class="gapnote">Mode {{ gateway.mode }}{% for name, ok in gateway.providers %} · {{ name }} {{ "up" if ok else "down" }}{% endfor %}. Changes reach owners as <code>routing.changed</code> receipts.</p>
+      {%- else %}
+      <div class="empty">The Model Gateway didn't answer its status check, so its routes aren't shown. Sites keep serving; Ask rests if the gateway is down.</div>
+      {%- endif %}
+    </article>
+
+    <article class="card tight">
+      <div class="card-title"><h4>Spend this month</h4><span class="small muted">estimates from catalogue prices, settled against Vultr's bill later</span></div>
+      {%- for a in f.spend.by_provider %}
+      <div class="spend-bar"><span><b>{{ a.label }}</b> <span class="small muted">{{ a.calls|plural("call", "calls") }}</span></span><span>{{ a.micro_usd|usd }}</span><div class="meter"><span style="width:{{ a.micro_usd|pct(f.spend.month_micro_usd) }}%"></span></div></div>
+      {%- endfor %}
+      {%- for a in f.spend.by_purpose %}
+      <div class="spend-bar"><span>{{ a.label }} <span class="small muted">{{ a.calls|plural("call", "calls") }}</span></span><span>{{ a.micro_usd|usd }}</span><div class="meter ok"><span style="width:{{ a.micro_usd|pct(f.spend.month_micro_usd) }}%"></span></div></div>
+      {%- else %}
+      <div class="empty">No model calls this month yet. Spend appears here per provider and purpose as soon as a site calls the gateway.</div>
+      {%- endfor %}
+    </article>
+  </div>
+
+  <article class="card tight" id="ledger">
+    <div class="card-title"><h4>Operator ledger</h4><span class="small muted">hash-chained · {{ shell.ledger_entries }} entr{{ "y" if shell.ledger_entries == 1 else "ies" }} · <a href="/trust#ledger">verify</a></span></div>
+    <ul class="rows">
+      {%- for e in ledger %}
+      <li><span class="avatar sm" style="background:var(--op)">{{ e.actor_name|initials }}</span><span>{{ e.summary }}</span><span class="ledger-id">{{ e.at|clock }} · {{ e.entry_id }}</span></li>
+      {%- else %}
+      <li><span></span><span class="small muted">Nothing recorded yet. Sign-ins, role changes, support grants, break-glass and holds land here.</span><span></span></li>
+      {%- endfor %}
+    </ul>
+  </article>
+</div>
+{% endblock %}
+{% block lane %}
+{% include "lane.html" %}
+{%- if fleet.owner_decisions_waiting %}
+<div class="ldec"><div class="from"><span class="avatar av-chief">Ow</span>Owners<span class="chip">only owners decide</span></div><b class="t">{{ fleet.owner_decisions_waiting }} owner decision{{ "" if fleet.owner_decisions_waiting == 1 else "s" }} waiting</b><p>Go-live cards, held orders and restores, waiting in their own consoles. You see the count, never the cards.</p><div class="verbs"><a class="btn btn-sm" href="/customers">See which sites</a></div></div>
+{%- endif %}
+<h4>Done for you</h4>
+<div class="quiet">In the last 24 hours the platform signed <b>{{ fleet.done_24h.receipts|num }}</b> receipt{{ "" if fleet.done_24h.receipts == 1 else "s" }}, wrote <b>{{ fleet.done_24h.briefs }}</b> Chief brief{{ "" if fleet.done_24h.briefs == 1 else "s" }}{% if fleet.done_24h.routing_receipts %}, told owners about {{ fleet.done_24h.routing_receipts }} model route change{{ "" if fleet.done_24h.routing_receipts == 1 else "s" }}{% endif %} and ran the gauntlet {{ fleet.done_24h.gauntlet_runs }} time{{ "" if fleet.done_24h.gauntlet_runs == 1 else "s" }}.</div>
+{% endblock %}

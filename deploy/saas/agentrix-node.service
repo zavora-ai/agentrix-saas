@@ -1,0 +1,42 @@
+# agentrix-node on saas-node (spec v3, SAAS_SHAPE=one): the platform with the money layer mounted
+# as a module (SAAS_MODULE=1), serving every host under SAAS_PLATFORM_HOST on 127.0.0.1:8080, and
+# Caddy's on-demand TLS question on 127.0.0.1:8079. Installed by deploy/saas/deploy.sh, which
+# stops and disables agentrix-saas.service first: both must never run the companies' kernels on
+# /var/lib/agentrix-saas at once.
+#
+# Settings: /etc/agentrix-saas/agentrix-node.env (root, 0600), written on every deploy from the
+# repo's .env (the node's and the money layer's keys, never a model provider key: those are
+# agentrix-models') and deploy/saas/agentrix-saas.env. owner.env holds the owner-console token.
+# Data: the platform's in /var/lib/agentrix-node (control.db, which agentrix-models meters into),
+# the money layer's in /var/lib/agentrix-saas (companies, mandates, audit logs, keys).
+[Unit]
+Description=Agentrix node (platform and money layer, one binary)
+After=network-online.target docker.service
+Wants=network-online.target
+Conflicts=agentrix-saas.service
+
+[Service]
+User=agentrix-saas
+Group=agentrix-saas
+EnvironmentFile=-/etc/agentrix-saas/owner.env
+EnvironmentFile=/etc/agentrix-saas/agentrix-node.env
+# Telegram alerts: {"bots":[{site, token}]}, root-only on disk, handed to the node as a credential.
+# deploy.sh writes one listing no bot when there is none (systemd won't start without the file).
+LoadCredential=telegram.json:/etc/agentrix-saas/telegram.json
+Environment=AGENTRIX_TELEGRAM_FILE=%d/telegram.json
+Environment=HOME=/var/lib/agentrix-node
+Environment=NO_COLOR=1
+ExecStart=/usr/local/bin/agentrix-node
+WorkingDirectory=/var/lib/agentrix-node
+UMask=0007
+Restart=on-failure
+RestartSec=3
+LimitNOFILE=65536
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=yes
+ReadWritePaths=/var/lib/agentrix-node /var/lib/agentrix-saas
+
+[Install]
+WantedBy=multi-user.target

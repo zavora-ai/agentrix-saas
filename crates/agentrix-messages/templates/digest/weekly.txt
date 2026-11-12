@@ -1,0 +1,18 @@
+{% block subject %}Your Friday five, {{ issue.date }}{% endblock %}
+{% block preheader %}{{ issue.stories[0].headline }}{% endblock %}
+{% block body %}
+# Your Friday five
+Five {{ digest.topics }} stories {{ site.name }} published this week, two lines each.
+
+{% for story in issue.stories %}
+::link {{ story.headline }} | {{ story.url }}
+{{ story.summary }}
+::note {{ story.section }} · {{ story.byline }} · {{ story.published }}{% if story.corrected %} · Corrected {{ story.corrected }}{% endif %}
+
+{% endfor %}
+{% if issue.locked %}
+{{ issue.locked }}
+
+{% endif %}
+::note The lines under each headline are the story's own summary, as the newsroom published it. Stories for subscribers show their headline only. If a story is corrected, the correction reaches the next digest.
+{% endblock %}

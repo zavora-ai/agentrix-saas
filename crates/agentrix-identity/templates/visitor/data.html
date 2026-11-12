@@ -1,0 +1,26 @@
+<section class="acct" id="acct" data-acct="data">
+  <h1 class="acct-h">Your data</h1>
+  <div class="card">
+    <h2>Download my data</h2>
+    <p>One file with:</p>
+    <ul class="keeps">
+      <li><b>Your account</b><span>Name, email, phone, and when you joined</span></li>
+      <li><b>How you sign in</b><span>Your passkeys' names and dates, your devices and sign-in history</span></li>
+      <li><b>Your choices and their receipts</b><span>Each one, with the times you gave and withdrew it</span></li>
+      {% for s in other_stores %}<li><b>{{ s }}</b><span>From {{ site }}'s records</span></li>{% endfor %}
+    </ul>
+    <p class="small">A file a computer can read (JSON). It never holds a passkey's private part, a code or a card number: {{ site }} never had them.</p>
+    <p><a class="btn wide" href="/account/api/export" download>Download my data</a></p>
+  </div>
+  <div class="card" role="group" aria-labelledby="del-h">
+    <h2 id="del-h">Delete your {{ site }} account?</h2>
+    <p><b>Erased:</b> your sign-in, contact details, devices and sign-in history, and your choices and their receipts{% if other_stores %}, and what {{ site }}'s other records hold about you{% endif %}.</p>
+    <p><b>Kept:</b> past orders and their receipts, as long as the law requires for business records. Your erasure receipt lists exactly what stays.</p>
+    <p>This can't be undone. Like changing your email, it needs a fresh sign-in.</p>
+    <div class="acct-row">
+      <button class="btn danger" type="button" id="acct-delete">Delete my account</button>
+      <a class="btn ghost" href="/account/security">Keep my account</a>
+    </div>
+    <p class="note warn" id="acct-error" role="alert" hidden></p>
+  </div>
+</section>

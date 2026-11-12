@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Claim the domain</title>
+<meta name="description" content="Owner journey, step 4: Wanjiru proves kilele-bakery.example is hers with one DNS record or one uploaded file. The Caretaker checks it, and nothing on the live site changes.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Manrope:wght@600;700;800&family=Fraunces:opsz,wght@9..144,600;9..144,800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../styles.css">
+<link rel="stylesheet" href="../console/console.css">
+<link rel="stylesheet" href="journeys.css">
+<link rel="stylesheet" href="owner.css">
+</head>
+<body data-lane="owner" data-step="4">
+<header class="j-top">
+  <a class="logo" href="../index.html"><span class="mark" aria-hidden="true"></span>Agentrix</a>
+  <a class="j-maplink" href="index.html">Journey map</a>
+  <span class="j-lane">Owner · Wanjiru</span>
+  <span class="concept-label">Concept · illustrative data</span>
+</header>
+<nav class="j-steps" aria-label="Owner journey" data-steps></nav>
+<main class="wrap j-main">
+  <header class="j-head">
+    <p class="eyebrow">Step 4 of 9 · Owner</p>
+    <h1>Prove the domain is yours</h1>
+    <p class="lead">One DNS record or one uploaded file, with steps for where her domain is registered. The Caretaker checks and says what it found. Nothing on her live site changes until she approves go-live.</p>
+  </header>
+  <div class="j-grid">
+    <section class="j-stage" aria-label="What Wanjiru sees">
+      <div class="o-frame">
+        <div class="browser-bar"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="url"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>os.agentrix.ai/kilele/setup/domain</span></div>
+        <div class="o-body">
+          <div class="o-who"><span class="j-mark" data-agent="caretaker" data-size="40"></span><div><b>Caretaker</b><span>Looks after your domain, certificates and backups</span></div></div>
+          <div><h2>Prove kilele-bakery.example is yours</h2><p class="sub">Public records show it's registered with a Kenyan registrar, and your old host serves the site. Pick whichever is easier.</p></div>
+
+          <div class="j-tabs" role="tablist" aria-label="How to prove it">
+            <button role="tab" type="button" aria-selected="true" aria-controls="t-dns" id="tab-dns">Add a DNS record</button>
+            <button role="tab" type="button" aria-selected="false" aria-controls="t-file" id="tab-file">Upload a file</button>
+          </div>
+          <div role="tabpanel" id="t-dns" aria-labelledby="tab-dns" class="o-proof">
+            <ol class="o-steps">
+              <li>Sign in to your registrar and open the DNS page for kilele-bakery.example. Agentrix never asks for that password.</li>
+              <li>Add a <b>TXT</b> record. Name: <span class="o-code">_agentrix</span> Value: <span class="o-code">agentrix-site-verification=k1l3-7f2c-91aa</span></li>
+              <li>Save it, come back, and press Check. Some registrars take a few minutes.</li>
+            </ol>
+          </div>
+          <div role="tabpanel" id="t-file" aria-labelledby="tab-file" hidden class="o-proof">
+            <ol class="o-steps">
+              <li>Download <span class="o-code">agentrix-verify.txt</span>. It holds only a code.</li>
+              <li>Upload it with your old host's file manager so it opens at <span class="o-code">https://kilele-bakery.example/.well-known/agentrix-verify.txt</span></li>
+              <li>Come back and press Check.</li>
+            </ol>
+          </div>
+
+          <button class="btn btn-primary" type="button" style="justify-self:start" data-next="#proved" data-wait="1500" data-busy="Caretaker is checking…" data-done="Check again">Check now</button>
+          <div id="proved" data-reveal class="o-sec">
+            <div class="o-ok">✓ Found it. kilele-bakery.example is yours · proved 10:02 by DNS record</div>
+            <p class="small muted" style="margin:0">Nothing on your live site has changed. Your domain moves to your new site only when you approve the go-live card, and undo is one tap for 30 days after that.</p>
+            <a class="btn btn-primary" href="owner-move.html" style="justify-self:start">Next: the Move starts</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <aside class="j-notes" aria-label="What happens underneath">
+      <div class="j-note gate"><h3>Proof, not passwords</h3><p>The Caretaker checks a public DNS record or a public file. The proof is recorded in the Trust log with the time and method. Agentrix never asks for the registrar or hosting password (01, rung 2).</p></div>
+      <div class="j-note"><h3>Nothing moves yet</h3><p>The proof only lets the Mover start. The DNS switch is part of the go-live card, which Wanjiru approves with her passkey or a code (step 6).</p></div>
+      <div class="j-note"><h3>When it doesn't work</h3><p>The Caretaker says what it saw in words: "No TXT record yet. Your registrar may take up to an hour." It never guesses, and it doesn't retry in a loop.</p></div>
+    </aside>
+  </div>
+</main>
+<nav class="wrap j-pager" aria-label="Previous and next step" data-pager></nav>
+<script src="journeys.js"></script>
+<script src="owner.js"></script>
+</body>
+</html>

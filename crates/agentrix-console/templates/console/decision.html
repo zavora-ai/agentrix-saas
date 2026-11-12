@@ -1,0 +1,76 @@
+{% extends "console/base.html" %}
+{% import "macros.html" as m %}
+{#- Page::Decision · view::DecisionView (+ ConsoleChrome) { card: Card {
+      id, kind: "go-live"|"quarantine-restore"|"order-held", title,
+      asked_by: AgentMark, risk, risk_words, why_words,
+      effects: [String]              -- "If you approve, exactly this happens", from canonical arguments
+      facts: [ { label, value } ],   -- parity, left behind, old site kept, undo
+      levels: [ JobLevels ],         -- starting autonomy written into charter v1 (R7.5); empty for other kinds
+      fingerprint, fingerprint_short, fields: [ { label, value } ],
+      state: "waiting"|"approved"|"declined"|"expired",
+      decided: { outcome_words, method_words, at_words, receipt }?,
+      passkey_options?: String (JSON from the approval ceremony, challenge = SHA-256(fingerprint ‖ nonce); D9),
+      has_passkey: bool, approve_url, decline_url } }
+    R7.1, R7.2, R7.5, R10.2, R10.3. -#}
+{% block title %}{{ card.title }}{% endblock %}
+{% block content %}
+<article class="stack" style="gap:var(--s4)">
+  <div class="from" style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-weight:700">{{ m.mark(card.asked_by, "lg") }}{{ card.asked_by.name }} asks<span class="chip {{ 'risk' if card.risk == 'high' else ('wait' if card.risk == 'medium' else 'ok') }}" style="margin-left:auto">{{ card.risk_words }}</span></div>
+  <h1>{{ card.title }}</h1>
+  <p class="small muted">{{ card.why_words }}</p>
+
+  <section class="card">
+    <p class="effects-title">If you approve, exactly this happens</p>
+    <ul class="effects">{% for e in card.effects %}<li>{{ e }}</li>{% endfor %}</ul>
+    {% if card.facts %}<dl class="kv">{% for f in card.facts %}<dt>{{ f.label }}</dt><dd>{{ f.value }}</dd>{% endfor %}</dl>{% endif %}
+  </section>
+
+  {% if card.levels %}
+  <section class="card" aria-labelledby="levels-h">
+    <h2 id="levels-h">What your WebAgents may do without asking</h2>
+    <p class="small">Approving this card also sets these starting levels. Anything that can't be undone still asks you first.</p>
+    {% for j in card.levels %}
+    <div class="stack" style="gap:6px">
+      <div class="spread"><b>{{ j.webagent }} · {{ j.job }}</b><span class="chip {{ 'info' if j.above_ask_first else '' }}">{{ j.level_words }}</span></div>
+      <ul class="levels" aria-label="{{ j.webagent }}, {{ j.job }}: levels">
+        {% for p in j.positions %}<li {% if p.current %}aria-current="true"{% endif %} class="{{ 'locked' if p.locked else '' }}">{{ p.name }}{% if p.locked %}<span class="why">{{ p.reason }}</span>{% endif %}</li>{% endfor %}
+      </ul>
+    </div>
+    {% endfor %}
+  </section>
+  {% endif %}
+
+  <details class="card">
+    <summary style="cursor:pointer;font-weight:700;min-height:32px;display:flex;align-items:center">What your approval signs</summary>
+    <p class="fp" style="margin-top:8px">{{ card.fingerprint }}</p>
+    {% if card.fields %}<dl class="kv">{% for f in card.fields %}<dt>{{ f.label }}</dt><dd class="mono">{{ f.value }}</dd>{% endfor %}</dl>{% endif %}
+    <p class="hint">This fingerprint stands for exactly what will run. The card you read and the approval you give are both made from it, so what you approve is what runs, once.</p>
+  </details>
+
+  {% if card.state == "waiting" %}
+  <section class="sheet" id="approve" data-approve-url="{{ card.approve_url }}" {% if card.passkey_options %}data-options='{{ card.passkey_options }}'{% endif %}>
+    {% if card.has_passkey %}
+    <button class="btn btn-primary btn-wide" type="button" id="approve-passkey">Approve with your passkey</button>
+    {% endif %}
+    <details {% if not card.has_passkey %}open{% endif %}>
+      <summary style="cursor:pointer;font-weight:700;min-height:32px;display:flex;align-items:center">{% if card.has_passkey %}No passkey on this device?{% else %}Approve with your authenticator app{% endif %}</summary>
+      <form class="stack" method="post" action="{{ card.approve_url }}" style="margin-top:var(--s3)">
+        <input type="hidden" name="method" value="totp">
+        <input type="hidden" name="fingerprint" value="{{ card.fingerprint }}">
+        <label class="field">Code from your authenticator app<input name="code" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6}" maxlength="6" required></label>
+        <p class="hint">It works once, and only for this card. Your receipt will say a code approved it, not a passkey.</p>
+        <button class="btn btn-primary btn-wide" type="submit">Approve with code</button>
+      </form>
+    </details>
+    <p class="error" id="approve-error" role="alert" hidden></p>
+    <form method="post" action="{{ card.decline_url }}"><button class="btn btn-ghost btn-wide" type="submit">Decline</button></form>
+  </section>
+  {% elif card.decided %}
+  <section class="card">
+    <p class="{{ 'okline' if card.state == 'approved' else 'waitline' }}">{{ card.decided.outcome_words }}</p>
+    <dl class="kv"><dt>How</dt><dd>{{ card.decided.method_words }}</dd><dt>When</dt><dd>{{ card.decided.at_words }}</dd><dt>Receipt</dt><dd><a class="mono" href="/receipts/{{ card.decided.receipt }}">{{ card.decided.receipt[:16] }}…</a></dd></dl>
+  </section>
+  {% endif %}
+</article>
+{% endblock %}
+{% block scripts %}{% if card.state == "waiting" and card.has_passkey %}<script src="/static/passkey.js?v={{ asset_v }}" defer></script>{% endif %}{% endblock %}

@@ -1,0 +1,15 @@
+{
+  "kind": "entra_agent_id",
+  "label": "Microsoft Entra Agent ID (fixture tenant)",
+  "source": "The claim shape of the Entra agent identity token validated live on Tue 10 Nov 2026 (specs/saas/identity-validation.md): v2.0, RS256, issued for a custom audience (the blueprint's app id), azp, sub and oid naming the agent identity, and none of the agent-marking claims. Ids are made up.",
+  "issuer": "https://login.microsoftonline.com/00000000-0000-4000-8000-00000000a11e/v2.0",
+  "audience": "b1ce0000-0000-4000-8000-0000000000b1",
+  "claims": {
+    "sub": "a9e1b2c3-0000-4000-8000-0000000000a9",
+    "oid": "a9e1b2c3-0000-4000-8000-0000000000a9",
+    "azp": "a9e1b2c3-0000-4000-8000-0000000000a9",
+    "azpacr": "2",
+    "tid": "00000000-0000-4000-8000-00000000a11e",
+    "ver": "2.0"
+  }
+}

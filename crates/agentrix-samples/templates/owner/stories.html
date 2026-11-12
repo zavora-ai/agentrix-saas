@@ -1,0 +1,38 @@
+{% extends "owner/base.html" %}
+{% block field %}{% import "owner/macros.html" as m %}
+{{ m.head(c) }}
+<nav class="tabs" aria-label="Stories by status">
+  {% for t in tabs %}<a href="{{ t.href }}"{% if t.current %} aria-current="page"{% endif %}>{{ t.label }} <span class="ct">{{ t.count }}</span></a>{% endfor %}
+</nav>
+<article class="fcard">
+  {% if rows %}
+  <div class="tbl"><table class="procs">
+    <thead><tr><th>Story</th><th class="hide-sm">Date</th><th>Status</th><th>Change</th></tr></thead>
+    <tbody>
+    {% for s in rows %}
+    <tr id="st-{{ s.slug }}">
+      <td>{% if s.kicker %}<small class="kicker">{{ s.kicker }}</small>{% endif %}<b>{{ s.title }}</b><small class="muted"> {{ s.section }} · {{ s.author }}{% if s.locked %} · subscribers{% endif %}{% if s.corrections %} · {{ s.corrections }} {% if s.corrections == 1 %}correction{% else %}corrections{% endif %}{% endif %}</small>{% if s.published %}<a class="tiny" href="{{ s.page }}">on the site</a>{% endif %}</td>
+      <td class="hide-sm">{{ s.date }}{% if s.updated %}<small class="muted"> updated {{ s.updated }}</small>{% endif %}</td>
+      <td>{% if s.published %}{{ m.chip("Published", "ok") }}{% else %}{{ m.chip("Not published", "wait") }}{% endif %}</td>
+      <td>
+        <form method="post" action="{{ s.href }}" class="inline">
+          {% if s.published %}<button class="btn btn-sm" name="do" value="unpublish">Unpublish</button>{% else %}<button class="btn btn-sm btn-primary" name="do" value="publish">Publish</button>{% endif %}
+        </form>
+        <details class="more"><summary class="btn btn-sm btn-ghost">Add a correction</summary>
+          <form method="post" action="{{ s.href }}" class="decide">
+            <input type="hidden" name="do" value="correct">
+            <label for="w-{{ s.slug }}">What changed</label>
+            <input id="w-{{ s.slug }}" name="what" maxlength="200" required placeholder="KSh 41bn, not 48bn">
+            <label for="n-{{ s.slug }}">The note readers see</label>
+            <textarea id="n-{{ s.slug }}" name="note" rows="2" maxlength="600" required placeholder="An earlier version gave the wrong figure. We corrected it."></textarea>
+            <div class="verbs"><button class="btn btn-sm btn-primary">Add the correction</button></div>
+          </form>
+        </details>
+      </td>
+    </tr>
+    {% endfor %}
+    </tbody>
+  </table></div>
+  {% else %}{{ m.empty("No stories in this list. Stories appear here when you or a reporter draft or publish one.") }}{% endif %}
+</article>
+{% endblock %}

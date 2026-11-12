@@ -1,0 +1,12 @@
+{% block subject %}A customer's erasure on {{ site.name }} is complete{% endblock %}
+{% block preheader %}Request {{ erasure.request_id }}, receipt {{ erasure.receipt_id }}.{% endblock %}
+{% block body %}
+# Erasure complete
+The erasure request {{ erasure.request_id }} from {{ erasure.requested_on }} finished at {{ erasure.done_at }} across every store. The customer got their own copy of the receipt before their address was erased.
+
+::fact Stores | {{ erasure.stores }}
+::fact Kept | {{ erasure.kept }}
+::fact Receipt | {{ erasure.receipt_id }}
+
+::button Read the receipt | {{ erasure.url }}
+{% endblock %}

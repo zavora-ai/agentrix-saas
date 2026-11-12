@@ -1,0 +1,31 @@
+{% extends "onboarding/base.html" %}
+{#- OnboardingPage::Setup · view::SetupPage { host?, steps: [{n, title, words, done}],
+      chief_words, next_href, next_words }
+    The Chief WebAgent introduces itself (O2.4, concept/journeys/owner-account.html's o-chief)
+    and says what comes next. -#}
+{% block title %}{% if host %}Setting up {{ host }}{% else %}Your account is ready{% endif %}{% endblock %}
+{% block body_class %}page-setup{% endblock %}
+{% block topright %}{% if host %}<span class="chip chip-outline">{{ host }}</span>{% endif %}<a class="btn btn-ghost btn-sm" href="/os">Console</a>{% endblock %}
+{% block main %}
+<section class="panel setup" aria-labelledby="setup-h">
+  <div class="o-body setup-body">
+    <div>
+      <h1 class="h2" id="setup-h">{% if host %}Setting up {{ host }}{% else %}Your account is ready{% endif %}</h1>
+      <p class="sub">Your old site keeps running, untouched, until you approve going live.</p>
+    </div>
+    <div class="o-chief">
+      <span class="avatar av-chief">CW</span>
+      <p><b>Chief WebAgent:</b> Karibu. I'm your Chief WebAgent. I speak for your WebAgents and plan their work, and nothing important happens without your OK. {{ chief_words }}</p>
+    </div>
+    <ol class="setup-steps">
+      {% for s in steps %}
+      <li class="{{ 'done' if s.done else '' }}">
+        <span class="n">{% if s.done %}✓{% else %}{{ s.n }}{% endif %}</span>
+        <div><b>{{ s.title }}</b><p>{{ s.words }}</p></div>
+      </li>
+      {% endfor %}
+    </ol>
+    <a class="btn btn-primary self-start" href="{{ next_href }}">{{ next_words }}</a>
+  </div>
+</section>
+{% endblock %}

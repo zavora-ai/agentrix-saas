@@ -1,0 +1,76 @@
+{% extends "onboarding/base.html" %}
+{#- OnboardingPage::Plan · view::PlanPage { site_id, host?, plans: [{id, name, price_words,
+      annual_words, year_words, saving_words, included_usd, includes, webagents_words}], chosen,
+      period ("monthly" | "annual"), annual, discount_percent, return_path, next }
+    concept/journeys/owner-plan.html (O3.1, O3.2), PayPal only and in USD (James, 8 Nov). Prices
+    come from W3's plan catalogue. The choice is saved (POST /setup/plan); the PayPal
+    subscription is approved on PayPal's own page just before go-live, through W6's Effects
+    Gateway, because a subscription's start is fixed when it's made. Nothing is charged until
+    the site goes live. Paid monthly, or 12 months up front at the catalogue's discount (W3's
+    annual_discount_percent, the number /prices and the agent door quote); the period posts
+    with the plan and PayPal charges that amount. -#}
+{% block title %}Choose a plan{% endblock %}
+{% block body_class %}page-setup page-plan{% endblock %}
+{% block topright %}{% if host %}<span class="chip chip-outline">{{ host }}</span>{% endif %}<a class="btn btn-ghost btn-sm" href="/os">Console</a>{% endblock %}
+{% block main %}
+<section class="panel setup setup-wide" aria-labelledby="plan-h">
+  <form class="o-body setup-body" id="plan" method="post" action="/setup/plan">
+    <input type="hidden" name="site" value="{{ site_id }}">
+    <input type="hidden" name="next" value="{{ next }}">
+    <input type="hidden" name="plan_id" id="plan-id" value="{{ chosen }}">
+    <div>
+      <h1 class="h2" id="plan-h">{% if host %}Choose a plan for {{ host }}{% else %}Choose a plan{% endif %}</h1>
+      <p class="sub">Your old site is untouched. The Move starts after you prove the domain is yours.</p>
+    </div>
+    <div class="o-chief">
+      <span class="avatar av-chief">CW</span>
+      <p><b>Chief WebAgent:</b> If your site will take orders and payments, <b>Commerce</b> adds the Cashier, so a customer can pay once you've approved their order. If you only want enquiries, Business is enough.</p>
+    </div>
+    {% if not plans %}
+    <div class="o-wait" role="status">Plans aren't published here yet. You can prove the domain is yours and start the Move now; you choose a plan before you go live.</div>
+    <a class="btn btn-primary self-start" href="{{ next }}">Next: prove the domain is yours</a>
+    {% else %}
+    <div class="o-plans" role="group" aria-label="Plans">
+      {% for p in plans %}
+      <button class="o-plan" type="button" aria-pressed="{{ 'true' if p.id == chosen else 'false' }}" data-id="{{ p.id }}" data-name="{{ p.name }}" data-price="{{ p.price_words }}" data-annual="{{ p.annual_words }}" data-year="{{ p.year_words }}" data-saving="{{ p.saving_words }}" data-budget="{{ p.included_usd }}">
+        {% if p.id == chosen %}<span class="rec">Suggested</span>{% endif %}
+        <h3>{{ p.name }}</h3>
+        <div class="price">{{ p.price_words }} <small>a month</small></div>
+        {% if p.annual_words %}<p class="o-hint">or {{ p.annual_words }} for 12 months</p>{% endif %}
+        <ul>
+          {% for line in p.includes %}<li>{{ line }}</li>{% endfor %}
+          <li>WebAgents: {{ p.webagents_words }}</li>
+        </ul>
+      </button>
+      {% endfor %}
+    </div>
+    {% set first = plans | selectattr("id", "equalto", chosen) | first %}
+    <div class="o-budget">
+      <div class="spread"><span><b id="budget-out">${{ first.included_usd if first else 0 }}</b> a month: your AI budget</span><span class="o-hint"><span data-plan-name>{{ first.name if first else "" }}</span> includes $<span data-plan-budget>{{ first.included_usd if first else 0 }}</span></span></div>
+      <label class="sr-only" for="budget">Monthly AI budget</label>
+      <input id="budget" name="ai_budget_usd" type="range" min="0" max="{{ (first.included_usd if first else 0) * 4 }}" step="5" value="{{ first.included_usd if first else 0 }}">
+      <p class="o-hint" id="budget-note">Inside the included budget. Nothing above your limit is ever billed.</p>
+    </div>
+    {% if annual %}
+    <fieldset class="o-rails" id="period">
+      <legend class="o-field">How often you pay</legend>
+      <label class="o-rail"><input type="radio" name="period" value="monthly"{% if period != "annual" %} checked{% endif %}><div><b>Monthly</b><span><span data-plan-price>{{ first.price_words if first else "" }}</span> a month, charged each month.</span></div></label>
+      <label class="o-rail"><input type="radio" name="period" value="annual"{% if period == "annual" %} checked{% endif %}><div><b>12 months ({{ discount_percent }}% off)</b><span><span data-plan-annual>{{ first.annual_words if first else "" }}</span> once for 12 months, instead of <span data-plan-year>{{ first.year_words if first else "" }}</span> paid monthly. You save <span data-plan-saving>{{ first.saving_words if first else "" }}</span>.</span></div><span class="tag">{{ discount_percent }}% off</span></label>
+    </fieldset>
+    {% else %}
+    <input type="hidden" name="period" value="monthly">
+    {% endif %}
+    <fieldset class="o-rails">
+      <legend class="o-field">How you pay</legend>
+      <label class="o-rail"><input type="radio" name="rail" value="paypal" checked><div><b>PayPal</b><span>A PayPal subscription, approved on PayPal's own page. Charged in USD.</span></div><span class="tag">Subscription</span></label>
+    </fieldset>
+    <div class="spread plan-go">
+      <p class="small"><b><span data-plan-name>{{ first.name if first else "" }}</span> · <span data-plan-charge>{% if first and period == "annual" %}{{ first.annual_words }} for 12 months{% elif first %}{{ first.price_words }} a month{% endif %}</span></b> · first charge on the day your site goes live</p>
+      <button class="btn btn-primary" type="submit" id="plan-go">Choose <span data-plan-name>{{ first.name if first else "" }}</span></button>
+    </div>
+    <p class="o-hint">You approve the PayPal subscription on PayPal's own page just before you go live, so the first charge is that day. If you pay for 12 months, PayPal charges the 12-month total that day, then again 12 months later. Either way the AI budget is monthly and the included AI resets each month. Agentrix never sees your PayPal password, card or bank details, and if you never go live, you're never charged.</p>
+    {% endif %}
+  </form>
+</section>
+{% endblock %}
+{% block scripts %}<script src="/static/onboarding/plan.js?v={{ onboarding_v }}" defer></script>{% endblock %}

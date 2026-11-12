@@ -1,0 +1,458 @@
+<title>Agentrix WebApp Platform</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Manrope:wght@600;700;800&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: a live build floor. Sticky bar (name, live pulse, clocks, whether main can move), then one view:
+   overview (workstream cards + waiting on James + live feed), tasks (kanban), asks, activity (log + merge pipeline).
+   Tokens follow the Agentrix product palette in concept/styles.css: indigo ground, coral signal. */
+:root {
+  --bg: #f6f6fa; --paper: #ffffff; --sunken: #efeff5; --ink: #23223a; --ink-2: #4a4960; --muted: #656479;
+  --line: #e3e2ec; --line-strong: #cfcedd; --brand: #38356d; --brand-900: #1f1d3d; --coral: #de4060; --coral-ink: #b72d50;
+  --ok: #11734a; --ok-bg: #e6f5ee; --wait: #8a5300; --wait-bg: #fff4dd; --risk: #a3302a; --risk-bg: #fdecea;
+  --info: #2f55c4; --info-bg: #eaf0ff; --idle: #686779; --idle-bg: #ecebf2; --flash: #ffe3ea;
+  --w0: #4b4880; --w1: #6a4fd1; --w2: #de4060; --w3: #b07514; --w4: #0f8487; --w5: #2563d6; --w6: #1f7a52; --w7: #b0368f;
+  --w8: #5c6b7a; --w9: #c2571a; --w10: #8a3fa8; --w11: #2f7d96; --w12: #6b7d2a;
+  --display: "Manrope", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --text: "DM Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --r: 12px;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #121120; --paper: #1b1a2c; --sunken: #161526; --ink: #ecebf6; --ink-2: #c4c2da; --muted: #a09db8;
+  --line: #2d2b44; --line-strong: #3d3a58; --brand: #b3aef5; --brand-900: #e4e2ff; --coral: #ff6c84; --coral-ink: #ff8ea1;
+  --ok: #5fd39d; --ok-bg: #173327; --wait: #f0bd62; --wait-bg: #3a2c12; --risk: #ff8b7e; --risk-bg: #3d1c19;
+  --info: #8fb2ff; --info-bg: #1b2744; --idle: #a3a6b6; --idle-bg: #262635; --flash: #4a2333;
+  --w0: #a9a6e6; --w1: #a993ff; --w2: #ff6c84; --w3: #f0bd62; --w4: #4fd1cf; --w5: #7aa7ff; --w6: #5fd39d; --w7: #f07ccf;
+  --w8: #a8b8c8; --w9: #ff9a5c; --w10: #d8a2f0; --w11: #74c7e0; --w12: #c3d77a;
+  color-scheme: dark; } }
+:root[data-theme="dark"] {
+  --bg: #121120; --paper: #1b1a2c; --sunken: #161526; --ink: #ecebf6; --ink-2: #c4c2da; --muted: #a09db8;
+  --line: #2d2b44; --line-strong: #3d3a58; --brand: #b3aef5; --brand-900: #e4e2ff; --coral: #ff6c84; --coral-ink: #ff8ea1;
+  --ok: #5fd39d; --ok-bg: #173327; --wait: #f0bd62; --wait-bg: #3a2c12; --risk: #ff8b7e; --risk-bg: #3d1c19;
+  --info: #8fb2ff; --info-bg: #1b2744; --idle: #a3a6b6; --idle-bg: #262635; --flash: #4a2333;
+  --w0: #a9a6e6; --w1: #a993ff; --w2: #ff6c84; --w3: #f0bd62; --w4: #4fd1cf; --w5: #7aa7ff; --w6: #5fd39d; --w7: #f07ccf;
+  --w8: #a8b8c8; --w9: #ff9a5c; --w10: #d8a2f0; --w11: #74c7e0; --w12: #c3d77a;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font: 15px/1.5 var(--text); }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--paper); }
+a { color: var(--brand); }
+button, input, select, textarea { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--coral); outline-offset: 2px; border-radius: 6px; }
+.mono { font-family: var(--mono); font-size: 12px; }
+.muted { color: var(--muted); }
+.small { font-size: 12.5px; }
+
+.bar { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--paper); border-bottom: 1px solid var(--line); }
+.wrap { max-width: 1360px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.bar .wrap { padding-block: 12px 0; }
+.top { display: flex; gap: 14px 20px; align-items: center; justify-content: space-between; flex-wrap: wrap; }
+.brand { display: flex; gap: 11px; align-items: center; min-width: 0; }
+.mark { width: 32px; height: 32px; border-radius: 9px; background: var(--brand); display: grid; place-items: center; flex: none; }
+.mark i { width: 12px; height: 12px; border-radius: 50%; background: var(--coral); box-shadow: 0 0 0 3px color-mix(in srgb, var(--coral) 30%, transparent); }
+h1 { font: 800 19px/1.2 var(--display); letter-spacing: -0.01em; margin: 0; text-wrap: balance; }
+.sub { color: var(--muted); font-size: 12.5px; }
+.chips-top { display: flex; gap: 8px; flex-wrap: wrap; align-items: stretch; }
+.clock { display: flex; flex-direction: column; justify-content: center; padding: 5px 12px; border-radius: 10px; background: var(--sunken); border: 1px solid var(--line); min-width: 128px; }
+.clock span { font-size: 10.5px; text-transform: uppercase; letter-spacing: .07em; color: var(--muted); font-weight: 600; }
+.clock b { font: 700 15px/1.25 var(--display); font-variant-numeric: tabular-nums; }
+.clock.main-open b { color: var(--ok); } .clock.main-frozen b { color: var(--risk); }
+.live { display: inline-flex; align-items: center; gap: 8px; font-weight: 600; font-size: 13px; }
+.live .pulse { width: 9px; height: 9px; border-radius: 50%; background: var(--idle); flex: none; }
+.live[data-s="live"] .pulse { background: var(--ok); animation: pulse 2s ease-out infinite; }
+.live[data-s="error"] .pulse { background: var(--risk); }
+@keyframes pulse { 0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--ok) 55%, transparent); } 100% { box-shadow: 0 0 0 9px transparent; } }
+.tabs { display: flex; gap: 2px; overflow-x: auto; scrollbar-width: none; margin-top: 8px; }
+.tab { padding: 10px 12px 11px; border-bottom: 2px solid transparent; color: var(--muted); font-weight: 600; text-decoration: none; white-space: nowrap; display: inline-flex; gap: 6px; align-items: center; }
+.tab[aria-current="page"] { color: var(--ink); border-bottom-color: var(--coral); }
+.tab .n { font: 600 11px var(--mono); background: var(--sunken); border-radius: 6px; padding: 1px 6px; color: var(--muted); }
+.tab .n.hot { background: var(--coral); color: #fff; }
+
+main.wrap { padding-block: 20px 64px; }
+.note { padding: 10px 14px; border-radius: 10px; background: var(--info-bg); color: var(--info); margin-bottom: 16px; font-weight: 500; }
+.note.bad { background: var(--risk-bg); color: var(--risk); }
+h2 { font: 700 15px/1.3 var(--display); margin: 0; }
+.eyebrow { font-size: 11px; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); font-weight: 700; }
+.section { display: grid; gap: 12px; margin-bottom: 28px; min-width: 0; }
+.head { display: flex; gap: 10px; align-items: baseline; justify-content: space-between; flex-wrap: wrap; }
+.split { display: grid; grid-template-columns: minmax(0, 2.1fr) minmax(0, 1fr); gap: 20px; align-items: start; }
+@media (max-width: 980px) { .split { grid-template-columns: minmax(0, 1fr); } }
+
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; }
+.stat { background: var(--paper); border: 1px solid var(--line); border-radius: var(--r); padding: 12px 14px; }
+.stat b { display: block; font: 800 24px/1.1 var(--display); font-variant-numeric: tabular-nums; }
+.stat span { color: var(--muted); font-size: 12.5px; }
+.stat.alert b { color: var(--coral-ink); }
+
+.windows { display: grid; gap: 0; background: var(--paper); border: 1px solid var(--line); border-radius: var(--r); padding: 4px 14px; }
+.win { display: grid; grid-template-columns: 22px minmax(0, 1fr) auto; gap: 4px 10px; align-items: center; padding: 9px 0; border-top: 1px solid var(--line); }
+.win:first-child { border-top: 0; }
+.win .k { width: 22px; height: 22px; border-radius: 6px; display: grid; place-items: center; font: 800 11px var(--display); background: var(--sunken); color: var(--muted); }
+.win.now .k { background: var(--risk); color: #fff; }
+.win.done { opacity: .55; }
+.win b { font-weight: 600; }
+.win .when { font-size: 12.5px; color: var(--muted); font-variant-numeric: tabular-nums; text-align: right; }
+
+.ws-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr)); gap: 12px; }
+.ws { background: var(--paper); border: 1px solid var(--line); border-top: 3px solid var(--c, var(--line)); border-radius: var(--r); padding: 13px 14px; display: grid; gap: 8px; align-content: start; min-width: 0; }
+.ws-top { display: flex; gap: 8px; align-items: flex-start; justify-content: space-between; }
+.ws-name { font: 700 14.5px/1.3 var(--display); min-width: 0; }
+.ws-name small { display: block; font: 600 11px var(--mono); color: var(--muted); letter-spacing: .02em; }
+.ws p { margin: 0; font-size: 13.5px; color: var(--ink-2); overflow-wrap: anywhere; }
+.ws .lbl { font-size: 11px; text-transform: uppercase; letter-spacing: .07em; color: var(--muted); font-weight: 700; margin-right: 6px; }
+.ws .blk { color: var(--risk); }
+.bar-p { height: 6px; border-radius: 3px; background: var(--sunken); overflow: hidden; }
+.bar-p i { display: block; height: 100%; background: var(--c, var(--brand)); border-radius: inherit; }
+.ws-meta { display: flex; gap: 6px 12px; flex-wrap: wrap; font-size: 12px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.commit { display: flex; gap: 8px; align-items: baseline; min-width: 0; font-size: 12.5px; color: var(--ink-2); }
+.commit .mono { color: var(--brand); flex: none; }
+.commit span:last-child { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
+
+.pill { display: inline-flex; align-items: center; gap: 5px; font-size: 11.5px; font-weight: 700; padding: 2px 9px; border-radius: 999px; background: var(--idle-bg); color: var(--idle); white-space: nowrap; flex: none; }
+.pill::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+.s-on-track, .s-done, .s-answered, .s-live, .s-on-main { background: var(--ok-bg); color: var(--ok); }
+.s-at-risk, .s-review, .s-requested, .s-staged, .s-accepted { background: var(--wait-bg); color: var(--wait); }
+.s-blocked, .s-conflict, .s-pushed-back { background: var(--risk-bg); color: var(--risk); }
+.s-doing, .s-open, .s-starting, .s-building { background: var(--info-bg); color: var(--info); }
+
+.panel { background: var(--paper); border: 1px solid var(--line); border-radius: var(--r); padding: 14px; display: grid; gap: 4px; min-width: 0; }
+.li { display: grid; gap: 4px; padding: 10px 0; border-top: 1px solid var(--line); min-width: 0; }
+.li:first-child { border-top: 0; padding-top: 2px; }
+.li-top { display: flex; gap: 8px; align-items: center; justify-content: space-between; flex-wrap: wrap; }
+.li-title { font-weight: 600; overflow-wrap: anywhere; }
+.li p { margin: 0; color: var(--ink-2); font-size: 13.5px; overflow-wrap: anywhere; white-space: pre-line; }
+.tag { display: inline-flex; gap: 6px; align-items: center; font-size: 12px; color: var(--muted); white-space: nowrap; }
+.dot { width: 9px; height: 9px; border-radius: 50%; background: var(--c, var(--idle)); flex: none; }
+.empty { color: var(--muted); font-size: 13.5px; padding: 14px; border: 1px dashed var(--line-strong); border-radius: var(--r); background: var(--sunken); }
+
+.answer { display: grid; gap: 6px; margin-top: 4px; }
+.answer textarea { width: 100%; min-height: 64px; resize: vertical; border: 1px solid var(--line-strong); border-radius: 8px; padding: 8px 10px; background: var(--bg); }
+.answer .row { display: flex; gap: 8px; align-items: center; justify-content: flex-end; flex-wrap: wrap; }
+.btn { border: 0; background: var(--brand); color: var(--paper); font-weight: 700; font-size: 13px; padding: 7px 14px; border-radius: 8px; cursor: pointer; }
+.btn:disabled { opacity: .5; cursor: default; }
+.quote { border-left: 3px solid var(--ok); padding-left: 10px; color: var(--ink); font-size: 13.5px; white-space: pre-line; }
+
+.filters { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.chip { border: 1px solid var(--line); background: var(--paper); border-radius: 999px; padding: 4px 11px; font-size: 12.5px; cursor: pointer; display: inline-flex; gap: 6px; align-items: center; color: var(--ink-2); }
+.chip[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.filters input { border: 1px solid var(--line-strong); border-radius: 8px; padding: 5px 10px; background: var(--paper); min-width: 0; flex: 1 1 180px; max-width: 280px; }
+.kanban { display: grid; grid-template-columns: repeat(5, minmax(220px, 1fr)); gap: 10px; overflow-x: auto; padding-bottom: 6px; }
+@media (max-width: 760px) { .kanban { grid-template-columns: minmax(0, 1fr); overflow-x: visible; } }
+.col { background: var(--sunken); border: 1px solid var(--line); border-radius: var(--r); padding: 10px; display: grid; gap: 8px; align-content: start; min-width: 0; }
+.col h3 { margin: 0 0 2px; font: 700 13px var(--display); display: flex; justify-content: space-between; }
+.card { background: var(--paper); border: 1px solid var(--line); border-left: 3px solid var(--c, var(--line)); border-radius: 9px; padding: 9px 10px; display: grid; gap: 5px; min-width: 0; }
+.card .li-title { font-size: 13.5px; }
+.prio { font: 600 10.5px var(--mono); text-transform: uppercase; color: var(--muted); }
+.prio.must { color: var(--coral-ink); }
+
+.feed .li p { color: var(--ink); }
+.pipe { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; font-size: 11.5px; color: var(--muted); }
+.pipe span { padding: 3px 6px; border-radius: 6px; background: var(--sunken); text-align: center; }
+.pipe span.on { background: var(--ok-bg); color: var(--ok); font-weight: 700; }
+
+.fresh { animation: flash 8s ease-out var(--age, 0s) both; }
+@keyframes flash { 0% { background-color: var(--flash); box-shadow: 0 0 0 2px var(--coral); } 60% { box-shadow: 0 0 0 0 transparent; } 100% { background-color: var(--paper); box-shadow: none; } }
+.li.fresh { animation-name: flash-li; border-radius: 8px; }
+@keyframes flash-li { 0% { background-color: var(--flash); } 100% { background-color: transparent; } }
+@media (prefers-reduced-motion: reduce) { .fresh, .live .pulse { animation: none !important; } }
+@media (max-width: 560px) { .clock { min-width: 0; flex: 1 1 40%; } }
+</style>
+
+<header class="bar">
+  <div class="wrap">
+    <div class="top">
+      <div class="brand">
+        <div class="mark" aria-hidden="true"><i></i></div>
+        <div>
+          <h1>Agentrix WebApp Platform</h1>
+          <div class="sub">The full product, built on the first release and shipped to agentrix.website. Each build session writes its own rows here as it works.</div>
+        </div>
+      </div>
+      <div class="chips-top">
+        <div class="clock" id="live-clock"><span>Board</span><b class="live" id="live" data-s="loading"><i class="pulse"></i><span id="live-text">Connecting</span></b></div>
+        <div class="clock" id="main-clock"><span>Main</span><b id="main-state">…</b></div>
+        <div class="clock"><span>Submit target</span><b id="c-target">…</b></div>
+        <div class="clock"><span>Lablab closes</span><b id="c-hard">…</b></div>
+      </div>
+    </div>
+    <nav class="tabs" id="tabs" aria-label="Views"></nav>
+  </div>
+</header>
+<main class="wrap" id="main" aria-live="polite"></main>
+
+<script>
+(() => {
+  "use strict";
+  const COLS = ["workstreams", "tasks", "asks", "log", "merges"];
+  const VIEWS = [["overview", "Overview"], ["tasks", "Tasks"], ["asks", "Asks"], ["activity", "Activity"]];
+  const TARGET_DEFAULT = "2026-11-08T20:00:00+03:00", HARD_DEFAULT = "2026-11-09T02:00:00+03:00";
+  const T_STATUS = ["todo", "doing", "review", "blocked", "done"];
+  const T_LABEL = { todo: "To do", doing: "Doing", review: "Review", blocked: "Blocked", done: "Done" };
+  const MERGE_STEPS = [["requested", "Asked"], ["staged", "On platform"], ["on-main", "On main"], ["live", "Live"]];
+  const FRESH_MS = 8000;
+
+  const st = { data: Object.fromEntries(COLS.map((c) => [c, []])), meta: null, answered: new Set(), status: "loading",
+    lastChange: 0, fresh: new Map(), canEdit: false, drafts: new Map(), busy: new Set() };
+  const ui = { view: "overview", ws: "all", q: "" };
+  let db = null;
+
+  const $ = (id) => document.getElementById(id);
+  const esc = (v) => String(v ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
+  const slug = (v) => String(v ?? "").toLowerCase().replace(/[^a-z0-9]+/g, "-");
+  const t = (iso) => { const n = Date.parse(iso); return Number.isFinite(n) ? n : 0; };
+  function ago(iso) {
+    const n = t(iso); if (!n) return "";
+    const s = Math.max(0, Math.round((Date.now() - n) / 1000));
+    if (s < 45) return "just now";
+    if (s < 3600) return `${Math.round(s / 60)} min ago`;
+    if (s < 86400) return `${Math.round(s / 3600)} h ago`;
+    return new Date(n).toLocaleDateString(undefined, { weekday: "short", day: "numeric", month: "short" });
+  }
+  function until(ms) {
+    if (ms <= 0) return "passed";
+    const h = Math.floor(ms / 3600000), m = Math.floor((ms % 3600000) / 60000);
+    return h >= 48 ? `${Math.floor(h / 24)}d ${h % 24}h` : `${h}h ${String(m).padStart(2, "0")}m`;
+  }
+  const hm = (iso) => new Date(t(iso)).toLocaleString(undefined, { weekday: "short", hour: "2-digit", minute: "2-digit" });
+  const pill = (s, label) => `<span class="pill s-${esc(slug(s))}">${esc(label || String(s || "unknown").replace(/-/g, " "))}</span>`;
+  const wsList = () => [...st.data.workstreams].sort((a, b) => (a.order ?? 99) - (b.order ?? 99));
+  const wsById = () => new Map(st.data.workstreams.map((w) => [w.id, w]));
+  const wsColor = (id) => { const w = wsById().get(id); return w && w.color ? `var(--${esc(w.color)})` : "var(--idle)"; };
+  const wsName = (id) => id === "james" ? "James" : ((wsById().get(id) || {}).short || (wsById().get(id) || {}).name || id || "Unassigned");
+  const wsTag = (id) => `<span class="tag"><span class="dot" style="--c:${id === "james" ? "var(--coral)" : wsColor(id)}"></span>${esc(wsName(id))}</span>`;
+  function freshAttr(key) {
+    const at = st.fresh.get(key); if (!at) return { cls: "", style: "" };
+    const age = (Date.now() - at) / 1000; if (age * 1000 > FRESH_MS) return { cls: "", style: "" };
+    return { cls: " fresh", style: `--age:-${age.toFixed(2)}s;` };
+  }
+  const empty = (txt) => `<div class="empty">${esc(txt)}</div>`;
+
+  /* ---------- header ---------- */
+  function windows() { return (st.meta && Array.isArray(st.meta.windows) ? st.meta.windows : []).slice().sort((a, b) => t(a.from) - t(b.from)); }
+  function renderHeader() {
+    const now = Date.now();
+    $("c-target").textContent = until(t((st.meta && st.meta.target) || TARGET_DEFAULT) - now);
+    $("c-hard").textContent = until(t((st.meta && st.meta.hard) || HARD_DEFAULT) - now);
+    const active = windows().find((w) => w.from && t(w.from) <= now && (!w.to || t(w.to) > now) && w.state !== "done");
+    const mainClock = $("main-clock"), ms = $("main-state");
+    if (!st.meta) { ms.textContent = "…"; mainClock.className = "clock"; }
+    else if (active) { ms.textContent = `Frozen: ${active.label}`; mainClock.className = "clock main-frozen"; }
+    else if (st.meta.mainOwner) { ms.textContent = `Open · ${st.meta.mainOwner}`; mainClock.className = "clock main-open"; }
+    else { ms.textContent = "Open"; mainClock.className = "clock main-open"; }
+    const live = $("live"); live.dataset.s = st.status;
+    $("live-text").textContent = st.status === "live" ? (st.lastChange ? `Live · ${ago(new Date(st.lastChange).toISOString())}` : "Live")
+      : st.status === "error" ? "Disconnected" : st.status === "nodb" ? "Offline view" : st.status === "slow" ? "Still connecting" : "Connecting";
+  }
+  function renderTabs() {
+    const openTasks = st.data.tasks.filter((x) => x.status !== "done").length;
+    const forJames = st.data.asks.filter((a) => a.to === "james" && a.status === "open").length;
+    const openAsks = st.data.asks.filter((a) => a.status === "open" || a.status === "pushed-back").length;
+    const counts = { tasks: [openTasks, false], asks: [openAsks, forJames > 0], activity: [0, false] };
+    $("tabs").innerHTML = VIEWS.map(([id, label]) => {
+      const [n, hot] = counts[id] || [0, false];
+      return `<a class="tab" href="#${id}"${ui.view === id ? ' aria-current="page"' : ""}>${esc(label)}${n ? `<span class="n${hot ? " hot" : ""}">${n}</span>` : ""}</a>`;
+    }).join("");
+  }
+  function noteHtml() {
+    if (st.status === "nodb") return `<div class="note">This copy can't reach the board's live data. Open it on claude.ai while signed in to see the sessions' rows.</div>`;
+    if (st.status === "error") return `<div class="note bad">The live connection dropped. Reload the page to reconnect.</div>`;
+    if (st.status === "slow") return `<div class="note">The board's data hasn't answered yet, so what you see may be out of date.</div>`;
+    return "";
+  }
+
+  /* ---------- overview ---------- */
+  function wsCard(w) {
+    const tasks = st.data.tasks.filter((x) => x.workstream === w.id);
+    const done = tasks.filter((x) => x.status === "done").length;
+    const pct = tasks.length ? Math.round((done / tasks.length) * 100) : 0;
+    const asksIn = st.data.asks.filter((a) => a.to === w.id && a.status === "open").length;
+    const f = freshAttr("workstreams/" + w.id);
+    const lc = w.lastCommit || {};
+    return `<article class="ws${f.cls}" style="--c:${wsColor(w.id)};${f.style}">
+      <div class="ws-top"><div class="ws-name"><small>${esc(w.code || "")}</small>${esc(w.name || w.id)}</div>${pill(w.status || "starting")}</div>
+      ${w.now ? `<p><span class="lbl">Now</span>${esc(w.now)}</p>` : w.mission ? `<p>${esc(w.mission)}</p>` : ""}
+      ${w.next ? `<p><span class="lbl">Next</span>${esc(w.next)}</p>` : ""}
+      ${w.blocked ? `<p class="blk"><span class="lbl">Blocked</span>${esc(w.blocked)}</p>` : ""}
+      <div class="bar-p" role="img" aria-label="${done} of ${tasks.length} tasks done"><i style="width:${pct}%"></i></div>
+      <div class="ws-meta"><span><b>${done}</b>/${tasks.length} tasks</span><span>${asksIn} asks waiting</span>${w.updatedAt ? `<span>updated ${esc(ago(w.updatedAt))}</span>` : ""}</div>
+      ${lc.hash ? `<div class="commit"><span class="mono">${esc(String(lc.hash).slice(0, 7))}</span><span title="${esc(lc.text || "")}">${esc(lc.text || "")}</span></div>` : ""}
+      ${w.session || w.branch ? `<div class="ws-meta">${w.session ? `<span>Session: ${esc(w.session)}</span>` : ""}${w.branch ? `<span class="mono">${esc(w.branch)}</span>` : ""}</div>` : ""}
+    </article>`;
+  }
+  function askItem(a, withForm) {
+    const f = freshAttr("asks/" + a.id);
+    const draft = st.drafts.get(a.id) || "";
+    const form = withForm && st.canEdit && a.status === "open" ? `<form class="answer" data-ask="${esc(a.id)}">
+        <label class="small muted" for="ans-${esc(a.id)}">Your answer goes to ${esc(wsName(a.from))}</label>
+        <textarea id="ans-${esc(a.id)}" data-draft="${esc(a.id)}">${esc(draft)}</textarea>
+        <div class="row"><button class="btn" type="submit"${st.busy.has(a.id) ? " disabled" : ""}>${st.busy.has(a.id) ? "Sending" : "Send answer"}</button></div></form>` : "";
+    return `<div class="li${f.cls}" style="${f.style}">
+      <div class="li-top"><span>${wsTag(a.from)} <span class="muted">to</span> ${wsTag(a.to)}</span>${pill(a.status || "open")}</div>
+      <div class="li-title">${esc(a.title)}</div>${a.detail ? `<p>${esc(a.detail)}</p>` : ""}
+      ${a.answer ? `<div class="quote">${esc(a.answer)}</div><small class="muted">${esc(a.answeredBy || "")} ${esc(ago(a.answeredAt))}</small>` : ""}
+      ${form}<small class="muted">${esc(ago(a.updatedAt))}</small></div>`;
+  }
+  function feedItems(n) {
+    const log = [...st.data.log].sort((a, b) => t(b.at) - t(a.at)).slice(0, n);
+    if (!log.length) return `<div class="muted small">Nothing logged yet. Each session adds a line per commit.</div>`;
+    return log.map((l) => { const f = freshAttr("log/" + l.id); return `<div class="li${f.cls}" style="${f.style}">
+      <div class="li-top">${wsTag(l.workstream)}<small class="muted">${esc(ago(l.at))}</small></div>
+      <p>${l.commit ? `<span class="mono" style="color:var(--brand)">${esc(String(l.commit).slice(0, 7))}</span> ` : ""}${esc(l.text)}</p></div>`; }).join("");
+  }
+  function viewOverview() {
+    const tasks = st.data.tasks;
+    const done = tasks.filter((x) => x.status === "done").length;
+    const blocked = tasks.filter((x) => x.status === "blocked").length + st.data.workstreams.filter((w) => w.status === "blocked").length;
+    const forJames = st.data.asks.filter((a) => a.to === "james" && a.status === "open").sort((a, b) => t(a.updatedAt) - t(b.updatedAt));
+    const live = st.data.merges.filter((m) => m.status === "live").length;
+    const stats = [[`${done}/${tasks.length}`, "tasks done"], [tasks.filter((x) => x.status === "doing" || x.status === "review").length, "in flight"],
+      [blocked, "blocked", blocked > 0], [forJames.length, "waiting on James", forJames.length > 0], [live, "slices live on agentrix.website"]];
+    const now = Date.now();
+    const win = windows();
+    const winHtml = win.length ? `<div class="windows">${win.map((w) => {
+      const isNow = !!w.from && t(w.from) <= now && (!w.to || t(w.to) > now) && w.state !== "done";
+      const isDone = w.state === "done" || (w.to && t(w.to) <= now);
+      const when = isNow ? "now" : isDone ? "over" : w.from ? esc(hm(w.from)) : esc(w.whenText || "time to be set");
+      return `<div class="win${isNow ? " now" : ""}${isDone ? " done" : ""}"><span class="k">${esc(w.key || "")}</span>
+        <div><b>${esc(w.label)}</b>${w.detail ? `<div class="small muted">${esc(w.detail)}</div>` : ""}</div>
+        <div class="when">${when}${w.to && !isDone ? `<br>${isNow ? "until " : "to "}${esc(hm(w.to))}` : ""}</div></div>`; }).join("")}</div>` : empty("No freeze windows set.");
+    const wss = wsList();
+    return `<section class="section"><div class="stats">${stats.map(([n, l, a]) => `<div class="stat${a ? " alert" : ""}"><b>${esc(n)}</b><span>${esc(l)}</span></div>`).join("")}</div></section>
+      <div class="split">
+        <div>
+          <section class="section"><div class="head"><h2>Workstreams</h2><span class="small muted">one build session each · cards light up when a session writes</span></div>
+            ${wss.length ? `<div class="ws-grid">${wss.map(wsCard).join("")}</div>` : empty("No workstreams yet. Each build session adds its card when it starts.")}</section>
+        </div>
+        <aside>
+          <section class="section"><div class="head"><h2>Waiting on James</h2></div>
+            <div class="panel">${forJames.length ? forJames.map((a) => askItem(a, true)).join("") : `<div class="muted small">Nothing waiting on you.</div>`}</div></section>
+          <section class="section"><div class="head"><h2>When main can move</h2><span class="small muted">The first release windows</span></div>${winHtml}</section>
+          <section class="section"><div class="head"><h2>Live feed</h2><a class="small" href="#activity">All activity</a></div>
+            <div class="panel feed">${feedItems(12)}</div></section>
+        </aside>
+      </div>`;
+  }
+
+  /* ---------- tasks ---------- */
+  function viewTasks() {
+    const q = ui.q.trim().toLowerCase();
+    const list = st.data.tasks.filter((x) => (ui.ws === "all" || x.workstream === ui.ws)
+      && (!q || `${x.title} ${x.surface || ""} ${x.id}`.toLowerCase().includes(q)));
+    const rank = { must: 0, should: 1, could: 2 };
+    const chips = `<div class="filters"><button class="chip" data-ws="all" aria-pressed="${ui.ws === "all"}">All</button>${wsList().map((w) =>
+      `<button class="chip" data-ws="${esc(w.id)}" aria-pressed="${ui.ws === w.id}"><span class="dot" style="--c:${wsColor(w.id)}"></span>${esc(w.short || w.name)}</button>`).join("")}
+      <input id="f-q" type="search" placeholder="Find a task" aria-label="Find a task" value="${esc(ui.q)}"></div>`;
+    const cols = T_STATUS.map((s) => {
+      const items = list.filter((x) => (x.status || "todo") === s).sort((a, b) => (rank[a.priority] ?? 3) - (rank[b.priority] ?? 3) || (a.order ?? 999) - (b.order ?? 999));
+      return `<div class="col"><h3><span>${T_LABEL[s]}</span><span class="mono">${items.length}</span></h3>${items.map((x) => {
+        const f = freshAttr("tasks/" + x.id);
+        return `<div class="card${f.cls}" style="--c:${wsColor(x.workstream)};${f.style}"><div class="li-top">${wsTag(x.workstream)}${x.priority ? `<span class="prio ${esc(x.priority)}">${esc(x.priority)}</span>` : ""}</div>
+          <div class="li-title">${esc(x.title)}</div>${x.surface ? `<small class="muted">${esc(x.surface)}</small>` : ""}
+          ${x.blockedBy ? `<small style="color:var(--risk)">Blocked by ${esc(x.blockedBy)}</small>` : ""}
+          ${x.commit ? `<small class="mono" style="color:var(--brand)">${esc(String(x.commit).slice(0, 7))}</small>` : ""}</div>`; }).join("") || `<div class="muted small">Nothing here.</div>`}</div>`;
+    }).join("");
+    return `<section class="section"><div class="head"><h2>Tasks</h2><span class="small muted">Must first · a card lights up when its session moves it</span></div>${chips}
+      ${st.data.tasks.length ? `<div class="kanban">${cols}</div>` : empty("No tasks yet. Each session lists its pages and features here when it starts.")}</section>`;
+  }
+
+  /* ---------- asks ---------- */
+  function viewAsks() {
+    const order = { open: 0, "pushed-back": 1, accepted: 2, answered: 3, done: 4 };
+    const list = [...st.data.asks].sort((a, b) => (order[a.status] ?? 5) - (order[b.status] ?? 5) || t(b.updatedAt) - t(a.updatedAt));
+    const open = list.filter((a) => a.status === "open" || a.status === "pushed-back" || a.status === "accepted");
+    const closed = list.filter((a) => !open.includes(a));
+    return `<div class="split"><section class="section"><div class="head"><h2>Open asks</h2><span class="small muted">what one workstream needs from another, or from James</span></div>
+      <div class="panel">${open.length ? open.map((a) => askItem(a, a.to === "james")).join("") : `<div class="muted small">No open asks.</div>`}</div></section>
+      <section class="section"><div class="head"><h2>Settled</h2></div><div class="panel">${closed.length ? closed.map((a) => askItem(a, false)).join("") : `<div class="muted small">None yet.</div>`}</div></section></div>`;
+  }
+
+  /* ---------- activity ---------- */
+  function viewActivity() {
+    const merges = [...st.data.merges].sort((a, b) => t(b.updatedAt) - t(a.updatedAt));
+    const idx = (s) => MERGE_STEPS.findIndex(([k]) => k === s);
+    return `<div class="split"><section class="section"><div class="head"><h2>Activity</h2><span class="small muted">newest first</span></div>
+      <div class="panel feed">${feedItems(200)}</div></section>
+      <aside class="section"><div class="head"><h2>Slices on their way to agentrix.website</h2></div>
+      <div class="panel">${merges.length ? merges.map((m) => { const f = freshAttr("merges/" + m.id); const at = idx(m.status);
+        return `<div class="li${f.cls}" style="${f.style}"><div class="li-top">${wsTag(m.workstream)}${pill(m.status === "conflict" ? "conflict" : m.status, m.status === "on-main" ? "on main" : null)}</div>
+          <div class="li-title">${esc(m.title || m.id)}</div>${m.range ? `<small class="mono muted">${esc(m.range)}</small>` : ""}${m.note ? `<p>${esc(m.note)}</p>` : ""}
+          <div class="pipe">${MERGE_STEPS.map(([k, l], i) => `<span class="${at >= i ? "on" : ""}">${l}</span>`).join("")}</div><small class="muted">${esc(ago(m.updatedAt))}</small></div>`; }).join("")
+        : `<div class="muted small">No slices yet. A slice is asked for, merged onto platform, fast-forwarded onto main, then deployed.</div>`}</div></aside></div>`;
+  }
+
+  /* ---------- render, keeping drafts and focus ---------- */
+  function render() {
+    renderHeader(); renderTabs();
+    const active = document.activeElement;
+    const keep = active && active.id ? { id: active.id, s: active.selectionStart, e: active.selectionEnd } : null;
+    const views = { overview: viewOverview, tasks: viewTasks, asks: viewAsks, activity: viewActivity };
+    $("main").innerHTML = noteHtml() + (views[ui.view] || viewOverview)();
+    if (keep) { const el = $(keep.id); if (el) { el.focus(); try { el.setSelectionRange(keep.s, keep.e); } catch (_) {} } }
+  }
+  let queued = false;
+  const schedule = () => { if (queued) return; queued = true; requestAnimationFrame(() => { queued = false; render(); }); };
+  function route() { const h = location.hash.replace(/^#/, ""); ui.view = VIEWS.some(([id]) => id === h) ? h : "overview"; render(); }
+
+  document.addEventListener("click", (ev) => {
+    const chip = ev.target.closest(".chip[data-ws]"); if (chip) { ui.ws = chip.dataset.ws; render(); }
+  });
+  document.addEventListener("input", (ev) => {
+    if (ev.target.id === "f-q") { ui.q = ev.target.value; render(); }
+    if (ev.target.dataset && ev.target.dataset.draft) st.drafts.set(ev.target.dataset.draft, ev.target.value);
+  });
+  document.addEventListener("submit", async (ev) => {
+    const form = ev.target.closest("form.answer"); if (!form) return;
+    ev.preventDefault();
+    const id = form.dataset.ask, text = (st.drafts.get(id) || "").trim();
+    if (!text || !db || st.busy.has(id)) return;
+    st.busy.add(id); render();
+    try {
+      const at = new Date().toISOString();
+      await db.doc("asks/" + id).update({ answer: text, status: "answered", answeredAt: at, answeredBy: "James (board)", updatedAt: at });
+      st.drafts.delete(id);
+    } catch (err) {
+      alertNote(`Your answer wasn't saved (${err && err.code ? err.code : "error"}). It's still in the box; try again.`);
+    } finally { st.busy.delete(id); render(); }
+  });
+  function alertNote(msg) { const n = document.createElement("div"); n.className = "note bad"; n.textContent = msg; $("main").prepend(n); setTimeout(() => n.remove(), 8000); }
+
+  window.addEventListener("hashchange", route);
+  setInterval(() => { renderHeader(); }, 15000);
+  route();
+
+  async function connect() {
+    db = window.claude && window.claude.use ? await window.claude.use("db") : null;
+    if (!db) { st.status = "nodb"; render(); return; }
+    try { const user = await window.claude.use("user"); st.canEdit = user ? await user.canEdit() : false; } catch (_) { st.canEdit = false; }
+    const timer = setTimeout(() => { if (st.status === "loading") { st.status = "slow"; render(); } }, 10000);
+    const fail = (err) => { st.status = "error"; clearTimeout(timer); console.warn("board", err && err.code); render(); };
+    const settle = (key) => { st.answered.add(key); if (st.answered.size === COLS.length + 1 && (st.status === "loading" || st.status === "slow")) { st.status = "live"; clearTimeout(timer); } };
+    COLS.forEach((col) => {
+      let first = true;
+      db.collection(col).onSnapshot((snap) => {
+        st.data[col] = snap.docs.filter((d) => d.exists).map((d) => ({ id: d.id, ...d.data() }));
+        if (!first && !snap.metadata.fromCache) {
+          snap.docChanges().forEach((c) => { if (c.type !== "removed") st.fresh.set(col + "/" + c.doc.id, Date.now()); });
+          st.lastChange = Date.now();
+        }
+        if (!snap.metadata.fromCache) { if (first) { first = false; } settle(col); }
+        schedule();
+      }, fail);
+    });
+    db.doc("meta/board").onSnapshot((snap) => {
+      st.meta = snap.exists ? snap.data() : null;
+      if (!snap.metadata.fromCache) settle("meta");
+      schedule();
+    }, fail);
+    setInterval(() => { // drop expired highlights
+      const now = Date.now(); let any = false;
+      st.fresh.forEach((at, k) => { if (now - at > FRESH_MS) { st.fresh.delete(k); any = true; } });
+      if (any && !document.activeElement?.matches?.("textarea, input")) schedule();
+    }, 4000);
+  }
+  connect();
+})();
+</script>

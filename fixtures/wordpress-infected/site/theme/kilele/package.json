@@ -1,0 +1,10 @@
+{
+  "name": "kilele-theme",
+  "version": "1.4.2",
+  "private": true,
+  "description": "Kilele theme (Zavora's fixture). The build compiles colour and font tokens into build/theme.css.",
+  "scripts": {
+    "build": "sh build.sh"
+  },
+  "license": "MIT"
+}

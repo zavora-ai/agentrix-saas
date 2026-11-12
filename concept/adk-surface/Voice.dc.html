@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Voice and video</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap">
+<style>body{margin:0}</style>
+</helmet>
+<div style="min-height: 820px; box-sizing: border-box; font-family: Inter, system-ui, sans-serif; color: {{t.text}}; background: {{t.glow}}, {{t.bg}}; display: flex; flex-direction: column">
+
+  <header style="padding: 14px 28px; border-bottom: 1px solid {{t.border}}; display: flex; flex-wrap: wrap; align-items: center; gap: 12px 24px">
+    <span style="display: flex; align-items: center; gap: 10px"><span style="width: 10px; height: 10px; border-radius: 5px; background: {{t.brand}}"></span><a href="WebHome.dc.html" style="font-weight: 800; font-size: 17px; letter-spacing: -0.02em; color: {{t.text}}; text-decoration: none">ADK-Rust</a></span>
+    <span style="font-size: 15px; color: {{t.text2}}">Talking with <span style="font-weight: 600; color: {{t.text}}">Chief of staff</span></span>
+    <span style="flex-grow: 1"></span>
+    <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: {{t.text2}}">Voice model
+      <select style="font: inherit; font-size: 14px; padding: 7px 10px; border: 1px solid {{t.line}}; border-radius: 10px; color: {{t.text}}; background: {{t.surface}}"><option>Gemini Live</option><option>OpenAI Realtime</option></select>
+    </label>
+    <button type="button" style="font: inherit; font-size: 14px; font-weight: 600; padding: 9px 16px; border-radius: 10px; border: none; background: {{t.ink}}; color: {{t.onInk}}; cursor: pointer; min-height: 40px">End</button>
+  </header>
+
+  <div style="width: 100%; max-width: 1100px; margin: 0 auto; box-sizing: border-box; padding: 44px 32px; display: flex; flex-wrap: wrap; gap: 40px; align-items: flex-start">
+    <main style="flex: 999 1 520px; min-width: 0; display: flex; flex-direction: column; gap: 26px">
+      <div style="display: flex; align-items: center; gap: 16px">
+        <div aria-hidden="true" style="display: flex; align-items: center; gap: 4px; height: 40px">
+          <span style="width: 5px; height: 12px; border-radius: 3px; background: {{t.brand}}"></span>
+          <span style="width: 5px; height: 28px; border-radius: 3px; background: {{t.brand}}"></span>
+          <span style="width: 5px; height: 18px; border-radius: 3px; background: {{t.brand}}"></span>
+          <span style="width: 5px; height: 36px; border-radius: 3px; background: {{t.brand}}"></span>
+          <span style="width: 5px; height: 14px; border-radius: 3px; background: {{t.brand}}"></span>
+          <span style="width: 5px; height: 24px; border-radius: 3px; background: {{t.brand}}"></span>
+        </div>
+        <span style="font-size: 34px; font-weight: 800; letter-spacing: -0.03em">Listening</span>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 14px; font-size: 18px; line-height: 1.55">
+        <p style="margin: 0; color: {{t.text2}}">Finance wants to email the October invoice to [CLIENT]. Say "allow once" or "deny".</p>
+        <p style="margin: 0; font-weight: 600">Allow once.</p>
+      </div>
+
+      <section aria-label="Voice decision" style="max-width: 600px; box-sizing: border-box; background: {{t.decision}}; border: 1px solid {{t.accentLine}}; border-radius: 20px; box-shadow: {{t.shadow}}; padding: 20px; display: flex; flex-direction: column; gap: 14px">
+        <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 10px">
+          <span style="font-size: 14px; color: {{t.text2}}">Heard "allow once"</span>
+          <span style="display: flex; align-items: center; gap: 7px; padding: 5px 11px; border-radius: 999px; background: {{t.accentSoft}}; color: {{t.accent}}; font-size: 13px; font-weight: 600"><span style="width: 7px; height: 7px; border-radius: 4px; background: {{t.brand}}"></span>Allowing in 3 s</span>
+        </div>
+        <h2 style="margin: 0; font-size: 22px; font-weight: 700; letter-spacing: -0.02em">Send the October invoice to [CLIENT]</h2>
+        <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px">
+          <span style="flex: 1 1 220px; font-size: 13px; color: {{t.muted}}">Finance · Medium risk</span>
+          <button type="button" style="font: inherit; font-size: 15px; padding: 10px 16px; border-radius: 10px; border: 1px solid {{t.line}}; background: transparent; color: {{t.text}}; cursor: pointer; min-height: 44px">Cancel</button>
+        </div>
+      </section>
+
+      <p style="margin: 0; font-size: 16px; line-height: 1.55; color: {{t.text2}}; max-width: 600px">Publishing a release is high risk, so voice can't approve it. <a href="PhoneDecide.dc.html" style="font-weight: 600; color: {{t.accent}}">Decide on screen</a></p>
+    </main>
+
+    <aside style="flex: 1 1 300px; min-width: 0; display: flex; flex-direction: column; gap: 14px">
+      <div style="background: {{t.surface}}; border: 1px solid {{t.border}}; border-radius: 20px; padding: 20px; display: flex; flex-direction: column; gap: 14px; box-shadow: {{t.shadow}}">
+        <h2 style="margin: 0; font-size: 17px; font-weight: 700">What it can see</h2>
+        <div role="img" aria-label="Placeholder for the shared window" style="height: 150px; border-radius: 12px; background: {{t.raised}}; border: 1px dashed {{t.line}}; display: flex; align-items: center; justify-content: center; font-size: 13px; color: {{t.muted}}; text-align: center; padding: 12px; box-sizing: border-box">[Shared window: invoice.pdf]</div>
+        <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 4px; padding: 4px; border-radius: 12px; background: {{t.raised}}">
+          <button type="button" aria-pressed="true" style="font: inherit; font-size: 13px; font-weight: 600; padding: 9px 4px; border-radius: 9px; border: none; background: {{t.surface}}; box-shadow: {{t.shadow}}; color: {{t.text}}; cursor: pointer; min-height: 40px">Mic on</button>
+          <button type="button" aria-pressed="false" style="font: inherit; font-size: 13px; padding: 9px 4px; border-radius: 9px; border: none; background: transparent; color: {{t.text2}}; cursor: pointer; min-height: 40px">Camera off</button>
+          <button type="button" aria-pressed="true" style="font: inherit; font-size: 13px; font-weight: 600; padding: 9px 4px; border-radius: 9px; border: none; background: {{t.surface}}; box-shadow: {{t.shadow}}; color: {{t.text}}; cursor: pointer; min-height: 40px">Screen on</button>
+        </div>
+      </div>
+      <span style="font-size: 14px; line-height: 1.5; color: {{t.muted}}; padding: 0 4px">By voice you can say yes once, or no, to everyday things. Serious ones need a screen. We keep a note of your answer, never the recording.</span>
+    </aside>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"dark":{"editor":"boolean","default":false},"$preview":{"width":1280,"height":820}}'>
+class Component extends DCLogic {
+  renderVals() {
+    var L = {bg: '#FFFFFF', surface: '#FFFFFF', raised: '#F6F7F9', border: '#E6E8EC', line: '#D3D7DE', text: '#0F172A', text2: '#475569', muted: '#64748B', brand: '#F74C00', accent: '#C03A00', accentSoft: '#FFF4EE', accentLine: '#FFD6C2', decision: '#FFF8F3', ink: '#0A1628', onInk: '#FFFFFF', shadow: '0 1px 2px rgba(15,23,42,0.04), 0 12px 32px rgba(15,23,42,0.06)', glow: 'radial-gradient(700px 420px at 100% 0%, #FFE9DE 0%, rgba(255,233,222,0) 70%)'};
+    var D = {bg: '#0A1628', surface: '#15233B', raised: '#1C2B45', border: '#2A3D5C', line: '#3A5075', text: '#F1F5F9', text2: '#D5DEE8', muted: '#A7B4C6', brand: '#F74C00', accent: '#FF9C78', accentSoft: 'rgba(247,76,0,0.14)', accentLine: 'rgba(255,156,120,0.38)', decision: '#2A2432', ink: '#F1F5F9', onInk: '#0A1628', shadow: 'none', glow: 'radial-gradient(700px 420px at 100% 0%, rgba(247,76,0,0.16) 0%, rgba(247,76,0,0) 70%)'};
+    return { t: this.props.dark ? D : L };
+  }
+}
+</script>
+</body>
+</html>

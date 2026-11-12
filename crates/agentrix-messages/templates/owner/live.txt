@@ -1,0 +1,16 @@
+{% block subject %}{{ site.name }} is live at {{ live.domain }}{% endblock %}
+{% block preheader %}The old site stays on standby until {{ live.fallback_until }}. Undo puts it back.{% endblock %}
+{% block body %}
+# Your site is live at {{ live.domain }}
+{{ live.at }}: visitors to {{ live.domain }} now get the new site, served from release {{ live.release }}, signed and checked against the old one page by page.
+
+The old site stays on standby until {{ live.fallback_until }}. Until then, Undo puts it back in one tap.
+
+::button Open the console | {{ console_url }}
+
+Tomorrow at 07:00 you'll get your first morning brief: what the site did overnight, and anything that needs you.
+{% endblock %}
+{% block chat %}
+Agentrix: {{ site.name }} is live at {{ live.domain }}. The old site stays on standby until {{ live.fallback_until }}; Undo in the console puts it back in one tap. Your first brief comes tomorrow at 07:00.
+::button Open the console | {{ console_url }}
+{% endblock %}

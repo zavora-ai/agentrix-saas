@@ -1,0 +1,16 @@
+{% block subject %}Your account at {{ site.name }} is ready{% endblock %}
+{% block preheader %}For following orders and keeping receipts.{% endblock %}
+{% block body %}
+# Your account is ready
+{% if person.name %}
+Welcome, {{ person.name }}. You sign in to {{ site.host }} with {{ signin_method }}.
+{% else %}
+Welcome. You sign in to {{ site.host }} with {{ signin_method }}.
+{% endif %}
+
+Your account keeps your orders, receipts and the choices you made. Your account page lists what {{ site.name }} keeps about you and for how long.
+
+::button Open your account | {{ account_url }}
+
+You can download everything or delete the account from the same page.
+{% endblock %}

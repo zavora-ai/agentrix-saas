@@ -1,0 +1,43 @@
+{% extends "messages/base.html" %}
+{% import "ui/kit.html" as ui %}
+{% block content %}
+<div class="page-head">
+  <span class="eyebrow">Trust centre</span>
+  <h1>Messages</h1>
+  <p class="lead">Every message sent for {{ scope_names }}, or that would have been: who it went to, on which channel, and why. One-time codes never show here.</p>
+</div>
+
+{% if not email_ready %}
+{{ ui.line("notice", "Email isn't switched on yet, so no email has left Agentrix. Each one is kept here, marked Not sent. Open one to read it as it would have arrived.") }}
+{% endif %}
+
+<section class="card" aria-labelledby="list-h">
+  <div class="card-title">
+    <h2 id="list-h">Sent and not sent</h2>
+    {{ ui.segmented(chips, "Filter messages") }}
+  </div>
+
+  {% if rows %}
+  <ol class="msg-list">
+    {% for m in rows %}
+    <li class="msg-row">
+      <span class="msg-when mono">{{ m.when }}</span>
+      <div>
+        <a class="msg-subject" href="/console/messages/{{ m.id }}">{{ m.subject }}</a>
+        <p class="small">{{ m.channel }} to {{ m.to }}</p>
+        <p class="small muted">Why: {{ m.reason }}</p>
+        <p class="msg-meta small muted">{{ ui.chip(m.status, m.status_tone) }}{% if m.status_reason %} <span>{{ m.status_reason }}</span>{% endif %} <span>{{ m.message_label }}</span></p>
+      </div>
+    </li>
+    {% endfor %}
+  </ol>
+  {% if older %}<p class="msg-more">{{ ui.button("Older messages", href=older, size="sm") }}</p>{% endif %}
+  {% elif filtered %}
+  {{ ui.empty("No messages match this filter", "Messages with this status will show here as they happen.", action={"label": "Show all messages", "href": "/console/messages"}, level=3) }}
+  {% else %}
+  {{ ui.empty("No messages yet", "They appear here the moment your site sends one: a customer's sign-in code, an order receipt, your morning brief.", level=3) }}
+  {% endif %}
+</section>
+
+<p class="small"><a href="/console/messages/catalogue">See every message Agentrix can send, with examples</a></p>
+{% endblock %}

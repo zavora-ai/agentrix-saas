@@ -1,0 +1,26 @@
+# copy-lint exceptions (scripts/copy-lint). One per line:
+#   path glob | rule | text the finding or its line contains (or *) | why it is allowed
+# Every entry needs a reason a reviewer can check. Prefer fixing the words.
+
+# Literal uses, not marketing.
+crates/*/templates/auth/*.html | banned-word | unlocks | Literal: the screen lock opens the passkey on the device
+crates/*/templates/auth/*.html | banned-word | magic | "Magic links" is the name of an email sign-in method we say we don't use
+
+# Concept pages (scripts/copy-lint --concepts). Product pages never carry these.
+concept/journeys/** | banned-word | journey | The concept set is named Journeys (the customer and owner lanes); no product page uses the word
+concept/assess.html | * | Kilele Bakery!!! | The infected old site's own copy, shown as found, to contrast with the new site
+concept/assess.html | em-dash | summer offers 2023 | The infected old site's own copy, shown as found
+concept/move.html | exclamation | Celebration Cakes!!! | The infected old site's own heading, shown as found during the Move
+concept/console/gestures.html | emoji | * | Hand-gesture icons that illustrate each gesture, not decoration
+concept/console/gestures.html | exclamation | We moved! | The owner's own post, quoted in the card she approves
+concept/console/live.html | exclamation | Hi! | A visitor's own words in a live thread
+concept/console.html | en-dash | Wanjiru | The owner signs her own message with a dash, as she wrote it
+concept/experience/creator.html | em-dash | KSh — | A price slot before the visitor picks an option
+concept/adk-surface/** | * | * | Imported from the adk-surface artifact as drawn; W5 ports its words through the kit
+concept/console/phone.html | banned-word | unlock | Literal: unlocking the phone shows the notification
+concept/journeys/*account.html | banned-word | magic | "Magic links" is the name of an email sign-in method the concept says we don't use
+concept/journeys/owner-account.html | banned-word | unlocks | Literal: the screen lock opens the passkey on the device
+concept/journeys/customer-order.html | exclamation | Happy 7th, Amina! | The customer's own message for the cake, as she typed it
+crates/agentrix-shell/templates/os/gestures.html | emoji | * | W5: the six hand shapes drawn as their emoji beside each gesture's name (concept/console/gestures.html); they are pictures of the gesture, not decoration
+crates/agentrix-home/film/plans/*.json | banned-word | unlocks | Literal: a person unlocks the salon door, in a shot prompt for the film's video model, not on screen
+specs/submission/video/beats-demo.json | banned-word | harness | ADK-Rust's component is named the harness; the video narration names it

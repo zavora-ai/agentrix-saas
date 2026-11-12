@@ -1,0 +1,25 @@
+{% extends "os/base.html" %}
+{#- ShellPage::Walk · view::WalkView (+ Chrome) { site_url?, talk_html? }
+    concept/console/live.html ("Walk your site with the Chief WebAgent"): the live site beside the voice panel. The
+    panel is W11's Talk app (agentrix-media), the same one in the dock: voice can ask, deny and stop everything, never
+    sign. Questions go to W1's Chief (agentrix_kernel::chief), which reads records and changes nothing. No WebAgent edits
+    pages from here (no Editor drafting path yet) and the Chief doesn't point at the page; the page says both. -#}
+{% block title %}Walk your site · {{ site.name }}{% endblock %}
+{% block field %}
+<section class="view on" aria-labelledby="walk-h">
+  <div class="field-head"><div><h2 id="walk-h">Walk your site</h2><div class="sub">Your site as visitors see it now, with your Chief WebAgent beside it</div></div>{% if site_url %}<a class="btn btn-sm" href="{{ site_url }}" rel="noopener" target="_blank">Open in a new tab</a>{% endif %}</div>
+  <div class="walk">
+    <div>
+      {% if site_url %}
+      <iframe class="site-frame" src="{{ site_url }}" title="{{ site.name }}, as visitors see it" sandbox="allow-scripts allow-same-origin allow-forms" referrerpolicy="no-referrer" loading="lazy"></iframe>
+      <p class="small muted">Ask about what you see: your Chief WebAgent (AI) answers from your site's records. It can't change your pages from here yet, and it can't point at parts of the page.</p>
+      {% else %}
+      <article class="fcard"><p>Your site isn't live yet, so there's nothing to walk. It shows here once it is.</p></article>
+      {% endif %}
+    </div>
+    <div>
+      {% if talk_html %}{{ talk_html|safe }}{% else %}<article class="fcard"><p>Talking to your Chief WebAgent isn't available on this console yet.</p></article>{% endif %}
+    </div>
+  </div>
+</section>
+{% endblock %}

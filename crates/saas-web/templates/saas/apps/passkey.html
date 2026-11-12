@@ -1,0 +1,30 @@
+{% extends "saas/apps/base.html" %}
+{% block title %}Passkey · {{ site.name }}{% endblock %}
+{% block field %}
+<div class="field-head"><div><h1>{{ owner }}'s passkey</h1><div class="sub">You are asked for it at three moments, and at no other: linking PayPal, signing or raising the mandate, and stepping up.</div></div></div>
+{% if rp_id %}
+<div class="passkey-line{% if ready %} ready{% endif %}">
+  {% if ready %}{{ ui.chip("Passkey set up", "ok") }} <span class="small">For <span class="mono">{{ rp_id }}</span>. Inside the mandate your agents act without asking.</span>
+  {% else %}{{ ui.chip("No passkey yet", "wait") }} <span class="small">Set up your passkey for <span class="mono">{{ rp_id }}</span> first.</span>
+  {% if may_act %}<button class="btn btn-sm btn-primary" type="button" data-passkey-setup data-options-url="{{ base }}/passkey/setup/options" data-register-url="{{ base }}/passkey/setup">Set up my passkey</button>{% endif %}{% endif %}
+  <span class="small muted" data-passkey-status role="status"></span>
+</div>
+{% endif %}
+<div class="moments">
+  <a class="card moment moment-link-paypal" href="{{ base }}/passkey/link-paypal">
+    <span class="eyebrow">Link PayPal · once</span>
+    <b>Link {{ site.name }}'s PayPal to its agents</b>
+    <span class="small">Starts on PayPal; you approve the link with your passkey</span>
+  </a>
+{% for m in moments %}
+  <a class="card moment moment-{{ m.moment }}{% if m.state != 'pending' %} done{% endif %}" href="{{ m.href }}">
+    <span class="eyebrow">{{ m.words }}{% if m.reason %} · {{ m.reason|replace("-", " ") }}{% endif %}</span>
+    <b>{{ m.title }}</b>
+    <span class="small">{% if m.state == "pending" %}Waiting for your passkey{% else %}{{ m.state|capitalize }}{% endif %}</span>
+  </a>
+{% else %}
+  {{ ui.quiet(note if note else "Nothing waits for your passkey.") }}
+{% endfor %}
+</div>
+{% endblock %}
+{% block scripts %}<script type="module" src="/static/saas/console.js?v={{ saas_v }}"></script>{% endblock %}

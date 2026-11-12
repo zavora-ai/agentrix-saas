@@ -1,0 +1,25 @@
+{% block subject %}{% if freeze.frozen %}Every WebAgent on {{ site.name }} is frozen{% else %}Your WebAgents on {{ site.name }} are working again{% endif %}{% endblock %}
+{% block preheader %}{{ freeze.by }}, {{ freeze.at }}.{% endblock %}
+{% block body %}
+{% if freeze.frozen %}
+# Every WebAgent is frozen
+{{ freeze.by }} froze every WebAgent on {{ site.name }} at {{ freeze.at }}{% if freeze.from %} from {{ freeze.from }}{% endif %}.
+
+Your pages stay up from the signed copy. Nothing new is sent, charged or published until someone unfreezes. Unfreezing needs the console and a passkey or an authenticator code.
+{% else %}
+# Your WebAgents are working again
+{{ freeze.by }} unfroze {{ site.name }} at {{ freeze.at }}. Anything they paused picks up where it stopped; held decisions are still waiting for you.
+{% endif %}
+
+::button Open the console | {{ console_url }}
+{% endblock %}
+{% block push %}{% if freeze.frozen %}Every WebAgent is frozen.{% else %}Your WebAgents are working again.{% endif %}{% endblock %}
+{% block push_url %}{{ console_url }}{% endblock %}
+{% block chat %}
+{% if freeze.frozen %}
+Agentrix: every WebAgent on {{ site.name }} is frozen ({{ freeze.by }}, {{ freeze.at }}). Pages stay up. Unfreezing needs the console.
+{% else %}
+Agentrix: {{ site.name }} is unfrozen ({{ freeze.by }}, {{ freeze.at }}). Your WebAgents are working again.
+{% endif %}
+::button Open the console | {{ console_url }}
+{% endblock %}

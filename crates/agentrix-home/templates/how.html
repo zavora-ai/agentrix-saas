@@ -1,0 +1,359 @@
+{% extends "base.html" %}
+{#- How it works · view::HomeView · the detail one click from the home page: the Move, sealed rooms, go-live, the new site, the console, the architecture on Vultr, the promises -#}
+{% from "macros.html" import ask_box, paste, person, tick, lock %}
+{% block title %}How it works · Agentrix{% endblock %}
+{% block description %}How Agentrix moves a WordPress site through sealed rooms, leaves a hack behind, and runs the new site with WebAgents on Vultr.{% endblock %}
+{% block path %}/how-it-works{% endblock %}
+{% block desk %}how{% endblock %}
+{% block main %}
+{{ ask_box(front_desks[1], desks_ai) }}
+
+<section class="desk-intro wrap" aria-labelledby="how-title">
+  <p class="eyebrow">How it works</p>
+  <h1 id="how-title">How we move your site, and what runs it after.</h1>
+  <p class="lead">The detail behind the home page: every step of the Move, the sealed rooms, going live, the new site and its WebAgents, and the machines on Vultr.</p>
+</section>
+
+<section class="live wrap" aria-labelledby="live-title">
+  <h2 id="live-title" class="sr-only">Live numbers</h2>
+  <ul class="stats">
+    {% for s in stats %}
+    <li class="stat">
+      {% if s.value %}<p class="stat-value">{{ s.value }}</p><p class="stat-label">{{ s.label }}</p>{% else %}<p class="stat-label stat-label-only">{{ s.label }}</p>{% endif %}
+      <p class="stat-note">{{ s.note }}{% if s.href %} <a href="{{ s.href }}">Open the receipt</a>{% endif %}</p>
+    </li>
+    {% endfor %}
+  </ul>
+  <p class="small muted live-foot"><span class="live-dot" aria-hidden="true"></span>Read from receipts and the database{% if read_at %} at {{ read_at }}{% endif %}. Nothing here is typed in.</p>
+</section>
+
+<section class="section wrap" id="conversations" aria-labelledby="conversations-title">
+  <p class="eyebrow">How your WebAgents work</p>
+  <h2 id="conversations-title">Three kinds of conversation, one team.</h2>
+  <div class="patterns">
+    <div class="card tight"><h3>Your customers and your WebAgents</h3><p>Visitors ask your site's desks anything, at any hour. Each desk says it's AI, answers from your own pages, shows the page it used, and passes anything that needs a person to you.</p></div>
+    <div class="card tight"><h3>You and your WebAgents</h3><p>Your Chief WebAgent briefs you each morning. The others ask before anything that costs money or makes a promise, and you answer with one tap on your phone. You can read any conversation and take it over.</p></div>
+    <div class="card tight"><h3>Other AI agents and your WebAgents</h3><p>A customer's AI assistant or agent comes in through the agent door. Your site says what agents may do, over AWP and MCP, and an order from an agent waits for your OK.</p></div>
+  </div>
+</section>
+
+<section class="section wrap" id="two-interfaces" aria-labelledby="two-title">
+  <p class="eyebrow">The Agentic Web Protocol</p>
+  <h2 id="two-title">One website, two interfaces.</h2>
+  <p class="lead">More of the web is now read by AI assistants acting for people. An Agentrix Website serves both: pages for people, and a structured interface for AI agents, built on ADK-Rust's Agentic Web Protocol (AWP).</p>
+  <div class="patterns">
+    <div class="card tight"><h3>For people</h3><p>A clear website, conversations with your WebAgent desks, forms and approvals, as people expect.</p></div>
+    <div class="card tight"><h3>For AI agents</h3><p>A manifest at /.well-known/awp that says what your business offers, what's current, what an agent may do and when it must ask you.</p></div>
+    <div class="card tight"><h3>One set of facts</h3><p>Both read the same published facts, prices and policies, so an agent never has to guess what a person would see.</p></div>
+  </div>
+  <p class="small"><a href="/.well-known/awp">Inspect this site's agent manifest</a> · <a href="https://adk-rust.com/en/awp">How AWP works, on adk-rust.com</a></p>
+</section>
+
+<section class="section section-alt" id="kernel" aria-labelledby="kernel-title">
+  <div class="wrap">
+    <p class="eyebrow">The technology</p>
+    <h2 id="kernel-title">Built on the ADK-Rust kernel.</h2>
+    <p class="lead">Agentrix is written in Rust on <a href="https://adk-rust.com">ADK-Rust</a>, Zavora's open-source agent development kit. Its kernel lets each WebAgent work on its own while you stay in charge.</p>
+    <div class="patterns">
+      <div class="card tight"><h3>One job each</h3><p>Every WebAgent has one job, its own tools and a list of things it never does without you.</p></div>
+      <div class="card tight"><h3>Dials, not blind trust</h3><p>Each job has a dial for how much it may do alone. Only you turn a dial up, and money and promises always ask first.</p></div>
+      <div class="card tight"><h3>A record you can check</h3><p>Every decision you approve is signed and kept as a receipt you can open and verify.</p></div>
+      <div class="card tight"><h3>Open doors for agents</h3><p>Other agents reach your site over AWP and MCP, so it works with the assistants your customers already use.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="section wrap" id="problem" aria-labelledby="problem-title">
+  <p class="eyebrow">The problem</p>
+  <h2 id="problem-title">Small-business websites sit still, and many are quietly hacked.</h2>
+  <div class="problem">
+    <div class="bigstat">
+      <p class="bigstat-n">39.4%</p>
+      <p class="bigstat-t">of all websites run on WordPress.</p>
+      <p class="bigstat-s">Source: <a href="https://w3techs.com/technologies/details/cm-wordpress">W3Techs</a>, 7 Nov 2026</p>
+    </div>
+    <ul class="issues">
+      <li class="issue"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><div><h3>Nobody answers at night.</h3><p>Questions arrive through forms nobody watches. Whoever answers first wins the customer.</p></div></li>
+      <li class="issue"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 2 20h20L12 3z"/><path d="M12 10v4M12 17h.01"/></svg><div><h3>Its infections are invisible to the owner.</h3><p>Injected scripts, spam links and webshells hide in plain sight. A normal migration copies them across.</p></div></li>
+      <li class="issue"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"/></svg><div><h3>AI agents can't use it.</h3><p>Customers now send AI agents to ask and to order. A brochure site leaves them reading screenshots.</p></div></li>
+    </ul>
+  </div>
+</section>
+
+<section class="section wrap" id="move" aria-labelledby="move-title">
+  <p class="eyebrow">The Move</p>
+  <h2 id="move-title">Your site, moved through sealed rooms, step by step.</h2>
+  <p class="lead">Seven steps. The four in dashed boxes run in sealed rooms on a separate Vultr machine that holds no keys. Every step ends in a signed receipt.</p>
+  <ol class="steps">
+    <li class="step"><span class="step-n">01</span><h3>Assess</h3><p>A sealed crawl, and a report with evidence for each finding</p></li>
+    <li class="step"><span class="step-n">02</span><h3>Claim</h3><p>Prove you own the site, by DNS or a file</p></li>
+    <li class="step step-sealed"><span class="step-n">03 · sealed</span><h3>Replay</h3><p>The old WordPress runs in a room with no route out</p></li>
+    <li class="step step-sealed"><span class="step-n">04 · sealed</span><h3>Clean</h3><p>Infections set aside and explained in plain words</p></li>
+    <li class="step step-sealed"><span class="step-n">05 · sealed</span><h3>Rebuild</h3><p>A model writes the new site; a room builds it</p></li>
+    <li class="step step-sealed"><span class="step-n">06 · sealed</span><h3>Prove</h3><p>At least 95% parity, page by page</p></li>
+    <li class="step step-owner"><span class="step-n">07 · you</span><h3>Go live</h3><p>Only on your passkey, with undo for 30 days</p></li>
+  </ol>
+
+  <div class="movelive card">
+    {% if first_move %}
+    <div class="spread"><h3>The first live Move: {{ first_move.site_name }}</h3><span class="chip chip-ok">Live since {{ first_move.live_on }}</span></div>
+    <ul class="timings">
+      {% for s in first_move.steps %}
+      <li><span class="t-step">{{ s.label }}</span><span class="t-time">{{ s.time }}</span><span class="t-sum">{{ s.summary }}{% if s.href %} · <a href="{{ s.href }}">receipt</a>{% endif %}</span></li>
+      {% endfor %}
+    </ul>
+    <p class="small muted">{% if first_move.sealed_total %}In sealed rooms for {{ first_move.sealed_total }} in all. {% endif %}The target is your go-live card within 10 minutes for a 50-page WordPress site. {% if first_move.cost %}Model cost of the whole Move: {{ first_move.cost }}{% if first_move.providers %}, on {{ first_move.providers }}{% endif %}. {% endif %}Times come from the step records; each step's receipt opens and verifies in your browser.</p>
+    {% else %}
+    <h3>The first live Move</h3>
+    <p class="muted">No Move has gone live on this server yet, so how long one takes isn't measured here. The target is your go-live card within 10 minutes for a 50-page WordPress site. When the first Move goes live, the time each sealed step took appears here, read from its receipts, with what the model calls cost.</p>
+    {% endif %}
+  </div>
+
+  <div class="patterns">
+    <div class="card tight"><h3>The model writes code</h3><p>A model writes each page of the new site. A sealed room builds and renders it with no network. Errors go back to the model, up to three tries.</p></div>
+    <div class="card tight"><h3>A browser in a room</h3><p>A browser reads the old site inside a room, and a vision model compares old and new page by page. A page below 95% waits for a person.</p></div>
+  </div>
+</section>
+
+<section class="band" id="security" aria-labelledby="security-title">
+  <div class="wrap band-in">
+    <div class="contain">
+      <p class="eyebrow">Containment</p>
+      <h2 id="security-title">Nothing the old site tries gets out.</h2>
+      <ul class="controls">
+        <li><h3>Process isolation</h3><p>A separate VX1 machine. Each job runs in a gVisor room: read-only, not root, with no capabilities.</p></li>
+        <li><h3>No secrets in the sandbox</h3><p>No keys on the sandbox machine. The proxy refuses the cloud's metadata address.</p></li>
+        <li><h3>Hard limits</h3><p>Caps on CPU, memory, processes and time for every job.</p></li>
+        <li><h3>Rooms are destroyed</h3><p>Every room is destroyed after its job, and the signed receipt says so.</p></li>
+      </ul>
+    </div>
+    <div class="gauntlet">
+      <p class="gauntlet-eyebrow">The gauntlet</p>
+      {% if gauntlet.score %}
+      <p class="gauntlet-score">{{ gauntlet.score }}</p>
+      <p class="gauntlet-sub">attacks contained on the last run, {{ gauntlet.when }}. Computed from receipts, never typed in.{% if gauntlet.href %} <a href="{{ gauntlet.href }}">Open the receipt</a>{% endif %}</p>
+      {% if gauntlet.attacks %}
+      <ol class="attacks">
+        {% for a in gauntlet.attacks %}<li><span>{{ a.name }}</span><b class="{{ 'held' if a.held else 'missed' }}">{% if a.href %}<a href="{{ a.href }}">{{ 'Contained' if a.held else 'Got through' }}</a>{% else %}{{ 'Contained' if a.held else 'Got through' }}{% endif %}</b></li>{% endfor %}
+      </ol>
+      {% endif %}
+      {% else %}
+      <p class="gauntlet-sub">Ten attacks are planted in Zavora's own infected WordPress. The gauntlet throws them at the platform after every deploy, and the score appears here from the run's receipt. It hasn't run on this server yet.</p>
+      <ol class="attacks attacks-plan">
+        <li>A redirect to the cloud's metadata address</li>
+        <li>A link into 127.0.0.1</li>
+        <li>Orders hidden for AI agents</li>
+        <li>Hidden spam links</li>
+        <li>A cloaking plugin</li>
+        <li>A webshell in uploads</li>
+        <li>An obfuscated miner script</li>
+        <li>PHP that phones home</li>
+        <li>A fork bomb asking for 8 GB</li>
+        <li>"Give me 90% off"</li>
+      </ol>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+<section class="section wrap" id="golive" aria-labelledby="golive-title">
+  <p class="eyebrow">Go live</p>
+  <h2 id="golive-title">Live only on the owner's say-so.</h2>
+  <div class="golive">
+    <figure class="card raised golive-card">
+      <figcaption class="golive-eyebrow">{% if golive.site_name %}The go-live card for {{ golive.site_name }}{% else %}The go-live card, as the owner sees it{% endif %}</figcaption>
+      <h3>Go live: your new site</h3>
+      <dl class="kv kv-lg">
+        <div><dt>Parity</dt><dd>{{ golive.parity }}</dd></div>
+        <div><dt>Left behind</dt><dd>{{ golive.left_behind }}</dd></div>
+        <div><dt>Without asking</dt><dd>Only work that can be undone</dd></div>
+        <div><dt>Old site</dt><dd>Kept as a fallback</dd></div>
+        <div><dt>Undo</dt><dd>One tap, for 30 days</dd></div>
+      </dl>
+      <div class="row" aria-hidden="true"><span class="btn btn-coral">Approve with passkey</span><span class="btn">Decline</span></div>
+    </figure>
+    <div class="golive-why">
+      <div><h3>The passkey signs this card.</h3><p>Its challenge commits to the card's fingerprint: the release's digest and the site's charter. Without a passkey, an authenticator code is bound to the same fingerprint.</p></div>
+      <div><h3>Only then is the release signed.</h3><p>The edge serves signed releases only. A release that fails its check is refused, and the last good one stays up.</p></div>
+      {% if golive.to_live %}
+      <div><h3>Live {{ golive.to_live }} after approval.</h3><p>Measured on the first live Move, from the {% if golive.approved_with %}approval with {{ golive.approved_with }}{% else %}approval{% endif %} to the switch. WebAgents never go live by themselves.</p></div>
+      {% else %}
+      <div><h3>Time to live, measured.</h3><p>The time from approval to live will appear here from the first live Move's records. The target is under a minute. WebAgents never go live by themselves.</p></div>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+<section class="section section-alt" id="site" aria-labelledby="site-title">
+  <div class="wrap">
+    <p class="eyebrow">The new site</p>
+    <h2 id="site-title">It answers people and their AI agents.</h2>
+    <div class="two">
+      <div class="card">
+        <h3>Ask this site</h3>
+        <div class="chat" aria-hidden="true">
+          <p class="bubble bubble-q">Do you deliver on Saturdays?</p>
+          <p class="bubble bubble-a">Yes, on Saturday mornings. <span class="cite">From: Delivery</span></p>
+        </div>
+        <p class="sample-tag">Sample · Kilele Bakery</p>
+        <ul class="ticks">
+          <li>Answers come from the site's own pages, and cite the page.</li>
+          <li>When the site doesn't say, it says so and passes the question to the owner.</li>
+          <li>It can't be talked into a discount, and the owner sees the attempt.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>The agent door</h3>
+        <pre class="code" aria-label="An AI agent placing an order through the door"><code>GET  /.well-known/awp
+POST /mcp  request_custom_order
+<em>→ held, waiting for the owner</em></code></pre>
+        <ul class="ticks">
+          <li>The site declares what agents may do, over AWP and MCP.</li>
+          <li>An order from an agent raises the owner's approval card.</li>
+          <li>The agent checks back for the owner's answer.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="race">
+      <p class="race-k">The agent race</p>
+      <p>One custom order, placed by a customer's AI agent twice: on the old site by reading screenshots, and on the new site through the door.{% if links.video %} <a href="{{ links.video }}">Watch it in the video</a>.{% endif %}</p>
+    </div>
+  </div>
+</section>
+
+<section class="section wrap" id="console" aria-labelledby="console-title">
+  <p class="eyebrow">The owner console</p>
+  <h2 id="console-title">What needs you, on your phone.</h2>
+  <div class="console">
+    <div class="phone" aria-label="The owner console's Now screen on a phone" role="img">
+      <div class="phone-screen">
+        <p class="phone-tab">Now</p>
+        <div class="phone-card">
+          <div class="row"><span class="avatar av-chief avatar-sm">CW</span><b>Chief WebAgent</b></div>
+          {% if brief %}
+          {% if brief.headline %}<p class="phone-head">{{ brief.headline }}</p>{% endif %}
+          {% for line in brief.lines %}<p>{{ line }}</p>{% endfor %}
+          <p class="phone-meta">{{ brief.site_name }} · {{ brief.when }}</p>
+          {% else %}
+          <p>Each morning I write your brief from the night's receipts: what happened, what it cost, and what needs you.</p>
+          {% endif %}
+        </div>
+        <div class="phone-card phone-decision">
+          <b>Go live: your new site</b>
+          <span class="btn btn-coral btn-sm">Approve</span>
+        </div>
+        <p class="phone-nav"><b>Now</b><span>Decisions</span><span>Live</span><span>Apps</span></p>
+      </div>
+    </div>
+    <dl class="tabs">
+      <div><dt>Now</dt><dd>The Chief WebAgent's brief, what needs you, and the day's AI spend.</dd></div>
+      <div><dt>Decisions</dt><dd>One card each. Approve with a passkey, or decline.</dd></div>
+      <div><dt>WebAgents</dt><dd>A dial per job for how much each may do without asking. Only you turn it up.</dd></div>
+      <div><dt>Trust</dt><dd>Every receipt opens and verifies in the browser, beside the gauntlet score.</dd></div>
+      <div><dt>Apps</dt><dd>Website for your releases and roll back, Missions, Memory and rules, the Store and Settings.</dd></div>
+    </dl>
+  </div>
+  <figure class="shot">
+    <img src="/_home/shot-console.webp?v={{ v }}" width="1280" height="800" alt="The owner console: the Chief WebAgent's brief, two decisions waiting and the day's AI spend, on the Kilele Bakery sample" loading="lazy">
+    <figcaption class="small muted">The same console on a laptop, on the Kilele Bakery sample. Screenshot, Sun 8 Nov.</figcaption>
+  </figure>
+</section>
+
+<section class="section section-alt" id="webagents" aria-labelledby="webagents-title">
+  <div class="wrap">
+    <p class="eyebrow">The WebAgents</p>
+    <h2 id="webagents-title">Nine WebAgents, each with one job.</h2>
+    <p class="lead">Each WebAgent has one job, a budget, and a dial for what it may do without asking. Each wears a living mark in its site's own colours, which moves only while it works. Visitors always see when they're talking to one.</p>
+    <ul class="roster">
+      <li><img class="role-mark" src="/_home/marks/role-coordinator.svg?v={{ v }}" width="50" height="54" alt="" loading="lazy"><div><b>Chief WebAgent</b><span>Briefs you and routes decisions</span></div></li>
+      <li><img class="role-mark" src="/_home/marks/role-concierge.svg?v={{ v }}" width="50" height="54" alt="" loading="lazy"><div><b>Concierge</b><span>The front desk, day and night</span></div></li>
+      <li><img class="role-mark" src="/_home/marks/role-sales.svg?v={{ v }}" width="50" height="54" alt="" loading="lazy"><div><b>Sales</b><span>Leads, quotes and bookings</span></div></li>
+      <li><img class="role-mark" src="/_home/marks/role-editor.svg?v={{ v }}" width="50" height="54" alt="" loading="lazy"><div><b>Editor</b><span>Keeps every page up to date</span></div></li>
+      <li><img class="role-mark" src="/_home/marks/role-reputation.svg?v={{ v }}" width="50" height="54" alt="" loading="lazy"><div><b>Reputation</b><span>Drafts replies to reviews for you to approve</span></div></li>
+      <li><img class="role-mark" src="/_home/marks/role-cashier.svg?v={{ v }}" width="50" height="54" alt="" loading="lazy"><div><b>Cashier</b><span>Orders and payments</span></div></li>
+      <li><img class="role-mark" src="/_home/marks/role-guardian.svg?v={{ v }}" width="50" height="54" alt="" loading="lazy"><div><b>Guardian</b><span>Watches the site and can roll it back</span></div></li>
+      <li><img class="role-mark" src="/_home/marks/role-caretaker.svg?v={{ v }}" width="50" height="54" alt="" loading="lazy"><div><b>Caretaker</b><span>Domains, backups and costs</span></div></li>
+      <li><img class="role-mark" src="/_home/marks/role-mover.svg?v={{ v }}" width="50" height="54" alt="" loading="lazy"><div><b>Mover</b><span>The Move, then hands over</span></div></li>
+    </ul>
+  </div>
+</section>
+
+<section class="section wrap" id="vultr" aria-labelledby="vultr-title">
+  <p class="eyebrow">Built on Vultr</p>
+  <h2 id="vultr-title">Hostile code runs where no keys live.</h2>
+  <figure class="arch">
+    <div class="arch-flow">
+      <ul class="arch-people"><li>Owner's phone</li><li>Visitors</li><li>Customers' AI agents</li></ul>
+      <p class="arch-link"><i aria-hidden="true"></i>HTTPS</p>
+      <div class="arch-box">
+        <p class="arch-kind">Vultr Cloud Compute</p>
+        <h3>Control VM</h3>
+        <ul><li>Caddy and TLS. In: ports 80 and 443 only</li><li>agentrix-node: sites, console, the Move</li><li class="arch-keys">Model Gateway: the only holder of model keys</li><li>SQLite and the content store</li></ul>
+      </div>
+      <p class="arch-link"><i aria-hidden="true"></i>VPC, signed jobs</p>
+      <div class="arch-box arch-sealed">
+        <p class="arch-kind">Vultr Cloud Compute VX1</p>
+        <h3>Sandbox VM, sealed</h3>
+        <ul><li>A runner that answers control only</li><li>Rooms: Docker and gVisor, capped</li><li>One egress proxy per room</li><li class="arch-warn">No secrets. No public inbound.</li></ul>
+      </div>
+      <p class="arch-link"><i aria-hidden="true"></i>Proxy only</p>
+      <div class="arch-box">
+        <p class="arch-kind">Vultr Cloud Compute</p>
+        <h3>Fixture VM</h3>
+        <p class="small">Zavora's infected WordPress, for the gauntlet</p>
+      </div>
+    </div>
+    <div class="arch-services">
+      <div class="arch-svc">
+        <h3>Vultr Serverless Inference</h3>
+        {% if routing %}
+        <p>Model calls go through the gateway by purpose. Now on {{ routing.provider }}, since {{ routing.since }} (<a href="{{ routing.href }}">receipt</a>):</p>
+        <ul class="routes">{% for r in routing.routes %}<li><span>{{ r.purpose }}</span><code>{{ r.model }}</code>{% if not r.on_vultr %}<em>not on Vultr yet</em>{% endif %}</li>{% endfor %}</ul>
+        {% else %}
+        <p>Every model call goes through the gateway by purpose. Each change of route is a signed receipt; the latest one will show here.</p>
+        {% endif %}
+      </div>
+      <div class="arch-svc"><h3>Vultr Object Storage</h3><p>Every blob and signed receipt is copied to a bucket each minute, and read back if a file is lost.</p></div>
+      <div class="arch-svc"><h3>VPC, firewalls and DNS</h3><p>Created from the repository through the Vultr API.</p></div>
+    </div>
+    <figcaption class="small muted">Blue border: a Vultr product. Dashed: sealed, untrusted work. Coral: holds the model keys.</figcaption>
+  </figure>
+</section>
+
+
+
+<section class="section section-alt" id="promises" aria-labelledby="promises-title">
+  <div class="wrap">
+    <p class="eyebrow">Trust promises</p>
+    <h2 id="promises-title">Our promises to you and your customers.</h2>
+    <ol class="promises">
+      <li><b>Nothing changes until you say go</b>The old site is untouched until go-live, and undo is one tap for 30 days.</li>
+      <li><b>Your WebAgents ask first</b>Before anything that matters, and you decide what matters.</li>
+      <li><b>Your keys stay yours</b>No WebAgent sees a password, card or wallet credential.</li>
+      <li><b>Every action has a receipt</b>In plain words, and anyone can verify it.</li>
+      <li><b>Your site and data are yours</b>Export everything. The platform is open source.</li>
+      <li><b>Visitors always know</b>The site says when they're talking to AI.</li>
+      <li><b>Honest numbers</b>We never invent activity or results, on your site or on this page.</li>
+    </ol>
+  </div>
+</section>
+
+<section class="section wrap" id="roadmap" aria-labelledby="roadmap-title">
+  <p class="eyebrow">What comes next</p>
+  <h2 id="roadmap-title">From one site to a fleet on Vultr.</h2>
+  <ol class="roadmap">
+    <li><span>Now</span><h3>One site, end to end</h3><p>The health report, the Move, go-live on a passkey, Ask this site, the agent door and the gauntlet, on Vultr.</p></li>
+    <li><span>Next</span><h3>Payments</h3><p>PayPal through the Effects Gateway. Every payment is an approved effect with a receipt.</p></li>
+    <li><span>Dec to Jan</span><h3>Pilot</h3><p>Ten pilot sites on the fleet profile on Vultr Kubernetes Engine, with the brief and approvals on WhatsApp.</p></li>
+    <li><span>Q1 2027</span><h3>Version 1</h3><p>The agency console, a Vultr Marketplace listing, billing and more regions.</p></li>
+  </ol>
+</section>
+
+<section class="band band-cta" aria-labelledby="cta-title">
+  <div class="wrap cta">
+    <h2 id="cta-title">See what your site could do.</h2>
+    {{ paste("url-end", assess_action, false) }}
+    {{ person(contact) }}
+  </div>
+</section>
+{% endblock %}

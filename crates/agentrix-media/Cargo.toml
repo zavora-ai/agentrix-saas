@@ -1,0 +1,45 @@
+[package]
+name = "agentrix-media"
+description = "Images for every site: drawn, screened, described, labelled and approved by the owner (W11)."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+authors.workspace = true
+
+[dependencies]
+agentrix-decisions.workspace = true
+agentrix-host.workspace = true
+agentrix-kernel.workspace = true
+agentrix-shell.workspace = true
+async-trait.workspace = true
+futures.workspace = true
+url.workspace = true
+# Node's side of live voice: the browser's socket in, the gateway's socket out (W11).
+tokio-tungstenite = "0.29"
+agentrix-types.workspace = true
+anyhow.workspace = true
+axum = { workspace = true, features = ["ws"] }
+base64.workspace = true
+bytes.workspace = true
+chrono.workspace = true
+clap.workspace = true
+reqwest.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+sqlx.workspace = true
+tokio.workspace = true
+tracing.workspace = true
+uuid.workspace = true
+
+[build-dependencies]
+serde_json.workspace = true
+
+[dev-dependencies]
+agentrix-ui.workspace = true
+agentrix-types.workspace = true
+tower.workspace = true
+
+[lints]
+workspace = true

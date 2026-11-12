@@ -1,0 +1,16 @@
+{% block subject %}Mission report: {{ mission.name }}{% endblock %}
+{% block preheader %}{{ mission.status }} Spend {{ mission.spend.used|money(mission.spend.currency) }} of {{ mission.spend.budget|money(mission.spend.currency) }}.{% endblock %}
+{% block body %}
+# {{ mission.name }}
+{{ mission.status }}
+
+{% for line in mission.lines %}
+- {{ line }}
+{% endfor %}
+
+::fact Goal | {{ mission.goal }}
+::fact Spend | {{ mission.spend.used|money(mission.spend.currency) }} of {{ mission.spend.budget|money(mission.spend.currency) }}
+::fact Ends | {{ mission.ends }}
+
+::button Open the mission | {{ mission.url }}
+{% endblock %}

@@ -1,0 +1,350 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The site presents itself · Agentrix</title>
+<meta name="description" content="Concept: a WebAgent gives a visitor a tailored tour of zavora.ai, driving the real page, taking questions mid-tour, from an owner-approved script.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Manrope:wght@600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../styles.css">
+<link rel="stylesheet" href="experience.css">
+<style>
+  .z { --wa-bg: #fff; --wa-soft: #f6f6fb; --wa-ink: #1f1d3d; --wa-ink-2: #4a4960; --wa-line: #e3e2ec; --wa-accent: #38356d; --wa-accent-2: #de4060; background: #fff; color: var(--ink); }
+  .frame-wrap { height: 780px; }
+  .z-head { position: sticky; top: 0; z-index: 20; display: flex; align-items: center; gap: 14px; padding: 12px clamp(14px, 3vw, 28px); background: rgba(255,255,255,.94); backdrop-filter: blur(8px); border-bottom: 1px solid var(--line); }
+  .z-logo { font: 800 20px/1 var(--font-display); color: var(--indigo-900); text-decoration: none; letter-spacing: -.02em; display: flex; align-items: center; gap: 8px; }
+  .z-logo i { width: 22px; height: 22px; border-radius: 7px; background: conic-gradient(from 210deg, var(--indigo) 0 55%, var(--coral) 55% 100%); }
+  .z-nav { display: flex; gap: 2px; margin-left: auto; }
+  .z-nav a { font: 600 13.5px/1 var(--font-text); color: var(--ink-2); text-decoration: none; padding: 9px 10px; border-radius: 999px; }
+  .z-nav a:hover { background: var(--surface); }
+  .zs { padding: clamp(28px, 5vw, 56px) clamp(14px, 3vw, 28px); border-bottom: 1px solid var(--line); transition: opacity .35s var(--ease), filter .35s var(--ease); }
+  .zs .in { max-width: 980px; margin: 0 auto; }
+  .z-hero { background: radial-gradient(70% 90% at 90% 0%, rgba(222,64,96,.12), transparent 60%), radial-gradient(60% 80% at 0% 100%, rgba(56,53,109,.12), transparent 60%), var(--indigo-50); }
+  .z-hero h1 { font-size: clamp(34px, 5.4vw, 60px); max-width: 15ch; }
+  .z-hero .lead { margin-top: 14px; }
+  .z-hero .row { margin-top: 20px; }
+  .z-ask { margin-top: 22px; max-width: 640px; background: #fff; border: 1px solid var(--line); border-radius: 18px; padding: 12px; box-shadow: var(--shadow-2); }
+  .z-ask .wa-input { margin: 0; }
+  .z-ask .chips2 { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+  .z-ask .chips2 button { border: 1px solid var(--line); background: var(--surface); border-radius: 999px; padding: 8px 12px; font: 600 13px/1.2 var(--font-text); color: var(--indigo-900); cursor: pointer; text-align: left; }
+  .rooms { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; margin-top: 18px; counter-reset: r; }
+  .room { background: #fff; border: 1px solid var(--line); border-radius: 14px; padding: 12px; font-size: 13.5px; color: var(--ink-2); }
+  .room b { display: block; font: 800 15px/1.2 var(--font-display); color: var(--indigo-900); margin-bottom: 4px; }
+  .room b::before { counter-increment: r; content: counter(r) " "; color: var(--coral-strong); }
+  .room.lit { border-color: var(--coral); box-shadow: 0 0 0 3px var(--coral-50); }
+  .three { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-top: 18px; }
+  .three .card p { font-size: 14px; color: var(--ink-2); margin-top: 6px; }
+  .brief { font-size: 14px; color: var(--ink-2); }
+  .brief b { color: var(--indigo-900); }
+  .promises4 { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; margin-top: 18px; }
+  .promises4 div { background: var(--surface); border-radius: 14px; padding: 12px; font-size: 13.5px; color: var(--ink-2); }
+  .promises4 b { display: block; color: var(--indigo-900); font: 700 14px/1.3 var(--font-display); margin-bottom: 4px; }
+  .price-line { display: inline-flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-top: 14px; padding: 10px 12px; border-radius: 12px; background: var(--wait-bg); color: var(--wait); font: 600 13.5px/1.3 var(--font-text); }
+  .z-foot { padding: 22px clamp(14px, 3vw, 28px) 140px; font-size: 13px; color: var(--muted); }
+
+  /* Stage mode */
+  .staging .zs:not(.on-stage) { opacity: .18; filter: grayscale(.6) blur(.5px); }
+  .staging .z-head { opacity: .4; }
+  .zs.on-stage { position: relative; box-shadow: inset 0 0 0 3px var(--coral); }
+  .stagebar { position: absolute; left: 12px; right: 12px; bottom: 12px; z-index: 30; background: #15142b; color: #e9e8f6; border-radius: 20px; box-shadow: 0 30px 60px -20px rgba(0,0,0,.55); transform: translateY(130%); transition: transform .3s var(--ease); font-family: var(--font-text); }
+  .staging .stagebar { transform: none; }
+  .sb-top { display: flex; align-items: center; gap: 10px; padding: 12px 14px 0; flex-wrap: wrap; }
+  .sb-top .ttl { font: 800 14px/1.2 var(--font-display); color: #fff; }
+  .sb-top .sub { font: 600 11.5px/1.2 var(--font-text); color: #a9a7cf; }
+  .sb-top .script { margin-left: auto; font: 600 11px/1.2 var(--font-text); color: #a9a7cf; border: 1px solid #34325d; border-radius: 999px; padding: 5px 9px; }
+  .chap { display: flex; gap: 6px; padding: 10px 14px 0; overflow-x: auto; scrollbar-width: none; }
+  .chap button { flex: none; border: 1px solid #34325d; background: transparent; color: #a9a7cf; border-radius: 999px; padding: 6px 10px; font: 600 11.5px/1 var(--font-text); cursor: pointer; }
+  .chap button[aria-current="step"] { background: #fff; color: #15142b; border-color: #fff; }
+  .chap button.done { color: #e9e8f6; }
+  .caption { padding: 10px 14px 0; font: 500 15.5px/1.5 var(--font-text); color: #fff; min-height: 52px; }
+  .caption b { color: #ffd2dc; }
+  .caption .cite { background: #26254a; border-color: #3a3870; color: #ffd2dc; }
+  .sb-ans { margin: 8px 14px 0; padding: 10px 12px; border-radius: 12px; background: #201f3d; border: 1px solid #34325d; font-size: 14px; line-height: 1.5; display: none; }
+  .sb-ans.on { display: block; }
+  .sb-ans .src { background: #15142b; border-color: #3a3870; color: #c9c8ea; }
+  .sb-ans .src b { color: #ffd2dc; }
+  .sb-ctrl { display: flex; align-items: center; gap: 8px; padding: 10px 14px 12px; flex-wrap: wrap; }
+  .sb-ctrl .icon-btn { background: #201f3d; border-color: #34325d; color: #e9e8f6; }
+  .sb-ctrl .icon-btn.play { background: var(--coral-strong); border-color: var(--coral-strong); color: #fff; width: 40px; height: 40px; }
+  .sb-ask { flex: 1; min-width: 200px; display: flex; gap: 6px; align-items: center; background: #201f3d; border: 1px solid #34325d; border-radius: 12px; padding: 3px 3px 3px 10px; }
+  .sb-ask input { flex: 1; min-width: 0; border: 0; outline: 0; background: transparent; color: #fff; font: 500 14px/1.2 var(--font-text); padding: 8px 0; }
+  .sb-ask input::placeholder { color: #8d8bb6; }
+  .sb-ask .wa-send { background: #38356d; width: 32px; height: 32px; }
+  .sb-tog { display: inline-flex; gap: 6px; align-items: center; font: 600 11.5px/1 var(--font-text); color: #a9a7cf; border: 1px solid #34325d; border-radius: 10px; padding: 8px 10px; background: transparent; cursor: pointer; }
+  .sb-tog[aria-pressed="true"] { color: #fff; border-color: #6d6aa8; }
+  .sb-tog[aria-disabled="true"] { opacity: .5; cursor: not-allowed; }
+  .progress { height: 3px; background: #26254a; border-radius: 0 0 20px 20px; overflow: hidden; }
+  .progress span { display: block; height: 100%; background: linear-gradient(90deg, var(--coral), #ffb3c3); width: 0; transition: width .4s var(--ease); }
+  .persona { position: absolute; top: 70px; right: 16px; z-index: 31; width: min(280px, calc(100% - 32px)); background: #fff; border-radius: 16px; border: 1px solid var(--line); box-shadow: var(--shadow-3); padding: 12px 14px; display: none; font-size: 13px; color: var(--ink-2); }
+  .staging .persona { display: block; animation: rise .3s var(--ease) both; }
+  .persona h4 { font: 700 11px/1 var(--font-text); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+  .persona .kv { display: flex; justify-content: space-between; gap: 8px; padding: 4px 0; border-bottom: 1px dashed var(--line); }
+  .persona .kv b { color: var(--indigo-900); }
+  @media (max-width: 900px) {
+    .rooms { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .three, .promises4 { grid-template-columns: 1fr; }
+    .z-nav { display: none; }
+    .persona { display: none !important; }
+  }
+  @media (max-width: 720px) {
+    .frame-wrap { height: 760px; }
+    .sb-top .script { display: none; }
+    .caption { font-size: 14.5px; }
+    .sb-tog.hide-sm { display: none; }
+  }
+</style>
+</head>
+<body>
+<header class="conceptbar">
+  <a class="logo" href="index.html"><span class="mark" aria-hidden="true"></span>Agentrix</a>
+  <nav aria-label="Experience concepts">
+    <a href="index.html">Experience</a>
+    <a href="nav-agents.html">Menu as WebAgents</a>
+    <a href="creator.html">Make it with me</a>
+    <a href="search.html">Agentic search</a>
+    <a href="artifact.html">Artifacts</a>
+    <a href="presentation.html" aria-current="page">Presentations</a>
+    <a href="news.html">News publisher</a>
+    <a href="../index.html">All concepts</a>
+  </nav>
+  <span class="concept-label">Concept · illustrative data</span>
+</header>
+
+<main class="wrap">
+  <div class="xp-head">
+    <span class="eyebrow">Experience 05 · Website presentations</span>
+    <h1>The site presents itself.</h1>
+    <p class="lead">A visitor asks "How would you move my agency's 40 WordPress sites?" and a WebAgent gives a tailored tour of zavora.ai. It drives the real page, one section at a time, and takes questions mid-tour. It works from a script Zavora approved, so claims stay within what the pages say. Pricing is presented as the pilot hypothesis it is.</p>
+    <p class="xp-tryline">Try: <b>Give me the tour</b> or the agency question · <span class="kbd">Space</span> pause · <span class="kbd">←</span> <span class="kbd">→</span> chapters · ask anything mid-tour.</p>
+  </div>
+
+  <div class="browser">
+    <div class="browser-bar"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="url"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>zavora.ai</span></div>
+    <div class="frame-wrap z" id="zwrap">
+      <div class="frame-body" id="zbody">
+        <div class="z-head"><a class="z-logo" href="#"><i></i>Zavora</a><nav class="z-nav" aria-label="zavora.ai"><a href="#move">Agentrix</a><a href="#trust">Trust</a><a href="#agency">Agencies</a><a href="#oss">Open source</a><a href="#contact">Contact</a></nav></div>
+
+        <section class="zs z-hero" id="s-hero"><div class="in">
+          <span class="eyebrow">Agentrix WebAgent Platform · by Zavora</span>
+          <h1 style="margin-top:12px">Move your website. Meet your WebAgents.</h1>
+          <p class="lead">Agentrix moves a business's website onto WebAgents. Agentrix moves your website onto WebAgents. They answer customers from your pages, take orders and keep the site current. Anything that costs money or makes a promise waits for you.</p>
+          <div class="row"><button class="btn btn-primary btn-lg" type="button" id="tourBtn"><span id="playIco"></span>Give me the tour · 4 min</button><a class="btn btn-lg" href="#contact">Assess my site free</a></div>
+          <div class="z-ask"><form class="wa-input" id="zAsk"><span class="wa-mark sm" id="zMark" style="--c:var(--indigo)"></span><label class="sr-only" for="zq">Ask zavora.ai</label><input id="zq" autocomplete="off" placeholder="Ask zavora.ai, or ask for a tour of anything…"><span class="wa-ai">AI</span><button class="wa-send" type="submit" aria-label="Ask"></button></form>
+            <div class="chips2"><button type="button" data-agency>How would you move my agency's 40 WordPress sites?</button><button type="button" data-tour>Show me what my customers would see</button></div></div>
+        </div></section>
+
+        <section class="zs" id="s-move"><div class="in" id="move">
+          <span class="eyebrow">The Move</span><h2 style="margin-top:10px">How a site moves, step by step</h2>
+          <p class="lead" style="margin-top:8px">Each site moves through sealed rooms. Nothing goes live until the owner says so; the old site stays as a fallback and undo is one tap for 30 days.</p>
+          <div class="rooms" id="rooms">
+            <div class="room"><b>Read</b>A polite, identified crawl of public pages</div>
+            <div class="room"><b>Claim</b>The owner proves the domain</div>
+            <div class="room"><b>Replay</b>The site's own export, opened with no route out</div>
+            <div class="room"><b>Clean</b>Hidden malware goes to quarantine, explained</div>
+            <div class="room"><b>Rebuild</b>Static, signed, fast pages</div>
+            <div class="room"><b>Prove</b>Side-by-side parity of at least 95%</div>
+            <div class="room"><b>Go live</b>On the owner's passkey</div>
+            <div class="room"><b>Watch</b>Probes, receipts, one-tap rollback</div>
+          </div>
+        </div></section>
+
+        <section class="zs" id="s-clients"><div class="in">
+          <span class="eyebrow">Every morning after</span><h2 style="margin-top:10px">What your clients get.</h2>
+          <div class="three">
+            <div class="card tight"><h3>The morning brief</h3><p class="brief">What the site did overnight, <b>the one decision waiting</b>, and what it cost against the budget the owner set. Recorded activity only.</p></div>
+            <div class="card tight"><h3>Decisions, one card each</h3><p>The exact effect, a recommendation and a risk score. Approve with a passkey; decline can become a standing rule.</p></div>
+            <div class="card tight"><h3>WebAgents with a dial</h3><p>Each WebAgent has a mandate, a budget and an autonomy dial the owner controls, job by job.</p></div>
+          </div>
+        </div></section>
+
+        <section class="zs" id="s-trust"><div class="in" id="trust">
+          <span class="eyebrow">Trust</span><h2 style="margin-top:10px">Four promises, and how each is kept</h2>
+          <div class="promises4">
+            <div><b>Nothing changes until you say go</b>Old site untouched until go-live; undo for 30 days.</div>
+            <div><b>Asks before anything that matters</b>And the owner decides what matters.</div>
+            <div><b>Your keys stay yours</b>No WebAgent sees a password, card or wallet credential.</div>
+            <div><b>Every action has a receipt</b>In plain words, verifiable by anyone.</div>
+          </div>
+        </div></section>
+
+        <section class="zs" id="s-agency"><div class="in" id="agency">
+          <span class="eyebrow">For agencies</span><h2 style="margin-top:10px">Move your whole book of client sites.</h2>
+          <div class="three">
+            <div class="card tight"><h3>White-label console</h3><p>Your brand on the console your clients use.</p></div>
+            <div class="card tight"><h3>Client approval routing</h3><p>Each client approves their own go-live and decisions, on their own site's card.</p></div>
+            <div class="card tight"><h3>A fleet view</h3><p>Health, held decisions and spend across every client site.</p></div>
+          </div>
+          <div class="price-line" id="priceLine">Pilot hypothesis: from $15 per site per month wholesale, 10-site minimum. Not final pricing.</div>
+        </div></section>
+
+        <section class="zs" id="s-oss"><div class="in" id="oss">
+          <span class="eyebrow">Open source</span><h2 style="margin-top:10px">MIT, built in Rust on adk-rust.</h2>
+          <p class="lead" style="margin-top:8px">The platform is MIT licensed. It runs on adk-rust, Zavora's open-source Rust agent framework, and self-hosts on Vultr. Export everything, any time.</p>
+        </div></section>
+
+        <section class="zs" id="s-contact"><div class="in" id="contact">
+          <span class="eyebrow">Start</span><h2 style="margin-top:10px">Start with three free assessments.</h2>
+          <p class="lead" style="margin-top:8px">Paste a client's address: a health report with evidence for each finding, and a working preview, in about three minutes, no account needed.</p>
+          <div class="row" style="margin-top:16px"><button class="btn btn-primary" type="button">Assess 3 client sites</button><button class="btn" type="button">Book a 20-minute call</button></div>
+        </div></section>
+        <div class="z-foot">© 2026 Zavora Technologies Ltd · Pages on this site are answered by AI WebAgents · Release v9 · signed</div>
+      </div>
+
+      <aside class="persona" id="persona" aria-label="What the tour was tailored to"><h4>Tailored to your question</h4>
+        <div class="kv"><span>You are</span><b>An agency</b></div><div class="kv"><span>Sites</span><b>40, WordPress</b></div><div class="kv"><span>Wants</span><b>How the move works</b></div>
+        <p class="small" style="margin-top:8px">From what you typed in this visit only. Nothing is stored. <a href="#" id="editPersona">Change</a></p></aside>
+
+      <div class="stagebar" id="stage" role="region" aria-label="Presentation">
+        <div class="sb-top"><span class="wa-mark" id="stMark" style="--c:var(--coral-strong)"></span><div><div class="ttl">Tours · zavora.ai</div><div class="sub">AI WebAgent · presenting this site</div></div><span class="script">Script approved by Zavora · 4 Nov · claims limited to published pages</span></div>
+        <div class="chap" id="chap" role="tablist" aria-label="Chapters"></div>
+        <div class="caption" id="caption" aria-live="polite"></div>
+        <div class="sb-ans" id="sbAns"></div>
+        <div class="sb-ctrl">
+          <button class="icon-btn" type="button" id="prev" aria-label="Previous chapter"></button>
+          <button class="icon-btn play" type="button" id="pp" aria-label="Pause"></button>
+          <button class="icon-btn" type="button" id="next" aria-label="Next chapter"></button>
+          <form class="sb-ask" id="sbAsk"><label class="sr-only" for="sbq">Ask about this</label><input id="sbq" autocomplete="off" placeholder="Ask about this… (pauses the tour)"><button class="wa-send" type="submit" aria-label="Ask"></button></form>
+          <button class="sb-tog" type="button" aria-pressed="true" id="capTog">Captions</button>
+          <button class="sb-tog hide-sm" type="button" aria-disabled="true" title="Voice is a later tier">Voice · later</button>
+          <button class="sb-tog hide-sm" type="button" id="saveDeck">Save as deck</button>
+          <button class="sb-tog" type="button" id="exit">Exit</button>
+        </div>
+        <div class="progress"><span id="prog"></span></div>
+      </div>
+    </div>
+  </div>
+
+  <section class="notes" aria-label="Design notes">
+    <div class="card">
+      <h3>How a presentation is built</h3>
+      <ul>
+        <li><b>An owner-approved script</b> in the signed release: chapters, must-say ("pricing is a pilot hypothesis"), must-not-say (client names, dates), sources, maximum length.</li>
+        <li><b>Adaptive fill</b> from the release for this visitor's question ("40 WordPress sites").</li>
+        <li><b>Stage cues</b> drive the real page: scroll, highlight, dim. They only ever target anchors in the current release.</li>
+        <li><b>Questions pause the tour</b>, get a cited answer, then it resumes at the cue.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Budgets</h3>
+      <ol class="budget">
+        <li><span class="t">&lt;2 s</span><span>First chapter on screen</span><span class="m model">model</span></li>
+        <li><span class="t">&lt;100 ms</span><span>Cue → scroll and highlight on the page</span><span class="m">no model</span></li>
+        <li><span class="t">&lt;1.5 s</span><span>Mid-tour answer, first words</span><span class="m model">model</span></li>
+        <li><span class="t">later</span><span>Voice with live captions (needs a speech provider)</span><span class="m model">model</span></li>
+      </ol>
+    </div>
+    <div class="card">
+      <h3>Presentations never</h3>
+      <ul class="never">
+        <li>Autoplay, or start without the visitor asking</li>
+        <li>Say something the script and pages don't support</li>
+        <li>Navigate off the site or inject content into the page</li>
+        <li>Hold the visitor: skip, pause and exit are always one tap away</li>
+        <li>Run for AI agents at the agent door (they get the facts directly)</li>
+      </ul>
+    </div>
+  </section>
+</main>
+
+<footer class="concept-foot"><div class="wrap row"><span><a href="artifact.html">← Artifacts</a> · <a href="news.html">Next: a news publisher →</a></span><span>Concept screens with illustrative data. Content drawn from the Agentrix design documents.</span></div></footer>
+
+<script src="experience.js"></script>
+<script>
+(() => {
+  const { I, esc, presence, point, toast, wait, reduced } = XP;
+  const TOUR_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></svg>';
+  document.getElementById("zMark").innerHTML = TOUR_ICON; document.getElementById("stMark").innerHTML = TOUR_ICON;
+  document.getElementById("playIco").innerHTML = I.play.replace("<svg", '<svg width="16" height="16"');
+  document.querySelectorAll(".wa-send").forEach(b => b.innerHTML = I.send);
+  document.getElementById("prev").innerHTML = I.prev; document.getElementById("next").innerHTML = I.next;
+  const pp = document.getElementById("pp");
+  const wrap = document.getElementById("zwrap"), zbody = document.getElementById("zbody"), cap = document.getElementById("caption"), chapEl = document.getElementById("chap"), prog = document.getElementById("prog"), stMark = document.getElementById("stMark"), sbAns = document.getElementById("sbAns");
+  const c = n => `<a href="#" class="cite" data-n="${n}">${n}</a>`;
+
+  const GENERIC = [
+    { t: "What Agentrix is", sec: "s-hero", lines: ["Agentrix moves a business's website onto <b>WebAgents</b>.", "The site answers customers, sells and maintains itself, and <b>asks the owner before anything that matters</b>."] },
+    { t: "The Move", sec: "s-move", rooms: true, lines: ["Every site moves through <b>eight sealed rooms</b>, from a polite crawl to go-live.", "Nothing goes live until the owner approves it, and the old site stays as a fallback for <b>30 days</b>."] },
+    { t: "Every morning after", sec: "s-clients", lines: ["Each morning the owner gets <b>a brief</b>: what happened, the one decision waiting, and what it cost."] },
+    { t: "Trust", sec: "s-trust", lines: ["The promises are enforced in code: <b>no WebAgent ever sees a password, card or wallet credential</b>, and every action has a receipt."] },
+    { t: "Start", sec: "s-contact", lines: ["The fastest way to judge it: paste your address and get <b>a living preview in about three minutes</b>, no account needed."] },
+  ];
+  const AGENCY = [
+    { t: "Your 40 sites", sec: "s-hero", lines: ["You look after <b>40 client sites on WordPress</b>.", "Here's how Agentrix would move them, and what you and your clients would see. About four minutes."] },
+    { t: "The Move, per site", sec: "s-move", rooms: true, lines: ["Each of your 40 sites goes through the same <b>eight sealed rooms</b>.", "A site is replayed from its own export with no route out, and hidden malware goes to quarantine with a plain explanation.", "<b>Each client approves their own go-live</b>, and keeps one-tap undo for 30 days."] },
+    { t: "What your clients get", sec: "s-clients", lines: ["Each client gets <b>a Morning Brief</b> and <b>decision cards</b> they approve with a passkey. The WebAgents handle the routine within the authority each client grants."] },
+    { t: "The agency tier", sec: "s-agency", lines: ["You get a <b>white-label console</b>, <b>client approval routing</b> and <b>a fleet view</b> of health, held decisions and spend.", "Pricing is a <b>pilot hypothesis</b>: from $15 per site per month wholesale, with a 10-site minimum. It isn't final."], mustSay: true },
+    { t: "Next step", sec: "s-contact", lines: ["Start small: <b>free assessments of three client sites</b>, each with a living preview you can show the client.", "Or book 20 minutes with the team."] },
+  ];
+  let deck = GENERIC, i = 0, playing = false, timer = null, token = 0;
+
+  function chapters() {
+    chapEl.innerHTML = deck.map((d, k) => `<button type="button" role="tab" data-k="${k}" ${k === i ? 'aria-current="step"' : ""} class="${k < i ? "done" : ""}">${k + 1}. ${esc(d.t)}</button>`).join("");
+    chapEl.querySelectorAll("[data-k]").forEach(b => b.addEventListener("click", () => go(+b.dataset.k)));
+  }
+  async function go(k) {
+    i = Math.max(0, Math.min(deck.length - 1, k)); const my = ++token;
+    sbAns.classList.remove("on"); chapters();
+    document.querySelectorAll(".zs").forEach(s => s.classList.remove("on-stage"));
+    document.querySelectorAll(".room").forEach(r => r.classList.remove("lit"));
+    const sec = document.getElementById(deck[i].sec); sec.classList.add("on-stage");
+    const top = sec.offsetTop - 60; zbody.scrollTo({ top: Math.max(0, top), behavior: reduced ? "auto" : "smooth" });
+    prog.style.width = `${(i + 1) / deck.length * 100}%`;
+    cap.innerHTML = ""; presence(stMark, "answering");
+    for (const line of deck[i].lines) {
+      if (my !== token) return;
+      const s = document.createElement("span"); s.className = "phrase"; s.innerHTML = line + " "; cap.appendChild(s);
+      if (deck[i].rooms) for (const r of document.querySelectorAll(".room")) { if (my !== token) return; r.classList.add("lit"); await wait(90); }
+      await wait(900);
+    }
+    presence(stMark, playing ? "answering" : "listening");
+    if (playing && my === token) { clearTimeout(timer); timer = setTimeout(() => { if (playing && my === token) { if (i < deck.length - 1) go(i + 1); else end(); } }, 2600); }
+  }
+  function setPlaying(p) { playing = p; pp.innerHTML = p ? I.pause : I.play; pp.setAttribute("aria-label", p ? "Pause" : "Play"); if (!p) clearTimeout(timer); else if (!sbAns.classList.contains("on")) { clearTimeout(timer); timer = setTimeout(() => go(i + 1 < deck.length ? i + 1 : i), 1200); } }
+  function start(d) {
+    deck = d; i = 0; wrap.classList.add("staging"); document.getElementById("persona").style.display = d === AGENCY ? "" : "none";
+    setPlaying(true); clearTimeout(timer); go(0);
+  }
+  function end() { setPlaying(false); cap.innerHTML += `<span class="phrase"> That's the tour. Save it as a deck to share with your team, or ask anything.</span>`; presence(stMark, "listening"); }
+  function exit() { setPlaying(false); token++; wrap.classList.remove("staging"); document.querySelectorAll(".zs").forEach(s => s.classList.remove("on-stage")); document.querySelectorAll(".room").forEach(r => r.classList.remove("lit")); }
+
+  document.getElementById("tourBtn").addEventListener("click", () => start(GENERIC));
+  document.querySelector("[data-tour]").addEventListener("click", () => start(GENERIC));
+  document.querySelector("[data-agency]").addEventListener("click", () => start(AGENCY));
+  document.getElementById("zAsk").addEventListener("submit", e => { e.preventDefault(); const v = document.getElementById("zq").value.trim(); if (!v) return; start(/agenc|sites|clients|40/i.test(v) ? AGENCY : GENERIC); });
+  pp.addEventListener("click", () => setPlaying(!playing));
+  document.getElementById("prev").addEventListener("click", () => { setPlaying(false); go(i - 1); });
+  document.getElementById("next").addEventListener("click", () => { setPlaying(false); go(i + 1); });
+  document.getElementById("exit").addEventListener("click", exit);
+  document.getElementById("capTog").addEventListener("click", e => { const on = e.currentTarget.getAttribute("aria-pressed") !== "true"; e.currentTarget.setAttribute("aria-pressed", String(on)); cap.style.display = on ? "" : "none"; });
+  document.getElementById("saveDeck").addEventListener("click", () => toast("Saved as a deck artifact: zavora.ai/a/deck-3mtp (private link, 30 days)."));
+  document.getElementById("editPersona").addEventListener("click", e => { e.preventDefault(); toast("Each line can be corrected; the tour re-tailors from the same script."); });
+  wrap.addEventListener("keydown", e => {
+    if (!wrap.classList.contains("staging") || /input/i.test(e.target.tagName)) return;
+    if (e.key === " ") { e.preventDefault(); setPlaying(!playing); } if (e.key === "ArrowRight") { setPlaying(false); go(i + 1); } if (e.key === "ArrowLeft") { setPlaying(false); go(i - 1); } if (e.key === "Escape") exit();
+  });
+
+  /* Interrupt with a question: pause, answer with citations, resume at the cue */
+  document.getElementById("sbAsk").addEventListener("submit", async e => {
+    e.preventDefault(); const inp = document.getElementById("sbq"); const q = inp.value.trim(); if (!q) return; inp.value = "";
+    setPlaying(false); token++;
+    presence(stMark, "working");
+    sbAns.classList.add("on"); sbAns.innerHTML = `<div class="wa-progress" style="color:#a9a7cf"><span class="wa-mark sm" data-state="working" style="--c:var(--coral-strong)">${TOUR_ICON}</span>Reading the Trust and Move sections</div>`;
+    await wait(700);
+    const hacked = /hack|malware|infect|virus|compromis/i.test(q), price = /price|cost|how much|\$/i.test(q);
+    const body = hacked ? `The Move replays the site from its own export in a room with <b>no route out</b> ${c(1)}. Hidden malware goes to <b>quarantine with a plain explanation</b>, and nothing there is released without the owner's decision ${c(1)}. The old site stays untouched until go-live ${c(2)}.`
+      : price ? `The agency price is a <b>pilot hypothesis</b>: from $15 per site per month wholesale, 10-site minimum ${c(3)}. Migration itself is free on every plan; complex sites have a fixed white-glove fee.`
+      : `That isn't covered on this site, so I won't guess. I can note it for the Zavora team, and they'll reply by email.`;
+    const srcs = hacked ? [[1, "The Move · Clean", "#s-move"], [2, "Trust · nothing changes until you say go", "#s-trust"]] : price ? [[3, "For agencies · pricing", "#priceLine"]] : [];
+    sbAns.innerHTML = `<div>${body}</div>${srcs.length ? `<div class="srcs" style="margin-top:8px">${srcs.map(([n, l, t]) => `<button type="button" class="src" data-t="${t}"><b>${n}</b>${esc(l)}</button>`).join("")}</div>` : ""}<div class="acts" style="margin-top:10px"><button class="act primary" type="button" id="resume">Resume the tour</button></div>`;
+    sbAns.querySelectorAll("[data-t]").forEach(b => b.addEventListener("click", () => point(b.dataset.t, "Cited")));
+    sbAns.querySelectorAll(".cite").forEach(a => a.addEventListener("click", ev => { ev.preventDefault(); const s = srcs.find(x => String(x[0]) === a.dataset.n); if (s) point(s[2], "Cited"); }));
+    document.getElementById("resume").addEventListener("click", () => { sbAns.classList.remove("on"); setPlaying(true); });
+    presence(stMark, "listening");
+  });
+  pp.innerHTML = I.play;
+})();
+</script>
+</body>
+</html>

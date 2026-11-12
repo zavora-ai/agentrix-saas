@@ -1,0 +1,51 @@
+{% extends "os/base.html" %}
+{#- ShellPage::Memory · view::MemoryView (+ Chrome) { members: [MemberView], recent: [ReceiptRow], receipts_total }
+    concept/adk-surface/WebTrust (memory and rules) and concept/console/trust.html's memory section. Facts and
+    standing rules show their honest empty state until W1's memory and W6's rules land. -#}
+{% block title %}Memory and rules · {{ site.name }}{% endblock %}
+{% block field %}
+<section class="view on" aria-labelledby="mem-h">
+  <div class="field-head"><div><h2 id="mem-h">Memory and rules</h2><div class="sub">What your WebAgents know about {{ site.name }}, what they may do, and what they did</div></div></div>
+  <div class="cards">
+    <article class="fcard span2" aria-labelledby="know-h">
+      <div class="spread-h"><h3 id="know-h">What your WebAgents believe</h3></div>
+      <p>Only facts you told them (<b>Known</b>) are ever published or promised. Things they work out for themselves (<b>Assumed</b>) can only shape a question to you.</p>
+      <p class="small muted">Nothing is remembered yet. When you tell them a fact, or confirm one they assumed, it shows here with where it came from, and you can correct or forget it.</p>
+    </article>
+
+    <article class="fcard span2" aria-labelledby="may-h">
+      <div class="spread-h"><h3 id="may-h">What they may do without asking</h3><a class="btn btn-sm" href="{{ base }}/webagents">Change on WebAgents</a></div>
+      {% for a in members %}
+      <div class="fact-row"><span><b>{{ a.name }}</b><small>{% for j in a.jobs %}{{ j.name }}: {{ j.level_words if a.dial == "ladder" else "your rules" }}{% if not loop.last %} · {% endif %}{% endfor %}</small></span>{% if a.asks %}<span class="chip chip-wait">{{ a.asks }} waiting</span>{% endif %}</div>
+      {% else %}
+      <p class="small">Your WebAgents start when your site goes live; the go-live card asks you to sign what each job may do.</p>
+      {% endfor %}
+      <p class="note after-cards"><span>Anything that spends money or publishes always asks you first. This can't be switched off.</span></p>
+    </article>
+
+    <article class="fcard" aria-labelledby="allow-h">
+      <div class="spread-h"><h3 id="allow-h">Allowed without asking</h3></div>
+      <p class="small">When you approve a card with "Allow, and tell me", the grant is listed in the <a href="{{ base }}/trust#grants">Trust centre</a> with its limit and end date, and you can stop it there at any time.</p>
+    </article>
+
+    <article class="fcard" aria-labelledby="limits-h">
+      <div class="spread-h"><h3 id="limits-h">Quiet time and spending</h3></div>
+      <div class="fact-row"><span>Quiet time<small>{{ time.quiet_words }}, your site's time</small></span><a class="btn btn-ghost btn-sm" href="{{ base }}/settings">Change</a></div>
+      <div class="fact-row"><span>AI spending<small>{% if budget %}{{ budget.words }}{% else %}No AI calls yet{% endif %}</small></span></div>
+    </article>
+
+    <article class="fcard" aria-labelledby="did-h">
+      <div class="spread-h"><h3 id="did-h">What they did</h3><a class="btn btn-sm" href="{{ base }}/trust#receipts">Every receipt</a></div>
+      {% if receipts_total %}<p class="small">Every action is on record with a signed receipt: {{ receipts_total }}{% if receipts_total >= 100 %} or more{% endif %} so far.</p>{% else %}<p class="small">Nothing recorded yet. Receipts appear as soon as anything runs.</p>{% endif %}
+      {% for r in recent %}{{ m.receipt(r) }}{% endfor %}
+    </article>
+
+    <article class="fcard" aria-labelledby="yes-h">
+      <div class="spread-h"><h3 id="yes-h">Where you can say yes from</h3></div>
+      {% if has_passkey %}<div class="fact-row"><span>Your passkey<small>Signs exactly what will run, on a screen</small></span></div>{% endif %}
+      <div class="fact-row"><span>Your authenticator app<small>A single-use code tied to exactly what will run{% if has_passkey %}, for a device without your passkey{% endif %}</small></span></div>
+      <p class="small muted">A chat message can decline a card but never approve one. Your voice can decline, or allow an everyday low-risk card once. Money and publishing need your screen.</p>
+    </article>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,43 @@
+# Agentrix · control VM. Caddy terminates TLS (automatic HTTPS) and forwards to
+# agentrix-node on loopback. Tokens @@…@@ are filled by deploy/provision.sh; until the platform
+# domain is chosen (task S0-03) the site address is ":80" and no certificate is requested.
+#
+# Converted customer sites are host-routed to the same agentrix-node (design §4.1), each also at
+# its platform alias {domain-with-dashes}.agentrix.website. On-demand TLS asks node's loopback-only
+# internal listener (127.0.0.1:8079, GET /internal/tls-ask) before requesting a certificate, so
+# Caddy only gets certificates for hosts the platform serves. Enabled 7 Nov (spec session, S2-01).
+
+{
+	admin localhost:2019
+	servers {
+		# TCP only: the firewall opens 80 and 443/tcp (R14.2).
+		protocols h1 h2
+	}
+	on_demand_tls {
+		ask http://127.0.0.1:@@INTERNAL_PORT@@/internal/tls-ask
+	}
+}
+
+@@PLATFORM_SITE@@ {
+	encode zstd gzip
+	header {
+		Strict-Transport-Security "max-age=31536000"
+		X-Content-Type-Options "nosniff"
+		Referrer-Policy "strict-origin-when-cross-origin"
+		-Server
+	}
+	reverse_proxy 127.0.0.1:@@NODE_PORT@@ {
+		flush_interval -1
+	}
+}
+
+# Converted sites: any other host, certificate on demand once node says it serves it.
+https:// {
+	tls {
+		on_demand
+	}
+	encode zstd gzip
+	reverse_proxy 127.0.0.1:@@NODE_PORT@@ {
+		flush_interval -1
+	}
+}

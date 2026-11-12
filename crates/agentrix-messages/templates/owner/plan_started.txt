@@ -1,0 +1,17 @@
+{% block subject %}Your {{ plan.name }} plan for {{ site.name }} starts today{% endblock %}
+{% block preheader %}{{ plan.price|money(plan.currency) }} a month with {{ plan.method }}. Next charge {{ plan.next_charge }}.{% endblock %}
+{% block body %}
+# Your plan starts today
+{{ site.name }} is live, so the {{ plan.name }} plan starts today. {{ plan.method }} took the first charge.
+
+::fact Plan | {{ plan.name }}
+::fact Price | {{ plan.price|money(plan.currency) }} a month{% if plan.local %} (about {{ plan.local }}){% endif %}
+
+::fact AI budget | {{ plan.ai_budget }}
+::fact Paid with | {{ plan.method }}
+::fact Next charge | {{ plan.next_charge }}
+
+You can cancel the plan at any time in Billing. If you cancel, the site keeps full service until the end of the month you paid for.
+
+::button Open billing | {{ plan.url }}
+{% endblock %}

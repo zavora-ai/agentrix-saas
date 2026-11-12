@@ -1,0 +1,951 @@
+{
+  "sprints": [
+    {
+      "id": "S0",
+      "name": "Ground",
+      "window": "Sat 19:00–22:00",
+      "goal": "Everyone can build against one pinned workspace; Vultr access, VMs and model ids confirmed.",
+      "gate": "G0 22:00: scaffold compiles, Vultr key works, VMs provisioning. Else rooms develop on local Linux Docker and deploy moves to Sun 08:00."
+    },
+    {
+      "id": "S1",
+      "name": "Vertical slice",
+      "window": "Sat 22:00 – Sun 04:00",
+      "goal": "Paste a URL → sealed crawl → report → sign in → claim → the Move to a candidate with parity → the site serves a signed release with Ask.",
+      "gate": "G1 04:00: if replay is not working, R4.4 fallback (crawl + WXR) is the path."
+    },
+    {
+      "id": "S2",
+      "name": "Owner decides",
+      "window": "Sun 04:00–10:00",
+      "goal": "Go-live with a passkey, undo, Trust tab, replay, the agent door, first deploy on Vultr, egress review passed.",
+      "gate": "G2 08:00: egress review passes or deploy is blocked. G3 10:00: agent race or its fallback."
+    },
+    {
+      "id": "S3",
+      "name": "Gauntlet and polish",
+      "window": "Sun 10:00–15:00",
+      "goal": "10/10 gauntlet from receipts on the live URL; acceptance run; README, slides, video.",
+      "gate": "Video recorded by 15:00."
+    },
+    {
+      "id": "S4",
+      "name": "Ship",
+      "window": "Sun 15:00–20:00",
+      "goal": "Defects burned down; freeze 17:00; submitted by 20:00 (hard close Mon 02:00).",
+      "gate": "Submitted."
+    }
+  ],
+  "lanes": {
+    "james": "James",
+    "spec": "the first release spec session (this board's owner)",
+    "coordinator": "Coordinator (integration lead)",
+    "data": "Data architecture session",
+    "architecture": "WebAgent architecture session (sandbox plane)",
+    "control-plane": "Control plane session (deploy, sign-in)",
+    "console": "Owner console session",
+    "experience": "Website experience session",
+    "framework": "adk-rust framework session",
+    "move": "Move builder (new session, proposed)",
+    "gauntlet": "Gauntlet builder (new session, proposed)",
+    "disk": "Disk cleanup session"
+  },
+  "tasks": [
+    {
+      "id": "S0-01",
+      "sprint": "S0",
+      "lane": "james",
+      "priority": "M",
+      "title": "Approve requirements and design (or mark changes)",
+      "reqs": [
+        "all"
+      ],
+      "est_h": 0.25,
+      "depends": [],
+      "done_when": "James says go, or lists changes on the board",
+      "status": "todo",
+      "note": ""
+    },
+    {
+      "id": "S0-02",
+      "sprint": "S0",
+      "lane": "james",
+      "priority": "M",
+      "title": "Put VULTR_INFERENCE_API_KEY and a Vultr API key (for provisioning) in a local .env; confirm credits",
+      "reqs": [
+        "R11",
+        "R14"
+      ],
+      "est_h": 0.25,
+      "depends": [],
+      "done_when": "Keys present in the .env files named by S0-04 and S0-05; nobody else types them",
+      "status": "todo",
+      "note": ""
+    },
+    {
+      "id": "S0-03",
+      "sprint": "S0",
+      "lane": "james",
+      "priority": "M",
+      "title": "Choose the platform domain and the fixture domain; delegate both to Vultr DNS",
+      "reqs": [
+        "R3.3",
+        "R14.1"
+      ],
+      "est_h": 0.25,
+      "depends": [],
+      "done_when": "Domains named on the board; NS records point to Vultr",
+      "status": "todo",
+      "note": ""
+    },
+    {
+      "id": "S0-04",
+      "sprint": "S0",
+      "lane": "control-plane",
+      "priority": "M",
+      "title": "cloud-init and provisioning script for control, sandbox (VX1) and fixture VMs, VPC and firewall groups; James approves creation",
+      "reqs": [
+        "R14.1",
+        "R14.2"
+      ],
+      "est_h": 2,
+      "depends": [
+        "S0-02",
+        "S0-03"
+      ],
+      "done_when": "Three VMs reachable over the VPC; firewall groups as in design §2; script in deploy/",
+      "status": "todo",
+      "note": ""
+    },
+    {
+      "id": "S0-05",
+      "sprint": "S0",
+      "lane": "data",
+      "priority": "M",
+      "title": "Confirm Vultr model ids via GET /v1/models; fix the routing table and the embedding model",
+      "reqs": [
+        "R11.2"
+      ],
+      "est_h": 0.5,
+      "depends": [
+        "S0-02"
+      ],
+      "done_when": "Routing table in design §4.3 updated with confirmed ids and tool/vision support",
+      "status": "todo",
+      "note": ""
+    },
+    {
+      "id": "S0-06",
+      "sprint": "S0",
+      "lane": "coordinator",
+      "priority": "M",
+      "title": "Workspace scaffold: every the first release crate as a compiling skeleton, adk-rust pinned rev, shared deps, CI (fmt, clippy, test); later tasks never edit root files",
+      "reqs": [
+        "N10"
+      ],
+      "est_h": 1.5,
+      "depends": [],
+      "done_when": "cargo check --workspace passes; CI green; crates per design §3 exist",
+      "status": "todo",
+      "note": ""
+    },
+    {
+      "id": "S0-07",
+      "sprint": "S0",
+      "lane": "control-plane",
+      "priority": "M",
+      "title": "Passkey spike: adk-surface WebAuthn verification vs webauthn-rs; record decision D9",
+      "reqs": [
+        "R2.1"
+      ],
+      "est_h": 0.5,
+      "depends": [
+        "S0-06"
+      ],
+      "done_when": "Decision written in design D9 with the reason",
+      "status": "todo",
+      "note": ""
+    },
+    {
+      "id": "S0-08",
+      "sprint": "S0",
+      "lane": "data",
+      "priority": "M",
+      "title": "agentrix-types: JobSpec, JobResult, Receipt, Finding, DecisionCard, EffectRequest; Ed25519 + RFC 8785 signing",
+      "reqs": [
+        "R12.5",
+        "R10.3"
+      ],
+      "est_h": 1.5,
+      "depends": [
+        "S0-06"
+      ],
+      "done_when": "Types and sign/verify round-trip tests pass",
+      "status": "todo",
+      "note": ""
+    },
+    {
+      "id": "S0-09",
+      "sprint": "S0",
+      "lane": "data",
+      "priority": "M",
+      "title": "SQLite schema and migrations (design §5) and the CAS store",
+      "reqs": [
+        "N9",
+        "R12.5"
+      ],
+      "est_h": 1.5,
+      "depends": [
+        "S0-06"
+      ],
+      "done_when": "Migrations run on a fresh DB; CAS put/get by digest tested",
+      "status": "todo",
+      "note": ""
+    },
+    {
+      "id": "S0-10",
+      "sprint": "S0",
+      "lane": "disk",
+      "priority": "M",
+      "title": "Free disk on James's Mac to >= 25 GB (stale target dirs), with James's OK per deletion",
+      "reqs": [
+        "N6"
+      ],
+      "est_h": 0.5,
+      "depends": [],
+      "done_when": "df shows >= 25 GB free",
+      "status": "todo",
+      "note": ""
+    },
+    {
+      "id": "S0-11",
+      "sprint": "S0",
+      "lane": "framework",
+      "priority": "M",
+      "title": "Land #1348; rerun #1345, #1347, #1349; tell the coordinator the adk-rust rev to pin",
+      "reqs": [
+        "D3"
+      ],
+      "est_h": 1,
+      "depends": [],
+      "done_when": "Pinned rev builds the scaffold; PR states on the board",
+      "status": "todo",
+      "note": ""
+    },
+    {
+      "id": "S0-12",
+      "sprint": "S0",
+      "lane": "spec",
+      "priority": "M",
+      "title": "Spec committed; the first release board live; lanes briefed",
+      "reqs": [
+        "all"
+      ],
+      "est_h": 1,
+      "depends": [],
+      "done_when": "Board shows every task; each lane has its brief",
+      "status": "todo",
+      "note": ""
+    },
+    {
+      "id": "S1-01",
+      "sprint": "S1",
+      "lane": "architecture",
+      "priority": "M",
+      "title": "agentrix-runner: verify signed specs; Docker + runsc rooms; caps; read-only root; non-root; artifacts by digest; destroy and confirm; JobEvent stream",
+      "reqs": [
+        "R12.1",
+        "R12.2",
+        "R12.4",
+        "R12.5"
+      ],
+      "est_h": 4,
+      "depends": [
+        "S0-08"
+      ],
+      "done_when": "A fetch job runs in gVisor on the sandbox VM and returns a result with destroyed=true",
+      "status": "todo",
+      "note": ""
+    },
+    {
+      "id": "S1-02",
+      "sprint": "S1",
+      "lane": "framework",
+      "priority": "M",
+      "title": "Room images: room-fetch, room-render, room-build (pinned digests)",
+      "reqs": [
+        "R1.2",
+        "R6.2",
+        "R12.2"
+      ],
+      "est_h": 3,
+      "depends": [
+        "S1-01"
+      ],
+      "done_when": "Each image runs one job to completion under its caps",
+      "status": "todo",
+      "note": ""
+    },
+    {
+      "id": "S1-03",
+      "sprint": "S1",
+      "lane": "architecture",
+      "priority": "M",
+      "title": "Egress wiring: per-job allowlist from the spec into agentrix-egress; sandbox nftables force room traffic through it",
+      "reqs": [
+        "R12.2",
+        "R12.3"
+      ],
+      "est_h": 2,
+      "depends": [
+        "S1-01"
+      ],
+      "done_when": "A room cannot reach any host off its allowlist, nor 169.254.169.254",
+      "status": "todo",
+      "note": ""
+    },
+    {
+      "id": "S1-04",
+      "sprint": "S1",
+      "lane": "data",
+      "priority": "M",
+      "title": "agentrix-models: purpose routing, metering, budgets, backoff, /v1/screen and /v1/decide",
+      "reqs": [
+        "R11.1",
+        "R11.2",
+        "R11.3",
+        "R11.4"
+      ],
+      "est_h": 4,
+      "depends": [
+        "S0-05",
+        "S0-08"
+      ],
+      "done_when": "Each purpose answers from Vultr; usage rows written; 429 path tested",
+      "status": "todo",
+      "note": ""
+    },
+    {
+      "id": "S1-05",
+      "sprint": "S1",
+      "lane": "coordinator",
+      "priority": "M",
+      "title": "Broker client in agentrix-node and the Assess pipeline: crawl job → adk-site scan findings → plain-words report",
+      "reqs": [
+        "R1.1",
+        "R1.2",
+        "R1.3",
+        "R1.5",
+        "R1.6",
+        "R1.7"
+      ],
+      "est_h": 4,
+      "depends": [
+        "S1-01",
+        "S1-02"
+      ],
+      "done_when": "Assessing the fixture domain lists its planted spam links and footer script with evidence",
+      "status": "todo",
+      "note": ""
+    },
+    {
+      "id": "S1-06",
+      "sprint": "S1",
+      "lane": "move",
+      "priority": "M",
+      "title": "agentrix-move: inventory (crawl + WXR) → sanitise, detect, quarantine → rebuild → render → parity; persisted, resumable steps",
+      "reqs": [
+        "R4.4",
+        "R5.1",
+        "R5.2",
+        "R5.3",
+        "R5.5",
+        "R6.1",
+        "R6.2",
+        "R6.3",
+        "R6.4",
+        "R6.5",
+        "N9"
+      ],
+      "est_h": 6,
+      "depends": [
+        "S1-01",
+        "S1-04"
+      ],
+      "done_when": "The fixture reaches a candidate release with parity >= 0.95 and the infection quarantined",
+      "status": "todo",
+      "note": ""
+    },
+    {
+      "id": "S1-07",
+      "sprint": "S1",
+      "lane": "control-plane",
+      "priority": "M",
+      "title": "Sign-in server: passkey register/login; password + TOTP fallback; sessions; claim by DNS TXT or file, verified from the sandbox",
+      "reqs": [
+        "R2.1",
+        "R2.2",
+        "R2.3",
+        "R3.1",
+        "R3.2",
+        "R3.3"
+      ],
+      "est_h": 4,
+      "depends": [
+        "S0-07",
+        "S0-09"
+      ],
+      "done_when": "Register, sign out, sign in by passkey and by TOTP; claim verified on the fixture domain",
+      "status": "todo",
+      "note": ""
+    },
+    {
+      "id": "S1-08",
+      "sprint": "S1",
+      "lane": "console",
+      "priority": "M",
+      "title": "Port templates: start/assess, sign-in, claim, the Move (SSE), console shell",
+      "reqs": [
+        "R1",
+        "R2",
+        "R3",
+        "R6.5",
+        "R10.1"
+      ],
+      "est_h": 5,
+      "depends": [
+        "S0-06"
+      ],
+      "done_when": "Screens render real data on a phone width, light and dark",
+      "status": "todo",
+      "note": ""
+    },
+    {
+      "id": "S1-09",
+      "sprint": "S1",
+      "lane": "experience",
+      "priority": "M",
+      "title": "Converted site theme; edge serves verified releases by Host; Ask this site (SSE, citations, AI disclosure, honest don't-know)",
+      "reqs": [
+        "R8.1",
+        "R8.2",
+        "R8.3"
+      ],
+      "est_h": 5,
+      "depends": [
+        "S1-04"
+      ],
+      "done_when": "A cited answer and an honest don't-know on the rebuilt fixture site",
+      "status": "todo",
+      "note": ""
+    },
+    {
+      "id": "S1-10",
+      "sprint": "S1",
+      "lane": "framework",
+      "priority": "S",
+      "title": "Sealed browser for room-fetch (B1) and the frame feed (B2, #1349); fallback screenshotter",
+      "reqs": [
+        "R1.4"
+      ],
+      "est_h": 4,
+      "depends": [
+        "S1-02"
+      ],
+      "done_when": "Frames stream to the Assess screen from a sealed room",
+      "status": "todo",
+      "note": ""
+    },
+    {
+      "id": "S1-11",
+      "sprint": "S1",
+      "lane": "gauntlet",
+      "priority": "M",
+      "title": "Fixture: infected WordPress compose from examples/website S3 + the infected overlay + the ten attacks; on the fixture VM",
+      "reqs": [
+        "R13.1",
+        "R3.3"
+      ],
+      "est_h": 3,
+      "depends": [
+        "S0-04"
+      ],
+      "done_when": "The fixture site is live on the fixture domain with all ten attacks planted",
+      "status": "todo",
+      "note": ""
+    },
+    {
+      "id": "S1-12",
+      "sprint": "S1",
+      "lane": "control-plane",
+      "priority": "M",
+      "title": "Deploy pipeline: build on the control VM, ship runner and egress to sandbox, systemd units, Caddy TLS, smoke test",
+      "reqs": [
+        "R14.1",
+        "R14.3"
+      ],
+      "est_h": 3,
+      "depends": [
+        "S0-04",
+        "S0-06"
+      ],
+      "done_when": "deploy/deploy.sh takes a commit to a running stack with a passing smoke test",
+      "status": "todo",
+      "note": ""
+    },
+    {
+      "id": "S2-01",
+      "sprint": "S2",
+      "lane": "move",
+      "priority": "M",
+      "title": "LaunchGate: card fingerprint (release digest + charter v1); sign the release on approval; atomic pointer switch; probes; rollback for 30 days",
+      "reqs": [
+        "R7.1",
+        "R7.3",
+        "R7.4",
+        "R8.1"
+      ],
+      "est_h": 4,
+      "depends": [
+        "S1-06"
+      ],
+      "done_when": "Approve → live < 60 s; rollback restores the previous release",
+      "status": "todo",
+      "note": ""
+    },
+    {
+      "id": "S2-02",
+      "sprint": "S2",
+      "lane": "console",
+      "priority": "M",
+      "title": "Go-live card and Decisions: passkey approval over the fingerprint; starting levels in plain words; locked positions",
+      "reqs": [
+        "R7.1",
+        "R7.2",
+        "R7.5",
+        "R10.1",
+        "R10.2"
+      ],
+      "est_h": 3,
+      "depends": [
+        "S1-07",
+        "S2-01"
+      ],
+      "done_when": "The owner approves go-live with a passkey on a phone",
+      "status": "todo",
+      "note": ""
+    },
+    {
+      "id": "S2-03",
+      "sprint": "S2",
+      "lane": "console",
+      "priority": "M",
+      "title": "Trust tab (receipts: list, open, verify; gauntlet score) and the Today view",
+      "reqs": [
+        "R10.1",
+        "R10.3",
+        "R13.2"
+      ],
+      "est_h": 3,
+      "depends": [
+        "S0-08"
+      ],
+      "done_when": "Every receipt opens and verifies against the published key",
+      "status": "todo",
+      "note": ""
+    },
+    {
+      "id": "S2-04",
+      "sprint": "S2",
+      "lane": "data",
+      "priority": "M",
+      "title": "Chief WebAgent brief for Today, from activity and receipts (concierge purpose)",
+      "reqs": [
+        "R10.1"
+      ],
+      "est_h": 2,
+      "depends": [
+        "S1-04"
+      ],
+      "done_when": "A plain-words brief of what happened, with links to receipts",
+      "status": "todo",
+      "note": ""
+    },
+    {
+      "id": "S2-05",
+      "sprint": "S2",
+      "lane": "architecture",
+      "priority": "M",
+      "title": "room-replay: WordPress from WXR/dump, internal-only network; microVM on VX1 if available, else gVisor",
+      "reqs": [
+        "R4.1",
+        "R4.2",
+        "R4.3"
+      ],
+      "est_h": 4,
+      "depends": [
+        "S1-01"
+      ],
+      "done_when": "Replay inventory produced; the phone-home attempt fails and is on the receipt",
+      "status": "todo",
+      "note": ""
+    },
+    {
+      "id": "S2-06",
+      "sprint": "S2",
+      "lane": "console",
+      "priority": "S",
+      "title": "Quarantine review; restore as a signed decision with a reason",
+      "reqs": [
+        "R5.4"
+      ],
+      "est_h": 2,
+      "depends": [
+        "S1-06"
+      ],
+      "done_when": "Owner restores a false positive; decision on the receipt",
+      "status": "todo",
+      "note": ""
+    },
+    {
+      "id": "S2-07",
+      "sprint": "S2",
+      "lane": "experience",
+      "priority": "S",
+      "title": "Agent door: AWP discovery + MCP request_custom_order → held → owner card → pollable status",
+      "reqs": [
+        "R9.1",
+        "R9.2"
+      ],
+      "est_h": 3,
+      "depends": [
+        "S1-09"
+      ],
+      "done_when": "An agent's order raises the owner's card and polls its status",
+      "status": "todo",
+      "note": ""
+    },
+    {
+      "id": "S2-08",
+      "sprint": "S2",
+      "lane": "experience",
+      "priority": "M",
+      "title": "Concierge refusal policy (no discounts, no instructions); the attempt shows in the console; AWP/Markdown twins",
+      "reqs": [
+        "R8.4",
+        "R8.5"
+      ],
+      "est_h": 2,
+      "depends": [
+        "S1-09"
+      ],
+      "done_when": "Gauntlet attack 10 refused and surfaced",
+      "status": "todo",
+      "note": ""
+    },
+    {
+      "id": "S2-09",
+      "sprint": "S2",
+      "lane": "framework",
+      "priority": "M",
+      "title": "Independent egress security review: one test per case (rebinding, redirects, IPv6/encoded, CONNECT, smuggling); architecture fixes what fails; sign-off",
+      "reqs": [
+        "R12.3",
+        "R12.6"
+      ],
+      "est_h": 3,
+      "depends": [
+        "S1-03"
+      ],
+      "done_when": "All cases pass in crates/agentrix-egress/tests; sign-off noted on the board",
+      "status": "todo",
+      "note": ""
+    },
+    {
+      "id": "S2-10",
+      "sprint": "S2",
+      "lane": "control-plane",
+      "priority": "M",
+      "title": "First deploy on Vultr: three VMs, HTTPS live URL",
+      "reqs": [
+        "R14.1",
+        "R14.2",
+        "R14.3"
+      ],
+      "est_h": 2,
+      "depends": [
+        "S1-12",
+        "S2-09"
+      ],
+      "done_when": "Live URL serves the start page over HTTPS",
+      "status": "todo",
+      "note": ""
+    },
+    {
+      "id": "S2-11",
+      "sprint": "S2",
+      "lane": "data",
+      "priority": "M",
+      "title": "Usage meter and budget in the console; model cost per Move",
+      "reqs": [
+        "R11.3",
+        "N5"
+      ],
+      "est_h": 1.5,
+      "depends": [
+        "S1-04"
+      ],
+      "done_when": "Cost per Move shown; budget stop tested",
+      "status": "todo",
+      "note": ""
+    },
+    {
+      "id": "S3-01",
+      "sprint": "S3",
+      "lane": "gauntlet",
+      "priority": "M",
+      "title": "Gauntlet runner: ten attacks against a deployment; score from receipts; on the Trust tab; runs on every deploy",
+      "reqs": [
+        "R13.2",
+        "R13.3"
+      ],
+      "est_h": 3,
+      "depends": [
+        "S1-11",
+        "S2-10"
+      ],
+      "done_when": "10/10 on the live URL, computed from receipts",
+      "status": "todo",
+      "note": ""
+    },
+    {
+      "id": "S3-02",
+      "sprint": "S3",
+      "lane": "spec",
+      "priority": "M",
+      "title": "Acceptance run: verify every Must criterion on the live URL; file defects on the board",
+      "reqs": [
+        "all"
+      ],
+      "est_h": 2,
+      "depends": [
+        "S2-10"
+      ],
+      "done_when": "Each Must criterion marked verified or failed with a defect",
+      "status": "todo",
+      "note": ""
+    },
+    {
+      "id": "S3-03",
+      "sprint": "S3",
+      "lane": "james",
+      "priority": "S",
+      "title": "Agent race rehearsal with computer use; keep or fall back by 10:00",
+      "reqs": [
+        "R9.3"
+      ],
+      "est_h": 1,
+      "depends": [
+        "S2-07"
+      ],
+      "done_when": "Decision on the board",
+      "status": "todo",
+      "note": ""
+    },
+    {
+      "id": "S3-04",
+      "sprint": "S3",
+      "lane": "control-plane",
+      "priority": "S",
+      "title": "Releases and evidence on Vultr Object Storage",
+      "reqs": [
+        "R14.4"
+      ],
+      "est_h": 2,
+      "depends": [
+        "S2-10"
+      ],
+      "done_when": "A release served from Object Storage-backed CAS",
+      "status": "todo",
+      "note": ""
+    },
+    {
+      "id": "S3-05",
+      "sprint": "S3",
+      "lane": "experience",
+      "priority": "S",
+      "title": "Accessibility and performance pass on site and console",
+      "reqs": [
+        "R8.6",
+        "N3",
+        "N7"
+      ],
+      "est_h": 2,
+      "depends": [
+        "S2-10"
+      ],
+      "done_when": "AA checks pass on demo paths; LCP < 2.5 s; Ask first token < 2 s",
+      "status": "todo",
+      "note": ""
+    },
+    {
+      "id": "S3-06",
+      "sprint": "S3",
+      "lane": "data",
+      "priority": "S",
+      "title": "Concierge retrieval on Vultr's vector store",
+      "reqs": [
+        "R11.5"
+      ],
+      "est_h": 2,
+      "depends": [
+        "S1-09"
+      ],
+      "done_when": "Ask answers cite chunks retrieved from Vultr",
+      "status": "todo",
+      "note": ""
+    },
+    {
+      "id": "S3-07",
+      "sprint": "S3",
+      "lane": "spec",
+      "priority": "M",
+      "title": "README: How we use Vultr, architecture, how the agent does real work, disclosure of what pre-existed",
+      "reqs": [
+        "R14.3",
+        "R15.1"
+      ],
+      "est_h": 2,
+      "depends": [
+        "S2-10"
+      ],
+      "done_when": "README reviewed by James",
+      "status": "todo",
+      "note": ""
+    },
+    {
+      "id": "S3-08",
+      "sprint": "S3",
+      "lane": "spec",
+      "priority": "M",
+      "title": "Slides (PDF) and the video script under 5 minutes: problem, market, revenue, competition, future",
+      "reqs": [
+        "R15.1",
+        "R15.2"
+      ],
+      "est_h": 2,
+      "depends": [],
+      "done_when": "Slides and script approved by James",
+      "status": "todo",
+      "note": ""
+    },
+    {
+      "id": "S3-10",
+      "sprint": "S3",
+      "lane": "data",
+      "priority": "M",
+      "title": "Switch gate: when acceptance passes on Claude (Phase 1), run the bake-off, switch routes to Vultr by configuration, re-run acceptance and the gauntlet on Vultr",
+      "reqs": [
+        "R11.2",
+        "R11.6",
+        "R13.2"
+      ],
+      "est_h": 2,
+      "depends": [
+        "S3-02"
+      ],
+      "done_when": "Routes on Vultr; acceptance and 10/10 gauntlet pass on Vultr; bake-off result and route change on receipts",
+      "status": "todo",
+      "note": ""
+    },
+    {
+      "id": "S3-09",
+      "sprint": "S3",
+      "lane": "james",
+      "priority": "M",
+      "title": "Record the video (live gauntlet, live go-live, the race or its fallback) on Vultr routes",
+      "reqs": [
+        "R13.3",
+        "R15.1"
+      ],
+      "est_h": 2,
+      "depends": [
+        "S3-01",
+        "S3-08",
+        "S3-10"
+      ],
+      "done_when": "Video uploaded",
+      "status": "todo",
+      "note": ""
+    },
+    {
+      "id": "S4-01",
+      "sprint": "S4",
+      "lane": "coordinator",
+      "priority": "M",
+      "title": "Defect burn-down from the acceptance run",
+      "reqs": [
+        "all"
+      ],
+      "est_h": 3,
+      "depends": [
+        "S3-02"
+      ],
+      "done_when": "No open Must defect",
+      "status": "todo",
+      "note": ""
+    },
+    {
+      "id": "S4-02",
+      "sprint": "S4",
+      "lane": "coordinator",
+      "priority": "M",
+      "title": "Feature freeze 17:00; final deploy; gauntlet re-run 10/10",
+      "reqs": [
+        "R13.2",
+        "R14"
+      ],
+      "est_h": 1,
+      "depends": [
+        "S4-01"
+      ],
+      "done_when": "Final deploy tagged; score 10/10 from receipts",
+      "status": "todo",
+      "note": ""
+    },
+    {
+      "id": "S4-03",
+      "sprint": "S4",
+      "lane": "spec",
+      "priority": "M",
+      "title": "Submission package: every item in 04 §6 checked",
+      "reqs": [
+        "R15.1"
+      ],
+      "est_h": 1,
+      "depends": [
+        "S4-02"
+      ],
+      "done_when": "Checklist complete",
+      "status": "todo",
+      "note": ""
+    },
+    {
+      "id": "S4-04",
+      "sprint": "S4",
+      "lane": "james",
+      "priority": "M",
+      "title": "Fill the lablab form and submit",
+      "reqs": [
+        "R15.1"
+      ],
+      "est_h": 0.5,
+      "depends": [
+        "S4-03"
+      ],
+      "done_when": "Submitted before 20:00 EAT",
+      "status": "todo",
+      "note": ""
+    }
+  ]
+}

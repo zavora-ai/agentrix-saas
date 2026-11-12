@@ -1,0 +1,31 @@
+{#- Classy Perfumes's shared pieces. -#}
+{% from "macros.html" import mark %}
+
+{#- The image: a sample render where one exists, else a tone placeholder. Always labelled. -#}
+{% macro pic(s, cls="") -%}
+<div class="cp-pic tone-{{ s.tone }} {{ cls }}">{% if s.image_url %}<img src="{{ s.image_url }}" alt="{{ s.image_alt }}" loading="lazy">{% else %}<span class="cp-bottle" aria-hidden="true"></span>{% endif %}<span class="rtag">{{ s.image_label }}</span></div>
+{%- endmacro %}
+
+{#- A product card in a grid. -#}
+{% macro card(s) -%}
+<article class="p-card" id="item-{{ s.slug }}">
+  <a class="rank" href="{{ s.href }}" tabindex="-1" aria-hidden="true">{{ pic(s) }}</a>
+  <div class="pb">
+    <h3><a href="{{ s.href }}">{{ s.name }}</a></h3>
+    <div class="pr">{{ s.price }} · {{ s.size }}</div>
+    <p class="why">{{ s.notes }}</p>
+    <div class="fits"><span class="fit{% if s.out %} no{% elif s.low %} low{% endif %}">{{ s.stock }}</span>{% if s.gift_ready %}<span class="fit">Gift-wrapped</span>{% endif %}{% if s.limited %}<span class="fit">Limited run</span>{% endif %}</div>
+  </div>
+</article>
+{%- endmacro %}
+
+{#- An answer card rendered on the server (no script needed). -#}
+{% macro answer(a, site) -%}
+<div class="wa-thread"><div class="wa-a">
+  <div class="by">{{ mark(a.desk, 20, site) }} {{ a.desk.name }} {% if a.ai %}<span class="wa-ai">AI</span>{% elif a.instant %}<span class="wa-ai">Instant</span>{% endif %}</div>
+  <div class="txt">{% for ph in a.phrases %}<span class="phrase">{% for p in ph %}{% if p.k == "b" %}<b>{{ p.t }}</b>{% elif p.k == "c" %}<a class="cite" href="{{ p.href }}">{{ p.t }}</a>{% else %}{{ p.t }}{% endif %}{% endfor %}</span> {% endfor %}</div>
+  {% if a.sources %}<div class="srcs">{% for s in a.sources %}<a class="src" href="{{ s.href }}"><b>{{ s.n }}</b>{{ s.label }}</a>{% endfor %}</div>{% endif %}
+  {% if a.actions %}<div class="acts">{% for x in a.actions %}<a class="act{% if x.primary %} primary{% endif %}" href="{{ x.href }}"{% if x.pass %} data-person{% endif %}>{{ x.label }}</a>{% endfor %}</div>{% endif %}
+  {% if a.meta %}<div class="wa-meta"><span>{{ a.meta }}</span></div>{% endif %}
+</div></div>
+{%- endmacro %}

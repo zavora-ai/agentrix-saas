@@ -1,0 +1,19 @@
+{% block subject %}New order {{ order.number }}: {{ order.total|money(order.currency) }}{% endblock %}
+{% block preheader %}{{ order.customer }} · {{ order.fulfilment.label }} {{ order.fulfilment.when }}{% endblock %}
+{% block body %}
+# New order {{ order.number }}
+{{ order.customer }} paid {{ order.total|money(order.currency) }}{% if order.charged %} ({{ order.charged.amount|money(order.charged.currency) }} with {{ order.charged.method }}){% endif %}.
+
+{% for line in order.lines %}
+::fact {{ line.qty }} × {{ line.name }} | {{ line.total|money(order.currency) }}
+{% endfor %}
+::fact {{ order.fulfilment.label }} | {{ order.fulfilment.when }}
+
+::button Open the order | {{ order.url }}
+{% endblock %}
+{% block push %}A new order came in.{% endblock %}
+{% block push_url %}{{ order.url }}{% endblock %}
+{% block chat %}
+New order {{ order.number }}: {{ order.total|money(order.currency) }} from {{ order.customer }}. {{ order.fulfilment.label }}: {{ order.fulfilment.when }}.
+::button Open the order | {{ order.url }}
+{% endblock %}

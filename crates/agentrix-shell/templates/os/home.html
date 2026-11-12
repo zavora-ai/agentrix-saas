@@ -1,0 +1,178 @@
+{% extends "os/base.html" %}
+{#- ShellPage::Home · view::HomeView (+ Chrome) {
+      greeting, sub_words, state_line: { class, words }, brief: Brief { written_words, events_count, lines: [{text, href?}], spend_words? }?,
+      first_brief_words, first_card: LaneCard?, work: [WorkCard { who, title, state_words, state, steps: [{text, state}], href }],
+      passed: [PassedQuestion { question, when_words, contact? }], passed_total, meter: Meter?, gauntlet: Gauntlet?,
+      missions: [MissionRow] (running ones),
+      away: Away { since_words, spent_words, waiting, items: [TimelineItem], more }?,
+      night: Night { sub_words, items: [TimelineItem], spend_words?, waiting },
+      front: Front { passed, passed_total, held: [LaneCard] }, recent: [ReceiptRow] }
+    01b C2 (Back office · Day Time), C3 (Night Time), C19 (Front of house); 07 §3.3, §3.5. -#}
+{% block title %}{{ "Front of house" if world == "front" else ("Night Time" if time.mode == "night" else "Back office") }} · {{ site.name }}{% endblock %}
+{% block field %}
+
+<!-- BACK OFFICE · DAY TIME -->
+<section class="view" data-view="back" aria-label="Back office">
+  <div class="field-head"><div><h2>{{ greeting }}</h2><div class="sub">{{ sub_words }}</div></div>{% if state_line.words %}<span class="state-line {{ state_line.class }}"><span class="dot"></span>{{ state_line.words }}</span>{% endif %}</div>
+  <div class="cards">
+
+    <article class="fcard accent span2" aria-labelledby="brief-h">
+      <div class="fcard-head">{{ ui.team_mark({"name": site.name, "monogram": monogram, "team": team}, size=32) }}<div class="who"><b id="brief-h">Chief WebAgent · your brief</b><span class="state-line">{% if brief %}Written {{ brief.written_words }}{% if brief.events_count %} · from {{ brief.events_count }} recorded event{{ "" if brief.events_count == 1 else "s" }}{% endif %}{% else %}No brief yet{% endif %}</span></div></div>
+      {% if brief %}
+        <ul class="brief-lines">
+          {% for l in brief.lines %}<li>{{ l.text }}{% if l.href %} <a class="cite" href="{{ l.href }}">receipt</a>{% endif %}</li>{% endfor %}
+        </ul>
+        {% if brief.spend_words %}<p class="small muted">{{ brief.spend_words }}</p>{% endif %}
+      {% else %}
+        <p>{{ first_brief_words }}</p>
+      {% endif %}
+      <div class="verbs">
+        {% if first_card %}<a class="btn btn-primary btn-sm" href="{{ first_card.href }}" data-sheet="{{ first_card.sheet_url }}">{% if first_card.title is startingwith("Approve") %}{{ first_card.title }}{% else %}Approve: {{ first_card.title }}{% endif %}</a>{% endif %}
+        <a class="btn btn-sm" href="{{ base }}/trust#receipts">Every receipt</a>
+      </div>
+    </article>
+
+    {% if live_now %}
+    <article class="fcard" aria-labelledby="live-now-h">
+      <div class="fcard-head"><span class="sysmark" aria-hidden="true">{{ m.icon("live") }}</span><div class="who"><b id="live-now-h">{{ live_now }} conversation{{ "" if live_now == 1 else "s" }} with your desks in the last 10 minutes</b><span class="state-line answering"><span class="dot"></span>Front of house</span></div></div>
+      <div class="verbs"><a class="btn btn-sm" href="{{ base }}/live">Sit in</a></div>
+    </article>
+    {% endif %}
+
+    {% for x in missions %}
+    <article class="fcard" aria-labelledby="msn-{{ loop.index }}">
+      <div class="fcard-head"><span class="sysmark" aria-hidden="true">{{ m.icon("missions") }}</span><div class="who"><b id="msn-{{ loop.index }}">Mission: {{ x.goal }}</b><span class="state-line ok"><span class="dot"></span>{{ x.lead }} named to lead · {{ x.left_words }}</span></div></div>
+      {% if x.count is not none and x.target %}
+      <div class="progress"><div class="spread"><span><b>{{ x.count }}</b> of {{ x.target }}</span><span>ends {{ x.ends_words }}</span></div>{{ ui.meter(x.count, x.target, tone="ok", label=x.count ~ " of " ~ x.target) }}</div>
+      {% endif %}
+      <p class="small">{{ x.pace_words }}</p>
+      <div class="verbs"><a class="btn btn-sm" href="{{ x.href }}">Open the mission</a></div>
+    </article>
+    {% endfor %}
+
+    {% for w in work %}
+    <article class="fcard">
+      <div class="fcard-head">{{ m.mark(w.who) }}<div class="who"><b>{{ w.title }}</b><span class="state-line {{ w.state }}"><span class="dot"></span>{{ w.state_words }}</span></div></div>
+      <ul class="steps">{% for s in w.steps %}<li class="{{ '' if s.state == 'todo' else s.state }}">{{ s.text }}</li>{% endfor %}</ul>
+      <div class="verbs"><a class="btn btn-sm" href="{{ w.href }}">Watch</a></div>
+    </article>
+    {% endfor %}
+
+    {% if granted %}
+    <article class="fcard span2" aria-labelledby="granted-h">
+      <div class="fcard-head"><span class="sysmark" aria-hidden="true">{{ m.icon("trust") }}</span><div class="who"><b id="granted-h">Done under your standing grants</b><span class="state-line">You chose "Allow, and tell me" for these</span></div><span class="chip">{{ granted|length }}</span></div>
+      {% for g in granted %}
+      <div class="rule-row">
+        <div><b><a href="{{ g.href }}">{{ g.title }}</a></b><p class="small muted">{{ g.words }}{% if g.receipt %} <a href="/receipts/{{ g.receipt }}">Receipt</a>{% endif %}</p></div>
+        {% if g.revoke_url %}<form method="post" action="{{ g.revoke_url }}"><button class="btn btn-sm btn-ghost" type="submit">Stop the grant</button></form>{% endif %}
+      </div>
+      {% endfor %}
+    </article>
+    {% endif %}
+    {% if away %}
+    <article class="fcard span2" aria-labelledby="away-h">
+      <div class="fcard-head">{{ ui.team_mark({"name": site.name, "monogram": monogram, "team": team}, size=32) }}<div class="who"><b id="away-h">While you were away</b><span class="state-line">{{ away.since_words }}</span></div></div>
+      <div class="stats">
+        <div><span>AI spend</span><b>{{ away.spent_words }}</b></div>
+        <div><span>Quiet hours</span><b>{{ time.quiet_words }}</b></div>
+        <div><span>Waiting for you</span><b>{{ away.waiting }}</b></div>
+      </div>
+      {% if away.items %}
+      <ol class="tl">{% for t in away.items %}{{ m.tl_item(t) }}{% endfor %}</ol>
+      {% if away.more %}<p class="small muted">And {{ away.more }} more. <a href="{{ base }}/trust#receipts">See every receipt</a></p>{% endif %}
+      {% else %}
+      <p>Nothing was recorded while you were away.</p>
+      {% endif %}
+    </article>
+    {% endif %}
+
+    <article class="fcard" aria-labelledby="teach-h">
+      <div class="fcard-head">{{ ui.team_mark({"name": site.name, "monogram": monogram, "team": team}, size=32) }}<div class="who"><b id="teach-h">Questions your pages can't answer yet</b><span class="state-line">Visitors asked these, and your pages don't say</span></div>{% if passed_total %}<span class="chip chip-coral">{{ passed_total }}</span>{% endif %}</div>
+      {% for q in passed[:3] %}
+        <p>"{{ q.question }}" <span class="muted">{{ q.when_words }}{% if q.contact %} · reply to {{ q.contact }}{% endif %}</span></p>
+      {% else %}
+        <p>None yet. When your site doesn't say, the Concierge offers to pass the question to you instead of guessing.</p>
+      {% endfor %}
+      {% if passed_total > 3 %}<div class="verbs"><a class="btn btn-sm" href="{{ base }}?world=front">See all {{ passed_total }}</a></div>{% endif %}
+    </article>
+
+    <article class="fcard" aria-labelledby="guard-h">
+      <div class="fcard-head"><span class="os-mark" data-state="{{ 'listening' if gauntlet else '' }}" data-c="#45597f"><span class="avatar av-guardian">Gu</span></span><div class="who"><b id="guard-h">Protections</b><span class="state-line{% if gauntlet %} live{% endif %}"><span class="dot"></span>{% if gauntlet %}Last checked {{ gauntlet.run_words }}{% else %}Not checked yet{% endif %}</span></div></div>
+      {% if gauntlet %}
+      <p><b>{{ gauntlet.held }} of {{ gauntlet.of }}</b> test attacks were stopped on your site. {% if gauntlet.held == gauntlet.of %}Nothing for you to do.{% else %}Open the Trust centre to see which got through.{% endif %}</p>
+      <div class="verbs"><a class="btn btn-sm" href="/receipts/{{ gauntlet.receipt }}">See the run's receipt</a></div>
+      {% else %}
+      <p>The test attacks haven't been run against your site yet, so there's no score to show.</p>
+      {% endif %}
+    </article>
+
+    {% if meter %}
+    <article class="fcard" aria-labelledby="spend-h">
+      <div class="fcard-head"><span class="sysmark" aria-hidden="true">{{ m.icon("activity") }}</span><div class="who"><b id="spend-h">AI spend this month</b><span class="state-line">{{ meter.cap_words }}</span></div></div>
+      {% if meter.cap_pct is not none %}<div class="progress"><div class="meter {{ 'coral' if meter.cap_pct >= 80 else 'ok' }}" data-value="{{ meter.cap_pct }}" data-max="100" role="img" aria-label="{{ meter.cap_pct }}% of this month's AI budget used"><span></span></div></div>{% endif %}
+      <p>{{ meter.cap_note }} {{ meter.calls_words }}{% if meter.refused_words %} · {{ meter.refused_words }}{% endif %}.</p>
+      <div class="verbs"><button class="btn btn-sm" type="button" data-open="activity">Spend by job</button></div>
+    </article>
+    {% endif %}
+
+    {% if recent %}
+    <article class="fcard span2" aria-labelledby="recent-h">
+      <div class="spread-h"><h3 id="recent-h">Recently, with receipts</h3><a class="btn btn-sm" href="{{ base }}/trust#receipts">All receipts</a></div>
+      {% for r in recent %}{{ m.receipt(r) }}{% endfor %}
+    </article>
+    {% endif %}
+  </div>
+</section>
+
+<!-- BACK OFFICE · NIGHT TIME -->
+<section class="view" data-view="night" aria-label="Night Time">
+  <div class="field-head"><div><h2>Night Time</h2><div class="sub">{{ night.sub_words }}</div></div>{% if night.spend_words %}<span class="state-line"><span class="dot night-dot"></span>{{ night.spend_words }}</span>{% endif %}</div>
+  <div class="cards">
+    <article class="fcard span2">
+      {% if night.items %}
+      <ol class="tl">{% for t in night.items %}{{ m.tl_item(t) }}{% endfor %}</ol>
+      {% else %}
+      <p>Nothing was recorded in these quiet hours.</p>
+      {% endif %}
+    </article>
+    <article class="fcard">
+      <div class="fcard-head">{{ ui.team_mark({"name": site.name, "monogram": monogram, "team": team}, size=32) }}<div class="who"><b>Waiting for the morning</b><span class="state-line">Nothing is approved without you</span></div></div>
+      <h3>{% if night.waiting %}{{ night.waiting }} decision{{ "" if night.waiting == 1 else "s" }}{% else %}Nothing{% endif %}</h3>
+      <p>Unanswered decisions wait for you. If one passes its time limit, it's recorded as expired and nothing is done.</p>
+    </article>
+    <article class="fcard">
+      <div class="fcard-head"><span class="sysmark" aria-hidden="true">{{ m.icon("settings") }}</span><div class="who"><b>Your quiet hours</b><span class="state-line">{{ time.quiet_words }}, your site's time</span></div></div>
+      <p>The console turns dark and shows the night's record instead of the day's cards. Emergency alerts aren't switched on for this site yet, so nothing rings you.</p>
+      <div class="verbs"><a class="btn btn-sm" href="{{ base }}/settings">Change quiet hours</a></div>
+    </article>
+  </div>
+</section>
+
+<!-- FRONT OF HOUSE -->
+<section class="view" data-view="front" aria-label="Front of house">
+  <div class="field-head"><div><h2>Front of house</h2><div class="sub">What visitors and AI agents left for you{% if site.live_url %} · <a href="{{ site.live_url }}" rel="noopener">your site</a>{% endif %}</div></div></div>
+  <div class="cards">
+    {% for c in front.held %}
+    <article class="fcard span2">
+      <div class="fcard-head"><span class="vdot agent vdot-lg">AI</span><div class="who"><b>An AI agent ordered at the agent door</b><span class="state-line waiting"><span class="dot"></span>Held for you · {{ c.created_words }}</span></div><span class="chip chip-coral">needs your OK</span></div>
+      <p><b>{{ c.title }}</b>{% if c.summary %} · {{ c.summary }}{% endif %}</p>
+      <div class="verbs"><a class="btn btn-primary btn-sm" href="{{ c.href }}" data-sheet="{{ c.sheet_url }}">Approve</a><a class="btn btn-sm" href="{{ c.href }}">See the order</a></div>
+    </article>
+    {% endfor %}
+    {% for q in front.passed %}
+    <article class="fcard">
+      <div class="fcard-head"><span class="vdot talking vdot-lg">?</span><div class="who"><b>A visitor asked</b><span class="state-line">{{ q.when_words }} · passed to you</span></div></div>
+      <p>"{{ q.question }}"</p>
+      <p class="muted small">{% if q.contact %}They left {{ q.contact }} so you can reply.{% else %}They left no way to reply. Answering it on your site helps the next person who asks.{% endif %}</p>
+    </article>
+    {% endfor %}
+    {% if not front.held and not front.passed %}
+    <article class="fcard span2">
+      <h3>Nobody has left anything for you</h3>
+      <p>Questions your pages can't answer and orders AI agents place at your door appear here. Live conversations will show here too, once that's switched on for your site.</p>
+    </article>
+    {% endif %}
+  </div>
+  <p class="note after-cards"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg><span>Visitors' words are shown here as they wrote them. Your Chief WebAgent can read them to answer your questions, and it's told never to take them as instructions.</span></p>
+</section>
+{% endblock %}

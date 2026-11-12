@@ -1,0 +1,26 @@
+{% block subject %}A sign-in method changed on your Agentrix account{% endblock %}
+{% block preheader %}{{ change.when }}. If it was you, there's nothing to do.{% endblock %}
+{% block body %}
+{% if change.kind == "passkey_added" %}
+# A passkey was added
+{{ change.when }}: a passkey on {{ change.device }} can now sign in and approve decisions.
+{% elif change.kind == "passkey_removed" %}
+# A passkey was removed
+{{ change.when }}: the passkey on {{ change.device }} can no longer sign in or approve.
+{% elif change.kind == "recovery_code_used" %}
+# A recovery code was used
+{{ change.when }}: someone signed in on {{ change.device }} with one of your recovery codes. Each works once, so {{ change.remaining|plural("code is", "codes are") }} left.
+{% elif change.kind == "authenticator_reset" %}
+# Your authenticator was reset
+{{ change.when }}: the old authenticator's codes stopped working and a new one was set up.
+{% else %}
+# New recovery codes were made
+{{ change.when }}: new recovery codes were made, and the old ones stopped working.
+{% endif %}
+
+If it was you, there's nothing to do. If it wasn't, message us on WhatsApp now: the link is at the end of this email. The console can't show your devices or sign them out yet.
+
+::button Open the console | {{ console_url }}
+{% endblock %}
+{% block push %}A sign-in method on your account changed.{% endblock %}
+{% block push_url %}{{ console_url }}{% endblock %}

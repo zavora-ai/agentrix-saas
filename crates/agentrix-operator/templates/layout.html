@@ -1,0 +1,108 @@
+{#- The operator scope's shell (08 §7.1; concept/control-plane/cp.js): status bar with the scope
+    chip, dock of apps then operator WebAgents, the field, the lane and the command bar. Every
+    page passes `shell` (pages.rs, Shell). -#}
+{%- macro icon(name) -%}
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+{%- if name == "fleet" %}<rect x="3" y="4" width="18" height="7" rx="2"/><rect x="3" y="13" width="18" height="7" rx="2"/><path d="M7 7.5h.01M7 16.5h.01"/>
+{%- elif name == "rollouts" %}<path d="m12 3 9 5-9 5-9-5 9-5z"/><path d="m3 13 9 5 9-5"/>
+{%- elif name == "incidents" %}<path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/><path d="M12 9v4M12 17h.01"/>
+{%- elif name == "customers" %}<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.9M16 3.1a4 4 0 0 1 0 7.8"/>
+{%- elif name == "money" %}<rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2.5"/><path d="M6 12h.01M18 12h.01"/>
+{%- elif name == "partners" %}<path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.7 1.7"/><path d="M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.7-1.7"/>
+{%- elif name == "trust" %}<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+{%- elif name == "clients" %}<rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+{%- elif name == "sites" %}<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18"/>
+{%- elif name == "billing" %}<rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2.5"/><path d="M6 12h.01M18 12h.01"/>
+{%- elif name == "team" %}<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.9M16 3.1a4 4 0 0 1 0 7.8"/>
+{%- elif name == "shield" %}<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/>
+{%- elif name == "hold" %}<rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/>
+{%- elif name == "send" %}<path d="M5 12h14M13 6l6 6-6 6"/>
+{%- elif name == "activity" %}<path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+{%- endif -%}
+</svg>
+{%- endmacro -%}
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>{% block title %}Control plane{% endblock %} · {{ shell.partner.name if shell.scope == "pf" else "Zavora Cloud operator" }}</title>
+<link rel="stylesheet" href="{{ ui_base }}/tokens.css?v={{ ui_v }}">
+<link rel="stylesheet" href="{{ ui_base }}/kit.css?v={{ ui_v }}">
+<link rel="stylesheet" href="{{ ui_base }}/shell.css?v={{ ui_v }}">
+<link rel="stylesheet" href="/ops-static/ops.css?v={{ asset_v }}">
+<script src="/ops-static/ops.js?v={{ asset_v }}" defer></script>
+</head>
+<body class="ops-app">
+<a class="skip" href="#field">Skip to the page</a>
+<div class="os cp-os app" data-cp-scope="{{ shell.scope }}" data-app="{{ shell.app }}">
+{%- if shell.scope == "pf" %}
+  <header class="os-bar">
+    <span class="site-chip scope-chip pf"><span class="logo-bake" aria-hidden="true">{{ shell.partner.name|initials }}</span><span>{{ shell.partner.name }}<small>Portfolio · {{ shell.partner.kind }}</small></span></span>
+    <span class="scope-tag pf">Portfolio · on Agentrix</span>
+    <div class="bar-right">
+      <span class="pill who hide-sm" title="Signed in with {{ 'a passkey' if shell.operator.method == 'passkey' else 'an authenticator code' }}"><span class="hide-md">{{ shell.operator.name }}</span> <b>{{ shell.roles|join(" · ") }}</b></span>
+      <form method="post" action="/signout"><button class="pill signout" type="submit">Sign out</button></form>
+    </div>
+  </header>
+  <nav class="dock" aria-label="{{ shell.partner.name }}: apps and WebAgents">
+    {%- for id, label, href in [("clients", "Clients", "/portfolio#clients"), ("sites", "Sites", "/portfolio#import"), ("rollouts", "Rollouts", "/portfolio#ring"), ("billing", "Billing", "/portfolio#margin"), ("team", "Team", "/portfolio#team")] %}
+    <a class="app-ico" href="{{ href }}"{% if id == shell.app %} aria-current="true"{% endif %} title="{{ label }}"><span class="sys">{{ icon(id) }}</span>{{ label }}</a>
+    {%- endfor %}
+    <span class="sep" aria-hidden="true"></span>
+    {%- for ini, label, av, colour, name in [("CW", "Chief", "av-chief", "#5c58a6", "Your Chief WebAgent"), ("Re", "Release", "av-release", "#6b8cf0", "Release"), ("Su", "Support", "av-support", "#e3607b", "Support"), ("Bi", "Billing", "av-billing", "#2fb07a", "Billing")] %}
+    <span class="app-ico" title="{{ name }}: not running yet"><span class="os-mark" data-state="resting" style="--c:{{ colour }}"><span class="avatar {{ av }}">{{ ini }}</span></span>{{ label }}</span>
+    {%- endfor %}
+  </nav>
+{%- else %}
+  <header class="os-bar">
+    <a class="site-chip scope-chip op" href="/" title="Overview of the three scopes"{% if shell.app == "overview" %} aria-current="page"{% endif %}><span class="logo-bake" aria-hidden="true">Z</span><span>Zavora Cloud<small>Operator · {{ shell.cells|plural("cell", "cells") }} · {{ shell.sites_live|plural("site", "sites") }} live</small></span></a>
+    <span class="scope-tag op">Operator · Zavora Cloud</span>
+    <div class="bar-right">
+      <span class="pill who hide-sm" title="Signed in with {{ 'a passkey' if shell.operator.method == 'passkey' else 'an authenticator code' }}"><span class="hide-md">{{ shell.operator.name }}</span> <b>{{ shell.roles|join(" · ") }}</b></span>
+      <a class="pill trust" href="/trust#ledger" title="Operator ledger: {{ shell.ledger_entries|plural("entry", "entries") }}">{{ icon("shield") }}<span class="hide-sm">{{ "Ledger verified" if shell.ledger_ok else "Ledger broken" }}</span>{% if shell.waiting %}<span class="n" aria-label="decisions waiting">{{ shell.waiting }}</span>{% endif %}</a>
+      <a class="pill hold" href="/holds" title="Platform hold: separate from an owner's freeze. Place one on a site from its page.">{{ icon("hold") }}<span class="hide-sm">Platform hold</span></a>
+      <form method="post" action="/signout"><button class="pill signout" type="submit">Sign out</button></form>
+    </div>
+  </header>
+  <nav class="dock" aria-label="Zavora Cloud: apps and WebAgents" data-agentrix-agents>
+    {%- for id, label, href in [("fleet", "Fleet", "/fleet"), ("rollouts", "Rollouts", "/rollouts"), ("incidents", "Incidents", "/incidents"), ("customers", "Customers", "/customers"), ("money", "Money", "/money"), ("partners", "Partners", "/partners"), ("trust", "Trust", "/trust"), ("activity", "Live activity", "/activity")] %}
+    <a class="app-ico" href="{{ href }}"{% if id == shell.app %} aria-current="true"{% endif %} title="{{ label }}"><span class="sys">{{ icon(id) }}</span>{{ label }}{% if id == "incidents" and shell.open_incidents %}<span class="badge" aria-label="{{ shell.open_incidents }} open">{{ shell.open_incidents }}</span>{% endif %}</a>
+    {%- endfor %}
+    <span class="sep" aria-hidden="true"></span>
+    {#- Agentrix's own agents, which run the business in saas-company's kernel. Each starts at
+        rest; the money layer's script (/activity/console.js) shows what it is doing now. #}
+    {%- for role, ini, label, av, colour in [("chief", "Ch", "Chief", "av-op-coord", "#4a4690"), ("revenue", "Rv", "Revenue", "av-editor", "#c58016"), ("receivables", "Rc", "Receivables", "av-cashier", "#2fb07a"), ("payables", "Pa", "Payables", "av-capacity", "#2aa6c9"), ("support", "Su", "Support", "av-support", "#e3607b")] %}
+    <span class="app-ico" data-agent="{{ role }}" title="Agentrix's {{ label }}"><span class="os-mark" data-state="resting" style="--c:{{ colour }}"><span class="avatar {{ av }}">{{ ini }}</span></span>{{ label }}</span>
+    {%- endfor %}
+    <span class="sep" aria-hidden="true"></span>
+    {#- The operator WebAgents still to come (08 §5.2). None runs yet, so each rests, greyed, and says so. #}
+    {%- for ini, label, av, colour, name in [("Sr", "SRE", "av-sre", "#d0583f", "SRE"), ("Re", "Release", "av-release", "#6b8cf0", "Release"), ("Cp", "Capacity", "av-capacity", "#2aa6c9", "Capacity"), ("Sc", "Security", "av-security", "#45597f", "Security & Abuse"), ("Ps", "Partners", "av-partner", "#22a394", "Partner Success"), ("Gr", "Growth", "av-growth", "#c58016", "Growth"), ("Cm", "Compliance", "av-compliance", "#a35dc1", "Compliance")] %}
+    <span class="app-ico" title="{{ name }}: not running yet"><span class="os-mark" data-state="resting" style="--c:{{ colour }}"><span class="avatar {{ av }}">{{ ini }}</span></span>{{ label }}</span>
+    {%- endfor %}
+  </nav>
+  <script src="/activity/console.js" defer></script>
+{%- endif %}
+  <main class="field cp-field" id="field" tabindex="-1">
+{%- if notice is defined and notice %}
+<p class="notice {{ notice.tone }}" role="{{ 'alert' if notice.tone == 'problem' else 'status' }}">{{ notice.words }}</p>
+{%- endif %}
+{% block field %}{% endblock %}
+  </main>
+  <aside class="lane" aria-label="What needs you"><div class="lane-scroll">
+{% block lane %}
+{% include "lane.html" %}
+{% endblock %}
+  </div></aside>
+  <div class="cmd">
+    {%- if shell.scope == "pf" %}
+    <div class="askline"><span class="orb sm" aria-hidden="true"></span><input type="text" disabled aria-label="Ask your Chief WebAgent" placeholder="Your Chief WebAgent isn't running yet, so there's no one to ask."><button class="icon-btn" type="button" disabled aria-label="Send">{{ icon("send") }}</button></div>
+    {%- else %}
+    {#- Agentrix's Chief answers here once the money layer's script finds it running. #}
+    <form class="askline" data-agentrix-ask method="post" action="/activity/ask"><span class="orb sm" aria-hidden="true"></span><input type="text" name="question" maxlength="2000" autocomplete="off" disabled aria-label="Ask Agentrix's Chief" placeholder="Agentrix's Chief answers here while the money layer runs."><button class="icon-btn" type="submit" disabled aria-label="Send">{{ icon("send") }}</button></form>
+    {%- endif %}
+  </div>
+</div>
+</body>
+</html>

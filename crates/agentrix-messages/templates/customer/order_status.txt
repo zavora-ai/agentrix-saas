@@ -1,0 +1,32 @@
+{% block subject %}{% if status.label == "Cancelled" %}Order {{ order.number }} is cancelled{% else %}Order {{ order.number }}: {{ status.label }}{% endif %}{% endblock %}
+{% block preheader %}{{ status.by }} updated it at {{ status.at }}.{% endblock %}
+{% block body %}
+{% if status.label == "Cancelled" %}
+# Order {{ order.number }} is cancelled
+{{ status.by }} cancelled it at {{ status.at }}.
+
+If you paid and haven't had an email about a refund, ask the Orders desk at {{ site.host }}.
+{% else %}
+# {{ status.label }}
+Order {{ order.number }} is now: {{ status.label }}. {{ status.by }} updated it at {{ status.at }}.
+{% endif %}
+
+{% if status.note %}
+::quote {{ status.note }}
+{% endif %}
+{% for step in order.steps %}
+::fact {{ step.label }} | {{ step.when }}
+{% endfor %}
+
+::button See your order | {{ order.url }}
+{% endblock %}
+{% block chat %}
+{% if status.label == "Cancelled" %}
+{{ site.name }}: order {{ order.number }} is cancelled.{% if status.note %} {{ status.note }}{% endif %}
+
+{% else %}
+{{ site.name }}: order {{ order.number }} is now "{{ status.label }}".{% if status.note %} {{ status.note }}{% endif %}
+
+{% endif %}
+::button See your order | {{ order.url }}
+{% endblock %}

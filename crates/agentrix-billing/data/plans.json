@@ -1,0 +1,120 @@
+{
+  "version": 1,
+  "currency": "USD",
+  "source": "docs/01-product.md §6.1. Prices are hypotheses until James sets them. First-month AI (launch offer) and hosting included: James, Sun 8 Nov.",
+  "_annual_discount_percent": "A plan paid 12 months up front costs 12 times the monthly price less this percent, rounded to the cent (the price list: a 12-month plan comes with a 20% discount). The home page, /prices, the agent door and /setup/plan all read it from here.",
+  "annual_discount_percent": 20,
+  "plans": [
+    {
+      "id": "essential",
+      "name": "Essential",
+      "kind": "site",
+      "price_cents": 2900,
+      "interval": "month",
+      "included_ai_micro_usd": 5000000,
+      "webagents": [
+        "Chief",
+        "Concierge",
+        "Editor"
+      ],
+      "includes": [
+        "Web hosting included",
+        "Your site on Agentrix",
+        "The morning brief",
+        "$5 of AI a month"
+      ],
+      "first_month_ai_micro_usd": 50000000
+    },
+    {
+      "id": "business",
+      "name": "Business",
+      "kind": "site",
+      "price_cents": 7900,
+      "interval": "month",
+      "included_ai_micro_usd": 15000000,
+      "webagents": [
+        "Chief",
+        "Concierge",
+        "Editor",
+        "Guardian",
+        "Caretaker",
+        "Sales",
+        "Reputation"
+      ],
+      "includes": [
+        "Web hosting included",
+        "Everything in Essential",
+        "Bookings and forms",
+        "WhatsApp channel",
+        "$15 of AI a month"
+      ],
+      "first_month_ai_micro_usd": 150000000
+    },
+    {
+      "id": "commerce",
+      "name": "Commerce",
+      "kind": "site",
+      "price_cents": 14900,
+      "interval": "month",
+      "included_ai_micro_usd": 30000000,
+      "webagents": [
+        "Chief",
+        "Concierge",
+        "Editor",
+        "Guardian",
+        "Caretaker",
+        "Sales",
+        "Reputation",
+        "Cashier"
+      ],
+      "includes": [
+        "Web hosting included",
+        "Everything in Business",
+        "Checkout and orders",
+        "Orders from customers' AI agents",
+        "$30 of AI a month"
+      ],
+      "first_month_ai_micro_usd": 250000000,
+      "webagents_soon": [
+        {
+          "name": "Marketing",
+          "role": "Plans campaigns from your sales and your customers' questions"
+        },
+        {
+          "name": "Advertising",
+          "role": "Runs ads you approve, within a budget you set"
+        },
+        {
+          "name": "Promotions",
+          "role": "Drafts offers and bundles for your OK"
+        },
+        {
+          "name": "Loyalty",
+          "role": "Brings back repeat customers with offers they signed up for"
+        }
+      ]
+    },
+    {
+      "id": "agency",
+      "name": "Agency wholesale",
+      "kind": "wholesale",
+      "price_cents": 1500,
+      "interval": "month",
+      "included_ai_micro_usd": 5000000,
+      "minimum_sites": 10,
+      "webagents": [
+        "Chief",
+        "Concierge",
+        "Editor",
+        "Guardian",
+        "Caretaker"
+      ],
+      "includes": [
+        "Per client site",
+        "White-label console",
+        "Client approval routing",
+        "A fleet view"
+      ]
+    }
+  ]
+}

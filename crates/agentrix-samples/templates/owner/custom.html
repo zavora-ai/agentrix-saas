@@ -1,0 +1,64 @@
+{% extends "owner/base.html" %}
+{% block field %}{% import "owner/macros.html" as m %}
+{{ m.head(c) }}
+{% if live.list %}<p class="note">{{ m.icon("catalogue") }}<span>Quotes are priced from price list <b>{{ live.list }}</b> ({{ live.list_source }}), {{ live.rate }}. Each request keeps the list it was priced on. AI never sets a price.</span></p>{% endif %}
+{% for o in held %}
+<article class="fcard decision" id="{{ o.id }}">
+  <div class="from">{{ m.agent("Cashier") }}<span>The Orders desk holds this request · nothing charged</span>{{ m.chip("Waiting for you", "wait") }}</div>
+  <h2 class="t">Approve custom order {{ o.id }} · {{ o.total }}</h2>
+  <p class="facts-line">{{ o.name }} · {{ o.fulfilment|lower }}{% if o.slot %} {{ o.slot.label }}{% endif %} · requested {{ o.placed_ago }}{% if o.channel == "agent door" %} through the agent door{% if o.agent %} ({{ o.agent }}){% endif %}{% endif %}</p>
+  <div class="dgrid">
+    <section>
+      <h3>The design</h3>
+      <div class="tbl"><table class="procs lines">
+        <thead><tr><th>What</th><th class="num">Adds</th></tr></thead>
+        <tbody>{% for l in o.lines %}<tr><td>{{ l.name }}{% if l.rule %}<details class="rule-id"><summary>Details</summary><span class="muted">Price rule <code class="mono">{{ l.rule }}</code></span></details>{% endif %}</td><td class="num">{{ l.amount }}</td></tr>{% endfor %}</tbody>
+        <tfoot>{% if o.has_delivery %}<tr><td>Delivery</td><td class="num">{{ o.delivery }}</td></tr>{% endif %}<tr class="total"><td>Quote</td><td class="num">{{ o.total }}</td></tr></tfoot>
+      </table></div>
+      {% if o.message %}<p>Message on the cake: <b>&ldquo;{{ o.message }}&rdquo;</b></p>{% endif %}
+      {% if o.idea %}<figure class="idea"><img src="{{ o.idea }}" alt="The idea of the cake {{ o.name }} saw in the studio" width="240" height="240" loading="lazy"><figcaption>The idea of the cake {{ o.name }} saw, made with AI from the options above. You bake the real one.</figcaption></figure>{% endif %}
+      {% if o.note or o.spec_note %}<p>Note: <b>{{ o.note or o.spec_note }}</b></p>{% endif %}
+    </section>
+    <section>
+      <h3>Quote</h3>
+      <dl class="facts">
+        <div><dt>Total</dt><dd><b>{{ o.total }}</b>{% if o.usd %} · {{ o.usd }} at {{ o.rate }}{% endif %}</dd></div>
+        <div><dt>Price list</dt><dd>{{ o.price_list or "none pinned" }}{% if o.stale_list %} {{ m.chip("live list is " ~ o.live_list, "wait") }}{% endif %}</dd></div>
+        {% if o.valid_until %}<div><dt>Price holds until</dt><dd>{{ o.valid_until }}{% if o.hold_ended %} {{ m.chip("hold ended", "wait") }}{% endif %}</dd></div>{% endif %}
+      </dl>
+      <h3>Customer</h3>
+      <dl class="facts">
+        <div><dt>Name</dt><dd>{{ o.name }}</dd></div>
+        {% if o.email %}<div><dt>Email</dt><dd>{{ o.email }}</dd></div>{% endif %}
+        {% if o.phone %}<div><dt>Phone</dt><dd>{{ o.phone }}</dd></div>{% endif %}
+        <div><dt>Other orders</dt><dd>{{ o.past }}</dd></div>
+      </dl>
+      <h3>{{ o.fulfilment }} slot</h3>
+      {% if o.slot %}<p><b>{{ o.slot.label }}</b> · {{ o.slot.taken }} of {{ o.slot.capacity }} taken{% if o.slot.full %} {{ m.chip("full", "risk") }}{% endif %}</p>{% else %}<p class="muted">No slot chosen.</p>{% endif %}
+    </section>
+  </div>
+  <p class="effect"><b>If you approve, exactly this happens:</b> the Cashier puts a payment request for {{ o.total }}{% if o.usd %} ({{ o.usd }}){% endif %} on {{ o.name }}'s order page. Nothing is charged until they pay. If you decline, nothing is charged and they see your note.</p>
+  <form method="post" action="{{ c.base }}custom/{{ o.id }}" class="decide">
+    <label for="note-{{ o.id }}">Note to {{ o.name }} <span class="muted">(optional; shown on the order page)</span></label>
+    <textarea id="note-{{ o.id }}" name="note" rows="2" maxlength="500" placeholder="For a decline, say why in a sentence, so they can change it."></textarea>
+    <div class="verbs">
+      <button class="btn btn-primary" name="decision" value="approve">Approve</button>
+      <button class="btn" name="decision" value="decline">Decline</button>
+      <a class="btn btn-ghost" href="{{ o.href }}">Open the order</a>
+    </div>
+    <p class="muted small">On a real site, Approve asks for {{ c.site.owner }}'s passkey and writes a receipt. In this sample view it doesn't, so anyone can try it.</p>
+  </form>
+</article>
+{% else %}
+<article class="fcard">{{ m.empty("No custom orders wait for you. When a customer designs one on the site or an agent requests one at the door, it is held here and nothing is charged until you approve.") }}</article>
+{% endfor %}
+<article class="fcard">
+  <h3>Decided recently</h3>
+  {% if decided %}
+  <div class="tbl"><table class="procs">
+    <thead><tr><th>Order</th><th>Customer</th><th class="hide-sm">Decision</th><th>Total</th><th>State now</th></tr></thead>
+    <tbody>{% for d in decided %}<tr><td><a href="{{ d.row.href }}"><b>{{ d.row.id }}</b></a></td><td>{{ d.row.name }}</td><td class="hide-sm">{{ d.decided }}</td><td class="num">{{ d.row.total }}</td><td>{{ m.chip(d.row.label, d.row.tone) }}</td></tr>{% endfor %}</tbody>
+  </table></div>
+  {% else %}{{ m.empty("No custom orders decided yet.") }}{% endif %}
+</article>
+{% endblock %}

@@ -1,0 +1,35 @@
+{% extends "console/base.html" %}
+{#- Page::Receipt · view::ReceiptView (+ ConsoleChrome) { receipt: {
+      digest, title, kind, kind_words, at_words, issuer, subject,
+      facts: [ { label, value } ], outputs: [String],
+      verified, verified_words, key_id, json (the signed receipt, pretty-printed) } }
+    R10.3, R12.5. The server checks the signature; the page lets anyone check it again in the browser. -#}
+{% block title %}Receipt {{ receipt.digest[:12] }}{% endblock %}
+{% block content %}
+<section class="stack">
+  <p class="eyebrow">Receipt · {{ receipt.kind_words }}</p>
+  <h1>{{ receipt.title }}</h1>
+  <p class="small muted">{{ receipt.at_words }} · issued by {{ receipt.issuer }}</p>
+</section>
+
+<section class="card">
+  <p class="{{ 'okline' if receipt.verified else 'error' }}" id="verify-server">{{ receipt.verified_words }}</p>
+  <dl class="kv">
+    <dt>Digest</dt><dd class="mono">{{ receipt.digest }}</dd>
+    <dt>About</dt><dd>{{ receipt.subject }}</dd>
+    {% for f in receipt.facts %}<dt>{{ f.label }}</dt><dd>{{ f.value }}</dd>{% endfor %}
+    {% if receipt.outputs %}<dt>Outputs</dt><dd class="mono">{% for o in receipt.outputs %}{{ o }}{% if not loop.last %}<br>{% endif %}{% endfor %}</dd>{% endif %}
+    <dt>Signing key</dt><dd class="mono">{{ receipt.key_id }}</dd>
+  </dl>
+  <div class="sheet" id="verify" data-receipt="/receipts/{{ receipt.digest }}" data-keys="/.well-known/agentrix/keys">
+    <button class="btn btn-wide" type="button" id="verify-go">Check the signature in this browser</button>
+    <p class="small" id="verify-out" role="status">This fetches the signed receipt and our public key, and checks the signature in your browser, so you don't have to take this page's word for it.</p>
+  </div>
+</section>
+
+<details class="card">
+  <summary style="cursor:pointer;font-weight:700;min-height:32px;display:flex;align-items:center">The signed receipt</summary>
+  <pre class="evidence" style="max-height:420px;overflow:auto">{{ receipt.json }}</pre>
+</details>
+{% endblock %}
+{% block scripts %}<script src="/static/verify.js?v={{ asset_v }}" defer></script>{% endblock %}

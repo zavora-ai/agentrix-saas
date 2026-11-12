@@ -1,0 +1,18 @@
+{% block subject %}Your {{ site.name }} account is erased{% endblock %}
+{% block preheader %}This is the last email to this address. Erasure receipt {{ erasure.receipt_id }}.{% endblock %}
+{% block body %}
+# Your account is erased
+{{ site.name }} erased your account and the data that went with it on {{ erasure.done_at }}.
+
+{% for row in erasure.rows %}
+::fact {{ row.store }} | {{ row.state }}
+{% endfor %}
+
+{% if erasure.kept %}
+{{ erasure.kept }}
+
+{% endif %}
+::fact Erasure receipt | {{ erasure.receipt_id }}
+
+This is the last email {{ site.name }} will send to this address. The address itself is erased after this email leaves.
+{% endblock %}

@@ -1,0 +1,879 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<!-- WebAgent living marks: the reference generator for ADR-031. Published copy: the architecture session's artifact. -->
+<title>WebAgent Living Marks</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&family=Manrope:wght@600;700;800&family=JetBrains+Mono:wght@400;600&family=Young+Serif&family=Italiana&family=Libre+Caslon+Text:wght@400;700&display=swap">
+<style>
+/* Layout: a working spec sheet in Agentrix tokens. Every sample site keeps its own colours and type. */
+:root {
+  --bg: #f3f3f8;
+  --paper: #ffffff;
+  --ink: #23223a;
+  --ink-2: #4a4960;
+  --muted: #605f78;
+  --line: #e1e0ea;
+  --line-strong: #c9c7da;
+  --accent: #38356d;
+  --accent-soft: #ecebf6;
+  --coral: #b72d50;
+  --ok: #11734a;
+  --ok-bg: #e6f5ee;
+  --warn: #8a5300;
+  --warn-bg: #fff4dd;
+  --code-bg: #efeef6;
+  --display: "Manrope", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --text: "DM Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #121120; --paper: #1b1a30; --ink: #eceaf7; --ink-2: #bdbbd2; --muted: #9a98b2;
+    --line: #2d2c47; --line-strong: #43416a; --accent: #b6b2f2; --accent-soft: #26244b;
+    --coral: #ff8aa3; --ok: #63d39e; --ok-bg: #12301f; --warn: #f0b54d; --warn-bg: #3a2c10;
+    --code-bg: #201f3a; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #121120; --paper: #1b1a30; --ink: #eceaf7; --ink-2: #bdbbd2; --muted: #9a98b2;
+  --line: #2d2c47; --line-strong: #43416a; --accent: #b6b2f2; --accent-soft: #26244b;
+  --coral: #ff8aa3; --ok: #63d39e; --ok-bg: #12301f; --warn: #f0b54d; --warn-bg: #3a2c10;
+  --code-bg: #201f3a; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font: 400 15px/1.55 var(--text); }
+.wrap {
+  max-width: 1180px; margin: 0 auto;
+  padding-block: 40px 72px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  display: grid; gap: 64px;
+}
+h1, h2, h3 { font-family: var(--display); text-wrap: balance; margin: 0; letter-spacing: -0.01em; }
+h1 { font-size: clamp(2rem, 5vw, 3.25rem); font-weight: 800; line-height: 1.05; }
+h2 { font-size: 1.5rem; font-weight: 800; }
+h3 { font-size: 1rem; font-weight: 700; }
+p { margin: 0; }
+.eyebrow { font: 600 12px/1.3 var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+.intro { display: grid; gap: 16px; max-width: 760px; }
+.lede { font-size: 1.125rem; color: var(--ink-2); max-width: 65ch; }
+.sec { display: grid; gap: 20px; }
+.sec-head { display: grid; gap: 6px; max-width: 70ch; }
+.sub { color: var(--ink-2); }
+.note { font-size: 13px; color: var(--muted); }
+
+/* ---------- the mark ---------- */
+.wa { display: block; overflow: visible; flex: none; }
+.wa .wa-halo { opacity: 0; transform-box: fill-box; transform-origin: center; }
+.wa .wa-trace { opacity: 0; stroke-dasharray: 22 120; }
+.wa .wa-dot { opacity: 0; }
+.wa .wa-sig { transform-box: fill-box; transform-origin: center; }
+.wa .wa-core, .wa { transition: filter .4s ease, opacity .4s ease; }
+.wa[data-state="listening"] .wa-halo { animation: wa-breathe 2.2s ease-in-out infinite; }
+.wa[data-state="answering"] .wa-halo { opacity: .45; }
+.wa[data-state="speaking"] .wa-halo { opacity: calc(.2 + var(--lvl, .4) * .6); transform: scale(calc(.97 + var(--lvl, .4) * .11)); }
+.wa[data-state="working"] .wa-trace { opacity: 1; animation: wa-trace 1s linear infinite; }
+.wa[data-state="working"][data-motion="spin"] .wa-sig { animation: wa-spin 16s linear infinite; }
+.wa[data-state="working"][data-motion="drift"] .wa-drift { animation: wa-drift 2.6s linear infinite; }
+.wa[data-state="waiting"] .wa-dot { opacity: 1; }
+.wa[data-state="resting"] { filter: grayscale(1); opacity: .55; }
+.wa[data-state="asleep"] { filter: saturate(.2); opacity: .72; }
+.wa[data-state="paused"] { filter: grayscale(1); opacity: .82; }
+.wa[data-state="frozen"] { filter: grayscale(1); opacity: .82; }
+.wa .chief-dot { transform-box: fill-box; transform-origin: center; }
+.wa .chief-dot.busy { animation: wa-pulse 1.4s ease-in-out infinite; }
+@keyframes wa-breathe { 0%, 100% { opacity: 0; transform: scale(.96); } 50% { opacity: .55; transform: scale(1.04); } }
+@keyframes wa-trace { from { stroke-dashoffset: 142; } to { stroke-dashoffset: 0; } }
+@keyframes wa-spin { to { transform: rotate(360deg); } }
+@keyframes wa-drift { from { transform: translateX(0); } to { transform: translateX(var(--p)); } }
+@keyframes wa-pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.35); } }
+.wa[data-settled], .wa[data-settled] * { animation: none !important; }
+.wa[data-settled][data-state="listening"] .wa-halo { opacity: .35; }
+.wa[data-settled][data-state="working"] .wa-trace { stroke-dasharray: none; opacity: .8; }
+@media (prefers-reduced-motion: reduce) {
+  .wa *, .wa { animation: none !important; transition: none !important; }
+  .wa[data-state="listening"] .wa-halo { opacity: .35; }
+  .wa[data-state="working"] .wa-trace { stroke-dasharray: none; opacity: .8; }
+}
+
+/* ---------- sample sites ---------- */
+.site {
+  --wa-ground: var(--sbg);
+  background: var(--sbg); color: var(--sink);
+  border: 1px solid var(--sline); border-radius: 16px;
+  padding: 18px 18px 14px; display: grid; gap: 14px; min-width: 0;
+}
+.site-name { font-family: var(--sfont); font-size: 1.5rem; line-height: 1.1; color: var(--sink); }
+.site-tag { font: 500 12px/1.3 var(--text); color: var(--sink2); }
+.team-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.chief-row { display: flex; align-items: center; gap: 12px; padding-bottom: 12px; border-bottom: 1px solid var(--sline); }
+.chief-row b { display: block; font: 700 14px/1.2 var(--text); }
+.chief-row span { display: block; font-size: 12.5px; color: var(--sink2); }
+.members { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.member { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: 10px; }
+.member .who { display: flex; align-items: center; gap: 6px; font: 700 14px/1.2 var(--text); color: var(--sink); }
+.member .what { font-size: 12.5px; color: var(--sink2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ai {
+  display: inline-flex; align-items: center; padding: 1px 6px; border-radius: 999px;
+  border: 1px solid var(--sline); font: 700 10px/1.4 var(--text); letter-spacing: .04em; color: var(--sink2);
+}
+
+/* ---------- anatomy ---------- */
+.anatomy { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 32px; align-items: start; }
+.exploded { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 4px; padding: 20px; background: var(--paper); border: 1px solid var(--line); border-radius: 16px; }
+.exploded figure { margin: 0; display: grid; justify-items: center; gap: 6px; }
+.exploded figcaption { font: 600 11px/1.2 var(--mono); color: var(--muted); letter-spacing: .03em; }
+.exploded .op { font: 700 20px/1 var(--display); color: var(--muted); padding: 0 2px 22px; }
+.layers { margin: 0; display: grid; gap: 14px; }
+.layers dt { font: 700 15px/1.3 var(--display); }
+.layers dd { margin: 2px 0 0; color: var(--ink-2); max-width: 62ch; }
+
+/* ---------- workshop ---------- */
+.ws { display: grid; grid-template-columns: 340px minmax(0, 1fr); gap: 20px; align-items: start; }
+.controls { background: var(--paper); border: 1px solid var(--line); border-radius: 16px; padding: 18px; display: grid; gap: 18px; }
+fieldset { border: 0; margin: 0; padding: 0; display: grid; gap: 8px; min-width: 0; }
+legend, .lbl { font: 700 12px/1.3 var(--mono); letter-spacing: .05em; text-transform: uppercase; color: var(--muted); padding: 0; margin-bottom: 8px; }
+.seg { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip { position: relative; }
+.chip input, .tile input, .sw input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.chip span {
+  display: inline-block; padding: 6px 10px; border-radius: 999px; border: 1px solid var(--line-strong);
+  font: 600 13px/1.2 var(--text); color: var(--ink-2); cursor: pointer; background: var(--paper);
+}
+.chip input:checked + span { background: var(--accent); border-color: var(--accent); color: var(--paper); }
+.chip input:focus-visible + span, .tile input:focus-visible + span, .sw input:focus-visible + span { outline: 2px solid var(--coral); outline-offset: 2px; }
+select, input[type="text"] {
+  font: 500 14px/1.3 var(--text); color: var(--ink); background: var(--paper);
+  border: 1px solid var(--line-strong); border-radius: 10px; padding: 8px 10px; width: 100%;
+}
+select:focus-visible, input:focus-visible, button:focus-visible { outline: 2px solid var(--coral); outline-offset: 2px; }
+.swatches { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.sw span { display: block; width: 30px; height: 30px; border-radius: 9px; cursor: pointer; border: 2px solid transparent; box-shadow: inset 0 0 0 1px rgba(0,0,0,.12); }
+.sw input:checked + span { border-color: var(--ink); box-shadow: inset 0 0 0 2px var(--paper); }
+input[type="color"] { width: 38px; height: 32px; padding: 0; border: 1px solid var(--line-strong); border-radius: 9px; background: var(--paper); cursor: pointer; }
+input[type="range"] { width: 100%; accent-color: var(--accent); }
+.range-ends { display: flex; justify-content: space-between; font-size: 12px; color: var(--muted); }
+.glyphs { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; }
+.tile { position: relative; }
+.tile span {
+  display: grid; place-items: center; aspect-ratio: 1; border-radius: 10px; border: 1px solid var(--line-strong);
+  color: var(--ink-2); cursor: pointer; background: var(--paper);
+}
+.tile span svg { width: 20px; height: 20px; }
+.tile input:checked + span { border-color: var(--accent); background: var(--accent-soft); color: var(--accent); }
+.mono-row { display: grid; grid-template-columns: auto 1fr; gap: 8px; align-items: center; }
+.mono-row .tile span { width: 44px; font: 800 15px/1 var(--display); }
+.families { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; }
+.families .tile span { aspect-ratio: auto; padding: 8px 2px 6px; gap: 4px; font: 600 11px/1.2 var(--text); background: var(--fam-bg, var(--paper)); }
+.families .tile span svg { width: 40px; height: 43px; }
+.btn {
+  font: 700 13px/1.2 var(--text); padding: 8px 12px; border-radius: 10px; cursor: pointer;
+  border: 1px solid var(--line-strong); background: var(--paper); color: var(--ink);
+}
+.btn:hover { border-color: var(--accent); }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: var(--paper); }
+.row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.seed { font: 600 12px/1.2 var(--mono); color: var(--muted); }
+
+.preview { display: grid; gap: 16px; min-width: 0; }
+.stage {
+  --wa-ground: var(--sbg);
+  background: var(--sbg); color: var(--sink); border: 1px solid var(--sline); border-radius: 16px;
+  padding: 22px; display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 24px; align-items: center;
+}
+.stage .big { display: grid; place-items: center; min-width: 174px; }
+.stage .cap { display: grid; gap: 12px; min-width: 0; }
+.stage .cap .nm { font-family: var(--sfont); font-size: 1.75rem; line-height: 1.1; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.stage dl { margin: 0; display: grid; gap: 8px; }
+.stage dt { font: 600 11px/1.3 var(--mono); letter-spacing: .05em; text-transform: uppercase; color: var(--sink2); }
+.stage dd { margin: 2px 0 0; font-size: 14.5px; }
+.sizes { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 18px; padding: 16px 18px; background: var(--paper); border: 1px solid var(--line); border-radius: 16px; }
+.sizes figure { margin: 0; display: grid; justify-items: center; gap: 4px; }
+.sizes figcaption { font: 600 11px/1.2 var(--mono); color: var(--muted); }
+.contexts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.ctx { border-radius: 14px; padding: 14px; display: grid; gap: 10px; align-content: start; min-width: 0; }
+.ctx .ctx-lbl { font: 600 11px/1.3 var(--mono); letter-spacing: .05em; text-transform: uppercase; }
+.ctx-site { --wa-ground: var(--sbg); background: var(--sbg); color: var(--sink); border: 1px solid var(--sline); }
+.ctx-site .ctx-lbl { color: var(--sink2); }
+.ctx-site .peek-head { display: flex; align-items: center; gap: 10px; }
+.ctx-site .peek-head b { font-family: var(--sfont); font-size: 1.125rem; font-weight: 400; display: block; }
+.ctx-site p { font-size: 13px; color: var(--sink2); }
+.ctx-console { --wa-ground: var(--paper); background: var(--paper); border: 1px solid var(--line); }
+.ctx-console .ctx-lbl { color: var(--muted); }
+.dock { display: flex; align-items: center; gap: 10px; }
+.dock b { font: 700 14px/1.2 var(--display); display: block; }
+.dock span { font-size: 12.5px; color: var(--ink-2); }
+.ctx-round { --wa-ground: var(--paper); background: var(--paper); border: 1px solid var(--line); }
+.ctx-round .ctx-lbl { color: var(--muted); }
+.round-row { display: flex; align-items: center; gap: 12px; }
+.round { width: 64px; height: 64px; border-radius: 50%; display: grid; place-items: center; background: var(--sbg); box-shadow: inset 0 0 0 1px var(--sline); flex: none; }
+.round-row p { font-size: 12.5px; color: var(--ink-2); }
+.checks { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.pill { display: inline-flex; align-items: center; gap: 6px; padding: 5px 10px; border-radius: 999px; font: 600 12.5px/1.2 var(--text); font-variant-numeric: tabular-nums; }
+.pill.pass { background: var(--ok-bg); color: var(--ok); }
+.pill.fail { background: var(--warn-bg); color: var(--warn); }
+.spec { position: relative; background: var(--code-bg); border-radius: 14px; border: 1px solid var(--line); }
+.spec pre { margin: 0; padding: 14px 16px; overflow-x: auto; font: 400 12.5px/1.55 var(--mono); color: var(--ink); }
+.spec .btn { position: absolute; top: 10px; right: 10px; }
+.spec-meta { font: 600 11.5px/1.3 var(--mono); color: var(--muted); padding: 0 16px 12px; }
+
+/* ---------- states ---------- */
+.state-grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px; }
+.st {
+  --wa-ground: var(--sbg);
+  background: var(--sbg); color: var(--sink); border: 1px solid var(--sline); border-radius: 14px;
+  padding: 14px; display: grid; gap: 8px; align-content: start; min-width: 0;
+}
+.st .mk { display: grid; place-items: center; height: 84px; }
+.st h3 { font-size: 14px; display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+.st .new { font: 700 10px/1.4 var(--mono); padding: 1px 6px; border-radius: 999px; background: var(--sink); color: var(--sbg); letter-spacing: .04em; }
+.st p { font-size: 12.5px; color: var(--sink2); }
+.st p b { color: var(--sink); font-weight: 700; }
+
+/* ---------- rules and lists ---------- */
+.two { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 16px; }
+.panel { background: var(--paper); border: 1px solid var(--line); border-radius: 16px; padding: 18px 20px; display: grid; gap: 10px; align-content: start; }
+.panel ul, .panel ol { margin: 0; padding-left: 18px; display: grid; gap: 8px; color: var(--ink-2); }
+.panel li::marker { color: var(--muted); }
+.panel li b { color: var(--ink); }
+.panel h3 { font-size: 15px; }
+code { font: 500 .9em/1 var(--mono); background: var(--code-bg); padding: 1px 5px; border-radius: 5px; }
+.travels { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.travels .panel p { color: var(--ink-2); font-size: 14px; }
+
+@media (max-width: 980px) {
+  .team-grid { grid-template-columns: 1fr; }
+  .ws { grid-template-columns: 1fr; }
+  .anatomy { grid-template-columns: 1fr; }
+  .state-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .contexts, .travels { grid-template-columns: 1fr; }
+  .two { grid-template-columns: 1fr; }
+}
+@media (max-width: 520px) {
+  .stage { grid-template-columns: 1fr; justify-items: start; }
+  .stage .big { min-width: 0; }
+  .glyphs { grid-template-columns: repeat(5, 1fr); }
+  .families { grid-template-columns: repeat(3, 1fr); }
+}
+</style>
+
+<main class="wrap">
+  <header class="intro">
+    <p class="eyebrow">Agentrix WebAgent Platform · identity proposal · 7 Nov 2026</p>
+    <h1>A WebAgent is a living mark</h1>
+    <p class="lede">Each WebAgent gets a mark that is unique to it, generated from its identity and dressed in the site's own brand. The owner can tune how it looks. What each motion means stays fixed by the platform, so a visitor learns it once and it never lies. There is no face.</p>
+  </header>
+
+  <section class="sec" aria-labelledby="teams-h">
+    <div class="sec-head">
+      <h2 id="teams-h">Three sites, three teams</h2>
+      <p class="sub">Same platform, same grammar of states. Each site's WebAgents share a silhouette and a pattern family, so they read as one team, and each one's seed makes it unique. The Chief WebAgent's mark carries the team as dots, which pulse while that WebAgent works.</p>
+    </div>
+    <div class="team-grid" id="teams"></div>
+    <p class="note">States change on a demo timer here. On a live site each change comes from a presence frame, never from a model call.</p>
+  </section>
+
+  <section class="sec" aria-labelledby="anatomy-h">
+    <div class="sec-head">
+      <h2 id="anatomy-h">Four layers</h2>
+      <p class="sub">The first three are the owner's to brand. The fourth belongs to the platform.</p>
+    </div>
+    <div class="anatomy">
+      <div class="exploded" id="exploded" aria-label="The four layers of the mark you are tuning below"></div>
+      <dl class="layers">
+        <div><dt>Silhouette</dt><dd>A squircle whose corner softness starts from the site's own corner radius, read at the Move. It never becomes a circle, because circles mean a person, such as the owner's chip when Wanjiru joins a chat.</dd></div>
+        <div><dt>Signature</dt><dd>A pattern generated from the site, the WebAgent and a seed the owner can shuffle. The site picks one family so its WebAgents look related; the seed makes each one unique. It shows from 28 px up, never stronger than 30% over the fill, and moves only while the WebAgent is working.</dd></div>
+        <div><dt>Glyph</dt><dd>The role as a line icon (cake, loaf, newspaper), or a monogram set in the site's display face.</dd></div>
+        <div><dt>State</dt><dd>The halo, the trace line, the amber dot and the grey wash. These mean the same thing on every site and in the console (06 §4.3, 07 §3.5).</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <section class="sec" aria-labelledby="ws-h">
+    <div class="sec-head">
+      <h2 id="ws-h">Workshop</h2>
+      <p class="sub">Tune one WebAgent the way an owner would from its card in the console. Nothing here is saved.</p>
+    </div>
+    <div class="ws">
+      <form class="controls" id="controls" autocomplete="off">
+        <fieldset>
+          <legend>Site</legend>
+          <div class="seg" id="siteSeg"></div>
+        </fieldset>
+        <div>
+          <label class="lbl" for="agentSel">WebAgent</label>
+          <select id="agentSel"></select>
+        </div>
+        <fieldset>
+          <legend>Colour</legend>
+          <div class="swatches" id="swatches"></div>
+          <div class="checks" id="checksMini"></div>
+        </fieldset>
+        <div>
+          <label class="lbl" for="roundness">Corners</label>
+          <input type="range" id="roundness" min="3.2" max="8" step="0.1">
+          <div class="range-ends"><span>Softer</span><span>Squarer</span></div>
+        </div>
+        <fieldset>
+          <legend>Glyph</legend>
+          <div class="glyphs" id="glyphs"></div>
+          <div class="mono-row">
+            <label class="tile"><input type="radio" name="glyph" id="g-monogram" value="monogram"><span>Aa</span></label>
+            <input type="text" id="monoLetter" maxlength="2" aria-label="Monogram letters">
+          </div>
+        </fieldset>
+        <fieldset>
+          <legend>Signature</legend>
+          <div class="families" id="families"></div>
+          <div class="row"><button type="button" class="btn" id="shuffle">Shuffle</button><span class="seed" id="seedOut"></span></div>
+        </fieldset>
+        <fieldset>
+          <legend>Preview a state</legend>
+          <div class="seg" id="stateSeg"></div>
+          <div class="row"><button type="button" class="btn" id="replay">Replay the motion</button></div>
+          <p class="note">Motion settles after 5 seconds in one state, as WCAG 2.2.2 asks; the label stays. Speaking lasts as long as the voice.</p>
+        </fieldset>
+        <div class="row"><button type="button" class="btn" id="reset">Reset to this WebAgent's defaults</button></div>
+      </form>
+
+      <div class="preview">
+        <div class="stage" id="stage"></div>
+        <div class="sizes" id="sizes" aria-label="The same mark at five sizes"></div>
+        <div class="contexts">
+          <div class="ctx ctx-site" id="ctxSite"></div>
+          <div class="ctx ctx-console" id="ctxConsole"></div>
+          <div class="ctx ctx-round" id="ctxRound"></div>
+        </div>
+        <div class="checks" id="checks"></div>
+        <div class="spec">
+          <pre id="spec"></pre>
+          <button type="button" class="btn" id="copySpec">Copy</button>
+          <div class="spec-meta" id="specMeta"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" aria-labelledby="states-h">
+    <div class="sec-head">
+      <h2 id="states-h">Ten states, one grammar</h2>
+      <p class="sub">Shown on the mark you are tuning. The owner's words and the visitor's words come from 06 §4.3 and 07 §3.5. With reduced motion, every animation stops and each state still reads by its shape. Without it, motion settles after 5 seconds in one state.</p>
+    </div>
+    <div class="state-grid" id="stateGrid"></div>
+  </section>
+
+  <section class="sec" aria-labelledby="rules-h">
+    <div class="sec-head"><h2 id="rules-h">Who decides what</h2></div>
+    <div class="two">
+      <div class="panel">
+        <h3>The owner chooses</h3>
+        <ul>
+          <li><b>Colour</b>, from the site's palette or any colour that keeps 3:1 against the site background.</li>
+          <li><b>Corner softness</b>, within the squircle range.</li>
+          <li><b>The glyph</b>: a role icon, a monogram in the site's display face, or later the owner's own drawing.</li>
+          <li><b>The signature family</b> for the whole site, and a fresh seed for any WebAgent.</li>
+          <li><b>The name</b> on the menu.</li>
+        </ul>
+      </div>
+      <div class="panel">
+        <h3>The platform keeps</h3>
+        <ul>
+          <li><b>What each motion means.</b> Ten states, the same on every site and in the console.</li>
+          <li><b>No face</b>, eyes, human name or photo, and no circles, because those mean a person.</li>
+          <li><b>The AI label</b> beside every mark a visitor sees.</li>
+          <li><b>Contrast</b> of 3:1 for the mark against the site, and for the glyph against the mark with its pattern drawn.</li>
+          <li><b>Stillness when idle.</b> Motion appears only while something is really happening.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" aria-labelledby="travels-h">
+    <div class="sec-head">
+      <h2 id="travels-h">One mark wherever it works</h2>
+      <p class="sub">The same spec renders everywhere, so the Cakes desk a visitor met on the site is recognisably the one that sends the owner a WhatsApp card.</p>
+    </div>
+    <div class="travels">
+      <div class="panel"><h3>On the site</h3><p>Desks, peeks and threads, the agent door page, and link previews of shared artifacts. The mark wears the site's tokens from the Move.</p></div>
+      <div class="panel"><h3>In the console</h3><p>The dock, WebAgent cards and decision cards, wearing Agentrix tokens around the mark. The Chief WebAgent's orb is its team mark.</p></div>
+      <div class="panel"><h3>Off the site</h3><p>WhatsApp briefs and cards as a static image padded for round crops; the A2A agent card's icon; MCP server and tool icons. Voice uses the speaking ring, driven by the real voice level.</p></div>
+    </div>
+  </section>
+
+  <section class="sec" aria-labelledby="build-h">
+    <div class="sec-head"><h2 id="build-h">How it is built</h2></div>
+    <div class="two">
+      <div class="panel">
+        <ul>
+          <li><b>A small <code>MarkSpec</code></b> lives in the WebAgent's spec. Changing it publishes with the next release, like any page change.</li>
+          <li><b>One generator, two builds.</b> Rust renders static SVG into the signed release and PNG for image-only channels; the console runs the same algorithm for live preview. Golden tests keep them identical.</li>
+          <li><b>Deterministic.</b> The pattern comes from a seeded generator keyed on the site, the WebAgent and the seed, so a mark looks the same everywhere and can be rebuilt from its spec.</li>
+        </ul>
+      </div>
+      <div class="panel">
+        <ul>
+          <li><b>State is one attribute.</b> Presence frames set <code>data-state</code>; all motion is CSS on transform and opacity.</li>
+          <li><b>Small.</b> The size of the mark you are tuning is shown under its spec.</li>
+          <li><b>Uploaded drawings are hostile input.</b> When owners can upload a glyph, it is cleaned in a sealed room into plain single-colour paths, with no scripts, links or embedded images.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" aria-labelledby="open-h">
+    <div class="sec-head"><h2 id="open-h">Decided by James, 7 Nov 2026</h2><p class="sub">Recorded as ADR-031 and in 05 §2.4.</p></div>
+    <div class="panel">
+      <ol>
+        <li><b>One family per site, one seed per WebAgent,</b> so a site's WebAgents read as one team.</li>
+        <li><b>The signature moves only while the WebAgent is working.</b> Idle stays still.</li>
+        <li><b>The first release offers role icons and monograms.</b> Owner uploads wait for the sealed-room cleaner.</li>
+        <li><b>The Chief WebAgent's mark is the team mark.</b> Its dots show who is working.</li>
+      </ol>
+    </div>
+  </section>
+</main>
+
+<script>
+(() => {
+  "use strict";
+
+  /* ---------- glyphs (24 px line icons) ---------- */
+  const GLYPHS = {
+    cake: '<path d="M4 20h16"/><path d="M5.5 20v-6.5h13V20"/><path d="M5.5 15.5c1.6 1.2 3.4 1.2 5 0 1.6 1.2 3.4 1.2 5 0 1 .8 2 .9 3 .5"/><path d="M12 13.5V10"/><path d="M12 7.6c-1-.9-1-2.1 0-3.4 1 1.3 1 2.5 0 3.4z"/>',
+    loaf: '<path d="M6 12.2A3.6 3.6 0 0 1 6.8 5h10.4a3.6 3.6 0 0 1 .8 7.2V19a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1z"/><path d="M9.5 9.5l1.5 1.8"/><path d="M13 8.6l1.5 1.8"/>',
+    bag: '<path d="M5.5 8.5h13l-1.1 11.5H6.6z"/><path d="M9 8.5V7a3 3 0 0 1 6 0v1.5"/>',
+    pen: '<path d="M4.5 19.5l1-4L16 5l3 3L8.5 18.5z"/><path d="M14 7l3 3"/>',
+    shield: '<path d="M12 3.5l7 2.8v5.4c0 4.2-2.9 7.3-7 8.8-4.1-1.5-7-4.6-7-8.8V6.3z"/><path d="M9 12l2.1 2.1L15.2 10"/>',
+    gift: '<path d="M4 9.5h16v3.5H4z"/><path d="M5.5 13v7h13v-7"/><path d="M12 9.5V20"/><path d="M12 9.5C10.8 6.8 7.5 6 7.5 8c0 1.2 1.8 1.5 4.5 1.5z"/><path d="M12 9.5c1.2-2.7 4.5-3.5 4.5-1.5 0 1.2-1.8 1.5-4.5 1.5z"/>',
+    perfume: '<path d="M9.5 3.5h5v3h-5z"/><path d="M10.5 6.5v2M13.5 6.5v2"/><path d="M6.5 11.5a3 3 0 0 1 3-3h5a3 3 0 0 1 3 3v7a2 2 0 0 1-2 2h-7a2 2 0 0 1-2-2z"/><path d="M9.5 14.5h5"/>',
+    star: '<path d="M12 4l2.5 5.1 5.6.8-4 3.9.9 5.6L12 16.8l-5 2.6.9-5.6-4-3.9 5.6-.8z"/>',
+    coin: '<circle cx="12" cy="12" r="8"/><path d="M12 7.5v9"/><path d="M14.4 9.7c-.4-.8-1.3-1.3-2.4-1.3-1.3 0-2.4.7-2.4 1.8s1.1 1.4 2.4 1.7 2.4.7 2.4 1.8-1.1 1.8-2.4 1.8c-1.1 0-2-.5-2.4-1.3"/>',
+    news: '<path d="M4 5.5h12.5V19H6a2 2 0 0 1-2-2z"/><path d="M16.5 9H20v8a2 2 0 0 1-2 2h-1.5"/><path d="M7 9h6.5M7 12.5h6.5M7 16h4"/>',
+    calendar: '<rect x="4" y="5.5" width="16" height="14.5" rx="2"/><path d="M4 10h16M8.5 3.5v4M15.5 3.5v4"/><path d="M8 14h3"/>',
+    key: '<circle cx="8.5" cy="15.5" r="4"/><path d="M11.3 12.7L19.5 4.5"/><path d="M16.5 7.5l2.2 2.2M14.5 9.5l1.8 1.8"/>',
+    boxes: '<path d="M3.5 7.5L12 3.5l8.5 4L12 11.5z"/><path d="M3.5 7.5v9l8.5 4 8.5-4v-9"/><path d="M12 11.5v9"/>',
+    chat: '<path d="M5 5h14a1.5 1.5 0 0 1 1.5 1.5v8A1.5 1.5 0 0 1 19 16h-6.5L8 19.5V16H5a1.5 1.5 0 0 1-1.5-1.5v-8A1.5 1.5 0 0 1 5 5z"/>'
+  };
+  const GLYPH_NAMES = { cake: "Cake", loaf: "Loaf", bag: "Bag", pen: "Pen", shield: "Shield", gift: "Gift", perfume: "Perfume", star: "Star", coin: "Coin", news: "Newspaper", calendar: "Calendar", key: "Key", boxes: "Boxes", chat: "Speech bubble" };
+
+  /* ---------- sample sites (fictional) ---------- */
+  const SITES = {
+    kilele: {
+      name: "Kilele Bakery", tag: "Cakes and bread · Nairobi", owner: "Wanjiru",
+      font: "'Young Serif', Georgia, 'Times New Roman', serif",
+      bg: "#fbf6ef", ink: "#2b1d14", ink2: "#6b5647", line: "#e8dccd",
+      family: "grain", n: 4.6,
+      palette: ["#8e3b46", "#9c5725", "#3b2416", "#577035", "#c9a227"],
+      agents: [
+        { id: "cakes", name: "Cakes", glyph: "cake", color: "#8e3b46", seed: 7, work: "Checking today's stock", mandate: "Answers about cakes, prices and collection times from the site's own pages." },
+        { id: "bread", name: "Bread", glyph: "loaf", color: "#9c5725", seed: 3, work: "Reading the bake schedule", mandate: "Says what is fresh today and when the oven opens." },
+        { id: "orders", name: "Orders", glyph: "bag", color: "#3b2416", seed: 11, work: "Looking up order 1042", mandate: "Takes and changes orders, and asks Wanjiru above her amount." },
+        { id: "editor", name: "Editor", glyph: "pen", color: "#577035", seed: 5, work: "Drafting the Easter menu page", mandate: "Keeps every page true and fresh." },
+        { id: "guardian", name: "Guardian", glyph: "shield", color: "#2b1d14", seed: 2, work: "Probing the checkout page", mandate: "Watches the site and can roll it back." }
+      ]
+    },
+    classy: {
+      name: "Classy Perfumes", tag: "Fragrance and gifts · Westlands", owner: "Classy Perfumes",
+      font: "'Italiana', Didot, 'Bodoni 72', Georgia, serif",
+      bg: "#f7f4f8", ink: "#1d1626", ink2: "#5e5468", line: "#e4dde9",
+      family: "facets", n: 6.2,
+      palette: ["#2a1f3d", "#7f6236", "#6d2e4f", "#3d5a6c", "#9d506b"],
+      agents: [
+        { id: "gifts", name: "Gifts", glyph: "gift", color: "#6d2e4f", seed: 19, work: "Finding a gift under KSh 5,000", mandate: "Helps visitors choose a gift and have it wrapped." },
+        { id: "fragrances", name: "Fragrances", glyph: "perfume", color: "#2a1f3d", seed: 4, work: "Comparing two oud blends", mandate: "Explains notes, sizes and what is in stock." },
+        { id: "orders", name: "Orders", glyph: "bag", color: "#3d5a6c", seed: 8, work: "Checking delivery to Westlands", mandate: "Takes orders and delivery details." },
+        { id: "reputation", name: "Reputation", glyph: "star", color: "#7f6236", seed: 13, work: "Drafting a reply to a review", mandate: "Drafts replies to reviews for the owner to approve." },
+        { id: "cashier", name: "Cashier", glyph: "coin", color: "#9d506b", seed: 6, work: "Reconciling today's PayPal payments", mandate: "Reconciles payments, and asks before any refund over the signed limit." }
+      ]
+    },
+    tana: {
+      name: "Tana Valley Times", tag: "Local news · weekly", owner: "Tana Valley Times",
+      font: "'Libre Caslon Text', Georgia, 'Times New Roman', serif",
+      bg: "#f4f5f7", ink: "#14213d", ink2: "#56607a", line: "#dfe3ea",
+      family: "strata", n: 7.2,
+      palette: ["#14213d", "#b3261e", "#2f5d8a", "#56636f", "#7a4b2a"],
+      agents: [
+        { id: "newsroom", name: "Newsroom", glyph: "news", color: "#b3261e", seed: 21, work: "Finding the council budget story", mandate: "Answers readers from published stories, with links." },
+        { id: "archive", name: "Archive", glyph: "calendar", color: "#2f5d8a", seed: 9, work: "Searching the 2019 issues", mandate: "Finds past issues by date and topic." },
+        { id: "subscriptions", name: "Subscriptions", glyph: "coin", color: "#14213d", seed: 15, work: "Checking a reader's renewal", mandate: "Handles sign-ups and renewals." },
+        { id: "editor", name: "Editor", glyph: "pen", color: "#7a4b2a", seed: 1, work: "Correcting a date in Tuesday's story", mandate: "Publishes corrections with a visible note." },
+        { id: "guardian", name: "Guardian", glyph: "shield", color: "#56636f", seed: 12, work: "Checking the site's certificates", mandate: "Watches the site and can roll it back." }
+      ]
+    }
+  };
+
+  const STATES = [
+    { k: "idle", name: "Idle", owner: "Mark only", visitor: "Mark only" },
+    { k: "listening", name: "Listening", owner: "Listening", visitor: "Mark only" },
+    { k: "working", name: "Working", owner: "The running tool's label", visitor: "The same label" },
+    { k: "answering", name: "Answering", owner: "Answering", visitor: "The ring, while text streams" },
+    { k: "speaking", name: "Speaking", owner: "Speaking", visitor: "The ring follows the voice", isNew: true },
+    { k: "waiting", name: "Waiting on the owner", owner: "Waiting for you", visitor: "Waiting for the owner's OK" },
+    { k: "resting", name: "Resting", owner: "Resting · budget reached", visitor: "Answers are paused right now. The page and the form still work." },
+    { k: "asleep", name: "Asleep", owner: "Asleep · next 07:15", visitor: "Not shown" },
+    { k: "paused", name: "Paused", owner: "Paused, with the reason", visitor: "A paused desk rests; never the reason" },
+    { k: "frozen", name: "Frozen", owner: "Frozen, with the freeze banner", visitor: "Answers are paused right now. You can still read the site." }
+  ];
+  const STATE_BY = Object.fromEntries(STATES.map(s => [s.k, s]));
+  const FAMILIES = [["orbits", "Orbits"], ["grain", "Grain"], ["strata", "Strata"], ["weave", "Weave"], ["facets", "Facets"]];
+
+  /* ---------- colour ---------- */
+  function hexToRgb(h) { h = h.replace("#", ""); if (h.length === 3) h = h.split("").map(c => c + c).join(""); const n = parseInt(h, 16); return [(n >> 16) & 255, (n >> 8) & 255, n & 255]; }
+  function rgbToHex(r, g, b) { return "#" + [r, g, b].map(v => Math.max(0, Math.min(255, Math.round(v))).toString(16).padStart(2, "0")).join(""); }
+  function lum(h) { const w = [.2126, .7152, .0722]; return hexToRgb(h).reduce((a, v, i) => { v /= 255; return a + w[i] * (v <= .03928 ? v / 12.92 : Math.pow((v + .055) / 1.055, 2.4)); }, 0); }
+  function contrast(a, b) { const A = lum(a), B = lum(b); return (Math.max(A, B) + .05) / (Math.min(A, B) + .05); }
+  const ON_DARK = "#ffffff", ON_LIGHT = "#1b1726";
+  function onColor(fill) { return contrast(fill, ON_DARK) >= contrast(fill, ON_LIGHT) ? ON_DARK : ON_LIGHT; }
+  function mix(a, b, t) { const A = hexToRgb(a), B = hexToRgb(b); return rgbToHex(...A.map((v, i) => v + (B[i] - v) * t)); }
+  /* The pattern is drawn in the glyph's colour, at most at this alpha (by detail level: none, 28-44 px, larger).
+     The glyph is checked against the fill with the pattern at its strongest, as 06 §4.3 requires. */
+  const SIG_ALPHA = [0, .22, .3];
+  function glyphContrast(fill) { const on = onColor(fill); return contrast(on, mix(fill, on, SIG_ALPHA[2])); }
+  function passes(fill, ground) { return contrast(fill, ground) >= 3 && glyphContrast(fill) >= 3; }
+  function nearestPassing(fill, ground) {
+    const dirs = lum(ground) > .4 ? ["#000000", "#ffffff"] : ["#ffffff", "#000000"];
+    for (const towards of dirs) for (let t = 0; t <= 1.0001; t += .02) { const c = mix(fill, towards, t); if (passes(c, ground)) return c; }
+    return dirs[0];
+  }
+
+  /* ---------- seeded generator ---------- */
+  function seedFrom(str) { let h = 1779033703 ^ str.length; for (let i = 0; i < str.length; i++) { h = Math.imul(h ^ str.charCodeAt(i), 3432918353); h = (h << 13) | (h >>> 19); } h = Math.imul(h ^ (h >>> 16), 2246822507); h = Math.imul(h ^ (h >>> 13), 3266489909); return (h ^= h >>> 16) >>> 0; }
+  function rngFor(key) { let a = seedFrom(key); return () => { a |= 0; a = (a + 0x6D2B79F5) | 0; let t = Math.imul(a ^ (a >>> 15), 1 | a); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
+
+  /* ---------- geometry ---------- */
+  const f = v => (Math.round(v * 100) / 100).toString();
+  function squircle(n, r, cx = 50, cy = 50, steps = 96) {
+    let d = "";
+    for (let i = 0; i < steps; i++) {
+      const t = (i / steps) * Math.PI * 2, c = Math.cos(t), s = Math.sin(t);
+      const x = cx + r * Math.sign(c) * Math.pow(Math.abs(c), 2 / n);
+      const y = cy + r * Math.sign(s) * Math.pow(Math.abs(s), 2 / n);
+      d += (i ? "L" : "M") + f(x) + " " + f(y);
+    }
+    return d + "Z";
+  }
+  function arc(r, a0, a1, color, w, op) {
+    const p = a => [50 + r * Math.cos(a * Math.PI / 180), 50 + r * Math.sin(a * Math.PI / 180)];
+    const [x0, y0] = p(a0), [x1, y1] = p(a1), large = (a1 - a0) > 180 ? 1 : 0;
+    return `<path d="M${f(x0)} ${f(y0)}A${f(r)} ${f(r)} 0 ${large} 1 ${f(x1)} ${f(y1)}" fill="none" stroke="${color}" stroke-width="${f(w)}" stroke-linecap="round" opacity="${f(op)}"/>`;
+  }
+  function wave(x0, x1, y0, amp, lam, ph) {
+    let d = "";
+    for (let x = x0, i = 0; x <= x1; x += 2.5, i++) d += (i ? "L" : "M") + f(x) + " " + f(y0 + amp * Math.sin((x + ph) / lam * Math.PI * 2));
+    return d;
+  }
+
+  /* ---------- signature families ---------- */
+  const SIG = {
+    orbits(r, c) {
+      const k = 3 + Math.floor(r() * 2); let s = "";
+      for (let i = 0; i < k; i++) {
+        const rad = 16 + i * (34 / (k - 1)) + (r() - .5) * 3, sweep = 150 + r() * 170, start = r() * 360;
+        s += arc(rad, start, start + sweep, c, 3.2 + r() * 2.6, .8);
+      }
+      const ma = r() * Math.PI * 2;
+      s += `<circle cx="${f(50 + 31.7 * Math.cos(ma))}" cy="${f(50 + 31.7 * Math.sin(ma))}" r="${f(4 + r() * 2)}" fill="${c}"/>`;
+      return { inner: s, motion: "spin" };
+    },
+    grain(r, c) {
+      const n = 34 + Math.floor(r() * 24), sc = 5.6 + r() * 1.6, rot = r() * 360, ox = (r() - .5) * 14, oy = (r() - .5) * 14;
+      let s = "";
+      for (let i = 1; i <= n; i++) {
+        const a = (i * 137.508 + rot) * Math.PI / 180, d = sc * Math.sqrt(i);
+        s += `<circle cx="${f(50 + ox + d * Math.cos(a))}" cy="${f(50 + oy + d * Math.sin(a))}" r="${f(1.1 + (i / n) * 2.6)}"/>`;
+      }
+      return { inner: `<g fill="${c}">${s}</g>`, motion: "spin" };
+    },
+    strata(r, c) {
+      const bands = 4 + Math.floor(r() * 3), lam = 34 + r() * 30, amp = 3 + r() * 6, ang = -30 + r() * 60, gap = 150 / bands;
+      let s = "";
+      for (let i = 0; i < bands; i++) {
+        const y0 = -25 + gap * (i + .5), ph = r() * lam;
+        s += `<path d="${wave(-50 - lam, 150 + lam, y0, amp, lam, ph)}" fill="none" stroke="${c}" stroke-width="${f(gap * (.3 + r() * .22))}" stroke-linecap="round" opacity="${i % 2 ? 1 : .6}"/>`;
+      }
+      return { inner: `<g transform="rotate(${f(ang)} 50 50)"><g class="wa-drift" style="--p:${f(-lam)}px">${s}</g></g>`, motion: "drift" };
+    },
+    weave(r, c) {
+      const sp = 9 + r() * 6, a1 = r() * 180, a2 = a1 + 55 + r() * 50, sw = 1.6 + r() * 1.4;
+      const set = ang => { let s = ""; for (let x = -90; x <= 190; x += sp) s += `<line x1="${f(x)}" y1="-70" x2="${f(x)}" y2="170"/>`; return `<g transform="rotate(${f(ang)} 50 50)"><g class="wa-drift" style="--p:${f(-sp)}px">${s}</g></g>`; };
+      return { inner: `<g stroke="${c}" stroke-width="${f(sw)}">${set(a1)}${set(a2)}</g>`, motion: "drift" };
+    },
+    facets(r, c) {
+      const px = 50 + (r() - .5) * 36, py = 50 + (r() - .5) * 36, k = 7 + Math.floor(r() * 5);
+      const angs = []; let a = r() * 360;
+      for (let i = 0; i < k; i++) { angs.push(a); a += (360 / k) * (.6 + r() * .8); }
+      let tri = "", lines = "";
+      for (let i = 0; i < k; i++) {
+        const b1 = angs[i] * Math.PI / 180, b2 = angs[(i + 1) % k] * Math.PI / 180, R = 92;
+        const p1 = [50 + R * Math.cos(b1), 50 + R * Math.sin(b1)], p2 = [50 + R * Math.cos(b2), 50 + R * Math.sin(b2)];
+        if (i % 2 === 0) tri += `<path d="M${f(px)} ${f(py)}L${f(p1[0])} ${f(p1[1])}L${f(p2[0])} ${f(p2[1])}Z" fill="${c}" fill-opacity="${f(.4 + r() * .45)}"/>`;
+        lines += `<line x1="${f(px)}" y1="${f(py)}" x2="${f(p1[0])}" y2="${f(p1[1])}"/>`;
+      }
+      return { inner: `${tri}<g stroke="${c}" stroke-width="1.4">${lines}</g>`, motion: "spin" };
+    }
+  };
+
+  /* ---------- the mark ---------- */
+  let UID = 0;
+  const esc = s => String(s).replace(/[&<>"']/g, ch => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[ch]));
+  const VB = 'viewBox="-12 -12 124 134"';
+  const dims = size => `width="${f(size * 1.24)}" height="${f(size * 1.34)}"`;
+
+  function pieces(m, size, sigColor, sigOp) {
+    const detail = size <= 24 ? 0 : size <= 44 ? 1 : 2;
+    const on = onColor(m.color);
+    const body = squircle(m.n, 50), halo = squircle(m.n, 58);
+    let sig = "", motion = "";
+    if (detail > 0) {
+      const out = SIG[m.family](rngFor(`${m.site}:${m.id}:${m.seed}`), sigColor || on);
+      sig = `<g opacity="${f(sigOp != null ? sigOp : SIG_ALPHA[detail])}">${out.inner}</g>`; motion = out.motion;
+    }
+    const gs = detail === 0 ? 60 : detail === 1 ? 50 : 44, gx = 50 - gs / 2, sw = detail === 0 ? 2.7 : detail === 1 ? 2.3 : 2;
+    const glyphFor = color => m.glyph === "monogram"
+      ? `<text x="50" y="52" text-anchor="middle" dominant-baseline="central" font-family="${esc(m.font)}" font-size="${(m.mono || "").length > 1 ? 40 : (detail === 0 ? 60 : 52)}" fill="${color}">${esc(m.mono || "")}</text>`
+      : `<svg x="${gx}" y="${gx}" width="${gs}" height="${gs}" viewBox="0 0 24 24" fill="none" stroke="${color}" stroke-width="${sw}" stroke-linecap="round" stroke-linejoin="round">${GLYPHS[m.glyph] || ""}</svg>`;
+    return { detail, on, body, halo, sig, motion, glyphFor };
+  }
+
+  function markSVG(m, size, state = "idle") {
+    const id = "wm" + (++UID), p = pieces(m, size);
+    const fill = p.detail === 2 ? `url(#${id}g)` : m.color;
+    return `<svg class="wa" data-state="${state}" data-since="${Date.now()}" data-motion="${p.motion}" ${dims(size)} ${VB} aria-hidden="true" focusable="false">` +
+      `<defs><clipPath id="${id}c"><path d="${p.body}"/></clipPath><linearGradient id="${id}g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${mix(m.color, "#ffffff", .16)}"/><stop offset="1" stop-color="${m.color}"/></linearGradient></defs>` +
+      `<path class="wa-halo" d="${p.halo}" fill="none" stroke="${m.color}" stroke-width="4"/>` +
+      `<g class="wa-core"><path d="${p.body}" fill="${fill}"/>` +
+      (p.sig ? `<g clip-path="url(#${id}c)"><g class="wa-sig"><circle cx="50" cy="50" r="80" fill="none"/>${p.sig}</g></g>` : "") +
+      p.glyphFor(p.on) + `</g>` +
+      `<line class="wa-trace" x1="8" y1="117" x2="92" y2="117" stroke="${m.color}" stroke-width="4" stroke-linecap="round"/>` +
+      `<circle class="wa-dot" cx="96" cy="4" r="11" fill="#b26b00" stroke="var(--wa-ground, #ffffff)" stroke-width="5"/>` +
+      `</svg>`;
+  }
+
+  function chiefSVG(site, states, size) {
+    const id = "wm" + (++UID), on = onColor(site.ink), body = squircle(site.n, 50), halo = squircle(site.n, 58);
+    const k = site.agents.length;
+    let dots = `<circle cx="50" cy="50" r="33" fill="none" stroke="${on}" stroke-width="1.5" opacity=".25"/>`;
+    site.agents.forEach((a, i) => {
+      const ang = (-90 + i * 360 / k) * Math.PI / 180, busy = states[i] === "working" || states[i] === "answering";
+      dots += `<circle class="chief-dot${busy ? " busy" : ""}" data-i="${i}" cx="${f(50 + 33 * Math.cos(ang))}" cy="${f(50 + 33 * Math.sin(ang))}" r="7" fill="${a.color}" stroke="${on}" stroke-width="2.4"/>`;
+    });
+    const waiting = states.includes("waiting");
+    return `<svg class="wa chief" data-state="${waiting ? "waiting" : "idle"}" data-since="${Date.now()}" ${dims(size)} ${VB} aria-hidden="true" focusable="false">` +
+      `<path class="wa-halo" d="${halo}" fill="none" stroke="${site.ink}" stroke-width="4"/>` +
+      `<g class="wa-core"><path d="${body}" fill="${site.ink}"/>${dots}` +
+      `<text x="50" y="52" text-anchor="middle" dominant-baseline="central" font-family="${esc(site.font)}" font-size="34" fill="${on}">${esc(site.name[0])}</text></g>` +
+      `<circle class="wa-dot" cx="96" cy="4" r="11" fill="#b26b00" stroke="var(--wa-ground, #ffffff)" stroke-width="5"/></svg>`;
+  }
+
+  const siteVars = s => `--sbg:${s.bg};--sink:${s.ink};--sink2:${s.ink2};--sline:${s.line};--sfont:${s.font};`;
+  const agentMark = (siteKey, a, over = {}) => Object.assign({ site: siteKey, id: a.id, name: a.name, color: a.color, n: SITES[siteKey].n, glyph: a.glyph, mono: a.name[0], family: SITES[siteKey].family, seed: a.seed, font: SITES[siteKey].font }, over);
+
+  /* ---------- teams (demo timer) ---------- */
+  const teamsEl = document.getElementById("teams");
+  const team = {};
+  const ownerWords = (st, a, site) => st === "working" ? a.work : st === "waiting" ? "Waiting for you" : st === "asleep" ? "Asleep · next 07:15" : STATE_BY[st].owner === "Mark only" ? "Idle" : STATE_BY[st].owner;
+  const START = { kilele: ["working", "listening", "waiting", "asleep", "listening"], classy: ["answering", "idle", "working", "waiting", "asleep"], tana: ["working", "idle", "asleep", "working", "listening"] };
+
+  function chiefSummary(states) {
+    const busy = states.filter(s => s === "working" || s === "answering").length, wait = states.filter(s => s === "waiting").length;
+    const parts = []; if (busy) parts.push(`${busy} at work`); if (wait) parts.push(`${wait} waiting for you`); if (!parts.length) parts.push("All quiet");
+    return parts.join(" · ");
+  }
+  function renderTeams() {
+    teamsEl.innerHTML = Object.entries(SITES).map(([key, s]) => {
+      const states = team[key];
+      return `<article class="site" style="${siteVars(s)}" data-site="${key}">
+        <div><div class="site-name">${esc(s.name)}</div><div class="site-tag">${esc(s.tag)}</div></div>
+        <div class="chief-row"><span class="chief-slot">${chiefSVG(s, states, 48)}</span><div><b>Chief WebAgent</b><span class="chief-sum">${esc(chiefSummary(states))}</span></div></div>
+        <ul class="members">${s.agents.map((a, i) => `<li class="member" data-i="${i}"><span class="mslot">${markSVG(agentMark(key, a), 34, states[i])}</span><div style="min-width:0"><div class="who">${esc(a.name)} <span class="ai">AI</span></div><div class="what">${esc(ownerWords(states[i], a, s))}</div></div></li>`).join("")}</ul>
+      </article>`;
+    }).join("");
+  }
+  function updateMember(key, i) {
+    const s = SITES[key], art = teamsEl.querySelector(`[data-site="${key}"]`); if (!art) return;
+    const li = art.querySelector(`.member[data-i="${i}"]`), st = team[key][i];
+    const mk = li.querySelector(".wa"); mk.setAttribute("data-state", st); restart(mk);
+    li.querySelector(".what").textContent = ownerWords(st, s.agents[i], s);
+    const chief = art.querySelector(".chief-slot .wa"); restart(chief);
+    chief.setAttribute("data-state", team[key].includes("waiting") ? "waiting" : "idle");
+    const dot = chief.querySelector(`.chief-dot[data-i="${i}"]`);
+    dot.classList.toggle("busy", st === "working" || st === "answering");
+    art.querySelector(".chief-sum").textContent = chiefSummary(team[key]);
+  }
+  Object.keys(SITES).forEach(k => team[k] = START[k].slice());
+  renderTeams();
+  const POOL = ["idle", "listening", "working", "working", "answering", "waiting", "asleep"];
+  let tick = 0;
+  setInterval(() => {
+    const keys = Object.keys(SITES), key = keys[tick++ % keys.length];
+    const i = Math.floor(Math.random() * SITES[key].agents.length);
+    let next = POOL[Math.floor(Math.random() * POOL.length)];
+    if (SITES[key].agents[i].id === "guardian") next = Math.random() < .7 ? "listening" : "working";
+    team[key][i] = next; updateMember(key, i);
+  }, 1800);
+
+  /* ---------- workshop ---------- */
+  const ws = { site: "kilele", agent: 0, color: "", n: 4.6, glyph: "cake", mono: "C", family: "grain", seed: 7, state: "working" };
+  const $ = id => document.getElementById(id);
+  function loadAgent() { const s = SITES[ws.site], a = s.agents[ws.agent]; Object.assign(ws, { color: a.color, n: s.n, glyph: a.glyph, mono: a.name[0], family: s.family, seed: a.seed }); }
+  function current() { const s = SITES[ws.site], a = s.agents[ws.agent]; return agentMark(ws.site, a, { color: ws.color, n: ws.n, glyph: ws.glyph, mono: ws.mono, family: ws.family, seed: ws.seed }); }
+
+  function buildStaticControls() {
+    $("siteSeg").innerHTML = Object.entries(SITES).map(([k, s]) => `<label class="chip"><input type="radio" name="site" id="site-${k}" value="${k}"><span>${esc(s.name)}</span></label>`).join("");
+    $("glyphs").innerHTML = Object.keys(GLYPHS).map(g => `<label class="tile" title="${GLYPH_NAMES[g]}"><input type="radio" name="glyph" id="g-${g}" value="${g}" aria-label="${GLYPH_NAMES[g]}"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${GLYPHS[g]}</svg></span></label>`).join("");
+    $("stateSeg").innerHTML = STATES.map(s => `<label class="chip"><input type="radio" name="state" id="st-${s.k}" value="${s.k}"><span>${esc(s.name)}</span></label>`).join("");
+  }
+  function buildSiteControls() {
+    const s = SITES[ws.site];
+    $("agentSel").innerHTML = s.agents.map((a, i) => `<option value="${i}">${esc(a.name)}</option>`).join("");
+    $("swatches").innerHTML = s.palette.map((c, i) => `<label class="sw" title="${c}"><input type="radio" name="color" id="sw-${i}" value="${c}" aria-label="Colour ${c}"><span style="background:${c}"></span></label>`).join("") +
+      `<input type="color" id="customColor" aria-label="Any colour">`;
+  }
+  function syncControls() {
+    $("site-" + ws.site).checked = true;
+    $("agentSel").value = String(ws.agent);
+    document.querySelectorAll('input[name="color"]').forEach(r => r.checked = r.value.toLowerCase() === ws.color.toLowerCase());
+    $("customColor").value = ws.color;
+    $("roundness").value = ws.n;
+    const g = document.getElementById("g-" + ws.glyph); if (g) g.checked = true;
+    $("monoLetter").value = ws.mono;
+    $("st-" + ws.state).checked = true;
+  }
+
+  function checkPills(m, ground) {
+    const a = contrast(m.color, ground), b = glyphContrast(m.color);
+    const pill = (ok, txt) => `<span class="pill ${ok ? "pass" : "fail"}">${ok ? "Passes" : "Too faint"} · ${txt}</span>`;
+    return { a, b, html: pill(a >= 3, `mark on the site ${a.toFixed(1)}:1`) + pill(b >= 3, `glyph on the mark, pattern drawn ${b.toFixed(1)}:1`) };
+  }
+
+  function render() {
+    const s = SITES[ws.site], a = s.agents[ws.agent], m = current(), st = STATE_BY[ws.state];
+    const vars = siteVars(s);
+    // stage
+    const visitor = ws.state === "working" ? a.work : ws.state === "waiting" ? `Waiting for ${s.owner}'s OK` : st.visitor;
+    const owner = ws.state === "working" ? a.work : st.owner;
+    $("stage").setAttribute("style", vars);
+    $("stage").innerHTML = `<div class="big">${markSVG(m, 140, ws.state)}</div>
+      <div class="cap"><div class="nm">${esc(a.name)} <span class="ai">AI</span></div>
+      <dl><div><dt>The owner sees</dt><dd>${esc(owner)}</dd></div><div><dt>A visitor sees</dt><dd>${esc(visitor)}</dd></div>
+      <div><dt>Mandate</dt><dd>${esc(a.mandate)}</dd></div></dl></div>`;
+    // sizes
+    $("sizes").innerHTML = [20, 28, 40, 64, 96].map(z => `<figure>${markSVG(m, z, ws.state)}<figcaption>${z} px</figcaption></figure>`).join("");
+    // contexts
+    $("ctxSite").setAttribute("style", vars);
+    $("ctxSite").innerHTML = `<div class="ctx-lbl">On the site</div><div class="peek-head">${markSVG(m, 40, ws.state)}<div><b>${esc(a.name)}</b><span class="ai">AI</span></div></div><p>${esc(a.mandate)}</p>`;
+    $("ctxConsole").setAttribute("style", vars);
+    $("ctxConsole").innerHTML = `<div class="ctx-lbl">In the console dock</div><div class="dock">${markSVG(m, 40, ws.state)}<div><b>${esc(a.name)}</b><span>${esc(owner)}</span></div></div>`;
+    $("ctxRound").setAttribute("style", vars);
+    $("ctxRound").innerHTML = `<div class="ctx-lbl">Round crops</div><div class="round-row"><div class="round">${markSVG(m, 34, "idle")}</div><p>WhatsApp and similar apps crop pictures to a circle. The squircle sits inside it with room to spare.</p></div>`;
+    // checks
+    const c = checkPills(m, s.bg);
+    $("checks").innerHTML = c.html;
+    $("checksMini").innerHTML = c.a >= 3 && c.b >= 3 ? "" : `<button type="button" class="btn" id="fixContrast">Use the nearest shade that passes</button>`;
+    // spec
+    const spec = {
+      markSpec: 1,
+      site: ws.site,
+      webagent: a.id,
+      silhouette: { shape: "squircle", squareness: Number(ws.n.toFixed(1)) },
+      color: { fill: ws.color, glyph: onColor(ws.color) },
+      glyph: ws.glyph === "monogram" ? { kind: "monogram", letters: ws.mono, face: "site display" } : { kind: "role", id: ws.glyph },
+      signature: { family: ws.family, seed: ws.seed }
+    };
+    $("spec").textContent = JSON.stringify(spec, null, 2);
+    const svgText = markSVG(m, 64, "idle");
+    $("specMeta").textContent = `Rendered SVG for this mark: ${(new Blob([svgText]).size / 1024).toFixed(1)} KB, before compression.`;
+    $("seedOut").textContent = `Seed ${ws.seed}`;
+    // families preview
+    $("families").innerHTML = FAMILIES.map(([k, label]) => `<label class="tile"><input type="radio" name="family" id="fam-${k}" value="${k}"${ws.family === k ? " checked" : ""}><span style="--wa-ground:var(--paper)">${markSVG(Object.assign({}, m, { family: k }), 32, "idle")}${label}</span></label>`).join("");
+    // exploded
+    renderExploded(m);
+    // states
+    $("stateGrid").innerHTML = STATES.map(x => {
+      const vis = x.k === "waiting" ? `Waiting for ${s.owner}'s OK` : x.k === "working" ? a.work : x.visitor;
+      const own = x.k === "working" ? a.work : x.owner;
+      return `<div class="st" style="${vars}"><div class="mk">${markSVG(m, 56, x.k)}</div><h3>${esc(x.name)}${x.isNew ? ' <span class="new">NEW</span>' : ""}</h3><p><b>Owner:</b> ${esc(own)}</p><p><b>Visitor:</b> ${esc(vis)}</p></div>`;
+    }).join("");
+  }
+
+  function renderExploded(m) {
+    const p = pieces(m, 72, m.color, .9), id = "wm" + (++UID);
+    const outline = `<path d="${p.body}" fill="none" stroke="var(--line-strong)" stroke-width="1.6" stroke-dasharray="4 4"/>`;
+    const svg = inner => `<svg class="wa" ${dims(64)} ${VB} aria-hidden="true" focusable="false">${inner}</svg>`;
+    const body = svg(`<path d="${p.body}" fill="${m.color}"/>`);
+    const sig = svg(`<defs><clipPath id="${id}x"><path d="${p.body}"/></clipPath></defs>${outline}<g clip-path="url(#${id}x)">${p.sig}</g>`);
+    const glyph = svg(`${outline}${p.glyphFor(m.color)}`);
+    const state = svg(`${outline}<path d="${p.halo}" fill="none" stroke="${m.color}" stroke-width="4" opacity=".55"/><line x1="8" y1="117" x2="92" y2="117" stroke="${m.color}" stroke-width="4" stroke-linecap="round" stroke-dasharray="22 120"/><circle cx="96" cy="4" r="11" fill="#b26b00" stroke="var(--paper)" stroke-width="5"/>`);
+    $("exploded").setAttribute("style", "--wa-ground: var(--paper)");
+    $("exploded").innerHTML =
+      `<figure>${body}<figcaption>silhouette</figcaption></figure><span class="op" aria-hidden="true">+</span>` +
+      `<figure>${sig}<figcaption>signature</figcaption></figure><span class="op" aria-hidden="true">+</span>` +
+      `<figure>${glyph}<figcaption>glyph</figcaption></figure><span class="op" aria-hidden="true">+</span>` +
+      `<figure>${state}<figcaption>state</figcaption></figure><span class="op" aria-hidden="true">=</span>` +
+      `<figure>${markSVG(m, 64, "working")}<figcaption>working</figcaption></figure>`;
+  }
+
+  buildStaticControls();
+  loadAgent(); buildSiteControls(); syncControls(); render();
+
+  const form = $("controls");
+  form.addEventListener("input", e => {
+    const t = e.target;
+    if (t.name === "site") { ws.site = t.value; ws.agent = 0; loadAgent(); buildSiteControls(); syncControls(); }
+    else if (t.id === "agentSel") { ws.agent = Number(t.value); loadAgent(); syncControls(); }
+    else if (t.name === "color") { ws.color = t.value; $("customColor").value = ws.color; }
+    else if (t.id === "customColor") { ws.color = t.value; document.querySelectorAll('input[name="color"]').forEach(r => r.checked = false); }
+    else if (t.id === "roundness") { ws.n = Number(t.value); }
+    else if (t.name === "glyph") { ws.glyph = t.value; }
+    else if (t.id === "monoLetter") { ws.mono = t.value.trim().slice(0, 2); ws.glyph = "monogram"; $("g-monogram").checked = true; }
+    else if (t.name === "family") { ws.family = t.value; }
+    else if (t.name === "state") { ws.state = t.value; }
+    else return;
+    render();
+  });
+  form.addEventListener("submit", e => e.preventDefault());
+  form.addEventListener("click", e => {
+    const t = e.target.closest("button"); if (!t) return;
+    if (t.id === "shuffle") { ws.seed = 1 + Math.floor(Math.random() * 9999); render(); }
+    else if (t.id === "reset") { loadAgent(); syncControls(); render(); }
+    else if (t.id === "replay") { render(); }
+    else if (t.id === "fixContrast") { ws.color = nearestPassing(ws.color, SITES[ws.site].bg); syncControls(); render(); }
+  });
+  $("copySpec").addEventListener("click", () => {
+    const text = $("spec").textContent, btn = $("copySpec");
+    const done = ok => { btn.textContent = ok ? "Copied" : "Select and copy"; setTimeout(() => btn.textContent = "Copy", 1600); };
+    try {
+      navigator.clipboard.writeText(text).then(() => done(true), () => { selectSpec(); done(false); });
+    } catch (err) { selectSpec(); done(false); }
+  });
+  function selectSpec() { const r = document.createRange(); r.selectNodeContents($("spec")); const sel = getSelection(); sel.removeAllRanges(); sel.addRange(r); }
+
+  /* ---------- motion settles after 5 s in one state; speaking lasts as long as the voice ---------- */
+  function restart(el) { el.setAttribute("data-since", String(Date.now())); el.removeAttribute("data-settled"); }
+  setInterval(() => {
+    const now = Date.now();
+    document.querySelectorAll(".wa[data-since]:not([data-settled])").forEach(el => {
+      if (el.getAttribute("data-state") !== "speaking" && now - Number(el.getAttribute("data-since")) > 5000) el.setAttribute("data-settled", "");
+    });
+  }, 400);
+
+  /* ---------- speaking level (simulated here; the real voice level in production) ---------- */
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)");
+  function speak(t) {
+    if (!reduce.matches) {
+      const s = t / 1000;
+      const lvl = Math.max(0, Math.min(1, .45 + .4 * Math.sin(s * 7.3) * Math.sin(s * 2.1 + 1) + .15 * Math.sin(s * 17.9)));
+      document.querySelectorAll('.wa[data-state="speaking"]').forEach(el => el.style.setProperty("--lvl", lvl.toFixed(3)));
+    }
+    requestAnimationFrame(speak);
+  }
+  requestAnimationFrame(speak);
+})();
+</script>
+
+</html>

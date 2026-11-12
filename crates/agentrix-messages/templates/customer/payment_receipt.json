@@ -1,0 +1,44 @@
+{
+ "site": {
+  "name": "Kilele Bakery",
+  "host": "kilele-bakery-sample.agentrix.website",
+  "sample": true,
+  "owner": "Wanjiru",
+  "accent": "#3b2416",
+  "url": "https://kilele-bakery-sample.agentrix.website"
+ },
+ "person": {
+  "name": "Njeri"
+ },
+ "order": {
+  "number": "KB-1042",
+  "currency": "KES",
+  "total": 2550,
+  "lines": [
+   {
+    "qty": 2,
+    "name": "Country sourdough",
+    "total": 900
+   },
+   {
+    "qty": 1,
+    "name": "Weekend bake box",
+    "total": 1350
+   },
+   {
+    "qty": 1,
+    "name": "Delivery to Kilimani",
+    "total": 300
+   }
+  ]
+ },
+ "payment": {
+  "charge": 19.77,
+  "charge_currency": "USD",
+  "method": "PayPal",
+  "rate": "1 USD = KSh 129.00",
+  "paid_at": "Thu 12 Nov, 14:06 (Nairobi time)",
+  "receipt_id": "R-1042",
+  "receipt_url": "https://kilele-bakery-sample.agentrix.website/orders/KB-1042/receipt"
+ }
+}

@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Agentrix OS Missions</title>
+<meta name="description" content="Concept: a background mission reports in. A standing goal with a budget, owners and an end date, run by WebAgents in the background and reported honestly, with every next step that matters waiting for the owner.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Manrope:wght@600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../styles.css">
+<link rel="stylesheet" href="console.css">
+<style>
+  .stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin-top: 12px; }
+  .stat { padding: 12px; border-radius: 14px; background: var(--os-pane-2); border: 1px solid var(--os-line); }
+  .stat b { display: block; font: 800 var(--fs-24)/1 var(--font-display); color: var(--os-head); }
+  .stat span { display: block; font-size: var(--fs-12); color: var(--os-muted); margin-top: 4px; }
+  .rep h4 { margin: 14px 0 6px; font: 700 11px/1 var(--font-text); letter-spacing: .1em; text-transform: uppercase; color: var(--os-muted); }
+  .rep ul { margin: 0; padding-left: 18px; display: grid; gap: 6px; font-size: var(--fs-13); color: var(--os-ink-2); }
+  .rep ul b { color: var(--os-head); }
+  .next { list-style: none; padding: 0 !important; }
+  .next li { display: grid; grid-template-columns: 26px minmax(0, 1fr); gap: 8px; align-items: start; }
+  .next .avatar { width: 24px; height: 24px; border-radius: 8px; font-size: 10px; }
+  .contract { display: grid; grid-template-columns: 110px minmax(0, 1fr); gap: 6px 12px; font-size: var(--fs-13); color: var(--os-ink-2); margin-top: 10px; }
+  .contract dt { font: 700 var(--fs-12)/1.5 var(--font-text); color: var(--os-muted); }
+  .contract dd { margin: 0; }
+  .contract dd b { color: var(--os-head); }
+  .method { margin-top: 10px; padding: 8px 10px; border-radius: 10px; background: var(--surface); border: 1px dashed var(--line-strong); font-size: var(--fs-12); color: var(--muted); }
+  .preview { margin-top: 8px; padding: 10px; border-radius: 10px; background: var(--paper); border: 1px solid var(--line); font-size: var(--fs-13); color: var(--ink); }
+  .start { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-top: 16px; }
+  .start .card { position: relative; }
+  .start .n { font: 700 var(--fs-12)/1 var(--font-mono); color: var(--coral-strong); }
+  .start .card p { font-size: var(--fs-14); color: var(--ink-2); margin-top: 8px; }
+  .start .quote { margin-top: 10px; padding: 10px 12px; border-radius: 12px; background: var(--indigo-50); border: 1px solid var(--indigo-100); font-size: var(--fs-14); color: var(--indigo-900); }
+  @media (max-width: 860px) { .start { grid-template-columns: 1fr; } .stats { grid-template-columns: 1fr 1fr; } .stats .stat:last-child { grid-column: 1 / -1; } }
+  @media (max-width: 520px) { .contract { grid-template-columns: 1fr; } .contract dt { margin-top: 6px; } }
+</style>
+</head>
+<body class="os-page">
+<header class="conceptbar">
+  <a class="logo" href="../index.html"><span class="mark" aria-hidden="true"></span>Agentrix</a>
+  <nav aria-label="Agentrix OS concepts">
+    <a href="index.html">Agentrix OS</a>
+    <a href="shell.html">Shell</a>
+    <a href="store.html">Store</a>
+    <a href="mission.html" aria-current="page">Missions</a>
+    <a href="live.html">Live</a>
+    <a href="phone.html">Phone</a>
+    <a href="trust.html">Trust centre</a>
+    <a href="gestures.html">Gestures</a>
+  </nav>
+  <span class="concept-label">Concept · illustrative data</span>
+</header>
+
+<main class="wrap">
+  <div class="page-head">
+    <span class="eyebrow">Agentrix OS · 3 of 6 · Background work</span>
+    <h1 style="margin-top:12px">A mission reports in.</h1>
+    <p class="lead">A mission is a goal you give in your own words. The Chief WebAgent turns it into a contract: what counts, which WebAgents work on it, when they wake, how much they may spend and when it ends. They work in the background, mostly at night. Every Monday the mission reports: what worked, what didn't, and what it wants to do next. Anything that matters waits for you.</p>
+    <div class="tryline"><span>Try:</span><span class="chip chip-outline">read the report</span><span class="chip chip-outline">approve Sales' message</span><span class="chip chip-outline">the mission contract</span></div>
+  </div>
+
+  <section class="os-frame" aria-label="Mission: Christmas cakes">
+    <div class="browser-bar"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="url"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>os.agentrix.ai/kilele/missions/christmas-cakes</span></div>
+    <div class="os" data-world="back" data-time="day">
+      <div class="os-bar">
+        <button class="site-chip" type="button"><span class="logo-bake">K</span><span>Kilele Bakery<small>kilele-bakery.example · v14 live</small></span></button>
+        <div class="worlds" role="group" aria-label="Worlds"><button type="button" data-world="front" aria-pressed="false">Front of house <span class="ct">2 live</span></button><button type="button" data-world="back" aria-pressed="true">Back office</button></div>
+        <div class="bar-right"><span class="pill"><b>KSh 112</b> <span class="hide-sm">of 400 mission budget</span></span><a class="pill trust" href="trust.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg><span class="hide-sm">Walls holding</span><span class="n">2</span></a></div>
+      </div>
+      <nav class="dock" aria-label="WebAgents on this mission">
+        <span class="app-ico"><span class="os-mark" data-state="waiting" style="--c:#0f6b62"><span class="avatar av-sales">Sa</span></span>Sales</span>
+        <span class="app-ico"><span class="os-mark" data-state="asleep"><span class="avatar av-editor">Ed</span></span>Editor</span>
+        <span class="app-ico"><span class="os-mark" data-state="answering" style="--c:#b72d50"><span class="avatar av-concierge">Co</span></span>Cakes desk</span>
+        <span class="app-ico"><span class="os-mark" data-state="asleep"><span class="avatar av-cashier">Ca</span></span>Cashier</span>
+        <span class="sep" aria-hidden="true"></span>
+        <span class="app-ico" aria-current="true"><span class="sys"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5"/></svg></span>Missions</span>
+      </nav>
+
+      <div class="field">
+        <section class="view" data-view="back">
+          <div class="field-head"><div><h2>Christmas cakes</h2><div class="sub">Your mission since 26 Oct · led by Sales · ends 24 Dec</div></div><div class="row"><button class="btn btn-sm" type="button">Change the goal</button><button class="btn btn-ghost btn-sm" type="button">Pause mission</button></div></div>
+          <div class="cards">
+            <article class="fcard span2 rep">
+              <div class="fcard-head"><span class="orb sm" aria-hidden="true"></span><div class="who"><b>Week 2 report</b><span class="state-line">Monday 07:00 · written by the Chief WebAgent from recorded activity only</span></div><button class="btn btn-ghost btn-sm" type="button">Share</button></div>
+              <div class="stats">
+                <div class="stat"><b>23 <small style="font-size:var(--fs-14);color:var(--os-muted)">/ 60</small></b><span>preorders with a deposit · +9 this week</span></div>
+                <div class="stat"><b>KSh 112</b><span>of the KSh 400 mission budget</span></div>
+                <div class="stat"><b>2</b><span>decisions for you</span></div>
+              </div>
+              <div class="progress"><div class="spread"><span>On track for <b>about 52</b> by 18 Dec at this pace</span><span>6 weeks left</span></div><div class="meter ok"><span style="width:38%"></span></div></div>
+              <h4>What worked</h4>
+              <ul>
+                <li><b>The Christmas page</b> (release v12, you approved it on 3 Nov): 14 of the 23 preorders started there. <a class="cite" href="#" onclick="return false">ledger</a></li>
+                <li><b>The Cakes desk</b> answered 31 questions about Christmas cakes; none corrected, 3 said "the site doesn't say". <a class="cite" href="#" onclick="return false">receipts</a></li>
+              </ul>
+              <h4>What didn't</h4>
+              <ul>
+                <li><b>The Instagram post</b> of 1 Nov: no preorder started from it. <a class="cite" href="#" onclick="return false">ledger</a></li>
+                <li>Christmas delivery to Karen was asked 2× and your pages don't say. It's in <b>Teach your site</b>.</li>
+              </ul>
+              <h4>What we want to do next</h4>
+              <ul class="next">
+                <li><span class="avatar av-sales">Sa</span><span><b>Sales</b> messages 31 customers from last December who agreed to updates. <span class="chip chip-wait">needs you</span></span></li>
+                <li><span class="avatar av-concierge">Co</span><span><b>Cakes desk</b> offers 4 more collection slots on Sat 19 Dec (11 of 12 are taken). <span class="chip chip-wait">needs you</span></span></li>
+                <li><span class="avatar av-editor">Ed</span><span><b>Editor</b> drafts a "last collection day" banner for next week. <span class="chip">Ask me first</span></span></li>
+              </ul>
+              <div class="method">How preorders are counted: a preorder counts for a page when the visitor's conversation started on it. Preorders made by phone or in the shop are not counted, so the real number may be higher.</div>
+            </article>
+
+            <article class="fcard">
+              <div class="fcard-head"><span class="avatar av-sales">Sa</span><div class="who"><b>The mission contract</b><span class="state-line">Signed 26 Oct with your iPhone passkey</span></div></div>
+              <dl class="contract">
+                <dt>Goal</dt><dd><b>60 Christmas cake preorders by 18 Dec</b></dd>
+                <dt>Counts</dt><dd>Preorders with a paid PayPal deposit. A new measure: until it has a baseline it shows your intention and never drives a promotion</dd>
+                <dt>Who</dt><dd>Sales (lead), Editor, Cakes desk, Cashier</dd>
+                <dt>Wakes</dt><dd>Each new preorder · 10:00 daily check · Monday report</dd>
+                <dt>Budget</dt><dd>KSh 400 in all; it stops at the cap and asks</dd>
+                <dt>Authority</dt><dd>Each job's own level. <b>A mission can't raise any.</b></dd>
+                <dt>Ends</dt><dd>24 Dec, or when you end it</dd>
+              </dl>
+            </article>
+
+            <article class="fcard">
+              <div class="fcard-head"><span class="orb sm" aria-hidden="true"></span><div class="who"><b>Last night, for this mission</b><span class="state-line">Night Time</span></div></div>
+              <ol class="tl" style="margin-top:8px">
+                <li><span class="t">21:40</span><span class="pin"></span><span>Cakes desk took preorder 23 (fruit cake, collect 23 Dec). Deposit paid.</span></li>
+                <li class="warn"><span class="t">03:00</span><span class="pin"></span><span>Sales drafted the message to 31 customers and <b>parked it for you</b>.</span></li>
+                <li><span class="t">06:50</span><span class="pin"></span><span>Chief WebAgent wrote this report.</span></li>
+              </ol>
+            </article>
+          </div>
+        </section>
+        <section class="view" data-view="front">
+          <div class="field-head"><div><h2>Front of house</h2><div class="sub">2 people asking about Christmas cakes right now</div></div><a class="btn btn-sm" href="live.html">Open Live</a></div>
+          <p class="note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg><span>The mission sees only the typed signals from these conversations (<code class="mono">visitor_intent</code> "Christmas preorder"), never what visitors wrote.</span></p>
+        </section>
+      </div>
+
+      <aside class="lane" aria-label="Mission decisions">
+        <div class="lane-scroll">
+          <h4>From this mission <span class="badge">2</span></h4>
+          <div class="ldec" data-decision>
+            <div class="from"><span class="avatar av-sales">Sa</span>Sales asks<span class="chip chip-wait">Medium</span></div>
+            <b class="t">Email 31 customers from last Christmas</b>
+            <p>All 31 agreed to updates (consent receipts on file). Sends Monday 10:00, outside quiet hours. About KSh 6.</p>
+            <div class="preview"><b>Subject:</b> Your Christmas cake from Kilele<br>"Hi {first name}, last year you ordered a Christmas cake from us. Preorders for 2026 are open until 18 Dec, with collection up to the 24th. Reply or order on our site. Wanjiru, Kilele Bakery." <span class="tag-ai" style="margin-top:6px">Drafted with AI</span></div>
+            <div class="verbs"><button class="btn btn-primary btn-sm" type="button" data-passkey data-sign="Email to 31 consented customers · Christmas preorders · Mon 9 Nov 10:00" data-fp="H(kilele, sales, email_send_sequence_step, {list l-xmas25 (31), template t-9, at 2026-11-09T10:00+03}, exp 9 Nov 09:59) = 7d2e…41">Approve</button><button class="btn btn-sm" type="button">Edit</button><button class="btn btn-ghost btn-sm" type="button" data-dismiss="Declined · Sales will not contact them · it learns why if you tell it">Decline</button></div>
+            <div class="done-line">Approved · signed on this MacBook · sends Mon 10:00 · receipt r-7d2e…41 · each email says it was drafted with AI.</div>
+          </div>
+          <div class="ldec" data-decision>
+            <div class="from"><span class="avatar av-concierge">Co</span>Cakes desk asks<span class="chip chip-ok">Low</span></div>
+            <b class="t">4 more collection slots on Sat 19 Dec</b>
+            <p>11 of 12 are taken. This changes the desk's rules (12 → 16 that day), so it is signed like any rule.</p>
+            <div class="verbs"><button class="btn btn-primary btn-sm" type="button" data-passkey data-sign="Cakes desk rules: Sat 19 Dec collection slots 12 → 16" data-fp="H(kilele, concierge, manifest.amend, {desk cakes, slots 2026-12-19: 16}) = 2a77…c0">Allow</button><button class="btn btn-ghost btn-sm" type="button" data-dismiss="Kept at 12 · the desk tells visitors the day is full">Keep 12</button></div>
+            <div class="done-line">Allowed · 16 slots on 19 Dec · release manifest updated.</div>
+          </div>
+          <h4>Ask about this mission</h4>
+          <div class="quiet">"Why didn't Instagram work?" · "What if we start delivery to Karen?" · "Pause it until December."</div>
+        </div>
+      </aside>
+
+      <div class="cmd">
+        <div class="askline"><span class="orb sm" aria-hidden="true"></span><input type="text" aria-label="Ask about this mission" placeholder="Ask about this mission…"><button class="icon-btn" type="button" aria-label="Send"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button></div>
+      </div>
+
+      <div class="overlay" id="passkey" role="dialog" aria-modal="true" aria-label="Confirm with your passkey">
+        <div class="passkey">
+          <div class="fp"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 11c0 3-1 6-3 8M8.5 7.5A5 5 0 0 1 17 11c0 1.5-.2 3-.6 4.4M6.3 10A6.5 6.5 0 0 1 9 5.6M12 14.5c-.2 1.8-.8 3.5-1.7 5M15.3 17.5c-.3 1-.7 2-1.2 2.9M4 13.5c.4-1 .6-2 .6-3"/></svg></div>
+          <h3>Confirm it's you</h3>
+          <p data-sign-what>This exact action</p>
+          <div class="sig"><b>Your passkey signs:</b> <span data-sign-fp></span></div>
+          <div class="row"><button class="btn" type="button" data-close>Cancel</button><button class="btn btn-primary" type="button" data-do-sign>Use passkey</button></div>
+          <button class="stepup-link" type="button" data-stepup>No passkey on this device? Use a code from your authenticator app</button>
+          <div class="stepup-box">
+            <label for="stepup-code">Code from your authenticator app</label>
+            <input id="stepup-code" class="stepup-code" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="6 digits">
+            <p>Single use, and bound to this exact effect. Your receipt will say a code approved it, not a passkey.</p>
+            <div class="row"><button class="btn" type="button" data-stepup-back>Back to passkey</button><button class="btn btn-primary" type="button" data-do-sign data-method="code">Approve with code</button></div>
+          </div>
+          <div class="ok">Signed · the effect runs once · receipt written</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-label="How a mission starts">
+    <span class="eyebrow">How a mission starts</span>
+    <h2 style="margin-top:8px">Say the goal, read the contract, then sign it</h2>
+    <div class="start">
+      <div class="card"><span class="n">01 · You say it</span><div class="quote">"Get us 60 Christmas cake preorders by 18 December. Don't spend more than KSh 400 on it."</div><p>By typing, by voice, or on WhatsApp.</p></div>
+      <div class="card"><span class="n">02 · The Chief WebAgent compiles it</span><p>A contract you can read: what counts, who works on it, what wakes them, the budget, the end date. It reuses each WebAgent's current authority; it can't add any. If something is unclear it asks you <b>one</b> question.</p></div>
+      <div class="card"><span class="n">03 · You sign, it runs</span><p>You approve it; because this one adds a new measure to your charter, your passkey signs it (or, without one, a code from your authenticator app approves it). The WebAgents wake on the mission's schedule and on its events, work mostly at night, and report every Monday. Pause or end it with one tap.</p></div>
+    </div>
+  </section>
+
+  <section class="notes" style="margin-top:0" aria-label="Design notes">
+    <article class="card"><h3>Honest reporting</h3><p>Reports are written from the ledger, the agenda and the stores, and each claim links to its source. The counting method is shown, including what it misses. "Didn't work" is a section, not an afterthought.</p></article>
+    <article class="card"><h3>A mission never raises a WebAgent's authority</h3><p>A mission bundles goals, wakes and a budget. It never grants authority: each step runs at the level of the job that does it. At the budget cap the mission stops and asks.</p></article>
+    <article class="card"><h3>Built on the kernel</h3><p>Under the hood a mission is a goal on the charter, agenda items, the jobs' standing wakes and a KPI tracker, tied together and shown as one thing. It survives restarts and crashes because its processes do.</p></article>
+  </section>
+</main>
+<footer class="concept-foot">
+  <div class="wrap row">
+    <span><a href="store.html">← The Store</a> · Next: <a href="live.html">Live: sit in, take over, walk the site →</a></span>
+    <span>Concept screens with illustrative data. Kilele Bakery is fictional.</span>
+  </div>
+</footer>
+<script src="console.js"></script>
+</body>
+</html>
