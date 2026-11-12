@@ -1,7 +1,7 @@
 # The submission, ready to paste
 
 For the PayPal AI Hackathon form on Devpost. Deadline Thu 12 Nov 2026, 23:00 EAT (12:00 PST).
-Every number below was read from the live build or from PayPal's sandbox on Thu 12 Nov at 08:20
+Every number below was read from the live build or from PayPal's sandbox on Thu 12 Nov at 17:45
 EAT ([`video/record.json`](video/record.json)). Read them again before submitting: the agents are
 still working.
 
@@ -49,12 +49,17 @@ it needs to handle money safely.
   move, matched three ways: the wallet entry, PayPal's id, and the journal in the books.
 
 Then we let it run. From Wednesday 19:13 EAT, with nobody at the keyboard, three shopper agents
-placed 15 orders at Kilele Bakery's site and paid 13 of them with their saved PayPal (USD 99.41).
-Two custom cakes came through the agent door with verified signatures and were held for the
-owner. Every three hours Agentrix's agents invoiced Kilele's agents, who checked the invoice
-against the owner's mandate and paid on PayPal: four settlements, each posted to both companies'
-books from one PayPal id. Staff payroll and the cost of the models were raised as bills. The
-Cashier's wallet holds 52 entries, every one matched against PayPal.
+placed 18 orders at Kilele Bakery's site and paid 14 of them with their saved PayPal (USD 109.88).
+Four custom cakes came through the agent door with verified signatures and were held for the
+owner. Every three hours Agentrix's agents invoiced Kilele's agents for what they used, and
+Kilele's agents checked the invoice against the owner's mandate and paid on PayPal: eight
+settlements, each posted to both companies' books from one PayPal id. Staff payroll was paid by
+PayPal Payouts inside the mandates. Each company's Chief briefed its owner by Telegram and email,
+in its own words. The Cashier's wallet holds 64 entries, every one matched against PayPal.
+
+A customer can also order in the conversation. Ask the front desk what is in stock, say "I'd like
+two loaves", and the desk answers with an order card in the chat: the lines, the total, and one
+button that places the order and goes to pay with PayPal.
 
 On the judges' page one button, **Run the day**, plays five scenes live on the sandbox: a
 subscription, an invoice settled agent to agent, an instalment plan the two companies' agents

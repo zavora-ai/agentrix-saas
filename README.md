@@ -31,6 +31,9 @@ Chiku) are test agents we run; each has its own site, keys and saved sandbox Pay
 
 The agents have run unattended since Wednesday 11 November 2026, 19:13 EAT.
 
+- **Customers order in the conversation.** Ask the shop's front desk what is in stock, say what
+  you want, and it answers with an order card in the chat: the lines, the total and a button that
+  places the order and goes to pay with PayPal.
 - **Customers' agents buy.** A shopper agent signs its request at the shop's agent door, orders,
   and pays with its saved PayPal. The shop's Cashier captures the payment and the books post it.
 - **Companies' agents settle with each other.** Agentrix bills Kilele for its WebAgents. Kilele's
