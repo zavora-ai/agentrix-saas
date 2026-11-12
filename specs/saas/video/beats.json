@@ -28,18 +28,30 @@
     },
     {
       "id": "b04",
+      "pic": "clip:ask.mp4",
+      "fallback": "title",
+      "start": 4.5,
+      "fit": "voice",
+      "badge": [
+        "Live",
+        "Kilele Bakery's website"
+      ],
+      "say": "Here it is, live. A visitor asks Kilele Bakery a question, and its front desk agent answers from the shop's own pages."
+    },
+    {
+      "id": "b05",
       "pic": "clip:door.mp4",
       "fallback": "title",
-      "start": 4.2,
+      "start": 13.5,
       "fit": "voice",
       "badge": [
         "Live",
         "Kilele Bakery, the owner's view"
       ],
-      "say": "Here it is, live. Three shopper agents placed these orders overnight at Kilele Bakery. This one came through the agent door: the request was signed, and the shop checked the signature against the agent's own website."
+      "say": "Agents are customers too. This order came through the shop's agent door: the request was signed, and the shop checked the signature against the agent's own website."
     },
     {
-      "id": "b05",
+      "id": "b06",
       "pic": "clip:today.mp4",
       "fallback": "title",
       "start": 4.6,
@@ -48,10 +60,10 @@
         "Live",
         "Kilele Bakery, the owner's morning"
       ],
-      "say": "Kilele's owner woke up to this. Her Chief counted the night from the records, and five custom cakes wait for her decision. Agents do the routine. The owner decides what matters."
+      "say": "The owner woke up to this. Her Chief counted the night from the records, and five custom cakes wait for her decision. Nothing is charged until she approves."
     },
     {
-      "id": "b06",
+      "id": "b07",
       "pic": "clip:settle.mp4",
       "fallback": "title",
       "start": 3.0,
@@ -60,22 +72,38 @@
         "Live",
         "Kilele Bakery's money console"
       ],
-      "say": "Kilele pays us for its WebAgents. My Receivables agent invoices Kilele's agent door. Its Payables agent checks the invoice against the mandate the owner signed, and pays through PayPal. Four times overnight, and both companies' books post from one PayPal id."
-    },
-    {
-      "id": "b07",
-      "pic": "clip:bills.mp4",
-      "fallback": "title",
-      "start": 4.5,
-      "fit": "voice",
-      "badge": [
-        "Live",
-        "Agentrix's own console"
-      ],
-      "say": "My own bills arrive the same way: every three hours, for the models my agents think with. Each agent signs its own requests, and holds no secrets."
+      "say": "Kilele pays us for its WebAgents. My Receivables agent invoices Kilele's agent door. Its Payables agent checks the invoice against the mandate the owner signed, and pays through PayPal. Four times overnight."
     },
     {
       "id": "b08",
+      "pic": "clip:runday.mp4",
+      "fallback": "title",
+      "start": 9.0,
+      "end": 32.5,
+      "fit": "voice",
+      "max_speed": 2.2,
+      "badge": [
+        "Live",
+        "A scripted day, real PayPal sandbox calls"
+      ],
+      "say": "Judges can press one button and watch a scripted day play on PayPal's sandbox, through the same rules and the same doors. An invoice is settled, agent to agent."
+    },
+    {
+      "id": "b09",
+      "pic": "clip:runday.mp4",
+      "fallback": "title",
+      "start": 32.8,
+      "fit": "voice",
+      "max_speed": 2.6,
+      "badge": [
+        "Live",
+        "A scripted day, real PayPal sandbox calls"
+      ],
+      "say": "A bigger one arrives and Kilele is short, so the two sides agree instalments, and the first is collected on PayPal. A supplier is paid inside the mandate. A bill over the limit waits for the founder's passkey. And an email saying a supplier's bank details changed is refused.",
+      "end": 67.5
+    },
+    {
+      "id": "b10",
       "pic": "clip:verify.mp4",
       "fallback": "title",
       "start": 0.8,
@@ -87,19 +115,7 @@
       "say": "How do you know an agent is who it says? Every agent carries a badge, rooted in its website's own domain and signed by its owner. Anyone can check it."
     },
     {
-      "id": "b09",
-      "pic": "clip:badge.mp4",
-      "fallback": "title",
-      "start": 5.0,
-      "fit": "voice",
-      "badge": [
-        "Live",
-        "Kilele Bakery's agents"
-      ],
-      "say": "The Cashier's badge points to its wallet: every move it made with the shop's PayPal, matched against PayPal's own record."
-    },
-    {
-      "id": "b10",
+      "id": "b11",
       "pic": "clip:impostor.mp4",
       "fallback": "title",
       "start": 0.8,
@@ -111,14 +127,10 @@
       "say": "An impostor can borrow an agent's name, but not its key. The door refuses, signs the refusal, and nothing moves."
     },
     {
-      "id": "b11",
-      "pic": "slide:clouds",
-      "say": "The same identity works in the clouds. We proved it live with AWS, Bedrock AgentCore, Google Cloud and Microsoft Entra Agent ID, and contributed the code to adk-rust, the open-source framework we're built on."
-    },
-    {
       "id": "b12",
-      "pic": "slide:passkey",
-      "say": "And a human answers for every agent. The owner's passkey is asked for at three moments only: linking PayPal, signing the mandate, and stepping up. Change one dollar after approval, and the approval is void."
+      "pic": "slide:clouds",
+      "say": "The same identity works in the clouds. We proved it live with AWS, Bedrock AgentCore, Google Cloud and Microsoft Entra Agent ID, and contributed the code to adk-rust, the open-source framework we're built on.",
+      "speak": "The same identity works in the clouds. We proved it live with AWS, Bedrock AgentCore, Google Cloud and Microsoft Entra Agent ID, and contributed the code to A D K Rust, the open-source framework we're built on."
     },
     {
       "id": "b13",
@@ -130,14 +142,15 @@
         "Live",
         "Proofs"
       ],
-      "say": "Don't take my word for it. The audit log is signed, and anyone can verify it. We ran ten attacks, from a fake supplier email to a forged PayPal webhook. All ten were refused, scored from PayPal and the books."
+      "say": "Don't take my word for it. The audit log is signed, and anyone can verify it. Ten attacks, from a fake supplier email to a forged PayPal webhook: all ten refused."
     },
     {
       "id": "b14",
       "pic": "slide:close",
       "presenter": false,
       "min": 7,
-      "say": "Agentrix. Businesses run by agents you can identify, with an owner who answers for them, and money you can check. Built on adk-rust and PayPal."
+      "say": "Agentrix. Businesses run by agents you can identify, with an owner who answers for them, and money you can check. Built on adk-rust and PayPal.",
+      "speak": "Agentrix. Businesses run by agents you can identify, with an owner who answers for them, and money you can check. Built on A D K Rust and PayPal."
     }
   ]
 }

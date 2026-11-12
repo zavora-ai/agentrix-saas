@@ -20,7 +20,7 @@ html, body { margin: 0; width: 1920px; height: 1080px; background: transparent; 
   padding: 6px 22px 6px 10px; border-radius: 999px; font: 700 22px/1 "Manrope", sans-serif; box-shadow: 0 8px 24px rgba(0,0,0,.3); }
 .pres img { width: 44px; height: 48px; }
 .pres small { font: 600 20px/1 "DM Sans"; color: #c9c7e6; }
-.speed { position: absolute; left: 96px; top: 74px; background: #f4c76b; color: #1f1d3d; padding: 12px 22px; border-radius: 999px; font: 800 25px/1 "Manrope"; }
+.speed { position: absolute; right: 96px; top: 76px; background: #f4c76b; color: #1f1d3d; padding: 12px 22px; border-radius: 999px; font: 800 25px/1 "Manrope"; }
 </style>
 </head>
 <body>
@@ -36,7 +36,7 @@ else if (kind === "badge") {
 else if (kind === "speed") { el.className = "speed"; el.textContent = text; }
 else if (kind === "presenter") {
   el.className = "pres";
-  el.innerHTML = `<img src="../../../crates/agentrix-home/film/marks/chief.svg" alt=""><span></span><small></small>`;
+  el.innerHTML = `<img src="chief.svg" alt=""><span></span><small></small>`;
   el.children[1].textContent = text; el.children[2].textContent = sub;
 }
 document.body.appendChild(el);

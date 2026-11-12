@@ -124,7 +124,7 @@ def segment(beat, i, sl, no_voice):
     if no_voice or not say:
         vpath, vdur = None, len(say.split()) / 2.4 if say else 0
     else:
-        vpath, vdur = voice(say)
+        vpath, vdur = voice(beat.get("speak", say))  # "speak" spells a word for the voice; captions show "say"
     dur = max(beat.get("min", 0), vdur + LEAD + TAIL)
     pic, badge, missing = beat["pic"], beat.get("badge"), False
     inputs, vf = [], []
@@ -139,8 +139,10 @@ def segment(beat, i, sl, no_voice):
             if beat.get("fit") == "voice":  # the whole clip, sped up (at most 1.6x) to end with the narration
                 length = float(run(["ffprobe", "-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0", clip]))
                 end = min(length, beat.get("end", length))
-                speed = min(1.6, max(1.0, (end - start) / dur))
+                speed = min(beat.get("max_speed", 1.6), max(1.0, (end - start) / dur))
                 dur = max(dur, (end - start) / speed)
+                if speed > 1.6 and not beat.get("speed_label"):  # faster than reading pace: say so on screen
+                    beat = dict(beat, speed_label=f"{speed:.0f}x speed")
             inputs += ["-ss", str(start), "-i", clip]
             crop = beat.get("crop")  # "w:h:x:y" in the clip's pixels
             vf.append((f"crop={crop}," if crop else "") + f"setpts=(PTS-STARTPTS)/{speed},scale=1728:972:force_original_aspect_ratio=decrease,pad={W}:{H}:(ow-iw)/2:84+(972-ih)/2:color=0x1f1d3d,fps={FPS},tpad=stop_mode=clone:stop_duration={dur + 1}")

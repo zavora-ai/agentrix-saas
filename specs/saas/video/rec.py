@@ -162,6 +162,71 @@ async def scene_proofs(tab, _):
     await asyncio.sleep(4)
 
 
+async def scene_ask(tab, _):
+    """A visitor asks the shop's front desk a question, and it answers from the shop's own pages."""
+    os.environ["AGX_URL"] = KILELE + "/"
+    os.environ.setdefault("AGX_QUESTIONS", "Are you open on Sunday?")
+    await base.scene_ask(tab, HOME)
+
+
+async def scene_runday(tab, _):
+    """The judges' page: Run the day, pressed for real. The five scenes run against the sandbox;
+    the page keeps the running scene in view. When each scene finished is written beside the
+    clip (runday.json), so the film can cut on those moments."""
+    t0 = asyncio.get_event_loop().time()
+    marks = {}
+    await tab.goto(MONEY + "/judges", settle=2)
+    await asyncio.sleep(2.5)
+    await show(tab, "document.querySelector('section.run-day')", 1.4, ring=False, block="start")
+    await tab.js("scrollBy({top: -76, behavior: 'smooth'}), true")
+    await asyncio.sleep(1.6)
+    await tab.js(RING % "[...document.querySelectorAll('section.run-day button')].find(b => b.innerText.includes('Run the day'))")
+    await asyncio.sleep(1.2)
+    await unring(tab)
+    marks["pressed"] = asyncio.get_event_loop().time() - t0
+    await tab.click(text="Run the day")
+    seen = 0
+    for _ in range(600):  # at most five minutes
+        await asyncio.sleep(0.5)
+        state = await tab.js("[...document.querySelectorAll('section.run-day li.scene')].map(e => e.classList.contains('done') ? 'done' : e.classList.contains('running') ? 'running' : e.classList.contains('failed') ? 'failed' : 'pending')")
+        done = sum(1 for x in state if x == "done")
+        if done > seen:
+            for n in range(seen + 1, done + 1):
+                marks[f"scene{n}"] = asyncio.get_event_loop().time() - t0
+            seen = done
+        # Keep the end of the running scene (or the last finished one) on screen.
+        await tab.js("""(() => { const all = [...document.querySelectorAll('section.run-day li.scene')];
+          const e = all.find(x => x.classList.contains('running')) || all.filter(x => x.classList.contains('done')).pop();
+          if (!e) return false; const r = e.getBoundingClientRect();
+          if (r.bottom > innerHeight - 40) scrollBy({top: Math.min(r.bottom - innerHeight + 60, 260), behavior: 'smooth'});
+          else if (r.top < 70) scrollBy({top: r.top - 90, behavior: 'smooth'}); return true; })()""")
+        if state and all(x in ("done", "failed") for x in state):
+            break
+    await asyncio.sleep(3)
+    # A slow pass over what the run left, so the narration can point at each result.
+    now = lambda: asyncio.get_event_loop().time() - t0  # noqa: E731
+    for key, text, hold in (
+        ("tour_settled", "settled it on PayPal through Vault", 4.0),
+        ("tour_short", "We'll propose instalments", 4.5),
+        ("tour_plan", "agreed a plan with Kilele's agent", 4.5),
+        ("tour_collected", "collected through Vault", 4.0),
+        ("tour_payout", "paid it by PayPal Payouts", 4.0),
+        ("tour_held", "waits for their passkey", 5.0),
+        ("tour_refused", "denied by policy", 5.0),
+        ("tour_audit", "signed audit log, provable", 4.0),
+    ):
+        if await tab.js(f"!!{deep(text)}"):
+            marks[key] = now()
+            await show(tab, deep(text), 1.3)
+            await asyncio.sleep(hold)
+    await unring(tab)
+    marks["end"] = now()
+    marks["states"] = state
+    out = os.environ.get("AGX_RUNDAY_MARKS", os.path.join(HERE, "runday.json"))
+    json.dump(marks, open(out, "w"), indent=1)
+    print("runday marks:", json.dumps(marks))
+
+
 async def terminal(tab, session):
     await tab.goto("file://" + os.path.join(HERE, "terminal.html"), settle=0.5)
     await tab.js("window.ready")
@@ -191,7 +256,9 @@ async def scene_replay(tab, _):
     await asyncio.sleep(1.5)
 
 
+_ask = base.scene_ask
 base.SCENES.clear()
+base.scene_ask = _ask
 base.SCENES.update({name[6:]: fn for name, fn in globals().items() if name.startswith("scene_")})
 
 
