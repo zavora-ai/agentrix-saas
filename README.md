@@ -109,6 +109,40 @@ routine turns. A tool call that moves money is checked by rule, never by the mod
 The attack suite tries to break each rule and scores the result from PayPal, the books and the
 audit log, never from the conversation: [`specs/saas/PROOFS.md`](specs/saas/PROOFS.md).
 
+## Set up and run
+
+You need [Rust](https://rustup.rs) and git. The first build fetches the dependencies and takes
+several minutes.
+
+```sh
+git clone https://github.com/zavora-ai/agentrix-saas && cd agentrix-saas
+cp .env.example .env
+```
+
+Fill in `.env`: the client id and secret of two PayPal sandbox apps (`PAYPAL_*` for Agentrix,
+`KILELE_PAYPAL_*` for the shop), and a model provider's key (`ANTHROPIC_API_KEY` or
+`VULTR_INFERENCE_API_KEY`). The file is read line by line and never sourced.
+
+Run the platform with its three sample websites and open http://localhost:8080:
+
+```sh
+AGENTRIX_DATA_DIR=$HOME/.agentrix-local AGENTRIX_ORIGIN=http://localhost:8080 cargo run -p agentrix-node --locked
+```
+
+Play the five scenes of the scripted day against PayPal's sandbox, printing each step's ids:
+
+```sh
+cargo run -p saas-node --bin agentrix-saas --locked -- --judge story
+```
+
+Run the tests:
+
+```sh
+cargo test --locked -p saas-company -p saas-node -p saas-web -p agentrix-samples
+```
+
+The judged build's own setup (one server, Caddy, the books) is in [`deploy/saas/`](deploy/saas/).
+
 ## Check it yourself
 
 ```sh
