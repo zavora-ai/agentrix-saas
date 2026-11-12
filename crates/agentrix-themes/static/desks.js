@@ -74,6 +74,40 @@
 
   const post = (url, body) => fetch(url, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(body), credentials: "same-origin" });
 
+  // An order card in the conversation: the lines, the total, and one button that puts them in
+  // the bag and goes to checkout, where the customer pays with PayPal.
+  function payCard(act) {
+    const c = act.card, card = document.createElement("div"); card.className = "pay-card";
+    card.style.cssText = "margin:10px 0 4px;border:1.5px solid rgba(0,0,0,.14);border-radius:14px;padding:12px 14px;background:rgba(255,255,255,.75);font-size:.92em";
+    const head = document.createElement("div"); head.textContent = "Your order";
+    head.style.cssText = "font-weight:700;letter-spacing:.04em;text-transform:uppercase;font-size:.78em;opacity:.7;margin-bottom:6px";
+    card.appendChild(head);
+    (c.lines || []).forEach(l => {
+      const row = document.createElement("div"); row.style.cssText = "display:flex;justify-content:space-between;gap:12px;padding:3px 0";
+      const name = document.createElement("span"); name.textContent = `${l.qty} \u00d7 ${l.name}`;
+      const amt = document.createElement("span"); amt.textContent = l.amount; amt.style.fontVariantNumeric = "tabular-nums";
+      row.append(name, amt); card.appendChild(row);
+    });
+    const tot = document.createElement("div"); tot.style.cssText = "display:flex;justify-content:space-between;gap:12px;padding:7px 0 2px;margin-top:5px;border-top:1px solid rgba(0,0,0,.12);font-weight:700";
+    const tl = document.createElement("span"); tl.textContent = "Total";
+    const tv = document.createElement("span"); tv.textContent = c.usd ? `${c.total} (${c.usd})` : c.total;
+    tot.append(tl, tv); card.appendChild(tot);
+    const b = document.createElement("button"); b.type = "button"; b.className = "act primary"; b.textContent = act.label;
+    b.style.cssText = "width:100%;margin-top:10px;justify-content:center";
+    b.addEventListener("click", async () => {
+      b.disabled = true; b.textContent = "Placing your order\u2026";
+      try {
+        for (const l of c.lines || []) {
+          await fetch("/bag/add", { method: "POST", headers: { "content-type": "application/x-www-form-urlencoded" }, body: new URLSearchParams({ sku: l.sku, qty: String(l.qty), back: "/bag" }), credentials: "same-origin" });
+        }
+        location.href = act.href || "/checkout";
+      } catch { b.disabled = false; b.textContent = act.label; toast("The order didn't go through. Try again."); }
+    });
+    card.appendChild(b);
+    if (c.note) { const n = document.createElement("div"); n.textContent = c.note; n.style.cssText = "margin-top:8px;font-size:.84em;opacity:.7"; card.appendChild(n); }
+    return card;
+  }
+
   function passForm(box, question, desk) {
     if (box.querySelector(".pass-form")) return;
     const f = document.createElement("form"); f.className = "pass-form";
@@ -152,9 +186,10 @@
       });
       box.appendChild(srcs);
     }
-    if ((a.actions || []).length) {
+    (a.actions || []).filter(x => x.kind === "pay" && x.card).forEach(x => box.appendChild(payCard(x)));
+    if ((a.actions || []).some(x => x.kind !== "pay")) {
       const acts = document.createElement("div"); acts.className = "acts";
-      a.actions.forEach(x => {
+      a.actions.filter(x => x.kind !== "pay").forEach(x => {
         const el = document.createElement(x.kind === "link" ? "a" : "button");
         el.className = "act" + (x.primary ? " primary" : ""); el.textContent = x.label;
         if (x.kind === "link") el.href = x.href; else el.type = "button";

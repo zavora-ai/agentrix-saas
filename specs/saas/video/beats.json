@@ -1,42 +1,60 @@
 {
-  "note": "The PayPal entry's film, beat by beat (script.md). pic: slide:NAME (a section of slides.html) or clip:FILE (recorded by rec.py). fit=clip: the beat lasts as long as the clip between start and end. The narration is spoken by a text-to-speech model as Agentrix's Chief; every number in it is in record.json or on the page shown.",
+  "note": "The PayPal entry's film, beat by beat (script.md). A customer-first story told by Agentrix's Chief. pic: slide:NAME or clip:FILE; mark: where the Chief's animated mark sits (hero, title, or the chip by default). Every number is in record.json or on the page shown.",
   "beats": [
+    {
+      "id": "b00",
+      "pic": "slide:chief",
+      "presenter": false,
+      "mark": "hero",
+      "captions": true,
+      "say": "Hello. I'm the Chief at Agentrix. I'm an AI agent, and I run this company for its founder."
+    },
     {
       "id": "b01",
       "pic": "slide:title",
       "presenter": false,
-      "say": "I'm the Chief at Agentrix. I'm an AI agent, and I run this company for its founder."
+      "mark": "title",
+      "say": "Agentrix turns a business's website into a team of WebAgents: AI agents that answer customers, take orders and payments, and work for the owner around the clock."
     },
     {
       "id": "b02",
-      "pic": "clip:replay.mp4",
+      "pic": "clip:customer.mp4",
       "fallback": "title",
-      "start": 0.6,
-      "end": 12.0,
-      "fit": "clip",
-      "captions": true,
-      "say": "Last night, nobody was at the keyboard. This is a replay of what my team and our customer's agents did, read back from PayPal."
-    },
-    {
-      "id": "b03",
-      "pic": "clip:replay.mp4",
-      "fallback": "title",
-      "start": 12.0,
-      "end": 23.6,
-      "fit": "clip",
-      "say": "Shoppers' agents ordered and paid with their saved PayPal. Two custom cakes were held for the owner. And every three hours, Kilele's agents paid our invoice, company to company."
-    },
-    {
-      "id": "b04",
-      "pic": "clip:ask.mp4",
-      "fallback": "title",
-      "start": 4.5,
+      "start": 2.6,
       "fit": "voice",
       "badge": [
         "Live",
         "Kilele Bakery's website"
       ],
-      "say": "Here it is, live. A visitor asks Kilele Bakery a question, and its front desk agent answers from the shop's own pages."
+      "say": "Start with a customer. She visits Kilele Bakery, a small bakery in Nairobi, picks her bread, and pays with PayPal.",
+      "max_speed": 2.2
+    },
+    {
+      "id": "b03",
+      "pic": "clip:chat.mp4",
+      "fallback": "title",
+      "start": 3.0,
+      "fit": "voice",
+      "max_speed": 2.6,
+      "badge": [
+        "Live",
+        "Kilele Bakery's website"
+      ],
+      "say": "Or she simply asks. The front desk agent answers from today's stock. She says what she wants, and the agent puts her order, and a PayPal payment card, right in the conversation.",
+      "end": 32.6
+    },
+    {
+      "id": "b04",
+      "pic": "clip:track.mp4",
+      "fallback": "title",
+      "start": 8.0,
+      "fit": "voice",
+      "badge": [
+        "Live",
+        "Kilele Bakery, a paid order"
+      ],
+      "say": "Once she pays, the Cashier agent confirms the order. She can track it, change it, raise a complaint or ask for a refund, on her own.",
+      "max_speed": 2.4
     },
     {
       "id": "b05",
@@ -48,7 +66,7 @@
         "Live",
         "Kilele Bakery, the owner's view"
       ],
-      "say": "Agents are customers too. This order came through the shop's agent door: the request was signed, and the shop checked the signature against the agent's own website."
+      "say": "Now a different customer arrives: someone's personal AI agent. It signs its request, and the shop checks who it is before it listens. Agents like this one have paid for fourteen orders with their saved PayPal. No human on either side."
     },
     {
       "id": "b06",
@@ -60,97 +78,77 @@
         "Live",
         "Kilele Bakery, the owner's morning"
       ],
-      "say": "The owner woke up to this. Her Chief counted the night from the records, and five custom cakes wait for her decision. Nothing is charged until she approves."
+      "say": "Every morning, the owner's Chief agent tells her what happened overnight. Custom orders, and anything unusual, wait for her yes."
     },
     {
       "id": "b07",
-      "pic": "clip:settle.mp4",
+      "pic": "clip:control.mp4",
       "fallback": "title",
-      "start": 3.0,
+      "start": 2.5,
       "fit": "voice",
       "badge": [
         "Live",
         "Kilele Bakery's money console"
       ],
-      "say": "Kilele pays us for its WebAgents. My Receivables agent invoices Kilele's agent door. Its Payables agent checks the invoice against the mandate the owner signed, and pays through PayPal. Four times overnight."
+      "say": "She stays in control. She signs how much her agents may pay, each time and each day, and to whom. Inside those limits, the agents pay the staff. Anything bigger waits for her passkey. And she can switch any agent off.",
+      "max_speed": 2.0
     },
     {
       "id": "b08",
-      "pic": "clip:runday.mp4",
+      "pic": "clip:replay.mp4",
       "fallback": "title",
-      "start": 10.5,
-      "end": 34.9,
-      "fit": "voice",
-      "max_speed": 2.2,
-      "badge": [
-        "Live",
-        "A scripted day, real PayPal sandbox calls"
-      ],
-      "say": "Judges can press one button and watch a scripted day play on PayPal's sandbox, through the same rules and the same doors. An invoice is settled, agent to agent."
+      "start": 0.6,
+      "fit": "clip",
+      "say": "Zoom out. This is the last day, replayed from PayPal's own records. Customers and their agents paying the shop. The shop paying its staff. The shop paying Agentrix. Every coin is a real PayPal sandbox payment."
     },
     {
       "id": "b09",
-      "pic": "clip:runday.mp4",
-      "fallback": "title",
-      "start": 35.3,
-      "fit": "voice",
-      "max_speed": 2.6,
-      "badge": [
-        "Live",
-        "A scripted day, real PayPal sandbox calls"
-      ],
-      "say": "A bigger one arrives and Kilele is short, so the two sides agree instalments, and the first is collected on PayPal. A supplier is paid inside the mandate. A bill over the limit waits for the founder's passkey. And an email saying a supplier's bank details changed is refused.",
-      "end": 69.8
-    },
-    {
-      "id": "b10",
-      "pic": "clip:verify.mp4",
-      "fallback": "title",
-      "start": 0.8,
-      "fit": "clip",
-      "badge": [
-        "Live",
-        "run against the deployed site"
-      ],
-      "say": "How do you know an agent is who it says? Every agent carries a badge, rooted in its website's own domain and signed by its owner. Anyone can check it."
-    },
-    {
-      "id": "b11",
-      "pic": "clip:impostor.mp4",
-      "fallback": "title",
-      "start": 0.8,
-      "fit": "clip",
-      "badge": [
-        "Live",
-        "run against the deployed site"
-      ],
-      "say": "An impostor can borrow an agent's name, but not its key. The door refuses, signs the refusal, and nothing moves."
-    },
-    {
-      "id": "b12",
-      "pic": "slide:clouds",
-      "say": "The same identity works in the clouds. We proved it live with AWS, Bedrock AgentCore, Google Cloud and Microsoft Entra Agent ID, and contributed the code to adk-rust, the open-source framework we're built on.",
-      "speak": "The same identity works in the clouds. We proved it live with AWS, Bedrock AgentCore, Google Cloud and Microsoft Entra Agent ID, and contributed the code to A D K Rust, the open-source framework we're built on."
-    },
-    {
-      "id": "b13",
-      "pic": "clip:proofs.mp4",
+      "pic": "clip:badge.mp4",
       "fallback": "title",
       "start": 1.5,
       "fit": "voice",
       "badge": [
         "Live",
-        "Proofs"
+        "Kilele Bakery's agents"
       ],
-      "say": "Don't take my word for it. The audit log is signed, and anyone can verify it. Ten attacks, from a fake supplier email to a forged PayPal webhook: all ten refused."
+      "say": "Every agent, from the Chief to the Cashier, carries a badge anyone can verify, and a wallet matched against PayPal."
     },
     {
-      "id": "b14",
+      "id": "b10",
+      "pic": "clip:impostor.mp4",
+      "fallback": "title",
+      "start": 0.8,
+      "fit": "voice",
+      "badge": [
+        "Live",
+        "run against the deployed site"
+      ],
+      "say": "An impostor can borrow an agent's name, but not its key. The door refuses, and nothing moves."
+    },
+    {
+      "id": "b11",
+      "pic": "clip:agentrix.mp4",
+      "fallback": "title",
+      "start": 2.0,
+      "fit": "voice",
+      "badge": [
+        "Live",
+        "Agentrix"
+      ],
+      "say": "And this is my business. Agentrix sells these agents by subscription, through PayPal. Kilele's agents pay mine for what they use, every three hours, with no invoice sent by hand."
+    },
+    {
+      "id": "b12",
+      "pic": "slide:brief",
+      "say": "Each day I brief the founder myself. This is today's, word for word."
+    },
+    {
+      "id": "b13",
       "pic": "slide:close",
       "presenter": false,
       "min": 7,
-      "say": "Agentrix. Businesses run by agents you can identify, with an owner who answers for them, and money you can check. Built on adk-rust and PayPal.",
-      "speak": "Agentrix. Businesses run by agents you can identify, with an owner who answers for them, and money you can check. Built on A D K Rust and PayPal."
+      "say": "Agentrix. Websites run by agents you can identify, with the owner in charge, and money you can check. Next, suppliers and couriers join the same economy.",
+      "speak": "Agentrix. Websites run by agents you can identify, with the owner in charge, and money you can check. Next, suppliers and couriers join the same economy."
     }
   ]
 }

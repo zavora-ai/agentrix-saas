@@ -68,7 +68,7 @@ pub struct Action {
     pub label: String,
     /// The primary action.
     pub primary: bool,
-    /// `link`, `pass` (to the owner), `hold`.
+    /// `link`, `pass` (to the owner), `hold`, `pay` (an order card with a pay button).
     pub kind: String,
     /// For links.
     pub href: Option<String>,
@@ -78,6 +78,9 @@ pub struct Action {
     pub sku: Option<String>,
     /// For `hold`.
     pub qty: Option<i64>,
+    /// For `pay`: the order as the card shows it (`lines`, `total`, `usd`, `note`).
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub card: Option<serde_json::Value>,
 }
 
 impl Action {
@@ -91,6 +94,7 @@ impl Action {
             question: None,
             sku: None,
             qty: None,
+            card: None,
         }
     }
     /// Pass the question to the owner.
@@ -103,6 +107,7 @@ impl Action {
             question: Some(question.into()),
             sku: None,
             qty: None,
+            card: None,
         }
     }
     /// A hold under the standing grant.
@@ -115,6 +120,21 @@ impl Action {
             question: None,
             sku: Some(sku.into()),
             qty: Some(qty),
+            card: None,
+        }
+    }
+    /// An order card in the conversation: what is ordered, the total, and a button that places
+    /// the order and goes to pay. Nothing is charged until the customer pays.
+    pub fn pay(label: &str, card: serde_json::Value) -> Self {
+        Self {
+            label: label.into(),
+            primary: true,
+            kind: "pay".into(),
+            href: Some("/checkout".into()),
+            question: None,
+            sku: None,
+            qty: None,
+            card: Some(card),
         }
     }
 }

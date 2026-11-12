@@ -32,7 +32,13 @@ W, H, FPS = 1920, 1080, 30
 WORK = os.environ.get("AGX_VIDEO_WORK", os.path.join(tempfile.gettempdir(), "agx-saas-video"))
 CLIPS = os.environ.get("AGX_VIDEO_CLIPS", os.path.join(HERE, "clips"))
 SPEAK = os.path.join(HERE, "../../submission/video/speak.py")
-VOICE = os.environ.get("AGX_VIDEO_VOICE", "")
+VOICE = os.environ.get("AGX_VIDEO_VOICE", "ryan")
+STYLE = os.environ.get("AGX_VIDEO_VOICE_STYLE", "A warm, confident British narrator with a clear Received Pronunciation English accent from southern England. Unhurried, friendly, natural.")
+# Where the Chief's animated mark sits, in film pixels (x, y, width): on the opening slide, on the
+# title slide, and inside the presenter chip.
+# The fourth value says whether the mark sits on its own dark disc (over live pages).
+MARK_AT = {"hero": (700, 96, 520, False), "title": (98, 696, 164, False), "pip": (34, 838, 218, True)}
+MARK_FPS = 15
 PRESENTER = ["The Chief", "Agentrix's AI agent, presenting"]
 LEAD, TAIL = 0.35, 0.5
 
@@ -70,9 +76,9 @@ def slides(names):
 
 def voice(text):
     os.makedirs(os.path.join(WORK, "voice"), exist_ok=True)
-    path = os.path.join(WORK, "voice", hashlib.sha256(text.encode()).hexdigest()[:16] + ".wav")
+    path = os.path.join(WORK, "voice", hashlib.sha256((VOICE + "|" + STYLE + "|" + text).encode()).hexdigest()[:16] + ".wav")
     if not os.path.exists(path):
-        run([sys.executable, "-I", SPEAK, path, text] + (["--voice", VOICE] if VOICE else []))
+        run([sys.executable, "-I", SPEAK, path, text, "--voice", VOICE, "--instructions", STYLE])
     with wave.open(path) as w:
         return path, w.getnframes() / w.getframerate()
 
@@ -204,6 +210,65 @@ def encode(seg, out):
     run(args)
 
 
+def animate(film, out, spans):
+    """Lays the Chief's speaking mark over the finished film. `spans` is [(t0, t1, place)], place
+    a key of MARK_AT. The mark's halo follows the film's own sound: the level in each 1/15 s is
+    its loudness against the film's loud passages, held a little as it falls."""
+    import array
+    raw = subprocess.run(["ffmpeg", "-hide_banner", "-loglevel", "error", "-i", film, "-vn", "-ac", "1", "-ar", "16000", "-f", "s16le", "-"], capture_output=True).stdout
+    pcm = array.array("h"); pcm.frombytes(raw[: len(raw) // 2 * 2])
+    step = 16000 // MARK_FPS
+    rms = [(sum(x * x for x in pcm[i:i + step]) / max(1, len(pcm[i:i + step]))) ** 0.5 for i in range(0, len(pcm), step)]
+    ref = sorted(rms)[int(len(rms) * 0.9)] or 1.0
+    levels, prev = [], 0.0
+    for r in rms:
+        prev = max(min(1.0, r / ref) ** 0.8, prev * 0.72)
+        levels.append(round(prev * 24))
+    frames = os.path.join(WORK, "mark")
+    os.makedirs(frames, exist_ok=True)
+    src = os.path.join(HERE, "mark.html")
+    stamp = os.path.join(frames, ".stamp")
+    mtime = str(os.path.getmtime(src))
+    if not (os.path.exists(stamp) and open(stamp).read() == mtime):
+        async def render():
+            with Browser(os.path.join(WORK, "chrome-mark"), port=9433, width=400, height=432) as b:
+                page = await Page.open(b)
+                await page.viewport(400, 432, 2)
+                await page.send("Emulation.setDefaultBackgroundColorOverride", {"color": {"r": 0, "g": 0, "b": 0, "a": 0}})
+                for style, bg in (("l", 0), ("b", 1)):
+                    for n in range(25):
+                        await page.goto(f"file://{src}?lvl={n / 24:.4f}&bg={bg}", settle=0.05)
+                        await page.eval("window.ready")
+                        await page.shot(os.path.join(frames, f"{style}{n:02d}.png"), fmt="png")
+                await page.close()
+        asyncio.run(render())
+        open(stamp, "w").write(mtime)
+    places = sorted({p for _, _, p in spans})
+    styles = sorted({"b" if MARK_AT[p][3] else "l" for p in places})
+    inputs = []
+    for style in styles:
+        lst = os.path.join(WORK, f"mark-{style}.txt")
+        with open(lst, "w") as f:
+            for n in levels:
+                f.write(f"file '{os.path.join(frames, f'{style}{n:02d}.png')}'\nduration {1 / MARK_FPS:.5f}\n")
+        inputs += ["-f", "concat", "-safe", "0", "-i", lst]
+    graph = []
+    for k, style in enumerate(styles):
+        mine = [p for p in places if ("b" if MARK_AT[p][3] else "l") == style]
+        graph.append(f"[{k + 1}:v]fps={FPS},format=rgba,split={len(mine)}" + "".join(f"[m{places.index(p)}]" for p in mine))
+    for i, p in enumerate(places):
+        graph.append(f"[m{i}]scale={MARK_AT[p][2]}:-1[s{i}]")
+    last = "0:v"
+    for i, p in enumerate(places):
+        x, y = MARK_AT[p][0], MARK_AT[p][1]
+        when = "+".join(f"between(t,{a:.2f},{b:.2f})" for a, b, q in spans if q == p)
+        graph.append(f"[{last}][s{i}]overlay={x}:{y}:enable='{when}'[o{i}]")
+        last = f"o{i}"
+    run(["ffmpeg", "-hide_banner", "-loglevel", "error", "-y", "-i", film] + inputs +
+        ["-filter_complex", ";".join(graph), "-map", f"[{last}]", "-map", "0:a", "-c:v", "libx264", "-preset", "medium", "-crf", "19",
+         "-r", str(FPS), "-pix_fmt", "yuv420p", "-c:a", "copy", "-movflags", "+faststart", out])
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--out", default=os.path.join(os.path.dirname(CLIPS.rstrip("/")), "agentrix-paypal-demo.mp4"))
@@ -226,8 +291,12 @@ def main():
     if missing and a.final:
         sys.exit("build: live captures missing: " + ", ".join(missing))
     parts = []
+    spans = []
     t = 0.0
     for s in segs:
+        place = s["beat"].get("mark", "pip")  # the Chief is on screen for the whole film
+        if place:
+            spans.append((t, t + s["dur"], place))
         p = os.path.join(WORK, f"seg-{s['beat']['id']}.mp4")
         encode(s, p)
         parts.append(p)
@@ -236,8 +305,13 @@ def main():
     lst = os.path.join(WORK, "concat.txt")
     with open(lst, "w") as f:
         f.writelines(f"file '{p}'\n" for p in parts)
+    plain = os.path.join(WORK, "plain.mp4")
     run(["ffmpeg", "-hide_banner", "-loglevel", "error", "-y", "-f", "concat", "-safe", "0", "-i", lst,
-         "-c:v", "copy", "-af", "loudnorm=I=-16:TP=-1.5:LRA=11", "-c:a", "aac", "-b:a", "160k", "-ar", "48000", "-movflags", "+faststart", a.out])
+         "-c:v", "copy", "-af", "loudnorm=I=-16:TP=-1.5:LRA=11", "-c:a", "aac", "-b:a", "160k", "-ar", "48000", "-movflags", "+faststart", plain])
+    if spans:
+        animate(plain, a.out, spans)
+    else:
+        os.replace(plain, a.out)
     print(f"{a.out}: {t // 60:.0f} min {t % 60:.1f} s" + (f"; missing live captures: {', '.join(missing)}" if missing else ""))
 
 

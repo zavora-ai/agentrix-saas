@@ -142,12 +142,149 @@ async def scene_bills(tab, _):
     await asyncio.sleep(4)
 
 
+async def scene_customer(tab, _):
+    """A person shops: the home page, the bread, two things into the bag, the bag with its total."""
+    await tab.goto(KILELE + "/", settle=2)
+    await asyncio.sleep(3)
+    await tab.goto(KILELE + "/bread", settle=1.5)
+    await asyncio.sleep(2)
+    for n in (0, 1):
+        await tab.js(RING % f"[...document.querySelectorAll('button')].filter(b => b.innerText.trim() === 'Add to bag')[{n}]")
+        await asyncio.sleep(0.8)
+        await tab.js(f"[...document.querySelectorAll('button')].filter(b => b.innerText.trim() === 'Add to bag')[{n}].click(), true")
+        await asyncio.sleep(1.4)
+    await unring(tab)
+    await tab.goto(KILELE + "/bag", settle=1.5)
+    await asyncio.sleep(5)
+    await tab.js("scrollBy({top: 380, behavior: 'smooth'}), true")
+    await asyncio.sleep(4)
+
+
+async def settle_text(tab, limit=40):
+    """Waits until the page's text has stopped growing for a second and a half."""
+    last, still = -1, 0
+    for _ in range(limit * 2):
+        n = await tab.js("document.body.innerText.length")
+        still = still + 1 if n == last else 0
+        last = n
+        if still >= 3:
+            return
+        await asyncio.sleep(0.5)
+
+
+async def say_to(tab, selector, text):
+    await tab.click(selector=selector)
+    await asyncio.sleep(0.4)
+    await tab.type_into(selector, text, cps=18)
+    await asyncio.sleep(0.5)
+    await tab.send("Input.dispatchKeyEvent", {"type": "keyDown", "key": "Enter", "code": "Enter", "windowsVirtualKeyCode": 13, "text": "\r"})
+    await tab.send("Input.dispatchKeyEvent", {"type": "keyUp", "key": "Enter", "code": "Enter", "windowsVirtualKeyCode": 13})
+    await asyncio.sleep(1.5)
+    await settle_text(tab)
+
+
+async def scene_chat(tab, _):
+    """A customer asks about a product, says what she wants, and the desk puts the order and a
+    pay card in the conversation; she presses it."""
+    await tab.goto(KILELE + "/", settle=2)
+    await asyncio.sleep(2)
+    await say_to(tab, "input[placeholder*='anything']", os.environ.get("AGX_CHAT_1", "Is the country sourdough in stock?"))
+    await asyncio.sleep(3)
+    await say_to(tab, "input[placeholder*='follow-up'], textarea[placeholder*='follow-up']", os.environ.get("AGX_CHAT_2", "I'd like two loaves, please."))
+    await asyncio.sleep(1.5)
+    if await tab.js("!!document.querySelector('.pay-card')"):
+        await tab.js("document.querySelector('.pay-card').scrollIntoView({block: 'center', behavior: 'smooth'}), true")
+        await asyncio.sleep(1.2)
+        await tab.js(RING % "document.querySelector('.pay-card')")
+        await asyncio.sleep(5)
+        await unring(tab)
+        await tab.js(RING % "document.querySelector('.pay-card button')")
+        await asyncio.sleep(1.2)
+        await unring(tab)
+        await tab.click(selector=".pay-card button")
+        await asyncio.sleep(6)
+    else:
+        print("rec: no pay card in the conversation", file=sys.stderr)
+        await asyncio.sleep(3)
+
+
+async def scene_track(tab, _):
+    """A customer tracks an order by its number; then the paid order as the shop holds it."""
+    order = os.environ.get("AGX_ORDER", "KB-1052")
+    await tab.goto(KILELE + "/orders", settle=2)
+    await asyncio.sleep(1.5)
+    sel = "form.k-track input, input[name='n'], #ordno"
+    await tab.click(selector=sel)
+    await tab.type_into(sel, order, cps=12)
+    await asyncio.sleep(0.6)
+    await tab.js(f"document.querySelector({json.dumps(sel)}).form.requestSubmit(), true")
+    await asyncio.sleep(1.5)
+    await settle_text(tab, 10)
+    await show(tab, deep(order) + "?.closest('article, section, li, div')", 1.2)
+    await asyncio.sleep(4)
+    await unring(tab)
+    await owner(tab, "orders/" + order)
+    await asyncio.sleep(1.5)
+    await show(tab, deep("with PayPal at Kilele's rate") + "?.parentElement", 1.5)
+    await asyncio.sleep(4.5)
+    await show(tab, deep("captured") + "?.closest('tr')", 1.2)
+    await asyncio.sleep(4)
+
+
+async def scene_paid(tab, _):
+    """A paid order in the owner's view: what was ordered, and the PayPal payment the Cashier took."""
+    await owner(tab, "orders/" + os.environ.get("AGX_ORDER", "KB-1052"))
+    await asyncio.sleep(3)
+    await show(tab, deep("with PayPal at Kilele's rate") + "?.parentElement", 1.5)
+    await asyncio.sleep(4.5)
+    await show(tab, deep("captured") + "?.closest('tr')", 1.2)
+    await asyncio.sleep(4)
+
+
+async def scene_control(tab, _):
+    """The owner's control: the mandate she signed, the bills inside it, and the off switch for each agent."""
+    await tab.goto(KMONEY + "/console", settle=2)
+    await asyncio.sleep(2)
+    await show(tab, deep("mandate for Payables") + "?.closest('article, section')", 1.5, block="start")
+    await asyncio.sleep(5)
+    await show(tab, deep("Bills to pay") + "?.closest('article, section')", 1.6, block="start")
+    await asyncio.sleep(4)
+    await show(tab, "[...document.querySelectorAll('button')].find(b => b.innerText.trim() === 'Revoke') || " + deep("Each agent signs its own requests"), 1.6)
+    await asyncio.sleep(5)
+
+
+async def scene_agentrix(tab, _):
+    """Agentrix itself: the plans a site subscribes to with PayPal, then what a site's agents paid it."""
+    await tab.goto(MONEY + "/", settle=2)
+    await asyncio.sleep(2.5)
+    await show(tab, deep("Subscribe with PayPal") + "?.closest('section') || " + deep("Subscribe with PayPal"), 1.6, ring=False, block="center")
+    await asyncio.sleep(4.5)
+    await tab.goto(MONEY + "/console", settle=1.5)
+    await asyncio.sleep(1.5)
+    await show(tab, deep("Settled agent to agent") + "?.closest('article, section')", 1.6)
+    await asyncio.sleep(6)
+
+
+async def scene_wallet(tab, _):
+    """Kilele's wallet: every sale with PayPal's id, matched three ways, and the hourly checkpoints."""
+    await tab.goto(KMONEY + "/console/kilele/wallet", settle=2)
+    await asyncio.sleep(2.5)
+    await show(tab, deep("Three-way matched") + "?.parentElement", 1.2)
+    await asyncio.sleep(3.5)
+    await show(tab, deep("Wallet ledger") + "?.closest('article, section') || " + deep("Wallet ledger"), 1.6, ring=False, block="start")
+    await asyncio.sleep(4)
+    await show(tab, deep("Wallet checkpoints") + "?.closest('article, section') || " + deep("Wallet checkpoints"), 2.0, ring=False, block="start")
+    await asyncio.sleep(4.5)
+
+
 async def scene_badge(tab, _):
     """An agent's badge, verified on the page."""
     await tab.goto(KILELE + "/agents", settle=2)
     await asyncio.sleep(2.5)
-    await show(tab, deep("did:web:kilele-bakery-sample") + "?.closest('article, section, .card') || " + deep("Holds no secrets"), 1.6, block="start")
-    await asyncio.sleep(4)
+    await tab.click(selector="form[data-verify] button")
+    await asyncio.sleep(3)
+    await show(tab, "document.querySelector('form[data-verify] [data-verify-result]')", 1.4)
+    await asyncio.sleep(5)
     await show(tab, deep("matches PayPal"), 1.6)
     await asyncio.sleep(5)
 
@@ -251,7 +388,7 @@ async def scene_verify(tab, _):
 
 async def scene_replay(tab, _):
     """The night, replayed from the record (replay.html reads record.json beside it)."""
-    await tab.goto("file://" + os.path.join(HERE, "replay.html") + "?auto=1", settle=0.5)
+    await tab.goto("file://" + os.path.join(HERE, "replay.html") + "?auto=1&seconds=" + os.environ.get("AGX_REPLAY_SECONDS", "12"), settle=0.5)
     await tab.wait_for("window.done === true", 90)
     await asyncio.sleep(1.5)
 

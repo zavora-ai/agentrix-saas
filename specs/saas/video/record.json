@@ -1,12 +1,12 @@
 {
- "read_at": "2026-11-12T05:20:04Z",
+ "read_at": "2026-11-12T14:45:20Z",
  "since": "2026-11-11T16:00:00Z",
  "sandbox": true,
  "wallet": {
-  "entries": 52,
+  "entries": 64,
   "reconciled": "matches",
-  "at": "2026-11-12T05:15:12.905838453Z",
-  "root": "sha256:ba2fa814b762467ec5aeecc3dc1d58e1e39fabf2f75a5c9d57385eecd3edaf2c"
+  "at": "2026-11-12T14:15:22.142495803Z",
+  "root": "sha256:18f5495cacf49dcbbcf3ed78cfd22f5c9265093dd897aa5ff205878666832119"
  },
  "refusals_on_kilele_console": 6,
  "events": [
@@ -344,6 +344,150 @@
    "paid_at": "2026-11-12T05:04:00Z",
    "paid_usd": 3.49,
    "source": "https://paypal.agentrix.website/samples/kilele-bakery-sample/orders/KB-1066"
+  },
+  {
+   "kind": "order",
+   "at": "2026-11-12T05:57:00Z",
+   "order": "KB-1067",
+   "agent": "Amani",
+   "items": "Custom: 2 tiers, Red velvet sponge, Forest green buttercream, Smooth finish, No decoration, Message: \u201cWell done\u201d",
+   "kes": "KSh 4,800",
+   "usd": 37.21,
+   "state": "Waiting for you",
+   "door": true,
+   "verified": true,
+   "paid_at": null,
+   "paid_usd": null,
+   "source": "https://paypal.agentrix.website/samples/kilele-bakery-sample/orders/KB-1067"
+  },
+  {
+   "kind": "bill",
+   "at": "2026-11-12T06:00:00Z",
+   "company": "Kilele Bakery",
+   "bill": "payroll:kilele-bakery:20261112T000000Z-20261112T060000Z",
+   "to": "Kilele Bakery staff payroll",
+   "due": "2026-11-12",
+   "status": "open",
+   "usd": 80.0,
+   "source": "https://kilele.money.paypal.agentrix.website/console"
+  },
+  {
+   "kind": "bill",
+   "at": "2026-11-12T06:00:00Z",
+   "company": "Agentrix",
+   "bill": "models:anthropic:20261112T030000Z-20261112T060000Z",
+   "to": "Anthropic",
+   "due": "2026-11-19",
+   "status": "open",
+   "usd": 0.08,
+   "source": "https://money.paypal.agentrix.website/console"
+  },
+  {
+   "kind": "settlement",
+   "at": "2026-11-12T06:20:05Z",
+   "invoice": "INV-2026-0005",
+   "usd": 2.06,
+   "paypal": "9VC1604925833960M",
+   "state": "COMPLETED",
+   "payer": "Kilele Bakery",
+   "payee": "Agentrix",
+   "source": "https://kilele.money.paypal.agentrix.website/console"
+  },
+  {
+   "kind": "order",
+   "at": "2026-11-12T06:42:00Z",
+   "order": "KB-1068",
+   "agent": "Baraka",
+   "items": "Custom: 1 tier, Red velvet sponge, Forest green buttercream, Ombr\u00e9 finish, Sprinkles, Message: \u201cHappy anniversary\u201d",
+   "kes": "KSh 4,500",
+   "usd": 34.88,
+   "state": "Waiting for you",
+   "door": true,
+   "verified": true,
+   "paid_at": null,
+   "paid_usd": null,
+   "source": "https://paypal.agentrix.website/samples/kilele-bakery-sample/orders/KB-1068"
+  },
+  {
+   "kind": "order",
+   "at": "2026-11-12T07:15:00Z",
+   "order": "KB-1069",
+   "agent": "Amani",
+   "items": "1 \u00d7 Weekend bake box",
+   "kes": "KSh 1,350",
+   "usd": 10.47,
+   "state": "Paid",
+   "door": false,
+   "verified": false,
+   "paid_at": "2026-11-12T07:15:00Z",
+   "paid_usd": 10.47,
+   "source": "https://paypal.agentrix.website/samples/kilele-bakery-sample/orders/KB-1069"
+  },
+  {
+   "kind": "bill",
+   "at": "2026-11-12T09:00:00Z",
+   "company": "Agentrix",
+   "bill": "models:anthropic:20261112T060000Z-20261112T090000Z",
+   "to": "Anthropic",
+   "due": "2026-11-19",
+   "status": "open",
+   "usd": 0.09,
+   "source": "https://money.paypal.agentrix.website/console"
+  },
+  {
+   "kind": "settlement",
+   "at": "2026-11-12T09:20:08Z",
+   "invoice": "INV-2026-0006",
+   "usd": 2.07,
+   "paypal": "0W63891980367704H",
+   "state": "COMPLETED",
+   "payer": "Kilele Bakery",
+   "payee": "Agentrix",
+   "source": "https://kilele.money.paypal.agentrix.website/console"
+  },
+  {
+   "kind": "bill",
+   "at": "2026-11-12T12:00:00Z",
+   "company": "Kilele Bakery",
+   "bill": "payroll:kilele-bakery:20261112T060000Z-20261112T120000Z",
+   "to": "Kilele Bakery staff payroll",
+   "due": "2026-11-12",
+   "status": "open",
+   "usd": 80.0,
+   "source": "https://kilele.money.paypal.agentrix.website/console"
+  },
+  {
+   "kind": "bill",
+   "at": "2026-11-12T12:00:00Z",
+   "company": "Agentrix",
+   "bill": "models:anthropic:20261112T090000Z-20261112T120000Z",
+   "to": "Anthropic",
+   "due": "2026-11-19",
+   "status": "open",
+   "usd": 0.11,
+   "source": "https://money.paypal.agentrix.website/console"
+  },
+  {
+   "kind": "bill",
+   "at": "2026-11-12T12:00:00Z",
+   "company": "Agentrix",
+   "bill": "payroll:agentrix:20261112T060000Z-20261112T120000Z",
+   "to": "Agentrix staff payroll",
+   "due": "2026-11-12",
+   "status": "open",
+   "usd": 120.0,
+   "source": "https://money.paypal.agentrix.website/console"
+  },
+  {
+   "kind": "settlement",
+   "at": "2026-11-12T12:20:06Z",
+   "invoice": "INV-2026-0007",
+   "usd": 2.07,
+   "paypal": "3HD06569M3429251M",
+   "state": "COMPLETED",
+   "payer": "Kilele Bakery",
+   "payee": "Agentrix",
+   "source": "https://kilele.money.paypal.agentrix.website/console"
   }
  ]
 }

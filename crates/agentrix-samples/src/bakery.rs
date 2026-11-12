@@ -1092,6 +1092,7 @@ async fn notfound(State(app): State<App>, Extension(ctx): Extension<Ctx>) -> Pag
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 enum Kind {
     Status,
+    Order,
     Hold,
     Stock,
     Dairy,
@@ -1136,6 +1137,32 @@ fn instant_kind(q: &str, prefix: &str) -> Option<Kind> {
     }
     if said(&p, &["hold", "reserve"]) && said(&p, &bread) {
         return Some(Kind::Hold);
+    }
+    // "I'd like two loaves", "can I order three croissants": an order for today's bakes.
+    if said(
+        &p,
+        &[
+            "id like",
+            "i would like",
+            "ill take",
+            "i will take",
+            "can i order",
+            "can i buy",
+            "can i get",
+            "can i have",
+            "i want to order",
+            "i want to buy",
+        ],
+    ) && (said(&p, &bread) || said(&p, &["mandazi", "bun", "buns", "rye", "box"]))
+        && !said(
+            &p,
+            &[
+                "gluten", "allergy", "allergic", "allergen", "dairy", "vegan", "nut", "nuts",
+                "egg", "cake", "cakes", "change", "cancel", "refund", "hold", "reserve",
+            ],
+        )
+    {
+        return Some(Kind::Order);
     }
     if said(
         &p,
@@ -1271,6 +1298,104 @@ async fn answer_kind(app: &App, ctx: &Ctx, q: &str, kind: Kind) -> anyhow::Resul
     let owner = site.fact("/owner/first");
     match kind {
         Kind::Status => crate::commerce::order_status_answer(app, ctx, q).await,
+        Kind::Order => {
+            // The product the customer named, how many, what is left, and the total from the
+            // price list. The card places the order; nothing is charged until they pay.
+            let products = records.products(&site.site, None).await?;
+            let words: Vec<String> = plain(q)
+                .split_whitespace()
+                .map(|w| w.trim_end_matches('s').to_owned())
+                .collect();
+            let score = |name: &str| {
+                plain(name)
+                    .split_whitespace()
+                    .map(|w| w.trim_end_matches('s').to_owned())
+                    .filter(|w| {
+                        w.len() > 2
+                            && (words.contains(w)
+                                || (w == "sourdough"
+                                    && words
+                                        .iter()
+                                        .any(|x| x == "loaf" || x == "loave" || x == "bread")))
+                    })
+                    .count()
+            };
+            let found = products
+                .iter()
+                .filter(|p| {
+                    matches!(p.section.as_str(), "bread" | "box") && p.status == "published"
+                })
+                .map(|p| (score(&p.name), p))
+                .filter(|(n, _)| *n > 0)
+                .max_by_key(|(n, _)| *n)
+                .map(|(_, p)| p);
+            let mut a = Answer::instant("orders");
+            let Some(p) = found else {
+                a.say("Tell me which of today's bakes you'd like and how many, and I'll put the order together [1].".into());
+                a.source(Source::new("Today's bakes", "/bread#bakes"));
+                return Ok(a);
+            };
+            let count = |w: &str| match w {
+                "a" | "an" | "one" => Some(1),
+                "two" | "couple" => Some(2),
+                "three" => Some(3),
+                "four" => Some(4),
+                "five" => Some(5),
+                "six" | "half" => Some(6),
+                "dozen" => Some(12),
+                _ => w.parse::<i64>().ok(),
+            };
+            let n = plain(q)
+                .split_whitespace()
+                .filter_map(count)
+                .find(|n| (1..=20).contains(n))
+                .unwrap_or(1);
+            let stock = records.stock(site, now).await?;
+            let left = stock.get(p.sku.as_str()).and_then(|s| s.left);
+            a.progress
+                .push("Checking today's stock and the price list".into());
+            if let Some(left) = left
+                && left < n
+            {
+                a.say(format!(
+                    "There {} **{left} {}** left today [1], so I can't take an order for {n}.",
+                    if left == 1 { "is" } else { "are" },
+                    p.name.to_lowercase()
+                ));
+                a.source(Source::new(&p.name, &format!("/bread#item-{}", p.slug)));
+                return Ok(a);
+            }
+            let list = records
+                .live_price_list(&site.site)
+                .await?
+                .ok_or_else(|| anyhow::anyhow!("no live price list"))?;
+            let total = p.price_minor * n;
+            let total_words = money::fmt(&site.currency, total);
+            let usd = money::usd(money::usd_cents(total, list.usd_rate_minor));
+            a.say(format!(
+                "**{n} \u{d7} {}** comes to **{total_words}** ({usd}) [1]. Shall I place the order? You pay with PayPal, and nothing is charged until you do.",
+                p.name
+            ));
+            a.source(Source::new(
+                &format!(
+                    "{} \u{b7} {}",
+                    p.name,
+                    money::fmt(&site.currency, p.price_minor)
+                ),
+                &format!("/bread#item-{}", p.slug),
+            ));
+            a.action(Action::pay(
+                &format!("Place order \u{b7} pay {total_words} with PayPal"),
+                json!({
+                    "lines": [{ "sku": p.sku, "name": p.name, "qty": n, "each": money::fmt(&site.currency, p.price_minor), "amount": total_words }],
+                    "total": total_words,
+                    "usd": usd,
+                    "note": format!("Priced from {}'s price list {}. You choose a collection or delivery slot at checkout.", site.name, list.version),
+                }),
+            ));
+            a.meta = "From today's stock and the price list".into();
+            Ok(a)
+        }
         Kind::Hold => {
             let stock = records.stock(site, now).await?;
             let left = stock.get("sourdough").and_then(|s| s.left).unwrap_or(0);

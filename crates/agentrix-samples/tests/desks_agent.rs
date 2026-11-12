@@ -415,6 +415,31 @@ async fn instant_answers_come_from_records_without_a_model() {
 }
 
 #[tokio::test]
+async fn an_order_in_the_conversation_gets_a_card_with_its_total_and_a_pay_button() {
+    let rig = rig().await;
+    let a = rig
+        .ask(KILELE, json!({ "q": "I'd like two sourdough loaves please" }))
+        .await;
+    let pay = a["actions"]
+        .as_array()
+        .and_then(|x| x.iter().find(|x| x["kind"] == "pay"))
+        .unwrap_or_else(|| panic!("no pay card: {a}"));
+    assert_eq!(pay["card"]["lines"][0]["sku"], "sourdough", "{a}");
+    assert_eq!(pay["card"]["lines"][0]["qty"], 2, "{a}");
+    assert_eq!(pay["card"]["total"], "KSh 900", "{a}");
+    assert_eq!(pay["href"], "/checkout", "{a}");
+    assert!(said(&a).contains("nothing is charged until you do"), "{a}");
+    // A question about an allergen is still the allergens answer, not an order.
+    let a = rig
+        .ask(KILELE, json!({ "q": "Can I get a gluten-free loaf?" }))
+        .await;
+    assert!(
+        a["actions"].as_array().is_none_or(|x| x.iter().all(|x| x["kind"] != "pay")),
+        "{a}"
+    );
+}
+
+#[tokio::test]
 async fn catch_me_up_is_written_by_the_newsroom_from_published_stories() {
     let rig = rig().await;
     rig.model.then(json!({
