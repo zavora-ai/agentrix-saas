@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Agentrix WebAgent Platform · Technical brief</title>
+<style>
+@page { size: A4; margin: 16mm 15mm 16mm 15mm; }
+* { box-sizing: border-box; }
+body { font: 10.2pt/1.45 -apple-system, "Helvetica Neue", Arial, sans-serif; color: #1c1a33; margin: 0; }
+h1 { font-size: 22pt; line-height: 1.1; margin: 0 0 4pt; letter-spacing: -.01em; }
+h2 { font-size: 13.5pt; margin: 16pt 0 5pt; padding-top: 6pt; border-top: 1.5pt solid #38356d; color: #25224a; break-after: avoid; }
+h3 { font-size: 11pt; margin: 10pt 0 3pt; color: #38356d; break-after: avoid; }
+p { margin: 0 0 6pt; }
+.sub { font-size: 11.5pt; color: #45426e; margin: 0 0 3pt; }
+.meta { font-size: 9pt; color: #6a678f; margin: 0 0 10pt; }
+ul, ol { margin: 0 0 6pt; padding-left: 16pt; }
+li { margin: 0 0 2.5pt; }
+table { border-collapse: collapse; width: 100%; margin: 4pt 0 8pt; font-size: 9pt; break-inside: avoid; }
+th, td { border: .6pt solid #c9c7e6; padding: 3.5pt 5pt; text-align: left; vertical-align: top; }
+th { background: #eeedf9; font-weight: 700; }
+code, .mono { font: 8.6pt/1.35 "SF Mono", Menlo, Consolas, monospace; background: #f1f0fa; padding: .5pt 2.5pt; border-radius: 2pt; }
+pre { font: 8.4pt/1.4 "SF Mono", Menlo, Consolas, monospace; background: #f1f0fa; border: .6pt solid #dcd9f5; border-radius: 4pt; padding: 6pt 8pt; margin: 4pt 0 8pt; white-space: pre-wrap; break-inside: avoid; }
+.note { background: #fff7e0; border: .6pt solid #f0d58a; border-radius: 4pt; padding: 5pt 8pt; font-size: 9.2pt; margin: 4pt 0 8pt; break-inside: avoid; }
+figure { margin: 6pt 0 8pt; break-inside: avoid; }
+figcaption { font-size: 8.6pt; color: #6a678f; margin-top: 3pt; }
+svg text { font-family: -apple-system, "Helvetica Neue", Arial, sans-serif; }
+.two { display: grid; grid-template-columns: 1fr 1fr; gap: 10pt; }
+</style>
+</head>
+<body>
+
+<h1>Agentrix WebAgent Platform</h1>
+<p class="sub">Technical brief: a payments ecosystem of autonomous agents on adk-rust and PayPal</p>
+<p class="meta">Zavora Technologies Ltd · PayPal AI Hackathon · 12 November 2026 · Code: github.com/zavora-ai/agentrix-saas (MIT) · Live: paypal.agentrix.website · Everything described here runs on the PayPal sandbox.</p>
+
+<h2>1. Summary</h2>
+<p>Agentrix turns a business's website into a team of AI agents ("WebAgents") that sell, bill, collect, pay and settle with other businesses' agents. The design goal is that an agent may move money without a human in the loop only when three things can be verified by a party that does not trust the agent: <b>who the agent is</b>, <b>who is accountable for it</b>, and <b>where the money went</b>.</p>
+<ul>
+  <li><b>Identity.</b> Every agent has a <code>did:web</code> identifier under its site's own domain, a badge signed by the owner's key, and signs each cross-company request with HTTP Message Signatures (RFC 9421).</li>
+  <li><b>Authority.</b> The owner signs a mandate that bounds what an agent may pay. Payment tools run on a governed path where deterministic rules, not model output, decide whether a call may reach PayPal.</li>
+  <li><b>Evidence.</b> Every money movement is confirmed by reading it back from PayPal, recorded in a signed append-only wallet log, and posted to the books under the PayPal identifier.</li>
+</ul>
+<p>The system ran unattended on the sandbox for about 23 hours before submission. In that time three customer agents placed 18 orders and paid for 14 of them with vaulted PayPal payment tokens (USD 109.88 captured), two companies' agents settled eight invoices with each other, and payroll was paid through Payouts. All figures in this brief were read from the live system or from PayPal's API.</p>
+
+<h2>2. System architecture</h2>
+<figure>
+<svg viewBox="0 0 700 300" width="100%" role="img" aria-label="System architecture">
+  <defs><marker id="a" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 8 4 0 8Z" fill="#38356d"/></marker></defs>
+  <g font-size="9.5" fill="#1c1a33">
+    <rect x="4" y="8" width="130" height="44" rx="6" fill="#eeedf9" stroke="#38356d"/><text x="69" y="27" text-anchor="middle" font-weight="700">Customers (browser)</text><text x="69" y="41" text-anchor="middle">site, chat, checkout</text>
+    <rect x="4" y="64" width="130" height="44" rx="6" fill="#eeedf9" stroke="#38356d"/><text x="69" y="83" text-anchor="middle" font-weight="700">Customers' agents</text><text x="69" y="97" text-anchor="middle">MCP, signed (RFC 9421)</text>
+    <rect x="4" y="120" width="130" height="44" rx="6" fill="#eeedf9" stroke="#38356d"/><text x="69" y="139" text-anchor="middle" font-weight="700">Other companies' agents</text><text x="69" y="153" text-anchor="middle">A2A, signed (RFC 9421)</text>
+    <rect x="4" y="176" width="130" height="44" rx="6" fill="#fff7e0" stroke="#b8860b"/><text x="69" y="195" text-anchor="middle" font-weight="700">Owner</text><text x="69" y="209" text-anchor="middle">WebAuthn passkey</text>
+    <rect x="176" y="8" width="60" height="212" rx="6" fill="#f6f6fb" stroke="#6a678f"/><text x="206" y="110" text-anchor="middle" font-weight="700">Caddy</text><text x="206" y="124" text-anchor="middle">TLS</text>
+    <rect x="270" y="4" width="270" height="222" rx="8" fill="#ffffff" stroke="#38356d" stroke-width="1.4"/>
+    <text x="405" y="20" text-anchor="middle" font-weight="700">agentrix-node (one Rust process)</text>
+    <rect x="280" y="28" width="120" height="38" rx="5" fill="#eeedf9" stroke="#8a87b8"/><text x="340" y="44" text-anchor="middle" font-weight="700">Sites and desks</text><text x="340" y="57" text-anchor="middle">pages, chat, checkout</text>
+    <rect x="410" y="28" width="120" height="38" rx="5" fill="#eeedf9" stroke="#8a87b8"/><text x="470" y="44" text-anchor="middle" font-weight="700">Agent door</text><text x="470" y="57" text-anchor="middle">MCP + A2A, verifier</text>
+    <rect x="280" y="74" width="250" height="62" rx="5" fill="#fde8ec" stroke="#de4060"/><text x="405" y="89" text-anchor="middle" font-weight="700">One adk-rust kernel per business</text><text x="405" y="103" text-anchor="middle">Chief · Cashier · Receivables · Payables · Support</text><text x="405" y="117" text-anchor="middle">cron wakes · approvals · guardrails · memory</text><text x="405" y="130" text-anchor="middle">governed tool path → mandate check → effect</text>
+    <rect x="280" y="144" width="120" height="36" rx="5" fill="#eeedf9" stroke="#8a87b8"/><text x="340" y="159" text-anchor="middle" font-weight="700">Wallet log</text><text x="340" y="172" text-anchor="middle">signed, Merkle root</text>
+    <rect x="410" y="144" width="120" height="36" rx="5" fill="#eeedf9" stroke="#8a87b8"/><text x="470" y="159" text-anchor="middle" font-weight="700">Signed audit log</text><text x="470" y="172" text-anchor="middle">per business</text>
+    <rect x="280" y="188" width="120" height="30" rx="5" fill="#eeedf9" stroke="#8a87b8"/><text x="340" y="207" text-anchor="middle" font-weight="700">Token service (STS)</text>
+    <rect x="410" y="188" width="120" height="30" rx="5" fill="#eeedf9" stroke="#8a87b8"/><text x="470" y="207" text-anchor="middle" font-weight="700">PayPal client</text>
+    <rect x="576" y="20" width="120" height="50" rx="6" fill="#e3edff" stroke="#17305c"/><text x="636" y="40" text-anchor="middle" font-weight="700">PayPal sandbox</text><text x="636" y="54" text-anchor="middle">REST + webhooks</text>
+    <rect x="576" y="88" width="120" height="44" rx="6" fill="#eeedf9" stroke="#38356d"/><text x="636" y="107" text-anchor="middle" font-weight="700">Zavora ERA</text><text x="636" y="121" text-anchor="middle">books, via mcp-erp</text>
+    <rect x="576" y="150" width="120" height="44" rx="6" fill="#eeedf9" stroke="#38356d"/><text x="636" y="169" text-anchor="middle" font-weight="700">Model gateway</text><text x="636" y="183" text-anchor="middle">metered, capped</text>
+    <rect x="270" y="244" width="270" height="48" rx="6" fill="#f6f6fb" stroke="#6a678f"/><text x="405" y="262" text-anchor="middle" font-weight="700">Shopper agents (separate service, own keys and hosts)</text><text x="405" y="277" text-anchor="middle">three test customers with vaulted sandbox buyers</text>
+  </g>
+  <g fill="none" stroke="#38356d" stroke-width="1.1" marker-end="url(#a)">
+    <path d="M134 30 H174"/><path d="M134 86 H174"/><path d="M134 142 H174"/><path d="M134 198 H174"/>
+    <path d="M236 110 H268"/>
+    <path d="M540 45 H574" marker-start="url(#a)"/><path d="M540 110 H574"/><path d="M540 172 H574"/>
+    <path d="M405 244 V228"/>
+  </g>
+</svg>
+<figcaption>Figure 1. The judged build is one server. Each business is isolated by its own kernel, keys, wallet log and audit log; businesses reach each other only through the signed agent door.</figcaption>
+</figure>
+<table>
+  <tr><th style="width:23%">Component</th><th>Role</th></tr>
+  <tr><td>Sites and desks</td><td>Server-rendered shop pages. Each "desk" is a WebAgent that answers visitors from the site's own records and pages. Instant answers come from records without a model call; open questions go to a model through the gateway with the retrieved sources.</td></tr>
+  <tr><td>Agent door</td><td>The machine interface of a site. Customers' agents use MCP tools (<code>catalog.search</code>, <code>quote.create</code>, <code>checkout.create</code>, <code>request_custom_order</code>, <code>order.status</code>). Other companies' agents use A2A messages for invoices and settlement. Capabilities are published in an AWP manifest at <code>/.well-known/awp.json</code>.</td></tr>
+  <tr><td>Kernel per business</td><td>adk-rust's <code>adk-kernel</code> runs each agent as a durable process with cron wakes, approvals, spend limits and a signed audit log. Schedules on the live build: collections and usage invoicing every 3 hours, wallet reconciliation hourly, payroll every 6 hours, the payables run every 3 hours, and the Chief's brief to the owner.</td></tr>
+  <tr><td>Books</td><td>Zavora ERA (double-entry accounting and CRM), reached through the open-source <code>mcp-erp</code> server. Receipts and bill payments are keyed by the PayPal identifier.</td></tr>
+  <tr><td>Model gateway</td><td>One process holds the model provider keys, meters every call per business and agent, and enforces daily spend caps. Agents never hold provider keys.</td></tr>
+</table>
+
+<h2>3. Agent identity</h2>
+<h3>3.1 Identifiers and badges</h3>
+<p>Each site is a DID subject: <code>did:web:&lt;site-host&gt;</code> resolves to <code>/.well-known/did.json</code>. Each agent is <code>did:web:&lt;site-host&gt;:agents:&lt;role&gt;</code>, with its DID document at <code>/agents/&lt;role&gt;/did.json</code> and its badge at <code>/agents/&lt;role&gt;/badge.json</code>. A badge is a JSON document carrying the agent's role, site, sponsor (the accountable human), key thumbprints, mandate reference, wallet checkpoint and a <code>JsonWebSignature2020</code> proof (EdDSA) made with the site's <code>#owner</code> key. The hosting platform adds a voucher that it hosts the site.</p>
+<p>Verification is public at <code>GET /agents/verify?did=…</code> and runs ten checks: the DID document resolves from the site's own domain; the badge is signed by the owner key; the badge names this agent and site; the key is in the agent's DID document and in the site's key directory; the names match; the agent is active; the agent holds no secrets; the platform vouches for the site; and the agent card is signed by the owner key.</p>
+
+<h3>3.2 Request signing</h3>
+<p>Every request from one company's agent to another carries an HTTP Message Signature (RFC 9421, Web Bot Auth profile). The verifier requires:</p>
+<ul>
+  <li><code>Content-Digest: sha-256=:…:</code> (RFC 9530) over the body;</li>
+  <li><code>Signature-Agent</code> naming the signer's site, from which the verifier fetches <code>/.well-known/http-message-signatures-directory</code>;</li>
+  <li><code>Signature-Input</code> covering <code>@authority</code>, <code>@method</code>, <code>@path</code> and <code>content-digest</code>, with <code>alg="ed25519"</code>, <code>created</code>, <code>expires</code> and <code>tag="web-bot-auth"</code>; the key id is the JWK thumbprint.</li>
+</ul>
+<p>A request that fails is answered with HTTP 401 and a <b>sealed refusal receipt</b>: a body with the refusal code (<code>content_digest_required</code>, <code>signature_required</code>, <code>signature_invalid</code>, <code>mandate_used</code>, <code>plan_refused</code>), the claimed agent, the request digest and <code>nothing_moved: true</code>, signed by the refusing company's key. The refusal is also written to that company's audit log. No PayPal call is made for a refused request.</p>
+
+<h3>3.3 Tokens and cloud federation</h3>
+<p>Each site is an OpenID Connect issuer for its agents (<code>/.well-known/openid-configuration</code> and a JWKS). Inside the node, an agent holds no long-lived secret: when a tool needs PayPal, the token service exchanges the agent's identity for a short-lived token scoped to one resource and role (RFC 8693 style), and revoking an agent stops its next exchange without rotating any PayPal credential.</p>
+<p>We verified that the same issuer is accepted by AWS IAM (<code>AssumeRoleWithWebIdentity</code>), Amazon Bedrock AgentCore Identity (<code>GetWorkloadAccessTokenForJWT</code>), Google Cloud workload identity federation (STS token exchange) and Microsoft Entra Agent ID (federated identity credential on an agent identity blueprint). In the other direction, the door's verifier accepts tokens from trusted external issuers. This code is upstream in adk-rust's <code>adk-auth</code> crate (zavora-ai/adk-rust#1362).</p>
+
+<h2>4. Authority: mandates and the governed path</h2>
+<p>A model can propose a payment; it cannot authorise one. Each payment tool call passes through a governed path that evaluates deterministic policy before any effect runs.</p>
+<table>
+  <tr><th style="width:23%">Control</th><th>Rule enforced before a PayPal call</th></tr>
+  <tr><td>Intent mandate</td><td>Signed by the owner. Sets the maximum per payment, the maximum per day, the allowed payees and an expiry. Mandates follow the structure of the Agent Payments Protocol (AP2); we describe them as AP2-style and do not claim conformance.</td></tr>
+  <tr><td>Cart mandate</td><td>Issued per invoice for agent-to-agent settlement. It is single-use: presenting it again is refused with <code>mandate_used</code>.</td></tr>
+  <tr><td>Payee binding</td><td>A bill can only be paid to the payee the books hold for that vendor. A message claiming changed bank or PayPal details cannot change the payee; the change goes to the owner.</td></tr>
+  <tr><td>Refund binding</td><td>A refund goes only to the payer of the original capture, read from PayPal's capture record, never from the conversation.</td></tr>
+  <tr><td>Approval binding</td><td>When a call exceeds the mandate it is held for the owner. The owner's WebAuthn assertion signs a fingerprint of the exact tool call and arguments. If the agent changes any argument, the fingerprint changes, the earlier approval is void, and the new call is held again.</td></tr>
+  <tr><td>Input screening</td><td>Inbound email and documents are parsed in a sandbox with the network denied and screened for payee-change claims, urgency and injected instructions before an agent sees them.</td></tr>
+</table>
+<p>A committed suite of ten attacks exercises these rules, including a business-email-compromise invoice, an injected refund to an attacker's address, an edit after approval, a forged PayPal webhook, a replayed cart mandate and a request signed with an unknown key. All ten were refused. Each result is scored from PayPal's API, the books and the signed audit log, not from model output.</p>
+
+<h2>5. PayPal integration</h2>
+<p>Two REST apps are used: one for the platform company (Agentrix) and one for the sample shop (Kilele Bakery). The PayPal client lives in one crate (<code>agentrix-effects</code>); agents reach it only through governed tools.</p>
+<table>
+  <tr><th style="width:21%">PayPal API</th><th style="width:33%">Use</th><th>Implementation notes</th></tr>
+  <tr><td>Orders v2</td><td>Checkout on the shops; invoices between companies' agents.</td><td>The order carries <code>invoice_id</code> (<code>agentrix-saas/&lt;invoice number&gt;/&lt;cart mandate id&gt;</code>) and <code>custom_id</code> (the cart mandate id), so a capture can be tied to exactly one invoice and one mandate.</td></tr>
+  <tr><td>Payment Method Tokens (Vault v3)</td><td>A customer's agent, or another company, pays without a person present.</td><td>A setup token is approved once by the account holder and exchanged for a payment token. Later payments are merchant-initiated Orders v2 captures on that token and complete in a single call. The app needs the <code>vault/payment-tokens/readwrite</code> scope.</td></tr>
+  <tr><td>Payouts</td><td>Payroll and supplier bills; fallback rail when a vaulted token cannot be used.</td><td>The batch id is derived from the bill, so repeating a call returns the first result and pays once. The batch and item are read back for their final status.</td></tr>
+  <tr><td>Subscriptions</td><td>Agentrix's own monthly plans (USD 29, 79, 149).</td><td>A catalog product and billing plans are created through the API. The client supports create, revise, suspend, activate and cancel. A plan becomes active only after the signed activation event.</td></tr>
+  <tr><td>Payments v2</td><td>Read-back of captures; refunds.</td><td><code>GET /v2/payments/captures/{id}</code> is the source of truth for amount, status and payer. Refunds use <code>POST …/captures/{id}/refund</code> and are bounded by the unrefunded remainder.</td></tr>
+  <tr><td>Webhooks</td><td>Confirmation of captures, payouts and subscription events.</td><td>Each delivery is verified with <code>POST /v1/notifications/verify-webhook-signature</code> over the exact bytes received, de-duplicated by event id, and routed to the business whose sale it confirms.</td></tr>
+</table>
+
+<h3>5.1 Agent-to-agent settlement</h3>
+<figure>
+<svg viewBox="0 0 700 250" width="100%" role="img" aria-label="Settlement sequence">
+  <defs><marker id="b" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 8 4 0 8Z" fill="#38356d"/></marker></defs>
+  <g font-size="9.5" fill="#1c1a33">
+    <g font-weight="700" text-anchor="middle"><text x="80" y="14">Payee: Receivables</text><text x="250" y="14">Payer: agent door</text><text x="410" y="14">Payer: Payables</text><text x="560" y="14">PayPal</text><text x="660" y="14">Books</text></g>
+    <g stroke="#8a87b8" stroke-dasharray="3 3"><path d="M80 20 V246"/><path d="M250 20 V246"/><path d="M410 20 V246"/><path d="M560 20 V246"/><path d="M660 20 V246"/></g>
+    <g fill="none" stroke="#38356d" stroke-width="1.1" marker-end="url(#b)">
+      <path d="M80 40 H248"/><path d="M250 66 H408"/><path d="M410 92 H252"/><path d="M250 112 H82"/>
+      <path d="M410 142 H558"/><path d="M560 164 H412"/><path d="M410 190 H82"/><path d="M80 214 H658"/><path d="M410 234 H658"/>
+    </g>
+    <text x="164" y="35" text-anchor="middle">1. invoice_offer + cart mandate (signed, A2A)</text>
+    <text x="330" y="61" text-anchor="middle">2. verify signature, wake Payables</text>
+    <text x="330" y="87" text-anchor="middle">3. check intent mandate: amount, day total, payee</text>
+    <text x="164" y="107" text-anchor="middle">4. decision: will_settle | instalments | refused</text>
+    <text x="485" y="137" text-anchor="middle">5. Orders v2 capture on the vaulted token</text>
+    <text x="485" y="159" text-anchor="middle">6. COMPLETED, capture id</text>
+    <text x="245" y="185" text-anchor="middle">7. settlement_receipt with the capture id (signed, A2A)</text>
+    <text x="370" y="209" text-anchor="middle">8. payee posts the receipt under paypal:capture:&lt;id&gt;</text>
+    <text x="535" y="229" text-anchor="middle">9. payer posts the bill payment, same id</text>
+  </g>
+</svg>
+<figcaption>Figure 2. One invoice, one cart mandate, one capture. Both companies' books post under the same PayPal capture id. If the payer is short of funds, steps 4 to 7 become <code>instalment_propose</code>, <code>instalment_counter</code> and <code>instalment_accept</code>, and the kernel collects each instalment on its due date.</figcaption>
+</figure>
+
+<h3>5.2 Correctness under failure</h3>
+<ul>
+  <li><b>Lost responses.</b> If the node crashes or loses the response after sending a capture or payout, the outcome is marked unknown and resolved by reading PayPal back. The webhook path completes the same record, and the tests assert that both paths together post exactly once.</li>
+  <li><b>Duplicate and out-of-order events.</b> Events are de-duplicated by event id, and state only moves forward, so a resent older event changes nothing.</li>
+  <li><b>Forged events.</b> A body that fails PayPal's signature verification is answered with 401 and posts nothing.</li>
+  <li><b>Reconciliation.</b> Every hour the Payables agent re-reads each wallet entry from PayPal and signs a checkpoint that records whether the wallet and PayPal agree.</li>
+</ul>
+
+<h2>6. Evidence: wallet, books and audit</h2>
+<p>The money stays in PayPal. The wallet is a per-business, append-only log of entries (capture, fee, payout, refund), each with the PayPal id, the counterparty and the order or invoice it belongs to. Entries are hashed into a Merkle tree; each checkpoint signs the root and the result of reconciliation. A wallet entry is "three-way matched" when the wallet entry, PayPal's record and the journal in the books agree. An agent's badge points to the latest checkpoint, so anyone verifying the agent can see whether its wallet matches PayPal.</p>
+<p>Each business also keeps a signed audit log (adk-rust's audit log with signed checkpoints) of every model call, tool call, approval, denial and refusal. The log can be verified offline with <code>agentrix-saas audit verify &lt;log&gt; --key-file &lt;key&gt;</code>; changing one byte makes verification fail.</p>
+
+<h2>7. The customer path</h2>
+<p>A customer can order through the pages or in the conversation. When a visitor tells the front desk what they want (for example "I'd like two loaves"), the Orders desk resolves the product and quantity against the catalogue, checks the day's stock, prices the order from the live price list, and returns an order card in the chat with the lines, the total in local currency and US dollars, and a PayPal button. The button places the lines in the bag and proceeds to checkout, where the order is paid through PayPal. Paid orders are confirmed by the Cashier agent and can be tracked by order number.</p>
+<p>A customer's agent follows the same rules through the agent door. Requests that create obligations must be signed; the order records the proven agent identity, the proof method and who vouched for it. Custom orders are held for the owner and nothing is charged until the owner approves.</p>
+
+<h2>8. What ran, and what did not</h2>
+<div class="two">
+<div>
+<h3>Observed on the live sandbox build</h3>
+<table>
+  <tr><th>Measure (Wed 19:13 to Thu 17:45 EAT)</th><th>Value</th></tr>
+  <tr><td>Orders placed by customer agents</td><td>18</td></tr>
+  <tr><td>Orders paid with vaulted PayPal tokens</td><td>14 (USD 109.88)</td></tr>
+  <tr><td>Agent-door requests held for the owner</td><td>4, all signature-verified</td></tr>
+  <tr><td>Company-to-company settlements</td><td>8; the four we read back from PayPal's API were COMPLETED</td></tr>
+  <tr><td>Payroll payouts executed</td><td>6 batches</td></tr>
+  <tr><td>Wallet entries (shop), reconciled</td><td>64, matches PayPal</td></tr>
+  <tr><td>Signed audit log entries</td><td>more than 600, verified</td></tr>
+</table>
+<p style="font-size:9pt">Sample capture ids: <span class="mono">6TD70709N14510631</span>, <span class="mono">8BJ82878PA738453P</span>, <span class="mono">3LY77780T3786843D</span>, <span class="mono">0NJ18763Y60384645</span> (invoices INV-2026-0001 to 0004).</p>
+</div>
+<div>
+<h3>Known limitations</h3>
+<ul style="font-size:9.4pt">
+  <li>Sandbox only. The businesses, customers and staff are sample data.</li>
+  <li>The order card in the chat proceeds to checkout; payment is not yet completed inside the conversation, and checkout requires the customer to sign in.</li>
+  <li>No shop on the live build holds an approved PayPal subscription; the subscription plans exist and the lifecycle calls are implemented.</li>
+  <li>Supplier, courier and rider businesses are designed but not built.</li>
+  <li>Owner passkeys are not yet enrolled on the two money consoles of the judged build, so mandates there were signed with the owner key file.</li>
+  <li>The "Run the day" button on the judges' page runs on an isolated node with scripted model answers and in-memory books; its PayPal calls are real sandbox calls.</li>
+  <li>The platform company's cash figure on its console drifts from PayPal and is under investigation.</li>
+</ul>
+</div>
+</div>
+
+<h2>9. Stack</h2>
+<p>Rust (axum, tokio, sqlx/SQLite); adk-rust crates <code>adk-kernel</code>, <code>adk-agent</code>, <code>adk-runner</code>, <code>adk-graph</code>, <code>adk-guardrail</code>, <code>adk-memory</code>, <code>adk-auth</code>, <code>adk-awp</code>, <code>adk-sandbox</code> and <code>adk-server</code>; Anthropic Claude (Sonnet for the Chief and Receivables, Haiku for Payables) and Vultr Serverless Inference (Qwen for the front desks, Nemotron for content screening); Zavora ERA on PostgreSQL through <code>mcp-erp</code>; Caddy; AG Grid / AG Studio for the treasury board; one Vultr VM for the judged build, with a Vultr Kubernetes cluster prepared for one isolated node per business.</p>
+<p class="meta" style="margin-top:10pt">Reproduce and verify: the repository's README lists set-up, the audit verification command, and two scripts that call the live agent door (<code>specs/saas/video/verify.sh</code>, <code>impostor.sh</code>, <code>door.sh</code>). Sandbox evidence with PayPal ids is in <code>specs/saas/EVIDENCE.md</code> and <code>crates/saas-settle/SANDBOX.md</code>.</p>
+
+</body>
+</html>
