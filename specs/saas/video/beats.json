@@ -78,8 +78,8 @@
       "id": "b08",
       "pic": "clip:runday.mp4",
       "fallback": "title",
-      "start": 9.0,
-      "end": 32.5,
+      "start": 10.5,
+      "end": 34.9,
       "fit": "voice",
       "max_speed": 2.2,
       "badge": [
@@ -92,7 +92,7 @@
       "id": "b09",
       "pic": "clip:runday.mp4",
       "fallback": "title",
-      "start": 32.8,
+      "start": 35.3,
       "fit": "voice",
       "max_speed": 2.6,
       "badge": [
@@ -100,7 +100,7 @@
         "A scripted day, real PayPal sandbox calls"
       ],
       "say": "A bigger one arrives and Kilele is short, so the two sides agree instalments, and the first is collected on PayPal. A supplier is paid inside the mandate. A bill over the limit waits for the founder's passkey. And an email saying a supplier's bank details changed is refused.",
-      "end": 67.5
+      "end": 69.8
     },
     {
       "id": "b10",
