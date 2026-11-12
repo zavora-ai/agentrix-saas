@@ -20,7 +20,7 @@ sandbox: no real money moves.
 | [Kilele's agents](https://kilele-bakery-sample.paypal.agentrix.website/agents) | Each agent's badge: who it is, who answers for it, and its wallet record |
 | [Kilele's owner view](https://paypal.agentrix.website/samples/kilele-bakery-sample/) | What the owner sees: the morning brief, orders, and the decisions that wait for her |
 | [Agentrix's console](https://money.paypal.agentrix.website/console) | Agentrix is itself a company run by agents: its bills, mandate and settlements |
-| [The night, replayed](https://zavora-ai.github.io/agentrix-saas/specs/saas/video/replay.html) | Thirteen hours of unattended work in 18 seconds, played from a record read back from the live build and PayPal |
+| [The Autonomous WebAgent Payments Ecosystem, replayed](https://zavora-ai.github.io/agentrix-saas/specs/saas/video/replay.html) | Thirteen hours of unattended work in 18 seconds, played from a record read back from the live build and PayPal |
 | [Proofs](https://money.paypal.agentrix.website/proofs) | The signed audit log, the agents' public keys, and ten attacks that were refused |
 | [Status](https://paypal.agentrix.website/status) | Whether everything is working now |
 

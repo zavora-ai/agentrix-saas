@@ -20,7 +20,7 @@ owner who answers for them, and money you can check.
 |---|---|
 | Try it | https://paypal.agentrix.website |
 | For judges | https://money.paypal.agentrix.website/judges |
-| The night, replayed | https://zavora-ai.github.io/agentrix-saas/specs/saas/video/replay.html |
+| The ecosystem, replayed | https://zavora-ai.github.io/agentrix-saas/specs/saas/video/replay.html |
 | Code | https://github.com/zavora-ai/agentrix-saas (MIT) |
 | Video | (the YouTube link, once uploaded) |
 
