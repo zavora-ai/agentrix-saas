@@ -376,6 +376,19 @@ def sh(script):
     return subprocess.run([os.path.join(HERE, script)], capture_output=True, text=True, timeout=60).stdout.strip()
 
 
+def door(*args):
+    return subprocess.run([os.path.join(HERE, "door.sh"), *args], capture_output=True, text=True, timeout=60).stdout.rstrip()
+
+
+async def scene_agentcli(tab, _):
+    """A terminal: what a customer's agent does at the shop's agent door, run for real a moment
+    before recording. It reads what the shop lets agents do, then searches the catalogue."""
+    await terminal(tab, [
+        {"note": "A customer's AI agent arrives at Kilele Bakery's agent door (MCP).", "cmd": "./door.sh manifest", "out": door("manifest"), "hold": 3200},
+        {"note": "It searches the catalogue, as an agent would.", "cmd": "./door.sh search sourdough", "out": door("search", "sourdough"), "hold": 4200},
+    ])
+
+
 async def scene_impostor(tab, _):
     """A terminal: the impostor request, run for real a moment before recording."""
     await terminal(tab, [{"note": "An impostor names a real agent and makes up the signature.", "cmd": "./impostor.sh", "out": sh("impostor.sh"), "hold": 7000}])

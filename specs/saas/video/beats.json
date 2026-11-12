@@ -58,6 +58,19 @@
     },
     {
       "id": "b05",
+      "pic": "clip:agentcli.mp4",
+      "fallback": "title",
+      "start": 0.8,
+      "fit": "voice",
+      "max_speed": 2.2,
+      "badge": [
+        "Live",
+        "run against the deployed site"
+      ],
+      "say": "Now a different customer arrives: someone's AI agent. At the agent door, it reads what agents may do here, and searches the catalogue."
+    },
+    {
+      "id": "b05b",
       "pic": "clip:door.mp4",
       "fallback": "title",
       "start": 13.5,
@@ -66,7 +79,8 @@
         "Live",
         "Kilele Bakery, the owner's view"
       ],
-      "say": "Now a different customer arrives: someone's personal AI agent. It signs its request, and the shop checks who it is before it listens. Agents like this one have paid for fourteen orders with their saved PayPal. No human on either side."
+      "say": "It signs its request, and the shop checks who it is. Agents like this have paid for fourteen orders with saved PayPal, no human on either side.",
+      "max_speed": 2.0
     },
     {
       "id": "b06",
@@ -90,7 +104,7 @@
         "Live",
         "Kilele Bakery's money console"
       ],
-      "say": "She stays in control. She signs how much her agents may pay, each time and each day, and to whom. Inside those limits, the agents pay the staff. Anything bigger waits for her passkey. And she can switch any agent off.",
+      "say": "She stays in control. She signs how much her agents may pay each day, and to whom. Inside those limits, the agents pay the staff. Anything bigger waits for her passkey. And she can switch any agent off.",
       "max_speed": 2.0
     },
     {
