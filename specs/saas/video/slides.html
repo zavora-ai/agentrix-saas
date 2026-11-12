@@ -59,7 +59,10 @@ p.lead { font: 500 24px/1.4 "DM Sans"; color: var(--soft); max-width: 860px; mar
 .hero b { display: block; font: 800 44px/1.1 "Manrope"; letter-spacing: -.01em; }
 .hero span { display: block; font: 500 22px/1.3 "DM Sans"; color: var(--soft); margin-top: 8px; }
 .markspace { display: block; width: 86px; height: 93px; flex: none; }
-.tech { display: grid; grid-template-columns: 1fr 1fr; gap: 26px; margin-top: 16px; max-width: 1128px; }
+.tech { display: grid; grid-template-columns: 430px 1fr; gap: 30px; margin-top: 12px; max-width: 1128px; }
+.tech .tr { display: grid; grid-template-columns: 150px 1fr; gap: 10px; align-items: baseline; padding: 5px 0; border-bottom: 1px solid rgba(255,255,255,.09); }
+.tech .tr b { font-size: 14.5px; }
+.tech .tr span { font-size: 12.5px; margin-top: 0; }
 .tech h3 { font: 800 19px/1 "Manrope"; color: var(--gold); margin: 0 0 10px; letter-spacing: .01em; }
 .tech b { display: block; font: 800 17px/1.15 "Manrope"; }
 .tech span { display: block; font: 500 13.5px/1.3 "DM Sans"; color: var(--soft); margin-top: 3px; }
@@ -96,9 +99,10 @@ p.lead { font: 500 24px/1.4 "DM Sans"; color: var(--soft); max-width: 860px; mar
 </section>
 
 <section id="brief">
-  <div class="eyebrow">Each Chief reports to its owner</div>
-  <h2 style="font-size:40px">Tonight's brief, word for word</h2>
-  <div class="letters one">
+  <div class="eyebrow">Each website has a Chief agent</div>
+  <h2 style="font-size:36px">Each website has a Chief agent that briefs its owner</h2>
+  <p class="lead" style="font-size:18px;margin-top:8px">An example: the brief Kilele Bakery's Chief sent its owner, word for word.</p>
+  <div class="letters one" style="margin-top:12px">
     <div class="letter"><div class="from"><i class="k">K</i><div><b>Kilele Bakery: the Chief's brief</b><span>to the owner · Thursday 12 November 2026, 20:40 EAT · by Telegram and email</span></div></div><div class="body" data-brief="kilele"></div></div>
   </div>
 </section>
@@ -128,22 +132,71 @@ p.lead { font: 500 24px/1.4 "DM Sans"; color: var(--soft); max-width: 860px; mar
 
 <section id="tech">
   <div class="eyebrow">Under the hood</div>
-  <h2 style="font-size:38px">How it is built</h2>
+  <h2 style="font-size:34px">How it is built</h2>
   <div class="tech">
     <div class="col">
       <h3>The WebAgent platform</h3>
-      <div class="layer"><b>Websites</b><span>each business's own site, with its desks in the conversation</span></div>
-      <div class="layer"><b>Agent door</b><span>MCP and A2A for other agents; every request signed (RFC 9421)</span></div>
-      <div class="layer"><b>A kernel per business</b><span>adk-rust: its agents, schedules, approvals and signed audit log</span></div>
-      <div class="layer two"><div><b>PayPal</b><span>Orders, Vault, Payouts, Subscriptions, Webhooks</span></div><div><b>Books</b><span>Zavora ERA, every payment a journal</span></div></div>
+      <div class="tr"><b>Websites</b><span>each business's site, its desks in the conversation</span></div>
+      <div class="tr"><b>Agent door</b><span>MCP and A2A, every request signed (RFC 9421)</span></div>
+      <div class="tr"><b>A kernel per business</b><span>adk-rust: agents, schedules, approvals, audit</span></div>
+      <div class="tr"><b>PayPal and the books</b><span>Orders, Vault, Payouts, Subscriptions; Zavora ERA</span></div>
+      <h3 style="margin-top:14px">Inside one agent</h3>
+      <div class="tr"><b>Identity</b><span>did:web badge; tokens the clouds accept (adk-auth)</span></div>
+      <div class="tr"><b>Mandate</b><span>AP2-style limits the owner signs</span></div>
+      <div class="tr"><b>Governed tools</b><span>rules decide if money moves (adk-guardrail)</span></div>
+      <div class="tr"><b>Memory, audit, wallet</b><span>signed log; wallet matched to PayPal</span></div>
     </div>
     <div class="col">
-      <h3>Inside one agent</h3>
-      <div class="part"><i>1</i><div><b>Identity</b><span>a did:web badge signed by the owner; tokens the clouds accept (adk-auth)</span></div></div>
-      <div class="part"><i>2</i><div><b>Mandate</b><span>AP2-style limits the owner signs: per payment, per day, to whom</span></div></div>
-      <div class="part"><i>3</i><div><b>Governed tools</b><span>rules decide whether money moves, never the model's word (adk-guardrail)</span></div></div>
-      <div class="part"><i>4</i><div><b>Memory and audit</b><span>what it knows of each counterparty; every action in a signed log</span></div></div>
-      <div class="part"><i>5</i><div><b>Wallet</b><span>each move it makes, matched against PayPal's own record</span></div></div>
+      <h3>Multi-agent payments</h3>
+      <svg viewBox="0 0 640 380" width="640" height="380" role="img" aria-label="Agents of two businesses and a customer's agent paying through PayPal">
+        <defs><marker id="ah" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 8 4 0 8Z" fill="#8fb8ff"/></marker></defs>
+        <g font-family="DM Sans, sans-serif" fill="#f3f2fb">
+          <rect x="6" y="20" width="150" height="74" rx="12" fill="#25224a" stroke="#4a4690" stroke-width="1.5"/>
+          <text x="81" y="50" text-anchor="middle" font-family="Manrope" font-weight="800" font-size="15">Customer's agent</text>
+          <text x="81" y="72" text-anchor="middle" font-size="12" fill="#c9c7e6">badge · signs requests</text>
+          <rect x="216" y="6" width="214" height="176" rx="14" fill="#2c2960" stroke="#ff4f6d" stroke-width="2"/>
+          <text x="323" y="30" text-anchor="middle" font-family="Manrope" font-weight="800" font-size="15">A shop's agents</text>
+          <rect x="268" y="42" width="110" height="30" rx="15" fill="#ff4f6d"/><text x="323" y="62" text-anchor="middle" font-weight="700" font-size="13">Chief</text>
+          <rect x="228" y="86" width="90" height="28" rx="14" fill="#38356d"/><text x="273" y="105" text-anchor="middle" font-size="12.5" font-weight="700">Cashier</text>
+          <rect x="328" y="86" width="90" height="28" rx="14" fill="#38356d"/><text x="373" y="105" text-anchor="middle" font-size="12.5" font-weight="700">Payables</text>
+          <rect x="228" y="122" width="90" height="28" rx="14" fill="#38356d"/><text x="273" y="141" text-anchor="middle" font-size="12.5" font-weight="700">Receivables</text>
+          <rect x="328" y="122" width="90" height="28" rx="14" fill="#38356d"/><text x="373" y="141" text-anchor="middle" font-size="12.5" font-weight="700">Support</text>
+          <text x="323" y="170" text-anchor="middle" font-size="11.5" fill="#ffcf5a">each inside the owner's mandate</text>
+          <rect x="484" y="20" width="150" height="110" rx="12" fill="#25224a" stroke="#4a4690" stroke-width="1.5"/>
+          <text x="559" y="46" text-anchor="middle" font-family="Manrope" font-weight="800" font-size="15">Agentrix's agents</text>
+          <rect x="504" y="58" width="110" height="26" rx="13" fill="#38356d"/><text x="559" y="76" text-anchor="middle" font-size="12.5" font-weight="700">Receivables</text>
+          <rect x="504" y="92" width="110" height="26" rx="13" fill="#38356d"/><text x="559" y="110" text-anchor="middle" font-size="12.5" font-weight="700">Payables</text>
+          <rect x="6" y="228" width="150" height="64" rx="12" fill="#25224a" stroke="#ffcf5a" stroke-width="1.5"/>
+          <text x="81" y="254" text-anchor="middle" font-family="Manrope" font-weight="800" font-size="15">The owner</text>
+          <text x="81" y="275" text-anchor="middle" font-size="12" fill="#c9c7e6">passkey</text>
+          <rect x="216" y="236" width="418" height="56" rx="12" fill="#17305c" stroke="#8fb8ff" stroke-width="1.5"/>
+          <text x="425" y="260" text-anchor="middle" font-family="Manrope" font-weight="800" font-size="15">PayPal</text>
+          <text x="425" y="280" text-anchor="middle" font-size="12" fill="#c9c7e6">Orders · Vault · Payouts · Subscriptions · Webhooks</text>
+          <rect x="216" y="322" width="200" height="46" rx="12" fill="#25224a" stroke="#4a4690" stroke-width="1.5"/>
+          <text x="316" y="350" text-anchor="middle" font-size="13" font-weight="700">Both companies' books</text>
+          <rect x="434" y="322" width="200" height="46" rx="12" fill="#25224a" stroke="#4a4690" stroke-width="1.5"/>
+          <text x="534" y="350" text-anchor="middle" font-size="13" font-weight="700">Signed audit logs</text>
+        </g>
+        <g fill="none" stroke="#8fb8ff" stroke-width="2" marker-end="url(#ah)">
+          <path d="M156 57 H214"/>
+          <path d="M432 70 H482" marker-start="url(#ah)"/>
+          <path d="M273 184 V234"/>
+          <path d="M373 184 V234"/>
+          <path d="M559 132 V234"/>
+          <path d="M81 226 V140 H214"/>
+          <path d="M316 294 V320"/>
+          <path d="M534 294 V320"/>
+        </g>
+        <g font-family="DM Sans, sans-serif" font-size="11" fill="#c9c7e6">
+          <text x="185" y="49" text-anchor="middle">order</text>
+          <text x="457" y="60" text-anchor="middle">invoice,</text><text x="457" y="92" text-anchor="middle">mandate</text>
+          <text x="266" y="214" text-anchor="end">capture</text>
+          <text x="380" y="214">payout</text>
+          <text x="566" y="190">capture</text>
+          <text x="88" y="190">signs mandate,</text><text x="88" y="204">approves the rest</text>
+          <text x="324" y="312">one PayPal id</text>
+        </g>
+      </svg>
     </div>
   </div>
 </section>

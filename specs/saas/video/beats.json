@@ -137,12 +137,18 @@
         "Live",
         "Agentrix"
       ],
-      "say": "And this is my business. Agentrix sells these agents by subscription, through PayPal. Kilele's agents pay mine for what they use, every three hours, with no invoice sent by hand."
+      "say": "And this is my business. Agentrix sells these agents as monthly plans, set up as PayPal subscriptions, and Kilele's agents pay mine, agent to agent."
     },
     {
       "id": "b12",
       "pic": "slide:brief",
-      "say": "Each Chief briefs its owner. This is the one Kilele's Chief sent tonight, word for word."
+      "say": "Each website has a Chief agent that briefs its owner. Here is an example, word for word."
+    },
+    {
+      "id": "b14",
+      "pic": "slide:tech",
+      "say": "Under the hood, every agent runs on adk-rust: an identity, a mandate its owner signed, governed tools and an audit log, on PayPal.",
+      "speak": "Under the hood, every agent runs on A D K Rust: an identity, a mandate its owner signed, governed tools and an audit log, on PayPal."
     },
     {
       "id": "b13",
@@ -151,12 +157,6 @@
       "min": 7,
       "say": "Agentrix WebAgent Platform. A payments ecosystem of autonomous agents: proactive, responsive and supportive.",
       "speak": "Agentrix WebAgent Platform. A payments ecosystem of autonomous agents: proactive, responsive and supportive."
-    },
-    {
-      "id": "b14",
-      "pic": "slide:tech",
-      "say": "Under the hood: every agent runs on adk-rust, with a verifiable identity, a mandate its owner signed, governed tools and a signed audit log, on PayPal.",
-      "speak": "Under the hood: every agent runs on A D K Rust, with a verifiable identity, a mandate its owner signed, governed tools and a signed audit log, on PayPal."
     }
   ]
 }
