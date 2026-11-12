@@ -34,6 +34,20 @@ p.lead { font: 500 24px/1.4 "DM Sans"; color: var(--soft); max-width: 860px; mar
 .three u { display: block; text-decoration: none; font: 800 44px/1 "Manrope"; color: var(--rose); }
 .three b { display: block; font: 800 23px/1.15 "Manrope"; margin-top: 14px; }
 .three span { display: block; font: 500 16px/1.4 "DM Sans"; color: var(--soft); margin-top: 8px; }
+.letters { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 18px; max-width: 1128px; }
+.letters .letter { margin-top: 0; padding: 16px 20px 16px; }
+.letters.one { grid-template-columns: 1fr; max-width: 860px; }
+.letters.one .body { font-size: 16.5px; column-count: 1; }
+.letters .from { padding-bottom: 10px; }
+.letters .from b { font-size: 17px; }
+.letters .from span { font-size: 12.5px; }
+.letters .from img { width: 38px; height: 41px; }
+.letter .from i.k { width: 38px; height: 38px; border-radius: 11px; background: #b45309; color: #fff; font: 800 20px/38px "Manrope"; text-align: center; font-style: normal; flex: none; }
+.letter .body { margin-top: 10px; font: 500 14.5px/1.42 "DM Sans"; }
+.letter .body .h { font: 800 12px/1 "Manrope"; letter-spacing: .1em; text-transform: uppercase; color: #de4060; margin: 9px 0 3px; }
+.letter .body .t { font-weight: 700; margin-bottom: 2px; }
+.letter .body .li { padding-left: 12px; text-indent: -12px; }
+.letter .body .c { margin-top: 8px; color: #45426e; font-style: italic; }
 .letter { margin-top: 26px; max-width: 1128px; background: #f6f4ff; color: #1f1d3d; border-radius: 20px; padding: 22px 28px 24px; box-shadow: 0 18px 44px rgba(0,0,0,.4); }
 .letter .from { display: flex; align-items: center; gap: 14px; padding-bottom: 14px; border-bottom: 1.5px solid #dcd9f5; }
 .letter .from img { width: 46px; height: 50px; }
@@ -45,6 +59,14 @@ p.lead { font: 500 24px/1.4 "DM Sans"; color: var(--soft); max-width: 860px; mar
 .hero b { display: block; font: 800 44px/1.1 "Manrope"; letter-spacing: -.01em; }
 .hero span { display: block; font: 500 22px/1.3 "DM Sans"; color: var(--soft); margin-top: 8px; }
 .markspace { display: block; width: 86px; height: 93px; flex: none; }
+.tech { display: grid; grid-template-columns: 1fr 1fr; gap: 26px; margin-top: 16px; max-width: 1128px; }
+.tech h3 { font: 800 19px/1 "Manrope"; color: var(--gold); margin: 0 0 10px; letter-spacing: .01em; }
+.tech b { display: block; font: 800 17px/1.15 "Manrope"; }
+.tech span { display: block; font: 500 13.5px/1.3 "DM Sans"; color: var(--soft); margin-top: 3px; }
+.layer { background: var(--panel); border: 1.5px solid var(--line); border-radius: 13px; padding: 10px 14px; margin-bottom: 8px; position: relative; }
+.layer.two { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.part { display: grid; grid-template-columns: 32px 1fr; gap: 12px; align-items: center; background: var(--panel); border: 1.5px solid var(--line); border-radius: 13px; padding: 8px 14px; margin-bottom: 7px; }
+.part i { width: 30px; height: 30px; border-radius: 50%; background: var(--rose); color: #fff; font: 800 15px/30px "Manrope"; text-align: center; font-style: normal; }
 .links { margin-top: 28px; display: grid; gap: 10px; font: 700 24px/1.2 "Manrope"; }
 .links span { color: var(--gold); }
 </style>
@@ -74,11 +96,10 @@ p.lead { font: 500 24px/1.4 "DM Sans"; color: var(--soft); max-width: 860px; mar
 </section>
 
 <section id="brief">
-  <div class="eyebrow">The Chief runs the company</div>
-  <h2>My brief to the founder, word for word</h2>
-  <div class="letter">
-    <div class="from"><img src="chief.svg" alt=""><div><b>Agentrix: the Chief's brief</b><span>Thursday 12 November 2026 · sent to the founder by Telegram and email</span></div></div>
-    <p>Brief as of 2026-11-12: Customers owe USD 0.00, nothing late. The company owes USD 0.41: seven Anthropic bills (0.09, 0.08, 0.07, 0.06, 0.05, 0.03, 0.03), due 11-18 and 11-19. None has a payee on file, so they can't be paid until you add one. <mark>The USD 120.00 staff payroll bill from the last brief is no longer open. I did not pay it, so please confirm how it was settled.</mark> Debt plans running: 0. Waiting for you: the Anthropic payee, and confirmation of the payroll bill.</p>
+  <div class="eyebrow">Each Chief reports to its owner</div>
+  <h2 style="font-size:40px">Tonight's brief, word for word</h2>
+  <div class="letters one">
+    <div class="letter"><div class="from"><i class="k">K</i><div><b>Kilele Bakery: the Chief's brief</b><span>to the owner · Thursday 12 November 2026, 20:40 EAT · by Telegram and email</span></div></div><div class="body" data-brief="kilele"></div></div>
   </div>
 </section>
 
@@ -105,6 +126,28 @@ p.lead { font: 500 24px/1.4 "DM Sans"; color: var(--soft); max-width: 860px; mar
   <div class="note"><b>The signature covers exactly what is shown.</b> In our attack suite the founder approved USD 800 and the agent then asked for USD 750: the edit was held as a new call and the approval was void. Neither paid.</div>
 </section>
 
+<section id="tech">
+  <div class="eyebrow">Under the hood</div>
+  <h2 style="font-size:38px">How it is built</h2>
+  <div class="tech">
+    <div class="col">
+      <h3>The WebAgent platform</h3>
+      <div class="layer"><b>Websites</b><span>each business's own site, with its desks in the conversation</span></div>
+      <div class="layer"><b>Agent door</b><span>MCP and A2A for other agents; every request signed (RFC 9421)</span></div>
+      <div class="layer"><b>A kernel per business</b><span>adk-rust: its agents, schedules, approvals and signed audit log</span></div>
+      <div class="layer two"><div><b>PayPal</b><span>Orders, Vault, Payouts, Subscriptions, Webhooks</span></div><div><b>Books</b><span>Zavora ERA, every payment a journal</span></div></div>
+    </div>
+    <div class="col">
+      <h3>Inside one agent</h3>
+      <div class="part"><i>1</i><div><b>Identity</b><span>a did:web badge signed by the owner; tokens the clouds accept (adk-auth)</span></div></div>
+      <div class="part"><i>2</i><div><b>Mandate</b><span>AP2-style limits the owner signs: per payment, per day, to whom</span></div></div>
+      <div class="part"><i>3</i><div><b>Governed tools</b><span>rules decide whether money moves, never the model's word (adk-guardrail)</span></div></div>
+      <div class="part"><i>4</i><div><b>Memory and audit</b><span>what it knows of each counterparty; every action in a signed log</span></div></div>
+      <div class="part"><i>5</i><div><b>Wallet</b><span>each move it makes, matched against PayPal's own record</span></div></div>
+    </div>
+  </div>
+</section>
+
 <section id="close">
   <div class="eyebrow">PayPal AI Hackathon · Zavora</div>
   <h1 style="font-size:58px">Agentrix WebAgent Platform</h1>
@@ -117,7 +160,21 @@ p.lead { font: 500 24px/1.4 "DM Sans"; color: var(--soft); max-width: 860px; mar
   </div>
   <div class="note">Everything ran on the PayPal sandbox: no real money moved. The businesses and shoppers are made up. The narration was written from the run's record and is spoken by a text-to-speech model, as Agentrix's Chief.</div>
 </section>
+<script src="briefs.js"></script>
 <script>
+// The briefs as the Chiefs sent them (briefs.py reads them from the server): a heading line, the
+// People, Agents and Today sections with their lines, and the Chief's own closing sentence.
+for (const box of document.querySelectorAll("[data-brief]")) {
+  const text = (window.BRIEFS || {})[box.dataset.brief] || "";
+  text.split(/\n+/).map(l => l.trim()).filter(Boolean).forEach((line, i) => {
+    const d = document.createElement("div");
+    if (i === 0) d.className = "t";
+    else if (/^(People|Agents|Today)$/.test(line)) d.className = "h";
+    else if (/^[-\u2022]\s/.test(line)) { d.className = "li"; line = "\u2022 " + line.replace(/^[-\u2022]\s+/, ""); }
+    else d.className = "c";
+    d.textContent = line; box.appendChild(d);
+  });
+}
 const s = new URLSearchParams(location.search).get("s") || "title";
 document.getElementById(s)?.classList.add("on");
 window.ready = document.fonts.ready.then(() => true);

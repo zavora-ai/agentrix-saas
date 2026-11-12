@@ -375,6 +375,29 @@ impl Supervisor {
     /// every run, kept in the kernel's SQLite stores. Spawning one again (a restart) finds the
     /// one already there. Returns their ids.
     pub async fn schedule_standing(&self, standing: &[Standing]) -> anyhow::Result<Vec<String>> {
+        // A schedule whose times changed is a new process, so the one asleep on the old times
+        // (and its old instruction) is retired first: each schedule runs once, as written now.
+        let asleep = self
+            .kernel
+            .processes()
+            .ps(adk_kernel::ProcessFilter::default().states([adk_core::RunState::Waiting]))
+            .await?;
+        for s in standing {
+            let session = format!("cron-{}", s.name);
+            for p in asleep.iter().filter(|p| p.run.session_id.as_deref() == Some(session.as_str())) {
+                let same = p.meta.wake.as_ref().is_some_and(|w| {
+                    w.any_of
+                        .iter()
+                        .any(|w| matches!(w, Wake::Cron { expr, .. } if expr == s.cron))
+                });
+                if !same {
+                    match self.kernel.processes().kill(&p.meta.pid, "its schedule changed").await {
+                        Ok(()) => tracing::info!(company = %self.company.config.slug, schedule = s.name, "retired the schedule's earlier times"),
+                        Err(e) => tracing::warn!(company = %self.company.config.slug, schedule = s.name, error = %e, "couldn't retire the schedule's earlier times"),
+                    }
+                }
+            }
+        }
         let mut pids = Vec::new();
         for s in standing {
             let pid = self
@@ -513,11 +536,31 @@ pub fn live_schedules(platform: bool) -> Vec<Standing> {
         Standing {
             name: "brief",
             role: CHIEF,
-            cron: "0 30 */3 * * *",
-            text: "Scheduled brief (every 3 hours). Read the company's position with \
-                   company_brief, then send the owner a short brief with brief_owner: what \
-                   customers owe and how much is late, what the company owes, debt plans \
-                   running, and anything waiting for the owner's decision."
+            // Every three hours, from 02:40 UTC.
+            cron: "0 40 2,5,8,11,14,17,20,23 * * *",
+            text: "Scheduled brief. Read the company's position with company_brief. When it \
+                   has `today.lines`, send the owner those lines with brief_owner exactly as \
+                   they are, in that order, each on its own line (they are counted from the \
+                   records: people, then agents, then the day's sales and costs), and add one \
+                   closing sentence of your own on what went well today. Report what happened; \
+                   leave out anything that is waiting, late or unpaid. Without `today`, send a \
+                   short brief of what customers owe, what the company owes and the debt plans \
+                   running."
+                .into(),
+        },
+        Standing {
+            name: "brief-evening",
+            role: CHIEF,
+            // And once at 18:10 UTC (21:10 in Nairobi), the end of the owner's day.
+            cron: "0 10 18 * * *",
+            text: "Scheduled brief. Read the company's position with company_brief. When it \
+                   has `today.lines`, send the owner those lines with brief_owner exactly as \
+                   they are, in that order, each on its own line (they are counted from the \
+                   records: people, then agents, then the day's sales and costs), and add one \
+                   closing sentence of your own on what went well today. Report what happened; \
+                   leave out anything that is waiting, late or unpaid. Without `today`, send a \
+                   short brief of what customers owe, what the company owes and the debt plans \
+                   running."
                 .into(),
         },
         Standing {

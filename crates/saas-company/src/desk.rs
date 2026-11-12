@@ -209,6 +209,12 @@ pub trait Outside: Send + Sync {
     async fn post_payroll(&self) -> anyhow::Result<Value> {
         anyhow::bail!("this node runs no payroll")
     }
+    /// Today at the company, for the Chief's brief: what people did, what agents did, and the
+    /// day's sales and costs, with the brief's lines already written from those figures
+    /// (`lines`).
+    async fn day_report(&self) -> anyhow::Result<Value> {
+        anyhow::bail!("this node keeps no day report")
+    }
 }
 
 /// Where agreed debt plans are kept, so a restarted node still knows what each instalment's
@@ -428,7 +434,17 @@ impl Desk {
         let today = self.today();
         let ar = self.books.ar_ageing(today).await?;
         let ap = self.books.ap_ageing(today).await?;
+        // The day's figures, where the node keeps them; the brief is written from these.
+        let day = match self.outside() {
+            Ok(outside) => outside
+                .day_report()
+                .await
+                .inspect_err(|e| tracing::debug!(error = %format!("{e:#}"), "no day report"))
+                .ok(),
+            Err(_) => None,
+        };
         Ok(json!({
+            "today": day,
             "company": self.company.as_str(),
             "as_of": today,
             "owed_to_us": ar.totals.total()?.to_string(),

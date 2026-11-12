@@ -1707,3 +1707,102 @@ pub fn state_words(state: &str) -> &'static str {
         _ => "in progress",
     }
 }
+
+/// One day at a site, for the Chief's brief to the owner: what people did, what agents did, and
+/// what was taken in. An order is an agent's when an agent proved itself at the agent door for
+/// it, or when the customer who placed it is a customer's agent.
+#[derive(Debug, Clone, Default, PartialEq, Eq, Serialize)]
+pub struct DayActivity {
+    /// Orders people placed (not declined, lapsed or cancelled), and their total.
+    pub people_orders: i64,
+    /// In the site's minor units.
+    pub people_orders_minor: i64,
+    /// Refunds made on people's orders, and their total.
+    pub people_refunds: i64,
+    /// In the site's minor units.
+    pub people_refunds_minor: i64,
+    /// Questions people asked that the desks passed to the owner.
+    pub questions_passed: i64,
+    /// Requests agents made at the agent door.
+    pub agent_requests: i64,
+    /// Of those, the ones whose agent proved who it was.
+    pub agent_requests_verified: i64,
+    /// How many different agents ordered or asked.
+    pub agents: i64,
+    /// Orders agents placed and paid, and their total.
+    pub agent_orders: i64,
+    /// In the site's minor units.
+    pub agent_orders_minor: i64,
+    /// Refunds made on agents' orders, and their total.
+    pub agent_refunds: i64,
+    /// In the site's minor units.
+    pub agent_refunds_minor: i64,
+    /// Payments captured, and their total in US cents.
+    pub payments: i64,
+    /// US cents.
+    pub payments_usd_cents: i64,
+}
+
+impl Records {
+    /// What happened at `site` since `since` (a Unix time): see [`DayActivity`]. An order is an
+    /// agent's when it has a proven agent, came through the agent door, or was placed by a
+    /// customer's agent's account.
+    pub async fn day_activity(&self, site: &str, since: i64) -> anyhow::Result<DayActivity> {
+        let (people_orders, people_orders_minor, agent_orders, agent_orders_minor, agent_requests, agent_requests_verified, agents): (i64, i64, i64, i64, i64, i64, i64) = sqlx::query_as(
+            "SELECT
+               COALESCE(SUM(CASE WHEN NOT (o.agent_id IS NOT NULL OR o.channel = 'agent door' OR o.contact_name LIKE '%customer agent)') AND o.state NOT IN ('declined', 'lapsed', 'cancelled') THEN 1 ELSE 0 END), 0),
+               COALESCE(SUM(CASE WHEN NOT (o.agent_id IS NOT NULL OR o.channel = 'agent door' OR o.contact_name LIKE '%customer agent)') AND o.state NOT IN ('declined', 'lapsed', 'cancelled') THEN o.total_minor ELSE 0 END), 0),
+               COALESCE(SUM(CASE WHEN (o.agent_id IS NOT NULL OR o.channel = 'agent door' OR o.contact_name LIKE '%customer agent)') AND o.state IN ('paid', 'baking', 'ready', 'out', 'delivered', 'collected') THEN 1 ELSE 0 END), 0),
+               COALESCE(SUM(CASE WHEN (o.agent_id IS NOT NULL OR o.channel = 'agent door' OR o.contact_name LIKE '%customer agent)') AND o.state IN ('paid', 'baking', 'ready', 'out', 'delivered', 'collected') THEN o.total_minor ELSE 0 END), 0),
+               COALESCE(SUM(CASE WHEN o.channel = 'agent door' THEN 1 ELSE 0 END), 0),
+               COALESCE(SUM(CASE WHEN o.channel = 'agent door' AND o.agent_proof_method IS NOT NULL THEN 1 ELSE 0 END), 0),
+               COUNT(DISTINCT CASE WHEN (o.agent_id IS NOT NULL OR o.channel = 'agent door' OR o.contact_name LIKE '%customer agent)') THEN o.contact_name END)
+             FROM rec_orders o WHERE o.site = ? AND o.created_at >= ?",
+        )
+        .bind(site)
+        .bind(since)
+        .fetch_one(self.pool())
+        .await?;
+        let (people_refunds, people_refunds_minor, agent_refunds, agent_refunds_minor): (i64, i64, i64, i64) = sqlx::query_as(
+            "SELECT
+               COALESCE(SUM(CASE WHEN NOT (o.agent_id IS NOT NULL OR o.channel = 'agent door' OR o.contact_name LIKE '%customer agent)') THEN 1 ELSE 0 END), 0),
+               COALESCE(SUM(CASE WHEN NOT (o.agent_id IS NOT NULL OR o.channel = 'agent door' OR o.contact_name LIKE '%customer agent)') THEN r.amount_minor ELSE 0 END), 0),
+               COALESCE(SUM(CASE WHEN (o.agent_id IS NOT NULL OR o.channel = 'agent door' OR o.contact_name LIKE '%customer agent)') THEN 1 ELSE 0 END), 0),
+               COALESCE(SUM(CASE WHEN (o.agent_id IS NOT NULL OR o.channel = 'agent door' OR o.contact_name LIKE '%customer agent)') THEN r.amount_minor ELSE 0 END), 0)
+             FROM rec_refunds r JOIN rec_orders o ON o.site = r.site AND o.order_id = r.order_id
+             WHERE r.site = ? AND r.created_at >= ? AND r.state = 'done'",
+        )
+        .bind(site)
+        .bind(since)
+        .fetch_one(self.pool())
+        .await?;
+        let (questions_passed,): (i64,) = sqlx::query_as("SELECT COUNT(*) FROM rec_questions WHERE site = ? AND created_at >= ?")
+            .bind(site)
+            .bind(since)
+            .fetch_one(self.pool())
+            .await?;
+        let (payments, payments_usd_cents): (i64, i64) = sqlx::query_as(
+            "SELECT COUNT(*), COALESCE(SUM(amount_minor), 0) FROM rec_payments WHERE site = ? AND created_at >= ? AND state = 'captured' AND currency = 'USD'",
+        )
+        .bind(site)
+        .bind(since)
+        .fetch_one(self.pool())
+        .await?;
+        Ok(DayActivity {
+            people_orders,
+            people_orders_minor,
+            people_refunds,
+            people_refunds_minor,
+            questions_passed,
+            agent_requests,
+            agent_requests_verified,
+            agents,
+            agent_orders,
+            agent_orders_minor,
+            agent_refunds,
+            agent_refunds_minor,
+            payments,
+            payments_usd_cents,
+        })
+    }
+}

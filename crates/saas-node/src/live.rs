@@ -242,6 +242,163 @@ impl Outside for NodeOutside {
         }))
     }
 
+    async fn day_report(&self) -> anyhow::Result<Value> {
+        // The owner's day is Nairobi's.
+        let nairobi = chrono::FixedOffset::east_opt(3 * 3600).expect("three hours east is a valid offset");
+        let now = Utc::now().with_timezone(&nairobi);
+        let today = now.date_naive();
+        let since = today
+            .and_hms_opt(0, 0, 0)
+            .and_then(|t| t.and_local_timezone(nairobi).single())
+            .map_or(0, |t| t.timestamp());
+        let usd = |cents: i64| format!("USD {}.{:02}", cents / 100, cents % 100);
+        let plural = |n: i64, one: &str, many: &str| format!("{n} {}", if n == 1 { one } else { many });
+        let name = if self.company == CompanyId::kilele() {
+            "Kilele Bakery"
+        } else {
+            "Agentrix"
+        };
+
+        // Costs: the bills dated today, by who they are owed to.
+        let vendors: HashMap<String, String> = self
+            .books
+            .vendors()
+            .await
+            .map(|v| v.into_iter().map(|v| (v.id.to_string(), v.counterparty.name)).collect())
+            .unwrap_or_default();
+        let mut costs: Vec<(String, i64)> = Vec::new();
+        for bill in self.books.bills(&saas_core::books::DocumentFilter::default()).await? {
+            if bill.issue_date != today {
+                continue;
+            }
+            let who = vendors
+                .get(&bill.vendor.to_string())
+                .cloned()
+                .unwrap_or_else(|| "other".to_owned());
+            match costs.iter_mut().find(|(n, _)| *n == who) {
+                Some((_, cents)) => *cents += bill.total.minor,
+                None => costs.push((who, bill.total.minor)),
+            }
+        }
+        costs.sort_by_key(|(_, cents)| std::cmp::Reverse(*cents));
+        let cost_total: i64 = costs.iter().map(|(_, c)| c).sum();
+        let cost_words = if costs.is_empty() {
+            "none today.".to_owned()
+        } else {
+            format!(
+                "{} ({}).",
+                usd(cost_total),
+                costs.iter().map(|(n, c)| format!("{n} {}", usd(*c))).collect::<Vec<_>>().join(", ")
+            )
+        };
+
+        // A company with a site: what people and agents did there today.
+        let site = crate::samples::joined()
+            .into_iter()
+            .find(|(_, c)| *c == self.company)
+            .map(|(s, _)| s);
+        let activity = match site {
+            Some(site) => agentrix_samples::held::day_activity(site, since)
+                .await
+                .inspect_err(|e| tracing::debug!(error = %format!("{e:#}"), "no site activity for the day report"))
+                .ok()
+                .flatten()
+                .map(|(a, currency)| (site, a, currency)),
+            None => None,
+        };
+        let mut lines = vec![format!("{name}, {}", today.format("%A %-d %B %Y"))];
+        let mut figures = json!({ "costs_usd_cents": cost_total });
+        if let Some((site, a, currency)) = activity {
+            let visits: i64 = match &self.control {
+                Some(control) => sqlx::query_scalar("SELECT COALESCE(SUM(visits), 0) FROM visit_counts WHERE site_id = ? AND day = ?")
+                    .bind(site)
+                    .bind(today.to_string())
+                    .fetch_one(control)
+                    .await
+                    .unwrap_or(0),
+                None => 0,
+            };
+            let local = |minor: i64| agentrix_records::money::fmt(&currency, minor);
+            lines.push("People".into());
+            lines.push(format!(
+                "- Engagements: {} to the site{}.",
+                plural(visits, "visit", "visits"),
+                if a.questions_passed > 0 { format!("; {} passed to you", plural(a.questions_passed, "question", "questions")) } else { String::new() }
+            ));
+            lines.push(if a.people_orders > 0 {
+                format!("- Orders: {} placed, {}.", a.people_orders, local(a.people_orders_minor))
+            } else {
+                "- Orders: none today.".into()
+            });
+            lines.push(if a.people_refunds > 0 {
+                format!("- Refunds: {}, {}.", a.people_refunds, local(a.people_refunds_minor))
+            } else {
+                "- Refunds: none.".into()
+            });
+            lines.push("Agents".into());
+            lines.push(if a.agent_requests > 0 || a.agents > 0 {
+                format!(
+                    "- Engagements: {} served; {} at the agent door, {} with a verified signature.",
+                    plural(a.agents, "agent", "agents"),
+                    plural(a.agent_requests, "request", "requests"),
+                    a.agent_requests_verified
+                )
+            } else {
+                "- Engagements: none today.".into()
+            });
+            lines.push(if a.agent_orders > 0 {
+                format!("- Orders: {} placed and paid, {}.", a.agent_orders, local(a.agent_orders_minor))
+            } else {
+                "- Orders: none today.".into()
+            });
+            lines.push(if a.agent_refunds > 0 {
+                format!("- Complaints and refunds: {}, {}.", plural(a.agent_refunds, "refund", "refunds"), local(a.agent_refunds_minor))
+            } else {
+                "- Complaints and refunds: none.".into()
+            });
+            lines.push("Today".into());
+            lines.push(format!(
+                "- Sales: {} from {} through PayPal.",
+                usd(a.payments_usd_cents),
+                plural(a.payments, "payment", "payments")
+            ));
+            lines.push(format!("- Costs: {cost_words}"));
+            figures["site"] = serde_json::to_value(&a)?;
+            figures["visits"] = json!(visits);
+            figures["sales_usd_cents"] = json!(a.payments_usd_cents);
+        } else {
+            // A company without a shop site: its customers are other companies' agents.
+            let invoices: Vec<_> = self
+                .books
+                .invoices(&saas_core::books::DocumentFilter::default())
+                .await?
+                .into_iter()
+                .filter(|i| i.issue_date == today)
+                .collect();
+            let settled: Vec<_> = invoices.iter().filter(|i| i.balance_due.minor == 0).collect();
+            let sales: i64 = settled.iter().map(|i| i.total.minor).sum();
+            lines.push("People".into());
+            lines.push("- Engagements, orders and refunds: none today; this company sells to other companies' agents.".into());
+            lines.push("Agents".into());
+            lines.push(format!(
+                "- Engagements: {} offered at customers' agent doors.",
+                plural(invoices.len() as i64, "invoice", "invoices")
+            ));
+            lines.push(if settled.is_empty() {
+                "- Orders: none settled today.".into()
+            } else {
+                format!("- Orders: {} settled agent to agent, {}.", plural(settled.len() as i64, "invoice", "invoices"), usd(sales))
+            });
+            lines.push("- Complaints and refunds: none.".into());
+            lines.push("Today".into());
+            lines.push(format!("- Sales: {} through PayPal.", usd(sales)));
+            lines.push(format!("- Costs: {cost_words}"));
+            figures["invoices"] = json!(invoices.len());
+            figures["sales_usd_cents"] = json!(sales);
+        }
+        Ok(json!({ "date": today.to_string(), "lines": lines, "figures": figures }))
+    }
+
     async fn bill_model_spend(&self) -> anyhow::Result<Value> {
         let control = self
             .control

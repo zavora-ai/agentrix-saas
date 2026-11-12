@@ -123,3 +123,24 @@ pub(crate) async fn decide_and_tell(
     app.tell_customer(site, &host, &origin, &v, event).await;
     Ok(v)
 }
+
+/// What happened at `slug` since `since` (a Unix time), for its Chief's brief to the owner, with
+/// the site's currency; `None` when the site isn't there.
+///
+/// # Errors
+///
+/// When the samples aren't mounted or the records can't be read.
+pub async fn day_activity(
+    slug: &str,
+    since: i64,
+) -> anyhow::Result<Option<(agentrix_records::orders::DayActivity, String)>> {
+    let app = app()?;
+    let records = app.records().await?;
+    let Some(site) = records.site(slug).await? else {
+        return Ok(None);
+    };
+    Ok(Some((
+        records.day_activity(&site.site, since).await?,
+        site.currency.clone(),
+    )))
+}

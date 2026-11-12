@@ -440,6 +440,23 @@ async fn an_order_in_the_conversation_gets_a_card_with_its_total_and_a_pay_butto
 }
 
 #[tokio::test]
+async fn the_days_activity_counts_people_and_agents_apart() {
+    let rig = rig().await;
+    // The first request seeds the sample's records.
+    rig.ask(KILELE, json!({ "q": "Are you open today?" })).await;
+    let (day, currency) = agentrix_samples::held::day_activity("kilele-bakery-sample", 0)
+        .await
+        .unwrap()
+        .expect("Kilele is a site here");
+    assert_eq!(currency, "KES");
+    // The sample's own orders are people's; no agent has ordered in this rig.
+    assert!(day.people_orders > 0, "{day:?}");
+    assert_eq!(day.agent_orders, 0, "{day:?}");
+    assert_eq!(day.agent_requests, 0, "{day:?}");
+    assert!(agentrix_samples::held::day_activity("no-such-site", 0).await.unwrap().is_none());
+}
+
+#[tokio::test]
 async fn catch_me_up_is_written_by_the_newsroom_from_published_stories() {
     let rig = rig().await;
     rig.model.then(json!({

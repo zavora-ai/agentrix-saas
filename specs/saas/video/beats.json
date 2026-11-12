@@ -114,18 +114,6 @@
       "say": "Every agent, from the Chief to the Cashier, carries a badge anyone can verify, and a wallet matched against PayPal."
     },
     {
-      "id": "b10",
-      "pic": "clip:impostor.mp4",
-      "fallback": "title",
-      "start": 0.8,
-      "fit": "voice",
-      "badge": [
-        "Live",
-        "run against the deployed site"
-      ],
-      "say": "An impostor can borrow an agent's name, but not its key. The door refuses, and nothing moves."
-    },
-    {
       "id": "b11",
       "pic": "clip:agentrix.mp4",
       "fallback": "title",
@@ -140,7 +128,7 @@
     {
       "id": "b12",
       "pic": "slide:brief",
-      "say": "Each day I brief the founder myself. This is today's, word for word."
+      "say": "Each Chief briefs its owner. This is the one Kilele's Chief sent tonight, word for word."
     },
     {
       "id": "b13",
@@ -149,6 +137,12 @@
       "min": 7,
       "say": "Agentrix WebAgent Platform. A payments ecosystem of autonomous agents: proactive, responsive and supportive.",
       "speak": "Agentrix WebAgent Platform. A payments ecosystem of autonomous agents: proactive, responsive and supportive."
+    },
+    {
+      "id": "b14",
+      "pic": "slide:tech",
+      "say": "Under the hood: every agent runs on adk-rust, with a verifiable identity, a mandate its owner signed, governed tools and a signed audit log, on PayPal.",
+      "speak": "Under the hood: every agent runs on A D K Rust, with a verifiable identity, a mandate its owner signed, governed tools and a signed audit log, on PayPal."
     }
   ]
 }
