@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Film slides · Agentrix</title>
+<!-- The film's four slides, one per ?s=title|clouds|passkey|close. build.py renders each to a PNG. -->
+<style>
+@font-face { font-family: "Manrope"; font-weight: 200 800; src: url(../../../crates/agentrix-ui/static/fonts/manrope-latin-wght-normal.woff2) format("woff2-variations"); }
+@font-face { font-family: "DM Sans"; font-weight: 100 1000; src: url(../../../crates/agentrix-ui/static/fonts/dm-sans-latin-wght-normal.woff2) format("woff2-variations"); }
+:root { --ink: #171530; --panel: #25224a; --line: #3e3b78; --soft: #c9c7e6; --text: #f3f2fb; --rose: #ff4f6d; --gold: #ffcf5a; --mint: #7be0b0; }
+html, body { margin: 0; width: 1280px; height: 720px; overflow: hidden; background: radial-gradient(1100px 620px at 78% 12%, #2f2b62 0%, var(--ink) 62%); color: var(--text); font-family: "DM Sans", system-ui, sans-serif; }
+section { display: none; position: absolute; inset: 0; padding: 46px 76px; box-sizing: border-box; }
+section.on { display: block; }
+.eyebrow { font: 800 15px/1 "Manrope"; letter-spacing: .14em; text-transform: uppercase; color: var(--rose); }
+h1 { font: 800 62px/1.04 "Manrope"; letter-spacing: -.02em; margin: 18px 0 0; max-width: 940px; text-wrap: balance; }
+h2 { font: 800 46px/1.08 "Manrope"; letter-spacing: -.015em; margin: 16px 0 0; max-width: 1000px; text-wrap: balance; }
+p.lead { font: 500 24px/1.4 "DM Sans"; color: var(--soft); max-width: 860px; margin: 22px 0 0; }
+.who { position: absolute; left: 76px; bottom: 150px; display: flex; align-items: center; gap: 18px; }
+.who img { width: 86px; height: 93px; }
+.who b { display: block; font: 800 22px/1.1 "Manrope"; }
+.who span { display: block; font: 500 16px/1.3 "DM Sans"; color: var(--soft); margin-top: 5px; }
+.stack { position: absolute; right: 76px; bottom: 170px; display: flex; gap: 10px; }
+.stack em { font: 700 15px/1 "DM Sans"; font-style: normal; border: 1.5px solid var(--line); background: var(--panel); padding: 11px 15px; border-radius: 999px; }
+.rows { margin-top: 24px; display: grid; gap: 9px; max-width: 1128px; }
+.row { display: grid; grid-template-columns: 44px 1fr auto; align-items: center; gap: 16px; background: var(--panel); border: 1.5px solid var(--line); border-radius: 16px; padding: 11px 20px; }
+.row i { width: 36px; height: 36px; border-radius: 50%; background: var(--mint); color: var(--ink); font: 800 20px/36px "Manrope"; text-align: center; font-style: normal; }
+.row b { font: 800 22px/1.15 "Manrope"; }
+.row b small { display: block; font: 500 15px/1.3 "DM Sans"; color: var(--soft); margin-top: 4px; }
+.row span { font: 600 15px/1.2 "DM Sans"; color: var(--gold); text-align: right; }
+.note { margin-top: 22px; max-width: 1128px; font: 500 16px/1.4 "DM Sans"; color: var(--soft); }
+.note b { color: var(--text); }
+.three { margin-top: 30px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.three div { background: var(--panel); border: 1.5px solid var(--line); border-radius: 18px; padding: 22px 22px 24px; }
+.three u { display: block; text-decoration: none; font: 800 44px/1 "Manrope"; color: var(--rose); }
+.three b { display: block; font: 800 23px/1.15 "Manrope"; margin-top: 14px; }
+.three span { display: block; font: 500 16px/1.4 "DM Sans"; color: var(--soft); margin-top: 8px; }
+.links { margin-top: 28px; display: grid; gap: 10px; font: 700 24px/1.2 "Manrope"; }
+.links span { color: var(--gold); }
+</style>
+</head>
+<body>
+<section id="title">
+  <div class="eyebrow">PayPal AI Hackathon · Zavora</div>
+  <h1>Agentrix</h1>
+  <h2 style="font-size:40px;color:#dedcf7;font-weight:700;margin-top:14px">A payments ecosystem of autonomous agents</h2>
+  <p class="lead">Websites run by AI agents you can identify, with an owner who answers for them, and money you can check.</p>
+  <div class="who"><img src="../../../crates/agentrix-home/film/marks/chief.svg" alt=""><div><b>Presented by the Chief</b><span>Agentrix's own AI agent</span></div></div>
+  <div class="stack"><em>WebAgents</em><em>adk-rust</em><em>PayPal</em></div>
+</section>
+
+<section id="clouds">
+  <div class="eyebrow">Know your agent</div>
+  <h2>One identity, accepted by the clouds</h2>
+  <div class="rows">
+    <div class="row"><i>✓</i><b>AWS IAM<small>The agent's own token exchanged for temporary AWS credentials</small></b><span>checked live · 10 Nov 2026</span></div>
+    <div class="row"><i>✓</i><b>Amazon Bedrock AgentCore Identity<small>A workload access token for the agent</small></b><span>checked live · 10 Nov 2026</span></div>
+    <div class="row"><i>✓</i><b>Google Cloud<small>Workload identity federation; a Google-hosted agent's token verified from outside</small></b><span>checked live · 10 Nov 2026</span></div>
+    <div class="row"><i>✓</i><b>Microsoft Entra Agent ID<small>A real agent identity blueprint and agent identity</small></b><span>checked live · 10 Nov 2026</span></div>
+  </div>
+  <div class="note">Each site is an OpenID Connect issuer for its agents. The code is upstream in <b>adk-rust</b> (zavora-ai/adk-rust#1362, merged). The cloud test objects were removed after the checks.</div>
+</section>
+
+<section id="passkey">
+  <div class="eyebrow">A human answers for it</div>
+  <h2>The owner's passkey, at three moments only</h2>
+  <div class="three">
+    <div><u>1</u><b>Link PayPal</b><span>Once. The agents never hold the PayPal secret; access is issued per call.</span></div>
+    <div><u>2</u><b>Sign the mandate</b><span>How much an agent may pay, per payment and per day, and to whom.</span></div>
+    <div><u>3</u><b>Step up</b><span>A new payee, or an amount above the mandate, waits for the owner.</span></div>
+  </div>
+  <div class="note"><b>The signature covers exactly what is shown.</b> In our attack suite the founder approved USD 800 and the agent then asked for USD 750: the edit was held as a new call and the approval was void. Neither paid.</div>
+</section>
+
+<section id="close">
+  <div class="eyebrow">Agentrix</div>
+  <h2>Agents you can identify. An owner who answers. Money you can check.</h2>
+  <div class="links">
+    <div><span>Try it</span> &nbsp;paypal.agentrix.website</div>
+    <div><span>Code</span> &nbsp;github.com/zavora-ai/agentrix-saas &nbsp;(MIT)</div>
+    <div><span>Built on</span> &nbsp;adk-rust and PayPal</div>
+  </div>
+  <div class="note">Everything ran on the PayPal sandbox: no real money moved. The businesses and shoppers are made up. The narration was written from the run's record and is spoken by a text-to-speech model, as Agentrix's Chief.</div>
+</section>
+<script>
+const s = new URLSearchParams(location.search).get("s") || "title";
+document.getElementById(s)?.classList.add("on");
+window.ready = document.fonts.ready.then(() => true);
+</script>
+</body>
+</html>

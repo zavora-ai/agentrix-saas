@@ -13,7 +13,7 @@
 
 <section class="card run-day" data-run-day data-url="/judges/run-day" aria-labelledby="run-day-h">
   <div class="spread"><h2 id="run-day-h">Run the day</h2>{% if run_day %}<button class="btn btn-primary btn-lg" type="button" data-run-day-start>Run the day</button>{% else %}{{ ui.chip("Judge mode is off on this node", "wait") }}{% endif %}</div>
-  <p class="small muted">One button runs the story on the sandbox: a customer buys, Agentrix bills the site, the Cashier pays inside the mandate, a changed payee asks for the passkey. Each scene shows the PayPal ids and ERA journals it left.</p>
+  <p class="small muted">One button plays a scripted day on a node of its own: a customer subscribes, Agentrix bills Kilele and Kilele's agent settles, the two agree instalments when Kilele is short, Payables pays inside the mandate, and a changed payee is refused. The rules, the agent doors and the calls to PayPal's sandbox are the live ones; the models' answers are scripted so every run is the same, and the run keeps its own books, so the live companies' books aren't touched. Each scene shows the PayPal ids it left.</p>
   <ol class="scenes-run" data-run-day-scenes></ol>
   <p class="small" data-run-day-status role="status"></p>
 </section>

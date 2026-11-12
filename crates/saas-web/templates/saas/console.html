@@ -85,6 +85,14 @@
   </article>
   {% endif %}
 
+  {% if refusals %}
+  <article class="fcard span2 wide" id="refused">
+    <div class="fcard-head"><div class="who"><b>Refused at the agent door</b><span class="state-line">Requests that couldn't prove who sent them, or broke a rule. Nothing moved, and each refusal is in the signed audit log</span></div></div>
+    {{ ui.timeline(refusals, label="Refused requests") }}
+    {% if refusals_total > refusals | length %}<p class="small muted">The latest {{ refusals | length }} of {{ refusals_total }}.</p>{% endif %}
+  </article>
+  {% endif %}
+
   <article class="fcard span2 wide" id="staff">
     <div class="fcard-head"><div class="who"><b>{{ site.name }}'s staff</b><span class="state-line">Each agent signs its own requests and holds no secrets; PayPal access is issued per call</span></div></div>
     <p class="small muted">Revoke switches one agent off now: its tokens stop working at its next call, and no PayPal key is rotated. Switching it back on takes your passkey.</p>

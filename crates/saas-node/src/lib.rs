@@ -553,6 +553,11 @@ impl Node {
             face = face.with_proofs_dir(Some(std::path::PathBuf::from(dir)));
         }
         face = face.with_day_runner(Some(Arc::new(NodeDayRunner(Arc::downgrade(self)))));
+        // The money hosts show the same badges and wallets as the console's apps and the sample
+        // sites, so the judges' Verify box checks a real badge and a wallet page shows the ledger.
+        for site in face.app_sites().to_vec() {
+            face = face.with_app_site(crate::os::live(site));
+        }
         let app = face.router()?;
         if !self.config.judge {
             return Ok(app);

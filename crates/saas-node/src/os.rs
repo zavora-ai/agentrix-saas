@@ -120,6 +120,66 @@ impl AppBadges for NodeBadges {
     }
 }
 
+/// A money host's badges: the node's own once the money layer has connected them, and face's
+/// stand-ins (with their note) until then, so a page never goes blank while the node starts.
+struct LiveBadges(Arc<dyn AppBadges>);
+
+#[async_trait]
+impl AppBadges for LiveBadges {
+    async fn badges(&self, site: &str) -> Result<Vec<Badge>, AppError> {
+        match NodeBadges.badges(site).await {
+            Err(AppError::NotConnected) => self.0.badges(site).await,
+            other => other,
+        }
+    }
+
+    async fn verify(&self, did: &str) -> Result<Verification, AppError> {
+        match NodeBadges.verify(did).await {
+            Err(AppError::NotConnected) => self.0.verify(did).await,
+            other => other,
+        }
+    }
+
+    fn note(&self) -> Option<String> {
+        if shared().badges.get().is_some() {
+            None
+        } else {
+            self.0.note()
+        }
+    }
+
+    async fn verify_token(&self, token: &str) -> Result<serde_json::Value, AppError> {
+        self.0.verify_token(token).await
+    }
+}
+
+/// A money host's wallet: the node's own once connected, face's stand-in until then.
+struct LiveWallets(Arc<dyn AppWallets>);
+
+#[async_trait]
+impl AppWallets for LiveWallets {
+    async fn wallet(&self, site: &str) -> Result<WalletFeed, AppError> {
+        match NodeWallets.wallet(site).await {
+            Err(AppError::NotConnected) => self.0.wallet(site).await,
+            other => other,
+        }
+    }
+
+    fn note(&self) -> Option<String> {
+        self.0.note()
+    }
+}
+
+/// `site` for a money host, reading the node's badges and wallet where they are connected. The
+/// passkey moments stay the host's own: a passkey belongs to the host it was made on.
+pub fn live(site: saas_web::AppSite) -> saas_web::AppSite {
+    saas_web::AppSite {
+        badges: Arc::new(LiveBadges(Arc::clone(&site.badges))),
+        wallet: Arc::new(LiveWallets(Arc::clone(&site.wallet))),
+        ..site
+    }
+}
+
 /// The wallets as face's apps and activity page read them, by face's site id (`agentrix`,
 /// `kilele`): not connected until the money layer has started them.
 pub fn wallets() -> Arc<dyn AppWallets> {

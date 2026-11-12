@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Terminal</title>
+<style>
+@font-face { font-family: "JetBrains Mono"; font-weight: 100 800; src: url(../../../crates/agentrix-ui/static/fonts/jetbrains-mono-latin-wght-normal.woff2) format("woff2-variations"); }
+html, body { margin: 0; height: 100%; background: #1b1a33; }
+.win { position: absolute; inset: 28px 40px; background: #0e0d20; border-radius: 16px; border: 1px solid #3e3b78; box-shadow: 0 30px 60px rgba(0,0,0,.45); overflow: hidden; display: flex; flex-direction: column; }
+.bar { height: 42px; background: #2c2a57; display: flex; align-items: center; gap: 9px; padding: 0 16px; font: 500 15px/1 "JetBrains Mono", monospace; color: #c9c7e6; }
+.bar i { width: 12px; height: 12px; border-radius: 50%; background: #6f6ba8; display: block; }
+.bar span { margin-left: 12px; }
+#t { flex: 1; padding: 20px 26px; font: 400 19px/1.5 "JetBrains Mono", monospace; color: #e8e6ff; white-space: pre-wrap; overflow: hidden; }
+.pr { color: #ff8fa6; font-weight: 700; }
+.c { color: #8f8bbf; }
+.o { color: #b8f0cf; }
+.cur { display: inline-block; width: 10px; height: 22px; background: #ff8fa6; vertical-align: -4px; animation: b 1s steps(1) infinite; }
+@keyframes b { 50% { opacity: 0; } }
+</style></head>
+<body>
+<div class="win"><div class="bar"><i></i><i></i><i></i><span>agentrix-saas · zsh · specs/saas/video</span></div><div id="t"></div></div>
+<script>
+// SESSION: [{cmd, out, note}] from demo.py, run for real just before recording.
+const t = document.getElementById("t");
+const esc = s => s.replace(/[&<>]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));
+window.play = async (session, cps = 22) => {
+  const sleep = ms => new Promise(r => setTimeout(r, ms));
+  for (const step of session) {
+    if (step.note) { t.insertAdjacentHTML("beforeend", `<span class="c"># ${esc(step.note)}</span>\n`); await sleep(500); }
+    t.insertAdjacentHTML("beforeend", `<span class="pr">$ </span>`);
+    const line = document.createElement("span"); t.appendChild(line);
+    const cur = document.createElement("span"); cur.className = "cur"; t.appendChild(cur);
+    for (const ch of step.cmd) { line.textContent += ch; await sleep(1000 / cps); }
+    await sleep(450); cur.remove();
+    t.insertAdjacentHTML("beforeend", `\n<span class="o">${esc(step.out)}</span>\n\n`);
+    t.scrollTop = t.scrollHeight;
+    while (t.scrollHeight > t.clientHeight + 4) { t.removeChild(t.firstChild); }
+    await sleep(step.hold || 2600);
+  }
+  t.insertAdjacentHTML("beforeend", `<span class="pr">$ </span><span class="cur"></span>`);
+  return true;
+};
+window.ready = document.fonts.ready.then(() => true);
+</script></body></html>

@@ -967,16 +967,20 @@ pub fn with_sample_doors(ctx: &NodeContext, mut mounted: Mounted) -> Mounted {
         }
     };
     let federation = federation(ctx);
+    // The public badge pages load face's scripts and styles from `/static/saas/…`.
+    let assets = saas_web::os::assets(Some(grid_js()));
     for routes in &mut mounted.hosts {
         let public = public.clone();
         let samples = routes.router.clone();
         let host = kilele_host.clone();
         let federation = federation.clone();
+        let assets = assets.clone();
         routes.router = Router::new().fallback(move |request: Request| {
             let samples = samples.clone();
             let host = host.clone();
             let public = public.clone();
             let federation = federation.clone();
+            let assets = assets.clone();
             async move {
                 let asked = request
                     .headers()
@@ -985,6 +989,9 @@ pub fn with_sample_doors(ctx: &NodeContext, mut mounted: Mounted) -> Mounted {
                     .map(|h| h.split(':').next().unwrap_or(h).to_ascii_lowercase());
                 let path = request.uri().path().to_owned();
                 let ours = asked.as_deref() == Some(host.as_str());
+                if ours && path.starts_with("/static/saas/") {
+                    return assets.oneshot(request).await.into_response();
+                }
                 if is_federation_path(&path)
                     && let Some(federation) = federation
                 {

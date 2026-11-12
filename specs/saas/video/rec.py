@@ -1,0 +1,209 @@
+"""Records the live product for the PayPal entry's film, one scene per clip.
+
+    python3 rec.py SCENE OUT.mp4 [--seconds 60] [--scale 1.5]
+
+It reuses the recorder in ../../submission/video/rec.py (headless Chrome on its own profile, frames
+piped to ffmpeg in real time). Every scene drives the deployed build the way a person would. The
+owner scenes use the sample's public owner sign-in, which the page itself fills in. A ring is
+drawn around the thing being talked about; nothing on the page is changed.
+
+AGX_PLATFORM names the judged build's host (default paypal.agentrix.website).
+"""
+
+import argparse
+import asyncio
+import json
+import os
+import subprocess
+import sys
+
+HERE = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, os.path.join(HERE, "../../submission/video"))
+import rec as base  # noqa: E402
+
+P = os.environ.get("AGX_PLATFORM", "paypal.agentrix.website")
+HOME = f"https://{P}"
+KILELE = f"https://kilele-bakery-sample.{P}"
+MONEY = f"https://money.{P}"
+KMONEY = f"https://kilele.money.{P}"
+OWNER = f"{HOME}/samples/kilele-bakery-sample"
+
+RING = """(() => { const e = %s; document.querySelectorAll('.agx-ring').forEach(x => x.remove()); if (!e) return false;
+  const r = e.getBoundingClientRect(), d = document.createElement('div'); d.className = 'agx-ring';
+  d.style.cssText = `position:fixed;left:${r.left - 8}px;top:${r.top - 6}px;width:${r.width + 16}px;height:${r.height + 12}px;`
+    + 'border:3px solid #ff4f6d;border-radius:12px;box-shadow:0 0 0 6px rgba(255,79,109,.22);pointer-events:none;z-index:99999;box-sizing:border-box';
+  document.body.appendChild(d); return true; })()"""
+
+
+RING_ALL = """(() => { const es = %s; document.querySelectorAll('.agx-ring').forEach(x => x.remove()); if (!es.length) return false;
+  const rs = es.map(e => e.getBoundingClientRect()), l = Math.min(...rs.map(r => r.left)), t = Math.min(...rs.map(r => r.top)),
+    r = Math.max(...rs.map(r => r.right)), b = Math.max(...rs.map(r => r.bottom)), d = document.createElement('div'); d.className = 'agx-ring';
+  d.style.cssText = `position:fixed;left:${l - 8}px;top:${t - 6}px;width:${r - l + 16}px;height:${b - t + 12}px;`
+    + 'border:3px solid #ff4f6d;border-radius:12px;box-shadow:0 0 0 6px rgba(255,79,109,.22);pointer-events:none;z-index:99999;box-sizing:border-box';
+  document.body.appendChild(d); return true; })()"""
+
+
+def by_text(tags, text):
+    return f"[...document.querySelectorAll({json.dumps(tags)})].find(e => e.getBoundingClientRect().width && e.innerText.includes({json.dumps(text)}))"
+
+
+def deep(text, nth=0):
+    """The innermost element whose text holds `text` (the nth such, in page order)."""
+    t = json.dumps(text)
+    return (f"(() => {{ const has = e => e.getBoundingClientRect().width && (e.innerText || '').includes({t});"
+            f" const tops = [...document.querySelectorAll('body *')].filter(e => has(e) && ![...e.children].some(has));"
+            f" return tops[{nth}] || null; }})()")
+
+
+async def show(tab, find, seconds=1.4, ring=True, offset=0, block="center"):
+    """Brings the element into view (inside whatever scrolls) and rings it. The ring stays where
+    it was drawn, so call unring before the page moves again."""
+    await unring(tab)
+    ok = await tab.js(f"(() => {{ const e = {find}; if (!e) return false; e.scrollIntoView({{block: {json.dumps(block)}, behavior: 'smooth'}}); return true; }})()")
+    if not ok:
+        print(f"rec: nothing found for {find[:80]}", file=sys.stderr)
+        return False
+    await asyncio.sleep(seconds)
+    if ring:
+        await tab.js(RING % find)
+    return True
+
+
+async def unring(tab):
+    await tab.js("document.querySelectorAll('.agx-ring').forEach(x => x.remove()), true")
+
+
+async def owner(tab, path=""):
+    """Opens a page of Kilele's sample owner view, through the sign-in the sample fills in."""
+    await tab.goto(f"{OWNER}/{path}", settle=1.0)
+    if await tab.js("location.pathname.endsWith('/sign-in')"):
+        await asyncio.sleep(1.0)
+        await tab.click(text="Sign in as Wanjiru")
+        await tab.wait_for("!location.pathname.endsWith('/sign-in')", 20)
+        await tab.js("document.fonts.ready.then(() => true)")
+        await asyncio.sleep(1.5)
+
+
+async def scene_shop(tab, _):
+    """The shop as a customer sees it, then its page for agents."""
+    await tab.goto(KILELE + "/", settle=2)
+    await asyncio.sleep(3)
+    await tab.scroll_to(700, 2.5)
+    await asyncio.sleep(2)
+    await tab.goto(KILELE + "/agents", settle=1.5)
+    await asyncio.sleep(4)
+
+
+async def scene_door(tab, _):
+    """Orders the shopper agents placed overnight, then one that came through the agent door."""
+    await owner(tab, "orders")
+    await asyncio.sleep(3.5)
+    await show(tab, by_text("tr", "Agent door"), 1.5, offset=330)
+    await asyncio.sleep(3)
+    await unring(tab)
+    href = await tab.js(f"(() => {{ const r = {by_text('tr', 'Agent door')}; return r ? r.querySelector('a').href : null; }})()")
+    await tab.goto(href, settle=1.5)
+    await asyncio.sleep(2)
+    await show(tab, deep("verified by web-bot-auth"), 2.0, offset=380)
+    await asyncio.sleep(6)
+
+
+async def scene_today(tab, _):
+    """The owner's morning: the brief counted from the records, and the decisions held for her."""
+    await owner(tab, "")
+    await asyncio.sleep(4)
+    await show(tab, by_text("li", "custom orders wait for your OK"), 1.0, offset=300)
+    await asyncio.sleep(4)
+    await unring(tab)
+    await show(tab, deep("Approve custom order"), 1.0, offset=300)
+    await asyncio.sleep(4)
+
+
+async def scene_settle(tab, _):
+    """Kilele's console: the mandate, then the invoices its agents settled with Agentrix's agents."""
+    await tab.goto(KMONEY + "/console", settle=2)
+    await asyncio.sleep(2.5)
+    await show(tab, deep("mandate for Payables") + "?.closest('article, section')", 1.5, offset=200)
+    await asyncio.sleep(4)
+    await unring(tab)
+    await show(tab, deep("INV-2026-0002") + "?.closest('li')", 1.6, ring=False)
+    await tab.js(RING_ALL % "[...document.querySelectorAll('li')].filter(e => /INV-\\d{4}-\\d+ · \\$/.test(e.innerText))")
+    await asyncio.sleep(6)
+
+
+async def scene_bills(tab, _):
+    """Agentrix's own console: the bills its agents raised for themselves, and its staff of agents."""
+    await tab.goto(MONEY + "/console", settle=2)
+    await asyncio.sleep(2.5)
+    await show(tab, deep("Bills to pay") + "?.closest('article, section')", 2.0, offset=200)
+    await asyncio.sleep(5)
+    await unring(tab)
+    await show(tab, deep("Each agent signs its own requests") + "?.closest('article, section')", 2.0, offset=160, ring=False)
+    await asyncio.sleep(4)
+
+
+async def scene_badge(tab, _):
+    """An agent's badge, verified on the page."""
+    await tab.goto(KILELE + "/agents", settle=2)
+    await asyncio.sleep(2.5)
+    await show(tab, deep("did:web:kilele-bakery-sample") + "?.closest('article, section, .card') || " + deep("Holds no secrets"), 1.6, block="start")
+    await asyncio.sleep(4)
+    await show(tab, deep("matches PayPal"), 1.6)
+    await asyncio.sleep(5)
+
+
+async def scene_proofs(tab, _):
+    """Proofs: the signed log, then the attack suite."""
+    await tab.goto(MONEY + "/proofs", settle=2)
+    await asyncio.sleep(4)
+    await show(tab, by_text("h2, h3", "The attack suite"), 2.5, offset=120, ring=False)
+    await asyncio.sleep(5)
+    await tab.js("scrollBy({top: 420, behavior: 'smooth'}), true")
+    await asyncio.sleep(4)
+
+
+async def terminal(tab, session):
+    await tab.goto("file://" + os.path.join(HERE, "terminal.html"), settle=0.5)
+    await tab.js("window.ready")
+    await asyncio.sleep(0.8)
+    await tab.js(f"window.play({json.dumps(session)})")
+    await asyncio.sleep(1)
+
+
+def sh(script):
+    return subprocess.run([os.path.join(HERE, script)], capture_output=True, text=True, timeout=60).stdout.strip()
+
+
+async def scene_impostor(tab, _):
+    """A terminal: the impostor request, run for real a moment before recording."""
+    await terminal(tab, [{"note": "An impostor names a real agent and makes up the signature.", "cmd": "./impostor.sh", "out": sh("impostor.sh"), "hold": 7000}])
+
+
+async def scene_verify(tab, _):
+    """A terminal: an agent's badge checked from outside, run for real a moment before recording."""
+    await terminal(tab, [{"note": "Check the Cashier's badge from outside. Anyone can.", "cmd": "./verify.sh", "out": sh("verify.sh"), "hold": 7000}])
+
+
+async def scene_replay(tab, _):
+    """The night, replayed from the record (replay.html reads record.json beside it)."""
+    await tab.goto("file://" + os.path.join(HERE, "replay.html") + "?auto=1", settle=0.5)
+    await tab.wait_for("window.done === true", 90)
+    await asyncio.sleep(1.5)
+
+
+base.SCENES.clear()
+base.SCENES.update({name[6:]: fn for name, fn in globals().items() if name.startswith("scene_")})
+
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("scene", choices=sorted(base.SCENES))
+    ap.add_argument("out")
+    ap.add_argument("--seconds", type=float, default=75)
+    ap.add_argument("--scale", type=float, default=1.5, help="device pixel ratio; the page lays out at 1920/scale wide")
+    a = ap.parse_args()
+    asyncio.run(base.record(a.scene, a.out, HOME, a.seconds, a.scale))
+
+
+if __name__ == "__main__":
+    main()

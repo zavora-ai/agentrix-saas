@@ -321,6 +321,18 @@ pub fn plans_view() -> Value {
     json!({ "plans": plans, "discount": cat.annual_discount_percent })
 }
 
+/// A door's refusal code in plain words, for the console's list of refused requests.
+fn refusal_words(code: &str) -> &'static str {
+    match code {
+        "signature_required" => "An unsigned request was refused",
+        "signature_invalid" => "A request whose signature didn't verify was refused",
+        "content_digest_required" => "A request without a body digest was refused",
+        "mandate_used" => "A cart mandate that had already been used was refused",
+        "token_invalid" | "token_refused" => "A request with a bad agent token was refused",
+        _ => "A request was refused",
+    }
+}
+
 fn agent_view(company: &str, a: &crate::feed::Agent) -> Value {
     let color = match a.id.as_str() {
         "chief" => "#0F8A8A",
@@ -521,7 +533,22 @@ pub fn console_view(feed: &Feed, company: &str, may_act: bool, base: &str) -> Va
     let settlements: Vec<Value> = f
         .settlements
         .iter()
+        .filter(|s| s.status != "refused")
         .map(|s| json!({"when": s.at.to_string(), "title": format!("{} · {}", s.invoice_number, usd(s.amount_minor)), "body": format!("{} · PayPal {}", s.route, s.paypal_id), "state": "ok"}))
+        .collect();
+    // What the agent door refused: no invoice, no amount and no PayPal id, because nothing moved.
+    let refused: Vec<&crate::feed::Settlement> = f
+        .settlements
+        .iter()
+        .filter(|s| s.status == "refused")
+        .collect();
+    let refusals: Vec<Value> = refused
+        .iter()
+        .take(5)
+        .map(|s| {
+            let code = s.route.rsplit("refused: ").next().unwrap_or("refused");
+            json!({"when": s.at.to_string(), "title": refusal_words(code), "body": format!("{code} · nothing moved"), "state": "risk"})
+        })
         .collect();
 
     let ink = if company == KILELE {
@@ -546,6 +573,8 @@ pub fn console_view(feed: &Feed, company: &str, may_act: bool, base: &str) -> Va
         "payables": payables,
         "plans": plans,
         "settlements": settlements,
+        "refusals": refusals,
+        "refusals_total": refused.len(),
         "audit": {"verified": feed.audit.verified, "entries": feed.audit.entries, "checkpoint": feed.audit.checkpoint.chars().take(23).collect::<String>(), "checked": feed.audit.checked},
         "as_of": feed.as_of.to_string(),
         "source": feed.source,

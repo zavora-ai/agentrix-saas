@@ -167,6 +167,19 @@ async fn one(
     });
 
     if let Some(m) = company.signed_mandate() {
+        // The mandate holds the books' vendor ids; the console shows who they are.
+        let names: std::collections::HashMap<String, String> = company
+            .desk
+            .books
+            .vendors()
+            .await
+            .map(|vendors| {
+                vendors
+                    .into_iter()
+                    .map(|v| (v.id.to_string(), v.counterparty.name))
+                    .collect()
+            })
+            .unwrap_or_default();
         let used = company
             .desk
             .rails
@@ -183,7 +196,12 @@ async fn one(
             per_payment_minor: m.terms.payout_max_each_minor,
             daily_minor: m.terms.payout_max_per_day_minor,
             used_today_minor: used,
-            payees: m.terms.payees.clone(),
+            payees: m
+                .terms
+                .payees
+                .iter()
+                .map(|id| names.get(id).cloned().unwrap_or_else(|| id.clone()))
+                .collect(),
             signed_with: m.signed_with.clone(),
             signed: m.signed_at.date_naive(),
             expires: m.terms.valid_until.date_naive(),

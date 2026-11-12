@@ -333,7 +333,7 @@ async fn scene_a(
         .await?;
     take.say(
         "a1",
-        "The sales desk's lead is in ERA's CRM, with its opportunity",
+        "The sales desk's lead is in the CRM, with its opportunity",
         json!({ "lead": lead.id, "opportunity": opportunity.id }),
     );
     let Some(effects) = node.agentrix_effects.clone() else {
@@ -408,7 +408,7 @@ async fn scene_a(
         .find(|r| r.reference.as_deref() == Some(reference.as_str()));
     take.say(
         "a4",
-        "Revenue set up the plan's recurring invoice in ERA, on the governed path",
+        "Revenue set up the plan's recurring invoice in the books, on the governed path",
         json!({ "recurring_invoice": recurring.as_ref().map(|r| r.id.to_string()) }),
     );
     // The first billing cycle's payment, read back from PayPal and booked through the handler
@@ -451,7 +451,7 @@ async fn scene_a(
                 let handled = node.agentrix.on_paypal_event(&event).await?;
                 take.say(
                     "a5",
-                    "The first payment is booked in ERA as a receipt",
+                    "The first payment is booked as a receipt",
                     json!({ "paypal_sale": sale["id"], "payment": handled.posted.as_ref().and_then(|p| p.payment.as_ref().map(|x| x.to_string())) }),
                 );
             }
@@ -482,7 +482,7 @@ async fn scene_a(
         .map(|o| o.stage);
     take.say(
         "a6",
-        "Revenue marked the deal won; ERA's CRM shows it",
+        "Revenue marked the deal won; the CRM shows it",
         json!({ "opportunity": opportunity.id, "stage": stage.map(|s| matches!(s, OpportunityStage::Won)), "customer": won["customer_id"] }),
     );
     Ok(())
@@ -561,7 +561,7 @@ pub(crate) async fn invoice_kilele(
     let number = issued["number"].as_str().unwrap_or_default().to_owned();
     take.say(
         &format!("{step}1"),
-        "Receivables issued the invoice in ERA, on the governed path",
+        "Receivables issued the invoice in the books, on the governed path",
         json!({ "invoice": invoice, "number": issued["number"], "total": issued["total"] }),
     );
     let host = node
@@ -689,7 +689,21 @@ async fn scene_c(
         "Receivables read Kilele's history and agreed a plan with Kilele's agent, inside both owners' mandates",
         json!({ "plan": plan_id, "instalments": plan["instalments"] }),
     );
-    let collected = until(options.agent_wait, || async {
+    // Before the collection hour on the first instalment's date there is nothing to wait for:
+    // the kernel collects it then, and the scene says so now.
+    let due_later = node
+        .agentrix
+        .company
+        .desk
+        .plan(&plan_id)
+        .and_then(|p| p.instalments.first().map(|i| i.due_date))
+        .is_some_and(|date| saas_company::supervisor::due_at(date) > node.clock.now());
+    let wait = if due_later {
+        Duration::ZERO
+    } else {
+        options.agent_wait
+    };
+    let collected = until(wait, || async {
         node.agentrix
             .company
             .desk
@@ -768,7 +782,7 @@ async fn scene_d(node: &Arc<Node>, stamp: &str, take: &mut Take) -> anyhow::Resu
     .await?;
     take.say(
         "d1",
-        "A USD 20 bill is posted in ERA",
+        "A USD 20 bill is posted in the books",
         json!({ "bill": small, "vendor": vendor.counterparty.name }),
     );
     let paid = node

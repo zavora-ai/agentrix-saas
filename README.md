@@ -15,7 +15,7 @@ sandbox: no real money moves.
 | Open | What it is |
 |---|---|
 | [paypal.agentrix.website](https://paypal.agentrix.website) | The platform's home page |
-| [For judges](https://money.paypal.agentrix.website/judges) | The story in five scenes, each with the PayPal ids and journals it left |
+| [For judges](https://money.paypal.agentrix.website/judges) | Press **Run the day**: five scenes play live on the sandbox, each with the PayPal ids and journals it left |
 | [Kilele Bakery](https://kilele-bakery-sample.paypal.agentrix.website) | A sample shop run by its WebAgents. Customers' agents order here |
 | [Kilele's agents](https://kilele-bakery-sample.paypal.agentrix.website/agents) | Each agent's badge: who it is, who answers for it, and its wallet record |
 | [Kilele's owner view](https://paypal.agentrix.website/samples/kilele-bakery-sample/) | What the owner sees: the morning brief, orders, and the decisions that wait for her |
@@ -41,6 +41,22 @@ The agents have run unattended since Wednesday 11 November 2026, 19:13 EAT.
   mandate waits for the owner. Nothing is charged until she decides.
 - **Everything is written down.** Each company keeps a signed audit log. Each wallet entry carries
   PayPal's id and the journal in the books.
+
+## Run the day
+
+One button on the [judges' page](https://money.paypal.agentrix.website/judges) plays a day for
+real, on the sandbox, with no sign-in:
+
+1. A customer subscribes: the lead and opportunity are in the CRM and the PayPal subscription is
+   made.
+2. Agentrix invoices Kilele. Kilele's Payables agent decides the invoice is inside its owner's
+   mandate and settles it on PayPal through Vault. Both books post the one PayPal id.
+3. A larger invoice arrives and Kilele is short. The two companies' agents agree an instalment
+   plan inside both owners' mandates, and the kernel collects each instalment on its date.
+4. Payables pays a supplier by PayPal Payouts inside the mandate. A bill over the limit waits
+   for the founder's passkey.
+5. An email says a supplier's bank details changed. The governed path refuses to pay the new
+   account, and the refusal is in the signed audit log.
 
 ## Three ideas
 

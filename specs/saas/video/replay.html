@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The night, replayed · Agentrix</title>
+<!-- Replays record.js (written by record.py from the live build and PayPal's sandbox).
+     ?auto=1 plays once and sets window.done; ?seconds=N sets the length (default 18). -->
+<style>
+@font-face { font-family: "Manrope"; font-weight: 200 800; src: url(../../../crates/agentrix-ui/static/fonts/manrope-latin-wght-normal.woff2) format("woff2-variations"); }
+@font-face { font-family: "DM Sans"; font-weight: 100 1000; src: url(../../../crates/agentrix-ui/static/fonts/dm-sans-latin-wght-normal.woff2) format("woff2-variations"); }
+:root { --ink: #171530; --panel: #25224a; --line: #3e3b78; --soft: #c9c7e6; --text: #f3f2fb; --rose: #ff4f6d; --gold: #ffcf5a; --mint: #7be0b0; --sky: #8fb8ff; }
+html, body { margin: 0; height: 100%; background: var(--ink); color: var(--text); font-family: "DM Sans", system-ui, sans-serif; overflow: hidden; }
+#stage { position: absolute; left: 50%; top: 50%; width: 1280px; height: 720px; transform-origin: center; }
+svg { position: absolute; inset: 0; width: 1280px; height: 720px; }
+h1 { position: absolute; left: 48px; top: 26px; margin: 0; font: 800 30px/1 "Manrope", sans-serif; letter-spacing: -.01em; }
+h1 small { display: block; margin-top: 9px; font: 500 15px/1.2 "DM Sans"; color: var(--soft); letter-spacing: 0; }
+#clock { position: absolute; right: 48px; top: 22px; text-align: right; font: 800 34px/1 "Manrope"; font-variant-numeric: tabular-nums; }
+#clock small { display: block; margin-top: 8px; font: 600 14px/1 "DM Sans"; color: var(--gold); }
+.node { position: absolute; background: var(--panel); border: 1.5px solid var(--line); border-radius: 18px; box-shadow: 0 14px 34px rgba(0,0,0,.35); }
+.node b { font: 800 19px/1.1 "Manrope"; display: block; }
+.node span { font: 500 13px/1.3 "DM Sans"; color: var(--soft); display: block; margin-top: 4px; }
+.node.pulse { animation: pulse .7s ease-out; }
+@keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(255,207,90,.75), 0 14px 34px rgba(0,0,0,.35); } 100% { box-shadow: 0 0 0 22px rgba(255,207,90,0), 0 14px 34px rgba(0,0,0,.35); } }
+.agent { width: 190px; padding: 12px 14px 12px 62px; box-sizing: border-box; }
+.agent i { position: absolute; left: 12px; top: 50%; margin-top: -19px; width: 38px; height: 38px; border-radius: 50%; background: var(--sky); color: var(--ink); font: 800 17px/38px "Manrope"; text-align: center; font-style: normal; }
+.biz { padding: 16px 18px; box-sizing: border-box; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+.chips em { font: 700 12px/1 "DM Sans"; font-style: normal; background: #38356d; color: #e4e2fb; padding: 6px 9px; border-radius: 999px; }
+.chips em.on { background: var(--rose); color: #fff; }
+.small { padding: 11px 14px; box-sizing: border-box; }
+.small b { font-size: 16px; }
+.tally { font: 800 15px/1 "Manrope"; color: var(--gold); margin-top: 8px; font-variant-numeric: tabular-nums; }
+#rail { position: absolute; left: 372px; top: 92px; font: 700 12px/1 "DM Sans"; color: #9c99cc; letter-spacing: .08em; text-transform: uppercase; }
+.tag { position: absolute; transform: translate(-50%, -50%); background: rgba(14,13,32,.94); border: 1px solid var(--line); border-radius: 10px; padding: 6px 10px; font: 700 13px/1.25 "DM Sans"; white-space: nowrap; opacity: 0; transition: opacity .25s; pointer-events: none; font-variant-numeric: tabular-nums; }
+.tag small { display: block; font: 500 11.5px/1.2 "DM Sans"; color: var(--soft); }
+.tag.show { opacity: 1; }
+.tag.held { border-color: var(--rose); }
+#ticker { position: absolute; left: 48px; right: 48px; top: 484px; height: 30px; font: 600 16px/30px "DM Sans"; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+#ticker time { color: var(--gold); font-weight: 800; margin-right: 10px; font-variant-numeric: tabular-nums; }
+#counts { position: absolute; left: 48px; right: 48px; top: 524px; display: grid; grid-template-columns: repeat(6, 1fr); gap: 12px; }
+#counts div { background: var(--panel); border: 1.5px solid var(--line); border-radius: 14px; padding: 10px 14px; }
+#counts b { display: block; font: 800 24px/1 "Manrope"; font-variant-numeric: tabular-nums; }
+#counts span { display: block; margin-top: 6px; font: 500 12.5px/1.2 "DM Sans"; color: var(--soft); }
+#foot { display: none; }
+</style>
+</head>
+<body>
+<div id="stage">
+  <svg viewBox="0 0 1280 720" aria-hidden="true">
+    <defs>
+      <marker id="arr" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 8 4 0 8Z" fill="#5a56a0"/></marker>
+    </defs>
+    <g id="paths" fill="none" stroke="#4a4690" stroke-width="2" stroke-dasharray="2 7" stroke-linecap="round"></g>
+    <g id="coins"></g>
+  </svg>
+  <h1>The night, replayed<small id="sub">Nobody at the keyboard. Every move read back from the live build and PayPal.</small></h1>
+  <div id="clock"><span id="clk">19:00</span><small id="day">Wed 11 Nov · East Africa Time</small></div>
+  <div id="rail">Money moves on PayPal (sandbox)</div>
+
+  <div class="node agent" id="n-Amani" style="left:48px;top:116px"><i>A</i><b>Amani</b><span>a customer's agent</span></div>
+  <div class="node agent" id="n-Baraka" style="left:48px;top:218px"><i>B</i><b>Baraka</b><span>a customer's agent</span></div>
+  <div class="node agent" id="n-Chiku" style="left:48px;top:320px"><i>C</i><b>Chiku</b><span>a customer's agent</span></div>
+
+  <div class="node biz" id="n-kilele" style="left:470px;top:150px;width:300px;height:172px">
+    <b>Kilele Bakery</b><span>a shop run by its WebAgents</span>
+    <div class="chips"><em id="c-door">Agent door</em><em id="c-cashier">Cashier</em><em id="c-payables">Payables</em><em id="c-kchief">Chief</em></div>
+    <div class="tally" id="t-kilele">USD 0.00 in from agents</div>
+  </div>
+  <div class="node biz" id="n-agentrix" style="left:960px;top:106px;width:272px;height:142px">
+    <b>Agentrix</b><span>the platform, itself run by agents</span>
+    <div class="chips"><em id="c-recv">Receivables</em><em id="c-achief">Chief</em></div>
+    <div class="tally" id="t-agentrix">USD 0.00 settled</div>
+  </div>
+  <div class="node small" id="n-staff" style="left:960px;top:282px;width:272px"><b>Staff payroll</b><span>bills raised by Kilele's agents</span><div class="tally" id="t-staff">0 bills</div></div>
+  <div class="node small" id="n-models" style="left:960px;top:386px;width:272px"><b>Model provider</b><span>what Agentrix's agents cost to run</span><div class="tally" id="t-models">0 bills</div></div>
+  <div class="node small" id="n-owner" style="left:470px;top:386px;width:300px"><b>Wanjiru, the owner</b><span>asked only when it matters</span><div class="tally" id="t-owner">0 held for her</div></div>
+
+  <div id="tags"></div>
+  <div id="ticker"></div>
+  <div id="counts">
+    <div><b id="k-orders">0</b><span>orders by customers' agents</span></div>
+    <div><b id="k-paid">$0.00</b><span>paid with saved PayPal</span></div>
+    <div><b id="k-settled">$0.00</b><span>settled company to company</span></div>
+    <div><b id="k-held">0</b><span>held for the owner, nothing charged</span></div>
+    <div><b id="k-bills">0</b><span>bills raised by agents</span></div>
+    <div><b id="k-wallet">–</b><span id="k-wallet-l">wallet entries</span></div>
+  </div>
+  <div id="foot"><span id="src">Source: record.json</span><span id="speed"></span></div>
+</div>
+<script src="record.js"></script>
+<script>
+const R = window.RECORD, q = new URLSearchParams(location.search);
+const stage = document.getElementById("stage");
+const fit = () => { stage.style.transform = `translate(-50%, -50%) scale(${Math.min(innerWidth / 1280, innerHeight / 720)})`; };
+addEventListener("resize", fit); fit();
+const $ = id => document.getElementById(id);
+const box = id => { const e = $(id); return { x: e.offsetLeft, y: e.offsetTop, w: e.offsetWidth, h: e.offsetHeight }; };
+const edge = (id, side) => { const b = box(id); return side === "r" ? [b.x + b.w, b.y + b.h / 2] : side === "l" ? [b.x, b.y + b.h / 2] : side === "b" ? [b.x + b.w / 2, b.y + b.h] : [b.x + b.w / 2, b.y]; };
+// Routes money and requests travel.
+const routes = {};
+const route = (name, a, b, bend = 0) => {
+  const mx = (a[0] + b[0]) / 2, my = (a[1] + b[1]) / 2 + bend;
+  routes[name] = { a, b, c: [mx, my] };
+  const p = document.createElementNS("http://www.w3.org/2000/svg", "path");
+  p.setAttribute("d", `M${a[0]} ${a[1]} Q${mx} ${my} ${b[0]} ${b[1]}`); p.setAttribute("marker-end", "url(#arr)");
+  $("paths").appendChild(p);
+};
+const kl = box("n-kilele");
+for (const [n, dy] of [["Amani", -44], ["Baraka", 0], ["Chiku", 44]]) route(n, edge("n-" + n, "r"), [kl.x, kl.y + kl.h / 2 + dy], n === "Baraka" ? 0 : (dy < 0 ? -18 : 18));
+route("settle", [kl.x + kl.w, kl.y + 50], edge("n-agentrix", "l"), -30);
+route("payroll", [kl.x + kl.w, kl.y + 120], edge("n-staff", "l"), 10);
+route("models", edge("n-agentrix", "b"), edge("n-staff", "t"), 0);
+route("held", edge("n-kilele", "b"), edge("n-owner", "t"), 0);
+delete routes.models; $("paths").lastElementChild.previousElementSibling.remove();
+{ const a = [box("n-agentrix").x + 250, box("n-agentrix").y + box("n-agentrix").h], b = [box("n-models").x + 250, box("n-models").y];
+  // Agentrix's model bills run down the right edge, past the payroll card.
+  const p = document.createElementNS("http://www.w3.org/2000/svg", "path");
+  p.setAttribute("d", `M${a[0]} ${a[1]} C${a[0] + 44} ${a[1] + 60} ${b[0] + 44} ${b[1] - 60} ${b[0]} ${b[1]}`); p.setAttribute("marker-end", "url(#arr)");
+  $("paths").appendChild(p); routes.models = { a, b, c: [a[0] + 58, (a[1] + b[1]) / 2] }; }
+
+const at = (r, k) => { const u = 1 - k; return [u * u * r.a[0] + 2 * u * k * r.c[0] + k * k * r.b[0], u * u * r.a[1] + 2 * u * k * r.c[1] + k * k * r.b[1]]; };
+const fly = (name, kind, ms = 950) => new Promise(done => {
+  const r = routes[name], g = document.createElementNS("http://www.w3.org/2000/svg", "g");
+  const fill = kind === "coin" ? "#ffcf5a" : kind === "held" ? "#ff4f6d" : "#8fb8ff";
+  g.innerHTML = kind === "coin"
+    ? `<circle r="11" fill="${fill}" stroke="#171530" stroke-width="2"/><text y="4.5" text-anchor="middle" font-family="Manrope" font-weight="800" font-size="13" fill="#171530">$</text>`
+    : `<rect x="-9" y="-11" width="18" height="22" rx="3" fill="${fill}" stroke="#171530" stroke-width="2"/><path d="M-5 -4h10M-5 1h10M-5 6h6" stroke="#171530" stroke-width="1.6"/>`;
+  $("coins").appendChild(g);
+  const t0 = performance.now();
+  const step = t => { const k = Math.min(1, (t - t0) / ms), e = k < .5 ? 2 * k * k : 1 - Math.pow(-2 * k + 2, 2) / 2, [x, y] = at(r, e);
+    g.setAttribute("transform", `translate(${x} ${y})`); k < 1 ? requestAnimationFrame(step) : (g.remove(), done()); };
+  requestAnimationFrame(step);
+});
+const pulse = id => { const e = $(id); e.classList.remove("pulse"); void e.offsetWidth; e.classList.add("pulse"); };
+const chip = id => { const e = $(id); e.classList.add("on"); setTimeout(() => e.classList.remove("on"), 900); };
+const tag = (name, k, html, cls = "", ms = 1500) => {
+  const [x, y] = at(routes[name], k), d = document.createElement("div");
+  d.className = "tag " + cls; d.style.left = Math.min(x, 1150) + "px"; d.style.top = (y - 26) + "px"; d.innerHTML = html;
+  $("tags").appendChild(d); requestAnimationFrame(() => d.classList.add("show"));
+  setTimeout(() => { d.classList.remove("show"); setTimeout(() => d.remove(), 300); }, ms);
+};
+const eat = iso => new Date(new Date(iso).getTime() + 3 * 3600e3);
+const hm = d => String(d.getUTCHours()).padStart(2, "0") + ":" + String(d.getUTCMinutes()).padStart(2, "0");
+const DAY = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"], MON = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+const day = d => `${DAY[d.getUTCDay()]} ${d.getUTCDate()} ${MON[d.getUTCMonth()]}`;
+const usd = n => "$" + n.toFixed(2);
+const short = id => id.length > 10 ? id.slice(0, 4) + "…" + id.slice(-4) : id;
+const S = { orders: 0, paid: 0, settled: 0, held: 0, bills: 0, staff: 0, models: 0 };
+const paint = () => {
+  $("k-orders").textContent = S.orders; $("k-paid").textContent = usd(S.paid); $("k-settled").textContent = usd(S.settled);
+  $("k-held").textContent = S.held; $("k-bills").textContent = S.bills;
+  $("t-kilele").textContent = `USD ${S.paid.toFixed(2)} in from agents`; $("t-agentrix").textContent = `USD ${S.settled.toFixed(2)} settled`;
+  $("t-staff").textContent = `${S.staff} bill${S.staff === 1 ? "" : "s"}`; $("t-models").textContent = `${S.models} bill${S.models === 1 ? "" : "s"}`;
+  $("t-owner").textContent = `${S.held} held for her`;
+};
+const say = (e, text) => { $("ticker").innerHTML = `<time>${hm(eat(e.at))}</time>${text}`; };
+const play = async e => {
+  if (e.kind === "order") {
+    S.orders++; paint();
+    if (e.paid_usd) {
+      chip("c-cashier"); say(e, `${e.agent}'s agent orders ${e.items} and pays with its saved PayPal · ${e.order} · USD ${e.paid_usd.toFixed(2)}`);
+      tag(e.agent, .5, `${e.order} · ${usd(e.paid_usd)}<small>saved PayPal, captured</small>`);
+      await fly(e.agent, "coin"); S.paid += e.paid_usd; pulse("n-kilele"); paint();
+    } else {
+      chip("c-door"); say(e, `${e.agent}'s agent asks for a custom cake at the agent door, signature verified · ${e.order} · held for the owner, nothing charged`);
+      tag(e.agent, .5, `${e.order} · custom cake<small>signed request, verified</small>`);
+      await fly(e.agent, "doc", 800); chip("c-kchief");
+      tag("held", .5, `${e.order} · ${usd(e.usd)}<small>held for the owner</small>`, "held");
+      await fly("held", "held", 700); S.held++; pulse("n-owner"); paint();
+    }
+  } else if (e.kind === "settlement") {
+    chip("c-recv"); chip("c-payables");
+    say(e, `Agentrix's Receivables bills Kilele; Kilele's Payables pays inside the owner's mandate · ${e.invoice} · USD ${e.usd.toFixed(2)} · PayPal ${e.paypal}`);
+    tag("settle", .5, `${e.invoice} · ${usd(e.usd)}<small>PayPal ${short(e.paypal)} · ${e.state.toLowerCase()}</small>`, "", 1900);
+    await fly("settle", "coin", 1100); S.settled += e.usd; pulse("n-agentrix"); paint();
+  } else if (e.kind === "bill") {
+    const mine = /payroll/.test(e.bill);
+    S.bills++; mine ? S.staff++ : S.models++;
+    say(e, mine ? `Kilele's agents raise the payroll bill for the last six hours · USD ${e.usd.toFixed(2)}` : `Agentrix's agents raise a bill for the models they ran on · USD ${e.usd.toFixed(2)}`);
+    tag(mine ? "payroll" : "models", mine ? .5 : .12, mine ? `payroll · ${usd(e.usd)}<small>bill raised</small>` : `models · ${usd(e.usd)}<small>bill raised</small>`);
+    await fly(mine ? "payroll" : "models", "doc", 900); pulse(mine ? "n-staff" : "n-models"); paint();
+  }
+};
+const run = async () => {
+  const seconds = Number(q.get("seconds") || 18), ev = R.events;
+  const t0 = new Date(R.since).getTime() + 0, first = new Date(ev[0].at).getTime() - 20 * 60e3;
+  const start = Math.max(t0, first), end = new Date(R.read_at).getTime(), span = end - start;
+  $("sub").textContent = `${(span / 3600e3).toFixed(1)} hours in ${seconds} seconds. Every move read back from the live build and PayPal's sandbox, ${day(eat(R.read_at))} ${hm(eat(R.read_at))} EAT.`;
+  $("k-wallet").textContent = "–";
+  await document.fonts.ready; await new Promise(r => setTimeout(r, 700));
+  const began = performance.now(); let i = 0;
+  await new Promise(done => {
+    const tick = now => {
+      const k = Math.min(1, (now - began) / (seconds * 1000)), t = start + span * k, d = eat(new Date(t).toISOString());
+      $("clk").textContent = hm(d); $("day").textContent = `${day(d)} · East Africa Time`;
+      while (i < ev.length && new Date(ev[i].at).getTime() <= t) play(ev[i++]);
+      k < 1 ? requestAnimationFrame(tick) : done();
+    };
+    requestAnimationFrame(tick);
+  });
+  await new Promise(r => setTimeout(r, 1400));
+  $("k-wallet").textContent = R.wallet.entries; $("k-wallet-l").textContent = R.wallet.reconciled === "matches" ? "wallet entries, matched against PayPal" : "wallet entries";
+  $("ticker").innerHTML = `<time>${hm(eat(R.read_at))}</time>The Cashier's wallet: ${R.wallet.entries} entries, ${R.wallet.reconciled === "matches" ? "every one matched against PayPal" : R.wallet.reconciled}. The agents are still working.`;
+  await new Promise(r => setTimeout(r, 1600));
+  window.done = true;
+};
+paint();
+if (R) run();
+</script>
+</body>
+</html>

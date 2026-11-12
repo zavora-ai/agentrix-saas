@@ -1,0 +1,143 @@
+{
+  "note": "The PayPal entry's film, beat by beat (script.md). pic: slide:NAME (a section of slides.html) or clip:FILE (recorded by rec.py). fit=clip: the beat lasts as long as the clip between start and end. The narration is spoken by a text-to-speech model as Agentrix's Chief; every number in it is in record.json or on the page shown.",
+  "beats": [
+    {
+      "id": "b01",
+      "pic": "slide:title",
+      "presenter": false,
+      "say": "I'm the Chief at Agentrix. I'm an AI agent, and I run this company for its founder."
+    },
+    {
+      "id": "b02",
+      "pic": "clip:replay.mp4",
+      "fallback": "title",
+      "start": 0.6,
+      "end": 12.0,
+      "fit": "clip",
+      "captions": true,
+      "say": "Last night, nobody was at the keyboard. This is a replay of what my team and our customer's agents did, read back from PayPal."
+    },
+    {
+      "id": "b03",
+      "pic": "clip:replay.mp4",
+      "fallback": "title",
+      "start": 12.0,
+      "end": 23.6,
+      "fit": "clip",
+      "say": "Shoppers' agents ordered and paid with their saved PayPal. Two custom cakes were held for the owner. And every three hours, Kilele's agents paid our invoice, company to company."
+    },
+    {
+      "id": "b04",
+      "pic": "clip:door.mp4",
+      "fallback": "title",
+      "start": 4.2,
+      "fit": "voice",
+      "badge": [
+        "Live",
+        "Kilele Bakery, the owner's view"
+      ],
+      "say": "Here it is, live. Three shopper agents placed these orders overnight at Kilele Bakery. This one came through the agent door: the request was signed, and the shop checked the signature against the agent's own website."
+    },
+    {
+      "id": "b05",
+      "pic": "clip:today.mp4",
+      "fallback": "title",
+      "start": 4.6,
+      "fit": "voice",
+      "badge": [
+        "Live",
+        "Kilele Bakery, the owner's morning"
+      ],
+      "say": "Kilele's owner woke up to this. Her Chief counted the night from the records, and five custom cakes wait for her decision. Agents do the routine. The owner decides what matters."
+    },
+    {
+      "id": "b06",
+      "pic": "clip:settle.mp4",
+      "fallback": "title",
+      "start": 3.0,
+      "fit": "voice",
+      "badge": [
+        "Live",
+        "Kilele Bakery's money console"
+      ],
+      "say": "Kilele pays us for its WebAgents. My Receivables agent invoices Kilele's agent door. Its Payables agent checks the invoice against the mandate the owner signed, and pays through PayPal. Four times overnight, and both companies' books post from one PayPal id."
+    },
+    {
+      "id": "b07",
+      "pic": "clip:bills.mp4",
+      "fallback": "title",
+      "start": 4.5,
+      "fit": "voice",
+      "badge": [
+        "Live",
+        "Agentrix's own console"
+      ],
+      "say": "My own bills arrive the same way: every three hours, for the models my agents think with. Each agent signs its own requests, and holds no secrets."
+    },
+    {
+      "id": "b08",
+      "pic": "clip:verify.mp4",
+      "fallback": "title",
+      "start": 0.8,
+      "fit": "clip",
+      "badge": [
+        "Live",
+        "run against the deployed site"
+      ],
+      "say": "How do you know an agent is who it says? Every agent carries a badge, rooted in its website's own domain and signed by its owner. Anyone can check it."
+    },
+    {
+      "id": "b09",
+      "pic": "clip:badge.mp4",
+      "fallback": "title",
+      "start": 5.0,
+      "fit": "voice",
+      "badge": [
+        "Live",
+        "Kilele Bakery's agents"
+      ],
+      "say": "The Cashier's badge points to its wallet: every move it made with the shop's PayPal, matched against PayPal's own record."
+    },
+    {
+      "id": "b10",
+      "pic": "clip:impostor.mp4",
+      "fallback": "title",
+      "start": 0.8,
+      "fit": "clip",
+      "badge": [
+        "Live",
+        "run against the deployed site"
+      ],
+      "say": "An impostor can borrow an agent's name, but not its key. The door refuses, signs the refusal, and nothing moves."
+    },
+    {
+      "id": "b11",
+      "pic": "slide:clouds",
+      "say": "The same identity works in the clouds. We proved it live with AWS, Bedrock AgentCore, Google Cloud and Microsoft Entra Agent ID, and contributed the code to adk-rust, the open-source framework we're built on."
+    },
+    {
+      "id": "b12",
+      "pic": "slide:passkey",
+      "say": "And a human answers for every agent. The owner's passkey is asked for at three moments only: linking PayPal, signing the mandate, and stepping up. Change one dollar after approval, and the approval is void."
+    },
+    {
+      "id": "b13",
+      "pic": "clip:proofs.mp4",
+      "fallback": "title",
+      "start": 1.5,
+      "fit": "voice",
+      "badge": [
+        "Live",
+        "Proofs"
+      ],
+      "say": "Don't take my word for it. The audit log is signed, and anyone can verify it. We ran ten attacks, from a fake supplier email to a forged PayPal webhook. All ten were refused, scored from PayPal and the books."
+    },
+    {
+      "id": "b14",
+      "pic": "slide:close",
+      "presenter": false,
+      "min": 7,
+      "say": "Agentrix. Businesses run by agents you can identify, with an owner who answers for them, and money you can check. Built on adk-rust and PayPal."
+    }
+  ]
+}
